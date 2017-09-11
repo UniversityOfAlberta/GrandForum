@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SAB Catalyst Report" reportType="RP_SAB_CAT_REPORT" pdfType="RPTP_SAB_CAT_REPORT" pdfFiles="SABCatalystReportPDF" personId="0" ajax="true" disabled="false" year="2017">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SD">
+        <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="table" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+        <Role role="STAFF+">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="table" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+        <!--Role role="RMC">
             <SectionPermission id="materials" permissions="r" />
             <SectionPermission id="table" permissions="" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
-        </Role>
+        </Role-->
         <Person id="1911">
             <SectionPermission id="materials" permissions="r" />
             <SectionPermission id="table" permissions="r" />
