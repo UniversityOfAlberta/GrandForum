@@ -60,7 +60,8 @@ class Report extends AbstractReport{
         }
         foreach($projects as $project){
             if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
-                if(strstr($project->getName(), "SSA2016") === false){
+                if(strstr($project->getName(), "SSA2016") === false && 
+                   strstr($project->getName(), "SSA2017") === false){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
                     
@@ -70,7 +71,8 @@ class Report extends AbstractReport{
             }
         }
         foreach($person->getProjects() as $project){
-            if(strstr($project->getName(), "SSA2016") !== false){
+            if(strstr($project->getName(), "SSA2016") !== false || 
+               strstr($project->getName(), "SSA2017") !== false){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSAReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} Final Report", "{$url}SSAReport&project={$project->getName()}", $selected);
             }
