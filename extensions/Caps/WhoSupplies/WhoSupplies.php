@@ -125,7 +125,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>In June, 2017, the Manitoba College of Pharmacists approved guidelines for the distribution of Mifegymiso® in Manitoba, specifying that pharmacist's in Manitoba cannot dispense Mifegymiso® directly to a patient, <a target='_blank' href='http://www.cphm.ca/uploaded/web/Guidelines/Mifegymiso/Final%20Mifegymiso%20Guideline%20for%20Pharmacists.pdf'>read more</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
