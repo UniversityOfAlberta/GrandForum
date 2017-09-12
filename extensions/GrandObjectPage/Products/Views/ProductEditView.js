@@ -275,7 +275,12 @@ ProductEditView = Backbone.View.extend({
                 this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
             }, this)
         });
-
+        
+        if(productStructure.categories[this.model.get('category')] != undefined &&
+            productStructure.categories[this.model.get('category')].types[this.model.get('type')] != undefined &&
+           _.size(productStructure.categories[this.model.get('category')].types[this.model.get('type')].titles) > 0){
+            this.$("select[name=title]").combobox();
+        }
         return this.$el;
     }
 

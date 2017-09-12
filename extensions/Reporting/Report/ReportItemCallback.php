@@ -113,6 +113,7 @@ class ReportItemCallback {
             "presentation_invited" => "getPresentationInvited",
             "presentation_organization" => "getPresentationOrganization",
             "presentation_country" => "getPresentationCountry",
+            "presentation_length" => "getPresentationLength",
             "presentation_date" => "getProductDate",
             //Awards
             "award_category" => "getAwardCategory",
@@ -787,6 +788,12 @@ class ReportItemCallback {
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
         return @$product['location'];
+    }
+    
+    function getPresentationLength(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $product = $product->getData();
+        return @$product['length'];
     }
     
     function getProductDate(){

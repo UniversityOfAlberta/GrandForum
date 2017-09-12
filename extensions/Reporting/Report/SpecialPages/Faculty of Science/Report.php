@@ -25,7 +25,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         if($wgUser->isLoggedIn()){
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
-            $tabs["CV"] = TabUtils::createTab("My CV");
+            $tabs["CV"] = TabUtils::createTab("My QA CV");
             $tabs["Recommendations"] = TabUtils::createTab("Recommendations");
             $tabs["FosStats"] = TabUtils::createTab("FOS Stats");
         }

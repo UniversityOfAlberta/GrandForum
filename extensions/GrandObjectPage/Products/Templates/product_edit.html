@@ -1,6 +1,13 @@
 <div id="dialogMessages"></div>
 <form>
-<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'title', {size: '50'}) %>
+<span class="label" style="display:inline-block;">Title:</span>
+<% if(productStructure.categories[category] != undefined &&
+      productStructure.categories[category].types[type] != undefined &&
+      _.size(productStructure.categories[category].types[type].titles) > 0){ %>
+    <%= HTML.Select(this, 'title', {options: productStructure.categories[category].types[type].titles}) %>
+<% } else { %>
+    <%= HTML.TextBox(this, 'title', {size: '50'}) %>
+<% } %>
 <h2>Authors</h2>
 <div id="productAuthors">
     

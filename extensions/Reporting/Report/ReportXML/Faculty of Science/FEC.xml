@@ -15,23 +15,66 @@
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <table class='wikitable'>
-                    <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                    <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
-                    <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
-                    <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
-                    <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
-                    <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
-                    <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
-                    <tr><td style='width:350px;'><b>Technicians:</b></td><td>{$user_tech_count}</tr></td>
-                    <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
-                </table>
-            ]]>
-        </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
-            <![CDATA[
-                <h2>Leaves</h2>
-                {$item}
+                <div style='display:inline-block;width:59%;'>
+                    <table class='wikitable'>
+                        <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                        <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                        <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+                        <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
+                        <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
+                        <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                        <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
+                        <tr><td style='width:350px;'><b>Technicians:</b></td><td>{$user_tech_count}</tr></td>
+                        <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
+                    </table>
+                </div>
+                <div style='display:inline-block;width:40%;vertical-align:top;'>
+                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see Faculty Agreement or FSO Agreement. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
+                    <table width="100%" class='wikitable'>
+                        <tr>
+                            <th></th>
+                            <th>Refereed</th>
+                            <th>Books</th>
+                            <th>Patents</th>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Lifetime</b></td>
+                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                        </tr>
+                    </table>
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
@@ -41,7 +84,13 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" multiple="true" addText="Add new leave" optional="true">
+            <![CDATA[
+                <h2>Leaves</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Political Leave,Sabbatical Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" multiple="true" addText="Add new reduced teaching reason" optional="true">
             <![CDATA[
                 <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
                 {$item}
@@ -54,15 +103,18 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new teaching development" optional="true">
             <![CDATA[
                 <h2>Teaching Development And Innovation</h2>
-                  {$item}
+                <small>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</small>
+                {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new other teaching" optional="true">
             <![CDATA[
-                <h2>Other Teaching</h2>{$item}
+                <h2>Other Teaching</h2>
+                <small>(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)</small>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -83,7 +135,7 @@
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <tr><td>{$product_citation}</td></tr>
+                    <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -104,6 +156,7 @@
                         <th>Organization</th>
                         <th>Location</th>
                         <th>Date</th>
+                        <th>Length (minutes)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -117,7 +170,8 @@
                         <td align='center'>{$presentation_invited}</td>
                         <td>{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
-                        <td style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
                     </tr>
                 ]]>
             </ReportItem>

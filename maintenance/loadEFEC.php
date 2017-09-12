@@ -683,7 +683,8 @@
         $product->projects = array();
         $data = array(
             'organizing_body' => $presentation['organization'],
-            'location' => $presentation['country']
+            'location' => $presentation['country'],
+            'length' => $presentation['duration']
         );
         if($presentation['refereed'] == "not refereed" ||
            $presentation['refereed'] == ""){

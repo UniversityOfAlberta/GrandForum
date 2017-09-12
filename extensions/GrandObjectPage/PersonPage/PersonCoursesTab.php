@@ -25,7 +25,7 @@ class PersonCoursesTab extends AbstractTab {
                 $coursesArray[$level]["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
             }
         }
-        $item = "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses<i></small>";
+        $item = "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses</i></small>";
         foreach($coursesArray as $level => $levels){
             $item .= "<h3>{$level} Level</h3>";
             $item .= "<table class='wikitable' frame='box' rules='all' width='100%'>";

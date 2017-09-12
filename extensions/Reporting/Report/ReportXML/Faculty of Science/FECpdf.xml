@@ -69,12 +69,6 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
-            <![CDATA[
-                <h3>Leaves</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <h3>Responsibilities Variation</h3>
@@ -82,9 +76,15 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
             <![CDATA[
-                <h3>Reasons For Reduced Teaching <i>(if applicable)</i></h3>
+                <h3>Leaves</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Political Leave,Sabbatical Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" class="wikitable" multiple="true" optional="true">
+            <![CDATA[
+                <h3>Reasons For Reduced Teaching<small> (if applicable)</small></h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -105,15 +105,16 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" multiple="true" optional="true">
             <![CDATA[
                 <h3>Teaching Development And Innovation</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobSection="FEC_COURSES" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" sizes="400" multiple="true" optional="true">
             <![CDATA[
-                <h3>Other Teaching</h3>{$item}
+                <h3>Other Teaching</h3>
+                {$item}
             ]]>
         </ReportItem>
         
@@ -150,7 +151,7 @@
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">{$product_citation}</li>
+                    <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$product_citation}</li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -178,6 +179,7 @@
                             <th>Organization</th>
                             <th>Location</th>
                             <th>Date</th>
+                            <th>Length (minutes)</th>
                         </tr>
                     </thead>
             ]]>
@@ -191,6 +193,7 @@
                         <td>{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
                     </tr>
                 ]]>
             </ReportItem>

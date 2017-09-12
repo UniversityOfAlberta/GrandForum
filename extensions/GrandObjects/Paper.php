@@ -516,9 +516,17 @@ class Paper extends BackboneModel{
                     else{
                         $tstatus = array();
                     }
+                    $titles = array();
+                    if("{$tattrs->titles}" != ""){
+                        $titles = @explode("|", "{$tattrs->titles}");
+                        foreach($titles as $key => $title){
+                            $titles[$key] = trim($title);
+                        }
+                    }
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
+                                                                               'titles' => $titles,
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array());
                     foreach($type->children() as $child){
@@ -1188,7 +1196,7 @@ class Paper extends BackboneModel{
      */
     function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
         $citationFormat = $this->getCitationFormat();
-        $format = strtolower($citationFormat);
+        $format = $citationFormat;
         $regex = "/\{.*?\}/";
         $format = preg_replace_callback($regex, "self::formatCitation", $format);
         
@@ -1261,6 +1269,19 @@ class Paper extends BackboneModel{
         $volume = $this->getData(array('volume'));
         $issue = $this->getData(array('number'));
         $editor = $this->getData(array('editors'));
+        $ranking = $this->getData(array('category_ranking'));
+        $if = $this->getData(array('impact_factor'));
+        
+        if($ranking == ""){
+            $ranking = "Unavailable for venue";
+        }
+        else{
+            $fraction = explode("/", $ranking);
+            $numerator = @$fraction[0];
+            $denominator = @$fraction[1];
+            $percent = number_format(($numerator/max(1, $denominator))*100, 2);
+            $ranking = $ranking." = {$percent}%";
+        }
         
         $yyyy = substr($date, 0, 4);
         $yy = substr($date, 2, 2);
@@ -1282,49 +1303,53 @@ class Paper extends BackboneModel{
             $match1 = $match;
             $match2 = $match;
             
-            $match1 = str_replace("%yyyy",      $yyyy,      $match1);
-            $match1 = str_replace("%yy",        $yy,        $match1);
-            $match1 = str_replace("%mm",        $mm,        $match1);
-            $match1 = str_replace("%dd",        $dd,        $match1);
-            $match1 = str_replace("%month",     $month,     $match1);
-            $match1 = str_replace("%mon",       $mon,       $match1);
-            $match1 = str_replace("%ayyyy",     $ayyyy,     $match1);
-            $match1 = str_replace("%ayy",       $ayy,       $match1);
-            $match1 = str_replace("%amm",       $amm,       $match1);
-            $match1 = str_replace("%add",       $add,       $match1);
-            $match1 = str_replace("%amonth",    $amonth,    $match1);
-            $match1 = str_replace("%amon",      $amon,      $match1);
-            $match1 = str_replace("%title",     $title,     $match1);
-            $match1 = str_replace("%type",      $type,      $match1);
-            $match1 = str_replace("%pages",     $pages,     $match1);
-            $match1 = str_replace("%authors",   $authors,   $match1);
-            $match1 = str_replace("%publisher", $publisher, $match1);
-            $match1 = str_replace("%editor",    $editor,    $match1);
-            $match1 = str_replace("%venue",     $venue,     $match1);
-            $match1 = str_replace("%issue",     $issue,     $match1);
-            $match1 = str_replace("%volume",    $volume,    $match1);
+            $match1 = str_ireplace("%yyyy",      $yyyy,      $match1);
+            $match1 = str_ireplace("%yy",        $yy,        $match1);
+            $match1 = str_ireplace("%mm",        $mm,        $match1);
+            $match1 = str_ireplace("%dd",        $dd,        $match1);
+            $match1 = str_ireplace("%month",     $month,     $match1);
+            $match1 = str_ireplace("%mon",       $mon,       $match1);
+            $match1 = str_ireplace("%ayyyy",     $ayyyy,     $match1);
+            $match1 = str_ireplace("%ayy",       $ayy,       $match1);
+            $match1 = str_ireplace("%amm",       $amm,       $match1);
+            $match1 = str_ireplace("%add",       $add,       $match1);
+            $match1 = str_ireplace("%amonth",    $amonth,    $match1);
+            $match1 = str_ireplace("%amon",      $amon,      $match1);
+            $match1 = str_ireplace("%title",     $title,     $match1);
+            $match1 = str_ireplace("%type",      $type,      $match1);
+            $match1 = str_ireplace("%pages",     $pages,     $match1);
+            $match1 = str_ireplace("%authors",   $authors,   $match1);
+            $match1 = str_ireplace("%publisher", $publisher, $match1);
+            $match1 = str_ireplace("%editor",    $editor,    $match1);
+            $match1 = str_ireplace("%venue",     $venue,     $match1);
+            $match1 = str_ireplace("%issue",     $issue,     $match1);
+            $match1 = str_ireplace("%volume",    $volume,    $match1);
+            $match1 = str_ireplace("%ranking",   $ranking,   $match1);
+            $match1 = str_ireplace("%if",        $if,        $match1);
 
-            $match2 = str_replace("%yyyy",      "", $match2);
-            $match2 = str_replace("%yy",        "", $match2);
-            $match2 = str_replace("%mm",        "", $match2);
-            $match2 = str_replace("%dd",        "", $match2);
-            $match2 = str_replace("%month",     "", $match2);
-            $match2 = str_replace("%mon",       "", $match2);
-            $match2 = str_replace("%ayyyy",     "", $match2);
-            $match2 = str_replace("%ayy",       "", $match2);
-            $match2 = str_replace("%amm",       "", $match2);
-            $match2 = str_replace("%add",       "", $match2);
-            $match2 = str_replace("%amonth",    "", $match2);
-            $match2 = str_replace("%amon",      "", $match2);
-            $match2 = str_replace("%title",     "", $match2);
-            $match2 = str_replace("%type",      "", $match2);
-            $match2 = str_replace("%pages",     "", $match2);
-            $match2 = str_replace("%authors",   "", $match2);
-            $match2 = str_replace("%publisher", "", $match2);
-            $match2 = str_replace("%editor",    "", $match2);
-            $match2 = str_replace("%venue",     "", $match2);
-            $match2 = str_replace("%issue",     "", $match2);
-            $match2 = str_replace("%volume",    "", $match2);
+            $match2 = str_ireplace("%yyyy",      "", $match2);
+            $match2 = str_ireplace("%yy",        "", $match2);
+            $match2 = str_ireplace("%mm",        "", $match2);
+            $match2 = str_ireplace("%dd",        "", $match2);
+            $match2 = str_ireplace("%month",     "", $match2);
+            $match2 = str_ireplace("%mon",       "", $match2);
+            $match2 = str_ireplace("%ayyyy",     "", $match2);
+            $match2 = str_ireplace("%ayy",       "", $match2);
+            $match2 = str_ireplace("%amm",       "", $match2);
+            $match2 = str_ireplace("%add",       "", $match2);
+            $match2 = str_ireplace("%amonth",    "", $match2);
+            $match2 = str_ireplace("%amon",      "", $match2);
+            $match2 = str_ireplace("%title",     "", $match2);
+            $match2 = str_ireplace("%type",      "", $match2);
+            $match2 = str_ireplace("%pages",     "", $match2);
+            $match2 = str_ireplace("%authors",   "", $match2);
+            $match2 = str_ireplace("%publisher", "", $match2);
+            $match2 = str_ireplace("%editor",    "", $match2);
+            $match2 = str_ireplace("%venue",     "", $match2);
+            $match2 = str_ireplace("%issue",     "", $match2);
+            $match2 = str_ireplace("%volume",    "", $match2);
+            $match2 = str_ireplace("%ranking",   "", $match2);
+            $match2 = str_ireplace("%if",        "", $match2);
             
             if($match1 == $match2){
                  $matches[$key] = "";
