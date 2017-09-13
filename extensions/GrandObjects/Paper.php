@@ -6,6 +6,7 @@
 
 class Paper extends BackboneModel{
 
+    static $structure = null;
     static $illegalAuthorsCache = array();
     static $oldSyncCache = array();
     static $cache = array();
@@ -490,6 +491,9 @@ class Paper extends BackboneModel{
      */
     static function structure(){
         global $config, $IP;
+        if(self::$structure != null){
+            return self::$structure;
+        }
         $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
         if(!file_exists($fileName)){
             $fileName = "$IP/extensions/GrandObjects/ProductStructures/NETWORK.xml";
@@ -586,6 +590,7 @@ class Paper extends BackboneModel{
                 return self::structure();
             } 
         }
+        self::$structure = $categories;
         return $categories;
     }
     
@@ -1136,12 +1141,45 @@ class Paper extends BackboneModel{
         return $this->getType();
     }
     
+    function getStructure(){
+        $structure = $this->structure();
+        if(isset($structure['categories'][$this->getCategory()]['types'][$this->getType()])){
+            return $structure['categories'][$this->getCategory()]['types'][$this->getType()];
+        }
+        return array();
+    }
+    
     /**
      * Returns the venue for this Paper (legacy stuff)
      * @return string The venue for this Paper
      */
     function getVenue(){
-        return $this->getData(array('event_title', 'published_in', 'journal_title', 'book_title', 'organization', 'owner', 'assignor'));
+        $structure = $this->getStructure();
+        if(isset($structure['data']['venue'])){
+            return $this->getData('venue');
+        }
+        else if(isset($structure['data']['event_title'])){
+            return $this->getData('event_title');
+        }
+        else if(isset($structure['data']['published_in'])){
+            return $this->getData('published_in');
+        }
+        else if(isset($structure['data']['journal_title'])){
+            return $this->getData('journal_title');
+        }
+        else if(isset($structure['data']['book_title'])){
+            return $this->getData('book_title');
+        }
+        else if(isset($structure['data']['organization'])){
+            return $this->getData('organization');
+        }
+        else if(isset($structure['data']['owner'])){
+            return $this->getData('owner');
+        }
+        else if(isset($structure['data']['assignor'])){
+            return $this->getData('assignor');
+        }
+        return "";
     }
 
     /**

@@ -28,28 +28,65 @@
                         $cells[$key] = trim(utf8_encode($cell));
                     }
                     $fullname = $cells[1];
+                    $cle = $cells[0];
                     $name_array = explode(",", $fullname);
                     $first_name = @$name_array[1];
                     $last_name = @$name_array[0];
-                    $person = Person::newFromNameLike($first_name." ".$last_name);
-                    if($person->getId() != 0){
-                        $user_id = $person->getId();
-                        $cle = $cells[0];
-                        $coapplicants = array();
-                        if(@is_array($lines2[$cle])){
-                            foreach($lines2[$cle] as $name){
-                                $name_array = explode(",", $name);
-                                $first_name = @$name_array[1];
-                                $last_name = @$name_array[0];
-                                $coapplicant = Person::newFromNameLike($first_name." ".$last_name);
-                                if($coapplicant->getId() != 0){
-                                    $coapplicants[] = $coapplicant->getId();
-                                }
-                                else{
-                                    $coapplicants[] = $first_name." ".$last_name;
+                    
+                    $username = str_replace(" ", "", $first_name.".".$last_name);
+                    $username = str_replace("'", "", $username);
+                    $username = preg_replace("/\(.*\)/", "", trim($username, " -\t\n\r\0\x0B"));
+                    $username = preg_replace("/\".*\"/", "", $username);
+                    
+                    $coapplicants = array();
+                    $person = Person::newFromName($username);
+                    if(@is_array($lines2[$cle])){
+                        foreach($lines2[$cle] as $name){
+                            $name_array = explode(",", $name);
+                            $first = @$name_array[1];
+                            $last = @$name_array[0];
+                            $coapplicant = Person::newFromNameLike($first." ".$last);
+                            if($coapplicant->getId() != 0){
+                                $coapplicants[] = $coapplicant->getId();
+                            }
+                            else{
+                                $coapplicants[] = $first." ".$last;
+                            }
+                        }
+                    }
+                    if($person->getId() == 0){
+                        // Double check the co-applicants to make sure that at least one of them is from UofA
+                        $found = false;
+                        foreach($coapplicants as $co){
+                            if(is_numeric($co)){
+                                $coapplicant = Person::newFromId($co);
+                                if($coapplicant->isRoleAtLeast(CI)){
+                                    $found = true;
+                                    break;
                                 }
                             }
                         }
+                        if($found){
+                            // Create the user
+                            $user = User::createNew($username, array('real_name' => "$first_name $last_name", 
+                                                                     'password' => User::crypt(mt_rand())));
+                            if($user != null){
+                                $person = new Person(array());
+                                $person->id = $user->getId();
+                                $person->name = $username;
+                                $person->realname = "$first_name $last_name";
+                                Person::$namesCache[$username] = $person;
+                                Person::$idsCache[$person->getId()] = $person;
+                                Person::$cache[strtolower($username)] = $person;
+                                Person::$cache[$person->getId()] = $person;
+                            }
+                            else{
+                                echo "ERROR Adding {$username}\n";
+                            }
+                        }
+                    }
+                    if($person->getId() != 0){
+                        $user_id = $person->getId();
                         $department = str_replace("'", "''",$cells[2]);
                         $institution = str_replace("'", "''",$cells[4]);
                         $province = str_replace("'", "''",$cells[5]);
