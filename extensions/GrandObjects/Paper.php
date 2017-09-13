@@ -1216,7 +1216,7 @@ class Paper extends BackboneModel{
     
     private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
         $authors = array();
-        if(strstr($matches[0], "authors") !== false){
+        if(strstr(strtolower($matches[0]), "authors") !== false){
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     $name = $a->getNameForProduct();

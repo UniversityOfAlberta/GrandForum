@@ -459,28 +459,31 @@
                 $hqpRoles[$person->getId()] = $r;
             }
             if($sup != null){
-                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$row['role']])){
+                switch($row['role']){
+                    case "":
+                    case "supervisor":
+                        $roleType = SUPERVISES;
+                        break;
+                    case "co-supervisor":
+                        $roleType = CO_SUPERVISES;
+                        break;
+                    default:
+                        $roleType = ucwords($row['role']);
+                        break;
+                }
+            
+                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$roleType])){
                     $rel = new Relationship(array());
                     $rel->user1 = $sup->getId();
                     $rel->user2 = $person->getId();
                     $rel->startDate = $row['started'];
                     $rel->endDate = $row['ended'];
-                    switch($row['role']){
-                        case "":
-                        case "supervisor":
-                            $rel->type = SUPERVISES;
-                            break;
-                        case "co-supervisor":
-                            $rel->type = CO_SUPERVISES;
-                            break;
-                        default:
-                            $rel->type = ucwords($row['role']);
-                            break;
-                    }
-                    $hqpRelations[$sup->getId()][$person->getId()][$row['role']] = $rel;
+                    $rel->type = $roleType;
+                    
+                    $hqpRelations[$sup->getId()][$person->getId()][$roleType] = $rel;
                 }
                 
-                $relation = $hqpRelations[$sup->getId()][$person->getId()][$row['role']];
+                $relation = $hqpRelations[$sup->getId()][$person->getId()][$roleType];
                 $relation->startDate = min($relation->getStartDate(), $row['started']);
                 $relation->endDate   = max($relation->getEndDate(),   $row['ended']);
             }

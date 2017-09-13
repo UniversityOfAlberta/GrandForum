@@ -157,16 +157,11 @@
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
-                </ul><br />
+                </ul>
             ]]>
         </ReportItem>
         
         <!-- Presentations -->
-        <ReportItem id="presentationspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
             <![CDATA[
                 <h2>Presentations</h2>
@@ -205,11 +200,6 @@
         </ReportItem>
         
         <!-- Awards Received -->
-        <ReportItem id="awardspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
             <![CDATA[
                 <h2>Awards Received</h2>
@@ -294,8 +284,8 @@
             <![CDATA[
                 <h2>Additional Info</h2>
             ]]>
-        </ReportItem> 
-        <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        </ReportItem>
+        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new supplementary professional activity" showHeader="false" optional="true">
             <![CDATA[
                 <h3>Supplementary Professional Activities</h3>{$item}
             ]]>
@@ -420,14 +410,16 @@
                 </ul>
             ]]>
         </ReportItem>
-        <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" addText="Add new additional datum" multiple="true" optional="true">
             <![CDATA[
-                <h3>Additional Data</h3>{$item}
+                <h3>Additional Data</h3>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
             <![CDATA[
-            	<b>Footnotes</b>{$item}
+            	<h3>Footnotes</h3>
+            	{$item}
             ]]>
         </ReportItem>
     </ReportSection>
