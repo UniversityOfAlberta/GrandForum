@@ -1,17 +1,24 @@
 <?php
     require_once( "commandLine.inc" );
     $wgUser=User::newFromId("1");
-    for($num=1;$num<=25;$num++){
+    for($num=1;$num<=26;$num++){
         if(file_exists("grant_awards/award".$num.".csv")){
             $handle = fopen("grant_awards/award".$num.".csv", "r");
+            $handle2 = fopen("grant_awards/co".$num.".csv", "r");
             echo "\nImporting award{$num}.csv\n";
             $iterationsSoFar = 0;
             $lines = array();
+            $lines2 = array();
             while (($data = fgetcsv($handle, 0, ",")) !== false) {
                 $lines[] = $data;
             }
+            while (($data2 = fgetcsv($handle2, 0, ",")) !== false) {
+                $lines2[$data2[0]][] = $data2[1];
+            }
             fclose($handle);
+            fclose($handle2);
             $offset = 0;
+            
             foreach($lines as $i => $cells){
                 if($i == 0 && array_search("Num_Partie", $cells) !== false){
                     $offset++;
@@ -25,9 +32,24 @@
                     $first_name = @$name_array[1];
                     $last_name = @$name_array[0];
                     $person = Person::newFromNameLike($first_name." ".$last_name);
-                    if($person->getId() != ""){
+                    if($person->getId() != 0){
                         $user_id = $person->getId();
                         $cle = $cells[0];
+                        $coapplicants = array();
+                        if(@is_array($lines2[$cle])){
+                            foreach($lines2[$cle] as $name){
+                                $name_array = explode(",", $name);
+                                $first_name = @$name_array[1];
+                                $last_name = @$name_array[0];
+                                $coapplicant = Person::newFromNameLike($first_name." ".$last_name);
+                                if($coapplicant->getId() != 0){
+                                    $coapplicants[] = $coapplicant->getId();
+                                }
+                                else{
+                                    $coapplicants[] = $first_name." ".$last_name;
+                                }
+                            }
+                        }
                         $department = str_replace("'", "''",$cells[2]);
                         $institution = str_replace("'", "''",$cells[4]);
                         $province = str_replace("'", "''",$cells[5]);
@@ -84,7 +106,8 @@
                                                             'nb_partie' => $nb_partie,
                                                             'application_title' => $application_title,
                                                             'keyword' => $keyword,
-                                                            'application_summary' => $application_summary));
+                                                            'application_summary' => $application_summary,
+                                                            'coapplicants' => serialize($coapplicants)));
                         if($status){
                             DBFunctions::commit();
                         }
