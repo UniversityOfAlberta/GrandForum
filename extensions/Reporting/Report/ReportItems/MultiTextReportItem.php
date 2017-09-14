@@ -349,8 +349,9 @@ EOF;
             $item .= "</tr>";
         }*/
         if($multiple){
+            $addText = $this->getAttr('addText', '+');
             $item .= "<tfoot><tr><td colspan='".(count($indices)+1)."'>";
-            $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
+            $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>{$addText}</button>";
             $item .= "</td></tr></tfoot>";
         }
         $item .= "</table>";
