@@ -20,8 +20,8 @@ class PersonGrantsTab extends AbstractTab {
                     });
                 </script>"
             );
-        $this->html = $this->generateUofAGrantTable();
-        return $this->html;
+        //$this->html = $this->generateUofAGrantTable();
+        //return $this->html;
         $this->html ="
             <div class='grantAccordion'>
                 <h3><a href='#'>UoA Grants 3.0</a></h3>
@@ -42,23 +42,22 @@ class PersonGrantsTab extends AbstractTab {
         if(!$this->visibility['isMe']){
             return "";
         }
-        $contributions = $this->person->getContributions();
+        $grantAwards = GrantAward::getAllGrantAwards(0, 999999999, $this->person);
         $string = "<table id='grants_table' frame='box' rules='all'>
-                    <thead><tr><th style='white-space:nowrap;'>Name</th>
-                    <th style='white-space:nowrap;'>Partner</th>
-                    <th style='white-space:nowrap;'>Start Date</th>
-                    <th style='white-space:nowrap;'>End Date</th>
-                    <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
-        foreach($contributions as $contribution){
-            $partners = $contribution->getPartners();
-            if($contribution->project_id != ""){
-                continue;
-            }
-            $string .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
-                            <td></td>
-                            <td style='white-space:nowrap;'>".time2date($contribution->getStartDate(), "Y-m-d")."</td>
-                            <td style='white-space:nowrap;'>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
-                            <td align=right>$".number_format($contribution->getTotal())."</td></tr>";}
+                    <thead>
+                        <tr>
+                            <th style='white-space:nowrap;'>Name</th>
+                            <th style='white-space:nowrap;'>Fiscal Year</th>
+                            <th style='white-space:nowrap;'>Competition Year</th>
+                            <th style='white-space:nowrap;'>Amount</th>
+                        </tr>
+                    </thead><tbody>";
+        foreach($grantAwards as $grantAward){
+            $partners = $grantAward->getPartners();
+            $string .= "<tr><td><a href='{$grantAward->getUrl()}'>{$grantAward->application_title}</a></td>
+                            <td style='white-space:nowrap;'>{$grantAward->fiscal_year}</td>
+                            <td style='white-space:nowrap;'>{$grantAward->competition_year}</td>
+                            <td align=right>$".number_format($grantAward->amount)."</td></tr>";}
             $string .= "</table></tbody><script type='text/javascript'>
                 $('#grants_table').dataTable({'iDisplayLength': 25});
             </script>";

@@ -48,12 +48,16 @@ class GrantAward extends BackboneModel {
         return $grant;
     }
     
-    static function getAllGrantAwards($start=0, $count=999999999){
+    static function getAllGrantAwards($start=0, $count=999999999, $person=null){
         $me = Person::newFromWgUser();
         $grants = array();
         $where = array();
-        if(!$me->isRoleAtLeast(ISAC)){
-            $where = array('user_id' => $me->getId());
+        if(!$me->isRoleAtLeast(ISAC) || $person != null){
+            if($person == null){
+                $person = $me;
+            }
+            $where = array('user_id' => $person->getId(),
+                           WHERE_OR('coapplicants') => LIKE("%\"{$person->getId()}\";%"));
         }
         $data = DBFunctions::select(array('grand_new_grants'),
                                     array('*'),
@@ -83,7 +87,7 @@ class GrantAward extends BackboneModel {
         $me = Person::newFromWgUser();
         if(count($data) > 0){
             $row = $data[0];
-            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(ISAC)){
+            if($me->getId() == $row['user_id'] || strstr($row['coapplicants'], "\"{$me->getId()}\";") !== false || $me->isRoleAtLeast(ISAC)){
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->grant_id = $row['grant_id'];

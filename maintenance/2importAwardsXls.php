@@ -30,8 +30,8 @@
                     $fullname = $cells[1];
                     $cle = $cells[0];
                     $name_array = explode(",", $fullname);
-                    $first_name = @$name_array[1];
-                    $last_name = @$name_array[0];
+                    $first_name = @trim($name_array[1]);
+                    $last_name = @trim($name_array[0]);
                     
                     $username = str_replace(" ", "", $first_name.".".$last_name);
                     $username = str_replace("'", "", $username);
@@ -43,8 +43,8 @@
                     if(@is_array($lines2[$cle])){
                         foreach($lines2[$cle] as $name){
                             $name_array = explode(",", $name);
-                            $first = @$name_array[1];
-                            $last = @$name_array[0];
+                            $first = @trim(utf8_encode($name_array[1]));
+                            $last = @trim(utf8_encode($name_array[0]));
                             $coapplicant = Person::newFromNameLike($first." ".$last);
                             if($coapplicant->getId() != 0){
                                 $coapplicants[] = $coapplicant->getId();
