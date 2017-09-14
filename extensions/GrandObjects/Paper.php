@@ -6,6 +6,7 @@
 
 class Paper extends BackboneModel{
 
+    static $structure = null;
     static $illegalAuthorsCache = array();
     static $oldSyncCache = array();
     static $cache = array();
@@ -494,6 +495,9 @@ class Paper extends BackboneModel{
      */
     static function structure(){
         global $config, $IP;
+        if(self::$structure != null){
+            return self::$structure;
+        }
         $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
         if(!file_exists($fileName)){
             $fileName = "$IP/extensions/GrandObjects/ProductStructures/NETWORK.xml";
@@ -572,6 +576,7 @@ class Paper extends BackboneModel{
                 return self::structure();
             } 
         }
+        self::$structure = $categories;
         return $categories;
     }
     
