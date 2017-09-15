@@ -2897,6 +2897,21 @@ class Person extends BackboneModel {
         return $grants;
     }
     
+    function getGrantAwards(){
+        return GrantAward::getAllGrantAwards(0, 999999999, $this);
+    }
+    
+    function getGrantAwardsBetween($start, $end){
+        $grants = array();
+        foreach($this->getGrantAwards() as $grant){
+            $date = $grant->fiscal_year;
+            if($start <= $date && $end >= $date){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
+    }
+    
     /**
      * Returns the Multimedia this Person has made
      * @return array the Multimedia this Person has made
