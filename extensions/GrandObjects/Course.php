@@ -120,7 +120,7 @@ class Course extends BackboneModel{
             Cache::store("course_$id", $data);
         }
         $course = new Course($data);
-        //$self::$cache[$course->id] = &$course;
+        self::$cache[$course->id] = &$course;
         return $course;
     }
 
@@ -138,7 +138,7 @@ class Course extends BackboneModel{
         $courses = array();
         foreach($data as $row){
             $course = new Course(array($row));
-            //$self::$cache[$course->id] = &$course;
+            //self::$cache[$course->id] = &$course;
             array_push($courses, $course);
         }
         return $courses;

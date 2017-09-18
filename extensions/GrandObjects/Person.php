@@ -4507,9 +4507,10 @@ class Person extends BackboneModel {
         foreach($courses as $course){
             $courseStart = $course->getStartDate();
             $courseEnd = $course->getEndDate();
-            if(($start <= $courseStart && $end >= $courseStart) ||
-               ($start >= $courseStart && $end <= $courseEnd)){
-                  $during[] = $course;
+            if(($courseStart <= $start && $courseEnd   >= $end) ||
+               ($courseEnd   >= $start && $courseEnd   <= $end) ||
+               ($courseStart >= $start && $courseStart <= $end)){
+                $during[] = $course;
             }
         }
         return $during;

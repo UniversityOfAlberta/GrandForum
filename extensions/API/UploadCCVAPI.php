@@ -545,9 +545,7 @@ class UploadCCVAPI extends API{
                                               array('*'),
                                               array('user_id'       => EQ($person->getId()),
                                                     'university_id' => EQ($university),
-                                                    'department'    => EQ($department),
-                                                    'position_id'   => EQ($position),
-                                                    'start_date'    => EQ($start_date)))) == 0){
+                                                    'position_id'   => EQ($position)))) == 0){
                 // Make sure this exact entry is not already entered (allow department and end_date to be different)
                 $status = $status && 
                           DBFunctions::insert('grand_user_university',

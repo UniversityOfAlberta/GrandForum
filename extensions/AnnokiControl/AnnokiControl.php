@@ -121,6 +121,9 @@ $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
+                                         
+$egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
+                                         'path' => "$IP/extensions/QASummary/QASummary.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

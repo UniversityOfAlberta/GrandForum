@@ -124,7 +124,8 @@
         'PublicVisualizations',
         'Duplicates',
         'ProjectEvolution',
-        'CCVExport'
+        'CCVExport',
+        //'QASummary'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,
