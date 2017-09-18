@@ -325,6 +325,7 @@ class Person extends BackboneModel {
                     $middleName = $row['middle_name'];
                     $keys = array(
                         strtolower($row['user_name']),
+                        strtolower(str_replace(".", " ", $row['user_name'])),
                         strtolower("$firstName $lastName"),
                         strtolower("$lastName $firstName"),
                         strtolower("$firstName ".substr($lastName, 0, 1)),
