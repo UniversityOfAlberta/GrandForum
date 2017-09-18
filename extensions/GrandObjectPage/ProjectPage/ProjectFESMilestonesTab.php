@@ -430,7 +430,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $members = $project->getAllPeople();
                 $peopleNames = array();
                 foreach($members as $person){
-                    $peopleNames[$person->getNameForForms()] = $person->getNameForForms();
+                    $peopleNames[$person->getName()] = $person->getNameForForms();
                 }
                 if($this->canEditMilestone(null)){
                     $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getNameForForms(), $peopleNames);
