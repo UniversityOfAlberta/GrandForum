@@ -656,7 +656,9 @@ class ContributionPage {
                             $wgOut->addHTML("<input type='submit' name='submit' value='Save Contribution' />");
                             $wgOut->addHTML("</form>");
                         }
-                        $wgOut->addHTML("<input type='button' name='edit' value='Edit Contribution' onClick='document.location=\"{$contribution->getUrl()}?edit\";' />");
+                        else {
+                            $wgOut->addHTML("<input type='button' name='edit' value='Edit Contribution' onClick='document.location=\"{$contribution->getUrl()}?edit\";' />");
+                        }
                     }
                     $wgOut->output();
                     $wgOut->disable();
