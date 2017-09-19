@@ -262,7 +262,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);
       if(array_search($uploadNS, AnnokiNamespaces::getPublicNamespaces()) !== false){
-        $project = Project::newFromName($uploadNS);
+        $project = Project::newFromName(str_replace("_", " ", $uploadNS));
         $isRole = isset($wgRoles[$uploadNS]);
         $me = Person::newFromId($user->getId());
         if($project == null || $project->getName() == null){
