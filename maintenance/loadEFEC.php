@@ -267,12 +267,15 @@
         
         // Update University Info
         addUserUniversity($person, "University of Alberta", ucwords($row['department']), ucwords($row['rank']), $row['date_of_appointment'], $row['date_retirement']);
+        $person->university = false;
         show_status(++$iterationsSoFar, count($staff));
     }
     
     // Adding Employment History
     echo "\nImporting Employment History from CCV\n";
     require_once("ccvEmploymentUpload.php");
+    
+    Person::$universityCache = array();
     
     // Adding HQP
     $respIdMap = array();
@@ -497,7 +500,7 @@
         if(!isset($hqpUniversities[$person->getId()][$row['responsibility']])){
             $uni = array();
             $uni['university'] = "University of Alberta";
-            $uni['department'] = "";
+            $uni['department'] = ($sup != null) ? $sup->getDepartment() : "";
             $uni['startDate'] = $row['started'];
             $uni['endDate'] = $row['ended'];
             $uni['title'] = $titleMap[$row['responsibility']];

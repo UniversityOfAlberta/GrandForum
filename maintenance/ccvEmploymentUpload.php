@@ -30,6 +30,7 @@
         
         //if ($status){ echo "employment update for " . $name . " was successful.\n"; }
         //else { echo "employment update for " . $name . " was unsuccessful.\n"; }
+        $person->university = false;
     }
 
 
