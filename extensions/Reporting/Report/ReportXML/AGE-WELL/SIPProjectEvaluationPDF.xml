@@ -68,6 +68,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Financial Report" title="Financial Report" pagebreak="false">
+        <ReportItem id="budget_amount" delete="true" />
+        <ReportItem id="budget" delete="true" />
+        <ReportItem id="justification" delete="true" />
+        <ReportItem id="resources_amount" delete="true" />
+        <ReportItem id="resources" delete="true" />
         <ReportItem id="0" type="Text" blobItem="1">
             <![CDATA[
                 <table id="finances" class="wikitable" frame="box" rules="all">
@@ -251,7 +256,7 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" optional="true">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" optional="true" position="100">
             <![CDATA[
                 <h3>Budget Justification</h3>
                 {$item}
