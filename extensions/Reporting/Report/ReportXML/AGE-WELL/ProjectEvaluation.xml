@@ -606,7 +606,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
             <![CDATA[
-                    #of publications published with any of the following listed as a co-author:<br />
+                    #of outputs published with any of the following listed as a co-author:<br />
                     older adult or caregiver: {$item} <br />
             ]]>
         </ReportItem>
