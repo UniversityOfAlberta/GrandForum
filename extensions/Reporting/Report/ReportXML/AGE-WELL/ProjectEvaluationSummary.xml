@@ -39,9 +39,9 @@
                         <tr>
                             <th></th>
                             <th colspan='3'>Scientific Excellence</th>
-                            <th colspan='19'>Networking and Partnerships</th>
-                            <th colspan='4'>KTEE (KM & Commercialization combined)</th>
-                            <th colspan='5'>HQP</th>
+                            <th colspan='14'>Networking and Partnerships</th>
+                            <th colspan='3'>KTEE (KM & Commercialization combined)</th>
+                            <th colspan='3'>HQP</th>
                         </tr>
                         <tr>
                             <th rowspan='2'></th>
@@ -50,41 +50,33 @@
                             <th rowspan='2'># of international collaborators involved in the project</th>
                             <th rowspan='2'># of partners</th>
                             <th rowspan='2'>Total cash and in-kind contributions the project received</th>
-                            <th colspan='4'># of stakeholders (older adult or caregiver)</th>
-                            <th colspan='4'># of stakeholders (community organization)</th>
-                            <th colspan='4'># of stakeholders (industry member)</th>
-                            <th colspan='4'># of stakeholders (policymaker)</th>
-                            <th rowspan='2'># of project meetings and events (workshops) that included non-academic partners</th>
+                            <th colspan='3'># of stakeholders (older adult or caregiver)</th>
+                            <th colspan='3'># of stakeholders (community organization)</th>
+                            <th colspan='3'># of stakeholders (industry member)</th>
+                            <th colspan='3'># of stakeholders (policymaker)</th>
                             <th rowspan='2'># of non-academic dissemination activities (total)</th>
-                            <th rowspan='2'># of academic dissemination (total)</th>
                             <th rowspan='2'># of licensing agreements</th>
                             <th rowspan='2'># of patents</th>
                             <th rowspan='2'># of HQP hired on project</th>
                             <th rowspan='2'># of HQP involved as a lead author on a publication</th>
-                            <th rowspan='2'># of HQP that worked directly with partner organizations</th>
                             <th rowspan='2'># of HQP successfully completing EPIC training program</th>
-                            <th rowspan='2'># of HQP involved as a lead author on a publication</th>
                         </tr>
                         <tr>
                             <th>Sum</th>
-                            <th>Research Subjects</th>
                             <th>Advisory Board Members</th>
-                            <th>Coinvestigators /Partners</th>
+                            <th>Affiliated Researchers</th>
                             
                             <th>Sum</th>
-                            <th>Research Subjects</th>
                             <th>Advisory Board Members</th>
-                            <th>Coinvestigators /Partners</th>
+                            <th>Affiliated Researchers</th>
                             
                             <th>Sum</th>
-                            <th>Research Subjects</th>
                             <th>Advisory Board Members</th>
-                            <th>Coinvestigators /Partners</th>
+                            <th>Affiliated Researchers</th>
                             
                             <th>Sum</th>
-                            <th>Research Subjects</th>
                             <th>Advisory Board Members</th>
-                            <th>Coinvestigators /Partners</th>
+                            <th>Affiliated Researchers</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,52 +87,41 @@
                 <![CDATA[
                     <tr>
                         <td style="white-space:nowrap;">{$project_name}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_2_5_M1,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})}</td>
-                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})},
-                                                    {getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M10,0,0,{$project_id})})})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M10,0,0,{$project_id})}</td>
-                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})},
-                                                    {getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M11,0,0,{$project_id})})})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M11,0,0,{$project_id})}</td>
-                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})},
-                                                    {getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M12,0,0,{$project_id})})})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M12,0,0,{$project_id})}</td>
-                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})},
-                                                    {getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M13,0,0,{$project_id})})})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M13,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2A,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2B,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_2_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1A,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1B,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1C,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M4,0,0,{$project_id})})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M6,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M10,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M6,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M10,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M7,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M11,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M7,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M11,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M8,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M12,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M8,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M12,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M9,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M13,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M9,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M13,0,0,{$project_id})}</td>
                         <td align="right">{add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1B,0,0,{$project_id})},
-                                                    {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1C,0,0,{$project_id})},   
-                                                         {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1D,0,0,{$project_id})},
-                                                              {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1E,0,0,{$project_id})})})})})}</td>
-                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0A,0,0,{$project_id})},
-                                               {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0B,0,0,{$project_id})},
-                                                    {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0C,0,0,{$project_id})},
-                                                         {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0D,0,0,{$project_id})})})})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_2_5_M4,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M1,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M4,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
-                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
+                                               {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1B,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1C,0,0,{$project_id})},   
+                                               {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1D,0,0,{$project_id})},
+                                               {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1E,0,0,{$project_id})})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,KTEE2,REV_2_5_M4,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,HQP,REV_1_6_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
+                        <td align="right">{getNumber(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
                     </tr>
                 ]]>
             </ReportItem>

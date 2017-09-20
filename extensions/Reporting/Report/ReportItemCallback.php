@@ -1613,7 +1613,7 @@ class ReportItemCallback {
     }
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
-        return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+        return (float) str_replace(",", "", $this->getText($rp, $section, $blobId, $subId, $personId, $projectId));
     }
     
     function concat(){
