@@ -9,6 +9,7 @@ class ArrayReportItemSet extends ReportItemSet {
         if($index != null && isset($array[$index])){
             $array = $array[$index];
         }
+        //var_dump($array);
         if(is_array($array)){
             foreach($array as $key => $el){
                 if($el == null || $el == ""){

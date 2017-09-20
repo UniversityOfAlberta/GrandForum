@@ -1593,7 +1593,11 @@ class ReportItemCallback {
         }
         else{
             $array = $blb->getData();
-            $value = @$array[$index];
+            $index = explode("|", $index);
+            foreach($index as $i){
+                $array = @$array[$i];
+            }
+            $value = $array;
             if(is_array($value) && $delim != ""){
                 return @implode($delim, $value);
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Evaluation" reportType="RP_PROJ_EVALUATION_SUMMARY" pdfType="RPTP_PROJ_EVALUATION_SUMMARY" ajax="true">
+<Report name="Project Evaluation" reportType="RP_PROJ_EVALUATION_SUMMARY" pdfType="RPTP_PROJ_EVALUATION_SUMMARY" ajax="true" year="2016">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="summary" permissions="rw" />
@@ -287,7 +287,7 @@
                                 <div style="font-family: Arial">
                                 <center><b>Core Research Program Project Evaluation <br />Project Overview</b></center>
                                 <br />
-                                <b>{$project_name}</b><br />
+                                <b>{$project_name}</b> {$project_full_name}<br />
                                 <br />
                                 <b>Project Leads:</b> {$project_leaders}<br />
                                 <br />
@@ -301,9 +301,35 @@
                                 <br />
                                 <b>Product description:</b> {getHTML(RP_PROJ_EVALUATION,NARRATIVE1,VALUE,0,0,{$project_id})}
                                 <br />
-                                <b>PRL Current Year:</b> ______<br />
+                                <table width='100%'>
+                                    <tr>
+                                        <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Product</th>
+                                        <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Product Type</th>
+                                        <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Stage</th>
+                                        <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">PRL Level (2016-17)</th>
+                                        <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">PRL Level (current)</th>
+                                        <th style="border: 1.00pt solid #000000;font-family: Arial">PRL Level (projected)</th>
+                                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="prl" type="ArrayReportItemSet" array="{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id})}" index="prl">
+                <ReportItem id="prl_row" type="Static">
+                    <![CDATA[
+                        <tr>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id},prl|{$extraIndex}|product)}</td>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id},prl|{$extraIndex}|producttype)}</td>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id},prl|{$extraIndex}|stage)}</td>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial"></td>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id},prl|{$extraIndex}|prllevel)}</td>
+                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid; #000000;font-family: Arial"></td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="row_continue" type="Static">
+                <![CDATA[
+                                </table>
                                 <br />
-                                <b>Projected PRL:</b> ______<br />
                                 <br />
                                 <b><u>3) Funding Profile</u></b><br />
                                 <br />
