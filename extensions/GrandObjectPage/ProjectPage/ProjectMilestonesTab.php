@@ -526,11 +526,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 });
                 
             </script>";
-        }
-        if($config->getValue('networkName') == "GlycoNet" && 
-           $this->canEditMilestone() && 
-           !$this->visibility['edit']){
-            $this->showMilestoneReport();
+            if($config->getValue('networkName') == "GlycoNet" && 
+               $this->canEditMilestone() && 
+               !$this->visibility['edit']){
+                $this->showMilestoneReport();
+            }
         }
     }
 

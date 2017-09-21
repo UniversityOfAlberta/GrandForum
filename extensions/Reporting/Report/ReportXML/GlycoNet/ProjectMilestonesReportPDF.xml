@@ -19,6 +19,17 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="HeaderReportSection" blobSection="REPORT" pagebreak="false">
+        <ReportItem id="table" type="ProjectMilestoneTable">
+            <![CDATA[
+                <h2>Milestones</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="pagebreak" type="PageBreak">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
             <![CDATA[
                 <h2>Top 3 successes</h2>
