@@ -36,8 +36,14 @@ class ApplicationsTable extends SpecialPage{
                                     Person::getAllCandidates(EXTERNAL));
         
         $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        
         $this->projects = Project::getAllProjects();
+        
+        $this->stratApplicants = array();
+        foreach(Person::getAllCandidates() as $person){
+            if($person->isSubRole('StratApplicant')){
+                $this->stratApplicants[] = $person;
+            }
+        }
     }
     
     function generateHTML($wgOut){
@@ -62,6 +68,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
@@ -92,6 +99,9 @@ class ApplicationsTable extends SpecialPage{
         }
         if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "strat" && $me->isRoleAtLeast(SD)){
+            $this->generateStrat();
         }
         else if($program == "exchange" && $me->isRoleAtLeast(SD)){
             $this->generateExchange();
@@ -186,6 +196,24 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_04_2017'), $this->allNis, 2017, "04-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateStrat(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_STRAT'), $this->stratApplicants, 2017, "2017", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
