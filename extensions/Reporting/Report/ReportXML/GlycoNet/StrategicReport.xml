@@ -11,7 +11,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="Staff+">
+        <Role role="STAFF+">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
