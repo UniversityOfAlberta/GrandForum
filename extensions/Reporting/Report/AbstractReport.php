@@ -745,7 +745,10 @@ abstract class AbstractReport extends SpecialPage {
                         }
                         else{
                             $rResultTmp = false;
-                            if(strstr($perm['perm']['role'], "+") !== false){
+                            if($perm['perm']['role'] == ""){
+                                $rResultTmp = true;
+                            }
+                            else if(strstr($perm['perm']['role'], "+") !== false){
                                 $rResultTmp = $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']);
                             }
                             else{
