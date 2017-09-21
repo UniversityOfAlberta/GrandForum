@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>Project Milestones Report {$this_year}</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="HeaderReportSection" blobSection="REPORT" pagebreak="false">
+        <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
+            <![CDATA[
+                <h2>Top 3 successes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Textarea" blobType="BLOB_TEXT" blobItem="CHALLENGE"  rich="true">
+            <![CDATA[
+                <h2>Top 3 challenges</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="products" type="Textarea" blobType="BLOB_TEXT" blobItem="PRODUCTS"  rich="true">
+            <![CDATA[
+                <h2>Publications, patents, and reports of invention issued since the annual report</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="info" type="Textarea" blobType="BLOB_TEXT" blobItem="INFO" rich="true">
+            <![CDATA[
+                <h2>Any other additional info</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

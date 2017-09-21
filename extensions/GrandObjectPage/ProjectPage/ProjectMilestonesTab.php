@@ -129,7 +129,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         return false;
     }
     
-    function canEditMilestone($milestone){
+    function canEditMilestone($milestone=null){
         $me = Person::newFromWgUser();
         if($milestone != null && $milestone->getLeader()->getId() == $me->getId()){
             return true;
@@ -527,6 +527,24 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 
             </script>";
         }
+        if($config->getValue('networkName') == "GlycoNet" && 
+           $this->canEditMilestone() && 
+           !$this->visibility['edit']){
+            $this->showMilestoneReport();
+        }
+    }
+
+    function showMilestoneReport(){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        $this->html .= "<p><a class='button' href='$wgServer$wgScriptPath/index.php/Special:Report?report=ProjectMilestonesReport&project={$this->project->getName()}'>Edit Milestone Report</a>";
+        $report = new DummyReport("ProjectMilestonesReport", $me, $this->project);
+        $pdfData = $report->getLatestPDF();
+        if(count($pdfData) > 0){
+            $pdf = PDF::newFromToken($pdfData[0]['token']);
+            $this->html .= "&nbsp;<a class='button' href='{$pdf->getUrl()}'>Download Report PDF</a>";
+        }
+        $this->html .= "</p>";
     }
 
 }    

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="PL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="EditableReportSection" blobSection="REPORT">
+        <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
+            <![CDATA[
+                <h2>Top 3 successes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Textarea" blobType="BLOB_TEXT" blobItem="CHALLENGE"  rich="true">
+            <![CDATA[
+                <h2>Top 3 challenges</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="products" type="Textarea" blobType="BLOB_TEXT" blobItem="PRODUCTS"  rich="true">
+            <![CDATA[
+                <h2>Publications, patents, and reports of invention issued since the annual report</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="info" type="Textarea" blobType="BLOB_TEXT" blobItem="INFO" rich="true">
+            <![CDATA[
+                <h2>Any other additional info</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By generating a PDF your report is automatically submitted" />
+    </ReportSection>
+</Report>
