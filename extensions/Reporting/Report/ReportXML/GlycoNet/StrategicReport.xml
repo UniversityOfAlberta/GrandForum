@@ -11,6 +11,16 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="Staff+">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="letters" permissions="rw" />
+            <SectionPermission id="commercial" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="instructions" type="StaticReportItem">
