@@ -6,7 +6,7 @@ class PersonGrantsTab extends AbstractTab {
     var $visibility;
 
     function PersonGrantsTab($person, $visibility){
-        parent::AbstractTab("Grants");
+        parent::AbstractTab("Funding");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -51,13 +51,13 @@ class PersonGrantsTab extends AbstractTab {
                         </div>";
         $this->html .= "
             <div class='grantAccordion'>
-                <h3><a href='#'>UoA Grants 3.0</a></h3>
+                <h3><a href='#'>Grant Accts</a></h3>
                 <div>
                 {$this->generateUofAGrantTable()}
                 </div>
             </div>
             <div class='grantAccordion'>
-                <h3><a href='#'>NSERC</a></h3>
+                <h3><a href='#'>Awards</a></h3>
                 <div>
                 {$this->generateGrantTable()}
                 </div>

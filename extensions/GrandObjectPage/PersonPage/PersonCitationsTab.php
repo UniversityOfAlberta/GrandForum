@@ -6,7 +6,7 @@ class PersonCitationsTab extends AbstractTab {
     var $visibility;
 
     function PersonCitationsTab($person, $visibility){
-        parent::AbstractTab("Citations");
+        parent::AbstractTab("Impact");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -28,10 +28,11 @@ class PersonCitationsTab extends AbstractTab {
 
 
         $metric = $this->person->getMetric();
-        $acm_stats = $this->getAcmStats($metric);
-        $scopus_stats = $this->getScopusStats($metric);
+        //$acm_stats = $this->getAcmStats($metric);
+        //$scopus_stats = $this->getScopusStats($metric);
         $gs_stats = $this->getGsStats();
-        $this->html ="
+        $this->html .= $gs_stats;
+        /*$this->html ="
             <div class='citationAccordion'>
                 <h3><a href='#'>ACM Statistics</a></h3>
                 <div>
@@ -49,7 +50,7 @@ class PersonCitationsTab extends AbstractTab {
             <div id='gs_stats'>
                 {$gs_stats}
             </div>
-        </div>";
+        </div>";*/
         return $this->html;
     }
 

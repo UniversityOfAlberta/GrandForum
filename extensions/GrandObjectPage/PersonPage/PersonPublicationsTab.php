@@ -9,10 +9,10 @@ class PersonPublicationsTab extends AbstractTab {
     function PersonPublicationsTab($person, $visibility, $category='all'){
         global $config;
         if($category == "all" || is_array($category)){
-            parent::AbstractTab(ucwords(Inflect::pluralize($config->getValue("productsTerm"))));
+            parent::AbstractTab(ucwords(Inflect::pluralize($config->getValue("productsTerm")), " \t\r\n\f\v-/"));
         }
         else{
-            parent::AbstractTab(ucwords(Inflect::pluralize($category)));
+            parent::AbstractTab(ucwords(Inflect::pluralize($category), " \t\r\n\f\v-/"));
         }
         $this->person = $person;
         $this->visibility = $visibility;

@@ -129,11 +129,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Patent/Spin Off'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
-                }
-                if($wgUser->isLoggedIn() && $person->isRole(NI)){
-                    $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGrantsTab($person, $visibility));
@@ -147,6 +143,12 @@ class PersonPage {
                 }
                 if($person->isRole(HQP) || $person->wasLastRole(HQP)){
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                }
+                if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Patent/Spin Off'));
+                }
+                if($wgUser->isLoggedIn() && $person->isRole(NI)){
+                    $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 if($config->getValue('projectsEnabled')){

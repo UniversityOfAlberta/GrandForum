@@ -88,7 +88,7 @@ class Inflect
         'CNI'    => 'CNIs',
         'PNI'    => 'PNIs',
         'HQP'    => 'HQPs',
-        'patent\/spin off' => 'patents and spin offs'
+        'patent\/spin off' => 'patents/spin-offs'
     );
 
 	/**
