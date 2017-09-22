@@ -20,7 +20,7 @@ class PersonPublicationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser;
+        global $wgUser, $wgServer, $wgScriptPath;
         if(!$wgUser->isLoggedIn()){
             return "";
         }
@@ -54,6 +54,9 @@ class PersonPublicationsTab extends AbstractTab {
                         </script>
                         </div>";
         $this->html .= $this->showTable($this->person, $this->visibility);
+        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageOutputs\");' value='Manage Outputs' />";
+        }
     }
 
     function showTable($person, $visibility){

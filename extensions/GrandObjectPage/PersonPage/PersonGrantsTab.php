@@ -62,6 +62,9 @@ class PersonGrantsTab extends AbstractTab {
                 {$this->generateGrantTable()}
                 </div>
             </div>";
+        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:GrantPage\");' value='Manage Funding' />";
+        }
         return $this->html;
      }
 

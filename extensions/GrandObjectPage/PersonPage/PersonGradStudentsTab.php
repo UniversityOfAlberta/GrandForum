@@ -65,7 +65,9 @@ class PersonGradStudentsTab extends AbstractTab {
                 {$this->showCommiteeRelations($this->person, $this->visibility)}   
              </div>
         </div>";
-             
+        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage HQP' />";
+        }
         return $this->html;
     }
     
@@ -170,16 +172,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
             }
         }
-        if($wgUser->isLoggedIn()){
-            if(true){
-                if($visibility['isMe'] || $visibility['isSupervisor']){
-                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage Students' />";
-                }
-                else{
-                    $html .= "This user has no relations";
-                }
-            }
-        }
         return $html;
     }
 
@@ -251,16 +243,6 @@ class PersonGradStudentsTab extends AbstractTab {
                     }
                     $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false, 'iDisplayLength': 25})</script>";
                     $html .= "</td></tr></table>";
-                }
-            }
-        }
-        if($wgUser->isLoggedIn()){
-            if(true){
-                if($visibility['isMe'] || $visibility['isSupervisor']){
-                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage Students' />";
-                }
-                else{
-                    $html .= "This user has no relations";
                 }
             }
         }
