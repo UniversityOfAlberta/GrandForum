@@ -237,6 +237,12 @@
                 </ol>
             ]]>
         </ReportItem>
+        <ReportItem id="funding" type="Checkbox" blobItem="FUNDING" blobType="BLOB_ARRAY" delimiter="&lt;br />" options="CIHR Collaboration funding medication optimization and deprescription to reduce or eliminate drug-induced cognitive impairment.|NBHRF Collaboration funding to encourage research be conducted in New Brunswick.|CFN Medication Optimization Summit identified research priorities areas for funding.">
+            <![CDATA[
+                <h2>Funding Priority</h2>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
         <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">

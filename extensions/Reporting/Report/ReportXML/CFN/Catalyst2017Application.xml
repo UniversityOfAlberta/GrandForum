@@ -262,6 +262,14 @@
                 </ol>
             ]]>
         </ReportItem>
+        <ReportItem id="funding" type="Checkbox" blobItem="FUNDING" blobType="BLOB_ARRAY" options="CIHR Collaboration funding medication optimization and deprescription to reduce or eliminate drug-induced cognitive impairment.|NBHRF Collaboration funding to encourage research be conducted in New Brunswick.|CFN Medication Optimization Summit identified research priorities areas for funding.">
+            <![CDATA[
+                <h2>Funding Priority</h2>
+                <p>For this competition there are three specific priority funding initiatives within the overall goal of medication optimization.  Refer to the Catalyst <a href="{$wgServer}{$wgScriptPath}/data/CAT2017 - Program Guidelines.docx">Program Guidelines</a> for more information on these priority funding areas.</p>
+                <p>Please check the appropriate box(es) below to indicate which priority funding area(s) your project is most likely to fall under. Note: This information is only for administrative purposes.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
         <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
