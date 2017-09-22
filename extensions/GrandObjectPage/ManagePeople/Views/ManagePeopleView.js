@@ -265,6 +265,9 @@ ManagePeopleView = Backbone.View.extend({
         this.$el.html(this.template());
         this.updateExistingMember();
         this.addRows();
+        this.$("#hqpDuplicatesProgress").progressbar({
+            value: 0
+        });
         this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
 	        autoOpen: false,
 	        modal: true,

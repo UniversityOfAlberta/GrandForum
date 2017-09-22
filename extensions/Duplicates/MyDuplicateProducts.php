@@ -6,7 +6,7 @@ $wgSpecialPages['MyDuplicateProducts'] = 'MyDuplicateProducts'; # Let MediaWiki 
 $wgExtensionMessagesFiles['MyDuplicateProducts'] = $dir . 'MyDuplicateProducts.i18n.php';
 $wgSpecialPageGroups['MyDuplicateProducts'] = 'other-tools';
 
-$wgHooks['ToolboxLinks'][] = 'MyDuplicateProducts::createToolboxLinks';
+//$wgHooks['ToolboxLinks'][] = 'MyDuplicateProducts::createToolboxLinks';
 
 function runMyDuplicateProducts($par){
     MyDuplicateProducts::execute($par);

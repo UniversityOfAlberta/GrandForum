@@ -1,20 +1,21 @@
 <p>
     You can use the table below to manage your HQP on the Forum.<br />
-    If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Add Existing Member' button.  If the person does not exist, then you will need to add them by clicking the 'Add New Member' button.
+    If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Find Existing Member' button.  If the person does not exist, then you will need to add them by clicking the 'Add HQP' button.
 </p>
 <p>
-<b>Sanity Check 1:</b> Names that are highlighted in <span style= "color: #FFA500">orange</span> indicate that HQP with incomplete data set <i>(their University, Department or Position are not specified)</i>.<br/>
-<b>Sanity Check 2:</b> Names that are <b>bolded</b> indicate that the HQP may not be your student <i>(their Department is different than yours)</i>. <br/>
-<b>Sanity Check 3:</b> Click the "Check Duplicates" button to check for duplicate entries (the button will not do anything if there are no duplicates): <button id="hqpDuplicatesButton">Check Duplicates</button> <br/>
+    <b>Sanity Check 1:</b> Names that are highlighted in <span style= "color: #FFA500">orange</span> indicate that HQP with incomplete data set <i>(their University, Department or Position are not specified)</i>.<br/>
+    <b>Sanity Check 2:</b> Names that are <b>bolded</b> indicate that the HQP may not be your student <i>(their Department is different than yours)</i>. <br/>
+    <b>Sanity Check 3:</b> Click the "Check Duplicates" button to check for duplicate entries (the button will not do anything if there are no duplicates): <button id="hqpDuplicatesButton">Check Duplicates</button>&nbsp;<span style="vertical-align:middle;display:inline-block;width:250px;" id="hqpDuplicatesProgress"></span>
     <div id="hqpDuplicates">
         
     </div>
+    <br />
 </p>
 <p>
-    <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
-    <button id="addExistingMember" title="Adds an existing member to the list below">Add Existing Member</button>
+    <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add HQP</a>
+    <button id="addExistingMember" title="Adds an existing member to the list below">Find Existing HQP</button>
 </p>
-<div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Add Existing Member">
+<div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Find Existing HQP">
     <p>Select the person you would like to show up in your table and then press "Save".</p>
     <select id="selectExistingMember" name="select"></select>
 </div>

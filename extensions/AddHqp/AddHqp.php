@@ -4,7 +4,7 @@ $wgSpecialPages['AddHqp'] = 'AddHqp'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['AddHqp'] = $dir . 'AddHqp.i18n.php';
 $wgSpecialPageGroups['AddHqp'] = 'network-tools';
 
-$wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
+//$wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
 $wgHooks['SpecialPage_initList'][] = 'AddHqp::redirect';
 autoload_register('AddHqp/Validations');
 require_once("$dir../AddMember/AddMember.body.php");
