@@ -33,8 +33,8 @@ class PersonGradStudentsTab extends AbstractTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='8' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='8' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>
