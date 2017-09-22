@@ -21,16 +21,16 @@ define("REPORTING_RMC_MEETING_MONTH", RMC_MEETING_MONTH);
 define("REPORTING_NCE_END_MONTH", NCE_END_MONTH);
 define("REPORTING_NCE_PRODUCTION_MONTH", NCE_PRODUCTION_MONTH);
 
-define("REPORTING_CYCLE_START", REPORTING_YEAR.REPORTING_CYCLE_START_MONTH); // Start of internal reporting cycle (Used for range queries)
-define("REPORTING_NCE_START", REPORTING_YEAR.REPORTING_NCE_START_MONTH); // Start of NCE reporting cycle
-define("REPORTING_START", REPORTING_YEAR.REPORTING_START_MONTH); // Start of reporting period
+define("REPORTING_CYCLE_START", (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH); // Start of internal reporting cycle (Used for range queries)
+define("REPORTING_NCE_START", (REPORTING_YEAR-1).REPORTING_NCE_START_MONTH); // Start of NCE reporting cycle
+define("REPORTING_START", (REPORTING_YEAR-1).REPORTING_START_MONTH); // Start of reporting period
 define("REPORTING_END", REPORTING_YEAR.REPORTING_END_MONTH); // End of reporting period for HQP, NIs and Projects
 define("REPORTING_CYCLE_END_ACTUAL", REPORTING_YEAR.REPORTING_CYCLE_END_MONTH_ACTUAL); // End of internal reporting cycle (Used for range queries)
-define("REPORTING_CYCLE_END", (REPORTING_YEAR+1).REPORTING_CYCLE_END_MONTH); // End of internal reporting cycle (Used for range queries)
-define("REPORTING_PRODUCTION", (REPORTING_YEAR+1).REPORTING_PRODUCTION_MONTH); // Production of NI and Project reports
-define("REPORTING_RMC_REVISED", (REPORTING_YEAR+1).REPORTING_RMC_REVISED_MONTH); // RMC when evaluator reports can be revised
-define("REPORTING_RMC_MEETING", (REPORTING_YEAR+1).REPORTING_RMC_MEETING_MONTH); // RMC meeting for fund allocation
-define("REPORTING_NCE_END", (REPORTING_YEAR+1).REPORTING_NCE_END_MONTH); // End of NCE reporting cycle
-define("REPORTING_NCE_PRODUCTION", (REPORTING_YEAR+1).REPORTING_NCE_PRODUCTION_MONTH); // Production of NCE report
+define("REPORTING_CYCLE_END", REPORTING_YEAR.REPORTING_CYCLE_END_MONTH); // End of internal reporting cycle (Used for range queries)
+define("REPORTING_PRODUCTION", REPORTING_YEAR.REPORTING_PRODUCTION_MONTH); // Production of NI and Project reports
+define("REPORTING_RMC_REVISED", REPORTING_YEAR.REPORTING_RMC_REVISED_MONTH); // RMC when evaluator reports can be revised
+define("REPORTING_RMC_MEETING", REPORTING_YEAR.REPORTING_RMC_MEETING_MONTH); // RMC meeting for fund allocation
+define("REPORTING_NCE_END", REPORTING_YEAR.REPORTING_NCE_END_MONTH); // End of NCE reporting cycle
+define("REPORTING_NCE_PRODUCTION", REPORTING_YEAR.REPORTING_NCE_PRODUCTION_MONTH); // Production of NCE report
 
 ?>
