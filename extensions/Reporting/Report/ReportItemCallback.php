@@ -5,11 +5,13 @@ class ReportItemCallback {
     static $callbacks = 
         array(
             // Dates
+            "startYear" => "getStartYear",
             "start_year" => "getStartYear",
             "2_years_ago" => "get2YearsAgo",
             "last_year" => "getLastYear",
             "this_year" => "getThisYear",
             "next_year" => "getNextYear",
+            "endYear" => "getThisYear",
             // Courses
             "course_term" => "getCourseTerm",
             "course_start" => "getCourseStart",

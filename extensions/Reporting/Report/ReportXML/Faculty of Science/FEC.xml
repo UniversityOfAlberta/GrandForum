@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+        <Role role="NI">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
