@@ -183,7 +183,7 @@ class Person extends BackboneModel {
             return Person::newFromId($data[0]['user_id']);
         }
         else{
-            return null;
+            return new Person(array());
         }
     }
 
