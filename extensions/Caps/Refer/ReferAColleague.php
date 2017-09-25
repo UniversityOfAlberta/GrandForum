@@ -51,6 +51,7 @@ class ReferAColleague extends SpecialPage{
         if($_POST['language_field'] == "en"){
             switch($_POST['role_field']){
                 case "Nurse Practitioner":
+                case "Midwife":
                 case "Physician":
                     return "<p>Hello {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
                             <p>Welcome to The Canadian Abortion Providers Support (CAPS-CPCA) online community platform!  You are receiving this email because a colleague of yours has referred you.</p>
@@ -98,6 +99,7 @@ class ReferAColleague extends SpecialPage{
         else if($_POST['language_field'] == "fr"){
             switch($_POST['role_field']){
                 case "Nurse Practitioner":
+                case "Midwife":
                 case "Physician":
                     return "<p>Bonjour {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
                             <p>Bienvenue sur la plate-forme en ligne de la Communauté de pratique canadienne sur l’avortement (CAPS-CPCA)! Vous recevez ce courriel parce qu'un de vos collègues a suggéré de vous écrire.</p>
