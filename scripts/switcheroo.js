@@ -237,7 +237,7 @@
     $("#moveLeft" + this.id.pluralize()).click(function(){
         $.each($("#right" + obj.id.pluralize()).children().filter(":selected"), function(index, value){
             $("#left" + obj.id.pluralize()).append($(value).detach());
-            obj.values.splice(obj.values.indexOf(value.value.replace(/ /g, ".")), 1);
+            //obj.values.splice(obj.values.indexOf(value.value.replace(/ /g, ".")), 1);
         });
         obj.placeInHidden();
     });
@@ -245,7 +245,7 @@
     $("#moveRight" + this.id.pluralize()).click(function(){
         $.each($("#left" + obj.id.pluralize()).children().filter(":selected"), function(index, value){
             $("#right" + obj.id.pluralize()).append($(value).detach());
-            obj.values.push(value.value.replace(/ /g, "."));
+            //obj.values.push(value.value.replace(/ /g, "."));
         });
         obj.values.sort();
         obj.filterResults();
