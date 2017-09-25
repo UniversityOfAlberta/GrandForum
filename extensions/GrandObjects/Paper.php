@@ -1248,8 +1248,18 @@ class Paper extends BackboneModel{
                 $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
             }
         }
-        
-        return trim("{$format}<div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>");
+        $ifranking = "";
+        $ranking = $this->getData(array('category_ranking'));
+        $if = $this->getData(array('impact_factor'));
+        if($if != "" && $ranking != ""){
+            $fraction = explode("/", $ranking);
+            $numerator = @$fraction[0];
+            $denominator = @$fraction[1];
+            $percent = number_format(($numerator/max(1, $denominator))*100, 2);
+            $ranking = $ranking." = {$percent}%";
+            $ifranking = "IF: {$if}; Ranking: {$ranking}<br />";
+        }
+        return trim("{$format}<div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>");
     }
     
     private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
