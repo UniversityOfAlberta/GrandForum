@@ -226,6 +226,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>Mifegymiso® may not be covered by most provincial drug plans, individuals will have to pay anywhere from $270 to $300 out of pocket, (Sept. 26th, 2016) <a href='http://www.shns.ca/?q=tags/mifegymiso' target='_blank'>read more</a></li>
+                    <li>On September 22nd, 2017 government officials from the province of Nova Scotia  announced universal coverage of mifepristone, <a target='_blank' href='http://www.cbc.ca/news/canada/nova-scotia/nova-scotia-abortion-no-referral-pill-mifegymiso-1.4301943'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>

@@ -739,7 +739,8 @@ class Person extends BackboneModel {
             $ars = self::getAllCandidates(AR);
             $cis = self::getAllCandidates(CI);
             $nps = self::getAllCandidates(NP);
-            return array_merge($ars, $cis, $nps);
+            $mws = self::getAllCandidates(MW);
+            return array_merge($ars, $cis, $nps, $mws);
         }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
@@ -2307,6 +2308,9 @@ class Person extends BackboneModel {
         else if($this->isRoleOn(NP, $year, $project) && !$this->leadershipOf($project)){
             return NP;
         }
+        else if($this->isRoleOn(MW, $year, $project) && !$this->leadershipOf($project)){
+            return MW;
+        }
         else if($this->leadershipOf($project)){
             return PL;
         }
@@ -2413,7 +2417,8 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->wasLastRole(AR) || 
                     $this->wasLastRole(CI) ||
-                    $this->wasLastRole(NP));
+                    $this->wasLastRole(NP) ||
+                    $this->wasLastRole(MW));
         }
         $lastRole = $this->getLastRole();
         if($lastRole != null && $lastRole->getRole() == $role){
@@ -2432,7 +2437,8 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->wasLastRoleAtLeast(AR) || 
                     $this->wasLastRoleAtLeast(CI) ||
-                    $this->wasLastRoleAtLeast(NP));
+                    $this->wasLastRoleAtLeast(NP) ||
+                    $this->wasLastRoleAtLeast(MW));
         }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
@@ -2453,7 +2459,8 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->wasLastRoleAtMost(AR) || 
                     $this->wasLastRoleAtMost(CI) ||
-                    $this->wasLastRoleAtMost(NP));
+                    $this->wasLastRoleAtMost(NP) ||
+                    $this->wasLastRoleAtMost(MW));
         }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
@@ -2943,12 +2950,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRole(AR, $project) || 
                     $this->isRole(CI, $project) ||
-                    $this->isRole(NP, $project));
+                    $this->isRole(NP, $project) ||
+                    $this->isRole(MW, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRole(AR.'-Candidate', $project) || 
                     $this->isRole(CI.'-Candidate', $project) ||
-                    $this->isRole(NP.'-Candidate', $project));
+                    $this->isRole(NP.'-Candidate', $project) ||
+                    $this->isRole(MW.'-Candidate', $project));
         }
         if($role == PL || $role == 'PL'){
             return $this->isProjectLeader();
@@ -3010,12 +3019,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleOn(AR, $date, $project) || 
                     $this->isRoleOn(CI, $date, $project) ||
-                    $this->isRoleOn(NP, $date, $project));
+                    $this->isRoleOn(NP, $date, $project) ||
+                    $this->isRoleOn(MW, $date, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleOn(AR.'-Candidate', $date, $project) || 
                     $this->isRoleOn(CI.'-Candidate', $date, $project) ||
-                    $this->isRoleOn(NP.'-Candidate', $date, $project));
+                    $this->isRoleOn(NP.'-Candidate', $date, $project) ||
+                    $this->isRoleOn(MW.'-Candidate', $date, $project));
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
@@ -3068,12 +3079,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
                     $this->isRoleDuring(CI, $startRange, $endRange, $project) ||
-                    $this->isRoleDuring(NP, $startRange, $endRange, $project));
+                    $this->isRoleDuring(NP, $startRange, $endRange, $project) ||
+                    $this->isRoleDuring(MW, $startRange, $endRange, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleDuring(AR.'-Candidate', $startRange, $endRange, $project) || 
                     $this->isRoleDuring(CI.'-Candidate', $startRange, $endRange, $project) ||
-                    $this->isRoleDuring(NP.'-Candidate', $startRange, $endRange, $project));
+                    $this->isRoleDuring(NP.'-Candidate', $startRange, $endRange, $project) ||
+                    $this->isRoleDuring(MW.'-Candidate', $startRange, $endRange, $project));
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
@@ -3137,12 +3150,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI, $startRange, $endRange) ||
-                    $this->isRoleAtLeastDuring(NP, $startRange, $endRange));
+                    $this->isRoleAtLeastDuring(NP, $startRange, $endRange) ||
+                    $this->isRoleAtLeastDuring(MW, $startRange, $endRange));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange) ||
-                    $this->isRoleAtLeastDuring(NP.'-Candidate', $startRange, $endRange));
+                    $this->isRoleAtLeastDuring(NP.'-Candidate', $startRange, $endRange) ||
+                    $this->isRoleAtLeastDuring(MW.'-Candidate', $startRange, $endRange));
         }
         if($this->isCandidate()){
             return false;
@@ -3173,12 +3188,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtLeast(AR) || 
                     $this->isRoleAtLeast(CI) ||
-                    $this->isRoleAtLeast(NP));
+                    $this->isRoleAtLeast(NP) ||
+                    $this->isROleAtLeast(MW));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtLeast(AR.'-Candidate') || 
                     $this->isRoleAtLeast(CI.'-Candidate') ||
-                    $this->isRoleAtLeast(NP.'-Candidate'));
+                    $this->isRoleAtLeast(NP.'-Candidate') ||
+                    $this->isRoleAtLeast(MW.'-Candidate'));
         }
         $me = Person::newFromWgUser();
         if($this->isCandidate()){
@@ -3219,12 +3236,14 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtMost(AR) || 
                     $this->isRoleAtMost(CI) ||
-                    $this->isRoleAtMost(NP));
+                    $this->isRoleAtMost(NP) ||
+                    $this->isRoleAtMost(MW));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtMost(AR.'-Candidate') || 
                     $this->isRoleAtMost(CI.'-Candidate') ||
-                    $this->isRoleAtMost(NP.'-Candidate'));
+                    $this->isRoleAtMost(NP.'-Candidate') ||
+                    $this->isRoleAtMost(MW.'-Candidate'));
         }
         if($this->isCandidate()){
             return true;

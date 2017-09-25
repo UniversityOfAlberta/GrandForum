@@ -556,6 +556,10 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                 $_POST['wpUserType'] = NP;
                 $_POST['wpRole'] = NP;
             }
+            else if(in_array($_POST['wpRole'], array("Midwife", "Sage-Femme"))){
+                $_POST['wpUserType'] = MW;
+                $_POST['wpRole'] = MW;
+            }
             else if(in_array($_POST['wpRole'], array("Facility Staff", "Personnel de l&#39;installation"))){
                 $_POST['wpUserType'] = HQP;
                 $_POST['wpRole'] = HQP;

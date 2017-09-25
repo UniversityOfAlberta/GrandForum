@@ -181,7 +181,7 @@ class ReferAColleague extends SpecialPage{
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Physician", "Nurse Practitioner" => "Nurse Practitioner", "Pharmacist" => "Pharmacist", "Facility Staff" => "Facility Staff"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Physician", "Nurse Practitioner" => "Nurse Practitioner", "Pharmacist" => "Pharmacist", "Facility Staff" => "Facility Staff", "Midwife" => "Midwife"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
             
@@ -213,7 +213,7 @@ class ReferAColleague extends SpecialPage{
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Rôle", "Le rôle de l'utilisateur", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Médecin", "Nurse Practitioner" => "Infirmière Praticienne", "Pharmacist" => "Pharmacien", "Facility Staff" => "Personnel de l'installation"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Médecin", "Nurse Practitioner" => "Infirmière Praticienne", "Pharmacist" => "Pharmacien", "Facility Staff" => "Personnel de l'installation", "Midwife" => "Sage-Femme"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
             
