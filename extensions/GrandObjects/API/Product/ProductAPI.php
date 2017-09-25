@@ -45,7 +45,7 @@ class ProductAPI extends RESTAPI {
                                               $start,
                                               $count);
                     foreach($ps as $p){
-                        $papers["{$p->getType()}_{$p->getTitle()}"] = $p;
+                        $papers["{$p->getType()}_{$p->getTitle()}{$p->getId()}"] = $p;
                     }
                 }
                 ksort($papers);
