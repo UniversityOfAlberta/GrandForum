@@ -136,6 +136,7 @@ class GrantAward extends BackboneModel {
     function getCoApplicants(){
         if($this->coapplicantsWaiting){
             $coapplicants = array();
+            $unserialized = array();
             if(is_array($this->coapplicants)){
                 // For creation/update of Product
                 foreach($this->coapplicants as $co){
