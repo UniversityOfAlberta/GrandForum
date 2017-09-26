@@ -52,8 +52,14 @@ class RadioReportItem extends AbstractReportItem {
 		}
 
 		if ($other) {
-			
-			$otherTextInput = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input name='{$this->getPostId()}_other' style='vertical-align:middle;' name='Other' />&nbsp;<div style='display:table-cell;'></div></div>";
+			if($orientation == 'horizontal'){
+                $items[] = "<input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='Other' $checked />&nbsp;Other";
+            }
+            else{
+                $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='Other' $checked />&nbsp;<div style='display:table-cell;'>Other</div></div>";
+    		
+    		}
+			$otherTextInput = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input name='{$this->getPostId()}_other' style='vertical-align:middle;' />&nbsp;<div style='display:table-cell;'></div></div>";
 			if ($number) {
 				$otherTextInput .= "<script type='text/javascript'>
 			    $('input[name={$this->getPostId()}_other]').forceNumeric({min: 0, max: 10000000, decimals: 2});
