@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSForm" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="OT">
+            <SectionPermission id="personal" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="eula" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="personal" tooltip="Personal Information" name="Personal Information" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="q1" type="Text" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
+            <![CDATA[
+            <div style="width: 100%;">
+                <div style="
+                    width: 400px;
+                    display: inline-block;
+                    vertical-align: top;
+                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                    padding: 0px 16px 16px 16px;
+                    margin-top: 8px;
+                    margin-right: 8px;">
+                    <h1>Personal Information</h1>
+                    <h3>*SITS ID<span title="X-digit ID found in your University of Alberta graduate application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="Text" blobType="BLOB_TEXT" blobItem="Q2" limit="1800">
+            <![CDATA[
+                <h3>*Student ID<span title="X-digit student ID number found in your University of Alberta graduate application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="Text" blobType="BLOB_TEXT" blobItem="Q3" limit="1800" width="100px">
+            <![CDATA[
+                <table >
+                    <td valign='top'>
+                        <h3>*First Name<span title="First (Given) Name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
+
+            ]]>
+        </ReportItem>
+        <ReportItem id="q4" type="Text" blobType="BLOB_TEXT" blobItem="Q4" limit="1800" width="100px">
+            <![CDATA[
+                    <td valign='top'>
+                        <h3>Middle Name<span title="If applicable" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q5" type="Text" blobType="BLOB_TEXT" blobItem="Q5" limit="900" width="100px">
+            <![CDATA[
+                    <td valign='top'>
+                        <h3>*Last Name<span title="Last (Family) name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q6" type="Radio" blobType="BLOB_TEXT" blobItem="Q6" options="Male|Female|Prefer Not to Answer" orientation="horizontal">
+            <![CDATA[
+                <h3>*Gender</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q7" type="Text" blobType="BLOB_TEXT" blobItem="Q7" limit="64">
+            <![CDATA[
+                <h3>*Email Address<span title="Same email address as on your University of Alberta application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q8" type="Select" blobType="BLOB_TEXT" blobItem="Q8" limit="64" options="Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cabo Verde|Cambodia|Cameroon|Canada|Central African Republic (CAR)|Chad|Chile|China|Colombia|Comoros|Democratic Republic of the Congo|Republic of the Congo|Costa Rica|Cote d'Ivoire|Croatia|Cuba|Cyprus|Czech Republic|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macedonia (FYROM)|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar (Burma)|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Swaziland|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates (UAE)|United Kingdom (UK)|United States of America (USA)|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe">
+            <![CDATA[
+                <h3>*Country of Citizenship</h3>
+                {$item}
+                <script type="text/javascript">$('select[name=PersonalInformation_q8]').chosen()</script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q9" type="Radio" blobType="BLOB_TEXT" blobItem="Q9" limit="900" options="INT|CDN|PR" labels="International|Canadian Citizen|Permanent Resident" orientation="horizontal">
+            <![CDATA[
+                <h3>*Immigration Status</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q10" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q10" limit="900" options="MSc|MSc Course|PhD" labels="MSc|MSc Course|PhD" orientation="horizontal">
+            <![CDATA[
+                <h1 style="margin-top: 16px">Program Interests</h1>
+                <h3>*Program<span title="Program you are applying to. (MSc, PhD are thesis-based; MSc Course is course-based.)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q11" type="Radio" blobType="BLOB_TEXT" blobItem="Q11" limit="900" options="Statistical Machine Learning" labels="Statistical Machine Learning" orientation="horizontal">
+            <![CDATA[
+                <h3>Specialization</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q12" type="Radio" blobType="BLOB_TEXT" blobItem="Q12" limit="900" options="FT|PT" labels="Full time|Part time" orientation="horizontal">
+            <![CDATA[
+                <h3>*Status</h3>
+                {$item}
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_TEXT" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" orientation="horizontal">
+            <![CDATA[
+                <h3>*Area of Study</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    
+        <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+            <![CDATA[
+                <h3>*Potential Supervisors<span title="Choose up to 3 potential supervisors." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+            <![CDATA[
+            <div style="width: 400px;
+                    display: inline-block;
+                    vertical-align: top;
+                    overflow: hidden; 
+                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                    padding: 0px 16px 16px 16px;
+                    margin-top: 8px;
+                    margin-right: 8px;">
+                    <h1>Financial</h1>
+                <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+            <![CDATA[
+                <h3>Held Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q17" type="Radio" blobType="BLOB_TEXT" blobItem="Q17" limit="900" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                <h3>*Require Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q18" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q18" limit="300">
+            <![CDATA[
+                <h1 style="margin-top: 16px">Education</h1>
+                <h3>*Education History<span title="Name of University/Institution, time frame (yyyy-yyyy OR present), degree (ie. BSc in Mathematics, if any). One per line. You may comment on any special circumstances." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q19" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q19" width="40px" orientation="horizontal">
+            <![CDATA[
+                <h1 style="margin-top: 16px">GPA</h1>
+                <p>Your Grade Point Average is calculated based on your most recent two years of full time study (or equivalent).</p>
+
+                <div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>*GPA<span title="Enter your GPA based on your most recent two years of full time study." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="q20" type="Radio" blobType="BLOB_TEXT" withOther="true" number="true" blobItem="Q20" options="4|5|10|20|100" orientation="horizontal">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                        <h3>*GPA Scale<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100">
+            <![CDATA[
+                <div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                        <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
+                </div>
+            
+            ]]>
+        </ReportItem>
+        <ReportItem id="q23" type="Text" blobType="BLOB_TEXT" blobItem="Q23" limit="100">
+            <![CDATA[
+                <h1 style="margin-top: 16px">GRE (General)</h1>
+                <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
+                <h3>GRE Date<span title="Please provide the following from your most recent GRE attempt. (yy/mm)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q24" type="Text" blobType="BLOB_TEXT" blobItem="Q24" limit="100">
+            <![CDATA[
+                <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q25" type="Text" blobType="BLOB_TEXT" blobItem="Q25" limit="100">
+            <![CDATA[
+                <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q26" type="Text" blobType="BLOB_TEXT" blobItem="Q26" limit="100">
+            <![CDATA[
+                <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100">
+            <![CDATA[
+                <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q28" type="Radio" blobType="BLOB_TEXT" blobItem="Q28" orientation="horizontal" options="Yes|No" limit="100">
+            <![CDATA[
+                <h1 style="margin-top: 16px">English Language Proficiency</h1>
+                <h3>*ELP Exempt<p>Do you meet one of <a href='https://www.ualberta.ca/graduate-studies/prospective-students/international-admissions-protocol/english-language-proficiency/exemptions' target="_blank">these English Language Proficiency exemptions?</a></p></h3>
+                {$item}
+                <script type="text/javascript">
+                    var q29Toggle = function() {
+                        if ($('[name={$post_id}]:checked').val() == 'No') {
+                            $('#question29').slideDown();
+                        } else {
+                            $('#question29').slideUp();
+                            $('#question29 input').val('');
+                        }
+                    };
+                    $('[name={$post_id}]').change(q29Toggle);
+                    $(document).ready(q29Toggle);
+
+                </script>
+                
+            
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="q29" type="Integer" blobType="BLOB_TEXT" blobItem="Q29" min="0" max="120" width="30px">
+            <![CDATA[
+            <div id='question29'>
+                <h3>English Language Proficiency Tests</h3>
+                <p>To fulfill the English language requirements, enter the score(s) for AT LEAST ONE of the following:</p>
+                <table>
+                    <tr>
+                        <td align="right">
+                            TOEFL iBT <span title="TOEFL (Test of English as a Foreign Language) iBT (Internet)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 120</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q30" type="Integer" blobType="BLOB_TEXT" blobItem="Q30" min="0" max="677" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            TOEFL PBT <span title="TOEFL (Test of English as a Foreign Language) PBT (Paper)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 677</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q31" type="Integer" blobType="BLOB_TEXT" blobItem="Q31" min="0" max="99" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            MELAB <span title="MELAB (Michigan English Language Assessment Battery)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 99</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q32" type="Integer" decimals="1" blobType="BLOB_TEXT" blobItem="Q32" min="0" max="9.0" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            IELTS <span title="IELTS (International English Language Testing System)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 9.0</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q33" type="Integer" blobType="BLOB_TEXT" blobItem="Q33" min="0" max="90" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            CAEL <span title="CAEL (Canadian Academic English Language Assessment)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 90</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q34" type="Integer" blobType="BLOB_TEXT" blobItem="Q34" min="0" max="90" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            PTE Academic <span title="PTE (Pearson Test of English) Academic" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span>
+                        </td>
+                        <td>{$item} / 90</td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+            </div>
+            ]]>
+        </ReportItem>
+
+        
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="eula" name="Declaration" title="Declaration" tooltip="Declaration" blobSection="OT_EULA" type="EULA">
+        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
+                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
+            <![CDATA[
+                <p>Personal information on this form is collected under the authority of Section 33(c) of Alberta’s Freedom of Information and Protection of Privacy Act and will be protected under Part 2 of that Act. It will be used for authorized purposes including admission and registration; administration of records, scholarships and awards, student services; and university planning and research. Students’ personal information may be used by academic and administrative units according to university policy, and operational needs. It is disclosed pursuant to federal and provincial regulatory reporting requirements, data sharing agreements with student governance associations, and to contracted or public health care providers as required. Direct any questions about this collection to the Admissions Services Supervisor, Faculty of Graduate Studies and Research, Killam Centre for Advanced Studies, 2-29 Triffo Hall, University of Alberta, Edmonton, AB T6G 2E1, 780-492-3499 or visit the <a href='http://www.ipo.ualberta.ca/' target='_blank'>Information and Privacy Office website</a>.</p>
+
+                <p>You must agree to the following declaration before submitting your application:</p>
+                <ul>
+                    <li>I agree, if admitted to the University of Alberta, to comply with University regulations.</li>
+                    <li>I certify that the information in this application is true and complete in all respects and that I have withheld no information.</li>
+                    <li>I authorize the University to verify any information provided as part of this application.</li>
+                    <li>I understand that misrepresentation, falsification of documents, or withholding of requested information regarding this application are serious offences and may result in prosecution under the University's Code of Applicant Behaviour, Code of Student Behaviour and/or the Criminal Code of Canada.</li>
+                    <li>I attest that I have completed all questions to the best of my ability and without the assistance of other individuals.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you complete the application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

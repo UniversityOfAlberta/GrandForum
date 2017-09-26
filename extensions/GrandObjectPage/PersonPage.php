@@ -52,7 +52,7 @@ class PersonPage {
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
                                                            $role == PL || $role == 'PL') && 
                $person->getName() != null && 
-               $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
+               $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))) {
                 TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
@@ -111,7 +111,7 @@ class PersonPage {
 
                 $tabbedPage = new TabbedPage("person");
                 
-                //$tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
@@ -127,8 +127,9 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                //$tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                //$tabbedPage->addTab(new ($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
+                $tabbedPage->addTab(new PersonSocialTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));

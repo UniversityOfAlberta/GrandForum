@@ -9,6 +9,8 @@ class RadioReportItem extends AbstractReportItem {
         $showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
         $orientation = $this->getAttr('orientation', 'vertical');
         $value = $this->getBlobValue();
+        $other = $this->getAttr('withOther', false);
+        $number = $this->getAttr('number', false);
         $items = array();
 		foreach($options as $i => $option){
 		    if(!is_array($option)){
@@ -18,6 +20,7 @@ class RadioReportItem extends AbstractReportItem {
 		        }
 		        $option = str_replace("'", "&#39;", $option);
 		        if(count($labels) == count($options)){
+		        	// With labels, force vertical
 		            $score = "";
 		            if($showScore){
 		                $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
@@ -47,6 +50,18 @@ class RadioReportItem extends AbstractReportItem {
 		        $items[] = "<table cellspacing='0' cellpadding='0'><tr><td>{$labels[$i]}</td></tr>{$score}</table>";
 		    }
 		}
+
+		if ($other) {
+			
+			$otherTextInput = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input name='{$this->getPostId()}_other' style='vertical-align:middle;' name='Other' />&nbsp;<div style='display:table-cell;'></div></div>";
+			if ($number) {
+				$otherTextInput .= "<script type='text/javascript'>
+			    $('input[name={$this->getPostId()}_other]').forceNumeric({min: 0, max: 10000000, decimals: 2});
+				</script>";
+			}
+			$items[] = $otherTextInput;
+		}
+		
 
         $output = "";
         $descriptions = explode("|", $this->getAttr('descriptions', ''));

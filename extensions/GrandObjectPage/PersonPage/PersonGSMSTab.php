@@ -6,7 +6,7 @@ class PersonGSMSTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonGSMSTab($person, $visibility){
-        parent::AbstractEditableTab("Bio");
+        parent::AbstractEditableTab("GSMS");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -29,123 +29,108 @@ class PersonGSMSTab extends AbstractEditableTab {
                     var person = new Person({$this->person->toJSON()});
                     var card = new LargePersonCardView({el: $("#card"), model: person});
                     card.render();
-		            $('.ui-state-default').hide();
+                    //$('.ui-state-default').hide();
                 });
             </script>
 EOF;
         if($this->canEdit()){
             $gsms = $this->person->getGSMS();
-	    $gsms_degrees = $gsms['degrees'];
-            $this->html .= "<table class='gsms'>";
+        $gsms_degrees = $gsms['degrees'];
+        $this->html .= "
+            <table class='gsms'>
+                <th>Most Recent Academic Degree </th>
+                <th>Additional Degrees</th>
+                <th>Background</th>
+                <tr>
+                    <td>
+                        <table class='gsms'>";
 
-	    $this->html .= "<th>Most Recent Academic Degree </th>";
-            $this->html .= "<th>Additional Degrees</th>";
-            $this->html .= "<th>Background</th>";
+                        if(count($gsms_degrees) > 0){
+                        $this->html .= "
+                            <tr>
+                                <td class='label'>Degree (Institution):</td>
+                                <td>{$gsms_degrees[0]['degree']} ({$gsms_degrees[0]['institution']}) </td>
+                            </tr>
+                        ";
+                        }
+                        $this->html .= "
+                            <tr>
+                                <td class='label'>GPA (over last 60 credits):</td>
+                                <td class='num'>{$gsms['gpa60']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>GPA (over best full year)/number of credits:</td>
+                                <td class='num'>{$gsms['gpafull']}/{$gsms['gpafull_credits']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>GPA2 (over best full year)/number of credits:</td>
+                                <td class='num'>{$gsms['gpafull2']}/{$gsms['gpafull_credits2']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Number of Failures:</td>
+                                <td class='num'>{$gsms['failures']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Number of Withdrawals:</td>
+                                <td class='num'>{$gsms['withdrawals']}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class='gsms'>";
+                        $i=0;
+                        foreach($gsms_degrees as $degree){
+                            if($i ==0){
+                               $i = $i+1;
+                                continue;
+                            }
+                            $this->html .= "
+                                <tr>
+                                    <td class='label'>Degree (Institution):</td>
+                                    <td>{$degree['degree']} ({$degree['institution']})</td>
+                                </tr>
+                            ";
+                        }
+                $this->html .= "
+                        </table>
+                    </td>
+                ";
 
-	    $this->html .= "<tr>";
-	    $this->html .= "<td>";
-	    $this->html .= "<table class='gsms'>";
-	    if(count($gsms_degrees) > 0){
-                $this->html .= "<tr>";
-                $this->html .= "<td class='label'>Degree (Institution):</td>";
-                $this->html .= "<td>{$gsms_degrees[0]['degree']} ({$gsms_degrees[0]['institution']}) </td>";
-                $this->html .= "</tr>";
-
-	    }
-	    $this->html .= "<tr>";
-            $this->html .= "<td class='label'>GPA (over last 60 credits):</td>";
-            $this->html .= "<td class='num'>{$gsms['gpa60']}</td>";
-            $this->html .= "</tr>";
-            
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>GPA (over best full year)/number of credits:</td>";
-            $this->html .= "<td class='num'>{$gsms['gpafull']}/{$gsms['gpafull_credits']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>GPA2 (over best full year)/number of credits:</td>";
-            $this->html .= "<td class='num'>{$gsms['gpafull2']}/{$gsms['gpafull_credits2']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Number of Failures:</td>";
-            $this->html .= "<td class='num'>{$gsms['failures']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Number of Withdrawals:</td>";
-            $this->html .= "<td class='num'>{$gsms['withdrawals']}</td>";
-            $this->html .= "</tr>";
-
-	    $this->html .= "</table>";
-
-            $this->html .= "</td>";
-            $this->html .= "<td>";
-
-            $this->html .= "<table class='gsms'>";
-
-            $i=0;
-            foreach($gsms_degrees as $degree){
-		if($i ==0){
-		   $i = $i+1;
-		    continue;
-		}
-                $this->html .= "<tr>";
-                $this->html .= "<td class='label'>Degree (Institution):</td>";
-                $this->html .= "<td>{$degree['degree']} ({$degree['institution']})</td>";
-                $this->html .= "</tr>";
-            }
-
-
-            $this->html .= "</table>";
-
-
-            $this->html .= "</td>";
-            $this->html .= "<td>";
-            $this->html .= "<table class='gsms'>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Notes:</td>";
-            $this->html .= "<td>{$gsms['notes']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Indigenous:</td>";
-            $this->html .= "<td>{$gsms['indigenous']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Canadian:</td>";
-            $this->html .= "<td>{$gsms['canadian']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Saskatchewan:</td>";
-            $this->html .= "<td>{$gsms['saskatchewan']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>International:</td>";
-            $this->html .= "<td>{$gsms['international']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Anatomy:</td>";
-            $this->html .= "<td>{$gsms['anatomy']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Stats:</td>";
-            $this->html .= "<td>{$gsms['stats']}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "</table>";
-
-            $this->html .= "</td>";
-
-            $this->html .= "</tr>";
-
-            $this->html .= "</table><br />";
+                $this->html .= "
+                    <td>
+                        <table class='gsms'>
+                            <tr>
+                                <td class='label'>Notes:</td><td>{$gsms['notes']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Indigenous:</td>
+                                <td>{$gsms['indigenous']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Canadian:</td>
+                                <td>{$gsms['canadian']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Saskatchewan:</td>
+                                <td>{$gsms['saskatchewan']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>International:</td>
+                                <td>{$gsms['international']}</td>
+                                </tr>
+                            <tr>
+                                <td class='label'>Anatomy:</td>
+                                <td>{$gsms['anatomy']}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Stats:</td>
+                                <td>{$gsms['stats']}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br />";
         }
         $this->showSop($this->person, $this->visibility);
         return $this->html;
@@ -312,9 +297,9 @@ EOF;
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
                 if($person->getSop()){
                     $sop_url = $person->getSop()->getUrl();
-		    if(!$this->canEdit()){
-			$this->html .= "<br /><br />";
-		    }
+            if(!$this->canEdit()){
+            $this->html .= "<br /><br />";
+            }
                     $this->html .= "<a class='button' href='$sop_url'>Review</a>";
                 }
                 if($person->getGSMSPdfUrl() != ""){
@@ -325,7 +310,7 @@ EOF;
         }
     }
     
-    function canEdit(){
+    function canEdit() {
         $me = Person::newFromWgUser();
         return ($me->isRoleAtLeast(ADMIN));
     }

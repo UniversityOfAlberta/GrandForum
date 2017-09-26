@@ -1,5 +1,5 @@
 <?php
-require_once('../config/Config.php');
+require_once('../config/ForumConfig.php');
 
 return array(
     "paths" => array(
@@ -14,7 +14,7 @@ return array(
             "name" => $config->getValue('dbName'),
             "user" => $config->getValue('dbUser'),
             "pass" => $config->getValue('dbPassword'),
-            "port" => 3306
+            "port" => 8889 //3306
         )
     )
 );
