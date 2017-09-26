@@ -129,7 +129,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
+                    $tabbedPage->addTab(new PersonPublicationsTypesTab($person,$visibility,'Activity'));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGrantsTab($person, $visibility));

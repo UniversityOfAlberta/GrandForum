@@ -59,7 +59,7 @@ class PersonPublicationsTab extends AbstractTab {
         }
     }
 
-    function showTable($person, $visibility){
+    function showTable($person, $visibility, $type=null){
         global $config;
         $me = Person::newFromWgUser();
         $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
@@ -75,19 +75,24 @@ class PersonPublicationsTab extends AbstractTab {
         }
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='{$this->name}Pubs' rules='all' frame='box'>
+            $string = "<table id='{$this->name}Pubs".md5($type)."' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>{$config->getValue('productsTerm')}</th>";
             if(is_array($this->category) || $this->category == "all"){
                 $string .= "<th>Category</th>";
             }
-            $string .= "<th>Type</th>
-                        <th>Date</th>
+            if($type == null){
+                $string .= "<th>Type</th>";
+            }
+            $string .= "<th>Date</th>
                     </tr>
                 </thead>
                 <tbody>";
             foreach($products as $paper){
+                if($type != null && $paper->getType() != $type){
+                    continue;
+                }
                 $projects = array();
                 if($config->getValue('projectsEnabled')){
                     foreach($paper->getProjects() as $project){
@@ -98,16 +103,18 @@ class PersonPublicationsTab extends AbstractTab {
                 $string .= "<tr>";
                 $string .= "<td>{$paper->getCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
                 if(is_array($this->category) || $this->category == "all"){
-                    $string .= "<td align=center>{$paper->getCategory()}</td>";
+                    $string .= "<td align='center'>{$paper->getCategory()}</td>";
                 }
-                $string .= "<td align=center>{$paper->getType()}</td>";
+                if($type == null){
+                    $string .= "<td align='center'>{$paper->getType()}</td>";
+                }
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "</tr>";
             }
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#{$this->name}Pubs').dataTable({
+                    $('#{$this->name}Pubs".md5($type)."').dataTable({
                         'order': [[ 1, 'desc' ]],
                         'autoWidth': false,
                         'iDisplayLength': 50
