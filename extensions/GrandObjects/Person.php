@@ -4580,8 +4580,8 @@ class Person extends BackboneModel {
         return "";
     }
     /**
-     * Returns Sop object of person
-     * @return Sop SoP object of person
+     * Returns url of GSMS pdf that was uploaded by Admin of person
+     * @return String url of GSMS pdf (Including their resume, ref letters, etc)
    **/
     function getGSMSPdfUrl(){
 
@@ -4599,13 +4599,40 @@ class Person extends BackboneModel {
         return "";
     }
 
+    function getSopPdf(){
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('pdf'),
+                                    array('user_id' => EQ($this->getId()),
+					  'type' => 'RPTP_OT',
+					  'year' => YEAR));
+        if(count($data) > 0){
+	    return $data[0]['pdf'];
+	}
+	return false;
+    }
 
+    function getSopPdfUrl(){
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('pdf'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'type' => 'RPTP_OT',
+                                          'year' => YEAR));
+
+        if(count($data) > 0){
+	    $pdf_data = $data[0]['pdf'];
+	    if($pdf_data != ""){
+                global $wgServer, $wgScriptPath;
+                return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&last=true&user=".$this->getId();
+	    }
+	}
+	return false;
+    }
     /**
      * Returns GSMS information of person
      * @return array gsms array of person
    **/    
     function getGSMS(){
-        $gsms = array('gpa60' => "",
+        /*$gsms = array('gpa60' => "",
                       'gpafull' => "",
                       'gpafull_credits' => "",
                       'notes' => "",
@@ -4655,8 +4682,27 @@ class Person extends BackboneModel {
                     $gsms[$key] = str_replace("'", "&#39;", $val);
 		}
             }
-        }
+        }*/
+	$gsms = InfoSheet::newFromUserId($this->id);
         return $gsms;
+    }
+    function getCourses(){
+        $courses = Course::getUserCourses($this->id);
+        return $courses;
+    }
+
+    function getCoursesDuring($start, $end){
+        $during = array();
+        $courses = Course::getUserCourses($this->id);
+        foreach($courses as $course){
+            $courseStart = $course->getStartDate();
+            $courseEnd = $course->getEndDate();
+            if(($start <= $courseStart && $end >= $courseStart) ||
+               ($start >= $courseStart && $end <= $courseEnd)){
+                  $during[] = $course;
+            }
+        }
+        return $during;
     }
 }
 ?>

@@ -108,11 +108,17 @@ class PersonPage {
                 $visibility['isChampion'] = $isChampion;
                 
                 self::showTitle($person, $visibility);
-
+		
                 $tabbedPage = new TabbedPage("person");
-                
-                $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
+		$tabbedPage->addTab(new PersonSopTab($person, $visibility));
+                if($person->getGSMSPdfUrl() != ""){
+                    $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
+                }
+
+                    $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+		if($me->isRoleAtLeast("Admin")){
+                    $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
+		}
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                 }
@@ -122,22 +128,32 @@ class PersonPage {
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
+                //    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                //$tabbedPage->addTab(new ($person, $visibility));
+                if($wgUser->isLoggedIn() && $person->isRoleAtLeast(HQP)){
+                $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
+                $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
+                $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
+                $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
+
+                    $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+                $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+
+                }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonSocialTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                //$tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+               // $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
-                $tabbedPage->showPage();
-
+                if(!$person->isRoleAtLeast("Staff")){
+                    $tabbedPage->showPage();
+		}
                 self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();

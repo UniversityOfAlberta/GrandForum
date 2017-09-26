@@ -1,0 +1,70 @@
+<div id="dialogMessages"></div>
+<form>
+<table>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Subject:</span>
+    </td>
+    <td>
+      <%= HTML.TextBox(this, 'subject', {size: '50'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Catalog:</span>
+    <td> 
+      <%= HTML.TextBox(this, 'catalog', {size: '50'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Component:</span>
+    </td>
+    <td>
+       <%= HTML.TextBox(this, 'component', {size: '50'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Term:</span> 
+    </td>
+    <td>
+      <%= HTML.TextBox(this, 'term', {size: '50'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Start Date:</span>
+    </td>
+    <td>
+      <%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">End Date:</span></td><td><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Description:</span></td><td> <%= HTML.TextArea(this, 'courseDescr', {style: 'height:175px;width:650px;'}) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label" style="display:inline-block;">Comment:</span> </td><td><%= HTML.TextArea(this, 'course_comment', {style: 'height:100px;width:550px;'}) %>
+    </td>
+  </tr>
+</table>
+</form>
+<% if(!this.isDialog){ %>
+    <br />
+<% } %>
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id='saveCourse'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Course</button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id='cancel'>Cancel</button>
+    </div>
+<% } %>

@@ -13,7 +13,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Manager)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Reviewer)}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
                 <ReportItem id="table_header" type="StaticReportItem">
                     <![CDATA[

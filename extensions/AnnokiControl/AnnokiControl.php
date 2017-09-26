@@ -143,6 +143,12 @@ $egAnnokiExtensions['Sops'] = array('name' => 'Sops',
                                          'path' => "$IP/extensions/Sops/Sops.php");
 $egAnnokiExtensions['PdfConversion'] = array('name' => 'PdfConversion',
                                          'path' => "$IP/extensions/PdfConversion/PdfConversion.php");
+$egAnnokiExtensions['AdminTabs'] = array('name' => 'AdminTabs',
+                                         'path' => "$IP/extensions/AdminTabs/AdminTabs.php");
+$egAnnokiExtensions['Courses'] = array('name' => 'Courses',
+                                         'path' => "$IP/extensions/Courses/Courses.php");
+
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
@@ -195,7 +201,8 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
-             $key == "CreateAccount" || $key == 'Sops' || $key == 'PdfConversion')){
+             $key == "CreateAccount" || $key == 'Sops' || 
+	     $key == 'PdfConversion'|| $key == 'AdminTabs')){
             unset($aSpecialPages[$key]);
             continue;
         }

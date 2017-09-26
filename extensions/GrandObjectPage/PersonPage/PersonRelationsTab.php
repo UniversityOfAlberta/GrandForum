@@ -21,7 +21,7 @@ class PersonRelationsTab extends AbstractTab {
      */
     function showRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
-        if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
+        //if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
                     $this->html .= "<h3>Supervisors</h3>";
@@ -54,10 +54,15 @@ class PersonRelationsTab extends AbstractTab {
                     $this->html .= "</table>";
                 }
                 if($wgUser->isLoggedIn()){
+		    $me = Person::newFromId($wgUser->getId());
                     if($this->person->isMe() && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
                         $this->html .= "Contact your supervisor in order be added as their student";
                     }
-                    else if($this->person->isMe()){
+                    else if($me->isRoleAtLeast(ADMIN)){
+        /*            if($this->person->isMe() && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
+                        $this->html .= "Contact your supervisor in order be added as their student";
+                    }
+                    else if($this->person->isMe()){*/
                         $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage People</a>";
                     }
                 }
@@ -139,7 +144,7 @@ class PersonRelationsTab extends AbstractTab {
                 }
                 $this->html .= "<td style='width:50%;'></td>";
                 $this->html .= "</tr></table>";
-            }
+            //}
         }
     }
 }

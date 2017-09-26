@@ -2,7 +2,20 @@
 <Products>
     <!-- Activities -->
     <Activities category="Activity">
-        <Activity type="Event Organization" status="Invited|Not Invited">
+        <Activity type="Internship">
+            <data>
+                <field label="Site Name" type="String">site_name</field>
+                <field label="Address" type="String">address</field>
+                <field label="Contact Information" type="String">contact_info</field>
+                <field label="Name of Supervisor" type="String">supervisor</field>
+		<field label="Role of OT on-site" type="String">role</field>
+                <field label="Services" type="String">service</field>
+                <field label="Program" type="String">program</field>
+                <field label="Comments" type="String">comments</field>
+            </data>
+        </Activity>
+
+        <Activity type="Events Organization" status="Invited|Not Invited">
             <data>
                 <field label="Conference" type="String">conference</field>
                 <field label="Location" type="String">location</field>

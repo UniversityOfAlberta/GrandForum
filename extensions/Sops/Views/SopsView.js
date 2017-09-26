@@ -38,6 +38,7 @@ SopsView = Backbone.View.extend({
 	"keyup .filter_option": "filterAll",
         "change .filter_option" : "filterAll",
 	"click input[type=checkbox]": "filterAll",
+	"click #filterMeOnly": "filterMineOnly",
 	"click #clearFiltersButton" : "clearFilters",
 
     },
@@ -186,6 +187,14 @@ SopsView = Backbone.View.extend({
 		    }
 		}
             });
+   },
+
+    filterMineOnly: function(){
+	    var input = me.get('fullName').toUpperCase();
+		console.log("hello");
+                if($('#filterMeOnly').is(':checked')){
+	            this.filterByRow(11,input);
+                }
    },
 
     filterByNationality: function(){

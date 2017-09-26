@@ -140,6 +140,7 @@ class CCVExport extends SpecialPage {
         $phone_map = simplexml_load_file($phone_file);
 
         $all_products = $person->getPapers("Publication", false, "both");
+$all_products = $person->getPapers("Publication", false, "both",true,"Public");
 
         $prod_sorted = array();
 
