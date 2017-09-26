@@ -52,8 +52,7 @@ class PersonCoursesTab extends AbstractTab {
                 }
                 $item .= "<tr>";
                 $item .= "<td style='white-space:nowrap;width:10%;'>{$subj}</td>";
-                $item .= @"<td>{$terms[0]->descr}</td>";
-                $item .= @"<td class='pdfnodisplay'>{$terms[0]->courseDescr}</td>";
+                $item .= @"<td>{$terms[0]->descr}<div class='pdfnodisplay'>{$terms[0]->courseDescr}</div></td>";
                 $item .= "<td style='width:45%;'>".implode("; ", $termStrings)."</td>";
                 $item .= "</tr>";
             }
