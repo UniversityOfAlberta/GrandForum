@@ -11,7 +11,8 @@ class SopsAPI extends RESTAPI {
    * @return mixed
    */
     function doGET(){
-        $sops = new Collection(SOP::getAllSOP());
+        //$sops = new Collection(SOP::getAllSOP());
+	$sops = new Collection(SOP::getAllReviewSOP());
         return $sops->toJSON();
     }
 

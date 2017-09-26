@@ -108,7 +108,7 @@ class AddContributionPage extends SpecialPage{
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(HQP)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Contribution", "$wgServer$wgScriptPath/index.php/Special:AddContributionPage");
+	        //$toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Contribution", "$wgServer$wgScriptPath/index.php/Special:AddContributionPage");
 	    }
 	    return true;
 	}

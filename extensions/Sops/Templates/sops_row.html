@@ -44,7 +44,11 @@
 </td>
 <td style="white-space: nowrap;">
 <% for(var i=0; i < reviewers.length;i++){ %>
-        <a href="<%= reviewers[i].url %>"><%= reviewers[i].name %></a><br />
+        <%= reviewers[i].name %>
+	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
+	<% } %>
+
+	<br />
 
 <% } %>
 </td>

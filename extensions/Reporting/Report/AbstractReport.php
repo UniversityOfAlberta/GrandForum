@@ -920,7 +920,7 @@ abstract class AbstractReport extends SpecialPage {
 	    	$sop->create();
 	        $sop = SOP::newFromUserId($me->getId());
 	    }
-	    $sop->updateStatistics(); 
+	    //$sop->updateStatistics(); 
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
             	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";

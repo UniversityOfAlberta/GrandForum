@@ -5,7 +5,7 @@ require_once("SpecialImpersonate.php");
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 $wgHooks['UnknownAction'][] = 'getUserMode';
-$wgHooks['SubLevelTabs'][] = 'impersonateCreateSubTabs';
+//$wgHooks['SubLevelTabs'][] = 'impersonateCreateSubTabs';
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating, $wgDelegating;

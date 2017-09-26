@@ -1,0 +1,36 @@
+<div>
+    <span class="label">Member:</span> 
+    <select id="member-select2" data-placeholder="Choose a Member...">
+        <option>&nbsp;</option>
+        <% this.people.each(function(p){ %>
+            <option value="<%= p.get('id')%>" <% if(person != null && p.get('id') == person.get('id')){ %> selected<% } %>><%= p.get('fullName') %></option>
+        <% }) %>
+    </select>
+    <% if(person != null){ %>
+        <h2>Edit GSMS Information </h2>
+        <p>Edit the fields below for <b><%= person.get('fullName') %></b>.</p>
+        <iframe name="fileUpload" style="display:none;"></iframe>
+        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.infosheet/<%= person.get('id') %>" method="PUT" enctype="multipart/form-data">
+<% console.log(infoSheet) %>
+<% console.log(infoSheet.get('gpa60')) %>
+	  <table>
+	    <tr><td>GPA (over last 60 credits):</td><td><input name="gpa60"  step="0.01" min="0" max="4" size="4" value="<%= infoSheet.get('gpa60') %>"></input></td></tr>
+            <tr><td>GPA (over best full year)/credits:</td><td><input name="gpafull" step="0.01" min="0" max="4" size="4"></input>/<input name="gpafull_credits" step="1" min="0" size="4"></input></td></tr>
+            <tr><td>GPA2 (over best full year)/credits:</td><td><input name="gpafull2" step="0.01" min="0" max="4" size="4"></input>/<input name="gpafull_credits2" step="1" min="0" size="4"></input></td></tr>
+            <tr><td>Notes:</td><td><input name="notes"></input></td></tr>
+            <tr><td>Indigenous:</td><td><input name="indigenous"></input></td></tr>
+            <tr><td>Canadian:</td><td><input name="canadian"></input></td></tr>
+            <tr><td>Saskatchewan:</td><td><input name="saskatchewan"></input></td></tr>
+            <tr><td>International:</td><td><input name="international"></input></td></tr>
+            <tr><td>Anatomy:</td><td><input name="anatomy"></input></td></tr>
+            <tr><td>Stats:</td><td><input name="stats"></input></td></tr>
+            <tr><td>Number of Failures:</td><td><input name="failures"  step="1" min="0" size="4"></input></td></tr>
+            <tr><td>Number of Withdrawals:</td><td><input name="withdrawals" step="1" min="0" size="4"></input></td></tr>
+            <tr><td>Degree/Institution:</td><td><input id="degree_button_plus" class="degree_button_plus" name="0" type="button" value="+"></td></tr>
+
+	  </table>
+
+        </form><br /><br />
+        <input id="upload" type="button" value="Edit" /> <span class="throbber" style="display:none;"></span>
+    <% } %>
+</div>

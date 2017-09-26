@@ -11,7 +11,7 @@ class ManageProducts extends BackbonePage {
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isLoggedIn();
+        return ($person->isLoggedIn() && $person->isRoleAtLeast(HQP));
     }
     
     function getTemplates(){
@@ -53,8 +53,10 @@ class ManageProducts extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
-	    if(ManageProducts::userCanExecute($wgUser)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
+//	    if(ManageProducts::userCanExecute($wgUser)){
+        $person = Person::newFromWgUser();
+        if($person->isRole(HQP)){
+	        $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
 	                                                                      "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
 	    }
 	    return true;

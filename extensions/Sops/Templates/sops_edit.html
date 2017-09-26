@@ -12,6 +12,15 @@ th {
     border-left: 1px solid #878787;
     border-right: 1px solid #878787;
 }
+
+#profile1{
+    position:fixed;
+    left:200px;
+    top:115px;
+    z-index:9999;
+    background-color: white;
+}
+
 table.profile{
     margin: 0;
     clear: both;
@@ -49,8 +58,9 @@ table.profile tr td{
     border-bottom: 0;
 }
     </style>
-
-<table class='profile' frame="box" rules="all">
+<div id="profile1">
+<h1><a href='<%=author.url%>'><%= author.name %></a></h1>
+<table class='profile' frame="box" rules="all" width="100px">
     <thead>
         <th>GPA (60 Credits)</th>
         <th>GPA / credits (Best)</th>
@@ -82,7 +92,8 @@ table.profile tr td{
     </tr>
     
 </table>
-<div id="accordion" style="width:100%;margin-top:10px;">
+</div>
+<div id="accordion" style="width:100%;margin-top:150px;">
     <div>
         <h3><a href="#">From FGSR</a></h3>
         <div>

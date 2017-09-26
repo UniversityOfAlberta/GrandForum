@@ -91,6 +91,10 @@
         </td>
     </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
+        <% if(val.label == "Outcome" && me.getRoleString().attributes.roleString.indexOf("Admin") !== -1) {%>
+	<% return }%>
+        <% if(val.label == "Comments" && me.getRoleString().attributes.roleString.indexOf("Admin") !== -1) {%>
+        <% return }%>
         <% if(!val.hidden){ %>
             <tr>
                 <td class="label"><%= val.label %>:
@@ -107,6 +111,8 @@
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                     <% } else if(val.type == "File"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Date"){ %>
+			<%= HTML.DatePicker(this, 'data.', + index, {format: 'yy-mm-dd'}) %>
                     <% } else { %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } %>

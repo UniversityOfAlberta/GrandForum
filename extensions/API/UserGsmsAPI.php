@@ -3,7 +3,6 @@
 class UserGsmsAPI extends API{
 
     function UserGsmsAPI(){
-        $this->addPOST("GPA60", true, "The GPA of this user based on 60 credits", "3.2");
     }
 
     function processParams($params){

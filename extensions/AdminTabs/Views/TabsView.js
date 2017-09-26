@@ -1,0 +1,61 @@
+TabsView = Backbone.View.extend({
+
+    template: _.template($("#tabs_template").html()),
+    currentRoles: null,
+
+    initialize: function(options){
+        var self = this;
+        me.getRoles();
+        me.roles.ready().then($.proxy(function(){
+            this.currentRoles = me.roles.getCurrent();
+            me.roles.ready().then($.proxy(function(){
+                Backbone.Subviews.add(this);
+                var intervalId = setInterval(function(){ //Intervals are set to check if the tab is visible to render all items
+                    if($('#tabs-1').is(':visible')){
+                        self.subviews.studentImport.render();
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                 }, 100);
+                var intervalId1 = setInterval(function(){
+                    if($('#tabs-2').is(':visible')){
+                        self.subviews.reviewerImport.render();
+                        clearInterval(intervalId1);
+                        intervalId1 = null;
+                    }
+                 }, 100);
+                var intervalId2 = setInterval(function(){
+                    if($('#tabs-3').is(':visible')){
+                        self.subviews.editBio.render();
+                        clearInterval(intervalId2);
+                        intervalId2 = null;
+                    }
+                 }, 100);
+                 this.render();
+            }, this))
+        }, this));
+    },
+
+    subviewCreators: {
+        "studentImport" : function(){
+             return new StudentImportView({parent: this, model: new AdminTabsModel()});
+        },
+        "reviewerImport" : function(){
+             return new ReviewerImportView({parent: this, model: new AdminTabsModel()});
+        },
+        "editBio" : function(){
+             return new EditBioView({parent: this, model: new AdminTabsModel()});
+        },
+    },
+
+
+    events: {
+    },
+
+    render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        $( "#tabs" ).tabs();
+        return this.$el;
+    }
+
+});

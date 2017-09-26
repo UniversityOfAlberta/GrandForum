@@ -1,0 +1,9 @@
+<div id="edit_gsms_tab">
+        <h2>Student GSMS Information Bulk Upload</h2>
+        <p>Please upload your Excel file using this <a href='<%= wgServer + wgScriptPath %>/skins/gsmsxls.xls' target="_blank">template</a>.</p>
+        <iframe name="fileUpload" style="display:none;"></iframe>
+        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.EditGsmsBio" method="POST" enctype="multipart/form-data">
+            <input type="file" name="students_gsms" /><br />
+        <form><br />
+        <input id="editGsmsUpload" type="button" value="Upload" /> <span class="throbber" style="display:none;"></span>
+</div>

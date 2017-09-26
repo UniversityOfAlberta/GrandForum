@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="OT Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="OTFormPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role role="OT">
+        <Role role="Applicant">
             <SectionPermission id="questions" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="eula" permissions="rw" />

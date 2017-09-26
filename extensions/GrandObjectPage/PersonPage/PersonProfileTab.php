@@ -17,21 +17,21 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile() != ""){
+        if($this->person->getProfile(true) != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
         }
-        $this->html .= $this->showFundedProjects($this->person, $this->visibility);
-        $this->html .= $this->showTable($this->person, $this->visibility);
+        //$this->html .= $this->showFundedProjects($this->person, $this->visibility);
+        //$this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->person->isRole(NI) || 
            $this->person->isRole(HQP) || 
            $this->person->isRole(EXTERNAL)){
             // Only show the word cloud for 'researchers'
-            $extra[] = $this->showCloud($this->person, $this->visibility);
+            //$extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        $extra[] = $this->showDoughnut($this->person, $this->visibility);
-        $extra[] = $this->showTwitter($this->person, $this->visibility);
+        //$extra[] = $this->showDoughnut($this->person, $this->visibility);
+        //$extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
@@ -41,7 +41,7 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
-        $this->html .= "<script type='text/javascript'>
+        /*$this->html .= "<script type='text/javascript'>
             setInterval(function(){
                 var table = $('#personProducts').DataTable();
                 if($('#bodyContent').width() < 650){
@@ -61,8 +61,8 @@ class PersonProfileTab extends AbstractEditableTab {
                     table.column(3).visible(true);
                 }
             }, 33);
-        </script>";
-        $this->showCCV($this->person, $this->visibility);
+        </script>";*/
+        //$this->showCCV($this->person, $this->visibility);
         $this->showSop($this->person, $this->visibility);
         return $this->html;
     }
@@ -219,7 +219,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<div style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
+        $this->html .= "<div style='text-align:justify;'>".$person->getProfile(true)."</div>";
     }
     
     /**
@@ -466,7 +466,7 @@ EOF;
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
 		if($person->getSop()){
                     $sop_url = $person->getSop()->getUrl();                
-		    $this->html .= "<a class='button' href='$sop_url'>Review</a>";
+		    //$this->html .= "<a class='button' href='$sop_url'>Review</a>";
 		}
             }
         }
@@ -499,11 +499,7 @@ EOF;
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>
-                            <tr>
-                                <td align='right'><b>Website URL:</b></td>
-                                <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
-                            </tr>
-                            <tr>
+<tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
@@ -530,7 +526,7 @@ EOF;
                 });
             </script>
 EOF;
-        $this->html .= $this->showChord($person, $visibility);
+        //$this->html .= $this->showChord($person, $visibility);
         $this->html .= "</div>";
     }
     
@@ -646,20 +642,7 @@ EOF;
                             <td align='right'><b>Title:</b></td>
                             <td>{$titleCombo->render()}</td>
                         </tr>";
-        if($me->isRoleAtLeast(STAFF)){
-            $this->html .= "<tr>
-                                <td></td>
-                                <td><table>";
-            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
-            foreach($roles as $role){
-                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
-                $this->html .= "<tr>
-                                    <td align='right'><b>{$role->getRole()}:</b></td>
-                                    <td>{$roleTitleCombo->render()}</td>
-                                </tr>";
-            }
             $this->html .= "</table></td></tr>";
-        }
         $this->html .= "<tr>
                             <td align='right'><b>Institution:</b></td>
                             <td>{$orgCombo->render()}</td>

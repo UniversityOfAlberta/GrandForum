@@ -480,10 +480,10 @@ class CavendishTemplate2 extends QuickTemplate {
 		            }, 100);
 		        }
 		        
-		        /*$("#sideToggle").click(function(e, force){
+		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
-		                $("#sideToggle").html("&#12297;");
+		                $("#sideToggle").html("&gt;");
 		                $("#side").animate({
 		                    'left': '-200px'
 		                }, 200, 'swing');
@@ -499,7 +499,7 @@ class CavendishTemplate2 extends QuickTemplate {
                         $.cookie('sideToggled', 'in', {expires: 30});
                     }
                     else{
-                        $("#sideToggle").html("&#12296;");
+                        $("#sideToggle").html("&lt;");
                         $("#side").animate({
 		                    'left': '0px'
 		                }, 200, 'swing');
@@ -514,12 +514,13 @@ class CavendishTemplate2 extends QuickTemplate {
                         sideToggled = 'out';
                         $.cookie('sideToggled', 'out', {expires: 30});
                     }
-		        });*/
+		        });
 		    });
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
 		    <script type="text/javascript">
                 $(document).ready(function(){
+
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
                         $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
@@ -694,7 +695,13 @@ class CavendishTemplate2 extends QuickTemplate {
                 echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
             }
             if($wgUser->isLoggedIn()){
+		$me = Person::newFromWgUser();
+		if($me->isRole(CI) || $me->isRole(HQP)){
                 echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; font-size:13px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />{$p->getNameForForms()}</a> <span style='font-size:20px;font-weight: lighter;color: rgba(255, 255, 255, 0.17);'>|</span>";
+		}
+		else{
+                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; font-size:13px;' title='Main' href='$wgServer$wgScriptPath/index.php/Special:Sops'><img class='photo' src='{$p->getPhoto()}' />{$p->getNameForForms()}</a> <span style='font-size:20px;font-weight: lighter;color: rgba(255, 255, 255, 0.17);'>|</span>";
+		}
                 if(!$wgImpersonating && !$wgDelegating){
                     $logout = $this->data['personal_urls']['logout'];
                     $getStr = "";
@@ -739,6 +746,7 @@ class CavendishTemplate2 extends QuickTemplate {
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
         <div id="sideToggle" class="highlightsBackground0">
+            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
         </div>
 	    <div id="header">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/icons/white_mix/hamburger.png" /></a>
@@ -749,23 +757,25 @@ class CavendishTemplate2 extends QuickTemplate {
                 $GLOBALS['tabs'] = array();
                 
                 $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
-                $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
+                //$GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
 
                 // $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
                 // $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-	            if($me->isRoleAtLeast(Manager)){
+	            /*if($me->isRoleAtLeast(Manager)){
                     $GLOBALS['tabs']['Review'] = TabUtils::createTab("Overview","$wgServer$wgScriptPath/index.php/Special:Sops");
 		        }
 		    if($me->isRoleAtLeast(Admin)){
-                    $GLOBALS['tabs']['Upload Pdf'] = TabUtils::createTab("Upload PDF","$wgServer$wgScriptPath/index.php/Special:PdfConversion");
-		    } 
+                    $GLOBALS['tabs']['AdminTabs'] = TabUtils::createTab("Admin Tabs","$wgServer$wgScriptPath/index.php/Special:AdminTabs");
+		    }
+                    $GLOBALS['tabs']['Manage Products'] = TabUtils::createTab("Outputs","$wgServer$wgScriptPath/index.php/Special:ManageProducts"); 
+                    $GLOBALS['tabs']['Manage Courses'] = TabUtils::createTab("Courses","$wgServer$wgScriptPath/index.php/Special:Courses");*/
 	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>
 		    <?php 
 			    global $wgUser, $wgScriptPath, $tabs;
 			    $selectedFound = false;
-			    foreach($tabs as $key => $tab){
+			   /* foreach($tabs as $key => $tab){
 			        ksort($tab['subtabs']);
 			        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
 			            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
@@ -793,7 +803,7 @@ class CavendishTemplate2 extends QuickTemplate {
 	           	            }
 	           	        }
 	           	    }
-	           	}
+	           	}*/
 	           	if(!$selectedFound){
 	           	    // If a selected tab wasn't found, just default to the Main Tab
 	           	    $tabs['Main']['selected'] = "selected";
@@ -915,20 +925,32 @@ class CavendishTemplate2 extends QuickTemplate {
 <?php
 	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config, $wgLang;
 	    $GLOBALS['toolbox'] = array();
-        $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
-        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
-        $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
+        //$GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
+        //$GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
+	$GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("Menu Items");
+        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Reviewer Items");
+
+        $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Admin Items");
  
 		if($wgUser->isLoggedIn()){
 		    echo "
 			<ul class='pBodyLogin'>";
-		    
-		    if(isset($_GET['returnto'])){
+		    /*if(isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
-		    }
+		    }*/
 		    $me = Person::newFromWgUser();
-		    if($wgTitle->getText() == "Main Page" && $me->isRole(CI)){
-		        redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+                    if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && !$me->isRole(CI) && !$me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
+                        redirect("$wgServer$wgScriptPath/index.php/Special:Sops");	
+		    }
+		    elseif(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI) && !($me->getSopPdfUrl()== false) && $_GET['action'] != "viewNotifications"){
+                        redirect($me->getUrl());
+		    }
+                    elseif(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
+                        redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+                    }
+		    elseif(($wgTitle->getText() == "Main Page"|| $wgTitle->getText() == "UserLogin") && $me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
+			redirect($me->getUrl());
+
 		    }
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
@@ -957,9 +979,9 @@ class CavendishTemplate2 extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-            $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
+            //$GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
 	        $person = Person::newFromId($wgUser->getId());
-	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        //$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
             $i = 0;
             array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);

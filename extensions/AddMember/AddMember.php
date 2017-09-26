@@ -384,7 +384,7 @@ class AddMember extends SpecialPage{
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(NI)){
-            $toolbox['People']['links'][-1] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
+            //$toolbox['People']['links'][-1] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;
     }

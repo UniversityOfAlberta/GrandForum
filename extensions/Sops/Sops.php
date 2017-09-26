@@ -1,7 +1,7 @@
 <?php
 $wgHooks['ToolboxLinks'][] = 'Sops::createToolboxLinks';
 $wgHooks['SubLevelTabs'][] = 'Sops::createSubTabs';
-BackbonePage::register('Sops', 'Sops', 'network-tools', dirname(__FILE__));
+BackbonePage::register('SoPs', 'SoPs', 'network-tools', dirname(__FILE__));
 
 /**
 * Class Sops generates the Sop pages that we view!
@@ -24,7 +24,7 @@ class Sops extends BackbonePage {
     function userCanExecute($user){
         global $config;
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(STAFF);
+        return $me->isRoleAtLeast(MANAGER);
     }
 
 
@@ -81,7 +81,7 @@ class Sops extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if(self::userCanExecute($wgUser)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("SoPs", "$wgServer$wgScriptPath/index.php/Special:Sops");
+            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Students Overview", "$wgServer$wgScriptPath/index.php/Special:Sops");
         }
         return true;
     }

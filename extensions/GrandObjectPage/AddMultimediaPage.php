@@ -110,7 +110,7 @@ class AddMultimediaPage extends SpecialPage{
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(HQP)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Multimedia", "$wgServer$wgScriptPath/index.php/Special:AddMultimediaPage");
+	        //$toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Multimedia", "$wgServer$wgScriptPath/index.php/Special:AddMultimediaPage");
 	    }
 	    return true;
 	}

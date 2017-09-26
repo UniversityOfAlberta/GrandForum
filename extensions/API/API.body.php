@@ -136,6 +136,7 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
 		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
                 $this->addAction('User Accounts', 'getUserPdf', 'UserPdfAPI');
+                $this->addAction('User Accounts', 'getSopPdf', 'UserSopPdfAPI');
 
 		
 		//POST
@@ -163,7 +164,9 @@ class APIRequest{
         $this->addAction('Hidden', 'updateSop', 'UpdateSopStatisticsAPI');
         $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
         $this->addAction('User Accounts', 'convertPdf', 'ConvertPdfAPI');
-
+        $this->addAction('User Accounts', 'usergsms', 'UserGsmsAPI');
+        $this->addAction('User Accounts', 'UploadReviewers', 'UploadReviewersAPI');
+        $this->addAction('User Accounts', 'EditGsmsBio', 'EditGsmsBioAPI');
 		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');

@@ -166,6 +166,32 @@ class SOP extends BackboneModel{
         return $sops;
     }
 
+    /**
+     * getAllSOP Returns all SOP available to a user
+     * @return sop An Array of SOP
+     */
+    static function getAllReviewSOP(){
+        global $wgRoleValues;
+        $sops = array();
+        $me = Person::newFromWgUser();
+        //if($me->isRoleAtLeast(MANAGER)){
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('id'),
+                                    array('reviewer' => "true"));
+        //}
+        if(count($data) >0){
+            foreach($data as $sopId){
+                $sop = SOP::newFromId($sopId['id']);
+                $person = Person::newFromId($sop->getUser());
+                if($person != null && $person->getName() != ""){
+                    $sops[] = $sop;
+                }
+            }
+        }
+        return $sops;
+    }
+
+
   /**
    *
    */
@@ -205,10 +231,10 @@ class SOP extends BackboneModel{
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS();
 	$nationality = array();
-        $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
-        $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
-        $nationality[] = ($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
-        $nationality[] = ($gsms['international'] == "Yes") ? "International" : "";
+        $nationality[] = ($gsms->indigenous == "Yes") ? "Indigenous" : "";
+        $nationality[] = ($gsms->canadian == "Yes") ? "Canadian" : "";
+        $nationality[] = ($gsms->saskatchewan == "Yes") ? "Saskatchewan" : "";
+        $nationality[] = ($gsms->international == "Yes") ? "International" : "";
 
 	$nationality_note = "";
 	foreach($nationality as $note){
@@ -217,12 +243,16 @@ class SOP extends BackboneModel{
 	    }
 	}
         $reviewers = array();
-        foreach($this->getReviewers() as $id){
-            $person = Person::newFromId($id);
+	$student = Person::newFromId($this->user_id);
+	$reviewer_array = $student->getEvaluators(YEAR,"sop"); 
+        //foreach($this->getReviewers() as $id){
+	foreach($reviewer_array as $reviewer){
+            //$person = Person::newFromId($id);
+	    $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
-                                 'decision' => $this->getAdmitResult($id));
+                                 'decision' => $this->getAdmitResult($reviewer->getId()));
         }
         $personality = $this->getPersonalityStats();
         $openness = 0;
@@ -245,7 +275,7 @@ class SOP extends BackboneModel{
                       'date_created' => $this->getDateCreated(),
                       'url' => $this->getUrl(),
                       'author' => $author,
-		      'gsms' => $gsms,
+		      'gsms' => $gsms->toArray(),
 		      'admit' => $this->getFinalAdmit(),
 		      'nationality_note' => $nationality_note,
                       'reviewers' => $reviewers,
@@ -435,7 +465,12 @@ class SOP extends BackboneModel{
 	elseif($data == 'Special Consideration'){
 	    return "Special Consideration";
 	}
-        return "Undecided";
+	elseif($data == 'Undecided'){
+            return "Undecided";
+	}
+	else{
+	    return "--";
+	}
     }
 
 

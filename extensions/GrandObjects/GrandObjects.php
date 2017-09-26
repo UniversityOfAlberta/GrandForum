@@ -18,6 +18,8 @@ autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Sop');
+autoload_register('GrandObjects/API/Course');
+autoload_register('GrandObjects/API/InfoSheet');
 
 global $apiRequest;
 // Person
@@ -112,7 +114,11 @@ $apiRequest->addAction('Hidden','sop/annotations', 'SopAnnotationAPI');
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 $apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
+//Course
+$apiRequest->addAction('Hidden','course/:id', 'CourseAPI');
+$apiRequest->addAction('Hidden','courses', 'CoursesAPI');
 
+$apiRequest->addAction('Hidden','infosheet/:id', 'InfoSheetAPI');
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js?".filemtime("extensions/GrandObjects/BackboneModels/RelationModel.js")."'></script>\n";
@@ -132,7 +138,8 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Sop.js?".filemtime("extensions/GrandObjects/BackboneModels/Sop.js")."'></script>\n";
-    
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Course.js?".filemtime("extensions/GrandObjects/BackboneModels/Course.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/InfoSheet.js?".filemtime("extensions/GrandObjects/BackboneModels/InfoSheet.js")."'></script>\n";
     return true;
 }
 ?>

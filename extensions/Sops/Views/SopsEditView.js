@@ -185,7 +185,6 @@ SopsEditView = Backbone.View.extend({
     render: function(){
       	var self = this;
 	console.log(self.model);
-        main.set('title', '<a href="'+self.model.get('author').url+'">'+self.model.get('author').name)+'</a>';
         var moveAnnotatorFilter = setInterval(function(){
             if(($('.annotator-filter').length)>0){
                 var annotator_filter = $('.annotator-filter').detach();
