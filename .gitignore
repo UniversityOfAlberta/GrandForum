@@ -17,6 +17,7 @@ Credentials.php
 phpdoc.dist.xml
 favicon.png
 maintenance/install/*.csv
+config/Config.php
 config/config.php
 config/config_grand.php
 config/config_age-well.php
