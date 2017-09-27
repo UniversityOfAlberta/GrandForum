@@ -8,11 +8,11 @@ jQuery.fn.forceNumeric = function (options) {
     if(_.isUndefined(options.decimals)){
         options.decimals = 0;
     }
-    var regex = new RegExp('^[0-9,]*\.?[0-9]{0,' + options.decimals + '}$');
+    var regex = new RegExp('^[0-9,-]*\.?[0-9]{0,' + options.decimals + '}$');
      return this.each(function () {
         var lastValue = $(this).val();
         
-        var validateMax = function(target){
+        var validateMax = function(target, checkMax){
             if($(target).val() == ""){
                 lastValue = options.min;
                 return;
@@ -21,7 +21,10 @@ jQuery.fn.forceNumeric = function (options) {
                 $(target).val(lastValue);
                 return;
             }
-            var minVal = Math.min(options.max, $(target).val().replace(/,/g, ''));
+            var minVal = $(target).val().replace(/,/g, '');
+            if(checkMax){
+                minVal = Math.min(options.max, minVal);
+            }
             
             if(_.isNaN(minVal)){
                 $(target).val(lastValue);
@@ -36,7 +39,7 @@ jQuery.fn.forceNumeric = function (options) {
             lastValue = $(target).val();
         }
         
-        var validateMin = function(target){
+        var validateMin = function(target, checkMin){
             if($(target).val() == ""){
                 lastValue = options.min;
                 return;
@@ -45,7 +48,10 @@ jQuery.fn.forceNumeric = function (options) {
                 $(target).val(lastValue);
                 return;
             }
-            var maxVal = Math.max(options.min, $(target).val().replace(/,/g, ''));
+            var maxVal = $(target).val().replace(/,/g, '');
+            if(checkMin) {
+                maxVal = Math.max(options.min, maxVal);
+            }
             
             if(_.isNaN(maxVal)){
                 $(target).val(lastValue);
@@ -60,18 +66,36 @@ jQuery.fn.forceNumeric = function (options) {
             lastValue = $(target).val();
         }
         
+        var checkArrows = function(e){
+            var key = e.which || e.keyCode;
+            if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+                key == 37 || key == 39){
+                return false;
+            }
+            return true;
+        };
+        
         if(options.max != ""){
             $(this).keyup(function(e){
-                validateMax(e.target);
+                if(checkArrows(e)){
+                    validateMax(e.target, false);
+                }
             });
-            validateMax(this);
+            $(this).change(function(e){
+                validateMax(e.target, true);
+            });
+            validateMax(this, true);
         }
         if(options.min != ""){
             $(this).keyup(function(e){
-                validateMin(e.target);
+                if(checkArrows(e)){
+                    validateMin(e.target, false);
+                }
             });
-            
-            validateMin(this);
+            $(this).change(function(e){
+                validateMin(e.target, true);
+            });
+            validateMin(this, true);
         }
         if(!(regex.test($(this).val()))){
             $(this).val(options.min);
@@ -79,7 +103,6 @@ jQuery.fn.forceNumeric = function (options) {
         }
         $(this).keydown(function (e) {
              var key = e.which || e.keyCode;
-
              if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
              // numbers   
                  key >= 48 && key <= 57 ||

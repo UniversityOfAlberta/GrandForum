@@ -8,7 +8,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="personal" tooltip="Personal Information" name="Personal Information" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="Text" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
             <div style="width: 100%;">
@@ -31,29 +31,29 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="Text" blobType="BLOB_TEXT" blobItem="Q3" limit="1800" width="100px">
+        <ReportItem id="q3" type="Static">
             <![CDATA[
                 <table >
                     <td valign='top'>
                         <h3>*First Name<span title="First (Given) Name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
+                        {$user_first_name}
                     </td>
 
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="Text" blobType="BLOB_TEXT" blobItem="Q4" limit="1800" width="100px">
+        <ReportItem id="q4" type="Static">
             <![CDATA[
                     <td valign='top'>
                         <h3>Middle Name<span title="If applicable" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
+                        {$hello}
                     </td>
             ]]>
         </ReportItem>
-        <ReportItem id="q5" type="Text" blobType="BLOB_TEXT" blobItem="Q5" limit="900" width="100px">
+        <ReportItem id="q5" type="Static">
             <![CDATA[
                     <td valign='top'>
                         <h3>*Last Name<span title="Last (Family) name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
+                        {$user_last_name}
                     </td>
                 </table>
             ]]>
@@ -64,17 +64,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q7" type="Text" blobType="BLOB_TEXT" blobItem="Q7" limit="64">
+        <ReportItem id="q7" type="Static">
             <![CDATA[
                 <h3>*Email Address<span title="Same email address as on your University of Alberta application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
+                {$user_email}
             ]]>
         </ReportItem>
-        <ReportItem id="q8" type="Select" blobType="BLOB_TEXT" blobItem="Q8" limit="64" options="Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cabo Verde|Cambodia|Cameroon|Canada|Central African Republic (CAR)|Chad|Chile|China|Colombia|Comoros|Democratic Republic of the Congo|Republic of the Congo|Costa Rica|Cote d'Ivoire|Croatia|Cuba|Cyprus|Czech Republic|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macedonia (FYROM)|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar (Burma)|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Swaziland|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates (UAE)|United Kingdom (UK)|United States of America (USA)|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe">
+        <ReportItem id="q8" type="Select" blobType="BLOB_TEXT" blobItem="Q8" limit="64" options="Canada|Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cabo Verde|Cambodia|Cameroon|Central African Republic (CAR)|Chad|Chile|China|Colombia|Comoros|Democratic Republic of the Congo|Republic of the Congo|Costa Rica|Cote d'Ivoire|Croatia|Cuba|Cyprus|Czech Republic|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macedonia (FYROM)|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar (Burma)|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Swaziland|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates (UAE)|United Kingdom (UK)|United States of America (USA)|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe">
             <![CDATA[
                 <h3>*Country of Citizenship</h3>
                 {$item}
-                <script type="text/javascript">$('select[name=PersonalInformation_q8]').chosen()</script>
+                <script type="text/javascript">$('select[name=AdditionalAdmissionInfo_q8]').chosen()</script>
             ]]>
         </ReportItem>
         <ReportItem id="q9" type="Radio" blobType="BLOB_TEXT" blobItem="Q9" limit="900" options="INT|CDN|PR" labels="International|Canadian Citizen|Permanent Resident" orientation="horizontal">
@@ -103,7 +103,7 @@
                 
             ]]>
         </ReportItem>
-        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_TEXT" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" orientation="horizontal">
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_TEXT" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
                 <h3>*Area of Study</h3>
                 {$item}
@@ -144,7 +144,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q18" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q18" limit="300">
+        <ReportItem id="q18" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q18" height="100px">
             <![CDATA[
                 <h1 style="margin-top: 16px">Education</h1>
                 <h3>*Education History<span title="Name of University/Institution, time frame (yyyy-yyyy OR present), degree (ie. BSc in Mathematics, if any). One per line. You may comment on any special circumstances." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -179,6 +179,42 @@
                     <div style="display: inline-block; vertical-align: top;">
                         <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                         {$item}
+                        <script type="text/javascript">
+                            var calculateNormalizedGPA = function() {
+                                var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
+                                var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]:checked').val();
+                                if (gpa_scale == 'Other') {
+                                    gpa_scale = $('#AdditionalAdmissionInfo_q20_other input').val();
+
+                                }
+
+                                var returnValue;
+
+                                if (gpa != '') {
+                                    if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
+                                        returnValue = 'Scale cannot be out of 0';
+                                    } else {
+                                        // try calculating
+                                        var normalized = (gpa * 4) / (gpa_scale);
+                                        if (normalized > 4) {
+                                            returnValue = 'GPA greater than scale';
+                                        } else {
+                                            returnValue = parseFloat(normalized).toFixed(2);
+                                        }
+                                    }
+                                } else {
+                                    returnValue = "";
+                                }
+
+                                $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
+                            };
+
+                            $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
+                            $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
+                            $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
+                            $(document).ready(calculateNormalizedGPA);
+
+                        </script>
                     </div>
             ]]>
         </ReportItem>
@@ -192,7 +228,7 @@
             
             ]]>
         </ReportItem>
-        <ReportItem id="q23" type="Text" blobType="BLOB_TEXT" blobItem="Q23" limit="100">
+        <ReportItem id="q23" type="Text" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%">
             <![CDATA[
                 <h1 style="margin-top: 16px">GRE (General)</h1>
                 <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
@@ -200,28 +236,57 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q24" type="Text" blobType="BLOB_TEXT" blobItem="Q24" limit="100">
+        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px">
             <![CDATA[
-                <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
+                <table>
+                    <td valign='top'>
+                        <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
             ]]>
         </ReportItem>
-        <ReportItem id="q25" type="Text" blobType="BLOB_TEXT" blobItem="Q25" limit="100">
+        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px">
             <![CDATA[
-                <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
+                    <td valign='top'>
+                        <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
             ]]>
         </ReportItem>
-        <ReportItem id="q26" type="Text" blobType="BLOB_TEXT" blobItem="Q26" limit="100">
+        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px">
             <![CDATA[
-                <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
+                    <td valign='top'>
+                        <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </td>
+                </table>
             ]]>
         </ReportItem>
-        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100">
+        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px">
             <![CDATA[
                 <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
+                <script type="text/javascript">
+                            var calculateGRE = function() {
+                                var gre1 = $('[name=AdditionalAdmissionInfo_q24]').val();
+                                var gre2 = $('[name=AdditionalAdmissionInfo_q25]').val();
+                                var gre3 = $('[name=AdditionalAdmissionInfo_q26]').val();
+
+                                var returnValue = '';
+                                if ((gre1 != '') && (gre2 != '') && (gre3 != '')) {
+                                    returnValue = (((gre1/170) + (gre2/170) + (gre3/6)) / 3) * 100;
+                                    returnValue = parseFloat(returnValue).toFixed(2);
+                                }
+
+                                $('[name=AdditionalAdmissionInfo_q27]').val(returnValue);
+                            };
+
+                            $('[name=AdditionalAdmissionInfo_q24]').change(calculateGRE);
+                            $('[name=AdditionalAdmissionInfo_q25]').change(calculateGRE);
+                            $('[name=AdditionalAdmissionInfo_q26]').change(calculateGRE);
+                            $(document).ready(calculateGRE);
+
+                        </script>
             ]]>
         </ReportItem>
         <ReportItem id="q28" type="Radio" blobType="BLOB_TEXT" blobItem="Q28" orientation="horizontal" options="Yes|No" limit="100">
