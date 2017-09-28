@@ -416,7 +416,7 @@ abstract class AbstractReportItem {
 
     //Function that finds all variables in CDATA (if any) and substitutes them by finding there values with the help of RI type-specific callbacks
     function varSubstitute($cdata){
-        if(defined($cdata)){
+        if(defined($cdata) && strtolower($cdata) != "true" && strtolower($cdata) != "false"){
             return constant($cdata);
         }
         $matches = array();
