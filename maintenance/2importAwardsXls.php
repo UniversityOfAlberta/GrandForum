@@ -5,18 +5,24 @@
         if(file_exists("grant_awards/award".$num.".csv")){
             $handle = fopen("grant_awards/award".$num.".csv", "r");
             $handle2 = fopen("grant_awards/co".$num.".csv", "r");
+            $handle3 = fopen("grant_awards/partner".$num.".csv", "r");
             echo "\nImporting award{$num}.csv\n";
             $iterationsSoFar = 0;
             $lines = array();
             $lines2 = array();
+            $lines3 = array();
             while (($data = fgetcsv($handle, 0, ",")) !== false) {
                 $lines[] = $data;
             }
             while (($data2 = fgetcsv($handle2, 0, ",")) !== false) {
                 $lines2[$data2[0]][] = $data2[1];
             }
+            while (($data3 = fgetcsv($handle3, 0, ",")) !== false) {
+                $lines3[$data3[0]][] = $data3;
+            }
             fclose($handle);
             fclose($handle2);
+            fclose($handle3);
             $offset = 0;
             
             foreach($lines as $i => $cells){
@@ -39,6 +45,7 @@
                     $username = preg_replace("/\".*\"/", "", $username);
                     
                     $coapplicants = array();
+                    $partners = array();
                     $person = Person::newFromName($username);
                     if(@is_array($lines2[$cle])){
                         foreach($lines2[$cle] as $name){
@@ -52,6 +59,23 @@
                             else{
                                 $coapplicants[] = $first." ".$last;
                             }
+                        }
+                    }
+                    if(@is_array($lines3[$cle])){
+                        foreach($lines3[$cle] as $cells3){
+                            $part_organization_id = str_replace("'", "''",$cells3[1]);
+                            $part_institution = str_replace("'", "''",$cells3[2]);
+                            $province = str_replace("'", "''",$cells3[3]);
+                            $country = str_replace("'", "''",$cells3[5]);
+                            $fiscal_year = $cells3[7].'-01-01 00:00:00';
+                            $org_type = str_replace("'", "''",$cells3[8]);
+                            $committee_name = "";
+                            $partners[] = array('part_institution' => $part_institution,
+                                                'province' => $province,
+                                                'country' => $country,
+                                                'committee_name' => $committee_name,
+                                                'fiscal_year' => $fiscal_year,
+                                                'org_type' => $org_type);
                         }
                     }
                     if($person->getId() == 0){
@@ -120,32 +144,46 @@
                             $keyword = '';
                         }
                         $application_summary = strip_tags(str_replace("'", "''",$cells[35+$offset]));
-
-                        $status = DBFunctions::insert('grand_new_grants',
-                                                      array('user_id' => $user_id,
-                                                            'cle' => $cle,
-                                                            'department' => $department,
-                                                            'institution' => $institution,
-                                                            'province' => $province,
-                                                            'country' => $country,
-                                                            'fiscal_year' => $fiscal_year,
-                                                            'competition_year' => $competition_year,
-                                                            'amount' => $amount,
-                                                            'program_id' => $program_id,
-                                                            'program_name' => $program_name,
-                                                            '`group`' => $group,
-                                                            'committee_name' => $committee_name,
-                                                            'area_of_application_group' => $area_of_application_group,
-                                                            'area_of_application' => $area_of_application,
-                                                            'research_subject_group' => $research_subject_group,
-                                                            'installment' => $installment,
-                                                            'partie' => $partie,
-                                                            'nb_partie' => $nb_partie,
-                                                            'application_title' => $application_title,
-                                                            'keyword' => $keyword,
-                                                            'application_summary' => $application_summary,
-                                                            'coapplicants' => serialize($coapplicants)));
-                        if($status){
+                        $grantAward = GrantAward::newFromTitle($application_title);
+                        if($grantAward->getId() != 0 && 
+                           $grantAward->user_id == $user_id && 
+                           $grantAward->competition_year == $competition_year &&
+                           ($grantAward->start_year > $fiscal_year || $grantAward->end_year < $fiscal_year)){
+                            $grantAward->start_year = min($grantAward->start_year, $fiscal_year);
+                            $grantAward->end_year   = max($grantAward->end_year,   $fiscal_year);
+                            $grantAward->amount += $amount;
+                            $grantAward->update();
+                        }
+                        else{
+                            DBFunctions::insert('grand_new_grants',
+                                                array('user_id' => $user_id,
+                                                      'department' => $department,
+                                                      'institution' => $institution,
+                                                      'province' => $province,
+                                                      'country' => $country,
+                                                      'start_year' => $fiscal_year,
+                                                      'end_year' => $fiscal_year,
+                                                      'competition_year' => $competition_year,
+                                                      'amount' => $amount,
+                                                      'program_id' => $program_id,
+                                                      'program_name' => $program_name,
+                                                      '`group`' => $group,
+                                                      'committee_name' => $committee_name,
+                                                      'area_of_application_group' => $area_of_application_group,
+                                                      'area_of_application' => $area_of_application,
+                                                      'research_subject_group' => $research_subject_group,
+                                                      'installment' => $installment,
+                                                      'partie' => $partie,
+                                                      'nb_partie' => $nb_partie,
+                                                      'application_title' => $application_title,
+                                                      'keyword' => $keyword,
+                                                      'application_summary' => $application_summary,
+                                                      'coapplicants' => serialize($coapplicants)));
+                            $grant_id = DBFunctions::insertId();
+                            foreach($partners as $partner){
+                                $partner['award_id'] = $grant_id;
+                                DBFunctions::insert('grand_new_grant_partner', $partner);
+                            }
                             DBFunctions::commit();
                         }
                     }

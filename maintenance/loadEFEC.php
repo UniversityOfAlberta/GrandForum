@@ -1039,8 +1039,5 @@
     require_once("2importAwardsXls.php");
     
     echo "\n";
-    
-    require_once("3importPartnersXls.php");
 
-    echo "\n";
 ?>

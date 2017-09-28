@@ -12,7 +12,7 @@ jQuery.fn.forceNumeric = function (options) {
      return this.each(function () {
         var lastValue = $(this).val();
         
-        var validateMax = function(target){
+        var validateMax = function(target, checkMax){
             if($(target).val() == ""){
                 lastValue = options.min;
                 return;
@@ -21,7 +21,10 @@ jQuery.fn.forceNumeric = function (options) {
                 $(target).val(lastValue);
                 return;
             }
-            var minVal = Math.min(options.max, $(target).val().replace(/,/g, ''));
+            var minVal = $(target).val().replace(/,/g, '');
+            if(checkMax){
+                minVal = Math.min(options.max, minVal);
+            }
             
             if(_.isNaN(minVal)){
                 $(target).val(lastValue);
@@ -36,7 +39,7 @@ jQuery.fn.forceNumeric = function (options) {
             lastValue = $(target).val();
         }
         
-        var validateMin = function(target){
+        var validateMin = function(target, checkMin){
             if($(target).val() == ""){
                 lastValue = options.min;
                 return;
@@ -45,7 +48,10 @@ jQuery.fn.forceNumeric = function (options) {
                 $(target).val(lastValue);
                 return;
             }
-            var maxVal = Math.max(options.min, $(target).val().replace(/,/g, ''));
+            var maxVal = $(target).val().replace(/,/g, '');
+            if(checkMin) {
+                maxVal = Math.max(options.min, maxVal);
+            }
             
             if(_.isNaN(maxVal)){
                 $(target).val(lastValue);
@@ -72,28 +78,24 @@ jQuery.fn.forceNumeric = function (options) {
         if(options.max != ""){
             $(this).keyup(function(e){
                 if(checkArrows(e)){
-                    validateMax(e.target);
+                    validateMax(e.target, false);
                 }
             });
             $(this).change(function(e){
-                if(checkArrows(e)){
-                    validateMax(e.target);
-                }
+                validateMax(e.target, true);
             });
-            validateMax(this);
+            validateMax(this, true);
         }
         if(options.min != ""){
             $(this).keyup(function(e){
                 if(checkArrows(e)){
-                    validateMin(e.target);
+                    validateMin(e.target, false);
                 }
             });
             $(this).change(function(e){
-                if(checkArrows(e)){
-                    validateMax(e.target);
-                }
+                validateMin(e.target, true);
             });
-            validateMin(this);
+            validateMin(this, true);
         }
         if(!(regex.test($(this).val()))){
             $(this).val(options.min);

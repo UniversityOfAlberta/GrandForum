@@ -2904,8 +2904,10 @@ class Person extends BackboneModel {
     function getGrantAwardsBetween($start, $end){
         $grants = array();
         foreach($this->getGrantAwards() as $grant){
-            $date = $grant->fiscal_year;
-            if($start <= $date && $end >= $date){
+            $grantStart = $grant->start_year;
+            $grantEnd = $grant->end_year;
+            if(($start <= $grantStart && $end >= $grantStart) ||
+               ($start >= $grantStart && $end <= $grantEnd)){
                 $grants[] = $grant;
             }
         }

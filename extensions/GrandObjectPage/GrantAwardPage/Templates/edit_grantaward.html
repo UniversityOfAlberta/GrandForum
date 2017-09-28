@@ -22,8 +22,8 @@
         <td><div id="partners"></div><button id="addPartner">Add Partner</button></td>
     </tr>
     <tr>
-        <td class="label">Fiscal Year:</td>
-        <td><%= HTML.TextBox(this, 'fiscal_year', {size: '4'}) %></td>
+        <td class="label">Timeframe:</td>
+        <td><%= HTML.TextBox(this, 'start_year', {size: '4'}) %> - <%= HTML.TextBox(this, 'end_year', {size: '4'}) %></td>
     </tr>
     <tr>
         <td class="label">Competition Year:</td>

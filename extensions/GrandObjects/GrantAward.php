@@ -7,12 +7,12 @@ class GrantAward extends BackboneModel {
     var $id;
     var $user_id;
     var $grant_id;
-    var $cle;
     var $department;
     var $institution;
     var $province;
     var $country;
-    var $fiscal_year;
+    var $start_year;
+    var $end_year;
     var $competition_year;
     var $amount;
     var $program_id;
@@ -40,10 +40,10 @@ class GrantAward extends BackboneModel {
         return $grant;
     }
     
-    static function newFromCle($cle){
+    static function newFromTitle($title){
         $data = DBFunctions::select(array('grand_new_grants'),
                                     array('*'),
-                                    array('cle' => EQ($cle)));
+                                    array('application_title' => EQ($title)));
         $grant = new GrantAward($data);
         return $grant;
     }
@@ -91,12 +91,12 @@ class GrantAward extends BackboneModel {
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->grant_id = $row['grant_id'];
-                $this->cle = $row['cle'];
                 $this->department = $row['department'];
                 $this->institution = $row['institution'];
                 $this->province = $row['province'];
                 $this->country = $row['country'];
-                $this->fiscal_year = $row['fiscal_year'];
+                $this->start_year = $row['start_year'];
+                $this->end_year = $row['end_year'];
                 $this->competition_year = $row['competition_year'];
                 $this->amount = $row['amount'];
                 $this->program_id = $row['program_id'];
@@ -226,6 +226,9 @@ class GrantAward extends BackboneModel {
     
     function create(){
         $coapplicants = array();
+        if(!is_array($this->coapplicants)){
+            $this->getCoApplicants();
+        }
         foreach($this->coapplicants as $co){
             if(isset($co->id) && $co->id != 0){
                 $coapplicants[] = $co->id;
@@ -241,12 +244,12 @@ class GrantAward extends BackboneModel {
         DBFunctions::insert('grand_new_grants',
                             array('user_id' => $this->user_id,
                                   'grant_id' => $this->grant_id,
-                                  'cle' => $this->cle,
                                   'department' => $this->department,
                                   'institution' => $this->institution,
                                   'province' => $this->province,
                                   'country' => $this->country,
-                                  'fiscal_year' => $this->fiscal_year,
+                                  'start_year' => $this->start_year,
+                                  'end_year' => $this->end_year,
                                   'competition_year' => $this->competition_year,
                                   'amount' => str_replace(",", "", $this->amount),
                                   'program_id' => $this->program_id,
@@ -264,6 +267,9 @@ class GrantAward extends BackboneModel {
                                   'application_summary' => $this->application_summary,
                                   'coapplicants' => serialize($coapplicants)));
         $this->id = DBFunctions::insertId();
+        if(!is_array($this->partners)){
+            $this->getPartners();
+        }
         foreach($this->partners as $partner){
             if(is_object($partner)){
                 $partner = get_object_vars($partner);
@@ -279,6 +285,9 @@ class GrantAward extends BackboneModel {
     
     function update(){
         $coapplicants = array();
+        if(!is_array($this->coapplicants)){
+            $this->getCoApplicants();
+        }
         foreach($this->coapplicants as $co){
             if(isset($co->id) && $co->id != 0){
                 $coapplicants[] = $co->id;
@@ -294,12 +303,12 @@ class GrantAward extends BackboneModel {
         $status = DBFunctions::update('grand_new_grants',
                             array('user_id' => $this->user_id,
                                   'grant_id' => $this->grant_id,
-                                  'cle' => $this->cle,
                                   'department' => $this->department,
                                   'institution' => $this->institution,
                                   'province' => $this->province,
                                   'country' => $this->country,
-                                  'fiscal_year' => $this->fiscal_year,
+                                  'start_year' => $this->start_year,
+                                  'end_year' => $this->end_year,
                                   'competition_year' => $this->competition_year,
                                   'amount' => str_replace(",", "", $this->amount),
                                   'program_id' => $this->program_id,
@@ -317,6 +326,9 @@ class GrantAward extends BackboneModel {
                                   'application_summary' => $this->application_summary,
                                   'coapplicants' => serialize($coapplicants)),
                             array('id' => EQ($this->id)));
+        if(!is_array($this->partners)){
+            $this->getPartners();
+        }
         DBFunctions::delete('grand_new_grant_partner',
                             array('award_id' => $this->id));
         foreach($this->partners as $partner){
@@ -355,12 +367,12 @@ class GrantAward extends BackboneModel {
         $json = array('id' => $this->id,
                       'user_id' => $this->user_id,
                       'grant_id' => $this->grant_id,
-                      'cle' => $this->cle,
                       'department' => $this->department,
                       'institution' => $this->institution,
                       'province' => $this->province,
                       'country' => $this->country,
-                      'fiscal_year' => $this->fiscal_year,
+                      'start_year' => $this->start_year,
+                      'end_year' => $this->end_year,
                       'competition_year' => $this->competition_year,
                       'amount' => str_replace(",", "", $this->amount),
                       'program_id' => $this->program_id,

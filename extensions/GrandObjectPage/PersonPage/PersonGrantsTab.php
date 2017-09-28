@@ -79,7 +79,7 @@ class PersonGrantsTab extends AbstractTab {
                     <thead>
                         <tr>
                             <th style='white-space:nowrap;'>Name</th>
-                            <th style='white-space:nowrap;'>Fiscal Year</th>
+                            <th style='white-space:nowrap;'>Timeframe</th>
                             <th style='white-space:nowrap;'>Competition Year</th>
                             <th style='white-space:nowrap;'>Amount</th>
                         </tr>
@@ -87,7 +87,7 @@ class PersonGrantsTab extends AbstractTab {
         foreach($grantAwards as $grantAward){
             $partners = $grantAward->getPartners();
             $string .= "<tr><td><a href='{$grantAward->getUrl()}'>{$grantAward->application_title}</a></td>
-                            <td style='white-space:nowrap;'>{$grantAward->fiscal_year}</td>
+                            <td style='white-space:nowrap;'>{$grantAward->start_year} - {$grantAward->end_year}</td>
                             <td style='white-space:nowrap;'>{$grantAward->competition_year}</td>
                             <td align=right>$".number_format($grantAward->amount)."</td></tr>";}
             $string .= "</table></tbody><script type='text/javascript'>
