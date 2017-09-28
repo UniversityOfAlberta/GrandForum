@@ -20,7 +20,7 @@ GrantAwardsView = Backbone.View.extend({
                 return;
             }
             var row = new Array("<a href='" + model.url + "'>" + model.application_title + "</a>", 
-                                model.fiscal_year,
+                                model.start_year + " - " + model.end_year,
                                 model.competition_year,
                                 number_format(model.amount));
             data.push(row);
@@ -54,7 +54,6 @@ GrantAwardsView = Backbone.View.extend({
         var data = this.processData(0);
         this.table = this.$("#grantawards").DataTable({
             iDisplayLength: 100,
-            aaSorting: [[2,'desc']],
             autoWidth: false,
             aaData : data,
             deferRender: true
