@@ -143,7 +143,7 @@ if(!TESTING){
 }
 $wgSessionCacheType = CACHE_DB;
 $wgPasswordAttemptThrottle = false;
-$wgDisableCounters = true;
+$wgDisableCounters = false;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;
