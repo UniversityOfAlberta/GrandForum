@@ -11,7 +11,7 @@ class PersonCoursesTab extends AbstractTab {
         $this->visibility = $visibility;
     }
     
-    function getHTML($start=null, $end=null){
+    function getHTML($start=null, $end=null, $generatePDF=false){
         if($start == null || $end == null){
             $courses = $this->person->getCourses();
         }
@@ -50,11 +50,23 @@ class PersonCoursesTab extends AbstractTab {
                     $inner = implode(", ", $inner);
                     $termStrings[] = "{$term}: $inner";
                 }
-                $item .= "<tr>";
-                $item .= "<td style='white-space:nowrap;width:10%;'>{$subj}</td>";
-                $item .= @"<td>{$terms[0]->descr}<div class='pdfnodisplay'>{$terms[0]->courseDescr}</div></td>";
-                $item .= "<td style='width:45%;'>".implode("; ", $termStrings)."</td>";
-                $item .= "</tr>";
+                if(!$generatePDF){
+                    $item .= @"<tr>
+                                  <td style='white-space:nowrap;width:10%;' rowspan='2'>{$subj}</td>
+                                  <td>{$terms[0]->descr}</td>
+                                  <td style='width:45%;'>".implode("; ", $termStrings)."</td>
+                              </tr>
+                              <tr>
+                                  <td colspan='2'><div class='pdfnodisplay'>{$terms[0]->courseDescr}</div></td>
+                              </tr>";
+                }
+                else{
+                    $item .= @"<tr>
+                                  <td style='white-space:nowrap;width:10%;'>{$subj}</td>
+                                  <td>{$terms[0]->descr}</td>
+                                  <td style='width:45%;'>".implode("; ", $termStrings)."</td>
+                              </tr>";
+                }
             }
             $item .= "</table>";
         }

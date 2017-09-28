@@ -10,7 +10,7 @@ class PersonCoursesReportItem extends StaticReportItem {
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         
         $tab = new PersonCoursesTab($person, array());
-        return $tab->getHTML($start, $end);
+        return $tab->getHTML($start, $end, true);
     }
 
     function render(){
