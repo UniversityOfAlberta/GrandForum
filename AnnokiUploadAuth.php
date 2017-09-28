@@ -38,11 +38,17 @@ wfDebugLog( 'AnnokiUploadAuth', "\$filename is {$filename}" );
 $exploded = explode("/", $path);
 $file = $exploded[count($exploded)-1];
 
+$data = DBFunctions::select(array('mw_page'),
+                            array('*'),
+                            array('page_title' => EQ("{$file}")));
+$wikipage = @WikiPage::newFromRow((object)$data[0]);
 if(!wfLocalFile($file)->exists()){
     $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                 array('url'),
                                 array('upload_name' => EQ('File:'.$file)));
     if(count($data) > 0 && $data[0]['url'] != ""){
+        $wikipage->doViewUpdates($wgUser);
+        DeferredUpdates::doUpdates('commit');
         if(strstr($data[0]['url'], 'http://') === false && strstr($data[0]['url'], 'https://') === false){
             redirect('http://'.$data[0]['url']);
         }
@@ -123,9 +129,9 @@ if( is_dir( $filename ) ) {
 	wfForbidden();
 }
 
-
-
 // Stream the requested file
+$wikipage->doViewUpdates($wgUser);
+DeferredUpdates::doUpdates('commit');
 wfDebugLog( 'AnnokiUploadAuth', "Streaming `{$filename}`" );
 StreamFile::stream($filename, array( 'Cache-Control: private', 'Vary: Cookie' ));
 wfLogProfilingData();
