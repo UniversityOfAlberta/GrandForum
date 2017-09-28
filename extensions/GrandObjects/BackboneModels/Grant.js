@@ -6,6 +6,13 @@ Grant = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.grant',
     
+    getGrantAward: function(){
+        this.grantAward = new GrantAward();
+        this.grantAward.set('id', this.get('grant_award_id'));
+        this.grantAward.fetch();
+        return this.grantAward;
+    },
+    
     defaults: function(){ return {
             id: null,
             user_id: '',
@@ -13,6 +20,7 @@ Grant = Backbone.Model.extend({
             copi: new Array(),
             copi_string: '',
             project_id: '',
+            grant_award_id: 0,
             sponsor: '',
             total: 0,
             funds_before: 0,

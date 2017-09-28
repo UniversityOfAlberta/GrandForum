@@ -9,9 +9,12 @@ GrantView = Backbone.View.extend({
                 this.$el.html("This Grant does not exist");
             }, this)
         });
+        
         this.listenTo(this.model, 'change', $.proxy(function(){
             this.person = new Person({id: this.model.get('user_id')});
             var xhr = this.person.fetch();
+            this.model.getGrantAward();
+            this.listenTo(this.model.grantAward, 'sync', this.render);
             $.when(xhr).then(this.render);
         }, this));
         

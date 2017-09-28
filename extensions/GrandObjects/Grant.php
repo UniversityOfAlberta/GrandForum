@@ -247,11 +247,14 @@ class Grant extends BackboneModel {
         foreach($this->getCoPI() as $copi){
             $copis[] = $copi->getNameForForms();
         }
+        $grantAward = $this->getGrantAward();
+        $grantAwardId = ($grantAward != null) ? $grantAward->getId() : 0;
         $json = array(
             'id' => $this->id,
             'user_id' => $this->user_id,
             'pi' => $this->getPI()->toArray(),
             'project_id' => $this->project_id,
+            'grant_award_id' => $grantAwardId,
             'sponsor' => $this->sponsor,
             'copi' => $this->copi,
             'copi_string' => implode("; ", $copis),
