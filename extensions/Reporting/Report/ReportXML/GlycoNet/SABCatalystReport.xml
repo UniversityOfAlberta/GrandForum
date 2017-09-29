@@ -19,10 +19,10 @@
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Role-->
-        <Person id="1911">
+        <Person id="2513">
             <SectionPermission id="materials" permissions="r" />
-            <SectionPermission id="table" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="table" permissions="" />
+            <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Person>
     </Permissions>
