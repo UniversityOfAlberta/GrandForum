@@ -9,6 +9,7 @@ class PersonCitationsTab extends AbstractTab {
         parent::AbstractTab("Impact");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->tooltip = "Contains Google Scholar citation information for this person.  A 'Google Scholar URL' on the Bio tab must be provided in order to import citation information.";
     }
 
     function generateBody(){
@@ -18,14 +19,11 @@ class PersonCitationsTab extends AbstractTab {
         }
         $wgOut->addScript(
                 "<script type='text/javascript'>
-                $(document).ready(function(){
-                    $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
-                });
-
-
+                    $(document).ready(function(){
+                        $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
+                    });
                 </script>"
             );
-
 
         $metric = $this->person->getMetric();
         //$acm_stats = $this->getAcmStats($metric);
@@ -128,7 +126,7 @@ class PersonCitationsTab extends AbstractTab {
                             url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
                             data: {id:".$this->person->getId()."},
                             success:function(result){
-                                    location.reload();
+                                document.location = '{$this->person->getUrl()}?tab=impact';
                             }});
                         });
                     });

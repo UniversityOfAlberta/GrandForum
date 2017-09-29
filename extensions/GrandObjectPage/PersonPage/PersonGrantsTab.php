@@ -9,6 +9,7 @@ class PersonGrantsTab extends AbstractTab {
         parent::AbstractTab("Funding");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->tooltip = "Contains a table with a list of Grant Accounts and Grant Awards between the specified start and end dates.";
     }
 
     function generateBody(){

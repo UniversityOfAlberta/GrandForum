@@ -92,7 +92,7 @@ class TabbedPage {
                 $tab->generateBody();
             }
             if($tab->html != ""){
-                $wgOut->addHTML("<li><a href='#{$tab->id}'>{$tab->name}</a></li>");
+                $wgOut->addHTML("<li title='".str_replace("'", "&#39;", $tab->tooltip)."' class='tooltip'><a href='#{$tab->id}'>{$tab->name}</a></li>");
             }
         }
         $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");

@@ -11,6 +11,7 @@ class PersonProfileTab extends AbstractEditableTab {
         parent::AbstractEditableTab("Bio");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->tooltip = "Contains basic information about the person, including a profile, productivity visualizations and contact information.";
     }
 
     function generateBody(){

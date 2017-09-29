@@ -9,6 +9,7 @@ class PersonCoursesTab extends AbstractTab {
         parent::AbstractTab("Teaching");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->tooltip = "Contains list of courses that the person has tought between the specified start and end dates.  Enrollment information is shown in parentheses.";
     }
     
     function getHTML($start=null, $end=null, $generatePDF=false){
@@ -42,7 +43,6 @@ class PersonCoursesTab extends AbstractTab {
                     $counts = array();
                     foreach($components as $key => $component){
                         $counts[$component][] = $totEnrls[$key];
-                        //$inner[] = "{$component} {$sects[$key]} : {$totEnrls[$key]}";
                     }
                     foreach($counts as $component => $count){
                         $inner[] = count($count)." $component (".array_sum($count).")";

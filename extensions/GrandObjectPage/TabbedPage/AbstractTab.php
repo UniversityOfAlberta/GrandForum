@@ -3,6 +3,7 @@
 abstract class AbstractTab {
 
     var $html;
+    var $tooltip;
     var $id;
     var $name;
 

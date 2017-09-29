@@ -9,6 +9,7 @@ class PersonGradStudentsTab extends AbstractTab {
         parent::AbstractTab("HQP");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->tooltip = "Contains list of hqp that the person has supervised between the specified start and end dates.  Examination Committee memberships are also included in a separate table.";
     }
 
     function generateBody(){

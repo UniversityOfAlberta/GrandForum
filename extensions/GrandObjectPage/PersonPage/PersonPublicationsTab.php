@@ -17,6 +17,7 @@ class PersonPublicationsTab extends AbstractTab {
         $this->person = $person;
         $this->visibility = $visibility;
         $this->category = $category;
+        $this->tooltip = "Contains a table with a list of ".Inflect::pluralize($category)." between the specified start and end dates.";
     }
 
     function generateBody(){
