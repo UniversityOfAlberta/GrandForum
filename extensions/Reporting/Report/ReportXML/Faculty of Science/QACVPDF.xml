@@ -270,139 +270,103 @@
             <ReportItemSet id="departmental_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental Committee,, false)}, 0)}">
                 <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
                     <![CDATA[
-                        <h3>Departmental</h3>
-                        <ul>
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Departmental</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="departmentalfooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet>
             
             <!-- Faculty -->
             <ReportItemSet id="faculty_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Faculty Committee,, false)}, 0)}">
                 <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
                     <![CDATA[
-                        <h3>Faculty</h3>
-                        <ul>
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Faculty</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="facultyfooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet>
             
             <!-- University -->
             <ReportItemSet id="university_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, University Committee,, false)}, 0)}">
                 <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
                     <![CDATA[
-                        <h3>University</h3>
-                        <ul>
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> University</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="universityfooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet>
             
             <!-- Scientific -->
             <!--ReportItemSet id="scientific_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific Committee,, false)}, 0)}">
                 <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
                     <![CDATA[
-                        <h3>Scientific</h3>
-                        <ul>
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Scientific</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="scientificfooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet-->
             
             <!-- Outreach and Community Engagement -->
             <ReportItemSet id="community_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach Committee,, false)}, 0)}">
                 <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
                     <![CDATA[
-                        <h3>Outreach and Community Engagement</h3>
-                        <ul>
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Outreach and Community Engagement</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="outreachfooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet>
             
             <!-- Other -->
             <!--ReportItemSet id="other_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other Committee,, false)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
                     <![CDATA[
-                    	<h3>Other</h3>
-                    	<ul>
+                    	<h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Other</h3>
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <li>{$product_description}, {$product_year_range}</li>
+                            <p style='margin-left:2em;'>{$product_description}, {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="otherFooter" type="Static">
-                    <![CDATA[
-                        </ul>
-                    ]]>
-                </ReportItem>
             </ReportItemSet-->
         </ReportItemSet>
         
         <!-- Footer -->
         <ReportItem id="cv_footer" type="Static">
             <![CDATA[
-                <br />
+                <br /><br /><br />
                 <div style="page-break-inside:avoid; position: absolute; bottom:0;">
                     <i>Generated: {$timestamp}</i>
                 </div>

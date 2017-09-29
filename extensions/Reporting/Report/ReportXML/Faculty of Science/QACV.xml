@@ -6,12 +6,31 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="BLOB_NONE" type="ReportSection">
+        <ReportItem id="introduction" type="Static">
+            <![CDATA[
+                <p>The information about a faculty member under the “My Profile” tab reflects the period from July 1 {$startYear} to June 30 {$endYear} and is organized into the following general categories.</p>
+                <ol>
+                    <li>The “Current Position and Employment History” data has been obtained from the eFEC system.</li>
+                    <li>The “Honors and Awards” section has been imported from the eFEC system and from a list maintained by the office of the Dean of Science.</li>
+                    <li>The Patent and Commercialization section uses data provided by TEC Edmonton.</li>
+                    <li>The “Courses Taught” section has been imported from a Beartracks data dump.</li>
+                    <li>The “Supervision and Training Responsibilities” section is obtained from two sources: (a) FGSR data on graduate students who have a milestone in the system, i.e., MSc students who have defended their thesis and PhD students who have gone through candidacy; (b) Undergraduate trainees, Technicians and Post-doctoral fellows are obtained from the eFEC system. Graduate students with no milestones (MSc course-based, or thesis-based MSc who have not defended before June 30 {$endYear} or PhD who have not passed their candidacy before June 30 {$endYear} are not included).</li>
+                    <li>The “Publications” section has been obtained from the eFEC system.</li>
+                    <li>The “Presentations” section is obtained from the eFEC system.</li>
+                    <li>Entries in the “Research Funding” section come from a data dump provided by RSO from Grants 3.0. NSERC makes available successful-application data. We have downloaded the NSERC data set (from <a target='_blank' href='http://open.canada.ca/data/en/dataset/c1b0f627-8c29-427c-ab73-33968ad9176e'>http://open.canada.ca/data/en/dataset/c1b0f627-8c29-427c-ab73-33968ad9176e</a>) and it is available under the “My Profile/Funding/Awards” tab.</li>
+                    <li>The “Service to the University and the Profession” has been imported from the eFEC system.</li>
+                </ol>
+                <p>All this data can be updated from the corresponding tabs under "My Profile"; relevant instructions on how to update each type of data is available on each tab</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>
