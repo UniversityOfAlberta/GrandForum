@@ -4528,7 +4528,7 @@ class Person extends BackboneModel {
         return $gsMetric;
     }
 
-/**
+    /**
      * Returns this Person's Supervisors
      * @param mixed $history Whether or not to include all Supervisors in history (can also be a specific date)
      * @return array This Person's Supervisors
