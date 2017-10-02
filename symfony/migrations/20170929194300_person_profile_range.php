@@ -29,7 +29,7 @@ class PersonProfileRange extends AbstractMigration
     {
         $table = $this->table('mw_user');
         $table->addColumn('profile_start_date', 'timestamp', array('after' => 'user_private_profile', 'default' => '0000:00:00 00-00-00'))
-              ->addColumn('profile_end_date','timestamp', array('after' => 'start_date', 'default' => '0000:00:00 00-00-00'))
+              ->addColumn('profile_end_date','timestamp', array('after' => 'profile_start_date', 'default' => '0000:00:00 00-00-00'))
               ->update();
     }
 }
