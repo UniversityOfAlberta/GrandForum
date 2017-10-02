@@ -9,7 +9,7 @@ class PersonFECTab extends AbstractEditableTab {
         parent::AbstractEditableTab("FEC History");
         $this->person = $person;
         $this->visibility = $visibility;
-        $this->tooltip = "Contains information about important dates in the person's academic history.";
+        $this->tooltip = "Contains information about important milestones in the faculty member's academic and employment record.";
     }
     
     function handleEdit(){

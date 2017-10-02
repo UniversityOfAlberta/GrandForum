@@ -23,7 +23,7 @@ class PersonPage {
     }
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgImpersonating, $wgDelegating;
         $result = true;
         self::userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
@@ -108,6 +108,14 @@ class PersonPage {
                 $visibility['isChampion'] = $isChampion;
                 
                 self::showTitle($person, $visibility);
+
+                if(isset($_GET['startRange']) && isset($_GET['endRange']) && 
+                   $me->getId() == $person->getId() && 
+                   !$wgImpersonating && !$wgDelegating){
+                    $me->profileStartDate = $_GET['startRange'];
+                    $me->profileEndDate = $_GET['endRange'];
+                    $me->update();
+                }
 
                 $tabbedPage = new TabbedPage("person");
                 

@@ -36,6 +36,8 @@ class Person extends BackboneModel {
     var $orcId;
     var $publicProfile;
     var $privateProfile;
+    var $profileStartDate;
+    var $profileEndDate;
     var $realname;
     var $firstName;
     var $lastName;
@@ -333,6 +335,8 @@ class Person extends BackboneModel {
                                               'orcid',
                                               'user_public_profile',
                                               'user_private_profile',
+                                              'profile_start_date',
+                                              'profile_end_date',
                                               'user_nationality',
                                               'user_gender',
                                               'candidate'),
@@ -901,6 +905,8 @@ class Person extends BackboneModel {
             $this->orcId = @$data[0]['orcid'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
+            $this->profileStartDate = @$data[0]['profile_start_date'];
+            $this->profileEndDate = @$data[0]['profile_end_date'];
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
@@ -946,6 +952,8 @@ class Person extends BackboneModel {
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
+                      'profile_start_date' => $this->getProfileStartDate(),
+                      'profile_end_date' => $this->getProfileEndDate(),
                       'url' => $this->getUrl());
         return $json;
     }
@@ -988,7 +996,9 @@ class Person extends BackboneModel {
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
-                                          'user_private_profile' => $this->getProfile(true)),
+                                          'user_private_profile' => $this->getProfile(true),
+                                          'profile_start_date' => $this->getProfileStartDate(),
+                                          'profile_end_date' => $this->getProfileEndDate()),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
             
@@ -1008,6 +1018,7 @@ class Person extends BackboneModel {
     }
     
     function update(){
+        global $wgImpersonating, $wgDelegating;
         $me = Person::newFromWgUser();
         if($me->isAllowedToEdit($this)){
             $status = DBFunctions::update('mw_user', 
@@ -1028,6 +1039,12 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+            if(!$wgImpersonating && !$wgDelegating){
+                DBFunctions::update('mw_user',
+                                    array('profile_start_date' => $this->getProfileStartDate(),
+                                          'profile_end_date' => $this->getProfileEndDate()),
+                                    array('user_id' => EQ($this->getId())));
+            }
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
@@ -1669,6 +1686,22 @@ class Person extends BackboneModel {
         else{
             return $this->publicProfile;
         }
+    }
+    
+    /**
+     * Returns the start date range for the user's profile
+     * @return string This Person's start date for the user's profile
+     */
+    function getProfileStartDate(){
+        return $this->profileStartDate;
+    }
+    
+    /**
+     * Returns the end date range for the user's profile
+     * @return string This Person's end date for the user's profile
+     */
+    function getProfileEndDate(){
+        return $this->profileEndDate;
     }
     
     /**

@@ -9,7 +9,7 @@ class PersonCitationsTab extends AbstractTab {
         parent::AbstractTab("Impact");
         $this->person = $person;
         $this->visibility = $visibility;
-        $this->tooltip = "Contains Google Scholar citation information for this person.  A 'Google Scholar URL' on the Bio tab must be provided in order to import citation information.";
+        $this->tooltip = "Contains Google Scholar citation information for the faculty member.  A 'Google Scholar URL' on the Bio tab must be provided in order to import citation information.";
     }
 
     function generateBody(){

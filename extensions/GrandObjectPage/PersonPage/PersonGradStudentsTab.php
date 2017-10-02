@@ -9,7 +9,7 @@ class PersonGradStudentsTab extends AbstractTab {
         parent::AbstractTab("HQP");
         $this->person = $person;
         $this->visibility = $visibility;
-        $this->tooltip = "Contains list of hqp that the person has supervised between the specified start and end dates.  Examination Committee memberships are also included in a separate table.";
+        $this->tooltip = "Contains information of the HQP that the faculty member has supervised between the specified start and end dates. Examination-Committee memberships are also included in a separate table.";
     }
 
     function generateBody(){
@@ -23,9 +23,18 @@ class PersonGradStudentsTab extends AbstractTab {
                     $('.supervisorAccordion').accordion({autoHeight: false, collapsible: true, active:false});
                 });
                 </script>"
-            );
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        );
+        
+        $me = Person::newFromWgUser();
+        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
+            $startRange = ($me->getProfileStartDate() != "0000-00-00 00:00:00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00 00:00:00") ? $me->getProfileEndDate()   : CYCLE_END;
+        }
+        else{
+            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
+            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        }
+        
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>

@@ -143,6 +143,8 @@ Person = Backbone.Model.extend({
         researchArea: '',
         publicProfile: '',
         privateProfile: '',
+        profileStartDate: '',
+        profileEndDate: '',
         url: ''
     }
 });

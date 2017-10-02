@@ -25,8 +25,17 @@ class PersonPublicationsTab extends AbstractTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        
+        $me = Person::newFromWgUser();
+        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
+            $startRange = ($me->getProfileStartDate() != "0000-00-00 00:00:00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00 00:00:00") ? $me->getProfileEndDate()   : CYCLE_END;
+        }
+        else{
+            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
+            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        }
+
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
