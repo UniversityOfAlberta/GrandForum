@@ -229,7 +229,7 @@ class PersonGradStudentsTab extends AbstractTab {
                         $research_area = $position['research_area'];
                         $position = $position['position'];
                         $role = $r->getType();
-                        if($role == SUPERVISES || $role == CO_SUPERVISES){
+                        if($role == SUPERVISES || $role == CO_SUPERVISES || $role == WORKS_WITH || $role == MENTORS){
                             continue;
                         }
                         $names = array();
