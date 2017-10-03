@@ -27,6 +27,13 @@ Product = Backbone.Model.extend({
                 this.set('status', _.first(productStructure.categories[this.get('category')].types[this.get('type')].status));
             }
         });
+        
+        this.on("change:status", function(){
+            var status = this.get('status');
+            if(status == "Published"){
+                this.set('access', 'Public');
+            }
+        });
     },
 
     getAuthors: function(){

@@ -13,6 +13,7 @@ ProductEditView = Backbone.View.extend({
         this.listenTo(this.model, "change:projects", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
+        this.listenTo(this.model, "change:access", this.render);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
