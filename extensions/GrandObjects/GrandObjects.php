@@ -7,6 +7,9 @@ define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("CO_SUPERVISES", 'Co-Supervises');
 define("MENTORS", 'Mentors');
+define("SUPERVISORY_COMMITTEE", "Supervisory Committee");
+define("EXAMINER", "Examiner");
+define("COMMITTEE_CHAIR", "Committee Chair");
 
 // Autoloads
 autoload_register('GrandObjects');
