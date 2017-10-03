@@ -105,6 +105,7 @@ class ReportItemCallback {
             "product_description" => "getProductDescription",
             "product_url" => "getProductUrl",
             "product_citation" => "getProductCitation",
+            "product_qa_citation" => "getProductQACitation",
             "product_date" => "getProductDate",
             "product_acceptance_year" => "getProductAcceptanceYear",
             "product_year" => "getProductYear",
@@ -759,6 +760,11 @@ class ReportItemCallback {
     function getProductCitation(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getCitation(true, true, false);
+    }
+    
+    function getProductQACitation(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getCitation(true, false, false);
     }
 
     function getPresentationTitle(){

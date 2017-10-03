@@ -1238,28 +1238,33 @@ class Paper extends BackboneModel{
         $regex = "/\{.*?\}/";
         $format = preg_replace_callback($regex, "self::formatCitation", $format);
         
-        $status = ($showStatus) ? $this->getStatus() : "";
-        $peer_rev = "";
-        if($showPeerReviewed && $this->getCategory() == "Publication"){
-            if($this->getData('peer_reviewed') == "Yes"){
-                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
+        $peerDiv = "";
+        if($showPeerReviewed){
+            $status = ($showStatus) ? $this->getStatus() : "";
+            $peer_rev = "";
+            $ifranking = "";
+            $ranking = $this->getData(array('category_ranking'));
+            $if = $this->getData(array('impact_factor'));
+            
+            if($this->getCategory() == "Publication"){
+                if($this->getData('peer_reviewed') == "Yes"){
+                    $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
+                }
+                else if($this->getData('peer_reviewed') == "No"){
+                    $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
+                }
             }
-            else if($this->getData('peer_reviewed') == "No"){
-                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
+            if($if != "" && $ranking != ""){
+                $fraction = explode("/", $ranking);
+                $numerator = @$fraction[0];
+                $denominator = @$fraction[1];
+                $percent = number_format(($numerator/max(1, $denominator))*100, 2);
+                $ranking = $ranking." = {$percent}%";
+                $ifranking = "IF: {$if}; Ranking: {$ranking}<br />";
             }
+            $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>";
         }
-        $ifranking = "";
-        $ranking = $this->getData(array('category_ranking'));
-        $if = $this->getData(array('impact_factor'));
-        if($if != "" && $ranking != ""){
-            $fraction = explode("/", $ranking);
-            $numerator = @$fraction[0];
-            $denominator = @$fraction[1];
-            $percent = number_format(($numerator/max(1, $denominator))*100, 2);
-            $ranking = $ranking." = {$percent}%";
-            $ifranking = "IF: {$if}; Ranking: {$ranking}<br />";
-        }
-        return trim("{$format}<div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>");
+        return trim("{$format}{$peerDiv}");
     }
     
     private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){

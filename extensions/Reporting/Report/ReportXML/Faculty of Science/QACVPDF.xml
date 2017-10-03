@@ -142,7 +142,7 @@
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
-                        <li style="page-break-inside: avoid;">{$product_citation}</li>
+                        <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -169,7 +169,7 @@
             <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
-                        <li style="page-break-inside: avoid;">{$product_citation}</li>
+                        <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -242,7 +242,7 @@
             <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
-                        <li>{$product_citation}</li>
+                        <li>{$product_qa_citation}</li>
                     ]]>
                 </ReportItem>
             </ReportItemSet>
