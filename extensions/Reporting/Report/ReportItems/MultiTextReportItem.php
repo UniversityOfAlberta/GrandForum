@@ -157,7 +157,7 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
+                        "<td colspan='$colspan' align='center'><span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span></td></tr>"
 EOF;
                     if($isVertical){
                         $item .= "+ \"<tr id='obj\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
@@ -220,7 +220,7 @@ EOF;
                     $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
                 }
                 if($multiple){
-                    $item .= "<th style='width:51px;'></th></tr>";
+                    $item .= "<th style='width:30px;'></th></tr>";
                 }
             }
         }
@@ -333,7 +333,7 @@ EOF;
                     $colspan = 2;
                 }
                 if($multiple){
-                    $item .= "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                    $item .= "<td colspan='$colspan' align='center'><span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span></td>";
                 }
                 $item .= "</tr>";
                 if($isVertical){
