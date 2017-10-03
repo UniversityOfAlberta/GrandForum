@@ -65,7 +65,7 @@ class PersonPublicationsTab extends AbstractTab {
                         </div>";
         $this->html .= $this->showTable($this->person, $this->visibility);
         if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
-            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageOutputs\");' value='Manage Outputs' />";
+            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageProducts\");' value='Manage Outputs' />";
         }
     }
 
