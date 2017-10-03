@@ -115,6 +115,7 @@ class ImportBibTeXAPI extends API{
             $product->access_id = $me->getId();
             $product->bibtex_id = $bibtex_id;
         }
+        $product->access = "Public";
         if(count($product->authors) == 0){
             if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
                 // Must be using ',' as a delimiter...
