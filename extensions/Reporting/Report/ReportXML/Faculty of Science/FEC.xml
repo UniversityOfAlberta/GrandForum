@@ -79,13 +79,13 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" multiple="true" addText="Add new leave" optional="true">
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" multiple="true" addText="Add New" optional="true" max="1">
             <![CDATA[
                 <h2>Leaves</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Political Leave,Sabbatical Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" multiple="true" addText="Add new reduced teaching reason" optional="true">
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
                 {$item}
@@ -98,14 +98,14 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new teaching development" optional="true">
+        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Teaching Development And Innovation</h2>
                 <small>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new other teaching" optional="true">
+        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Other Teaching</h2>
                 <small>(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)</small>
@@ -248,7 +248,7 @@
             </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
-        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new supplementary professional activity" optional="true">
+        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Supplementary Professional Activities</h2>
                 <small>(Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a target='_blank' href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf'>Faculty Agreement</a> or to Article 8 of the <a target='_blank' href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf'>FSO Agreement</a>.)</small>
@@ -279,7 +279,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add new additional datum" multiple="true" optional="true">
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
             <![CDATA[
                 <h2>Additional Data</h2>
                 <small>(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)</small>
