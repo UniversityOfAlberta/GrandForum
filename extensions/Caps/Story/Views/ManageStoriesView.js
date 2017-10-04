@@ -94,10 +94,10 @@ ManageStoriesView = Backbone.View.extend({
                                     document.location = wgServer + wgScriptPath + "/index.php/Special:StoryManagePage";
 
                             }, this),
-                            error: $.proxy(function(){
+                            error: $.proxy(function(m, e){
                                 this.$(".throbber").hide();
                                 clearAllMessages();
-                                addError("There was a problem saving the Thread", true);
+                                addError(e.responseText, true);
                             }, this)
                         });
                     }, this)

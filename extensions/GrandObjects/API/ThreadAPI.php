@@ -14,6 +14,9 @@ class ThreadAPI extends RESTAPI {
 
     function doPOST(){
         $me = Person::newFromWgUser();
+        if(trim($this->POST('title')) == ""){
+            $this->throwError("A title must be provided");
+        }
         $thread = new Thread(array());
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));
@@ -49,6 +52,9 @@ class ThreadAPI extends RESTAPI {
         }
         elseif(!$thread->canEdit()){
             $this->throwError("You are not allowed to edit this thread");
+        }
+        if(trim($this->POST('title')) == ""){
+            $this->throwError("A title must be provided");
         }
         if($visibility == "All Experts"){
             $thread->setUsers(array());

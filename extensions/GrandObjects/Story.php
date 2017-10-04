@@ -190,18 +190,17 @@ class Story extends BackboneModel{
 	    $data = DBFunctions::select(array('grand_user_stories'),
 					array('*'),
 					array());
-	    $id = count($data)+1;//have to manually add for now because may do revisions in the future
             if($me->isLoggedIn()){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_user_stories',
-                                              array('id' => $id,
-						                            'user_id' => $this->user,
+                                              array('user_id' => $this->user,
 						                            'title' => $this->getTitle(),
                                                     'story' => $this->getStory(),
                                                     'approved' => 0),true);
                 if($status){
+                    $this->id = DBFunctions::insertId();
                     DBFunctions::commit();
-                    return true;
+                    return $this;
                 }
             }
             return false;

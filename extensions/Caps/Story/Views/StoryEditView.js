@@ -58,11 +58,11 @@ StoryEditView = Backbone.View.extend({
                 clearAllMessages();
                 document.location = this.model.get('url');
             }, this),
-            error: $.proxy(function(){
+            error: $.proxy(function(m, e){
                 this.$(".throbber").hide();
                 this.$("#saveStory").prop('disabled', false);
                 clearAllMessages();
-                addError("There was a problem saving the case", true);
+                addError(e.responseText, true);
             }, this)
         });
     },

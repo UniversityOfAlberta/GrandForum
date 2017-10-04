@@ -110,10 +110,10 @@ MyThreadsView = Backbone.View.extend({
                             	    }, this)
                             	});
                             }, this),
-                            error: $.proxy(function(){
+                            error: $.proxy(function(m, e){
                         		this.$(".throbber").hide();
                         		clearAllMessages();
-                        		addError("There was a problem saving the Thread", true);
+                        		addError(e.responseText, true);
                             }, this)
                        });
                     }, this)

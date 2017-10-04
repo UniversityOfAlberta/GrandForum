@@ -16,14 +16,16 @@ class StoryAPI extends RESTAPI {
     function doPOST(){
         $story = new Story(array());
         $me = Person::newFromWgUser();
+        if(trim($this->POST('title')) == ""){
+            $this->throwError("A title must be provided");
+        }
         $story->user = $me->getId();
         $story->title = $this->POST('title');
         $story->story = $this->POST('story');
         $status = $story->create();
-        if(!$status){
+        if($status === false){
             $this->throwError("The story <i>{$story->getTitle()}</i> could not be created");
         }
-        $story = Story::newFromTitle($this->POST('title'));
         if($me->isRoleAtLeast(MANAGER)){
             $story->approve();
 	        $people = Person::getAllPeople();
@@ -37,11 +39,14 @@ class StoryAPI extends RESTAPI {
 
     function doPUT(){
         $story = Story::newFromId($this->getParam('id'));
-        if($story == null || $story->getTitle() == ""){
+        if($story == null || $story->getId() == 0){
             $this->throwError("This story does not exist");
         }
         elseif(!$story->canEdit()){
-            permissionError();
+            $this->throwError("You are not allowed to edit this thread");
+        }
+        if(trim($this->POST('title')) == ""){
+            $this->throwError("A title must be provided");
         }
         $story->id = $this->POST('id');
         $story->rev_id = $this->POST('rev_id');
