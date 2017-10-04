@@ -153,13 +153,13 @@ class PersonGradStudentsTab extends AbstractTab {
             }
             $html .= 
             "<tr>
-                <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
-                <td style='white-space: nowrap;'>$position</td>
-                <td style='white-space: nowrap;'>$start_date</td>
-                <td style='white-space: nowrap;'>$end_date</td>
+                <td width='25%' rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
+                <td width='25%' style='white-space: nowrap;'>$position</td>
+                <td width='15%' style='white-space: nowrap;'>$start_date</td>
+                <td width='15%' style='white-space: nowrap;'>$end_date</td>
                 <!--td>$research_area</td-->
                 <!--td></td><td>".implode("; ",$names)."</td-->
-                <td style='white-space: nowrap;'>$role</td>
+                <td width='20%' style='white-space: nowrap;'>$role</td>
             </tr>";
             if(count($awardCitations) > 0){
                 $html .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
@@ -191,7 +191,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= "<h3>Undergraduates</h3>";
                 $html .= $this->supervisesHTML(array("ugrad", "undergraduate", "undergraduate student"), $startRange, $endRange);
                 
-                $html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
+                //$html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
             }
         }
         return $html;
