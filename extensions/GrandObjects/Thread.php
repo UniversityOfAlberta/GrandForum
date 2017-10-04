@@ -59,7 +59,7 @@ class Thread extends BackboneModel{
             $threads = array();
             $me = Person::newFromWgUser();
 	    $meId = ($me->getId() ?: "0");
-            $meName = $me->getNameForForms();
+            $meName = str_replace(".", " ", $me->getName());
             if($me->isRoleAtLeast(MANAGER)){
                 $data = DBFunctions::select(array('grand_threads'),
                                             array('id'));
