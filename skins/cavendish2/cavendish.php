@@ -24,7 +24,7 @@ if( !defined( 'MEDIAWIKI' ) )
  */
 class SkinCavendish2 extends SkinTemplate {
 	/** Using cavendish. */
-	function initPage( &$out ) {
+	function initPage( $out ) {
 		SkinTemplate::initPage($out);
 		$this->skinname  = 'cavendish2';
 		$this->stylename = 'cavendish2';
@@ -620,7 +620,8 @@ class CavendishTemplate2 extends QuickTemplate {
             header_remove("X-Frame-Options");
 		 } ?>
 	</head>
-<body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
+<body 
+<?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
 <?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>

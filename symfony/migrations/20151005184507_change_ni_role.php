@@ -1,6 +1,6 @@
 <?php
 
-require_once('../config/Config.php');
+require_once('../config/ForumConfig.php');
 
 use Phinx\Migration\AbstractMigration;
 

@@ -6,7 +6,7 @@ if(file_exists("../../test.tmp")){
 else{
     define("TESTING", false);
 }
-require_once("../../config/Config.php");
+require_once("../../config/ForumConfig.php");
 
 function adjustBrightness($hex, $steps) {
     // Steps should be between -255 and 255. Negative = darker, positive = lighter

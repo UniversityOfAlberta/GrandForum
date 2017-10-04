@@ -65,7 +65,9 @@ abstract class RESTAPI extends API {
         else if($method == "POST"){
             $json = $this->doPOST();
         }
+
         header('Content-Type: application/json');
+        header('Content-Encoding: gzip');
         ob_start("ob_gzhandler");
         echo $json;
         DBFunctions::close();

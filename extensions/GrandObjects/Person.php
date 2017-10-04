@@ -28,6 +28,7 @@ class Person extends BackboneModel {
     var $gender;
     var $photo;
     var $twitter;
+    var $facebook;
     var $website;
     var $publicProfile;
     var $privateProfile;
@@ -336,6 +337,7 @@ class Person extends BackboneModel {
                                               //'language',
                                               'user_email',
                                               'user_twitter',
+                                              'user_facebook',
                                               'user_website',
                                               'user_public_profile',
                                               'user_private_profile',
@@ -844,6 +846,7 @@ class Person extends BackboneModel {
             $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
+            $this->facebook = @$data[0]['user_facebook'];
             $this->website = @$data[0]['user_website'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
@@ -940,6 +943,7 @@ class Person extends BackboneModel {
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
                                     array('user_twitter' => $this->getTwitter(),
+                                          'user_facebook' => $this->getfacebook(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -982,6 +986,7 @@ class Person extends BackboneModel {
                                           //'honorific' => $this->getHonorific(),
                                           //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
+                                          'user_facebook' => $this->getfacebook(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1350,6 +1355,14 @@ class Person extends BackboneModel {
      */
     function getTwitter(){
         return $this->twitter;
+    }
+
+    /**
+     * Returns the handle of this Person's facebook account
+     * @return string The handle of this Person's facebook account
+     */
+    function getLinkedin(){
+        return $this->facebook;
     }
     
     /**

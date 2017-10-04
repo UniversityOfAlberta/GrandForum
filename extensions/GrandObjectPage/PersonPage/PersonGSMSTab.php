@@ -29,7 +29,7 @@ class PersonGSMSTab extends AbstractEditableTab {
                     var person = new Person({$this->person->toJSON()});
                     var card = new LargePersonCardView({el: $("#card"), model: person});
                     card.render();
-		           //$('.ui-state-default').hide();
+		            //$('.ui-state-default').hide();
                 });
             </script>
 EOF;
@@ -151,6 +151,7 @@ EOF;
 
             $this->html .= "</table><br />";
         }
+        
         $this->showSop($this->person, $this->visibility);
         return $this->html;
     }
@@ -316,9 +317,9 @@ EOF;
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
                 if($person->getSop()){
                     $sop_url = $person->getSop()->getUrl();
-		    if(!$this->canEdit()){
-			$this->html .= "<br /><br />";
-		    }
+            if(!$this->canEdit()){
+            $this->html .= "<br /><br />";
+            }
                     $this->html .= "<a class='button' href='$sop_url'>Review</a>";
                 }
                 if($person->getGSMSPdfUrl() != ""){
@@ -329,7 +330,7 @@ EOF;
         }
     }
     
-    function canEdit(){
+    function canEdit() {
         $me = Person::newFromWgUser();
         return ($me->isRoleAtLeast(ADMIN));
     }

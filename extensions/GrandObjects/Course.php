@@ -305,11 +305,11 @@ class Course extends BackboneModel{
         return $courses;
     }
 
-    function getUserCourses($id=0){
-	global $wgUser;
-	if($id == 0){
-	    $id = $wgUser->getId();    
-	}
+    static function getUserCourses($id=0){
+    	global $wgUser;
+    	if($id == 0){
+    	    $id = $wgUser->getId();    
+    }
         $sql = "SELECT DISTINCT course_id
                 FROM `grand_user_courses`
                 WHERE (user_id = '$id')";

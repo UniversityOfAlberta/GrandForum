@@ -98,7 +98,7 @@ class APIRequest{
 		return true;
 	}
 	
-	function doAction($api, $param=false){
+	static function doAction($api, $param=false){
 	    global $apiPaths;
 	    $api = $api."API";
 	    $obj = new $api();
@@ -125,6 +125,7 @@ class APIRequest{
 		$this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
 		$this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
 		$this->addAction('User Accounts', 'updateUserTwitterAccount', 'UserTwitterAccountAPI');
+		$this->addAction('User Accounts', 'updateUserFacebookAccount', 'UserFacebookAccountAPI');
 		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
 		$this->addAction('User Accounts', 'updateUserWebsite', 'UserWebsiteAPI');
 		$this->addAction('User Accounts', 'updateUserNationality', 'UserNationalityAPI');

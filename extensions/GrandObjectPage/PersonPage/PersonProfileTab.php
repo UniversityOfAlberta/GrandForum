@@ -1,5 +1,7 @@
 <?php
 
+require_once ("symfony/vendor/autoload.php");
+
 class PersonProfileTab extends AbstractEditableTab {
 
     var $person;
@@ -30,7 +32,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Only show the word cloud for 'researchers'
             //$extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        //$extra[] = $this->showDoughnut($this->person, $this->visibility);
+        $extra[] = $this->showDoughnut($this->person, $this->visibility);
         //$extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
@@ -175,6 +177,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['facebook'] = @$_POST['facebook'];
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
@@ -192,6 +195,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserPhoneAPI();
             $api->doAction(true);
             $api = new UserTwitterAccountAPI();
+            $api->doAction(true);
+            $api = new UserFacebookAccountAPI();
             $api->doAction(true);
             $api = new UserWebsiteAPI();
             $api->doAction(true);
@@ -485,6 +490,7 @@ EOF;
     }
     
     function showEditPhoto($person, $visibility){
+
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
         $this->html .= "<div id=\"special_links\"></div>";
@@ -502,6 +508,10 @@ EOF;
 <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>LinkedIn Page:</b></td>
+                                <td><input type='text' name='facebook' value='".str_replace("'", "&#39;", $person->getLinkedin())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>

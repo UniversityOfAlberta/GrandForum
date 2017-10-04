@@ -281,8 +281,8 @@ class Impersonate extends SpecialPage {
             $toolbox['Other']['links'][] = $link;
         }
         else if(!$wgImpersonating && !$wgDelegating && ($me->isRoleAtLeast(STAFF) || $me->isRole(SD))){
-            //$link = TabUtils::createToolboxLink("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
-            //$toolbox['Other']['links'][] = $link;
+            $link = TabUtils::createToolboxLink("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
+            $toolbox['Other']['links'][] = $link;
         }
         return true;
     }
