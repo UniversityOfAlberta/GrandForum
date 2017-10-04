@@ -201,6 +201,7 @@ class Story extends BackboneModel{
                                                     'story' => $this->getStory(),
                                                     'approved' => 0),true);
                 if($status){
+                    $this->id = $id;
                     DBFunctions::commit();
                     return true;
                 }
