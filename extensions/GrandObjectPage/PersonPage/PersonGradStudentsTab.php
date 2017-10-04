@@ -142,15 +142,21 @@ class PersonGradStudentsTab extends AbstractTab {
                 }
                 $names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
             } */
+            $awards = $hqp->getPapersAuthored('Award', $startDate, $endDate);
+            $awardCitations = array();
+            foreach($awards as $award){
+                $awardCitations[] = "<span style='margin-left:2em;><a href='{$award->getUrl()}'>{$award->getTitle()}</a></span>";
+            }
             $html .= 
             "<tr>
-                <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
+                <td rowspan='2' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                 <td style='white-space: nowrap;'>$position</td>
                 <td style='white-space: nowrap;'>$start_date</td>
                 <td style='white-space: nowrap;'>$end_date</td>
                 <!--td>$research_area</td-->
                 <!--td></td><td>".implode("; ",$names)."</td-->
                 <td style='white-space: nowrap;'>$role</td>";
+            $html .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             $html .= "</tr>";
         }
         $html .= "</tbody></table>";
