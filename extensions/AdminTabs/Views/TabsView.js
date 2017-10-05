@@ -31,6 +31,13 @@ TabsView = Backbone.View.extend({
                         intervalId2 = null;
                     }
                  }, 100);
+                var intervalId3 = setInterval(function(){
+                    if($('#tabs-4').is(':visible')){
+                        self.subviews.gsmsOutcomeImport.render();
+                        clearInterval(intervalId3);
+                        intervalId3 = null;
+                    }
+                 }, 100);
                  this.render();
             }, this))
         }, this));
@@ -45,6 +52,9 @@ TabsView = Backbone.View.extend({
         },
         "editBio" : function(){
              return new EditBioView({parent: this, model: new AdminTabsModel()});
+        },
+	"gsmsOutcomeImport" : function(){
+             return new GsmsOutcomeImportView({parent: this, model: new AdminTabsModel()});
         },
     },
 

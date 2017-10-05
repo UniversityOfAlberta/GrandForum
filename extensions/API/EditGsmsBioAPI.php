@@ -114,7 +114,7 @@ class EditGsmsBioAPI extends API{
                     $info_sheet->international = $student['international'];
                     $info_sheet->indigenous = $student['indigenous'];
                     $info_sheet->saskatchewan = $student['saskatchewan'];
-                    $info_sheet->degrees = serialize($student['degrees']);
+                    $info_sheet->degrees = $student['degrees'];
 
 		    if(!$update){
 			$info_sheet->create();

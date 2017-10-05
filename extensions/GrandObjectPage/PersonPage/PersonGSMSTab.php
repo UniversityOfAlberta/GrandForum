@@ -35,8 +35,7 @@ class PersonGSMSTab extends AbstractEditableTab {
 EOF;
         if($this->canEdit()){
             $gsms = $this->person->getGSMS();
-
-	    $gsms_degrees = $gsms->degrees;
+	    $gsms_degrees = $gsms->getDegrees();
 	    if(!is_array($gsms_degrees)){
 		unserialize($gsms_degrees);
 	    }
@@ -160,7 +159,7 @@ EOF;
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $gsms = $this->person->getGSMS();
-        $gsms_degrees = $gsms->degrees;
+        $gsms_degrees = $gsms->getDegrees();
         
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 

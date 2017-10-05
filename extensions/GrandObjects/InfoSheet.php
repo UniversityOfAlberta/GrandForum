@@ -157,8 +157,8 @@ class InfoSheet extends BackboneModel{
 
     }
     function getDegrees(){
-	if(!is_array($this->degrees)){
-	    $this->degrees = unserialize($this->degrees);
+	if(count($this->degrees) == 0 || $this->degrees == ""){
+	    return array();
 	}
 	return $this->degrees;
     }
