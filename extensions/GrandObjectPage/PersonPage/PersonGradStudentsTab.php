@@ -191,7 +191,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= "<h3>Undergraduates</h3>";
                 $html .= $this->supervisesHTML(array("ugrad", "undergraduate", "undergraduate student"), $startRange, $endRange);
                 
-                $html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
+                //$html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
             }
         }
         return $html;
