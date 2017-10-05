@@ -8,6 +8,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
+$wgHooks['OutputPageBeforeHTML'][] = 'Report::redirect';
 
 require_once("ReportStatusTable.php");
 
@@ -19,6 +20,14 @@ class Report extends AbstractReport{
         $topProjectOnly = false;
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
+
+    function redirect($out, $text) {
+        global $wgTitle, $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
+                redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+        }
+    } 
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;

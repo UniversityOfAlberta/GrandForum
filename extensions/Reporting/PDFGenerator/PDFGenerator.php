@@ -841,9 +841,17 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
-        exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
-
-        exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+        //exec("/usr/local/bin/pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" cat output \"/tmp/{$name}{$rand}nomarks\"");
+        
+        $gs = 'gs';
+        $uname = strtolower(php_uname());
+		if (strpos($uname, "darwin") !== false) {
+		    // It's OSX
+			echo exec("find pdftk");
+		    $gs = 'gs_mac';
+		}
+        exec("$IP/extensions/Reporting/PDFGenerator/{$gs} \\
                 -q \\
                 -dBATCH \\
                 -dNOPAUSE \\
@@ -851,6 +859,7 @@ if ( isset($pdf) ) {
                 -dPDFSETTINGS=/prepress \\
                 -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}nomarks\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
         
+        //exit();
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}nomarks");

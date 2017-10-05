@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSForm" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="OT">
             <SectionPermission id="personal" permissions="rw" />
@@ -8,54 +8,68 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q1" type="Text" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
+    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
+       
+        <ReportItem id="q3" type="Static">
             <![CDATA[
-            <div style="width: 100%;">
-                <div style="
-                    width: 400px;
+            <style>
+                .flex-container {
+                  width: 99%;
+                  display: -webkit-flex; /* Safari */
+                  display: flex;
+                  -webkit-flex-direction: row; /* Safari */
+                  flex-direction:         row;
+                  -webkit-align-items: baseline; /* Safari */
+                  align-items:         baseline;
+                  justify-content: space-around;
+                  align-content: stretch;
+                  flex-wrap: wrap;
+                }
+                .flex-item {
+                  -webkit-flex-grow: <number>; /* Safari */
+                  flex-grow:         <number>;
+                }
+            </style>
+            <div class="flex-container">
+                <div class="flex-item" style="
+                    min-width: 350px; 
+                    max-width: 500px;
+                    flex-grow: 1;
+                    flex-basis: 350px;
                     display: inline-block;
                     vertical-align: top;
                     box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
                     padding: 0px 16px 16px 16px;
                     margin-top: 8px;
-                    margin-right: 8px;">
+                    margin-right: 8px;" >
                     <h1>Personal Information</h1>
-                    <h3>*SITS ID<span title="X-digit ID found in your University of Alberta graduate application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                    {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q2" type="Text" blobType="BLOB_TEXT" blobItem="Q2" limit="1800">
-            <![CDATA[
-                <h3>*Student ID<span title="X-digit student ID number found in your University of Alberta graduate application." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q3" type="Static">
-            <![CDATA[
-                <table >
-                    <td valign='top'>
-                        <h3>*First Name<span title="First (Given) Name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$user_first_name}
-                    </td>
+
+                    <div class="flex-container" style=""> 
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>First Name</h3>
+                            {$user_first_name}
+                        </div>
 
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="Static">
+        <ReportItem id="q4" type="Text" blobType="BLOB_TEXT" blobItem="Q4" limit="100" width="100px" optional="true">
             <![CDATA[
-                    <td valign='top'>
-                        <h3>Middle Name<span title="If applicable" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$hello}
-                    </td>
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>Middle Name
+                              <span title="If applicable" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432
+                              </span>
+                            </h3>
+                            {$item}
+                        </div>
             ]]>
         </ReportItem>
         <ReportItem id="q5" type="Static">
             <![CDATA[
-                    <td valign='top'>
-                        <h3>*Last Name<span title="Last (Family) name, as it appears on your passport." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$user_last_name}
-                    </td>
-                </table>
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>Last Name</h3>
+                            {$user_last_name}
+                        </div>
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="q6" type="Radio" blobType="BLOB_TEXT" blobItem="Q6" options="Male|Female|Prefer Not to Answer" orientation="horizontal">
@@ -90,7 +104,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q11" type="Radio" blobType="BLOB_TEXT" blobItem="Q11" limit="900" options="Statistical Machine Learning" labels="Statistical Machine Learning" orientation="horizontal">
+        <ReportItem id="q11" type="Radio" blobType="BLOB_TEXT" blobItem="Q11" limit="900" options="Statistical Machine Learning" labels="Statistical Machine Learning" orientation="horizontal" optional="true">
             <![CDATA[
                 <h3>Specialization</h3>
                 {$item}
@@ -103,7 +117,7 @@
                 
             ]]>
         </ReportItem>
-        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_TEXT" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
                 <h3>*Area of Study</h3>
                 {$item}
@@ -117,22 +131,26 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
-            <div style="width: 400px;
-                    display: inline-block;
-                    vertical-align: top;
-                    overflow: hidden; 
-                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;">
-                    <h1>Financial</h1>
+            <div class="flex-item" style="
+                min-width: 350px; 
+                max-width: 500px;
+                flex-grow: 1;
+                flex-basis: 350px;
+                display: inline-block;
+                vertical-align: top;
+                overflow: hidden; 
+                box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                padding: 0px 16px 16px 16px;
+                margin-top: 8px;
+                margin-right: 8px;">
+                <h1>Financial</h1>
                 <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+        <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
                 <h3>Held Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
@@ -173,7 +191,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100">
+        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100" optional="true">
             <![CDATA[
                 <div>
                     <div style="display: inline-block; vertical-align: top;">
@@ -228,15 +246,15 @@
             
             ]]>
         </ReportItem>
-        <ReportItem id="q23" type="Text" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%">
+        <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%" optional="true">
             <![CDATA[
                 <h1 style="margin-top: 16px">GRE (General)</h1>
                 <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
-                <h3>GRE Date<span title="Please provide the following from your most recent GRE attempt. (yy/mm)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px">
+        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
                 <table>
                     <td valign='top'>
@@ -245,7 +263,7 @@
                     </td>
             ]]>
         </ReportItem>
-        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px">
+        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
                     <td valign='top'>
                         <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -253,7 +271,7 @@
                     </td>
             ]]>
         </ReportItem>
-        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px">
+        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
                     <td valign='top'>
                         <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -262,7 +280,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px">
+        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px" optional="true">
             <![CDATA[
                 <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
@@ -312,7 +330,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="q29" type="Integer" blobType="BLOB_TEXT" blobItem="Q29" min="0" max="120" width="30px">
+        <ReportItem id="q29" type="Integer" blobType="BLOB_TEXT" blobItem="Q29" min="0" max="120" width="30px" optional="true">
             <![CDATA[
             <div id='question29'>
                 <h3>English Language Proficiency Tests</h3>
@@ -326,7 +344,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="q30" type="Integer" blobType="BLOB_TEXT" blobItem="Q30" min="0" max="677" width="30px">
+        <ReportItem id="q30" type="Integer" blobType="BLOB_TEXT" blobItem="Q30" min="0" max="677" width="30px" optional="true">
             <![CDATA[
                     <tr>
                         <td align="right">
@@ -336,7 +354,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="q31" type="Integer" blobType="BLOB_TEXT" blobItem="Q31" min="0" max="99" width="30px">
+        <ReportItem id="q31" type="Integer" blobType="BLOB_TEXT" blobItem="Q31" min="0" max="99" width="30px" optional="true">
             <![CDATA[
                     <tr>
                         <td align="right">
@@ -346,7 +364,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="q32" type="Integer" decimals="1" blobType="BLOB_TEXT" blobItem="Q32" min="0" max="9.0" width="30px">
+        <ReportItem id="q32" type="Integer" decimals="1" blobType="BLOB_TEXT" blobItem="Q32" min="0" max="9.0" width="30px" optional="true">
             <![CDATA[
                     <tr>
                         <td align="right">
@@ -356,7 +374,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="q33" type="Integer" blobType="BLOB_TEXT" blobItem="Q33" min="0" max="90" width="30px">
+        <ReportItem id="q33" type="Integer" blobType="BLOB_TEXT" blobItem="Q33" min="0" max="90" width="30px" optional="true">
             <![CDATA[
                     <tr>
                         <td align="right">
@@ -366,7 +384,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="q34" type="Integer" blobType="BLOB_TEXT" blobItem="Q34" min="0" max="90" width="30px">
+        <ReportItem id="q34" type="Integer" blobType="BLOB_TEXT" blobItem="Q34" min="0" max="90" width="30px" optional="true">
             <![CDATA[
                     <tr>
                         <td align="right">
@@ -381,8 +399,53 @@
             ]]>
         </ReportItem>
 
-        
     </ReportSection>
+
+    <ReportSection id="sop_questions" tooltip="Statement of Purpose" name="SOP" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false" title="Statement of Purpose">
+        <ReportItem id="qSOP1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP1" limit="1800">
+            <![CDATA[
+                <h3>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP2" limit="1800">
+            <![CDATA[
+                <h3>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP3" limit="1800">
+            <![CDATA[
+                <h3>Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP4" limit="1800">
+            <![CDATA[
+                <h3>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP5" limit="900">
+            <![CDATA[
+                <h3>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="upload_pdf" tooltip="Upload PDF" name="Upload PDF" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+            <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <p>Use this to upload any PDF file relevant to your submission</p>
+                <h3>Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+    </ReportSection>
+
+
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>

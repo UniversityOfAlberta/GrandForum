@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="OT Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="OTFormPDF" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" ajax="true" disabled="false">
+
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS OT Application</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
                 <br />
                 <br />
@@ -19,41 +20,389 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" reportLimits="true" limit="1800">
+
+    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
+       
+        <ReportItem id="q3" type="Static">
             <![CDATA[
-                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
-                {$item}
-                <br />
+            <style>
+                .flex-container {
+                  width: 99%;
+                  display: -webkit-flex; /* Safari */
+                  display: flex;
+                  -webkit-flex-direction: row; /* Safari */
+                  flex-direction:         row;
+                  -webkit-align-items: baseline; /* Safari */
+                  align-items:         baseline;
+                  justify-content: space-around;
+                  align-content: stretch;
+                  flex-wrap: wrap;
+                }
+                .flex-item {
+                  -webkit-flex-grow: <number>; /* Safari */
+                  flex-grow:         <number>;
+                }
+            </style>
+            <div class="flex-container">
+                <div class="flex-item" style="
+                    min-width: 350px; 
+                    max-width: 500px;
+                    flex-grow: 1;
+                    flex-basis: 350px;
+                    display: inline-block;
+                    vertical-align: top;
+                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                    padding: 0px 16px 16px 16px;
+                    margin-top: 8px;
+                    margin-right: 8px;" >
+                    <h1>Personal Information</h1>
+
+                    <div class="flex-container" style=""> 
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>First Name</h3>
+                            {$user_first_name}
+                        </div>
+
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" reportLimits="true" limit="1800">
+        <ReportItem id="q4" type="Text" blobType="BLOB_TEXT" blobItem="Q4" limit="100" width="100px">
             <![CDATA[
-                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
-                {$item}
-                <br />
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>Middle Name
+                            </h3>
+                            {$item}
+                        </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q3" reportLimits="true" limit="1800">
+        <ReportItem id="q5" type="Static">
             <![CDATA[
-                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
-                {$item}
-                <br />
+                        <div style="margin-right: 20px" class="flex-item">
+                            <h3>Last Name</h3>
+                            {$user_last_name}
+                        </div>
+                    </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" reportLimits="true" limit="1800">
+        <ReportItem id="q6" type="Radio" blobType="BLOB_TEXT" blobItem="Q6" options="Male|Female|Prefer Not to Answer" orientation="horizontal">
             <![CDATA[
-                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                <h3>*Gender</h3>
                 {$item}
-                <br />
             ]]>
         </ReportItem>
-        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" reportLimits="true" limit="900">
+        <ReportItem id="q7" type="Static">
             <![CDATA[
-                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                <h3>*Email Address</h3>
+                {$user_email}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q8" type="Select" blobType="BLOB_TEXT" blobItem="Q8" limit="64" options="Canada|Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cabo Verde|Cambodia|Cameroon|Central African Republic (CAR)|Chad|Chile|China|Colombia|Comoros|Democratic Republic of the Congo|Republic of the Congo|Costa Rica|Cote d'Ivoire|Croatia|Cuba|Cyprus|Czech Republic|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macedonia (FYROM)|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar (Burma)|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Swaziland|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates (UAE)|United Kingdom (UK)|United States of America (USA)|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe">
+            <![CDATA[
+                <h3>*Country of Citizenship</h3>
                 {$item}
-                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="q9" type="Radio" blobType="BLOB_TEXT" blobItem="Q9" limit="900" options="INT|CDN|PR" labels="International|Canadian Citizen|Permanent Resident" orientation="horizontal">
+            <![CDATA[
+                <h3>*Immigration Status</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q10" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q10" limit="900" options="MSc|MSc Course|PhD" labels="MSc|MSc Course|PhD" orientation="horizontal">
+            <![CDATA[
+                <h1 style="margin-top: 16px">Program Interests</h1>
+                <h3>*Program</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q11" type="Radio" blobType="BLOB_TEXT" blobItem="Q11" limit="900" options="Statistical Machine Learning" labels="Statistical Machine Learning" orientation="horizontal">
+            <![CDATA[
+                <h3>Specialization</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q12" type="Radio" blobType="BLOB_TEXT" blobItem="Q12" limit="900" options="FT|PT" labels="Full time|Part time" orientation="horizontal">
+            <![CDATA[
+                <h3>*Status</h3>
+                {$item}
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+            <![CDATA[
+                <h3>*Area of Study</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    
+        <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+            <![CDATA[
+                <h3>*Potential Supervisors</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+            <![CDATA[
+            <div class="flex-item" style="
+                min-width: 350px; 
+                max-width: 500px;
+                flex-grow: 1;
+                flex-basis: 350px;
+                display: inline-block;
+                vertical-align: top;
+                overflow: hidden; 
+                box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                padding: 0px 16px 16px 16px;
+                margin-top: 8px;
+                margin-right: 8px;">
+                <h1>Financial</h1>
+                <h3>Applied Scholarships</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal">
+            <![CDATA[
+                <h3>Held Scholarships</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q17" type="Radio" blobType="BLOB_TEXT" blobItem="Q17" limit="900" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                <h3>*Require Financial Support</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q18" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q18" height="100px">
+            <![CDATA[
+                <h1 style="margin-top: 16px">Education</h1>
+                <h3>*Education History</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q19" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q19" width="40px" orientation="horizontal">
+            <![CDATA[
+                <h1 style="margin-top: 16px">GPA</h1>
+
+                <div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>*GPA</h3>
+                        {$item}
+                    </div>
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="q20" type="Radio" blobType="BLOB_TEXT" withOther="true" number="true" blobItem="Q20" options="4|5|10|20|100" orientation="horizontal">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                        <h3>*GPA Scale</h3>
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100">
+            <![CDATA[
+                <div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>Normalized GPA</h3>
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                        <h3>*Institution</h3>
+                        {$item}
+                    </div>
+                </div>
+            
+            ]]>
+        </ReportItem>
+        <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%">
+            <![CDATA[
+                <h1 style="margin-top: 16px">GRE (General)</h1>
+                <h3>GRE Date</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px">
+            <![CDATA[
+                <table>
+                    <td valign='top'>
+                        <h3>Verbal</h3>
+                        {$item}
+                    </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px">
+            <![CDATA[
+                    <td valign='top'>
+                        <h3>Quantitative</h3>
+                        {$item}
+                    </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px">
+            <![CDATA[
+                    <td valign='top'>
+                        <h3>Analytical</h3>
+                        {$item}
+                    </td>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px">
+            <![CDATA[
+                <h3>GRE Overall
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q28" type="Radio" blobType="BLOB_TEXT" blobItem="Q28" orientation="horizontal" options="Yes|No" limit="100">
+            <![CDATA[
+                <h1 style="margin-top: 16px">English Language Proficiency</h1>
+                <h3>*ELP Exempt</h3>
+                {$item}
+                
+            
+            ]]>
+        </ReportItem>
+
+    <ReportItemSet id="q29if" type="If" if="{==({getText(RP_OT, CS_QUESTIONS, Q28, 0, {$user_id}, 0)}, No)}">
+
+        <ReportItem id="endDiv" type="Static" >
+            <![CDATA[
+            <div id='question29'>
+                <h3>English Language Proficiency Tests</h3>
+                <table>
+            ]]>
+        </ReportItem>
+
+        <ReportItemSet id="q29if1" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q29, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q29" type="Integer" blobType="BLOB_TEXT" blobItem="Q29" min="0" max="120" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                TOEFL iBT
+                            </td>
+                            <td>{$item} / 120</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="q29if2" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q30, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q30" type="Integer" blobType="BLOB_TEXT" blobItem="Q30" min="0" max="677" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                TOEFL PBT
+                            </td>
+                            <td>{$item} / 677</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="q29if3" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q31, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q31" type="Integer" blobType="BLOB_TEXT" blobItem="Q31" min="0" max="99" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                MELAB
+                            </td>
+                            <td>{$item} / 99</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="q29if4" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q32, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q32" type="Integer" decimals="1" blobType="BLOB_TEXT" blobItem="Q32" min="0" max="9.0" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                IELTS
+                            </td>
+                            <td>{$item} / 9.0</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="q29if5" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q33, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q33" type="Integer" blobType="BLOB_TEXT" blobItem="Q33" min="0" max="90" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                CAEL
+                            </td>
+                            <td>{$item} / 90</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="q29if6" type="If" if="{!=({getText(RP_OT, CS_QUESTIONS, Q34, 0, {$user_id}, 0)}, )}">
+            <ReportItem id="q34" type="Integer" blobType="BLOB_TEXT" blobItem="Q34" min="0" max="90" width="30px">
+                <![CDATA[
+                        <tr>
+                            <td>
+                                PTE Academic
+                            </td>
+                            <td>{$item} / 90</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportItemSet>
+
+    <ReportItem id="endDiv" type="Static" >
+        <![CDATA[
+                    </table>
+                </div>
+            </div>
+            </div>
+        ]]>
+    </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="sop_questions" tooltip="Statement of Purpose" name="SOP" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false" title="Statement of Purpose">
+        <ReportItem id="qSOP1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP1" limit="1800">
+            <![CDATA[
+                <h3>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP2" limit="1800">
+            <![CDATA[
+                <h3>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP3" limit="1800">
+            <![CDATA[
+                <h3>Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP4" limit="1800">
+            <![CDATA[
+                <h3>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP5" limit="900">
+            <![CDATA[
+                <h3>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
+
+    <ReportSection id="upload_pdf" tooltip="Upload PDF" name="Upload PDF" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+            <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h3>Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+    </ReportSection>
+
 </Report>
