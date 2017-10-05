@@ -858,7 +858,7 @@
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</b></td>
+                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
                         <td align='right'>
                             {round({divide({get(q1)},{get(nReviewers)})},2)}
                         </td>
@@ -1005,7 +1005,7 @@
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</b></td>
+                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
                         <td align='right'>
                             {round({divide({get(q1)},{get(nReviewers)})},2)}
                         </td>
@@ -1158,7 +1158,7 @@
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</b></td>
+                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
                         <td align='right'>
                             {round({divide({get(q1)},{get(nReviewers)})},2)}
                         </td>
