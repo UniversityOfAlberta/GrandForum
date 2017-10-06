@@ -4,12 +4,19 @@ class AllProjectsReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $phase = ($this->getAttr("phase") != "") ? $this->getAttr("phase") : 0;
+        $phase = $this->getAttr("phase", 0);
+        $start = $this->getAttr("startDate", null);
+        $end = $this->getAttr("endDate", null);
         if($this->getReport()->topProjectOnly){
             $projects = array($this->getReport()->project);
         }
         else{
-            $projects = Project::getAllProjects();
+            if($start != null && $end != null){
+                $projects = Project::getAllProjectsDuring($start, $end);
+            }
+            else{
+                $projects = Project::getAllProjects();
+            }
         }
         foreach($projects as $project){
             if($project == null || ($phase != 0 && $project->getPhase() != $phase)){
