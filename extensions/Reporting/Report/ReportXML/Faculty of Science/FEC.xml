@@ -85,7 +85,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="||359" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
                 {$item}
@@ -213,6 +213,30 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="services" name="Services" tooltip="Services/Committees/Outreach" title="Service/Committees/Outreach" type="ReportSection">
+        <ReportItem id="productsheader" type="StaticReportItem">
+            <![CDATA[
+                <table class='wikitable' style='width:100%'>
+                <thead>
+                    <th>Activity</th><th>Type</th>
+                </thead>
+                <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td>{$product_citation}</td><td>{$product_type}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="productsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts">Manage Outputs</a>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts" blobSection="FEC_GRANTS" type="ReportSection">
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
@@ -257,29 +281,6 @@
                 <h2>Supplementary Professional Activities</h2>
                 <small>(Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a target='_blank' href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf'>Faculty Agreement</a> or to Article 8 of the <a target='_blank' href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf'>FSO Agreement</a>.)</small>
                 {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="productsheader" type="StaticReportItem">
-            <![CDATA[
-                <h2>Service/Committees/Outreach</h2>
-                <table class='wikitable' style='width:100%'>
-                <thead>
-                    <th>Activity</th><th>Type</th>
-                </thead>
-                <tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr><td>{$product_citation}</td><td>{$product_type}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table>
             ]]>
         </ReportItem>
         

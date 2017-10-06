@@ -231,67 +231,12 @@
             ]]>
         </ReportItem>
         
-        <!-- Grants -->
-        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
-            <![CDATA[
-                <h2>Research Grants and Contracts</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Sponsor</th>
-                            <th>Starts</th>
-                            <th>Ends</th>
-                            <th>$Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem> 
-        <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td align='left'>{$grant_project_id}<br />
-                            <p>{$grant_description}</p>
-                        </td>
-                        <td align='left'>{$grant_sponsor}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                        <td align='right'>${$grant_total}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="grantsfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Committees -->
-        <ReportItem id="committeespagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
-            <![CDATA[
-                <h2>Additional Info</h2>
-            ]]>
-        </ReportItem>
-        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add new supplementary professional activity" showHeader="false" optional="true">
-            <![CDATA[
-                <h3>Supplementary Professional Activities</h3>{$item}
-            ]]>
-        </ReportItem>
-        
         <!-- Departmental -->
+        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
+            <![CDATA[
+                <h2>Service/Committees/Outreach</h2>
+            ]]>
+        </ReportItem>
         <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
             <![CDATA[
                 <h3>Departmental</h3>
@@ -410,7 +355,68 @@
                 </ul>
             ]]>
         </ReportItem>
-        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" addText="Add new additional datum" multiple="true" optional="true">
+        
+        <!-- Grants -->
+        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
+            <![CDATA[
+                <h2>Research Grants and Contracts</h2>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            <p>{$grant_description}</p>
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Committees -->
+        <ReportItem id="committeespagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
+            <![CDATA[
+                <h2>Additional Info</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
+            <![CDATA[
+                <h3>Supplementary Professional Activities</h3>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" showHeader="false" optional="true">
             <![CDATA[
                 <h3>Additional Data</h3>
                 {$item}
