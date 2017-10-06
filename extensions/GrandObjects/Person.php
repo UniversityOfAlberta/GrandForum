@@ -2636,7 +2636,7 @@ class Person extends BackboneModel {
             foreach($projects as $project){
                 $project = Project::newFromHistoricName($project->getName());
                 if(((!$project->isDeleted()) || 
-                    ($project->isDeleted() && !($project->effectiveDate < $end))) &&
+                    ($project->isDeleted() && !($project->effectiveDate < $start))) &&
                    ($allowProposed || $project->getStatus() != "Proposed")){
                     $members = $project->getAllPeopleDuring(null, $start, $end, true);
                     foreach($members as $member){
@@ -3963,7 +3963,7 @@ class Person extends BackboneModel {
             $project = Project::newFromId($row['project_id']);
             if($project != null && 
                ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $endRange)))){
+               ($project->isDeleted() && !($project->effectiveDate < $startRange)))){
                 $projects[] = $project;
             }
         }
