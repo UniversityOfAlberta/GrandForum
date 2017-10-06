@@ -92,13 +92,13 @@ class Report extends AbstractReport {
         }
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC) || $person->isRole(PS)){
             $projects = array();
-            foreach($person->leadershipDuring(NCE_START, NCE_END) as $project){
+            foreach($person->leadershipDuring(NCE_START, date('Y-m-d')) as $project){
                 $projects[$project->getName()] = $project;
             }
             foreach($person->getThemeProjects() as $project){
                 $projects[$project->getName()] = $project;
             }
-            foreach($person->getProjectsDuring(NCE_START, NCE_END) as $project){
+            foreach($person->getProjectsDuring(NCE_START, date('Y-m-d')) as $project){
                 if($person->isRole(PS, $project)){
                     $projects[$project->getName()] = $project;
                 }
