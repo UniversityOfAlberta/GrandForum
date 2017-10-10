@@ -175,6 +175,7 @@ class PersonGradStudentsTab extends AbstractTab {
     function showSupervisorRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
+        $me = Person::newFromWgUser();
         if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
             $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
             $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
@@ -210,6 +211,7 @@ class PersonGradStudentsTab extends AbstractTab {
     function showCommiteeRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
+        $me = Person::newFromWgUser();
         if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
             $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
             $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
