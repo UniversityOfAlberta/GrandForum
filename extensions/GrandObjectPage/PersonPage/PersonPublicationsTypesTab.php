@@ -2,27 +2,14 @@
 
 class PersonPublicationsTypesTab extends PersonPublicationsTab {
 
-    var $person;
-    var $visibility;
-    var $category;
-
-    function PersonPublicationsTypesTab($person, $visibility, $category='all'){
-        parent::PersonPublicationsTab($person, $visibility, $category);
+    function PersonPublicationsTypesTab($person, $visibility, $category='all', $startRange=CYCLE_START, $endRange=CYCLE_END){
+        parent::PersonPublicationsTab($person, $visibility, $category, $startRange=CYCLE_START, $endRange=CYCLE_END);
     }
 
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
         if(!$wgUser->isLoggedIn()){
             return "";
-        }
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
         }
         $this->html .= "<div id='{$this->id}'>
                         <table>
@@ -32,8 +19,8 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>

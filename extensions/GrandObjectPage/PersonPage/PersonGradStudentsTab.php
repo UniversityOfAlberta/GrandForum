@@ -4,11 +4,15 @@ class PersonGradStudentsTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $startRange;
+    var $endRange;
 
-    function PersonGradStudentsTab($person, $visibility){
+    function PersonGradStudentsTab($person, $visibility, $startRange=CYCLE_START, $endRange=CYCLE_END){
         parent::AbstractTab("HQP");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->startRange = $startRange;
+        $this->endRange = $endRange;
         $this->tooltip = "Contains information of the HQP that the faculty member has supervised between the specified start and end dates. Examination-Committee memberships are also included in a separate table.";
     }
 
@@ -25,16 +29,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 </script>"
         );
         
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
-        
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
@@ -43,8 +37,8 @@ class PersonGradStudentsTab extends AbstractTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>
@@ -175,28 +169,20 @@ class PersonGradStudentsTab extends AbstractTab {
     function showSupervisorRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
+
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 $html .= "<h3>Graduate Students (Supervised or Co-supervised)</h3>";
-                $html .= $this->supervisesHTML(array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"), $startRange, $endRange);
+                $html .= $this->supervisesHTML(array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"), $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised)</h3>";
-                $html .= $this->supervisesHTML(array("pdf","post-doctoral fellow"), $startRange, $endRange);
+                $html .= $this->supervisesHTML(array("pdf","post-doctoral fellow"), $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Technicians</h3>";
-                $html .= $this->supervisesHTML(array("technician", "ra", "research/technical assistant", "professional end user"), $startRange, $endRange);
+                $html .= $this->supervisesHTML(array("technician", "ra", "research/technical assistant", "professional end user"), $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Undergraduates</h3>";
-                $html .= $this->supervisesHTML(array("ugrad", "undergraduate", "undergraduate student"), $startRange, $endRange);
+                $html .= $this->supervisesHTML(array("ugrad", "undergraduate", "undergraduate student"), $this->startRange, $this->endRange);
                 
                 //$html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
             }
@@ -211,19 +197,11 @@ class PersonGradStudentsTab extends AbstractTab {
     function showCommiteeRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
+
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 $html .= "<table width='100%'><tr>";
-                if(count($person->getRelationsDuring('all', $startRange, $endRange)>0)){
+                if(count($person->getRelationsDuring('all', $this->startRange, $this->endRange)>0)){
                     $html .= "<td style='width:100%;' valign='top'>";
                     $html .= "<table id='relations_table2' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                                 <thead><tr>
@@ -236,7 +214,7 @@ class PersonGradStudentsTab extends AbstractTab {
                                     <th>Co-Supervisors & Committees</th-->
                                     <th width='20%'>Role</th>
                                 </tr></thead><tbody>";
-                    $relations = $person->getRelationsDuring('all', $startRange, $endRange);
+                    $relations = $person->getRelationsDuring('all', $this->startRange, $this->endRange);
                     $students = array();
                     foreach($relations as $r){
                         $hqp = $r->getUser2();

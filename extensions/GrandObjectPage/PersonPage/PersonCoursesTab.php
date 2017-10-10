@@ -4,11 +4,15 @@ class PersonCoursesTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $startRange;
+    var $endRange;
 
-    function PersonCoursesTab($person, $visibility){
+    function PersonCoursesTab($person, $visibility, $startRange=CYCLE_START, $endRange=CYCLE_END){
         parent::AbstractTab("Teaching");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->startRange = $startRange;
+        $this->endRange = $endRange;
         $this->tooltip = "Contains a list of courses (and their corresponding student enrolments) that the faculty member has taught between the specified start and end dates.";
     }
     
@@ -78,17 +82,7 @@ class PersonCoursesTab extends AbstractTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
-        
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
-        
+
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
@@ -97,8 +91,8 @@ class PersonCoursesTab extends AbstractTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>
@@ -116,7 +110,7 @@ class PersonCoursesTab extends AbstractTab {
                             });
                         </script>
                         </div>";
-        $this->html .= $this->getHTML($startRange, $endRange);
+        $this->html .= $this->getHTML($this->startRange, $this->endRange);
         return;
         $courses = $this->person->getCourses();
         $this->html .= "<table id='courses_table' frame='box' rules='all'>

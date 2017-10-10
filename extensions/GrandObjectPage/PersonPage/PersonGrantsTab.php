@@ -4,11 +4,15 @@ class PersonGrantsTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $startRange;
+    var $endRange;
 
-    function PersonGrantsTab($person, $visibility){
+    function PersonGrantsTab($person, $visibility, $startRange=CYCLE_START, $endRange=CYCLE_END){
         parent::AbstractTab("Funding");
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->startRange = $startRange;
+        $this->endRange = $endRange;
         $this->tooltip = "Contains two tables listing the faculty member's Grant Accounts, as shown in the UoA's Peoplesoft system, and the corresponding Grant Awards between the specified start and end dates.";
     }
 
@@ -21,16 +25,6 @@ class PersonGrantsTab extends AbstractTab {
                     });
                 </script>"
         );
-            
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
         
         $this->html .= "<div id='{$this->id}'>
                         <table>
@@ -40,8 +34,8 @@ class PersonGrantsTab extends AbstractTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>
@@ -82,9 +76,8 @@ class PersonGrantsTab extends AbstractTab {
         if(!$this->visibility['isMe']){
             return "";
         }
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        $grantAwards = $this->person->getGrantAwardsBetween($startRange, $endRange);
+
+        $grantAwards = $this->person->getGrantAwardsBetween($this->startRange, $this->endRange);
         $string = "<table id='grants_table' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -110,9 +103,8 @@ class PersonGrantsTab extends AbstractTab {
         if(!$this->visibility['isMe']){
                 return "";
         }
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        $grants = $this->person->getGrantsBetween($startRange, $endRange);
+
+        $grants = $this->person->getGrantsBetween($this->startRange, $this->endRange);
         $string = "<table id='grants_table2' frame='box' rules='all'>
                     <thead><tr><th style='white-space:nowrap;'>Name</th>
                     <th style='white-space:nowrap;'>Sponsor</th>

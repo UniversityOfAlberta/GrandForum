@@ -5,8 +5,10 @@ class PersonPublicationsTab extends AbstractTab {
     var $person;
     var $visibility;
     var $category;
+    var $startRange;
+    var $endRange;
 
-    function PersonPublicationsTab($person, $visibility, $category='all'){
+    function PersonPublicationsTab($person, $visibility, $category='all', $startRange=CYCLE_START, $endRange=CYCLE_END){
         global $config;
         if($category == "all" || is_array($category)){
             parent::AbstractTab(ucwords(Inflect::pluralize($config->getValue("productsTerm")), " \t\r\n\f\v-/"));
@@ -17,6 +19,8 @@ class PersonPublicationsTab extends AbstractTab {
         $this->person = $person;
         $this->visibility = $visibility;
         $this->category = $category;
+        $this->startRange = $startRange;
+        $this->endRange = $endRange;
         $this->tooltip = "Contains a table with a list of ".Inflect::pluralize($category)." between the specified start and end dates.";
     }
 
@@ -24,16 +28,6 @@ class PersonPublicationsTab extends AbstractTab {
         global $wgUser, $wgServer, $wgScriptPath;
         if(!$wgUser->isLoggedIn()){
             return "";
-        }
-        
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
         }
 
         $this->html .= "<div id='{$this->id}'>
@@ -44,8 +38,8 @@ class PersonPublicationsTab extends AbstractTab {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td><input type='datepicker' name='startRange' value='{$startRange}' size='10' /></td>
-                                <td><input type='datepicker' name='endRange' value='{$endRange}' size='10' /></td>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
                             </tr>
                         </table>
@@ -71,23 +65,14 @@ class PersonPublicationsTab extends AbstractTab {
 
     function showTable($person, $visibility, $type=null){
         global $config;
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
-        }
-        else{
-            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
-        }
         if(is_array($this->category)){
             $products = array();
             foreach($this->category as $category){
-                $products = array_merge($products, $person->getPapersAuthored($category, $startRange, $endRange, true, false));
+                $products = array_merge($products, $person->getPapersAuthored($category, $this->startRange, $this->endRange, true, false));
             }
         }
         else{
-            $products = $person->getPapersAuthored($this->category, $startRange, $endRange, true, false);
+            $products = $person->getPapersAuthored($this->category, $this->startRange, $this->endRange, true, false);
         }
         $string = "";
         if(count($products) > 0){
