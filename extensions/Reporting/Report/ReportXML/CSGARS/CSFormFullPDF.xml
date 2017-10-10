@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF, CSFormTrimPDF" ajax="true" disabled="false">
-    <Permissions>
-        <Role role="OT">
-            <SectionPermission id="personal" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="eula" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-    </Permissions>
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_CS_FULL" ajax="true" disabled="false">
+
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
     <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
        
         <ReportItem id="q9" type="Radio" blobType="BLOB_TEXT" blobItem="Q9" limit="900" options="INT|CDN|PR" labels="International|Canadian Citizen|Permanent Resident" orientation="horizontal">
@@ -69,7 +82,7 @@
     
         <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors<span title="Choose up to 3 potential supervisors." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors</h3>
                     {$item}
                 </div>
             ]]>
@@ -89,19 +102,19 @@
                 margin-top: 8px;
                 margin-right: 8px;">
                     <h1>Financial</h1>
-                    <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>Applied Scholarships</h3>
                     {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
-                    <h3>Held Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>Held Scholarships</h3>
                     {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q17" type="Radio" blobType="BLOB_TEXT" blobItem="Q17" limit="900" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <h3>*Require Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Require Financial Support</h3>
                     {$item}
             ]]>
         </ReportItem>
@@ -112,7 +125,7 @@
 
                     <div>
                         <div style="display: inline-block; vertical-align: top;">
-                            <h3>*GPA<span title="Enter your GPA based on your most recent two years of full time study." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            <h3>*GPA</h3>
                             {$item}
                         </div>
                 
@@ -121,7 +134,7 @@
         <ReportItem id="q20" type="Radio" blobType="BLOB_TEXT" withOther="true" number="true" blobItem="Q20" options="4|5|10|20|100" orientation="horizontal">
             <![CDATA[
                         <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                            <h3>*GPA Scale<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            <h3>*GPA Scale</h3>
                             {$item}
                         </div>
                     </div>
@@ -131,7 +144,7 @@
             <![CDATA[
                     <div>
                         <div style="display: inline-block; vertical-align: top;">
-                        <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <h3>Normalized GPA</h3>
                         {$item}
                         <script type="text/javascript">
                             var calculateNormalizedGPA = function() {
@@ -175,7 +188,7 @@
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
             <![CDATA[
                     <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                        <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <h3>*Institution</h3>
                         {$item}
                     </div>
             
@@ -186,7 +199,7 @@
                     <div>
                         <h1 style="margin-top: 16px">GRE (General)</h1>
                         <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
-                        <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <h3>GRE Date</h3>
                         {$item}
             ]]>
         </ReportItem>
@@ -194,7 +207,7 @@
             <![CDATA[
                         <div class="flex-container">
                             <div class="flex-item">
-                                <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                                <h3>Verbal</h3>
                                 {$item}
                             </div>
             ]]>
@@ -202,7 +215,7 @@
         <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
                             <div class="flex-item">
-                                <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                                <h3>Quantitative</h3>
                                 {$item}
                             </div>
             ]]>
@@ -210,7 +223,7 @@
         <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
                             <div class="flex-item">
-                                <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                                <h3>Analytical</h3>
                                 {$item}
                             </div>
                         </div>
@@ -218,7 +231,7 @@
         </ReportItem>
         <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px" optional="true">
             <![CDATA[
-                        <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <h3>GRE Overall</h3>
                         {$item}
                         <script type="text/javascript">
                             var calculateGRE = function() {
@@ -244,6 +257,18 @@
                     </div>
                 </div>
             </div>
+                <div class="flex-item" style="
+                min-width: 370px;
+                flex-grow: 1;
+                flex-basis: 350px;
+                display: inline-block;
+                vertical-align: top;
+                overflow: hidden; 
+                box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                padding: 0px 16px 16px 16px;
+                margin-top: 8px;
+                margin-right: 8px;">
+            
             ]]>
         </ReportItem>
 
@@ -253,6 +278,7 @@
     <ReportSection id="msc_thesis" tooltip="MSc Thesis" name="MSc Thesis" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qMSc1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc1" limit="128">
             <![CDATA[
+                
                 <h3>Thesis Title</h3>
                 {$item}
             ]]>
@@ -265,49 +291,16 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false" title="CV/Resume File">
             <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
             <![CDATA[
-                <p>Use this to upload any CV or resume PDF file relevant to your submission</p>
                 <h3>Upload</h3>
                 {$item}
+            </div>
+
+            </div>
             ]]>
         </ReportItem>
 
-    </ReportSection>
-
-
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="eula" name="Declaration" title="Declaration" tooltip="Declaration" blobSection="OT_EULA" type="EULA">
-        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
-                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
-            <![CDATA[
-                <p>Personal information on this form is collected under the authority of Section 33(c) of Alberta’s Freedom of Information and Protection of Privacy Act and will be protected under Part 2 of that Act. It will be used for authorized purposes including admission and registration; administration of records, scholarships and awards, student services; and university planning and research. Students’ personal information may be used by academic and administrative units according to university policy, and operational needs. It is disclosed pursuant to federal and provincial regulatory reporting requirements, data sharing agreements with student governance associations, and to contracted or public health care providers as required. Direct any questions about this collection to the Admissions Services Supervisor, Faculty of Graduate Studies and Research, Killam Centre for Advanced Studies, 2-29 Triffo Hall, University of Alberta, Edmonton, AB T6G 2E1, 780-492-3499 or visit the <a href='http://www.ipo.ualberta.ca/' target='_blank'>Information and Privacy Office website</a>.</p>
-
-                <p>You must agree to the following declaration before submitting your application:</p>
-                <ul>
-                    <li>I agree, if admitted to the University of Alberta, to comply with University regulations.</li>
-                    <li>I certify that the information in this application is true and complete in all respects and that I have withheld no information.</li>
-                    <li>I authorize the University to verify any information provided as part of this application.</li>
-                    <li>I understand that misrepresentation, falsification of documents, or withholding of requested information regarding this application are serious offences and may result in prosecution under the University's Code of Applicant Behaviour, Code of Student Behaviour and/or the Criminal Code of Canada.</li>
-                    <li>I attest that I have completed all questions to the best of my ability and without the assistance of other individuals.</li>
-                </ul>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <![CDATA[
-                <p>You need to accept the declaration before you complete the application.</p>
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>
