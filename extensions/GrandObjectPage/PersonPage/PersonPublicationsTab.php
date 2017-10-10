@@ -28,8 +28,8 @@ class PersonPublicationsTab extends AbstractTab {
         
         $me = Person::newFromWgUser();
         if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00 00:00:00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00 00:00:00") ? $me->getProfileEndDate()   : CYCLE_END;
+            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
         }
         else{
             $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
@@ -72,8 +72,14 @@ class PersonPublicationsTab extends AbstractTab {
     function showTable($person, $visibility, $type=null){
         global $config;
         $me = Person::newFromWgUser();
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
+            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
+        }
+        else{
+            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
+            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        }
         if(is_array($this->category)){
             $products = array();
             foreach($this->category as $category){

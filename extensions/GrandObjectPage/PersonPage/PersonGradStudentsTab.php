@@ -27,8 +27,8 @@ class PersonGradStudentsTab extends AbstractTab {
         
         $me = Person::newFromWgUser();
         if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
-            $startRange = ($me->getProfileStartDate() != "0000-00-00 00:00:00") ? $me->getProfileStartDate() : CYCLE_START;
-            $endRange   = ($me->getProfileEndDate()   != "0000-00-00 00:00:00") ? $me->getProfileEndDate()   : CYCLE_END;
+            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
         }
         else{
             $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
@@ -175,8 +175,14 @@ class PersonGradStudentsTab extends AbstractTab {
     function showSupervisorRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
+            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
+        }
+        else{
+            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
+            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        }
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 $html .= "<h3>Graduate Students (Supervised or Co-supervised)</h3>";
@@ -204,8 +210,14 @@ class PersonGradStudentsTab extends AbstractTab {
     function showCommiteeRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
-        $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-        $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $this->person->getId()){
+            $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
+            $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
+        }
+        else{
+            $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
+            $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+        }
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 $html .= "<table width='100%'><tr>";
