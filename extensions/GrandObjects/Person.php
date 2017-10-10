@@ -1693,7 +1693,7 @@ class Person extends BackboneModel {
      * @return string This Person's start date for the user's profile
      */
     function getProfileStartDate(){
-        return $this->profileStartDate;
+        return substr($this->profileStartDate, 0, 10);
     }
     
     /**
@@ -1701,7 +1701,7 @@ class Person extends BackboneModel {
      * @return string This Person's end date for the user's profile
      */
     function getProfileEndDate(){
-        return $this->profileEndDate;
+        return substr($this->profileEndDate, 0, 10);
     }
     
     /**
