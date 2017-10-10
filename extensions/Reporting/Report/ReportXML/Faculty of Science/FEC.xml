@@ -24,7 +24,7 @@
                     </table>
                 </div>
                 <div style='display:inline-block;width:40%;vertical-align:top;'>
-                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see Faculty Agreement or FSO Agreement. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
+                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf' target='_blank'>Faculty Agreement</a> or <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf' target='_blank'>FSO Agreement</a>. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
                     <table width="100%" class='wikitable'>
                         <tr>
                             <th></th>
@@ -79,7 +79,7 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100">
+        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100" optional="true">
             <![CDATA[
                 <div id="responsibilities_variation" style='margin-left:25px;display:none;'>
                     {$item}
