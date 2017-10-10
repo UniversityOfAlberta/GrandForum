@@ -344,12 +344,12 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>The College of Pharmacists of Saskatchewan has developed guidelines that stipulate it is within the scope of practice of pharmacy professionals in Saskatchewan to dispense medications directly to patients, <a href='https://scp.in1touch.org/document/3774/Mifegymiso_Guidance_FINAL.pdf' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>On August 31st, 2017, Mifegymiso was added to <a href='http://formulary.drugplan.ehealthsask.ca/default.aspx' target='_blank'>The Saskatchewan Formulary</a>, meaning the cost charged to a patient will vary based on individual coverage and eligibility through benefit programs, <a href='http://www.saskatchewan.ca/government/news-and-media/2017/august/31/mifegymiso-added-to-formulary' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
