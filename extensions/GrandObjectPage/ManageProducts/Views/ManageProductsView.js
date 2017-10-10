@@ -1,5 +1,6 @@
 ManageProductsView = Backbone.View.extend({
 
+    category: null,
     allProjects: null,
     otherProjects: null,
     oldProjects: null,
@@ -15,10 +16,13 @@ ManageProductsView = Backbone.View.extend({
     bibtexDialog: null,
     duplicatesDialog: null,
 
-    initialize: function(){
+    initialize: function(options){
         this.subViews = new Array();
         this.allProjects = new Projects();
         this.allProjects.fetch();
+        if(options.category != undefined){
+            this.category = options.category;
+        }
         this.template = _.template($('#manage_products_template').html());
         me.getProjects();
         this.listenTo(this.model, "sync", function(){
@@ -48,11 +52,16 @@ ManageProductsView = Backbone.View.extend({
     addProduct: function(){
         var model = new Product({authors: [me.toJSON()]});
         var view = new ProductEditView({el: this.editDialog, model: model, isDialog: true});
+        var title = "Add " + productsTerm;
+        if(this.category != null){
+            title = "Add " + this.category;
+            model.set('category', this.category);
+        }
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height()*0.75, 
             width: 800,
-            title: "Create " + productsTerm
+            title: title
         });
         this.editDialog.dialog('open');
     },

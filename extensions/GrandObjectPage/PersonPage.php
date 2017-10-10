@@ -163,7 +163,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 }
                 if(($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)) && $visibility['isMe']){
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Patent/Spin Off', $startRange, $endRange));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Patent/Spin-Off', $startRange, $endRange));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));

@@ -139,6 +139,7 @@
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a>
             ]]>
         </ReportItem>
         <ReportItem id="presentationheader" type="StaticReportItem">
@@ -176,7 +177,7 @@
         <ReportItem id="presentationfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts">Manage Outputs</a>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -209,7 +210,7 @@
         <ReportItem id="awardfooter" type="StaticReportItem">
             <![CDATA[
                 </table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts">Manage Outputs</a>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -233,7 +234,7 @@
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts">Manage Outputs</a>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
             ]]>
         </ReportItem>
     </ReportSection>
