@@ -148,7 +148,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication|Patent/Spin-Off" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$product_citation}</li>

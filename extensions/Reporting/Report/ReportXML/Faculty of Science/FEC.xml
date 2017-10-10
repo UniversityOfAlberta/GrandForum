@@ -129,7 +129,7 @@
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication|Patent/Spin-Off" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
@@ -139,7 +139,7 @@
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a> <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a>
             ]]>
         </ReportItem>
         <ReportItem id="presentationheader" type="StaticReportItem">

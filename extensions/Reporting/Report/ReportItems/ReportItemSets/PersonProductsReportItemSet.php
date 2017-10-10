@@ -11,7 +11,12 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->personId);
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, $includeHQP);
+        $categories = explode("|", $category);
+        $products = array();
+        foreach($categories as $cat){
+            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP));
+        }
+        
         usort($products, function($a, $b){
             return (str_replace("0000-00-00", "9999-99-99", $a->getDate()) < str_replace("0000-00-00", "9999-99-99", $b->getDate())) ? 1 : -1;
         });
