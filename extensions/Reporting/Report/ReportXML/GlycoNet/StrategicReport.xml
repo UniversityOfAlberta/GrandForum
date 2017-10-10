@@ -186,7 +186,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true" optional="true">
             <![CDATA[
                 <script type="text/javascript">
                     var resub = function(){
