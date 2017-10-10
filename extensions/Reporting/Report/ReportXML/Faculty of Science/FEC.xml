@@ -79,6 +79,27 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100">
+            <![CDATA[
+                <div id="responsibilities_variation" style='margin-left:25px;display:none;'>
+                    {$item}
+                </div>
+                <script type="text/javascript">
+                    var respChange = function(){
+                        var value = $("input[name=Intro_responsibilities]:checked").val();
+                        if(value == "Yes"){
+                            $("#responsibilities_variation").show();
+                        }
+                        else{
+                            $("#responsibilities_variation").hide();
+                        }
+                    };
+                    
+                    $("input[name=Intro_responsibilities]").change(respChange);
+                    respChange();
+                </script>
+            ]]>
+        </ReportItem>
         <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" sizes="200|200|164|164" multiple="true" addText="Add New" optional="true" max="1">
             <![CDATA[
                 <h2>Leaves</h2>

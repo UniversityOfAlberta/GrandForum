@@ -73,11 +73,19 @@
             <![CDATA[
                 <h3>Responsibilities Variation</h3>
                 Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
-                <div style='margin-left:25px;'>{$item}</div>
+                <div style='margin-left:25px;'>{$item}
             ]]>
         </ReportItem>
+        <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_INFORMATION,FEC_INFO_RESP,0,{$user_id},0)},Yes)}">
+            <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" orientation="list" showLabels="true">
+                <![CDATA[
+                    &nbsp;-&nbsp;{$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
             <![CDATA[
+                </div>
                 <h3>Leaves</h3>
                 {$item}
             ]]>

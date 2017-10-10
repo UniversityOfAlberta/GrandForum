@@ -402,14 +402,24 @@ EOF;
         $item = "";
         if($max > -1 && $isList){
             $innerValues = array();
+            $delimiter = $this->getAttr("delimiter", ", ");
+            $showLabels = (strtolower($this->getAttr("showLabels", "false")) == "true");
             foreach($values as $vals){
-                $innerValues[] = implode(", ", $vals);
+                $innerVals = $vals;
+                if($showLabels){
+                    $innerVals = array();
+                    $indices = $this->getIndices($labels);
+                    foreach($indices as $j => $index){
+                        $innerVals[] = "{$vals[$index]}{$labels[$j]}";
+                    }
+                }
+                $innerValues[] = implode($delimiter, $innerVals);
             }
             if(count($labels) > 1){
                 $item .= implode("<br />", $innerValues);
             }
             else{
-                $item .= implode(", ", $innerValues);
+                $item .= implode($delimiter, $innerValues);
             }
         }
         else if($max > -1 && !$isList){
