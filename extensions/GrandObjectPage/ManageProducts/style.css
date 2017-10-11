@@ -14,3 +14,8 @@ tbody#productRows td:not(.checkboxCell) {
 #editDialog {
     font-size: 9pt;
 }
+
+#showOnly {
+    float: right;
+    margin-right: 250px;
+}

@@ -1179,6 +1179,9 @@ class Paper extends BackboneModel{
         else if(isset($structure['data']['assignor'])){
             return $this->getData('assignor');
         }
+        else if(isset($structure['data']['country'])){
+            return $this->getData('country');
+        }
         return "";
     }
 

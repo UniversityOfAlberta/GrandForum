@@ -646,7 +646,7 @@
     </Presentations>
     
     <!-- Patents and Spin Offs -->
-    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
         <Product type="Tool" status="">
             <data></data>
             <date label="Date"></date>

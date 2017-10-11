@@ -150,10 +150,16 @@ ManageProductsView = Backbone.View.extend({
             this.table.destroy();
             this.table = null;
         }
+        
+        var products = this.products;
+        if(this.category != null){
+            products = new Products(products.where({category: this.category}));
+        }
+        
         // First remove deleted models
         _.each(this.subViews, $.proxy(function(view){
             var m = view.model;
-            if(this.products.where({id: m.get('id')}).length == 0){
+            if(products.where({id: m.get('id')}).length == 0){
                 this.subViews = _.without(this.subViews, view);
                 view.remove();
             }
@@ -162,7 +168,8 @@ ManageProductsView = Backbone.View.extend({
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
         //var start = new Date().getTime();
         var frag = document.createDocumentFragment();
-        this.products.each($.proxy(function(p, i){
+        
+        products.each($.proxy(function(p, i){
             if(!_.contains(models, p.id)){
                 // Product isn't in the table yet
                 this.listenTo(p, "dirty", this.productChanged);
@@ -202,7 +209,7 @@ ManageProductsView = Backbone.View.extend({
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
                                                      'aoColumnDefs': [
-                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
+                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 1) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.cacheRows();
@@ -215,6 +222,14 @@ ManageProductsView = Backbone.View.extend({
 	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
         this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
 	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
+	    this.$("#listTable_length").append('<span id="showOnly">Show Only: <select><option value="">All</option></select></span>');
+	    _.each(productStructure.categories, $.proxy(function(cat, key){
+	        var el = $("<option value='" + key + "'>" + key.pluralize() + "</option>");
+	        if(this.category == key){
+	            el.prop('selected', true);
+	        }
+	        this.$("#showOnly select").append(el);
+	    }, this));
     },
     
     toggleSelect: function(e){
@@ -393,6 +408,19 @@ ManageProductsView = Backbone.View.extend({
         }, this));
     },
     
+    showOnly: function(){
+        _.each(this.subViews, function(view){
+            // Empty the subViews array
+            this.subViews = _.without(this.subViews, view);
+            view.remove();
+        });
+        this.category = this.$("#showOnly select > option:selected").val();
+        if(this.category == ''){
+            this.category = null;
+        }
+        this.addRows();
+    },
+    
     events: {
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
@@ -402,7 +430,8 @@ ManageProductsView = Backbone.View.extend({
         "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX",
-        "click #uploadCalendarButton": "uploadCalendar"
+        "click #uploadCalendarButton": "uploadCalendar",
+        "change #showOnly select": "showOnly"
     },
     
     render: function(){
