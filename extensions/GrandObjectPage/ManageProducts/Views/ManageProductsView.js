@@ -50,7 +50,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addProduct: function(){
-        var model = new Product({authors: [me.toJSON()]});
+        var model = new Product({authors: [_.extend({fullname: me.get('fullName')}, me.toJSON())]});
         var view = new ProductEditView({el: this.editDialog, model: model, isDialog: true});
         var title = "Add " + productsTerm;
         if(this.category != null){
