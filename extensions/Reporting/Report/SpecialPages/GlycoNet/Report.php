@@ -102,11 +102,16 @@ class Report extends AbstractReport{
         }
         if($person->isRoleAtLeast(MANAGER) || 
            $person->isRole(SD) || 
-           //$person->isRole(RMC) ||
+           $person->isRole(RMC) ||
            $person->isRoleAtLeast(STAFF) ||
            $person->getId() == 2513){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABTranslationalReport")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Translational Report", "{$url}SABTranslationalReport", $selected);
+            if($person->isRoleAtLeast(MANAGER) || 
+               $person->isRole(SD) || 
+               $person->isRoleAtLeast(STAFF) ||
+               $person->getId() == 2513){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABTranslationalReport")) ? "selected" : false;
+                $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Translational Report", "{$url}SABTranslationalReport", $selected);
+            }
            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCatalystReport")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Catalyst Report", "{$url}SABCatalystReport", $selected);
