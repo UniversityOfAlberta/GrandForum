@@ -3,128 +3,125 @@
 <br />
   <div id="filters" style="display:none; margin-top:10px;">
     <button style="margin-bottom:10px;" id="clearFiltersButton">Clear Filters</button>
-      <table>
-         <tr>
-           <td>
-             <table>
-               <tr>
-                 <td align="right"><b>GPA:</b></td>
-                 <td> <input type="text" class="filter_option" id="referenceNameInputMin" placeholder="Search here..." style="width: 20px"> to <input type="text" class="filter_option" id="referenceNameInputMax" placeholder="Search here..." style="width: 20px"></td>
-                </tr>
-                <tr>
-                  <td align="right"><b>Degree Program:</b></td>
-                  <td><input type="text" class="filter_option" id="degreeInput" placeholder="Search here..." style="width: 205px"></td>
-                 </tr>
-                 <tr>
-                   <td align="right"><b>Institution:</b></td>
-                   <td> <input type="text" class="filter_option" id="InstitutionNameInput" placeholder="Search here..." style="width: 205px"></td>
-                 </tr>
-               </table>
-             </td>
-             <td>
-               <table>
-                 <tr>
-                   <td align="right"><text><b>Anatomy:</b></text></td>
-                   <td><select id="anatomyType"  class="filter_option" style="width: 120px">
+    <table>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td align="right"><b>GPA:</b></td>
+              <td> <input type="text" class="filter_option" id="referenceNameInputMin" placeholder="Search here..." style="width: 20px"> to <input type="text" class="filter_option" id="referenceNameInputMax" placeholder="Search here..." style="width: 20px"></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Degree Program:</b></td>
+              <td><input type="text" class="filter_option" id="degreeInput" placeholder="Search here..." style="width: 205px"></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Institution:</b></td>
+              <td> <input type="text" class="filter_option" id="InstitutionNameInput" placeholder="Search here..." style="width: 205px"></td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td align="right"><text><b>Anatomy:</b></text></td>
+              <td><select id="anatomyType"  class="filter_option" style="width: 120px">
                        <option value="" selected="selected">--</option>
                        <option value="Yes">Yes</option>
                        <option value="No">No</option>
                        <option value="In-Progress">In-Progress</option>
-                       </select>
-                    </td>
-                  </tr>
-                  <tr>
-                     <td align="right"><text><b>Stats:</b></text></td>
-                     <td><select id="statsType"  class="filter_option" style="width: 120px">
-                                <option value="" selected="selected">--</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                                <option value="In-Progress">In-Progress</option>
-                            </select></td>
-                        </tr>
-                        <tr>
-                            <td align="right"><text><b>Nationality:</b></text></td>
-			    <td>
-                            <div>
-                                <div id="nationalityBox" class="selectBox">
-                                    <select>
-                                        <option>Select Nationality</option>
-                                    </select>
-                                    <div class="overSelect">
-                                    </div>
-                                </div>
-                                <div id="nationboxes">
-                                    <label><input type="checkbox" class="filter_option check_tags" id="indigenous"  unchecked/>Indigenous</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="canadian"  unchecked/>Canadian</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="saskatchewan"  unchecked/>Saskatchewan</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="international"  unchecked/>International</label>
-
-				</div>
-			    </div>
-			    </td>
-                        </tr>
-                    </table>
-                </td>
-		<td>
-                    <table>
-                        <tr>
-                            <td align="right"><text><b>Admit:</b></text></td>
-                            <td><select id="admitType" class="filter_option" style="width: 120px">
+                       
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td align="right"><text><b>Stats:</b></text></td>
+                <td><select id="statsType"  class="filter_option" style="width: 120px">
+                         <option value="" selected="selected">--</option>
+                         <option value="Yes">Yes</option>
+                         <option value="No">No</option>
+                         <option value="In-Progress">In-Progress</option>
+                   </select>
+               </td>
+            </tr>
+            <tr>
+              <td align="right"><text><b>Nationality:</b></text></td>
+              <td>
+                <div>
+                  <div id="nationalityBox" class="selectBox">
+                    <select><option>Select Nationality</option></select>
+                    <div class="overSelect"></div>
+                  </div>
+                  <div id="nationboxes">
+                    <label><input type="checkbox" class="filter_option check_tags" id="indigenous"  unchecked/>Indigenous</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="canadian"  unchecked/>Canadian</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="saskatchewan"  unchecked/>Saskatchewan</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="international"  unchecked/>International</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td align="right"><text><b>Admit:</b></text></td>
+              <td><select id="admitType" class="filter_option" style="width: 120px">
                                 <option value="" selected="selected">--</option>
                                 <option value="admit">Admit</option>
                                 <option value="reject">Reject</option>
                                 <option value="undecided">Undecided</option>
                                 <option value="special consideration">Special Consideration</option>
-                            </select></td>
-                        </tr>
-                        <tr>
-                            <td align="right"><text><b>Final Decision:</b></text></td>
-                            <td><select id="finalAdmitType" class="filter_option" style="width: 120px">
-                                <option value="" selected="selected">--</option>
-                                <option value="admit">Admit</option>
-                                <option value="reject">Reject</option>
-                                <option value="waitlist">Waitlist</option>
-                            </select></td>
-                        </tr>
-                    </table>
-		</td>
-                <td>
-                    <table>
-                        <tr>
-                            <input type="checkbox" id="filterByTags" class="filter_option check_tags"/>Filter by Tags
-                        </tr>
-                        <tr>
-                            <div class="multiselect">
-                                <div id="selectTagBox" class="selectBox">
-                                    <select>
-                                        <option>Select Tags</option>
-                                    </select>
-                                    <div class="overSelect">
-                                    </div>
-                                </div>
-                                <div id="checkboxes">
-                                    <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalquantities"  unchecked/>Negative personal qualities</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience"  unchecked/>Understanding of OT incorporated into personal experience</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
-                                    <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
-                                </div>
-                            </div></tr></table>
-                </td>
+                         </select>
+              </td>
             </tr>
-        </table>
+            <tr>
+              <td align="right"><text><b>Final Decision:</b></text></td>
+                <td><select id="finalAdmitType" class="filter_option" style="width: 120px">
+                            <option value="" selected="selected">--</option>
+                            <option value="admit">Admit</option>
+                            <option value="reject">Reject</option>
+                            <option value="waitlist">Waitlist</option>
+                        </select>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table>
+              <tr><input type="checkbox" id="filterByTags" class="filter_option check_tags"/>Filter by Tags</tr>
+              <tr>
+                <div class="multiselect">
+                  <div id="selectTagBox" class="selectBox">
+                    <select><option>Select Tags</option></select>
+                    <div class="overSelect"></div>
+                  </div>
+                  <div id="checkboxes">
+                    <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalquantities"  unchecked/>Negative personal qualities</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience"  unchecked/>Understanding of OT incorporated into personal experience</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
+                    <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
+                  </div>
+                </div>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
     <!--End of of Search & Filters-->
     
@@ -152,33 +149,3 @@
             
         </tbody>
     </table>
-   <!-- 
-    <script>
-        var expanded = false;
-	var expanded2 = false;
-        function showCheckboxes() {
-            var checkboxes = document.getElementById("checkboxes");
-            if (!expanded) {
-                checkboxes.style.display = "block";
-                checkboxes.style.position = "absolute";
-                checkboxes.style.background="white";
-                expanded = true;
-            } else {
-                checkboxes.style.display = "none";
-                expanded = false;
-            }
-        }
-
-        function showNationalityBoxes() {
-            var checkboxes = document.getElementById("nationboxes");
-            if (!expanded2) {
-                checkboxes.style.display = "block";
-                checkboxes.style.position = "absolute";
-                checkboxes.style.background="white";
-                expanded2 = true;
-            } else {
-                checkboxes.style.display = "none";
-                expanded2 = false;
-            }
-        }
-    </script>--!>
