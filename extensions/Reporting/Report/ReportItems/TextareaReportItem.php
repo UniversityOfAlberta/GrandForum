@@ -88,7 +88,8 @@ class TextareaReportItem extends AbstractReportItem {
     function calculateHeight($limit){
         $rich = (strtolower($this->getAttr('rich', 'false')) == 'true');
         if($limit > 0 && !$rich){
-            $height = max(intval($this->getAttr('height', '125px')), (pow($limit, 0.75)))."px";
+            $max_height = min(500, intval($this->getAttr('height', '125px')));
+            $height = max($max_height, (pow($limit, 0.75)))."px";
         }
         else{
             $height = $this->getAttr('height', '200px');
