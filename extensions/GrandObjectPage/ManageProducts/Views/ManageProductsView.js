@@ -161,12 +161,12 @@ ManageProductsView = Backbone.View.extend({
             var m = view.model;
             if(products.where({id: m.get('id')}).length == 0){
                 this.subViews = _.without(this.subViews, view);
-                view.remove();
+                this.stopListening(m);
+                view.$el.detach();
             }
         }, this));
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
-        //var start = new Date().getTime();
         var frag = document.createDocumentFragment();
         
         products.each($.proxy(function(p, i){
@@ -188,8 +188,6 @@ ManageProductsView = Backbone.View.extend({
         this.createDataTable(order, searchStr);
         this.productChanged();
         this.$("#listTable").show();
-        //var end = new Date().getTime();
-        //console.log(end - start);
     },
     
     cacheRows: function(){
@@ -409,11 +407,6 @@ ManageProductsView = Backbone.View.extend({
     },
     
     showOnly: function(){
-        _.each(this.subViews, function(view){
-            // Empty the subViews array
-            this.subViews = _.without(this.subViews, view);
-            view.remove();
-        });
         this.category = this.$("#showOnly select > option:selected").val();
         if(this.category == ''){
             this.category = null;

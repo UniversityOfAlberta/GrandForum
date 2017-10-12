@@ -101,7 +101,6 @@ class TextareaReportItem extends AbstractReportItem {
         $value = $this->getBlobValue();
         $rows = $this->getAttr('rows', 5);
         $width = $this->getAttr('width', '100%');
-        $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
         $height = $this->calculateHeight($limit);
         $rich = strtolower($this->getAttr('rich', 'false'));
