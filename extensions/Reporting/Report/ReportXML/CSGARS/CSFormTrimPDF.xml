@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_CS_TRIM" ajax="true" disabled="false">
+
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
+       
+        
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+            <![CDATA[
+                <h3>*Area of Study</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    
+        <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+            <![CDATA[
+                <h3>*Potential Supervisors</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+    </ReportSection>
+
+    <ReportSection id="sop_questions" tooltip="Statement of Purpose" name="SOP" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false" title="Statement of Purpose">
+        <ReportItem id="qSOP1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP1" limit="1800">
+            <![CDATA[
+                <h3>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP2" limit="1800">
+            <![CDATA[
+                <h3>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP3" limit="1800">
+            <![CDATA[
+                <h3>Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP4" limit="1800">
+            <![CDATA[
+                <h3>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qSOP5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP5" limit="900">
+            <![CDATA[
+                <h3>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="upload_pdf" tooltip="Upload PDF" name="Upload PDF" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+            <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h3>Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+    </ReportSection>
+
+</Report>

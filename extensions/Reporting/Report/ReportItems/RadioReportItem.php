@@ -52,6 +52,12 @@ class RadioReportItem extends AbstractReportItem {
 		}
 
 		if ($other) {
+			$checked = "";
+            	if (!in_array($value, $options)) {
+            		$checked = "checked='checked'";
+            	}
+
+			// Add the "other" radio option to either horizontal or vertical layout.
 			if($orientation == 'horizontal'){
                 $items[] = "<input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='Other' $checked />&nbsp;Other";
             }
@@ -59,10 +65,27 @@ class RadioReportItem extends AbstractReportItem {
                 $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='Other' $checked />&nbsp;<div style='display:table-cell;'>Other</div></div>";
     		
     		}
-			$otherTextInput = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input name='{$this->getPostId()}_other' style='vertical-align:middle;' />&nbsp;<div style='display:table-cell;'></div></div>";
+    		// show the "Other" textbox when the other radio option is selected.
+    		$otherTextInput = "";
+    		$otherTextInput .= "<script type='text/javascript'>
+			    var toggleOther{$this->getPostId()} = function() {
+			    	if ($('input[name={$this->getPostId()}]:checked').val() == 'Other') {
+			            $('#{$this->getPostId()}_other').slideDown();
+                        $('#{$this->getPostId()}_other input').prop('disabled', false);
+                    } else {
+                        $('#{$this->getPostId()}_other').slideUp();
+                        $('#{$this->getPostId()}_other input').val('');
+                        $('#{$this->getPostId()}_other input').prop('disabled', true);
+
+                    }
+				}
+				$('input[name={$this->getPostId()}]').change(toggleOther{$this->getPostId()});
+				$(document).ready(toggleOther{$this->getPostId()});
+				</script>";
+			$otherTextInput .= "<div id='{$this->getPostId()}_other' style='padding-bottom:1px;padding-top:1px;'>Other: <input name='{$this->getPostId()}' value='{$value}' style='vertical-align:middle;' />&nbsp;</div>";
 			if ($number) {
 				$otherTextInput .= "<script type='text/javascript'>
-			    $('input[name={$this->getPostId()}_other]').forceNumeric({min: 0, max: 10000000, decimals: 2});
+			    $('input[type=text][name={$this->getPostId()}]').forceNumeric({min: 0, max: 10000000, decimals: 2});
 				</script>";
 			}
 			$items[] = $otherTextInput;

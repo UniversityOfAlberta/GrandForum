@@ -12,7 +12,9 @@ class FacultyMembersReportItem extends MultipleSelectReportItem {
         }
         $options = array();
         foreach($json as $prof) {
-        	$options[] = $prof->realName;
+        	if ($prof->department == "Computing Science") {
+        		$options[] = $prof->realName;
+        	}
         }
 
         $value = $this->getBlobValue();
