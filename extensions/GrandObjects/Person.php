@@ -4686,6 +4686,34 @@ class Person extends BackboneModel {
 	$gsms = InfoSheet::newFromUserId($this->id);
         return $gsms;
     }
+
+    /**
+     * Returns GSMS information of person
+     * @return array gsms array of person
+   **/
+    function getGSMSOutcome(){
+        $gsms = array('academic_year' => "",
+                      'term' => "",
+                      'program' => "",
+                      'degree' => "",
+                      'folder' => "",
+                      'decision_response' => "");
+
+	$data = DBFunctions::select(array('grand_person_gsms'),
+                                    array('final_gsms'),
+                                    array('user_id' => EQ($this->getId())));
+
+        if(count($data) > 0){
+	    $gsms_array = unserialize($data[0]['final_gsms']);
+	    if($gsms_array != ""){
+                foreach($gsms_array as $key => $val){
+                    $gsms[$key] = str_replace("'", "&#39;", $val);
+                }
+	    }
+        }
+        return $gsms;
+    }
+
     function getCourses(){
         $courses = Course::getUserCourses($this->id);
         return $courses;

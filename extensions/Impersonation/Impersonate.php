@@ -244,8 +244,8 @@ function impersonateCreateSubTabs(&$tabs){
     global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
     $person = Person::newFromWgUser($wgUser);
     if($person->isRoleAtLeast(MANAGER)){
-        $selected = @($wgTitle->getText() == "Impersonate") ? "selected" : false;
-        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate", $selected);
+        //$selected = @($wgTitle->getText() == "Impersonate") ? "selected" : false;
+        //$tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate", $selected);
     }
     return true;
 }

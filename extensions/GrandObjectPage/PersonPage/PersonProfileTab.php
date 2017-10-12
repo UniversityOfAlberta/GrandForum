@@ -32,7 +32,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Only show the word cloud for 'researchers'
             //$extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        //$extra[] = $this->showDoughnut($this->person, $this->visibility);
         //$extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
