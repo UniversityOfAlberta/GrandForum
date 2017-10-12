@@ -9,8 +9,8 @@
         </Role>
     </Permissions>
     <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
-       
-        <ReportItem id="q9" type="Radio" blobType="BLOB_TEXT" blobItem="Q9" limit="900" options="INT|CDN|PR" labels="International|Canadian Citizen|Permanent Resident" orientation="horizontal">
+
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
             <style>
                 .flex-container {
@@ -30,7 +30,7 @@
                   flex-grow:         <number>;
                 }
             </style>
-            <div class="flex-container">
+                <div class="flex-container">
                 <div class="flex-item" style="
                     min-width: 370px; 
                     max-width: 500px;
@@ -43,25 +43,6 @@
                     margin-top: 8px;
                     margin-right: 8px;" >
                     <h1>Personal Information</h1>
-                    <h3>*Immigration Status</h3>
-                    {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q11" type="Radio" blobType="BLOB_TEXT" blobItem="Q11" limit="900" options="Statistical Machine Learning" labels="Statistical Machine Learning" orientation="horizontal" optional="true">
-            <![CDATA[
-                    <h3>Specialization</h3>
-                    {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q12" type="Radio" blobType="BLOB_TEXT" blobItem="Q12" limit="900" options="FT|PT" labels="Full time|Part time" orientation="horizontal">
-            <![CDATA[
-                    <h3>*Status</h3>
-                    {$item}
-                
-            ]]>
-        </ReportItem>
-        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
-            <![CDATA[
                     <h3>*Area of Study</h3>
                     {$item}
             ]]>
@@ -71,23 +52,11 @@
             <![CDATA[
                     <h3>*Potential Supervisors<span title="Choose up to 3 potential supervisors." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
-                </div>
             ]]>
         </ReportItem>
         <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
-                <div class="flex-item" style="
-                    min-width: 370px; 
-                    max-width: 500px;
-                    flex-grow: 1;
-                    flex-basis: 350px;
-                    display: inline-block;
-                    vertical-align: top;
-                    overflow: hidden; 
-                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;">
+                
                     <h1>Financial</h1>
                     <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
@@ -103,11 +72,25 @@
             <![CDATA[
                     <h3>*Require Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="q19" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q19" width="40px" orientation="horizontal">
             <![CDATA[
-                    <h1 style="margin-top: 16px">GPA</h1>
+
+                <div class="flex-item" style="
+                    min-width: 370px; 
+                    max-width: 500px;
+                    flex-grow: 1;
+                    flex-basis: 350px;
+                    display: inline-block;
+                    vertical-align: top;
+                    overflow: hidden; 
+                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                    padding: 0px 16px 16px 16px;
+                    margin-top: 8px;
+                    margin-right: 8px;">
+                    <h1>GPA</h1>
                     <p>Your Grade Point Average is calculated based on your most recent two years of full time study (or equivalent).</p>
 
                     <div>
@@ -118,7 +101,7 @@
                 
             ]]>
         </ReportItem>
-        <ReportItem id="q20" type="Radio" blobType="BLOB_TEXT" withOther="true" number="true" blobItem="Q20" options="4|5|10|20|100" orientation="horizontal">
+        <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="80px" orientation="horizontal">
             <![CDATA[
                         <div style="display: inline-block; vertical-align: top; margin-left: 16px">
                             <h3>*GPA Scale<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -129,122 +112,115 @@
         </ReportItem>
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100" optional="true">
             <![CDATA[
-                    <div>
-                        <div style="display: inline-block; vertical-align: top;">
-                            <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                            {$item}
-                            <script type="text/javascript">
-                                var calculateNormalizedGPA = function() {
-                                    var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
-                                    var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]:checked').val();
-                                    if (gpa_scale == 'Other') {
-                                        gpa_scale = $('#AdditionalAdmissionInfo_q20_other input').val();
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                        <script type="text/javascript">
+                            var calculateNormalizedGPA = function() {
+                                var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
+                                var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]').val();
 
-                                    }
+                                var returnValue;
 
-                                    var returnValue;
-
-                                    if (gpa != '') {
-                                        if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
-                                            returnValue = 'Scale cannot be out of 0';
-                                        } else {
-                                            // try calculating
-                                            var normalized = (gpa * 4) / (gpa_scale);
-                                            if (normalized > 4) {
-                                                returnValue = 'GPA greater than scale';
-                                            } else {
-                                                returnValue = parseFloat(normalized).toFixed(2);
-                                            }
-                                        }
+                                if (gpa != '') {
+                                    if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
+                                        returnValue = 'Scale cannot be out of 0';
                                     } else {
-                                        returnValue = "";
+                                        // try calculating
+                                        var normalized = (gpa * 4) / (gpa_scale);
+                                        if (normalized > 4) {
+                                            returnValue = 'GPA greater than scale';
+                                        } else {
+                                            returnValue = parseFloat(normalized).toFixed(2);
+                                        }
                                     }
+                                } else {
+                                    returnValue = "";
+                                }
 
-                                    $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
-                                };
+                                $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
+                            };
 
-                                $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
-                                $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
-                                $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
-                                $(document).ready(calculateNormalizedGPA);
+                            $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
+                            $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
+                            $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
+                            $(document).ready(calculateNormalizedGPA);
 
-                            </script>
-                        </div>
+                        </script>
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
             <![CDATA[
-                        <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                            <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                            {$item}
-                        </div>
+                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                        <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
             
             ]]>
         </ReportItem>
         <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%" optional="true">
             <![CDATA[
-                        <div>
-                            <h1 style="margin-top: 16px">GRE (General)</h1>
-                            <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
-                            <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                            {$item}
-                        </div>
+                    <h1 style="margin-top: 16px">GRE (General)</h1>
+                    <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
+                    <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    {$item}
+
             ]]>
         </ReportItem>
         <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
-                        <div class="flex-container">
-                            <div class="flex-item">
-                                <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                                {$item}
-                            </div>
+                    <div class="flex-container">
+                        <div class="flex-item">
+                            <h3>Verbal<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                        </div>
             ]]>
         </ReportItem>
         <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
-                            <div class="flex-item">
-                                <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                                {$item}
-                            </div>
+                        <div class="flex-item">
+                            <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                        </div>
             ]]>
         </ReportItem>
         <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
-                            <div class="flex-item">
-                                <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                                {$item}
-                            </div>
+                        <div class="flex-item">
+                            <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
                         </div>
+                    </div> <!-- end GRE flex -->
             ]]>
         </ReportItem>
         <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px" optional="true">
             <![CDATA[
-                        <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
-                        <script type="text/javascript">
-                            var calculateGRE = function() {
-                                var gre1 = $('[name=AdditionalAdmissionInfo_q24]').val();
-                                var gre2 = $('[name=AdditionalAdmissionInfo_q25]').val();
-                                var gre3 = $('[name=AdditionalAdmissionInfo_q26]').val();
+                    <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    {$item}
+                    <script type="text/javascript">
+                        var calculateGRE = function() {
+                            var gre1 = $('[name=AdditionalAdmissionInfo_q24]').val();
+                            var gre2 = $('[name=AdditionalAdmissionInfo_q25]').val();
+                            var gre3 = $('[name=AdditionalAdmissionInfo_q26]').val();
 
-                                var returnValue = '';
-                                if ((gre1 != '') && (gre2 != '') && (gre3 != '')) {
-                                    returnValue = (((gre1/170) + (gre2/170) + (gre3/6)) / 3) * 100;
-                                    returnValue = parseFloat(returnValue).toFixed(2);
-                                }
+                            var returnValue = '';
+                            if ((gre1 != '') && (gre2 != '') && (gre3 != '')) {
+                                returnValue = (((gre1/170) + (gre2/170) + (gre3/6)) / 3) * 100;
+                                returnValue = parseFloat(returnValue).toFixed(2);
+                            }
 
-                                $('[name=AdditionalAdmissionInfo_q27]').val(returnValue);
-                            };
+                            $('[name=AdditionalAdmissionInfo_q27]').val(returnValue);
+                        };
 
-                            $('[name=AdditionalAdmissionInfo_q24]').change(calculateGRE);
-                            $('[name=AdditionalAdmissionInfo_q25]').change(calculateGRE);
-                            $('[name=AdditionalAdmissionInfo_q26]').change(calculateGRE);
-                            $(document).ready(calculateGRE);
+                        $('[name=AdditionalAdmissionInfo_q24]').change(calculateGRE);
+                        $('[name=AdditionalAdmissionInfo_q25]').change(calculateGRE);
+                        $('[name=AdditionalAdmissionInfo_q26]').change(calculateGRE);
+                        $(document).ready(calculateGRE);
 
-                        </script>
-                    </div>
-                </div>
-            </div>
+                    </script>
+                </div> <!-- end flex item2 -->
+            </div> <!-- end flex container -->
             ]]>
         </ReportItem>
 
@@ -252,7 +228,7 @@
     </ReportSection>
 
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SOP" title="Statement of Purpose" blobSection="CS_QUESTIONS1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1500">
+        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1500" height="1000px">
             <![CDATA[
                 <h3>Statement of Purpose</h3>
                 {$item}
@@ -262,7 +238,7 @@
 
 
     <ReportSection id="msc_thesis" tooltip="MSc Thesis" name="MSc Thesis" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qMSc1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc1" limit="150">
+        <ReportItem id="qMSc1" type="Text" blobType="BLOB_TEXT" blobItem="QMSc1" limit="150" width="98%">
             <![CDATA[
                 <h3>Thesis Title</h3>
                 {$item}
@@ -276,8 +252,10 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
-            <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
+
+
+    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS4" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
             <![CDATA[
                 <p>Use this to upload any CV or resume PDF file relevant to your submission</p>
                 <h3>Upload</h3>
@@ -287,6 +265,23 @@
 
     </ReportSection>
 
+
+    <ReportSection id="multimedia_page" tooltip="Multimedia Project History" name="Multimedia Program" title="Multimedia Program" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+
+        <ReportItem id="qmulti1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qmulti1" limit="200">
+            <![CDATA[
+                <h3>Professional certificate/diploma</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qmulti2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="qmulti2" labels="Title|Description" types="Text|Textarea" multiple="true" start="1">
+            <![CDATA[
+                <h3>Multimedia projects history</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+    </ReportSection>
 
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
