@@ -141,10 +141,12 @@ class PersonPage {
 
                     $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
-
                 }
+		if($me->isRoleAtLeast("Admin")){
+                    $tabbedPage->addTab(new PersonGSMSOutcomeTab($person, $visibility));
+		}
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonSocialTab($person, $visibility));
+//                $tabbedPage->addTab(new PersonSocialTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));

@@ -26,10 +26,10 @@ class UserGsmsFinalAPI extends API{
 	    $array_info['name'] = $student_name;
 	    $array_info['department'] = $row[0];
 	    $array_info['gsms_id'] = $row[3];
-	    //$array_info['student_id'] = $row[4];
+	    $array_info['student_id'] = $row[4];
 	    $array_info['cs_app'] = $row[5];
-	    //$array_info['dob'] = $row[6];
-	    //$array_info['email'] = $row[7];
+	    $array_info['dob'] = $row[6];
+	    $array_info['email'] = $row[7];
 	    $array_info['academic_year'] = $row[8];
 	    $array_info['term'] = $row[9];
 	    $array_info['program'] = $row[10];

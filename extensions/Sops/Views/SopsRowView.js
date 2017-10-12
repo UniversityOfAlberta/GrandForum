@@ -10,19 +10,6 @@ SopsRowView = Backbone.View.extend({
     },
 
     events: {
-       "click #update_button" : "updateSop", 
-    },
-
-    updateSop: function(){
-	$.ajax({url: wgServer+wgScriptPath+"/index.php/index.php?action=api.updateSop&id="+this.model.id, 
-	type:'GET',
-	success: function(data){
-		        location.reload();
-	},
-	error: function(){
-                        location.reload();
-	},
-	});
     },
 
     render: function(){

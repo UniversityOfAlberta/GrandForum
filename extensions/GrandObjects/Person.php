@@ -4599,6 +4599,10 @@ class Person extends BackboneModel {
         return "";
     }
 
+    /**
+     * Returns PDF stream of Statement of Purpose pdf 
+     * @return text stream of SoP PDF
+   **/
     function getSopPdf(){
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('pdf'),
@@ -4611,6 +4615,10 @@ class Person extends BackboneModel {
 	return false;
     }
 
+    /**
+     * Returns url of Statement of Purpose pdf 
+     * @return String url of SoP pdf
+   **/
     function getSopPdfUrl(){
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('pdf'),
@@ -4627,82 +4635,105 @@ class Person extends BackboneModel {
 	}
 	return false;
     }
+
     /**
      * Returns GSMS information of person
      * @return array gsms array of person
    **/    
     function getGSMS(){
-        /*$gsms = array('gpa60' => "",
-                      'gpafull' => "",
-                      'gpafull_credits' => "",
-                      'notes' => "",
-                      'anatomy' => "",
-                      'stats' => "",
-                      'degree' => "",
-                      'institution' => "",
-                      'failures' => "",
-		      'withdrawals' => "",
-		      'canadian' => "",
-		      'international' => "",
-		      'indigenous' => "",
-		      'saskatchewan' => "",
-		      'gpafull2' => "",
-		      'gpafull_credits2' => "",
-		      'degrees' => array());
-        $data = DBFunctions::select(array('grand_person_gsms'),
-                                    array('gpa60',
-                                          'gpafull',
-                                          'gpafull_credits',
-                                          'notes',
-                                          'anatomy',
-                                          'stats',
-                                          'degree',
-                                          'institution',
-                                          'failures',
-					  'withdrawals',
-                      			  'canadian',
-                      			  'international',
-                      			  'indigenous',
-                      			  'saskatchewan',
-                      			  'gpafull2',
-                      			  'gpafull_credits2',
-                      			  'degrees'),
-                                    array('user_id' => EQ($this->getId())));
-        if(count($data) > 0){
-            foreach($data[0] as $key => $val){
-		if($key == 'degrees'){
-		    if($val == ''){
-			$gsms[$key] = array();
-		    }
-		    else{
-                    	$gsms[$key] = unserialize($val);
-		    }
-		}
-		else{
-                    $gsms[$key] = str_replace("'", "&#39;", $val);
-		}
-            }
-        }*/
 	$gsms = InfoSheet::newFromUserId($this->id);
         return $gsms;
     }
-    function getCourses(){
+
+    /**
+     * Returns GSMS information of person
+     * @param boolean $all if all data should be returned
+     * @return array gsms array of person
+   **/
+    function getGSMSOutcome($all=false){
+        if($all ==false){
+            $gsms = array('academic_year' => "",
+                      'term' => "",
+                      'program' => "",
+                      'degree' => "",
+                      'folder' => "",
+                      'decision_response' => "");
+        }
+        else{
+            $gsms = array('name' => "",
+                      'department' => "",
+                      'gsms_id' => "",
+                      'student_id' => "",
+                      'cs_app' => "",
+                      'dob' => "",
+                      'email' => "",
+                      'academic_year' => "",
+                      'term' => "",
+                      'program' => "",
+                      'subplan_name' => "",
+                      'degree' => "",
+                      'program_name' => "",
+                      'admission_program_name' => "",
+                      'submitted_date' => "",
+                      'gender' => "",
+                      'country_of_birth' => "",
+                      'country_of_citizenship' => "",
+                      'application_type' => "",
+                      'folder' => "",
+                      'education_history' => "",
+                      'department_gpa' => "",
+                      'gpa_scale' => "",
+                      'normalized_gpa' => "",
+                      'elp_test' => "",
+                      'elp_score' => "",
+                      'listen' => "",
+                      'write' => "",
+                      'read' => "",
+                      'speaking' => "",
+                      'funding_note' => "",
+                      'department_decision' => "",
+                      'fgsr_decision' => "",
+                      'decision_response' => "",
+                      'general_notes' => "");
+
+        }
+
+	$data = DBFunctions::select(array('grand_person_gsms'),
+                                    array('final_gsms'),
+                                    array('user_id' => EQ($this->getId())));
+
+        if(count($data) > 0){
+	    $gsms_array = unserialize($data[0]['final_gsms']);
+	    if($gsms_array != ""){
+                foreach($gsms_array as $key => $val){
+                    $gsms[$key] = str_replace("'", "&#39;", $val);
+                }
+	    }
+        }
+        return $gsms;
+    }
+    /**
+     * Returns courses the person has taken or is currently taking
+     * @param date $start returns courses from the starting of this date
+     * @param date $end returns courses from the end of this date
+     * @return array List of courses 
+     */
+    function getCourses($start=false,$end=false){
         $courses = Course::getUserCourses($this->id);
+	if($start != false && $end != false){
+            $during = array();
+            foreach($courses as $course){
+                $courseStart = $course->getStartDate();
+                $courseEnd = $course->getEndDate();
+                if(($start <= $courseStart && $end >= $courseStart) ||
+                   ($start >= $courseStart && $end <= $courseEnd)){
+                      $during[] = $course;
+                }
+            }
+            return $during;
+	}
         return $courses;
     }
 
-    function getCoursesDuring($start, $end){
-        $during = array();
-        $courses = Course::getUserCourses($this->id);
-        foreach($courses as $course){
-            $courseStart = $course->getStartDate();
-            $courseEnd = $course->getEndDate();
-            if(($start <= $courseStart && $end >= $courseStart) ||
-               ($start >= $courseStart && $end <= $courseEnd)){
-                  $during[] = $course;
-            }
-        }
-        return $during;
-    }
 }
 ?>
