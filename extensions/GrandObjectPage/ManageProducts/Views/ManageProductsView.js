@@ -410,6 +410,12 @@ ManageProductsView = Backbone.View.extend({
         this.category = this.$("#showOnly select > option:selected").val();
         if(this.category == ''){
             this.category = null;
+            main.set('title', productsTerm + ' Management');
+            this.$("#addProductButton").text("Add " + productsTerm);
+        }
+        else{
+            main.set('title', this.category.pluralize() + ' Management');
+            this.$("#addProductButton").text("Add " + this.category);
         }
         this.addRows();
     },
