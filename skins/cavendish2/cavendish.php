@@ -483,7 +483,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
-		                $("#sideToggle").html("&gt;");
+		                $("#sideToggle").html("&#12297;");
 		                $("#side").animate({
 		                    'left': '-200px'
 		                }, 200, 'swing');
@@ -499,7 +499,7 @@ class CavendishTemplate2 extends QuickTemplate {
                         $.cookie('sideToggled', 'in', {expires: 30});
                     }
                     else{
-                        $("#sideToggle").html("&lt;");
+                        $("#sideToggle").html("&#12296;");
                         $("#side").animate({
 		                    'left': '0px'
 		                }, 200, 'swing');
@@ -747,7 +747,7 @@ class CavendishTemplate2 extends QuickTemplate {
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
         <div id="sideToggle" class="highlightsBackground0">
-            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
+            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&#12297;"; } else { echo "&#12296;";}?>
         </div>
 	    <div id="header">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/icons/white_mix/hamburger.png" /></a>

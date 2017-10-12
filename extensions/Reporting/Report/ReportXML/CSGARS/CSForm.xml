@@ -54,23 +54,25 @@
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
-            <![CDATA[
-                
-                    <h1>Financial</h1>
-                    <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                    {$item}
-            ]]>
-        </ReportItem>
+        
         <ReportItem id="q16" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q16" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
-                    <h3>Held Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h1>Financial</h1>
+                    <h3>Scholarships Held<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
+
+        <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
+            <![CDATA[
+                    <h3>Scholarships Applied For<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+
         <ReportItem id="q17" type="Radio" blobType="BLOB_TEXT" blobItem="Q17" limit="900" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <h3>*Require Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Need for Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
                 </div>
             ]]>
@@ -101,7 +103,7 @@
                 
             ]]>
         </ReportItem>
-        <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="80px" orientation="horizontal">
+        <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="40px" orientation="horizontal">
             <![CDATA[
                         <div style="display: inline-block; vertical-align: top; margin-left: 16px">
                             <h3>*GPA Scale<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -110,7 +112,7 @@
                     </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" limit="100" optional="true">
+        <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
             <![CDATA[
                     <div style="display: inline-block; vertical-align: top;">
                         <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -150,7 +152,7 @@
                     </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
+        <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100" width="200px">
             <![CDATA[
                     <div style="display: inline-block; vertical-align: top; margin-left: 16px">
                         <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -159,9 +161,9 @@
             
             ]]>
         </ReportItem>
-        <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%" optional="true">
+        <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="100px" optional="true">
             <![CDATA[
-                    <h1 style="margin-top: 16px">GRE (General)</h1>
+                    <h1 style="margin-top: 16px">GRE</h1>
                     <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
                     <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
@@ -196,7 +198,7 @@
         </ReportItem>
         <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px" optional="true">
             <![CDATA[
-                    <h3>GRE Overall<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>GRE CS<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
                     <script type="text/javascript">
                         var calculateGRE = function() {
