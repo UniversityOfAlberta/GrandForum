@@ -841,15 +841,15 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
-        exec("/usr/local/bin/pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
-        //exec("pdftk \"/tmp/{$name}{$rand}pdf\" cat output \"/tmp/{$name}{$rand}nomarks\"");
+        //exec("/usr/local/bin/pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" cat output \"/tmp/{$name}{$rand}nomarks\"");
         
         $gs = 'gs';
         $uname = strtolower(php_uname());
 		if (strpos($uname, "darwin") !== false) {
 		    // It's OSX
-			echo exec("which pdftk");
-			echo "hello there";
+			//echo exec("which pdftk");
+			//echo "hello there";
 		    $gs = 'gs_mac';
 		}
         exec("$IP/extensions/Reporting/PDFGenerator/{$gs} \\

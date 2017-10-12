@@ -77,17 +77,17 @@
         <ReportItem id="q15" type="CheckboxReportItem" withOther="true" blobType="BLOB_ARRAY" blobItem="Q15" limit="900" options="NSERC|AITF|Vanier" orientation="horizontal" optional="true">
             <![CDATA[
                 <div class="flex-item" style="
-                min-width: 370px; 
-                max-width: 500px;
-                flex-grow: 1;
-                flex-basis: 350px;
-                display: inline-block;
-                vertical-align: top;
-                overflow: hidden; 
-                box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                padding: 0px 16px 16px 16px;
-                margin-top: 8px;
-                margin-right: 8px;">
+                    min-width: 370px; 
+                    max-width: 500px;
+                    flex-grow: 1;
+                    flex-basis: 350px;
+                    display: inline-block;
+                    vertical-align: top;
+                    overflow: hidden; 
+                    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+                    padding: 0px 16px 16px 16px;
+                    margin-top: 8px;
+                    margin-right: 8px;">
                     <h1>Financial</h1>
                     <h3>Applied Scholarships<span title="Select all that you have applied to." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
@@ -131,63 +131,64 @@
             <![CDATA[
                     <div>
                         <div style="display: inline-block; vertical-align: top;">
-                        <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
-                        <script type="text/javascript">
-                            var calculateNormalizedGPA = function() {
-                                var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
-                                var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]:checked').val();
-                                if (gpa_scale == 'Other') {
-                                    gpa_scale = $('#AdditionalAdmissionInfo_q20_other input').val();
+                            <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                            <script type="text/javascript">
+                                var calculateNormalizedGPA = function() {
+                                    var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
+                                    var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]:checked').val();
+                                    if (gpa_scale == 'Other') {
+                                        gpa_scale = $('#AdditionalAdmissionInfo_q20_other input').val();
 
-                                }
-
-                                var returnValue;
-
-                                if (gpa != '') {
-                                    if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
-                                        returnValue = 'Scale cannot be out of 0';
-                                    } else {
-                                        // try calculating
-                                        var normalized = (gpa * 4) / (gpa_scale);
-                                        if (normalized > 4) {
-                                            returnValue = 'GPA greater than scale';
-                                        } else {
-                                            returnValue = parseFloat(normalized).toFixed(2);
-                                        }
                                     }
-                                } else {
-                                    returnValue = "";
-                                }
 
-                                $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
-                            };
+                                    var returnValue;
 
-                            $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
-                            $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
-                            $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
-                            $(document).ready(calculateNormalizedGPA);
+                                    if (gpa != '') {
+                                        if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
+                                            returnValue = 'Scale cannot be out of 0';
+                                        } else {
+                                            // try calculating
+                                            var normalized = (gpa * 4) / (gpa_scale);
+                                            if (normalized > 4) {
+                                                returnValue = 'GPA greater than scale';
+                                            } else {
+                                                returnValue = parseFloat(normalized).toFixed(2);
+                                            }
+                                        }
+                                    } else {
+                                        returnValue = "";
+                                    }
 
-                        </script>
-                    </div>
+                                    $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
+                                };
+
+                                $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
+                                $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
+                                $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
+                                $(document).ready(calculateNormalizedGPA);
+
+                            </script>
+                        </div>
             ]]>
         </ReportItem>
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100">
             <![CDATA[
-                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                        <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
-                    </div>
+                        <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                            <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                        </div>
             
             ]]>
         </ReportItem>
         <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="90%" optional="true">
             <![CDATA[
-                    <div>
-                        <h1 style="margin-top: 16px">GRE (General)</h1>
-                        <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
-                        <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                        {$item}
+                        <div>
+                            <h1 style="margin-top: 16px">GRE (General)</h1>
+                            <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
+                            <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                        </div>
             ]]>
         </ReportItem>
         <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
@@ -250,14 +251,24 @@
 
     </ReportSection>
 
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SOP" title="Statement of Purpose" blobSection="CS_QUESTIONS1" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1500">
+            <![CDATA[
+                <h3>Statement of Purpose</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+
     <ReportSection id="msc_thesis" tooltip="MSc Thesis" name="MSc Thesis" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qMSc1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc1" limit="128">
+        <ReportItem id="qMSc1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc1" limit="150">
             <![CDATA[
                 <h3>Thesis Title</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1800">
+        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1000">
             <![CDATA[
                 <h3>Thesis Abstract</h3>
                 {$item}
