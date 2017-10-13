@@ -747,23 +747,40 @@
         }
         if(strlen($endYear) == 2){
             $endYear = "20{$endYear}";
-        } 
+        }
         $product = new Product(array());
         $product->category = 'Award';
-        $product->type = 'Award';
+        $product->type = 'Other';
+        
+        $types = array();
+        if(strstr($award['Award Category'], "Teaching")){
+            $types[] = "Teaching";
+        }
+        if(strstr($award['Award Category'], "Research")){
+            $types[] = "Research";
+        }
+        if(strstr($award['Award Category'], "Service")){
+            $types[] = "Service";
+        }
+        if(count($types) > 1){
+            $product->type = "Combined";
+        }
+        else if(count($types) == 1){
+            $product->type = $types[0];
+        }
+        
         $product->title = ucwords(trim($award['Award']));
         $product->acceptance_date = trim($startYear)."-01-01";
         $product->date = trim($endYear)."-01-01";
         $product->status = "Published";
         $product->access = "Public";
         $product->description = trim($award['award description']);
-        $product->data = array('award_category' => ucwords($award['Award Category']),
-                               'awarded_by' => $award['Awarded by'],
+        $product->data = array('awarded_by' => $award['Awarded by'],
                                'scope' => ucwords($award['Type']));
                                
         $product->authors = array();
         $product->projects = array();
-                               
+        
         // Add Author
         if($award['Employee ID'] != null){
             $author = Person::newFromEmployeeId($award['Employee ID']);

@@ -449,6 +449,15 @@ ManageProductsView = Backbone.View.extend({
             }
         }, this));
         this.$el.html(this.template());
+        $("#pageTitle").qtip({
+            content: {
+                text: this.$('#instructions').html()
+            },
+            position: {
+                my: 'top left',
+                at: 'bottom left',
+            }
+        });
         this.addRows();
 	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){

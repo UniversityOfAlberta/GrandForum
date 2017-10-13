@@ -706,7 +706,7 @@
     </Products>  
 
     <Awards category="Award" citationFormat="{%Authors} {(%AYYYY - %YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
-         <Award type="Award" titles="Faculty of Science Award for Excellent Teaching|
+         <Award type="Teaching" titles="Faculty of Science Award for Excellent Teaching|
                                      Faculty of Science Graduate Mentoring Award|
                                      Faculty of Science Innovation in Teaching Award|
                                      Faculty of Science Research Award|
@@ -729,7 +729,126 @@
                                      Excellence in Graduate Teaching">
              <data>
                   <field label="URL" type="URL">url</field>
-                  <field label="Award Category" type="String">award_category</field>
+                  <field label="Awarded By" type="String">awarded_by</field>
+                  <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
+             </data>
+             <acceptance_date label="Start Date"></acceptance_date>
+            <date label="End Date"></date>
+         </Award>
+         
+         <Award type="Research" titles="Faculty of Science Award for Excellent Teaching|
+                                     Faculty of Science Graduate Mentoring Award|
+                                     Faculty of Science Innovation in Teaching Award|
+                                     Faculty of Science Research Award|
+                                     Faculty of Science Service Award|
+                                     Centennial Professor|
+                                     Distinguished University Professor|
+                                     GSA Excellence in Graduate Supervision Award|
+                                     J Gordin Kaplan Award for Excellence in Research|
+                                     Killam Annual Professorship|
+                                     Killam Award for Excellence in Mentoring|
+                                     Klawe Prize for Excellence in Teaching Large Classes|
+                                     Martha Cook Piper Research Prize|
+                                     McCalla Professorship|
+                                     Rutherford Award|
+                                     Teaching Unit Award|
+                                     University Cup|
+                                     Vargo Distinguished Teaching Chair|
+                                     3M National Teaching Fellowship|
+                                     Alan Blizzard Award|
+                                     Excellence in Graduate Teaching">
+             <data>
+                  <field label="URL" type="URL">url</field>
+                  <field label="Awarded By" type="String">awarded_by</field>
+                  <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
+             </data>
+             <acceptance_date label="Start Date"></acceptance_date>
+            <date label="End Date"></date>
+         </Award>
+         
+         <Award type="Service" titles="Faculty of Science Award for Excellent Teaching|
+                                     Faculty of Science Graduate Mentoring Award|
+                                     Faculty of Science Innovation in Teaching Award|
+                                     Faculty of Science Research Award|
+                                     Faculty of Science Service Award|
+                                     Centennial Professor|
+                                     Distinguished University Professor|
+                                     GSA Excellence in Graduate Supervision Award|
+                                     J Gordin Kaplan Award for Excellence in Research|
+                                     Killam Annual Professorship|
+                                     Killam Award for Excellence in Mentoring|
+                                     Klawe Prize for Excellence in Teaching Large Classes|
+                                     Martha Cook Piper Research Prize|
+                                     McCalla Professorship|
+                                     Rutherford Award|
+                                     Teaching Unit Award|
+                                     University Cup|
+                                     Vargo Distinguished Teaching Chair|
+                                     3M National Teaching Fellowship|
+                                     Alan Blizzard Award|
+                                     Excellence in Graduate Teaching">
+             <data>
+                  <field label="URL" type="URL">url</field>
+                  <field label="Awarded By" type="String">awarded_by</field>
+                  <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
+             </data>
+             <acceptance_date label="Start Date"></acceptance_date>
+            <date label="End Date"></date>
+         </Award>
+         
+         <Award type="Combined" titles="Faculty of Science Award for Excellent Teaching|
+                                     Faculty of Science Graduate Mentoring Award|
+                                     Faculty of Science Innovation in Teaching Award|
+                                     Faculty of Science Research Award|
+                                     Faculty of Science Service Award|
+                                     Centennial Professor|
+                                     Distinguished University Professor|
+                                     GSA Excellence in Graduate Supervision Award|
+                                     J Gordin Kaplan Award for Excellence in Research|
+                                     Killam Annual Professorship|
+                                     Killam Award for Excellence in Mentoring|
+                                     Klawe Prize for Excellence in Teaching Large Classes|
+                                     Martha Cook Piper Research Prize|
+                                     McCalla Professorship|
+                                     Rutherford Award|
+                                     Teaching Unit Award|
+                                     University Cup|
+                                     Vargo Distinguished Teaching Chair|
+                                     3M National Teaching Fellowship|
+                                     Alan Blizzard Award|
+                                     Excellence in Graduate Teaching">
+             <data>
+                  <field label="URL" type="URL">url</field>
+                  <field label="Awarded By" type="String">awarded_by</field>
+                  <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
+             </data>
+             <acceptance_date label="Start Date"></acceptance_date>
+            <date label="End Date"></date>
+         </Award>
+         
+         <Award type="Other" titles="Faculty of Science Award for Excellent Teaching|
+                                     Faculty of Science Graduate Mentoring Award|
+                                     Faculty of Science Innovation in Teaching Award|
+                                     Faculty of Science Research Award|
+                                     Faculty of Science Service Award|
+                                     Centennial Professor|
+                                     Distinguished University Professor|
+                                     GSA Excellence in Graduate Supervision Award|
+                                     J Gordin Kaplan Award for Excellence in Research|
+                                     Killam Annual Professorship|
+                                     Killam Award for Excellence in Mentoring|
+                                     Klawe Prize for Excellence in Teaching Large Classes|
+                                     Martha Cook Piper Research Prize|
+                                     McCalla Professorship|
+                                     Rutherford Award|
+                                     Teaching Unit Award|
+                                     University Cup|
+                                     Vargo Distinguished Teaching Chair|
+                                     3M National Teaching Fellowship|
+                                     Alan Blizzard Award|
+                                     Excellence in Graduate Teaching">
+             <data>
+                  <field label="URL" type="URL">url</field>
                   <field label="Awarded By" type="String">awarded_by</field>
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
              </data>
