@@ -56,6 +56,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
+        $start = $this->getAttr('start', 0);
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
         $isVertical = (strtolower($orientation) == 'vertical');
@@ -164,7 +165,11 @@ EOF;
                 }
                 if($("#table_{$this->getPostId()} tr.obj").length < {$minEntries}){
                     $(".table_{$this->getPostId()}").show();
-                    $(".table_{$this->getPostId()}").html('You must include at least {$minEntries} entries.');
+                    if({$minEntries} == 1) {
+                        $(".table_{$this->getPostId()}").html('You must include at least 1 entry');
+                    } else {
+                        $(".table_{$this->getPostId()}").html('You must include at least {$minEntries} entries.');
+                    }
                 }
                 else{
                     $(".table_{$this->getPostId()}").hide();
@@ -299,10 +304,15 @@ EOF;
             }
             $item .= "</tr>";
         }*/
-        if($multiple){
+        if ($multiple){
             $item .= "<tfoot><tr><td colspan='".(count($indices)+1)."'>";
             $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
             $item .= "</td></tr></tfoot>";
+
+            $startingNum = max($minEntries, $start);
+            for ($i = count($values); $i < $startingNum; $i++) {
+                $item .= "<script type='text/javascript'>$('#add_{$this->getPostId()}').click()</script>";
+            }
         }
         $item .= "</table>";
         $item .= "<script type='text/javascript'>

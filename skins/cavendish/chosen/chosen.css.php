@@ -2,7 +2,7 @@
 
 header('Content-Type: text/css');
 
-require_once("../../../config/Config.php");
+require_once("../../../config/ForumConfig.php");
 
 $hl = $config->getValue("highlightColor");
 $iconPath = $config->getValue("iconPath");

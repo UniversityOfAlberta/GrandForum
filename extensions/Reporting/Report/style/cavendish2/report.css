@@ -138,8 +138,8 @@ table.small textarea {
     display: table-cell;
     overflow: hidden;
     vertical-align:top;
-    min-height:650px;
-    height:650px;
+    min-height:500px;
+    height:500px;
 }
 
 #reportMain > div {
@@ -149,8 +149,8 @@ table.small textarea {
     height:100%;
     position:relative;
     margin-left:1px;
-    min-height:650px;
-    height:650px;
+    min-height:500px;
+    height:500px;
 }
 
 #reportMain > div > div {
@@ -219,7 +219,7 @@ table.small textarea {
 #reportBody {
     margin:10px;
     display:block;
-    min-height:550px;
+    min-height:400px;
 }
 
 #reportFooter {
@@ -233,7 +233,7 @@ table.small textarea {
 #reportInstructions {
     font-size: 11px;
     display:table-cell;
-    max-height: 550px;
+    max-height::400px;
     position:static;
     vertical-align:top;
     min-width: 230px;
@@ -243,7 +243,7 @@ table.small textarea {
 #reportInstructions > div {
     overflow: auto;
     position:absolute;
-    max-height:550px;
+    max-height:400px;
     min-width: 210px;
 }
 
@@ -389,7 +389,7 @@ div.disabled_bg h4{
 div.eula {
     background: #EEEEEE;
     color: #555555;
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: scroll;
     padding: 5px;
     border: 1px solid #AAAAAA;
