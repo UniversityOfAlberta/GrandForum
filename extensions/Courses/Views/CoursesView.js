@@ -14,13 +14,13 @@ CoursesView = Backbone.View.extend({
     },
 
     addCourse: function(){
-        //var model = new Course({student_person: [me.toJSON()]});
         var model = new Course();
+	//this sets it so that person logged in is added as owner of course.. maybe later can add actual field for Admins to set
 	model.set('person_name',me.get('fullName'));
 	model.set('student_url', me.get('url'));
         var view = new CoursesEditView({el: this.editDialog, model: model, isDialog: true});
-	view.render();
         this.editDialog.view = view;
+        view.render();
         this.editDialog.dialog({
             height: $(window).height()*0.75,
             width: 800,
@@ -56,21 +56,7 @@ CoursesView = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-        $(document).click($.proxy(function(e){
-            var popup = $("div.popupBox:visible").not(":animated").first();
-            if(popup.length > 0 && !$.contains(popup[0], e.target)){
-                _.each(this.subViews, function(view){
-                    if(view.$("div.popupBox").is(":visible")){
-                        // Need to defer the event so that unchecking a project is not in conflict
-                        _.defer(function(){
-                            view.model.trigger("change", view.model);
-                        });
-                    }
-                });
-            }
-        }, this));
         this.$el.html(this.template());
-	console.log(this.model);
            this.editDialog = this.$("#editDialog").dialog({
                 autoOpen: false,
                 modal: true,
@@ -116,24 +102,9 @@ CoursesView = Backbone.View.extend({
             });
 
         this.addRows();
-                $(document).ready(function () {
-                    $("#showfilter").click(function () {
-                        if ($(this).data('name') == 'show') {
-                            $("#filters").animate({
-                            }).hide();
-                            $(this).data('name', 'hide');
-                            $(this).val('Show Filter Options');
-                        } else {
-                            $("#filters").animate({
-                            }).show();
-                            $(this).data('name', 'show')
-                            $(this).val('Hide Filter Options');
-                        }
-                    });
-                });
-            $(window).resize($.proxy(function(){
-                this.editDialog.dialog({height: $(window).height()*0.75});
-            }, this));
+        $(window).resize($.proxy(function(){
+            this.editDialog.dialog({height: $(window).height()*0.75});
+        }, this));
         return this.$el;
     }
 });
