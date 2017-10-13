@@ -1662,7 +1662,7 @@ class ReportItemCallback {
     }
 
     function getString($f) {
-        return trim(file_get_contents("Extensions/Reporting/Report/ReportStrings/$f"));
+        return trim(file_get_contents("extensions/Reporting/Report/ReportStrings/$f"));
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId){
