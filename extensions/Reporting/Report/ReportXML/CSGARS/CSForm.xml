@@ -8,7 +8,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
@@ -229,7 +229,7 @@
 
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SOP" title="Statement of Purpose" blobSection="CS_QUESTIONS1" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS1" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1500" height="1000px">
             <![CDATA[
                 <h3>Statement of Purpose</h3>
@@ -255,24 +255,11 @@
     </ReportSection>
 
 
-
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
-            <![CDATA[
-                <p>Use this to upload any CV or resume PDF file relevant to your submission</p>
-                <h3>Upload</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-
-    </ReportSection>
-
-
     <ReportSection id="multimedia_page" tooltip="Multimedia Project History" name="Multimedia Program" title="Multimedia Program" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="qmulti1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qmulti1" limit="200">
             <![CDATA[
-                <h3>Professional certificate/diploma</h3>
+                <h3>Professional Certificate/Diploma</h3>
                 {$item}
             ]]>
         </ReportItem>

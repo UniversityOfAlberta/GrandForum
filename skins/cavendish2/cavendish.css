@@ -1864,6 +1864,33 @@ table.gsms th{
     font-size:18px;
 }
 
+div.dt-buttons {
+	position: absolute !important;
+    top: 4px;
+    left: 6px;
+}
+
+div.dt-buttons > a {
+	border-radius: 10px;
+}
+
+div.dt-button-collection {
+	max-height: 400px;
+	overflow-y: auto !important;
+}
+
+.dt-button.buttons-columnVisibility {
+	background-color: #888888 !important;
+	color: #EEEEEE !important;
+	background-image: none !important;
+}
+
+.dt-button.buttons-columnVisibility.active {
+	background-color: #CCCCCC !important;
+	color: black !important;
+	background-image: none !important;
+}
+
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
 .popup .show {

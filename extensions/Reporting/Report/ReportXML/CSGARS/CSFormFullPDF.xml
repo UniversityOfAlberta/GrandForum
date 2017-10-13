@@ -265,19 +265,6 @@
     </ReportSection>
 
 
-
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
-            <![CDATA[
-                <p>Use this to upload any CV or resume PDF file relevant to your submission</p>
-                <h3>Upload</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-
-    </ReportSection>
-
-
     <ReportSection id="multimedia_page" tooltip="Multimedia Project History" name="Multimedia Program" title="Multimedia Program" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="qmulti1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qmulti1" limit="200">
@@ -295,16 +282,4 @@
 
     </ReportSection>
 
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false" title="CV/Resume File">
-        <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
-        <![CDATA[
-            <h3>Upload</h3>
-            {$item}
-        </div>
-
-        </div>
-        ]]>
-        </ReportItem>
-
-    </ReportSection>
 </Report>
