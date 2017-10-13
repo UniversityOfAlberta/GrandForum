@@ -72,7 +72,7 @@
                     <![CDATA[
                         <tr>
                             <td>{$product_title}</td>
-                            <td align='left'>{$award_category}</td>
+                            <td align='left'>{$product_type}</td>
                             <td align='left'>{$award_by}</td>
                             <td align='left'>{$award_scope}</td>
                             <td align='center'>{$product_year_range}</td>

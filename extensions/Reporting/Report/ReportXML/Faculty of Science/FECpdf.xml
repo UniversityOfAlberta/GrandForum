@@ -226,7 +226,7 @@
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
-                        <td align='center'>{$award_category}</td>
+                        <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
                     </tr>

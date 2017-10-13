@@ -119,7 +119,6 @@ class ReportItemCallback {
             "presentation_length" => "getPresentationLength",
             "presentation_date" => "getProductDate",
             //Awards
-            "award_category" => "getAwardCategory",
             "award_scope" => "getAwardScope",
             "award_by" => "getAwardedBy",
             // Other
@@ -807,12 +806,6 @@ class ReportItemCallback {
     function getProductDate(){
         $product = Paper::newFromId($this->reportItem->productId);
         return @$product->getDate();
-    }
-    
-    function getAwardCategory(){
-        $product = Paper::newFromId($this->reportItem->productId);
-        $product = $product->getData();
-        return @$product['award_category'];
     }
     
     function getAwardScope(){
