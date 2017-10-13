@@ -33,6 +33,9 @@ Product = Backbone.Model.extend({
             if(status == "Published"){
                 this.set('access', 'Public');
             }
+            else{
+                this.set('access', 'Forum');
+            }
         });
     },
 
