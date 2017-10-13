@@ -77,7 +77,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational">
+            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational" includeSelf="true">
                 <ReportItem id="default" type="Static">
                     <![CDATA[
                         {set(rank,{getText(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
@@ -122,7 +122,7 @@
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Translational">
             <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
-                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational" includeSelf="true">
                         <ReportItem id="review" type="StaticReportItem">
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
