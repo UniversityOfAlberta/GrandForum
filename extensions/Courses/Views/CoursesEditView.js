@@ -71,7 +71,6 @@ CoursesEditView = Backbone.View.extend({
         main.set('title',this.model.get('subject') + ' ' + this.model.get('catalog') + ' (' + this.model.get('component') + ')');
     }
       	var self = this;
-	console.log(self.model);
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
         return this.$el;
