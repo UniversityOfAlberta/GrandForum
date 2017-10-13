@@ -443,7 +443,9 @@ abstract class AbstractReportItem {
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
                 $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
-                $v = str_replace(",", "&#44;", $v);
+                $v = preg_replace(preg_quote('/[^\\],/'), "&#44;", $v);
+                $v = str_replace('\,', ',', $v);
+                //$v = str_replace(",", "&#44;", $v);
                 $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
             }
         }
@@ -481,7 +483,9 @@ abstract class AbstractReportItem {
                             $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                         }
                         else{
-                            $v = str_replace(",", "&#44;", $v);
+                            $v = preg_replace(preg_quote('/[^\\],/'), "&#44;", $v);
+                            $v = str_replace('\,', ',', $v);
+                            //$v = str_replace(",", "&#44;", $v);
                             foreach($matches[1] as $k2 => $m2){
                                 $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
                             }

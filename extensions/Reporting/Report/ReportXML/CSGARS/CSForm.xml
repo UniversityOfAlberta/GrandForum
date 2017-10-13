@@ -254,6 +254,15 @@
         </ReportItem>
     </ReportSection>
 
+    <ReportSection id="courses" tooltip="Courses" name="Courses" blobSection="CS_Q_COURSES" type="EditableReportSection" pagebreak="true">
+        <ReportItem id="qCourses" type="MultiTextReportItem" types="Text|Select({getString(CS_Classes.file)})|Integer(0,100)" labels="Course|UofA Course|Grade" start="1" sizes="||75" multiple="true" blobType="BLOB_ARRAY" blobItem="QCourses" limit="150" width="98%">
+            <![CDATA[
+                <h3>Courses Taken</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
 
     <ReportSection id="multimedia_page" tooltip="Multimedia Project History" name="Multimedia Program" title="Multimedia Program" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
