@@ -254,7 +254,7 @@
     </ReportSection>
 
     <ReportSection id="courses" tooltip="Courses" name="Courses" blobSection="CS_Q_COURSES" type="EditableReportSection" pagebreak="true">
-        <ReportItem id="qCourses" type="MultiTextReportItem" types="Text|ComboBox({getString(CS_Classes.file)})|Integer(0,100)" labels="Course|UofA Course|Grade" start="1" sizes="||75" multiple="true" blobType="BLOB_ARRAY" blobItem="QCourses" limit="150" width="98%">
+        <ReportItem id="qCourses" type="MultiTextReportItem" types="Text|ComboBox({getString(CS_Classes.file)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="QCourses" limit="150" width="98%">
             <![CDATA[
                 <h3>Courses Taken</h3>
                 {$item}
