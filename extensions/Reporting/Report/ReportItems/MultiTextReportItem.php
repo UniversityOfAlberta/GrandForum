@@ -56,6 +56,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
+        $heights = explode("|", $this->getAttr('heights'));
         $start = $this->getAttr('start', 0);
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
@@ -100,7 +101,12 @@ EOF;
                             $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' data-min='{$matches[0]}' data-max='{$matches[1]}'/></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
+                            if (count($heights) <= $j){
+                                $height = 60;
+                            } else {
+                                $height = max(60, $heights[$j]);
+                            }
+                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:{$height}px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){

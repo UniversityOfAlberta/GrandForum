@@ -271,7 +271,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="qmulti2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="qmulti2" labels="Title|Description" types="Text|Textarea" multiple="true" start="1">
+        <ReportItem id="qmulti2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="qmulti2" labels="Title|Description" types="Text|Textarea" multiple="true" start="1" sizes="275|350" heights="|150">
             <![CDATA[
                 <h3>Multimedia projects history</h3>
                 {$item}
