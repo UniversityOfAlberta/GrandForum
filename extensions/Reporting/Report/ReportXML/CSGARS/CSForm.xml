@@ -119,8 +119,8 @@
                         {$item}
                         <script type="text/javascript">
                             var calculateNormalizedGPA = function() {
-                                var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
-                                var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]').val();
+                                var gpa       = $('[name=CSApplicationDetails_q19]').val();
+                                var gpa_scale = $('[name=CSApplicationDetails_q20]').val();
 
                                 var returnValue;
 
@@ -140,12 +140,11 @@
                                     returnValue = "";
                                 }
 
-                                $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
+                                $('[name=CSApplicationDetails_q21]').val(returnValue);
                             };
 
-                            $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
-                            $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
-                            $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
+                            $('[name=CSApplicationDetails_q19]').change(calculateNormalizedGPA);
+                            $('[name=CSApplicationDetails_q20]').change(calculateNormalizedGPA);
                             $(document).ready(calculateNormalizedGPA);
 
                         </script>
@@ -202,9 +201,9 @@
                     {$item}
                     <script type="text/javascript">
                         var calculateGRE = function() {
-                            var gre1 = $('[name=AdditionalAdmissionInfo_q24]').val();
-                            var gre2 = $('[name=AdditionalAdmissionInfo_q25]').val();
-                            var gre3 = $('[name=AdditionalAdmissionInfo_q26]').val();
+                            var gre1 = $('[name=CSApplicationDetails_q24]').val();
+                            var gre2 = $('[name=CSApplicationDetails_q25]').val();
+                            var gre3 = $('[name=CSApplicationDetails_q26]').val();
 
                             var returnValue = '';
                             if ((gre1 != '') && (gre2 != '') && (gre3 != '')) {
@@ -212,12 +211,12 @@
                                 returnValue = parseFloat(returnValue).toFixed(2);
                             }
 
-                            $('[name=AdditionalAdmissionInfo_q27]').val(returnValue);
+                            $('[name=CSApplicationDetails_q27]').val(returnValue);
                         };
 
-                        $('[name=AdditionalAdmissionInfo_q24]').change(calculateGRE);
-                        $('[name=AdditionalAdmissionInfo_q25]').change(calculateGRE);
-                        $('[name=AdditionalAdmissionInfo_q26]').change(calculateGRE);
+                        $('[name=CSApplicationDetails_q24]').change(calculateGRE);
+                        $('[name=CSApplicationDetails_q25]').change(calculateGRE);
+                        $('[name=CSApplicationDetails_q26]').change(calculateGRE);
                         $(document).ready(calculateGRE);
 
                     </script>
@@ -255,7 +254,7 @@
     </ReportSection>
 
     <ReportSection id="courses" tooltip="Courses" name="Courses" blobSection="CS_Q_COURSES" type="EditableReportSection" pagebreak="true">
-        <ReportItem id="qCourses" type="MultiTextReportItem" types="Text|Select({getString(CS_Classes.file)})|Integer(0,100)" labels="Course|UofA Course|Grade" start="1" sizes="||75" multiple="true" blobType="BLOB_ARRAY" blobItem="QCourses" limit="150" width="98%">
+        <ReportItem id="qCourses" type="MultiTextReportItem" types="Text|ComboBox({getString(CS_Classes.file)})|Integer(0,100)" labels="Course|UofA Course|Grade" start="1" sizes="||75" multiple="true" blobType="BLOB_ARRAY" blobItem="QCourses" limit="150" width="98%">
             <![CDATA[
                 <h3>Courses Taken</h3>
                 {$item}
