@@ -2896,7 +2896,8 @@ class Person extends BackboneModel {
             $this->grants = array();
             $data = DBFunctions::select(array('grand_grants'),
                                         array('id'),
-                                        array('user_id' => EQ($this->getId())));
+                                        array('user_id' => EQ($this->getId()),
+                                              WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
             foreach($data as $row){
                 $grant = Grant::newFromId($row['id']);
                 if($grant != null && $grant->getId() != 0){

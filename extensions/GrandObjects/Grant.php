@@ -53,12 +53,14 @@ class Grant extends BackboneModel {
         $me = Person::newFromWgUser();
         if(count($data) > 0){
             $row = $data[0];
-            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(ISAC)){
+            $copi = unserialize($row['copi']);
+            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(ISAC) ||
+               array_search($me->getId(), $copi) !== false){
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->project_id = $row['project_id'];
                 $this->sponsor = $row['sponsor'];
-                $this->copi = unserialize($row['copi']);
+                $this->copi = $copi;
                 $this->total = $row['total'];
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
