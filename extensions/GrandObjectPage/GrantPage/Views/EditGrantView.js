@@ -8,7 +8,7 @@ EditGrantView = Backbone.View.extend({
         if(!this.model.isNew()){
             this.model.fetch({
                 error: $.proxy(function(e){
-                    this.$el.html("This Grant does not exist");
+                    this.$el.html("This Revenue Account does not exist");
                 }, this)
             });
         }
@@ -49,7 +49,7 @@ EditGrantView = Backbone.View.extend({
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Grant", true);
+                    addError("There was a problem saving the Revenue Account", true);
                 }
             }, this)
         });

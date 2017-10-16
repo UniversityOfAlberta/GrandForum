@@ -13,7 +13,7 @@ class PersonGrantsTab extends AbstractTab {
         $this->visibility = $visibility;
         $this->startRange = $startRange;
         $this->endRange = $endRange;
-        $this->tooltip = "Contains two tables listing the faculty member's Grant Accounts, as shown in the UoA's Peoplesoft system, and the corresponding Grant Awards between the specified start and end dates.";
+        $this->tooltip = "Contains two tables listing the faculty member's Revenue Accounts, as shown in the UoA's Peoplesoft system, and the corresponding Awarded NSERC Applications between the specified start and end dates.";
     }
 
     function generateBody(){
@@ -55,13 +55,13 @@ class PersonGrantsTab extends AbstractTab {
                         </div>";
         $this->html .= "
             <div class='grantAccordion'>
-                <h3><a href='#'>Grant Accts</a></h3>
+                <h3><a href='#'>Revenue Accts</a></h3>
                 <div>
                 {$this->generateUofAGrantTable()}
                 </div>
             </div>
             <div class='grantAccordion'>
-                <h3><a href='#'>Awards</a></h3>
+                <h3><a href='#'>Awarded NSERC Applications</a></h3>
                 <div>
                 {$this->generateGrantTable()}
                 </div>

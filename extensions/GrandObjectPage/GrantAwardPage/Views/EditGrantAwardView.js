@@ -7,7 +7,7 @@ EditGrantAwardView = Backbone.View.extend({
         if(!this.model.isNew()){
             this.model.fetch({
                 error: $.proxy(function(e){
-                    this.$el.html("This Grant Award does not exist");
+                    this.$el.html("This Awarded NSERC Application does not exist");
                 }, this)
             });
         }
@@ -18,7 +18,7 @@ EditGrantAwardView = Backbone.View.extend({
                 main.set('title', this.model.get('application_title'));
             }
             else{
-                main.set('title', 'New Grant Award');
+                main.set('title', 'New Awarded NSERC Application');
             }
         });
         this.listenTo(this.model, 'sync', function(){
@@ -54,7 +54,7 @@ EditGrantAwardView = Backbone.View.extend({
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Grant Award", true);
+                    addError("There was a problem saving the Awarded NSERC Application", true);
                 }
             }, this)
         });
@@ -117,7 +117,7 @@ EditGrantAwardView = Backbone.View.extend({
             main.set('title', this.model.get('application_title'));
         }
         else{
-            main.set('title', 'New Grant Award');
+            main.set('title', 'New Awarded NSERC Application');
         }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderCoapplicants();

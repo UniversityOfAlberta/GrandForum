@@ -7,7 +7,7 @@ GrantsView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', "Grant Accts");
+        main.set('title', "Revenue Accounts");
         this.$el.html(this.template());
         this.$("#grants").dataTable({iDisplayLength: 100});
         return this.$el;

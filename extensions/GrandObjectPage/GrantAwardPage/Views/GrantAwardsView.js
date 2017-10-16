@@ -48,7 +48,7 @@ GrantAwardsView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', "Grant Awards");
+        main.set('title', "Awarded NSERC Applications");
         this.$el.css('display', 'none');
         this.$el.html(this.template());
         var data = this.processData(0);

@@ -6,7 +6,7 @@ GrantAwardView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch({
             error: $.proxy(function(e){
-                this.$el.html("This Grant Award does not exist");
+                this.$el.html("This Awarded NSERC Application does not exist");
             }, this)
         });
         

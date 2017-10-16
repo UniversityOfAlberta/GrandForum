@@ -6,7 +6,7 @@ GrantView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch({
             error: $.proxy(function(e){
-                this.$el.html("This Grant does not exist");
+                this.$el.html("This Revenue Account does not exist");
             }, this)
         });
         
