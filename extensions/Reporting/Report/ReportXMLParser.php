@@ -238,7 +238,12 @@ class ReportXMLParser {
                 }
             }
             if(isset($attributes->year)){
-                $this->report->year = "{$attributes->year}";
+                if(intval("{$attributes->year}") < 0){
+                    $this->report->year = YEAR + intval("{$attributes->year}");
+                }
+                else{
+                    $this->report->year = "{$attributes->year}";
+                }
                 $this->report->startYear = $this->report->year - 1;
             }
             if(isset($attributes->startYear)){
