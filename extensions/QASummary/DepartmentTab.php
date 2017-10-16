@@ -13,7 +13,7 @@ class DepartmentTab extends AbstractTab {
     
     function generateBody(){
         global $wgOut;
-        $year = YEAR;
+        $year = YEAR-1;
         $people = array();
         $hqps = array();
         $ugrads = array();
@@ -61,7 +61,7 @@ class DepartmentTab extends AbstractTab {
         }
         
         ksort($courses);
-        $html = "<h1>Department of Chemistry</h1>";
+        $html = "<h1>Department of {$this->department}</h1>";
         $html .= "<h2>Quality Assurance Reporting Period: July 1, ".($year-5)." - June 30, $year</h2>";
         $html .= "<h2>Course Descriptions and Associated Instructors</h2>";
         foreach($courses as $key => $course){
