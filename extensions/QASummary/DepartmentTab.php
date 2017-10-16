@@ -93,11 +93,65 @@ class DepartmentTab extends AbstractTab {
         }
         $html .= "</table>";
         
+        $awards = array();
+        foreach($people as $person){
+            foreach($person->getPapersAuthored("Award", ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $award){
+                if($award->getData('scope') != ''){
+                    $awards[$award->getData('scope')][] = $award;
+                }
+            }
+        }
+        
+        uksort($awards, function($a, $b){
+            $dict = array("International" => 0,
+                          "National" => 1,
+                          "Provincial" => 2,
+                          "University" => 3,
+                          "Faculty" => 4,
+                          "Departmental" => 5);
+            $aVal = (isset($dict[$a])) ? $dict[$a] : 1000;
+            $bVal = (isset($dict[$b])) ? $dict[$b] : 1000;
+            
+            return $aVal - $bVal;
+        });
+        
+        $html .= "<h2>Awards Summary Table</h2>";
+        foreach($awards as $scope => $as){
+            $html .= "<h3>{$scope}</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <tr>
+                        <th width='35%'>Title</th>
+                        <th width='35%'>Awarded By</th>
+                        <th width='20%'>Recipient Last Names</th>
+                        <th width='10%'>Year</th>
+                    </tr>";
+            foreach($as as $award){
+                $authors = array();
+                foreach($award->getAuthors() as $author){
+                    $authors[] = $author->getLastName();
+                }
+                $html .= "<tr><td>{$award->getTitle()}</td><td>{$award->getData('awarded_by')}</td><td>".implode(", ", $authors)."</td><td>{$award->getYear()}</td></tr>";
+            }
+            $html .= "</table>";
+        }
+        /*$html .= "<h3>International</h3>";
+        foreach($awards['International'] as $award
+        
+        $html .= "<h3>National</h3>";
+        
+        $html .= "<h3>Provincial</h3>";
+        
+        $html .= "<h3>University</h3>";
+        
+        $html .= "<h3>Faculty</h3>";
+        
+        $html .= "<h3>Departmental</h3>";*/
+        
         $gradPapers = array();
         $ugradPapers = array();
         
         foreach($hqps as $hqp){
-            $papers = $hqp->getPapersAuthored("all", ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
+            $papers = $hqp->getPapersAuthored("Publication", ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
                 $uni = $hqp->getUniversityDuring($paper->getDate(), $paper->getDate());
                 $pos = @$uni['position'];
