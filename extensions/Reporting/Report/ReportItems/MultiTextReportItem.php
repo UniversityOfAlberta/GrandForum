@@ -148,7 +148,7 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
+                        "<td colspan='$colspan'><button type='button' name='{$this->getPostId()}_btn_rmv' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
 EOF;
                     if($isVertical){
                         $item .= "+ \"<tr id='obj\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
@@ -161,9 +161,11 @@ EOF;
             }
             
             function removeObj{$this->getPostId()}(obj){
-                var id = $(obj).parent().parent().attr('id');
-                $('tr#' + id, $(obj).parent().parent().parent()).remove();
-                updateTable{$this->getPostId()}();
+                _.defer(function() {
+                    var id = $(obj).parent().parent().attr('id');
+                    $('tr#' + id, $(obj).parent().parent().parent()).remove();
+                    updateTable{$this->getPostId()}();
+                });
             }
             
             function updateTable{$this->getPostId()}(){
@@ -306,7 +308,7 @@ EOF;
                     $colspan = 2;
                 }
                 if($multiple){
-                    $item .= "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                    $item .= "<td colspan='$colspan'><button type='button' name='{$this->getPostId()}_btn_rmv' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
                 }
                 $item .= "</tr>";
                 if($isVertical){
