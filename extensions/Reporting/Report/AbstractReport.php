@@ -777,7 +777,9 @@ abstract class AbstractReport extends SpecialPage {
                 if(!$project->isSubProject()){
                     foreach($this->pdfFiles as $pdfFile){
                         set_time_limit(120); // Renew the execution timer
-                        $wgOut->clearHTML();
+                        if(!$wgOut->isDisabled()){
+                            $wgOut->clearHTML();
+                        }
                         $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
                         $report->renderForPDF();
                         $data = "";
@@ -796,28 +798,56 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
-        foreach($this->pdfFiles as $pdfFile){
+        if(count($this->pdfFiles) > 0){
+            foreach($this->pdfFiles as $pdfFile){
+                set_time_limit(120); // Renew the execution timer
+                if(!$wgOut->isDisabled()){
+                    $wgOut->clearHTML();
+                }
+                $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
+                $report->renderForPDF();
+                $data = "";
+                $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report);
+                if($preview){
+                    exit;
+                }
+                $sto = new ReportStorage($this->person);
+                $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
+                if($report->project != null){
+                    $ind = new ReportIndex($this->person);
+                    $rid = $sto->metadata('report_id');
+                    $ind->insert_report($rid, $report->project);
+                }
+                $tok = $sto->metadata('token');
+                $tst = $sto->metadata('timestamp');
+                $len = $sto->metadata('pdf_len');
+                $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
+            }
+        }
+        else{
             set_time_limit(120); // Renew the execution timer
-            $wgOut->clearHTML();
-            $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
-            $report->renderForPDF();
+            if(!$wgOut->isDisabled()){
+                $wgOut->clearHTML();
+            }
+            $this->renderForPDF();
             $data = "";
-            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report);
+            $pdf = PDFGenerator::generate("{$this->person->getNameForForms()}_{$this->name}", $wgOut->getHTML(), "", $me, $this->project, false, $this);
             if($preview){
                 exit;
             }
             $sto = new ReportStorage($this->person);
-            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
-            if($report->project != null){
+            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $this->pdfType, $this->year);
+            if($this->project != null){
                 $ind = new ReportIndex($this->person);
                 $rid = $sto->metadata('report_id');
-                $ind->insert_report($rid, $report->project);
+                $ind->insert_report($rid, $this->project);
             }
             $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
-            $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
+            $json[] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$this->name}");
         }
+        
         if($submit){
             $this->submitReport($person);
         }

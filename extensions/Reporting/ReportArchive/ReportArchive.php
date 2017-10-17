@@ -97,7 +97,10 @@ class ReportArchive extends SpecialPage {
                             $minute = substr($tst, 11, 2);
                             $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
                             $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
-                            if($report->project != null){
+                            if($report->name == ""){
+                                $name = str_replace(" ", "-", trim(str_replace(":", "", $type)))."_$date.$ext";
+                            }
+                            else if($report->project != null){
                                 $project = $report->project;
                                 if($report->person->getId() == 0){
                                     $reportName = trim(str_replace($project->getName(), "", $reportName), " \t\n\r\0\x0B-");
@@ -129,12 +132,12 @@ class ReportArchive extends SpecialPage {
                     ob_clean();
                     header("Content-Type: application/{$ext}");
                     header('Content-Length: ' . $len);
-		    if(isset($_GET['download'])){                    
-			header('Content-Disposition: attachment; filename="'.$name.'"');
-		    }
-		    else{
+                    if(isset($_GET['download'])){                    
+                        header('Content-Disposition: attachment; filename="'.$name.'"');
+                    }
+                    else{
                         header('Content-Disposition: inline; filename="'.$name.'"');
-		    }
+                    }
                     header('Cache-Control: private, max-age=0, must-revalidate');
                     header('Pragma: public');
                     ini_set('zlib.output_compression','0');

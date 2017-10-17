@@ -12,7 +12,8 @@ class DepartmentTab extends AbstractTab {
     }
     
     function generateBody(){
-        global $wgOut;
+        global $wgOut, $config;
+        $me = Person::newFromWgUser();
         $year = YEAR-1;
         $people = array();
         $hqps = array();
@@ -63,6 +64,11 @@ class DepartmentTab extends AbstractTab {
         ksort($courses);
         $html = "<h1>Department of {$this->department}</h1>";
         $html .= "<h2>Quality Assurance Reporting Period: July 1, ".($year-5)." - June 30, $year</h2>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Course Descriptions and Associated Instructors\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>Course Descriptions and Associated Instructors</h2>";
         foreach($courses as $key => $course){
             $html .= "<h3>{$key}</h3>";
@@ -78,6 +84,12 @@ class DepartmentTab extends AbstractTab {
             $html .= implode("; ", $profs);
         }
         
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Distribution of Courses across Instructors\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>Distribution of Courses across Instructors</h2>";
         $html .= "<table>";
         foreach($people as $person){
@@ -115,6 +127,12 @@ class DepartmentTab extends AbstractTab {
             return $aVal - $bVal;
         });
         
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Awards Summary Table\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>Awards Summary Table</h2>";
         foreach($awards as $scope => $as){
             $html .= "<h3>{$scope}</h3>
@@ -134,18 +152,6 @@ class DepartmentTab extends AbstractTab {
             }
             $html .= "</table>";
         }
-        /*$html .= "<h3>International</h3>";
-        foreach($awards['International'] as $award
-        
-        $html .= "<h3>National</h3>";
-        
-        $html .= "<h3>Provincial</h3>";
-        
-        $html .= "<h3>University</h3>";
-        
-        $html .= "<h3>Faculty</h3>";
-        
-        $html .= "<h3>Departmental</h3>";*/
         
         $gradPapers = array();
         $ugradPapers = array();
@@ -164,6 +170,12 @@ class DepartmentTab extends AbstractTab {
             }
         }
         
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Graduate Student Publications\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>Graduate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($gradPapers)."</p>";
         $html .= "<small>Graduate student name boldfaced</small><br />";
@@ -173,6 +185,12 @@ class DepartmentTab extends AbstractTab {
         }
         $html .= "</ul>";
         
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Undergradate Student Publications\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>Undergradate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($ugradPapers)."</p>";
         $html .= "<small>Graduate student name boldfaced</small><br />";
@@ -182,6 +200,12 @@ class DepartmentTab extends AbstractTab {
         }
         $html .= "</ul>";
         
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"HQP Supervision Summary Document\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
         $html .= "<h2>HQP Supervision Summary Document</h2>";
         
         $html .= "<p>Total number of undergraduate students: ".count($ugrads)."</p>";
@@ -194,8 +218,71 @@ class DepartmentTab extends AbstractTab {
         
         $html .= "<p>Total number of PDFs: ".count($pdfs)."</p>";
         
+        $report = new Report();
+        $report->pdfType = "QA_SUMMARY: {$this->department}";
+        $report->year = YEAR;
+        if(isset($_GET['generatePDF']) && isset($_GET['tab']) && $_GET['tab'] == $this->id){
+            $report->headerName = " ";
+            $wgOut->clearHTML();
+            $wgOut->addHTML($html);
+            $wgOut->disable();
+            $report->generatePDF();
+        }
+        else{
+            $this->html .= "<button type='button' id='generate{$this->id}'>Generate PDF</button>&nbsp;";
+            $pdf = $report->getLatestPDF();
+            if(isset($pdf[0]['token'])){
+                $pdf = PDF::newFromToken($pdf[0]['token']);
+                $this->html .= "<button type='button' id='download{$this->id}'>Download PDF</button>";
+                $this->html .= "<script type='text/javascript'>
+                    $('#download{$this->id}').on('click', function(){
+                        window.open('{$pdf->getUrl()}', '_blank');
+                    });
+                </script>";
+            }
+            else{
+                $this->html .= "<button  type='button' id='download{$this->id}' disabled>Download PDF</button>";
+            }
+            $this->html .= "&nbsp;<span id='generate{$this->id}_throbber' class='throbber' style='display:none;'></span>";
+            $this->html .= "<script type='text/javascript'>
+                $('#generate{$this->id}').click(function(){
+                    $('#generate{$this->id}').prop('disabled', true);
+                    $('#download{$this->id}').prop('disabled', true);
+                    $('#generate{$this->id}_throbber').css('display', 'inline-block');
+                    $.ajax({
+                        url : wgServer + wgScriptPath +'/index.php/Special:QASummary?tab={$this->id}&generatePDF', 
+                        success : function(data){
+                            for(index in data){
+                                val = data[index];
+                                if(typeof val.tok != 'undefined'){
+                                    index = index.replace('/', '');
+                                    var tok = val.tok;
+                                    
+                                    addSuccess('PDF Generated Successfully.');
+                                    $('#download{$this->id}').off('click');
+                                    $('#download{$this->id}').on('click', function(){
+                                        window.open(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=' + tok,'_blank');
+                                    });
+                                }
+                                else{
+                                    addError('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                }
+                            }
+                            $('#generate{$this->id}_throbber').css('display', 'none');
+                            $('#generate{$this->id}').prop('disabled', false);
+                            $('#download{$this->id}').prop('disabled', false);
+                        },
+                        error : function(response){
+                            // Error
+                            addError('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                            $('#generate{$this->id}').prop('disabled', false);
+                            $('#generate{$this->id}_throbber').css('display', 'none');
+                        }
+                    });
+                });
+            </script>";
+        }
         $this->html .= $html;
-        
     }
 
 }
