@@ -1,7 +1,7 @@
 <?php
 
 //$wgHooks['ToolboxLinks'][] = 'GrantAwardPage::createToolboxLinks';
-BackbonePage::register('GrantAwardPage', 'Grant Awards', 'network-tools', dirname(__FILE__));
+BackbonePage::register('GrantAwardPage', 'Awarded NSERC Applications', 'network-tools', dirname(__FILE__));
 
 class GrantAwardPage extends BackbonePage {
     
