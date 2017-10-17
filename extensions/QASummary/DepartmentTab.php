@@ -13,6 +13,10 @@ class DepartmentTab extends AbstractTab {
     
     function generateBody(){
         global $wgOut, $config;
+        if(isset($_GET['generatePDF']) && isset($_GET['tab']) && $_GET['tab'] != $this->id){
+            // Wanting to generate a pdf, but it isn't for this tab, don't waste time
+            return;
+        }
         $me = Person::newFromWgUser();
         $year = YEAR-1;
         $people = array();
@@ -257,7 +261,7 @@ class DepartmentTab extends AbstractTab {
                                 if(typeof val.tok != 'undefined'){
                                     index = index.replace('/', '');
                                     var tok = val.tok;
-                                    
+                                    clearAllMessages();
                                     addSuccess('PDF Generated Successfully.');
                                     $('#download{$this->id}').off('click');
                                     $('#download{$this->id}').on('click', function(){
@@ -265,6 +269,7 @@ class DepartmentTab extends AbstractTab {
                                     });
                                 }
                                 else{
+                                    clearAllMessages();
                                     addError('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                 }
                             }
@@ -274,6 +279,7 @@ class DepartmentTab extends AbstractTab {
                         },
                         error : function(response){
                             // Error
+                            clearAllMessages();
                             addError('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                             $('#generate{$this->id}').prop('disabled', false);
                             $('#generate{$this->id}_throbber').css('display', 'none');
