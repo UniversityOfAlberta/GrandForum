@@ -14,7 +14,7 @@ EditGrantAwardView = Backbone.View.extend({
         this.grants = new Grants();
         var xhr1 = this.grants.fetch();
         this.listenTo(this.model, "change:application_title", function(){
-            if(this.model.get('application_title') != ''){
+            if(this.model.isNew() && this.model.get('application_title') != ''){
                 main.set('title', this.model.get('application_title'));
             }
             else{
@@ -113,7 +113,7 @@ EditGrantAwardView = Backbone.View.extend({
     },
     
     render: function(){
-        if(this.model.get('application_title') != ''){
+        if(this.model.isNew() && this.model.get('application_title') != ''){
             main.set('title', this.model.get('application_title'));
         }
         else{

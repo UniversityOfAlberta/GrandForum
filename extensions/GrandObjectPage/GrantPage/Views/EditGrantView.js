@@ -13,7 +13,12 @@ EditGrantView = Backbone.View.extend({
             });
         }
         this.listenTo(this.model, "change:title", function(){
-            main.set('title', this.model.get('title'));
+            if(this.model.isNew() && this.model.get('title') == ""){
+                main.set('title', 'New Revenue Account');
+            }
+            else{
+                main.set('title', this.model.get('title'));
+            }
         });
         this.listenTo(this.model, 'sync', function(){
             this.person = new Person({id: this.model.get('user_id')});
@@ -204,7 +209,12 @@ EditGrantView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', this.model.get('title'));
+        if(this.model.isNew() && this.model.get('title') == ""){
+            main.set('title', 'New Revenue Account');
+        }
+        else{
+            main.set('title', this.model.get('title'));
+        }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
         this.renderCoPI();
