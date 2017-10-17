@@ -31,8 +31,7 @@ else if(php_sapi_name() != 'cli' && isset($_SERVER['uid'])){
     $shib_AssertionConsumerServiceURL = "/Shibboleth.sso";
      
     // Map Real Name to what Shibboleth variable(s)?
-    $shib_RN = ucfirst(strtolower($_SERVER['givenName'])) . ' '
-	     . ucfirst(strtolower($_SERVER['sn']));
+    $shib_RN = @ucfirst(strtolower($_SERVER['givenName'])) . ' ' . ucfirst(strtolower($_SERVER['sn']));
 
     // Map e-mail to what Shibboleth variable?
     $shib_email = $_SERVER['uid']."@ualberta.ca";
@@ -68,7 +67,7 @@ else if(php_sapi_name() != 'cli' && isset($_SERVER['uid'])){
     // You should beware of possible namespace collisions, it is best to chose
     // something that will not violate MW's usual restrictions on characters
     // Map Username to what Shibboleth variable?
-    $shib_UN = ucfirst($_SERVER['givenName']).".".ucfirst($_SERVER['sn']);
+    $shib_UN = @ucfirst($_SERVER['givenName']).".".ucfirst($_SERVER['sn']);
      
     // Shibboleth doesn't really support logging out very well.  To take care of
     // this we simply get rid of the logout link when a user is logged in through
