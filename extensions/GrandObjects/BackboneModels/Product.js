@@ -123,6 +123,24 @@ Product = Backbone.Model.extend({
         }
         return productStructure.categories[this.get('category')].types[type].date_label;
     },
+    
+    getAuthorsLabel: function(){
+        var type = this.get('type').split(":")[0];
+        if(this.get('category') == ""){
+            return "Author";
+        }
+        var label = "";
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            label = _.first(_.values(productStructure.categories[this.get('category')].types)).authors_label;
+        }
+        else{
+            label = productStructure.categories[this.get('category')].types[type].authors_label;
+        }
+        if(label == undefined){
+            return "Author";
+        }
+        return label;
+    },
 
     urlRoot: 'index.php?action=api.product',
     
