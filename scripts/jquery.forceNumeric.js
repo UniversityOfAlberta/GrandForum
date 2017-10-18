@@ -18,7 +18,11 @@ jQuery.fn.forceNumeric = function (options) {
                 return;
             }
             if(!(regex.test('' + $(target).val() + ''))){
-                $(target).val(lastValue);
+                if(_.isNumber(parseFloat($(target).val()))) {
+                    $(target).val(Number(Math.round($(target).val()+'e'+options.decimals)+'e-'+options.decimals));
+                } else {
+                    $(target).val(lastValue);
+                }
                 return;
             }
             var minVal = $(target).val().replace(/,/g, '');
@@ -45,7 +49,11 @@ jQuery.fn.forceNumeric = function (options) {
                 return;
             }
             if(!(regex.test('' + $(target).val() + ''))){
-                $(target).val(lastValue);
+                if(_.isNumber(parseFloat($(target).val()))) {
+                    $(target).val(Number(Math.round($(target).val()+'e'+options.decimals)+'e-'+options.decimals));
+                } else {
+                    $(target).val(lastValue);
+                }
                 return;
             }
             var maxVal = $(target).val().replace(/,/g, '');
@@ -97,9 +105,23 @@ jQuery.fn.forceNumeric = function (options) {
             });
             validateMin(this, true);
         }
+        $(this).change(function(e) { 
+            if(!(regex.test($(e.target).val()))){
+                if(_.isNumber(parseFloat($(e.target).val()))) {
+                    $(e.target).val(Number(Math.round($(e.target).val()+'e'+options.decimals)+'e-'+options.decimals));
+                } else {
+                    $(e.target).val(options.min);
+                }
+                lastValue = $(e.target).val();
+            }
+        });
         if(!(regex.test($(this).val()))){
-            $(this).val(options.min);
-            lastValue = options.min;
+            if(_.isNumber(parseFloat($(this).val()))) {
+                $(this).val(Number(Math.round($(this).val()+'e'+options.decimals)+'e-'+options.decimals));
+            } else {
+                $(this).val(options.min);
+            }
+            lastValue = $(this).val();
         }
         $(this).keydown(function (e) {
              var key = e.which || e.keyCode;

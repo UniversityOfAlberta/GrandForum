@@ -274,10 +274,11 @@
 
     <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer|Integer" multiple="true" start="1" sizes="350|100|100">
+        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
             <![CDATA[
                 <h3>Course History</h3>
                 {$item}
+                <div id='warning_container'></div>
             ]]>
         </ReportItem>
 
@@ -291,16 +292,17 @@
                         _.defer(function() {
                             // get all the gpas from report item above this one
                             var elArray = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                            console.log('hey');
+                            
                             // Calculate gpa
-                            var sum = 0;
+                            var sumGPA = 0;
                             for (var a = 0; a < elArray.length; a++) {
-                                if (!_.isNaN(parseInt(elArray[a].value))) {
-                                    sum += parseInt(elArray[a].value);
+                                if (!_.isNaN(parseFloat(elArray[a].value))) {
+                                    sumGPA += parseFloat(elArray[a].value);
                                 }
                             }
-                            var avg = sum / Math.max(elArray.length, 1);
-                            $('[name=BestFullYearGPA_qpaFullq2]').val(avg);
+                            var avg = sumGPA / Math.max(elArray.length, 1);                            
+                            $('[name=BestFullYearGPA_qpaFullq2]').val(Number(Math.round(avg+'e2')+'e-2'));
+                            
                         });
                     };
 
@@ -309,6 +311,7 @@
                     $(document).off("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
                     $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']", calculateGPAfull);
                     $(document).on("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
+                    calculateGPAfull();
 
                 </script>
             ]]>

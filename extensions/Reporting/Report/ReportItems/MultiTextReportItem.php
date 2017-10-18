@@ -98,7 +98,7 @@ EOF;
                             $matches = array();
                             preg_match("/^(Integer)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
-                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' data-min='{$matches[0]}' data-max='{$matches[1]}'/></td>\" + \n";
+                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' data-min='{$matches[0]}' data-max='{$matches[1]}' data-decimals='{$matches[2]}'/></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             if (count($heights) <= $j){
@@ -193,7 +193,7 @@ EOF;
                     $("#table_{$this->getPostId()}").show();
                 }
                 $("input.numeric").each(function(i, el) {
-                    $(el).forceNumeric({min: $(el).attr('data-min'), max: $(el).attr('data-max')});
+                    $(el).forceNumeric({min: $(el).attr('data-min'), max: $(el).attr('data-max'), decimals: $(el).attr('data-decimals')});
                 });
                 $("input.calendar").each(function(i, el){
                     $(el).datepicker({
@@ -251,7 +251,7 @@ EOF;
                         $matches = array();
                         preg_match("/^(Integer)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
-                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' data-min='{$matches[0]}' data-max='{$matches[1]}'/></td>";
+                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' data-min='{$matches[0]}' data-max='{$matches[1]}' data-decimals='{$matches[2]}'/></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
