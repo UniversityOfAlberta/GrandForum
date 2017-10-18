@@ -28,7 +28,7 @@ class Impersonate extends SpecialPage {
     }
 	
 	function execute($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $user = Person::newFromWgUser();
 	    $allPeople = array();
 	    if($user->isRoleAtLeast(STAFF) || $user->isRole(SD)){
@@ -42,7 +42,7 @@ class Impersonate extends SpecialPage {
             $allPeople = $user->getDelegates();
         }
 	    
-	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the Forum as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
+	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the {$config->getValue('siteName')} as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
 	                        <tr><td>
 	                            <select id='names' data-placeholder='Chose a Person...' name='name' size='10' style='width:100%'>");
 	    foreach($allPeople as $person){

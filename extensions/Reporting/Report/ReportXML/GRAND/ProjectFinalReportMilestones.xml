@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Final Milestones" extends="ProjectReportMilestones" pdfFiles="ProjectFinalReportMilestones">
-    <ReportSection id="milestones" number="5">
-
-    </ReportSection>
-</Report>

@@ -556,7 +556,7 @@ class EditMember extends SpecialPage{
     }
     
     function generateMain(){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $me = Person::newFromWgUser();
         $allPeople = Person::getAllCandidates('all');
         $i = 0;
@@ -579,7 +579,7 @@ class EditMember extends SpecialPage{
                 $allPeople[] = $person;
             }
         }
-        $wgOut->addHTML("This page can be used to edit the roles and projects of members on the forum.<br />
+        $wgOut->addHTML("This page can be used to edit the roles and projects of members on the {$config->getValue('siteName')}.<br />
                          Select a user from the list below, and then click the 'Next' button.<table>
                             <tr><td>
                             <form action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>

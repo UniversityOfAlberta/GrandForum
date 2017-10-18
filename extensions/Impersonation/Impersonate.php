@@ -8,7 +8,7 @@ $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 $wgHooks['UnknownAction'][] = 'getUserMode';
 
 function getUserMode($action, $page){
-    global $wgUser, $wgImpersonating, $wgDelegating;
+    global $wgUser, $wgImpersonating, $wgDelegating, $config;
     $me = Person::newFromUser($wgUser);
     if($action == 'getUserMode'){
         session_write_close();
@@ -22,7 +22,7 @@ function getUserMode($action, $page){
         }
         else if(FROZEN && !$me->isRoleAtLeast(STAFF)){
             $json = array('mode' => 'frozen',
-                          'message' => "The Forum is currently not available for edits during the RMC review-and-deliberation period.");
+                          'message' => "The {$config->getValue('siteName')} is currently not available for edits during the RMC review-and-deliberation period.");
             header('Content-Type: application/json');
             echo json_encode($json);
             exit;
@@ -150,7 +150,7 @@ function impersonate(){
 }
 
 function getImpersonatingMessage(){
-    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle;
+    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle, $config;
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);
@@ -192,12 +192,12 @@ function getImpersonatingMessage(){
             $renewSession = "?renewSession";
         }
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
-        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire in ".ceil($time/(60))." minutes.<br />
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the {$config->getValue('siteName')} as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire in ".ceil($time/(60))." minutes.<br />
                             <a href='{$wgServer}{$page}{$renewSession}'>Renew My Session as {$person->getNameForForms()}</a> | <a href='{$wgServer}{$page}{$stopImpersonating}'>Stop Impersonating and Resume as {$realPerson->getNameForForms()}</a>";
     }
     else{
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
-        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire once you navigate away from this page";
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the {$config->getValue('siteName')} as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire once you navigate away from this page";
     }
     wfRunHooks('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
     return $message;

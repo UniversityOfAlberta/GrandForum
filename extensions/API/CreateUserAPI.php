@@ -19,7 +19,7 @@ class CreateUserAPI extends API{
     }
 
     function doAction($doEcho=true){
-        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication;
+        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication, $config;
         $me = Person::newFromId($wgUser->getId());
         $oldWPNS = "";
         $oldWPType = "";
@@ -124,7 +124,7 @@ class CreateUserAPI extends API{
                                                       'sub_role' => $subtype));
                         }
                     }
-                    Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
+                    Notification::addNotification("", $creator, "User Created", "A new user has been added to the {$config->getValue('siteName')}: {$person->getReversedName()}", "{$person->getUrl()}");
                     $data = DBFunctions::select(array('grand_notifications'),
                                                 array('id'),
                                                 array('user_id' => EQ($creator->getId()),

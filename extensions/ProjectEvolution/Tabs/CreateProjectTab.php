@@ -120,7 +120,7 @@ EOF;
         
         // Champion
         $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
+        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the {$config->getValue('siteName')} when the user gets created.", VALIDATE_NOTHING));
         
         $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
         $champTable = new FormTable("{$pre}_champ_table");
