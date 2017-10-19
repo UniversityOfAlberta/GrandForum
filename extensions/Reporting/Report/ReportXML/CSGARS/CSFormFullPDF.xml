@@ -17,7 +17,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="true">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
@@ -197,7 +197,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="Text" sizes="600" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150" width="98%">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="Text" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150" width="98%" class="wikitable">
             <![CDATA[
                 <h3>Publications</h3>
                 {$item}
@@ -206,7 +206,7 @@
     </ReportSection>
 
     <ReportSection id="awards" tooltip="Awards" name="Awards" blobSection="CS_QUESTIONS_tab4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%" class="wikitable">
             <![CDATA[
                 {$item}
             ]]>
@@ -214,14 +214,14 @@
     </ReportSection>
 
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
+        <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)"  start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" class="wikitable">
             <![CDATA[
                 <h3>Degrees</h3>
                 {$item}
             ]]>
         </ReportItem>
 
-        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Classes.file)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
+        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Classes.file)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" class="wikitable" >
             <![CDATA[
                 <h3>Courses Taken</h3>
                 {$item}
@@ -248,7 +248,7 @@
 
     <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350||">
+        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" class="wikitable">
             <![CDATA[
                 <div class="flex-container"
                     <div class="flex-item" style="

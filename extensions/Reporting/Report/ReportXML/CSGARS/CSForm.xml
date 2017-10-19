@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF, CSFormTrimPDF" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="OT">
             <SectionPermission id="personal" permissions="rw" />
@@ -169,7 +169,7 @@
 
             ]]>
         </ReportItem>
-        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
+        <ReportItem id="q24" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
                     <div class="flex-container">
                         <div class="flex-item">
@@ -178,7 +178,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
+        <ReportItem id="q25" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -186,7 +186,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
+        <ReportItem id="q26" type="Integer" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -224,7 +224,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="Text" sizes="600" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150" width="98%">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="1000" heights="300" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
             <![CDATA[
                 <h3>Publications</h3>
                 {$item}
@@ -346,6 +346,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
+
     <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
