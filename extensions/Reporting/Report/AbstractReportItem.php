@@ -24,7 +24,6 @@ abstract class AbstractReportItem {
     var $extraIndex;
     var $private;
     var $deleted;
-    var $blobSection;
     var $blobItem;
     var $blobSubItem;
     var $value;
@@ -38,7 +37,6 @@ abstract class AbstractReportItem {
         $this->value = "";
         $this->blobType = BLOB_TEXT;
         $this->projectId = 0;
-        $this->blobSection = null;
         $this->blobItem = 0;
         $this->blobSubItem = 0;
         $this->attributes = array();
@@ -142,11 +140,6 @@ abstract class AbstractReportItem {
     function setDeleted($deleted){
         $this->deleted = $deleted;
     }
-    
-    // Sets the Blob Section of this AbstractReportItem (optional)
-    function setBlobSection($item){
-        $this->blobSection = $item;
-    }
 
     // Sets the Blob Item of this AbstractReportItem
     function setBlobItem($item){
@@ -168,20 +161,6 @@ abstract class AbstractReportItem {
         $cdata = $this->varSubstitute($cdata);
         $cdata = str_replace('{$item}', $output, $cdata);
 		return $cdata;
-    }
-    
-    // Returns the 'pdf' rendered version of the widget in text form
-    function getText(){
-        global $wgOut;
-        $oldWgOut = $wgOut;
-        $oldValue = $this->value;
-        $wgOut = new OutputPage();
-        $this->value = '{$item}';
-        $this->renderForPDF();
-        $this->value = $oldValue;
-        $text = $wgOut->getHTML();
-        $wgOut = $oldWgOut;
-        return $text;
     }
 
     //Responsible for rendering the actual widget
@@ -241,14 +220,13 @@ abstract class AbstractReportItem {
         }
         if(!($parent instanceof AbstractReportSection)){
             $extraId = $this->getExtraIndex();
-            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
+            $postId = @$parent->getPostId()."_p1{$this->personId}_p2{$this->projectId}_m{$this->milestoneId}_e{$extraId}".$postId;
         }
         else{
-            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", $parent->name))).$postId;
+            $postId = str_replace(" ", "", $parent->name).$postId;
         }
         $postId = str_replace("-", "", $postId);
         $postId = str_replace(" ", "", $postId);
-        $postId = str_replace("/", "", $postId);
         return $postId;
     }
     
@@ -256,30 +234,28 @@ abstract class AbstractReportItem {
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            if(strtolower($this->getAttr('default', '')) == ''){
-                if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
-                   $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
-                    if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
-                        // Don't handle arrays, but save anyways
-                        $this->setBlobValue($_POST[$this->getPostId()]);
-                        return array();
-                    }
-                    if(isset($_POST['oldData'][$this->getPostId()]) &&
-                       $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
-                       // Don't save, but also don't display an error
-                       return array();
-                    }
-                    else if(isset($_POST['oldData'][$this->getPostId()]) && 
-                       $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
-                       $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
-                        if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
-                            // Conflict in blob values
-                            return array(array('postId' => $this->getPostId(), 
-                                               'value' => $this->stripBlob($this->getBlobValue()),
-                                               'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
-                                               'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
-                                               'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
-                        }
+            if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
+               $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
+                if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
+                    // Don't handle arrays, but save anyways
+                    $this->setBlobValue($_POST[$this->getPostId()]);
+                    return array();
+                }
+                if(isset($_POST['oldData'][$this->getPostId()]) &&
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
+                   // Don't save, but also don't display an error
+                   return array();
+                }
+                else if(isset($_POST['oldData'][$this->getPostId()]) && 
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
+                   $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
+                    if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
+                        // Conflict in blob values
+                        return array(array('postId' => $this->getPostId(), 
+                                           'value' => $this->stripBlob($this->getBlobValue()),
+                                           'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
+                                           'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
+                                           'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                     }
                 }
             }
@@ -289,8 +265,7 @@ abstract class AbstractReportItem {
     }
     
     private function stripBlob($value){
-        $value = trim(htmlentities($value, null, 'utf-8', false));
-        $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
+        return trim(htmlentities($value, null, 'utf-8', false));
         return $value;
     }
 
@@ -299,9 +274,13 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
-        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
+        $sec = $this->getAttr('blobSection', '0'); //added for FEC report -rd
+        if($sec != '0'){
+            $section->sec = $sec;
+        }
+
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $sectionId, $this->blobItem, $this->blobSubItem);
+	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();

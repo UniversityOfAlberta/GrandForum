@@ -36,7 +36,8 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
+    <!-- Page1: IDs, GPA, GRE, Areas, and Faculty members -->
+    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="true">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
@@ -178,38 +179,9 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <!-- End page1 -->
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="true">
-        <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-
-    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="true">
-        <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="Text" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150" width="98%" class="wikitable">
-            <![CDATA[
-                <h3>Publications</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-
-    <ReportSection id="awards" tooltip="Awards" name="Awards" blobSection="CS_QUESTIONS_tab4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%" class="wikitable">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-
+    <!-- Page2: Education History, Courses, Awards -->
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)"  start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" class="wikitable">
             <![CDATA[
@@ -239,10 +211,16 @@
             ]]>
         </ReportItem>
 
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobSection="CS_QUESTIONS_tab4" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%" class="wikitable">
+            <![CDATA[
+                <h3>Awards</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
+    <!-- End page2 -->
 
-
-    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="true">
 
         <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" class="wikitable">
             <![CDATA[
@@ -267,5 +245,34 @@
         </ReportItem>
 
     </ReportSection>
+
+    <!-- Page3: SoP -->
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="true">
+        <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <!-- End page3 -->
+
+    <!-- Page4: Research Experience, Publications -->
+    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="true">
+        <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="Text" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150" width="98%" class="wikitable">
+            <![CDATA[
+                <h3>Publications</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+
+    
 
 </Report>
