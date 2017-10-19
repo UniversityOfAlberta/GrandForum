@@ -174,7 +174,7 @@ class PersonVisualizationsTab extends AbstractTab {
                                                                         <td><b>Title:</b></td><td>{$university['position']}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>Department:</b></td><td>{$university['department']}</td>
+                                                                        <td><b>{$config->getValue('deptsTerm')}:</b></td><td>{$university['department']}</td>
                                                                     </tr>
                                                                     </table>"),
                                  'group' => 'locations',
@@ -256,7 +256,7 @@ class PersonVisualizationsTab extends AbstractTab {
                 $legend[$i++]['color'] = "#82D868";
             }
             
-            $legend[$i]['name'] = "University";
+            $legend[$i]['name'] = "Institution";
             $legend[$i++]['color'] = "#B26060";
             if($me->isLoggedIn()){
                 $legend[$i]['name'] = "Co-authorship";

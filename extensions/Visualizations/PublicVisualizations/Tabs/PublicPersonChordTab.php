@@ -186,7 +186,7 @@ class PublicPersonChordTab extends AbstractTab {
             $array['dateOptions'] = $dates;
                                       
             $array['sortOptions'] = array(array('name' => 'Institution', 'value' => 'university', 'checked' => 'checked'),
-                                          array('name' => 'Department', 'value' => 'department'));
+                                          array('name' => $config->getValue('deptsTerm'), 'value' => 'department'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;

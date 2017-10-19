@@ -49,7 +49,7 @@ class PeopleTableTab extends AbstractTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     <th style='white-space: nowrap;'>Institution</th>
-                                    <th style='white-space: nowrap;'>Department</th>
+                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$epicHeader}
                                     {$contactHeader}

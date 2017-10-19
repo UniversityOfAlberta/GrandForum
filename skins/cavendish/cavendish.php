@@ -266,6 +266,7 @@ class CavendishTemplate extends QuickTemplate {
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
 		    headerColor = "<?php echo $config->getValue('headerColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
+		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		

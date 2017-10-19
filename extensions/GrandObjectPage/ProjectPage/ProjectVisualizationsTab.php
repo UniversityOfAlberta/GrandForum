@@ -313,7 +313,7 @@ class ProjectVisualizationsTab extends AbstractTab {
 	}
 	
 	static function getProjectChordData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getProjectChordData"){
 	        $year = (isset($_GET['date'])) ? $_GET['date'] : YEAR;
 	        $array = array();
@@ -454,7 +454,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             $array['sortOptions'] = array(array('name' => 'Last Name', 'value' => 'name', 'checked' => 'checked'),
                                           array('name' => 'University', 'value' => 'uni', 'checked' => ''),
                                           array('name' => 'Title', 'value' => 'position', 'checked' => ''),
-                                          array('name' => 'Department', 'value' => 'dept', 'checked' => '')
+                                          array('name' => $config->getValue('deptsTerm'), 'value' => 'dept', 'checked' => '')
                                           );
                                       
             $array['matrix'] = $matrix;

@@ -86,6 +86,9 @@
     
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
+    
+    // The terminology to user for "Department"
+    $config->setValue("deptsTerm", "Department");
 
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     

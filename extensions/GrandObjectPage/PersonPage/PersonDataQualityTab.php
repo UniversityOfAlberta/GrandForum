@@ -231,8 +231,8 @@ EOF;
             if(empty($gender)){ $ni_errors['profile_errors'][] = "Missing gender information"; }
             if(empty($email)){ $ni_errors['profile_errors'][] = "Missing contact email"; }
             if(empty($nationality)){ $ni_errors['profile_errors'][] = "Missing nationality"; }
-            if(empty($ni_university)){ $ni_errors['profile_errors'][] = "Missing university"; }
-            if(empty($ni_department)){ $ni_errors['profile_errors'][] = "Missing department"; }
+            if(empty($ni_university)){ $ni_errors['profile_errors'][] = "Missing institution"; }
+            if(empty($ni_department)){ $ni_errors['profile_errors'][] = "Missing ".strtolower($config->getValue('deptsTerm')); }
             if(empty($ni_position)){ $ni_errors['profile_errors'][] = "Missing title"; }
             if(empty($ni_position)){ $ni_errors['profile_pub'][] = "Missing public profile"; }
             if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
@@ -280,7 +280,7 @@ EOF;
                 $ishqp = $s->isRole(HQP);
 
                 if($ishqp && ($university == "" || $department == "" || $position == "")){
-                    $errors[] = "Missing University/Department/Position";
+                    $errors[] = "Missing Institution/{$config->getValue('deptsTerm')}/Position";
                 }
 
                 //Only care about Masters and PhDs for thesis errors

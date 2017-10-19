@@ -293,8 +293,8 @@ class AddMember extends SpecialPage{
         $universityRow = new FormTableRow("university_row");
         $universityRow->append($universityLabel)->append($universityField);
         
-        $deptLabel = new Label("dept_label", "Department", "The department of this user", VALIDATE_NOTHING);
-        $deptField = new ComboBox("dept_field", "Department", $me->getDepartment(), $departments, VALIDATE_NOTHING);
+        $deptLabel = new Label("dept_label", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", VALIDATE_NOTHING);
+        $deptField = new ComboBox("dept_field", $config->getValue('deptsTerm'), $me->getDepartment(), $departments, VALIDATE_NOTHING);
         $deptField->attr("style", "width: 250px;");
         $deptRow = new FormTableRow("dept_row");
         $deptRow->append($deptLabel)->append($deptField);
