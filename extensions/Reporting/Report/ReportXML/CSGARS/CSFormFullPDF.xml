@@ -4,6 +4,20 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
+	   <style>
+		.table-container {
+		  display: table;
+		  width: 100%;
+		}
+                .flex-container {
+		  display: table-row;
+                  width: 100%;
+                }
+                .flex-item {
+		  width: 25%;
+		  display: table-cell;
+                }
+            </style>
                 <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
                 <br />
@@ -22,40 +36,18 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="true">
+    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
-            <style>
-                .flex-container {
-                  width: 99%;
-                  display: -webkit-flex; /* Safari */
-                  display: flex;
-                  -webkit-flex-direction: row; /* Safari */
-                  flex-direction:         row;
-                  -webkit-align-items: baseline; /* Safari */
-                  align-items:         baseline;
-                  justify-content: space-around;
-                  align-content: stretch;
-                  flex-wrap: wrap;
-                }
-                .flex-item {
-                  -webkit-flex-grow: <number>; /* Safari */
-                  flex-grow:         <number>;
-                }
-            </style>
-                <div class="flex-container">
-                <div class="flex-item" style="
-                    min-width: 370px; 
-                    max-width: 500px;
-                    flex-grow: 1;
-                    flex-basis: 350px;
-                    display: inline-block;
+            
+	<table width='100%'>
+            <tr width='100%'>
+                <td style="
+		    width: 50%;
                     vertical-align: top;
                     box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;" >
+                    padding: 0px 16px 16px 16px;" >
                     <h1>Personal Information</h1>
                     <h3>Area of Study</h3>
                     {$item}
@@ -88,56 +80,54 @@
             <![CDATA[
                     <h3>Need for Financial Support</h3>
                     {$item}
-                </div>
+                </td> <!-- end the first chunk -->
             ]]>
         </ReportItem>
         <ReportItem id="q19" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q19" width="40px" orientation="horizontal">
             <![CDATA[
-
-                <div class="flex-item" style="
-                    min-width: 370px; 
-                    max-width: 500px;
-                    flex-grow: 1;
-                    flex-basis: 350px;
-                    display: inline-block;
+		<!-- second chunk start -->
+                <td style="
+                    width: 50%;
                     vertical-align: top;
                     overflow: hidden; 
                     box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;">
+                    padding: 0px 16px 16px 16px;">
                     <h1>GPA</h1>
-                    <div>
-                        <div style="display: inline-block; vertical-align: top;">
-                            <h3>GPA</h3>
-                            {$item}
-                        </div>
+                    <table>
+			<tr>
+                            <td>
+                                <h3>GPA</h3>
+                                {$item}
+                            </td>
                 
             ]]>
         </ReportItem>
         <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="40px" orientation="horizontal">
             <![CDATA[
-                        <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                            <h3>GPA Scale</h3>
-                            {$item}
-                        </div>
-                    </div>
+                            <td style="margin-left: 16px">
+                                <h3>GPA Scale</h3>
+                                {$item}
+                            </td>
             ]]>
         </ReportItem>
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
             <![CDATA[
-                    <div style="display: inline-block; vertical-align: top;">
-                        <h3>Normalized GPA</h3>
-                        {$item}
-                    </div>
+                            <td>
+                        	<h3>Normalized GPA</h3>
+                        	{$item}
+                    	    </td>
+			</tr>
             ]]>
         </ReportItem>
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100" width="200px">
-            <![CDATA[
-                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                        <h3>Institution</h3>
-                        {$item}
-                    </div>
+            <![CDATA[	
+			<tr>
+                    	    <td style="margin-left: 16px">
+                        	<h3>Institution</h3>
+                        	{$item}
+                   	    </td>
+			</tr>
+		    </table>
             
             ]]>
         </ReportItem>
@@ -151,38 +141,41 @@
         </ReportItem>
         <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
-                    <div class="flex-container">
-                        <div class="flex-item">
-                            <h3>Verbal</h3>
-                            {$item}
-                        </div>
+		    <table width='100%'>
+                        <tr width='100%'>
+                            <td width='25%'>
+                                <h3>Verbal</h3>
+                                {$item}
+                            </td>
             ]]>
         </ReportItem>
         <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
-                        <div class="flex-item">
-                            <h3>Quantitative</h3>
-                            {$item}
-                        </div>
+                            <td width='25%'>
+                                <h3>Quantitative</h3>
+                                {$item}
+                            </td>
             ]]>
         </ReportItem>
         <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
-                        <div class="flex-item">
-                            <h3>Analytical</h3>
-                            {$item}
-                        </div>
+                            <td width='25%'>
+                                <h3>Analytical</h3>
+                                {$item}
+                            </td>
             ]]>
         </ReportItem>
         <ReportItem id="q27" type="Integer" blobType="BLOB_TEXT" blobItem="Q27" limit="100" width="100px" optional="false">
             <![CDATA[
-                        <div class="flex-item">
-                            <h3>GRE CS</h3>
-                            {$item}
-                        </div>
-                    </div> <!-- end GRE flex -->
-                </div> <!-- end flex item2 -->
-            </div> <!-- end flex container -->
+                            <td width='25%'>
+                                <h3>GRE CS</h3>
+                                {$item}
+                            </td>
+                        </tr> <!-- end GRE -->
+		     </table>
+                </td> <!-- end second chunk -->
+            </tr> <!-- end flex container -->
+	</table> <!-- end table container -->
             ]]>
         </ReportItem>
     </ReportSection>
@@ -195,7 +188,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="true">
         <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
                 {$item}
@@ -250,46 +243,30 @@
     </ReportSection>
 
 
-
     <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" class="wikitable">
             <![CDATA[
-                <div class="flex-container"
-                    <div class="flex-item" style="
-                    min-width: 370px;
-                    max-width: 80%;
-                    flex-grow: 1;
-                    flex-basis: 350px;
-                    display: inline-block;
-                    vertical-align: top;
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;" >
+		<table width='100%'>
+                <tr width='100%'>
+                    <td style="width: 80%; vertical-align: top; padding: 0px 16px 16px 16px;" >
                         <h3>Course History</h3>
                         {$item}
-                    </div>
+                    </td>
             ]]>
         </ReportItem>
 
-        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" width="100px" optional="true">
+        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" optional="true">
             <![CDATA[
-                    <div class="flex-item" style="
-                    max-width: 50px;
-                    flex-grow: 1;
-                    display: inline-block;
-                    vertical-align: top;
-                    padding: 0px 16px 16px 16px;
-                    margin-top: 8px;
-                    margin-right: 8px;" >
+                    <td style="width: 20%; vertical-align: top; padding: 0px 16px 16px 16px;" >
                         <h3>GPA</h3>
                         {$item}
-                    </div
-                </div>
+                    </td>
+                </tr>
+		</table>
             ]]>
         </ReportItem>
 
     </ReportSection>
-
 
 </Report>
