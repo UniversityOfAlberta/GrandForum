@@ -4,20 +4,6 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-	   <style>
-		.table-container {
-		  display: table;
-		  width: 100%;
-		}
-                .flex-container {
-		  display: table-row;
-                  width: 100%;
-                }
-                .flex-item {
-		  width: 25%;
-		  display: table-cell;
-                }
-            </style>
                 <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
                 <br />
@@ -51,6 +37,7 @@
                         <h1>Personal Information</h1>
                         <h3>Area of Study</h3>
                         {$item}
+			<br/>
             ]]>
         </ReportItem>
     
@@ -95,7 +82,7 @@
                         <h1>GPA</h1>
                         <table>
                             <tr>
-                                <td>
+                                <td style='padding: 0.25em'>
                                     <h3>GPA</h3>
                                     {$item}
                                 </td>
@@ -104,16 +91,16 @@
         </ReportItem>
         <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="40px" orientation="horizontal">
             <![CDATA[
-                                <td style="margin-left: 16px">
-                                    <h3>GPA Scale</h3>
+                                <td style="padding: 0.25em">
+                                    <h3 style='white-space: nowrap;'>GPA Scale</h3>
                                     {$item}
                                 </td>
             ]]>
         </ReportItem>
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
             <![CDATA[
-                                <td>
-                            	   <h3>Normalized GPA</h3>
+                                <td style='padding: 0.25em'>
+                            	   <h3 style='white-space: nowrap;'>Normalized GPA</h3>
                             	   {$item}
                         	    </td>
                             </tr>
@@ -122,7 +109,7 @@
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100" width="200px">
             <![CDATA[	
                             <tr>
-                        	    <td style="margin-left: 16px">
+                        	    <td style='padding: 0.25em'>
                             	   <h3>Institution</h3>
                             	   {$item}
                        	        </td>
@@ -143,7 +130,7 @@
             <![CDATA[
                         <table width='100%'>
                             <tr width='100%'>
-                                <td width='25%'>
+                                <td style='padding: 0.25em; width:25%;'>
                                     <h3>Verbal</h3>
                                     {$item}
                                 </td>
@@ -151,7 +138,7 @@
         </ReportItem>
         <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
-                                <td width='25%'>
+                                <td style='padding: 0.25em; width:25%;'>
                                     <h3>Quantitative</h3>
                                     {$item}
                                 </td>
@@ -159,7 +146,7 @@
         </ReportItem>
         <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
-                                <td width='25%'>
+                                <td style='padding: 0.25em; width:25%;'>
                                     <h3>Analytical</h3>
                                     {$item}
                                 </td>
@@ -167,8 +154,8 @@
         </ReportItem>
         <ReportItem id="q27" type="Integer" blobType="BLOB_TEXT" blobItem="Q27" limit="100" width="100px" optional="false">
             <![CDATA[
-                                <td width='25%'>
-                                    <h3>GRE CS</h3>
+                                <td style='padding: 0.25em; width:25%;'>
+                                    <h3 style='white-space: nowrap;'>GRE CS</h3>
                                     {$item}
                                 </td>
                             </tr> <!-- end GRE -->
@@ -182,7 +169,7 @@
     <!-- End page1 -->
 
     <!-- Page2: Education History, Courses, Awards -->
-    <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="true">
         <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)"  start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" class="wikitable">
             <![CDATA[
                 <h3>Degrees</h3>
@@ -257,7 +244,7 @@
     <!-- End page3 -->
 
     <!-- Page4: Research Experience, Publications -->
-    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="true">
+    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
                 {$item}
