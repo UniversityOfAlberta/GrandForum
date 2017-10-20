@@ -12,6 +12,9 @@
     $dataDir = "ccvData/";
     $dirIt = new DirectoryIterator($dataDir);
     
+    $iterationsSoFar = 0;
+    $count = iterator_count($dirIt);
+    $dirIt->rewind();
     foreach($dirIt as $file){
         $filename = $file->getFilename();
 
@@ -22,17 +25,18 @@
         $personalInfo = $cv->getPersonalInfo();
 
         $name = $personalInfo["first_name"] . " " . $personalInfo["last_name"];
-        
         $person = Person::newFromName($name);
-        $employment = $cv->getEmployment();
+        if($person->getId() != 0){
+            $employment = $cv->getEmployment();
+            $hqps = $cv->getStudentsSupervised();
 
-        $status = UploadCCVAPI::updateEmployment($person, $employment);
-        
-        //if ($status){ echo "employment update for " . $name . " was successful.\n"; }
-        //else { echo "employment update for " . $name . " was unsuccessful.\n"; }
-        $person->university = false;
+            UploadCCVAPI::updateEmployment($person, $employment);
+            UploadCCVAPI::updateHQPPresentPosition($person, $hqps);
+            
+            $person->university = false;
+        }
+        show_status(++$iterationsSoFar, $count-2);
     }
 
 
 ?>
-

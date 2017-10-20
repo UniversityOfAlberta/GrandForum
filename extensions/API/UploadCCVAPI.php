@@ -559,6 +559,63 @@ class UploadCCVAPI extends API{
         }
         return $status;
     }
+    
+    /**
+     * Adds the hqp present position information to the person's history
+     * @param Person $supervisor The Person to update
+     * @param array $hqps The array containing the hqps
+     * @return boolean The status of the update
+     */
+    function updateHQPPresentPosition($supervisor, $hqps){
+        $status = true;
+        DBFunctions::delete('grand_ccv_employment_outcome',
+                            array('supervisor_id' => $supervisor->getId()));
+        foreach($hqps as $hqp){
+            if((trim($hqp['present_position']) != "" || trim($hqp['present_position']) != "") && 
+               ("{$hqp['degree_end_year']}-{$hqp['degree_end_month']}" != "-" ||
+                "{$hqp['end_year']}-{$hqp['end_month']}" != "-")){
+                if("{$hqp['degree_end_year']}-{$hqp['degree_end_month']}" != "-"){
+                    $date = "{$hqp['degree_end_year']}-{$hqp['degree_end_month']}-01";
+                }
+                else{
+                    $date = "{$hqp['end_year']}-{$hqp['end_month']}-01";
+                }
+                $name = trim($hqp['name']);
+                $exploded = explode(",", $name);
+                if(count($exploded) > 1){
+                    $name = str_replace(" ", "", trim($exploded[1]).".".trim($exploded[0]));
+                }
+                else{
+                    $name = str_replace(" ", ".", $name);
+                }
+                $person = Person::newFromName($hqp['name']);
+                if($person->getId() != 0){
+                    // Person Found
+                    if(count($person->getAllMovedOn()) == 0){
+                        // No Previous Moved Ons found, add it
+                        $_POST['id'] = "";
+                        $_POST['user'] = $person->getName();
+                        $_POST['studies'] = $hqp['present_position'];
+                        $_POST['employer'] = $hqp['present_position'];
+                        $_POST['city'] = "";
+                        $_POST['country'] = "";
+                        $_POST['effective_date'] = $date;
+                        APIRequest::doAction('AddHQPMovedOn', true);
+                    }
+                }
+                DBFunctions::insert('grand_ccv_employment_outcome',
+                                    array('supervisor_id' => $supervisor->getId(),
+                                          'hqp' => $hqp['name'],
+                                          'date' => $date,
+                                          'present_position' => trim($hqp['present_position']),
+                                          'present_organization' => trim($hqp['present_organization']),
+                                          'institution' => $hqp['institution'],
+                                          'status' => CommonCV::getCaptionFromValue($hqp['status'], "Degree Status"),
+                                          'degree' => $hqp['diploma']));
+            }
+        }
+        return $status;
+    }
 
     function doAction($noEcho=false){
         global $wgMessage;

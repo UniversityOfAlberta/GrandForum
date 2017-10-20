@@ -74,6 +74,7 @@
     DBFunctions::execSQL("TRUNCATE grand_positions", true);
     DBFunctions::execSQL("TRUNCATE grand_relations", true);
     DBFunctions::execSQL("TRUNCATE grand_movedOn", true);
+    DBFunctions::execSQL("TRUNCATE grand_ccv_employment_outcome", true);
     DBFunctions::execSQL("TRUNCATE grand_theses", true);
     DBFunctions::execSQL("TRUNCATE grand_managed_people", true);
     DBFunctions::execSQL("TRUNCATE grand_new_grants", true);
