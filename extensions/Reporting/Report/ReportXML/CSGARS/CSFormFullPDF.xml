@@ -5,7 +5,7 @@
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>GARS CS Application</h4></div>
-                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/uacs_logo.png' />
                 <br />
                 <br />
                 <br />
@@ -23,6 +23,33 @@
     </ReportSection>
 
     <!-- Page1: IDs, GPA, GRE, Areas, and Faculty members -->
+    <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+            <![CDATA[
+                <div style="display: inline-block; margin-bottom: 1em">
+                    <h3>GSMS ID</h3>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
+            <![CDATA[
+                <div style="display: inline-block; margin-left: 1em">
+                    <h3>Student ID</h3>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
+            <![CDATA[
+                <div style="display: inline-block; margin-left: 1em">
+                    <h3>CS Application Number</h3>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="true">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
@@ -34,7 +61,7 @@
                         vertical-align: top;
                         box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
                         padding: 0px 16px 16px 16px;" >
-                        <h1>Personal Information</h1>
+                        <h1>Research Interests</h1>
                         <h3>Area of Study</h3>
                         {$item}
 			<br/>
@@ -207,6 +234,7 @@
     </ReportSection>
     <!-- End page2 -->
 
+    <!--
     <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="true">
 
         <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" class="wikitable">
@@ -232,6 +260,7 @@
         </ReportItem>
 
     </ReportSection>
+    -->
 
     <!-- Page3: SoP -->
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="true">
