@@ -133,6 +133,7 @@
                             {$item}
                         </div>
                     </div>
+                    <div id='warning_container'></div>
             ]]>
         </ReportItem>
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
@@ -146,15 +147,15 @@
                                 var gpa_scale = $('[name=CSApplicationDetails_q20]').val();
 
                                 var returnValue;
-
+                                clearWarning('#warning_container');
                                 if (gpa != '') {
                                     if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
-                                        returnValue = 'Scale cannot be out of 0';
+                                        addWarning('Scale cannot be out of 0', false, '#warning_container');
                                     } else {
                                         // try calculating
                                         var normalized = (gpa * 4) / (gpa_scale);
                                         if (normalized > 4) {
-                                            returnValue = 'GPA greater than scale';
+                                            addWarning('GPA cannot be greater than scale', false, '#warning_container');
                                         } else {
                                             returnValue = parseFloat(normalized).toFixed(2);
                                         }
