@@ -26,9 +26,9 @@
     <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
             <![CDATA[
-                <table style="width: 100%;">
+                <table style="width: 100%; margin-bottom: 1em">
                 <tr>
-                    <td>
+                    <td style="padding: 0.25em;">
                         <h3>GSMS ID</h3>
                         {$item}
                     </td>
@@ -36,7 +36,7 @@
         </ReportItem>
         <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
             <![CDATA[
-                    <td>
+                    <td style="padding: 0.25em;">
                     <h3>Student ID</h3>
                     {$item}
                     </td>
@@ -44,7 +44,7 @@
         </ReportItem>
         <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
             <![CDATA[
-                    <td>
+                    <td style="padding: 0.25em;">
                     <h3>CS Application Number</h3>
                     {$item}
                     </td>
