@@ -486,7 +486,7 @@
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Required Signatures</h2>
-                <p>Submit a <b>single PDF</b> containing signature documents for each Principal Investigator.  Name the PDF document CAT2017-##_Surname_Signatures.pdf.  (The Surname refers to the Project Leader’s surname).</p>
+                <p>Submit a <b>single PDF</b> containing signature documents for each Principal Investigator.  Name the PDF document CAT2017-##_Surname_Signatures.pdf.  (The Surname refers to the Project Leader’s surname).  The template document can be downloaded <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Required Signatures.docx'>here</a>.</p>
                 {$item}
             ]]>
         </ReportItem>
