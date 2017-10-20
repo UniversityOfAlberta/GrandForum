@@ -1060,6 +1060,23 @@ class Paper extends BackboneModel{
     }
     
     /**
+     * Returns the journal entry in the db that matches up with this Product
+     * @return array The journal entry in the db that matches up with this Product
+     */
+    function getJournal(){
+        $journal_title = DBFunctions::escape($this->getVenue());
+        $issn = DBFunctions::escape($this->getData('issn'));
+        $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
+                                      WHERE (`title` = '{$journal_title}' 
+                                             AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      OR `issn` = '{$issn}'");
+        if(count($data) > 0){
+            return $data[0];
+        }
+        return array();
+    }
+    
+    /**
      * Returns the Universities which are associated with this Paper
      * @return array The Universities which are associated with this Paper
      */
@@ -1268,7 +1285,12 @@ class Paper extends BackboneModel{
                 $denominator = @$fraction[1];
                 $percent = number_format(($numerator/max(1, $denominator))*100, 2);
                 $ranking = $ranking." = {$percent}%";
-                $ifranking = "IF: {$if}; Ranking: {$ranking}<br />";
+                $journal = $this->getJournal();
+                $jType = "";
+                if(isset($journal['description'])){
+                    $jType = " ({$journal['description']})";
+                }
+                $ifranking = "IF: {$if}; Ranking: {$ranking}{$jType}<br />";
             }
             $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>";
         }
