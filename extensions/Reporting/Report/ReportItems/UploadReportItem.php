@@ -80,6 +80,7 @@ class UploadReportItem extends AbstractReportItem {
                             background: none;
                             padding-bottom:25px;
                             overflow: hidden;
+                            min-width: 100% !important;
                         }
                         
                         #bodyContent {
