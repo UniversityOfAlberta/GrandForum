@@ -8,28 +8,50 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
+
+    <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+            <![CDATA[
+                <style>
+                    .flex-container {
+                      width: 99%;
+                      display: -webkit-flex; /* Safari */
+                      display: flex;
+                      -webkit-flex-direction: row; /* Safari */
+                      flex-direction:         row;
+                      -webkit-align-items: baseline; /* Safari */
+                      align-items:         baseline;
+                      justify-content: space-around;
+                      align-content: stretch;
+                      flex-wrap: wrap;
+                    }
+                    .flex-item {
+                      -webkit-flex-grow: <number>; /* Safari */
+                      flex-grow:         <number>;
+                    }
+                </style>
+                <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
+            <![CDATA[
+                <h3>Student ID<span title="Generated when an applicant establishes a relationship with the U of A in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
+            <![CDATA[
+                <h3>CS Application Number<span title="This number is generated when an application is created for an applicant in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
-            <style>
-                .flex-container {
-                  width: 99%;
-                  display: -webkit-flex; /* Safari */
-                  display: flex;
-                  -webkit-flex-direction: row; /* Safari */
-                  flex-direction:         row;
-                  -webkit-align-items: baseline; /* Safari */
-                  align-items:         baseline;
-                  justify-content: space-around;
-                  align-content: stretch;
-                  flex-wrap: wrap;
-                }
-                .flex-item {
-                  -webkit-flex-grow: <number>; /* Safari */
-                  flex-grow:         <number>;
-                }
-            </style>
                 <div class="flex-container">
                 <div class="flex-item" style="
                     min-width: 370px; 
@@ -42,7 +64,7 @@
                     padding: 0px 16px 16px 16px;
                     margin-top: 8px;
                     margin-right: 8px;" >
-                    <h1>Personal Information</h1>
+                    <h1>Research Interests</h1>
                     <h3>*Area of Study</h3>
                     {$item}
             ]]>
@@ -201,10 +223,20 @@
                             {$item}
                         </div>
                     </div> <!-- end GRE flex -->
+
+            ]]>
+        </ReportItem>
+
+
+        <ReportItem id="q28" type="Upload" blobType="BLOB_RAW" blobItem="qUploadGRE" width="100px" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                    <h3>Upload GRE Transcript (PDF)</h3>
+                    {$item}
                 </div> <!-- end flex item2 -->
             </div> <!-- end flex container -->
             ]]>
         </ReportItem>
+
     </ReportSection>
 
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
@@ -248,7 +280,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Classes.file)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
+        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
             <![CDATA[
                 <h3>Courses Taken</h3>
                 {$item}
@@ -271,7 +303,7 @@
     </ReportSection>
 
 
-
+    <!--
     <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
@@ -318,6 +350,7 @@
         </ReportItem>
 
     </ReportSection>
+-->
 
 
 
