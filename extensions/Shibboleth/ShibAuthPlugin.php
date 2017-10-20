@@ -541,10 +541,21 @@ function ShibUserLoadFromSession($user, &$result)
 	DBFunctions::update('mw_user',
                         array('user_email' => $shib_email),
                         array('user_id' => EQ($user->getId())));
-	if($config->getValue('shibDefaultRole') != ""){
+	// send request to fos forum
+	// 'https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty'
+	$json = json_decode(file_get_contents('https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty'));
+	$email = $user->getEmail();
+	$role = $config->getValue('shibDefaultRole');
+    foreach($json as $prof) {
+    	if ($prof->email == $email) {
+    		$role = EVALUATOR;
+    		break;
+    	}
+    }
+	if($role != ""){
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
-	                              'role'       => $config->getValue('shibDefaultRole'),
+	                              'role'       => $role,
 	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 	}
 	wfRunHooks('AuthPluginSetup', array());
