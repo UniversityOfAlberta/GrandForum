@@ -7,7 +7,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $category = $this->getAttr("category", "all");
         $productType = $this->getAttr("productType", "");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end_date = $this->getAttr("end",REPORTING_CYCLE_END_ACTUAL);
+        $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->personId);
