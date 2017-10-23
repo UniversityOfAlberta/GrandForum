@@ -258,7 +258,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="1000" heights="300" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="1000" heights="67" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
             <![CDATA[
                 <h3>Publications</h3>
                 {$item}
