@@ -278,8 +278,9 @@ ProductEditView = Backbone.View.extend({
         });
         
         if(productStructure.categories[this.model.get('category')] != undefined &&
-            productStructure.categories[this.model.get('category')].types[this.model.get('type')] != undefined &&
-           _.size(productStructure.categories[this.model.get('category')].types[this.model.get('type')].titles) > 0){
+           (productStructure.categories[this.model.get('category')].types[this.model.get('type')] != undefined &&
+            _.size(productStructure.categories[this.model.get('category')].types[this.model.get('type')].titles) > 0) ||
+            (_.size(_.first(_.values(productStructure.categories[this.model.get('category')].types)).titles) > 0)){
             this.$("select[name=title]").combobox();
         }
         return this.$el;

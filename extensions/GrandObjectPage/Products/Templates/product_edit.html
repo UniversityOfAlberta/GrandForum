@@ -5,6 +5,9 @@
       productStructure.categories[category].types[type] != undefined &&
       _.size(productStructure.categories[category].types[type].titles) > 0){ %>
     <%= HTML.Select(this, 'title', {options: productStructure.categories[category].types[type].titles}) %>
+<% } else if(productStructure.categories[category] != undefined &&
+             _.size(_.first(_.values(productStructure.categories[category].types)).titles) > 0){ %>
+    <%= HTML.Select(this, 'title', {options: _.first(_.values(productStructure.categories[category].types)).titles}) %>
 <% } else { %>
     <%= HTML.TextBox(this, 'title', {size: '50'}) %>
 <% } %>
