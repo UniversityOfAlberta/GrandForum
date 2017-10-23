@@ -24,7 +24,7 @@ class Sops extends BackbonePage {
     function userCanExecute($user){
         global $config;
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(MANAGER);
+        return $me->isRoleAtLeast(EVALUATOR);
     }
 
 

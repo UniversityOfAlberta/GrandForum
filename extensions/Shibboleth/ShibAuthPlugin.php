@@ -450,13 +450,16 @@ function ShibUserLoadFromSession($user, &$result)
 	}
         $sql = "SELECT user_id
                 FROM mw_user
-                WHERE LOWER(CONVERT(user_name USING latin1)) = LOWER('".DBFunctions::escape($shib_UN)."')";
+                WHERE LOWER(CONVERT(user_name USING latin1)) = LOWER('".DBFunctions::escape($shib_UN)."')
+                AND deleted != 1";
+
         $data = DBFunctions::execSQL($sql); 
 	//Is the user already in the database?
 	if(count($data) == 0){
 	    $sql = "SELECT user_id
 		    FROM mw_user
-		    WHERE user_email LIKE LOWER('".DBFunctions::escape($shib_email)."')";
+		    WHERE user_email LIKE LOWER('".DBFunctions::escape($shib_email)."')
+		    AND deleted != 1";
 	    $data = DBFunctions::execSQL($sql);
 
 	}
@@ -541,17 +544,21 @@ function ShibUserLoadFromSession($user, &$result)
 	DBFunctions::update('mw_user',
                         array('user_email' => $shib_email),
                         array('user_id' => EQ($user->getId())));
+
 	// send request to fos forum
-	// 'https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty'
-	$json = json_decode(file_get_contents('https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty'));
-	$email = $user->getEmail();
 	$role = $config->getValue('shibDefaultRole');
-    foreach($json as $prof) {
-    	if ($prof->email == $email) {
-    		$role = EVALUATOR;
-    		break;
-    	}
-    }
+	$api = $config->getValue('facultyAPI');
+	if ($api != null) {
+		$json = json_decode(file_get_contents($api));
+		$email = $user->getEmail();
+	    foreach($json as $prof) {
+	    	if (($prof->department == "Computing Science") && ($prof->email == $email)) {
+	    		$role = EVALUATOR;
+	    		break;
+	    	}
+	    }
+	}
+
 	if($role != ""){
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
