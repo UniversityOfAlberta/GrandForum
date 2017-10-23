@@ -12,7 +12,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$tooltipOptionName = $this->getAttr("tooltipOptionName", "Name");
 		$notReferenced = $this->getAttr("showNotReferenced", "false");
 		$item = "";
-		$reportItemSet = $this->getSet();
+		$reportItemSet = $this->getAutoCompleteSet();
 		if(class_exists($set)){
 		    $item .= "<script type='text/javascript'>
 		                var {$this->getId()} = Array();\n";
@@ -111,7 +111,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$wgOut->addHTML($item);
 	}
 	
-	function getSet(){
+	function getAutoCompleteSet(){
 	    $set = $this->getAttr("set", "");
 	    if(class_exists($set)){
 	        $reportItemSet = new $set();
@@ -190,7 +190,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$index = $this->getAttr("index", "");
 		$label = $this->getAttr("label", "");
 		if(class_exists($set)){
-		    $reportItemSet = $this->getSet();
+		    $reportItemSet = $this->getAutoCompleteSet();
 		    $anchorFormat = $this->getAttr("anchorFormat", "", false);
 		    foreach($reportItemSet->getData() as $tuple){
 		        $staticValue = new StaticReportItem();

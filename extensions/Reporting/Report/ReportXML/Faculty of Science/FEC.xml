@@ -313,9 +313,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="footnotes" type="AutoCompleteTextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" set="PersonProductsReportItemSet" name="Outputs" tooltipOptionId="Id" tooltipOptionName="Title" index="product_id" label="product_title" optional="true">
             <![CDATA[
-                <h2>Footnotes</h2>{$item}
+                <h2>Footnotes</h2>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
