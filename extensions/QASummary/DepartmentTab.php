@@ -12,7 +12,7 @@ class DepartmentTab extends AbstractTab {
     }
     
     function generateBody(){
-        global $wgOut, $config;
+        global $wgOut, $config, $wgServer, $wgScriptPath;
         if(isset($_GET['generatePDF']) && isset($_GET['tab']) && $_GET['tab'] != $this->id){
             // Wanting to generate a pdf, but it isn't for this tab, don't waste time
             return;
@@ -232,6 +232,30 @@ class DepartmentTab extends AbstractTab {
             $wgOut->disable();
             $report->generatePDF();
         }
+        else if(isset($_GET['downloadCSV']) && isset($_GET['tab']) && $_GET['tab'] == $this->id){
+            $ids = array();
+            foreach($people as $person){
+                $ids[] = $person->getId();
+            }
+            $data = DBFunctions::execSQL("SELECT u.user_real_name, ccv.hqp, ccv.date, ccv.present_position, ccv.present_organization, ccv.institution, ccv.status, ccv.degree
+                                          FROM mw_user u, grand_ccv_employment_outcome ccv
+                                          WHERE u.user_id = ccv.supervisor_id
+                                          AND supervisor_id IN('".implode("','", $ids)."')
+                                          AND (status = 'Completed' OR status = 'Withdrawn')
+                                          AND date BETWEEN '".(($year-5).CYCLE_START_MONTH)."' AND '".($year.CYCLE_END_MONTH)."'");
+            $strings = array();
+            $strings[] = '"'.implode('","', array("Supervisor", "HQP", "Date", "Present Position", "Present Organization", "Institution", "Status", "Degree")).'"';;
+            foreach($data as $row){
+                $strings[] = '"'.implode('","', $row).'"';
+            }
+            header("Content-Type: text/csv");
+            header('Content-Disposition: attachment; filename="'.$this->department.' HQP Moved On.csv"');
+            header('Cache-Control: private, max-age=0, must-revalidate');
+            header('Pragma: public');
+            ini_set('zlib.output_compression','0');
+            echo implode("\n", $strings);
+            exit;
+        }
         else{
             $this->html .= "<button type='button' id='generate{$this->id}'>Generate PDF</button>&nbsp;";
             $pdf = $report->getLatestPDF();
@@ -245,8 +269,9 @@ class DepartmentTab extends AbstractTab {
                 </script>";
             }
             else{
-                $this->html .= "<button  type='button' id='download{$this->id}' disabled>Download PDF</button>";
+                $this->html .= "<button type='button' id='download{$this->id}' disabled>Download PDF</button>";
             }
+            $this->html .= "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:QASummary?tab={$this->id}&downloadCSV' target='_blank'>Download HQP Moved On</a>";
             $this->html .= "&nbsp;<span id='generate{$this->id}_throbber' class='throbber' style='display:none;'></span>";
             $this->html .= "<script type='text/javascript'>
                 $('#generate{$this->id}').click(function(){
