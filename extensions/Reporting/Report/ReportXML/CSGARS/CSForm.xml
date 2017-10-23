@@ -282,7 +282,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|UofA Course|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
+        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|Category|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
             <![CDATA[
                 <h3>Courses Taken</h3>
                 {$item}
