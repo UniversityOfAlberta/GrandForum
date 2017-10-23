@@ -1019,7 +1019,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
                 $person = Person::newFromName($_POST['wpName']);
                 $user = User::newFromName($_POST['wpName']);
-                if($person->getId() == 0 || $person->getName() != $_POST['wpName']){
+                if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
                     $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
                     if(isset($_POST['wpMailmypassword'])){
                         $failMessage .= "<b>Password request failed</b>";
