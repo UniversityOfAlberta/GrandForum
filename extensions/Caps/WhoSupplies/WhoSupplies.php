@@ -144,7 +144,7 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
-                    <li>The full online training offered by the SOGC is still required of physicians in New Brunswick, even though Health Canada has waived the requirement, (October 16th, 2017), <a href='http://thebruns.ca/2017/10/12/miscommunication-leads-to-persistent-barriers-in-access-of-abortion-pill/' target='_blank'>read more</a></li>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
