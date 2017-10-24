@@ -157,7 +157,7 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan' align='center'><span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span></td></tr>"
+                        "<td colspan='$colspan' align='center'><span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span><br /><span class='move-icon' style='margin-top:10px;'></span></td></tr>"
 EOF;
                     if($isVertical){
                         $item .= "+ \"<tr id='obj\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
@@ -201,6 +201,9 @@ EOF;
                         dateFormat: $(el).attr('data-dateFormat')
                     });
                 });
+                $("#table_{$this->getPostId()} tbody").sortable({ axis: "y" });
+                $("#table_{$this->getPostId()} tr").css('background', '#F9F9F9');
+                $("#table_{$this->getPostId()} tr").css('cursor', 'move');
             }
             $(document).ready(function(){
                 $("#table_{$this->getPostId()} select:not(.raw)").combobox();
@@ -333,7 +336,10 @@ EOF;
                     $colspan = 2;
                 }
                 if($multiple){
-                    $item .= "<td colspan='$colspan' align='center'><span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span></td>";
+                    $item .= "<td colspan='$colspan' align='center'>
+                                <span class='delete-icon' onClick='removeObj{$this->getPostId()}(this);'></span><br />
+                                <span class='move-icon' style='margin-top:10px;'></span>
+                              </td>";
                 }
                 $item .= "</tr>";
                 if($isVertical){

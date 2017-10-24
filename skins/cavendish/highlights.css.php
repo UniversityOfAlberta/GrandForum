@@ -104,6 +104,17 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     background: url("../../{$iconPathHighlighted}glyphicons_207_remove_2.png");
 }
 
+.move-icon {
+    cursor: move;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 16px;
+    height: 16px;
+    margin-left: 1px;
+    margin-right:1px;
+    background: url("../../skins/icons/gray_dark/move_vertical_alt2_16x16.png");
+}
+
 /* JQuery UI */
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
