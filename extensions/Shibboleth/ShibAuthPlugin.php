@@ -278,7 +278,7 @@ function SetupShibPopup(){
             <table>
                 <tr>
                     <td width='225px' align='center'>
-                        <span style='font-size:1.3em;'>Sign in using <br /><br /><a class='button' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></span>
+                        <span style='font-size:1.3em;'>Department Members<br /><br /><a class='button' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></span>
                     </td>
                     <td width='30px;' align='center'>
                         <div style='width:1px;height:60px;background:#888888;'></div>
@@ -286,9 +286,10 @@ function SetupShibPopup(){
                         <div style='width:1px;height:60px;background:#888888;'></div>
                     </td>
                     <td width='225px' align='center'>
-                        Login using your Forum account
+                        <span style='font-size:1.3em;'>Applicants</span><br />
+                        Login with your GARS credentials
                         <div id='loginDiv'></div>
-                        Don't have an account?<br />
+                        If you don't have a GARS account?<br />
                         <a class='button' id='createAccount'>Create Account</a>
                     </td>
                 </tr>
