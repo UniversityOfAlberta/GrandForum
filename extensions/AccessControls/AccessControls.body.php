@@ -458,10 +458,15 @@ function onAbortMove($oldtitle, $newtitle, $user, &$error) {
  * Abort login if user is deleted
  */
 function onAbortLogin($user, $password, &$retval, &$msg){
-    $person = Person::newFromId($user->getId());
-    if($person->getId() > 0){
+    $data = DBFunctions::select(array('mw_user'),
+                                array('user_id'),
+                                array('user_id' => $user->getId(),
+                                      'deleted' => 0));
+    if(count($data) > 0){
+        // User exists
         return true;
     }
+    // User does not exist/is deleted
     return false;
 }
 
