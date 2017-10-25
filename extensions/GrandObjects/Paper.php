@@ -1346,7 +1346,7 @@ class Paper extends BackboneModel{
             $title = $title;
         }
         $type = $this->type;
-        $pages = $this->getData(array('pages'));
+        $pages = $this->getData(array('ms_pages', 'pages'));
         $publisher = $this->getData(array('publisher'));
         $venue = $this->getVenue();
         $volume = $this->getData(array('volume'));
@@ -1460,11 +1460,11 @@ class Paper extends BackboneModel{
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtil::get_string($data, 'pages');
+            $pg = $this->getData(array('ms_pages', 'pages'));
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtil::get_string($data, 'publisher', '');
+            $pb = $this->getData(array('publisher'));
             if($pb == ''){
                 $completeness['publisher'] = false;
             }

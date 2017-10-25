@@ -201,11 +201,15 @@ HTML.Radio = function(view, attr, options){
 HTML.Pages = function(view, attr, options){
     var value = HTML.Value(view, attr);
     var values = value.split("-");
-    var start = values[0].trim();
-    values.splice(0, 1);
+    
+    var start = "";
+    if(values[0] != undefined){
+        start = values[0].trim();
+    }
+    
     var end = "";
     if(values[1] != undefined){
-        end = values.join('-').trim();
+        end = values[1].trim();
     }
     var el1 = HTML.Element("<input type='integer' />", options);
     $(el1).attr('name', HTML.Name(attr) + '_start');

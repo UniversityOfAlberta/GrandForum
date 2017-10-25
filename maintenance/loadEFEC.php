@@ -612,17 +612,24 @@
         $product->title = trim(str_replace("•", "", str_replace("￼", "", $publication['title'])));
         $product->date = $publication['publication_date'];
         $product->acceptance_date = $publication['acceptance_date'];
-        //$product->ratio = $publication['ratio'];
-        //$product->acceptance_ratio_numerator = $publication['acceptance_ratio_numerator'];
-        //$product->acceptance_ratio_denominator = $publication['acceptance_ratio_denominator'];
         $product->status = "Published";
         $product->access = "Public";
         
         $product->authors = array();
         $product->projects = array();
+        
+        $pages = "";
+        $pageRange = "";
+        if(!is_numeric(str_replace(array("-", " "), "", $publication['pages'])) && strstr($publication['pages'], "-") === false){
+            $pages = $publication['pages'];
+        }
+        else {
+            $pageRange = $publication['pages'];
+        }
         $data = array(
             'publisher' => $publication['publisher'],
-            'pages' => $publication['pages'],
+            'ms_pages' => $pages,
+            'pages' => $pageRange,
             'volume' => $publication['volume'],
             'issue' => $publication['issue'],
             'number' => $publication['issue'],

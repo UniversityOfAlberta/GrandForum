@@ -42,16 +42,15 @@ class DashboardProgressReportItem extends StaticReportItem {
                 }
                 
                 if(in_array($paper->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-                    $pg = ArrayUtil::get_string($data, 'pages');
+                    $pg = $paper->getData(array('ms_pages', 'pages'));
                     if (!(strlen($pg) > 0)){
                         $nNoPages++;
                     }
-                    $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
-                    if($pb == '(no publisher)'){
+                    $pb = $paper->getData('publisher');
+                    if($pb == ''){
                         $nNoPublisher++;
                     }
                 }
-                
 		        $nPublications++;
 		    }
 		}
