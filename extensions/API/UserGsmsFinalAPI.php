@@ -120,6 +120,11 @@ class UserGsmsFinalAPI extends API{
                             array('final_gsms' => serialize($student),
 				  'final_decision' => $student['fgsr_decision']),
                             array('user_id' => EQ($student_id)));
+
+                    DBFunctions::update('grand_person_gsms',
+                            array('final_gsms' => serialize($student),
+                                  'final_decision' => $student['fgsr_decision']),
+                            array('user_id' => EQ($student_id)));
 		   //put update here
 		    $success[] = $student_name;
                     DBFunctions::commit();

@@ -12,7 +12,7 @@ class AdminTabs extends BackbonePage {
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isRoleAtLeast(ADMIN);
+        return $person->isRoleAtLeast(STAFF);
     }
     
     function getTemplates(){
@@ -62,10 +62,10 @@ class AdminTabs extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if(self::userCanExecute($wgUser)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Import Student PDF", "$wgServer$wgScriptPath/index.php/Special:AdminTabs");
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Import Reviewers", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-2");
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Import Student GSMS Bio", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-3");
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Import Student GSMS Outcomes", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-4");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("GSMS PDF Upload", "$wgServer$wgScriptPath/index.php/Special:AdminTabs");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Reviewer Assignment", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-2");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Student Stats Edit", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-3");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Final Application Adjudication", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-4");
         }
         return true;
     }

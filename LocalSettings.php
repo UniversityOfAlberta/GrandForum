@@ -261,13 +261,13 @@ $wgRoleValues = array(INACTIVE => 0,
                       EVALUATOR => 12,
                       ASD => 13,
                       SD => 13,
-                      STAFF => 16,
-                      MANAGER => 17,
+                      STAFF => 100,
+                      MANAGER => 100,
                       ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, EVALUATOR, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :

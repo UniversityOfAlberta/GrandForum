@@ -6,7 +6,7 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonGSMSOutcomeTab($person, $visibility){
-        parent::AbstractEditableTab("GSMS Outcome");
+        parent::AbstractEditableTab("Final Application Adjudication");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -23,43 +23,33 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
     function generateBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($this->canEdit()){
-            $gsms = $this->person->getGSMSOutcome();
+            $gsms = $this->person->getGSMSOutcome(true);
             $this->html .= "<table class='gsms'>";
 
-	    $this->html .= "<th>Most Recent Academic Degree </th>";
+	    $this->html .= "<th>Final Applicant Adjudication </th>";
 
 	    $this->html .= "<tr>";
 	    $this->html .= "<td>";
 	    $this->html .= "<table class='gsms'>";
 	    //$gsms_degrees = array();
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Academic Year</td>";
-            $this->html .= "<td class='num'>{$gsms['academic_year']}</td>";
-            $this->html .= "</tr>";
-
-	    $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Term</td>";
-            $this->html .= "<td class='num'>{$gsms['term']}</td>";
-            $this->html .= "</tr>";
-            
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Program</td>";
-            $this->html .= "<td class='num'>{$gsms['program']}</td>";
+            $this->html .= "<td class='label'>Funding Note</td>";
+            $this->html .= "<td class='text'>{$gsms['funding_note']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Degree Code</td>";
-            $this->html .= "<td class='num'>{$gsms['degree']}</td>";
+            $this->html .= "<td class='label'>Department Decision</td>";
+            $this->html .= "<td class='text'>{$gsms['department_decision']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Folder</td>";
-            $this->html .= "<td class='num'>{$gsms['folder']}</td>";
+            $this->html .= "<td class='label'>FGSR Decision</td>";
+            $this->html .= "<td class='text'>{$gsms['fgsr_decision']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Decision Response</td>";
-            $this->html .= "<td class='num'>{$gsms['decision_response']}</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
             $this->html .= "</tr>";
 
 	    $this->html .= "</table>";
@@ -90,7 +80,7 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $gsms = $this->person->getGSMSOutcome();
+        $gsms = $this->person->getGSMSOutcome(true);
         
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 

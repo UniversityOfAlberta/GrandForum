@@ -115,7 +115,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
                 }
 
-                    $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonApplicantDataTab($person, $visibility));
 		if($me->isRoleAtLeast("Admin")){
                     $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
 		}
@@ -133,15 +133,15 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRoleAtLeast(HQP)){
+                /*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(HQP)){
                 $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
                 $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
                 $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
                 $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
 
-                    $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
-                $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
-                }
+                    //$tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+                //$tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                }*/
 		if($me->isRoleAtLeast("Admin")){
                     $tabbedPage->addTab(new PersonGSMSOutcomeTab($person, $visibility));
 		}

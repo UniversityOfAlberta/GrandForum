@@ -19,7 +19,7 @@ autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Sop');
 autoload_register('GrandObjects/API/Course');
-autoload_register('GrandObjects/API/InfoSheet');
+autoload_register('GrandObjects/API/GsmsData');
 
 global $apiRequest;
 // Person
@@ -139,7 +139,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Sop.js?".filemtime("extensions/GrandObjects/BackboneModels/Sop.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Course.js?".filemtime("extensions/GrandObjects/BackboneModels/Course.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/InfoSheet.js?".filemtime("extensions/GrandObjects/BackboneModels/InfoSheet.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GsmsData.js?".filemtime("extensions/GrandObjects/BackboneModels/GsmsData.js")."'></script>\n";
     return true;
 }
 ?>

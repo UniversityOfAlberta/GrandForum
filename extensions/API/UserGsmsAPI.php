@@ -12,6 +12,12 @@ class UserGsmsAPI extends API{
     }
 
     function doAction($noEcho=false){
+	if(!isset($_POST['view'])){
+	    $visible = false;
+	}
+	else{
+	    $visible = $_POST['view'];
+	}
 	$degrees = array();
 	for($i=1; $i<100; $i++){
 	    $degree_name = "degree".$i;
@@ -50,6 +56,10 @@ class UserGsmsAPI extends API{
 				  'failures' => trim($_POST['failures']),
                                   'degrees' => serialize($degrees)),
 
+                            array('user_id' => EQ($person->getId())));
+
+        DBFunctions::update('grand_sop',
+                            array('reviewer' => $visible),
                             array('user_id' => EQ($person->getId())));
         $person->getUser()->invalidateCache();
         if(!$noEcho){

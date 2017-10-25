@@ -6,7 +6,7 @@ class PersonGSMSTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonGSMSTab($person, $visibility){
-        parent::AbstractEditableTab("GSMS");
+        parent::AbstractEditableTab("Department Review");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -22,17 +22,6 @@ class PersonGSMSTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= <<<EOF
-            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
-            <script type='text/javascript'>
-                $(document).ready(function(){
-                    var person = new Person({$this->person->toJSON()});
-                    var card = new LargePersonCardView({el: $("#card"), model: person});
-                    card.render();
-		            //$('.ui-state-default').hide();
-                });
-            </script>
-EOF;
         if($this->canEdit()){
             $gsms = $this->person->getGSMS();
 	    $gsms_degrees = $gsms->getDegrees();
@@ -159,6 +148,8 @@ EOF;
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $gsms = $this->person->getGSMS();
+	$sop = $this->person->getSOP();
+	$visible = $sop->visible;
         $gsms_degrees = $gsms->getDegrees();
         
         $this->html .= "<style>
@@ -183,6 +174,7 @@ EOF;
         $saskatchewanYes = ($gsms->saskatchewan == "Yes") ? "checked" : "";
         $internationalYes = ($gsms->international == "Yes") ? "checked" : "";
 
+        $viewYes = ($visible == "true") ? "checked" : "";
 
  
         $anatomyYes = ($gsms->anatomy == "Yes") ? "checked" : "";
@@ -196,6 +188,10 @@ EOF;
 
         $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
         $this->html .= "<table id='gsms_bio'>";
+
+        $this->html .= "<tr>";
+        $this->html .= "<td> <input name='view' type='checkbox' value='true' $viewYes /> Visible &nbsp";
+        $this->html .= "</tr>";
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>GPA (over last 60 credits):</td>";
