@@ -12,7 +12,7 @@ class PersonGrantsReportItemSet extends ReportItemSet {
         if(is_array($grants)){
             foreach($grants as $grant){
                 $tuple = self::createTuple();
-                $tuple['project_id'] = $grant->id;
+                $tuple['product_id'] = $grant->id;
                 $data[] = $tuple;
             }
         }

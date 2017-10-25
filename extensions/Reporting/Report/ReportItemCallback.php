@@ -405,37 +405,37 @@ class ReportItemCallback {
     }
  
     function getGrantTitle(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return $grant->getTitle();
     }
     
     function getGrantDescription(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return $grant->getDescription();
     }
     
     function getGrantProjectId(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return $grant->getProjectId();
     }
     
     function getGrantSponsor(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return $grant->getSponsor();
     }
     
     function getGrantStartDate(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return time2date($grant->getStartDate(), "Y-m-d");
     }
     
     function getGrantEndDate(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return time2date($grant->getEndDate(), "Y-m-d");
     }
     
     function getGrantTotal(){
-        $grant = Grant::newFromId($this->reportItem->projectId);
+        $grant = Grant::newFromId($this->reportItem->productId);
         return number_format($grant->getTotal());
     }
     

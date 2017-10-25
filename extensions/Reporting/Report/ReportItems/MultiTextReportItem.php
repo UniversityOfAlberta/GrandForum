@@ -206,7 +206,7 @@ EOF;
                     items: "tr:not(.header_row)"
                 });
                 $("#table_{$this->getPostId()} tr").css('background', '#F9F9F9');
-                $("#table_{$this->getPostId()} tr td").css('cursor', 'move');
+                $("#table_{$this->getPostId()} tbody tr td").css('cursor', 'move');
             }
             $(document).ready(function(){
                 $("#table_{$this->getPostId()} select:not(.raw)").combobox();

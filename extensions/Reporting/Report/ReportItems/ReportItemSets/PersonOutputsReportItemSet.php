@@ -1,0 +1,28 @@
+<?php
+
+class PersonOutputsReportItemSet extends ReportItemSet {
+    
+    function getData(){
+        $products = new PersonProductsReportItemSet();
+        $grants = new PersonGrantsReportItemSet();
+        
+        $products->setPersonId($this->personId);
+        $products->setProjectId($this->projectId);
+        $products->setMilestoneId($this->milestoneId);
+        $products->setProductId($this->productId);
+        
+        $grants->setPersonId($this->personId);
+        $grants->setProjectId($this->projectId);
+        $grants->setMilestoneId($this->milestoneId);
+        $grants->setProductId($this->productId);
+        
+        $products->attributes = $this->attributes;
+        $grants->attributes = $this->attributes;
+        
+        $data = array_merge($products->getData(), $grants->getData());
+        return $data;
+    }
+
+}
+
+?>
