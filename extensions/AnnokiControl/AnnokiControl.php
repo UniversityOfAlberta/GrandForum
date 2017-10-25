@@ -139,8 +139,6 @@ $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport',
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
-$egAnnokiExtensions['Sops'] = array('name' => 'Sops',
-                                         'path' => "$IP/extensions/Sops/Sops.php");
 $egAnnokiExtensions['PdfConversion'] = array('name' => 'PdfConversion',
                                          'path' => "$IP/extensions/PdfConversion/PdfConversion.php");
 $egAnnokiExtensions['AdminTabs'] = array('name' => 'AdminTabs',
