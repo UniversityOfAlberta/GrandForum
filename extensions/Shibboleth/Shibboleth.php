@@ -78,6 +78,7 @@ if(isset($_SERVER['uid'])){
 else if(isset($_GET['clearSession'])){
     session_unset();
     session_destroy();
+    $wgUser->doLogout();
 }
 
 ?>

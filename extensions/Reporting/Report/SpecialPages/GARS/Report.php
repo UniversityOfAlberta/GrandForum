@@ -8,7 +8,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
-$wgHooks['OutputPageBeforeHTML'][] = 'Report::redirect';
+$wgHooks['BeforePageDisplay'][] = 'Report::redirect';
 
 require_once("ReportStatusTable.php");
 

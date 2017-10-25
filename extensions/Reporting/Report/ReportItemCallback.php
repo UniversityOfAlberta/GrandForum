@@ -143,6 +143,7 @@ class ReportItemCallback {
             "getProjects" => "getProjects",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
+            "getString" => "getString",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
@@ -1658,6 +1659,10 @@ class ReportItemCallback {
             }
             return $value;
         }
+    }
+
+    function getString($f) {
+        return trim(file_get_contents("extensions/Reporting/Report/ReportStrings/$f"));
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId){

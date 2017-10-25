@@ -30,24 +30,32 @@ SopsView = Backbone.View.extend({
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'autoWidth': false,
+                                                     'dom': 'Bfrtip',
+                                                     'buttons': [
+                                                        {
+                                                            extend: 'colvis',
+                                                            className: 'btn btn-primary',
+                                                            text: 'Column Visibility'
+                                                        }
+                                                     ],
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
     },
 
     events: {
-	"keyup .filter_option": "reloadTable",
+        "keyup .filter_option": "reloadTable",
         "change .filter_option" : "reloadTable",
-	"click input[type=checkbox]": "reloadTable",
+        "click input[type=checkbox]": "reloadTable",
         "click #clearFiltersButton" : "clearFilters",
-	"click #filterMeOnly": "reloadTable",
+        "click #filterMeOnly": "reloadTable",
         "click #nationalityBox" : "showNationalityBoxes",
-	"click #selectTagBox" : "showCheckboxes",
-	"click #showfilter" : "showFilter",
+        "click #selectTagBox" : "showCheckboxes",
+        "click #showfilter" : "showFilter",
     },
 
     reloadTable: function(){
-	this.table.draw();
+    this.table.draw();
     },
 
     showFilter: function(){
@@ -89,9 +97,9 @@ SopsView = Backbone.View.extend({
     },
 
     clearFilters: function(){
-	$('.filter_option').val("");
-	$('.filter_option').prop('checked', false);
-	this.reloadTable();
+    $('.filter_option').val("");
+    $('.filter_option').prop('checked', false);
+    this.reloadTable();
     },
 
     filterDegreeName: function(settings,data,dataIndex){
@@ -116,7 +124,7 @@ SopsView = Backbone.View.extend({
         var min = parseFloat($('#referenceNameInputMin').val(),0);
         var max = parseFloat($('#referenceNameInputMax').val(),0);
         var gpa = parseFloat( data[2] ) || 0; // use column 2
-	//check if gpa inbetween min-max
+    //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
              ( min <= gpa   && isNaN( max ) ) ||
@@ -168,9 +176,9 @@ SopsView = Backbone.View.extend({
         if($('#filterByTags').is(':checked')){
             for(j = 0; j < tags.length; j++){
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
-		if($('#'+tag).is(':checked')){
+        if($('#'+tag).is(':checked')){
                     return true;
-		}
+        }
                 return false;
             }
         }
@@ -184,9 +192,9 @@ SopsView = Backbone.View.extend({
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
-	    return false;
+        return false;
         }
-	return true;
+    return true;
    },
 
     filterByNationality: function(settings,data,dataIndex){
@@ -207,18 +215,18 @@ SopsView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
-	$.fn.dataTable.ext.search.push(
-    	    this.filterGPA,
-	    this.filterDegreeName,
-	    this.filterInstitutionName,
+        $.fn.dataTable.ext.search.push(
+            this.filterGPA,
+            this.filterDegreeName,
+            this.filterInstitutionName,
             this.filterAnatomyType,
             this.filterStatsType,
             this.filterAdmitType,
             this.filterFinalAdmitType,
-	    this.filterMineOnly,
-	    this.filterByTags,
+            this.filterMineOnly,
+            this.filterByTags,
             this.filterByNationality,
-    );
+        );
         return this.$el;
     }
 });

@@ -28,7 +28,7 @@ class UploadReportItem extends AbstractReportItem {
                             </script>";
         $html .= "<div>";
         
-        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
+        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:88px;width:100%;min-height:88px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
         $html .= "</div>";
         
         $item = $this->processCData($html);
@@ -79,7 +79,8 @@ class UploadReportItem extends AbstractReportItem {
                         body {
                             background: none;
                             padding-bottom:25px;
-                            overflow-y: hidden;
+                            overflow: hidden;
+                            min-width: 100% !important;
                         }
                         
                         #bodyContent {
@@ -119,7 +120,7 @@ class UploadReportItem extends AbstractReportItem {
         }
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
-                            <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
+                            <input type='submit' name='upload' value='Upload' /> <br/><b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
                         </form>";
         $data = $this->getBlobValue();
         if($data !== null && $data !== ""){

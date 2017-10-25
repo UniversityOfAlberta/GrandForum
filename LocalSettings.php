@@ -141,6 +141,7 @@ if(!TESTING){
     }
 }
 $wgDisableCounters = true;
+$wgPasswordAttemptThrottle = false;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;

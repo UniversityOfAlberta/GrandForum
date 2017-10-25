@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF, CSFormTrimPDF" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="OT">
             <SectionPermission id="personal" permissions="rw" />
@@ -8,28 +8,51 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="personal" tooltip="Supplementary Admission Information" title="Supplementary Admission Information" name="Additional Admission Info" blobSection="CS_QUESTIONS" type="EditableReportSection" pagebreak="false">
+
+    <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+            <![CDATA[
+                
+                <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
+            <![CDATA[
+                <h3>Student ID<span title="Generated when an applicant establishes a relationship with the U of A in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
+            <![CDATA[
+                <h3>CS Application Number<span title="This number is generated when an application is created for an applicant in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
             <style>
-                .flex-container {
-                  width: 99%;
-                  display: -webkit-flex; /* Safari */
-                  display: flex;
-                  -webkit-flex-direction: row; /* Safari */
-                  flex-direction:         row;
-                  -webkit-align-items: baseline; /* Safari */
-                  align-items:         baseline;
-                  justify-content: space-around;
-                  align-content: stretch;
-                  flex-wrap: wrap;
-                }
-                .flex-item {
-                  -webkit-flex-grow: <number>; /* Safari */
-                  flex-grow:         <number>;
-                }
-            </style>
+                    .flex-container {
+                      width: 99%;
+                      display: -webkit-flex; /* Safari */
+                      display: flex;
+                      -webkit-flex-direction: row; /* Safari */
+                      flex-direction:         row;
+                      -webkit-align-items: baseline; /* Safari */
+                      align-items:         baseline;
+                      justify-content: space-around;
+                      align-content: stretch;
+                      flex-wrap: wrap;
+                    }
+                    .flex-item {
+                      -webkit-flex-grow: <number>; /* Safari */
+                      flex-grow:         <number>;
+                    }
+                </style>
                 <div class="flex-container">
                 <div class="flex-item" style="
                     min-width: 370px; 
@@ -42,7 +65,7 @@
                     padding: 0px 16px 16px 16px;
                     margin-top: 8px;
                     margin-right: 8px;" >
-                    <h1>Personal Information</h1>
+                    <h1>Research Interests</h1>
                     <h3>*Area of Study</h3>
                     {$item}
             ]]>
@@ -110,6 +133,7 @@
                             {$item}
                         </div>
                     </div>
+                    <div id='warning_container'></div>
             ]]>
         </ReportItem>
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
@@ -119,19 +143,19 @@
                         {$item}
                         <script type="text/javascript">
                             var calculateNormalizedGPA = function() {
-                                var gpa       = $('[name=AdditionalAdmissionInfo_q19]').val();
-                                var gpa_scale = $('[name=AdditionalAdmissionInfo_q20]').val();
+                                var gpa       = $('[name=CSApplicationDetails_q19]').val();
+                                var gpa_scale = $('[name=CSApplicationDetails_q20]').val();
 
                                 var returnValue;
-
+                                clearWarning('#warning_container');
                                 if (gpa != '') {
                                     if ((gpa_scale == 0) || (gpa_scale == '') || (gpa_scale == null)) {
-                                        returnValue = 'Scale cannot be out of 0';
+                                        addWarning('Scale cannot be out of 0', false, '#warning_container');
                                     } else {
                                         // try calculating
                                         var normalized = (gpa * 4) / (gpa_scale);
                                         if (normalized > 4) {
-                                            returnValue = 'GPA greater than scale';
+                                            addWarning('GPA cannot be greater than scale', false, '#warning_container');
                                         } else {
                                             returnValue = parseFloat(normalized).toFixed(2);
                                         }
@@ -140,12 +164,11 @@
                                     returnValue = "";
                                 }
 
-                                $('[name=AdditionalAdmissionInfo_q21]').val(returnValue);
+                                $('[name=CSApplicationDetails_q21]').val(returnValue);
                             };
 
-                            $('[name=AdditionalAdmissionInfo_q19]').change(calculateNormalizedGPA);
-                            $('[name=AdditionalAdmissionInfo_q20]').change(calculateNormalizedGPA);
-                            $('#AdditionalAdmissionInfo_q20_other input').change(calculateNormalizedGPA);
+                            $('[name=CSApplicationDetails_q19]').change(calculateNormalizedGPA);
+                            $('[name=CSApplicationDetails_q20]').change(calculateNormalizedGPA);
                             $(document).ready(calculateNormalizedGPA);
 
                         </script>
@@ -170,7 +193,7 @@
 
             ]]>
         </ReportItem>
-        <ReportItem id="q24" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
+        <ReportItem id="q24" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
                     <div class="flex-container">
                         <div class="flex-item">
@@ -179,7 +202,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q25" type="Integer" min="130" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
+        <ReportItem id="q25" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -187,50 +210,39 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q26" type="Integer" min="0" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
+        <ReportItem id="q26" type="Integer" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                             {$item}
                         </div>
-                    </div> <!-- end GRE flex -->
             ]]>
         </ReportItem>
-        <ReportItem id="q27" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q27" limit="100" width="100px" optional="true">
+        <ReportItem id="q27" type="Integer" blobType="BLOB_TEXT" blobItem="Q27" limit="100" width="100px" optional="false">
             <![CDATA[
-                    <h3>GRE CS<span title="Calculated field. Averages the 3 sections for a % score." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <div class="flex-item">
+                            <h3>GRE CS</h3>
+                            {$item}
+                        </div>
+                    </div> <!-- end GRE flex -->
+
+            ]]>
+        </ReportItem>
+
+
+        <ReportItem id="q28" type="Upload" blobType="BLOB_RAW" blobItem="qUploadGRE" width="100px" mimeType=".pdf" fileSize="5">
+            <![CDATA[
+                    <h3>Upload GRE Transcript (PDF)</h3>
                     {$item}
-                    <script type="text/javascript">
-                        var calculateGRE = function() {
-                            var gre1 = $('[name=AdditionalAdmissionInfo_q24]').val();
-                            var gre2 = $('[name=AdditionalAdmissionInfo_q25]').val();
-                            var gre3 = $('[name=AdditionalAdmissionInfo_q26]').val();
-
-                            var returnValue = '';
-                            if ((gre1 != '') && (gre2 != '') && (gre3 != '')) {
-                                returnValue = (((gre1/170) + (gre2/170) + (gre3/6)) / 3) * 100;
-                                returnValue = parseFloat(returnValue).toFixed(2);
-                            }
-
-                            $('[name=AdditionalAdmissionInfo_q27]').val(returnValue);
-                        };
-
-                        $('[name=AdditionalAdmissionInfo_q24]').change(calculateGRE);
-                        $('[name=AdditionalAdmissionInfo_q25]').change(calculateGRE);
-                        $('[name=AdditionalAdmissionInfo_q26]').change(calculateGRE);
-                        $(document).ready(calculateGRE);
-
-                    </script>
                 </div> <!-- end flex item2 -->
             </div> <!-- end flex container -->
             ]]>
         </ReportItem>
 
-
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SOP" title="Statement of Purpose" blobSection="CS_QUESTIONS1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1500" height="1000px">
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
                 <h3>Statement of Purpose</h3>
                 {$item}
@@ -238,58 +250,119 @@
         </ReportItem>
     </ReportSection>
 
-
-    <ReportSection id="msc_thesis" tooltip="MSc Thesis" name="MSc Thesis" blobSection="CS_QUESTIONS2" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qMSc1" type="Text" blobType="BLOB_TEXT" blobItem="QMSc1" limit="150" width="98%">
+    <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
-                <h3>Thesis Title</h3>
+                <h3>Research Experience</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="qMSc2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QMSc2" limit="1000">
+
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="1000" heights="67" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
+            <![CDATA[
+                <h3>Publications</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="awards" tooltip="Awards" name="Awards" blobSection="CS_QUESTIONS_tab4" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
+            <![CDATA[
+                <h3>Degrees</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|Category|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
+            <![CDATA[
+                <h3>Courses Taken</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="qEducation3" type="Text" blobType="BLOB_TEXT" blobItem="qThesisTitle" limit="150" width="98%">
+            <![CDATA[
+                <h3>Masters Thesis Title</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qEducation4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qThesisAbstract" limit="1000">
             <![CDATA[
                 <h3>Thesis Abstract</h3>
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
-
-
-
-    <ReportSection id="upload_pdf" tooltip="Upload CV or Resume" name="Upload CV/Resume" blobSection="CS_QUESTIONS4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="uploadPDF" type="Upload" blobType="BLOB_RAW" blobItem="uploadPDF" mimeType="application/pdf" fileSize="10">
-            <![CDATA[
-                <p>Use this to upload any CV or resume PDF file relevant to your submission</p>
-                <h3>Upload</h3>
-                {$item}
-            ]]>
-        </ReportItem>
 
     </ReportSection>
 
 
-    <ReportSection id="multimedia_page" tooltip="Multimedia Project History" name="Multimedia Program" title="Multimedia Program" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
+    <!--
+    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qmulti1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qmulti1" limit="200">
+        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
             <![CDATA[
-                <h3>Professional certificate/diploma</h3>
+                <h3>Course History</h3>
                 {$item}
+                <div id='warning_container'></div>
             ]]>
         </ReportItem>
-        <ReportItem id="qmulti2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="qmulti2" labels="Title|Description" types="Text|Textarea" multiple="true" start="1">
+
+        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" width="100px" optional="true">
             <![CDATA[
-                <h3>Multimedia projects history</h3>
+                <h3>GPA<span title="Auto-calculated value from above courses" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
+                <script type="text/javascript">
+
+                    var calculateGPAfull = function() {
+                        _.defer(function() {
+                            // get all the gpas from report item above this one
+                            var elArray = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
+                            
+                            // Calculate gpa
+                            var sumGPA = 0;
+                            for (var a = 0; a < elArray.length; a++) {
+                                if (!_.isNaN(parseFloat(elArray[a].value))) {
+                                    sumGPA += parseFloat(elArray[a].value);
+                                }
+                            }
+                            var avg = sumGPA / Math.max(elArray.length, 1);                            
+                            $('[name=BestFullYearGPA_qpaFullq2]').val(Number(Math.round(avg+'e2')+'e-2'));
+                            
+                        });
+                    };
+
+                    // set onChangeListeners
+                    $(document).off("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
+                    $(document).off("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
+                    $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']", calculateGPAfull);
+                    $(document).on("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
+                    calculateGPAfull();
+
+                </script>
             ]]>
         </ReportItem>
 
     </ReportSection>
+-->
+
+
+
 
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
+
     <ReportSection id="eula" name="Declaration" title="Declaration" tooltip="Declaration" blobSection="OT_EULA" type="EULA">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
@@ -308,6 +381,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
+
     <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />

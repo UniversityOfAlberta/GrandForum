@@ -56,6 +56,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
+        $heights = explode("|", $this->getAttr('heights'));
         $start = $this->getAttr('start', 0);
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
@@ -92,11 +93,20 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= "\"<td align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
-                        else if(strtolower(@$types[$j]) == "integer"){
-                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        else if(strstr(strtolower(@$types[$j]), "integer") !== false){
+
+                            $matches = array();
+                            preg_match("/^(Integer)\((.*)\)$/i", $types[$j], $matches);
+                            $matches = @explode(",", $matches[2]);
+                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' data-min='{$matches[0]}' data-max='{$matches[1]}' data-decimals='{$matches[2]}'/></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
+                            if (count($heights) <= $j){
+                                $height = 60;
+                            } else {
+                                $height = max(60, $heights[$j]);
+                            }
+                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:{$height}px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -138,7 +148,7 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
+                        "<td colspan='$colspan'><button type='button' name='{$this->getPostId()}_btn_rmv' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
 EOF;
                     if($isVertical){
                         $item .= "+ \"<tr id='obj\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
@@ -151,9 +161,11 @@ EOF;
             }
             
             function removeObj{$this->getPostId()}(obj){
-                var id = $(obj).parent().parent().attr('id');
-                $('tr#' + id, $(obj).parent().parent().parent()).remove();
-                updateTable{$this->getPostId()}();
+                _.defer(function() {
+                    var id = $(obj).parent().parent().attr('id');
+                    $('tr#' + id, $(obj).parent().parent().parent()).remove();
+                    updateTable{$this->getPostId()}();
+                });
             }
             
             function updateTable{$this->getPostId()}(){
@@ -180,7 +192,9 @@ EOF;
                 else{
                     $("#table_{$this->getPostId()}").show();
                 }
-                $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
+                $("input.numeric").each(function(i, el) {
+                    $(el).forceNumeric({min: $(el).attr('data-min'), max: $(el).attr('data-max'), decimals: $(el).attr('data-decimals')});
+                });
                 $("input.calendar").each(function(i, el){
                     $(el).datepicker({
                         dateFormat: $(el).attr('data-dateFormat')
@@ -233,8 +247,11 @@ EOF;
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
                         $item .= "<td align='$align'>".$combobox->render()."</td>";
                     }
-                    else if(strtolower(@$types[$j]) == "integer"){
-                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                    else if(strstr(strtolower(@$types[$j]), "integer") !== false) {
+                        $matches = array();
+                        preg_match("/^(Integer)\((.*)\)$/i", $types[$j], $matches);
+                        $matches = @explode(",", $matches[2]);
+                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' data-min='{$matches[0]}' data-max='{$matches[1]}' data-decimals='{$matches[2]}'/></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
@@ -248,7 +265,9 @@ EOF;
                         $item .= @"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                        //print_r($matches);
                         $matches = @explode(",", $matches[2]);
+
                         if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
                             $item .= @"<option selected>{$value[$index]}</option>";
                         }
@@ -289,7 +308,7 @@ EOF;
                     $colspan = 2;
                 }
                 if($multiple){
-                    $item .= "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                    $item .= "<td colspan='$colspan'><button type='button' name='{$this->getPostId()}_btn_rmv' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
                 }
                 $item .= "</tr>";
                 if($isVertical){
@@ -415,7 +434,7 @@ EOF;
                            strstr(strtolower(@$types[$j]), "combobox") !== false){
                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
-                        else if(strtolower(@$types[$j]) == "integer"){
+                        else if(strstr(strtolower(@$types[$j]), "integer") !== false){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
