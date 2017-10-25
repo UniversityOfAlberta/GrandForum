@@ -201,9 +201,12 @@ EOF;
                         dateFormat: $(el).attr('data-dateFormat')
                     });
                 });
-                $("#table_{$this->getPostId()} tbody").sortable({ axis: "y" });
+                $("#table_{$this->getPostId()} tbody").sortable({
+                    axis: "y",
+                    items: "tr:not(.header_row)"
+                });
                 $("#table_{$this->getPostId()} tr").css('background', '#F9F9F9');
-                $("#table_{$this->getPostId()} tr").css('cursor', 'move');
+                $("#table_{$this->getPostId()} tr td").css('cursor', 'move');
             }
             $(document).ready(function(){
                 $("#table_{$this->getPostId()} select:not(.raw)").combobox();
@@ -212,10 +215,11 @@ EOF;
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
         $item .= "<div class='table_{$this->getPostId()} warning' style='display:none;'></div>";
-        $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
+        $item .= "<table id='table_{$this->getPostId()}' class='$class'>
+                    ";
         if(!$isVertical){
             if(count($labels) > 0 && $labels[0] != ""){
-                $item .= "<tr>";
+                $item .= "<tr class='header_row'>";
                 foreach($labels as $j => $label){
                     if(strtolower(@$types[$j]) == "random"){
                         continue;
@@ -234,6 +238,7 @@ EOF;
                 }
             } 
         }
+        //$item .= "</thead>";
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
