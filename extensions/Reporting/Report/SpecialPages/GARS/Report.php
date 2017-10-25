@@ -10,6 +10,7 @@ $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 $wgHooks['BeforePageDisplay'][] = 'Report::redirect';
 
+require_once("Sops/Sops.php");
 require_once("ReportStatusTable.php");
 
 class Report extends AbstractReport{
