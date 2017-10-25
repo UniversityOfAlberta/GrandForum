@@ -25,7 +25,7 @@ class Report extends AbstractReport{
         global $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
-                redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
+            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
         }
     } 
 
