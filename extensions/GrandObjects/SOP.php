@@ -142,6 +142,59 @@ class SOP extends BackboneModel{
         }
     }
 
+    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem){
+        $projectId = 0;
+        
+        $blb = new ReportBlob($blobType, $year, $this->user_id, $projectId);
+        $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        
+        return $data;
+    }
+
+    function getCSColumns() {
+        $moreJson = array();
+        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
+        $moreJson['areas_of_study'] = implode(", ", $AoS['q13']);
+        //var_dump($moreJson['areas_of_study']);
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
+        
+        $moreJson['supervisors'] = implode(", ", array($blob['q14']));
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
+        $moreJson['scholarships_held'] = implode(", ", array($blob['q16']));
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
+        $moreJson['scholarships_applied'] = implode(", ", array($blob['q15']));
+
+        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
+        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
+        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
+        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
+
+        // # of Publications
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
+        $moreJson['num_publications'] = count($blob['qResExp2']);
+
+        // # of awards
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
+        $moreJson['num_awards'] = count($blob['qAwards']);
+
+        // Courses (number of courses, number of areas)
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
+        $moreJson['courses'] = implode(", ", array($blob['qEducation2']));
+
+        return $moreJson;
+
+    }
+
+    function getOTColumns() {
+
+    }
+
     /**
      * getAllSOP Returns all SOP available to a user
      * @return sop An Array of SOP
@@ -230,7 +283,7 @@ class SOP extends BackboneModel{
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS();
-	$nationality = array();
+	      $nationality = array();
         $nationality[] = ($gsms->indigenous == "Yes") ? "Indigenous" : "";
         $nationality[] = ($gsms->canadian == "Yes") ? "Canadian" : "";
         $nationality[] = ($gsms->saskatchewan == "Yes") ? "Saskatchewan" : "";
@@ -268,6 +321,7 @@ class SOP extends BackboneModel{
              $agreeableness = $personality['personality'][3]['percentile'];
              $neurotism = $personality['personality'][4]['percentile'];
         }
+        $this->getCSColumns();
         $json = array('id' => $this->getId(),
                       'content' => $this->getContent(),
                       'content_string' => $this->getContent(true),
@@ -275,9 +329,9 @@ class SOP extends BackboneModel{
                       'date_created' => $this->getDateCreated(),
                       'url' => $this->getUrl(),
                       'author' => $author,
-		      'gsms' => $gsms->toArray(),
-		      'admit' => $this->getFinalAdmit(),
-		      'nationality_note' => $nationality_note,
+            		      'gsms' => $gsms->toArray(),
+            		      'admit' => $this->getFinalAdmit(),
+            		      'nationality_note' => $nationality_note,
                       'reviewers' => $reviewers,
                       'sentiment_val' => round($this->sentiment_val,2),
                       'sentiment_type' => $this->sentiment_type,
@@ -312,6 +366,9 @@ class SOP extends BackboneModel{
                       'pdf_data' => $this->getPdf(true),
 		      'gsms_data' => $this->checkGSMS(),
 		      'gsms_url' => $this->getGSMSUrl());
+
+          // Get from Config which forum we are looking at to add extra columns
+          $json = array_merge($json, $this->getCSColumns());
         return $json;
     }
 
@@ -452,7 +509,7 @@ class SOP extends BackboneModel{
     */
     function getAdmitResult($user){
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
-	    $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
+	    $blob_address = ReportBlob::create_address('RP_OT', 'OT_REVIEW', 'Q13', $this->getId());
 	    $blob->load($blob_address);
 	    $data = $blob->getData();
 
