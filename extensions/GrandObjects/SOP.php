@@ -158,18 +158,18 @@ class SOP extends BackboneModel{
     function getCSColumns() {
         $moreJson = array();
         $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
-        $moreJson['areas_of_study'] = implode(", ", $AoS['q13']);
+        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
         //var_dump($moreJson['areas_of_study']);
 
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
         
-        $moreJson['supervisors'] = implode(", ", array($blob['q14']));
+        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
 
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
-        $moreJson['scholarships_held'] = implode(", ", array($blob['q16']));
+        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
 
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
-        $moreJson['scholarships_applied'] = implode(", ", array($blob['q15']));
+        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
 
         $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
         $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
@@ -179,15 +179,15 @@ class SOP extends BackboneModel{
 
         // # of Publications
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
-        $moreJson['num_publications'] = count($blob['qResExp2']);
+        $moreJson['num_publications'] = @count($blob['qResExp2']);
 
         // # of awards
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
-        $moreJson['num_awards'] = count($blob['qAwards']);
+        $moreJson['num_awards'] = @count($blob['qAwards']);
 
         // Courses (number of courses, number of areas)
         $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = implode(", ", array($blob['qEducation2']));
+        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
 
         return $moreJson;
 
