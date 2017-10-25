@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_CS" pdfType="RPTP_CS" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="OT">
             <SectionPermission id="personal" permissions="rw" />
@@ -267,7 +267,7 @@
     </ReportSection>
 
     <ReportSection id="awards" tooltip="Awards" name="Awards" blobSection="CS_QUESTIONS_tab4" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%">
+        <ReportItem id="qAwards" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%">
             <![CDATA[
                 {$item}
             ]]>

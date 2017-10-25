@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Form" reportType="RP_OT" pdfType="RPTP_CS_FULL" ajax="true" disabled="false">
+<Report name="CS Form" reportType="RP_CS" pdfType="RPTP_CS_FULL" ajax="true" disabled="false">
 
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">

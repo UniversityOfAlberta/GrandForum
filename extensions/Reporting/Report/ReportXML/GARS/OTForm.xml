@@ -11,36 +11,38 @@
     <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
-                <h3>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                <h3>Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" limit="1800">
             <![CDATA[
-                <h3>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                <h3>Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q3" limit="1800">
+        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" limit="1800">
             <![CDATA[
-                <h3>Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                <h3>Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" limit="1800">
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900">
             <![CDATA[
-                <h3>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900">
-            <![CDATA[
-                <h3>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                <h3>Is there anything else in terms of extenuating circumstances that you would like inform the Admissions Committee in making their decision?  An example of an extenuating circumstance would be (e.g. gaps in program, leave of absences from previous program). Note: if there are no extenuating circumstances to speak of, please leave this answer blank.</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
+
+        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
+            <![CDATA[
+                <h3>Max Grade<span title="The maximum grade achievable for the classes below. E.g. 4.0" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+                <div id='max_grade_warning_container'></div>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="qpa60q1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpa60Entries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
             <![CDATA[
@@ -52,15 +54,23 @@
 
         <ReportItem id="qpa60q2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpa60Output" limit="100" width="100px" optional="true">
             <![CDATA[
-                <h3>GPA<span title="Auto-calculated value from above courses" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>GPA<span title="Auto-calculated value from above courses, normalized to the 4-point scale" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
                 <script type="text/javascript">
 
                     var calculateGPAfull = function() {
                         _.defer(function() {
                             // get all the gpas from report item above this one
-                            var elArray = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                            var elArrayCredits = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='credits']");
+                            var elArray = $("*[name^='Last60CreditsGPA_qpa60q1'][name*='grade']");
+                            var elArrayCredits = $("*[name^='Last60CreditsGPA_qpa60q1'][name*='credits']");
+                            var maxGrade = $("*[name^='Last60CreditsGPA_qpa60MaxGrade']")[0].value;
+                            if (maxGrade == 0) {
+                                addWarning("Max grade cannot be 0", false, '#max_grade_warning_container');
+                                $('[name=Last60CreditsGPA_qpa60q2]').val(0);
+                                return;
+                            } else {
+                                clearWarning('#max_grade_warning_container');
+                            }
                             
                             // Calculate gpa
                             var sumGPA = 0;
@@ -69,8 +79,10 @@
                                     sumGPA += parseFloat(elArray[a].value);
                                 }
                             }
-                            var avg = sumGPA / Math.max(elArray.length, 1);                            
-                            $('[name=BestFullYearGPA_qpaFullq2]').val(Number(Math.round(avg+'e2')+'e-2'));
+                            var normal = 4;
+                            var avg = ((sumGPA * normal) / maxGrade) / Math.max(elArray.length, 1); 
+                            var avg = Math.min(avg, normal);                           
+                            $('[name=Last60CreditsGPA_qpa60q2]').val(Number(Math.round(avg+'e2')+'e-2'));
 
                             // Count credits
                             var sumCredits = 0;
@@ -83,9 +95,9 @@
                             clearWarning('#warning_container');
                             clearSuccess('#warning_container');
                             if (sumCredits >= 60) {
-                                $('#add_BestFullYearGPA_qpaFullq1').prop('disabled', true);
+                                $('#add_Last60CreditsGPA_qpa60q1').prop('disabled', true);
                             } else {
-                                $('#add_BestFullYearGPA_qpaFullq1').prop('disabled', false);
+                                $('#add_Last60CreditsGPA_qpa60q1').prop('disabled', false);
                             }
 
                             if (sumCredits > 60) {
@@ -99,12 +111,16 @@
                     };
 
                     // set onChangeListeners
-                    $(document).off("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                    $(document).off("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
-                    $(document).off("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='credits']");
-                    $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']", calculateGPAfull);
-                    $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='credits']", calculateGPAfull);
-                    $(document).on("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
+                    $(document).off("change", "*[name^='Last60CreditsGPA_qpa60q1'][name*='grade']");
+                    $(document).off("click", "#table_Last60CreditsGPA_qpa60q1 button", calculateGPAfull);
+                    $(document).off("change", "*[name^='Last60CreditsGPA_qpa60q1'][name*='credits']");
+                    $(document).on("change", "*[name^='Last60CreditsGPA_qpa60q1'][name*='grade']", calculateGPAfull);
+                    $(document).on("change", "*[name^='Last60CreditsGPA_qpa60q1'][name*='credits']", calculateGPAfull);
+                    $(document).on("click", "#table_Last60CreditsGPA_qpa60q1 button", calculateGPAfull);
+
+                    $(document).off("change", "*[name^='Last60CreditsGPA_qpa60MaxGrade']");
+                    $(document).on("change", "*[name^='Last60CreditsGPA_qpa60MaxGrade']", calculateGPAfull);
+
                     calculateGPAfull();
 
                 </script>
