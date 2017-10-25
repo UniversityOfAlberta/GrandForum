@@ -4,7 +4,7 @@
  * Class InfoSheetAPI
  * API Class for interacting with individual GSMS infosheets
  */
-class InfoSheetAPI extends RESTAPI {
+class GsmsDataAPI extends RESTAPI {
 
   /**
    * doGET handler for get request method
@@ -19,7 +19,7 @@ class InfoSheetAPI extends RESTAPI {
                 $this->throwError("You must be logged in to view this sop");
             }
 	    elseif($info_sheet->user_id == ""){
-		$info_sheet = new InfoSheet(array());
+		$info_sheet = new GsmsData(array());
 	    }
             return $info_sheet->toJSON();
         }
@@ -61,7 +61,7 @@ class InfoSheetAPI extends RESTAPI {
         if(!$status){
             $this->throwError("The info_sheet could not be updated");
         }
-        $info_sheet = InfoSheet::newFromUserId($this->getParam('user_id'));
+        $info_sheet = GsmsData::newFromUserId($this->getParam('user_id'));
         return true;
     }
 

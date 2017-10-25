@@ -3,10 +3,36 @@
     * @package GrandObjects
     */
 
-class InfoSheet extends BackboneModel{
+class GsmsData extends BackboneModel{
 
     static $cache = array();
     var $user_id;
+//General data
+    var $date_of_birth;
+    var $program_name;
+    var $country_of_birth;
+    var $country_of_citizenship;
+    var $applicant_type;
+    var $education_history;
+    var $department;
+    var $epl_test;
+    var $epl_score;
+    var $epl_listen;
+    var $epl_write;
+    var $epl_read;
+    var $speaking; 
+
+//Specific for CS
+    var $areas;
+    var $supervisors;
+    var $scholarships;
+    var $gpa_normalized;
+    var $gre_verbal;
+    var $gre_quantitative;
+    var $gre_analytical; 
+    var $gre_cs;
+
+//specific for OT
     var $gpa60;
     var $gpafull;
     var $gpafull_credits;
@@ -27,7 +53,7 @@ class InfoSheet extends BackboneModel{
 
 
     // Constructor
-    function InfoSheet($data){
+    function GsmsData($data){
         if(count($data) > 0){
             $this->user_id = $data[0]['user_id'];
             $this->gpa60 = $data[0]['gpa60'];
@@ -51,7 +77,7 @@ class InfoSheet extends BackboneModel{
     }
 
     /**
-    * Returns a new InfoSheet from the given id
+    * Returns a new GsmsData from the given id
     * @param integer $id The id of the course
     * @return Course The Course with the given id. If no
     * course exists with that id, it will return an empty course.
@@ -64,7 +90,7 @@ class InfoSheet extends BackboneModel{
         $data = DBFunctions::select(array('grand_person_gsms'),
                                     array('*'),
                                     array('user_id' => EQ($id)));
-        $info_sheet = new InfoSheet($data);
+        $info_sheet = new GsmsData($data);
         return $info_sheet;
     }
 
@@ -156,6 +182,7 @@ class InfoSheet extends BackboneModel{
         return $json;
 
     }
+
     function getDegrees(){
 	if(count($this->degrees) == 0 || $this->degrees == ""){
 	    return array();

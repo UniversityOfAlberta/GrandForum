@@ -1,8 +1,9 @@
 CoursesEditView = Backbone.View.extend({
     isDialog: false,
     sops: null,
-
+    parent: null,
     initialize: function(){
+	this.parent = this;
         this.template = _.template($('#courses_edit_template').html());
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;

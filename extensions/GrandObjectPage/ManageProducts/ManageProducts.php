@@ -55,7 +55,8 @@ class ManageProducts extends BackbonePage {
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
 //	    if(ManageProducts::userCanExecute($wgUser)){
         $person = Person::newFromWgUser();
-        if($person->isRole(HQP)){
+        //if($person->isRole()){
+	if(false){
 	        $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
 	                                                                      "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
 	    }

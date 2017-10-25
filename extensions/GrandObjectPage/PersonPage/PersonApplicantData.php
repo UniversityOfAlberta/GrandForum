@@ -2,12 +2,12 @@
 
 require_once ("symfony/vendor/autoload.php");
 
-class PersonProfileTab extends AbstractEditableTab {
+class PersonApplicantData extends AbstractEditableTab {
 
     var $person;
     var $visibility;
 
-    function PersonProfileTab($person, $visibility){
+    function PersonApplicantData($person, $visibility){
         parent::AbstractEditableTab("Applicant Data");
         $this->person = $person;
         $this->visibility = $visibility;
@@ -23,18 +23,12 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
         }
-        //$this->html .= $this->showFundedProjects($this->person, $this->visibility);
-        //$this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->person->isRole(NI) || 
            $this->person->isRole(HQP) || 
            $this->person->isRole(EXTERNAL)){
             // Only show the word cloud for 'researchers'
-            //$extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        //$extra[] = $this->showDoughnut($this->person, $this->visibility);
-        //$extra[] = $this->showTwitter($this->person, $this->visibility);
-        
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
             if($e == ""){
@@ -43,28 +37,6 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
-        /*$this->html .= "<script type='text/javascript'>
-            setInterval(function(){
-                var table = $('#personProducts').DataTable();
-                if($('#bodyContent').width() < 650){
-                    $('td#firstRight').hide();
-                    $('.chordChart').hide();
-                    
-                    table.column(1).visible(false);
-                    table.column(2).visible(false);
-                    table.column(3).visible(false);
-                }
-                else{
-                    $('td#firstRight').show();
-                    $('.chordChart').show();
-                    
-                    table.column(1).visible(true);
-                    table.column(2).visible(true);
-                    table.column(3).visible(true);
-                }
-            }, 33);
-        </script>";*/
-        //$this->showCCV($this->person, $this->visibility);
         $this->showSop($this->person, $this->visibility);
         return $this->html;
     }
@@ -394,74 +366,7 @@ EOF;
         return $html;
     }
     
-    /**
-     * Shows a table of this Person's products, and is filterable by the
-     * visualizations which appear above it.
-     */
-    function showTable($person, $visibility){
-        global $config;
-        $me = Person::newFromWgUser();
-        $products = $person->getPapers("all", false, 'both', true, "Public");
-        $string = "";
-        if(count($products) > 0){
-            $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
-            $string .= "<table id='personProducts' rules='all' frame='box'>
-                <thead>
-                    <tr>
-                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
-                    </tr>
-                </thead>
-                <tbody>";
-            foreach($products as $paper){
-                $projects = array();
-                foreach($paper->getProjects() as $project){
-                    $projects[] = "{$project->getName()}";
-                }
-
-                $names = array();
-                foreach($paper->getAuthors() as $author){
-                    if($author->getId() != 0 && $author->getUrl() != ""){
-                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForProduct()}</a>";
-                    }
-                    else{
-                        $names[] = $author->getNameForForms();
-                    }
-                }
-                
-                $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
-                $string .= "<td>{$paper->getCategory()}</td>";
-                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $names)."</td>";
-                
-                $string .= "</tr>";
-            }
-            $string .= "</tbody>
-                </table>
-                <script type='text/javascript'>
-                    var personProducts = $('#personProducts').dataTable({
-                        'order': [[ 2, 'desc' ]],
-                        'autoWidth': false
-                    });
-                </script>";
-        }
-        return $string;
-    }
-   
-    /**
-     * Displays the profile for this user
-     */
-    function showCCV($person, $visibility){
-        global $wgUser, $wgServer, $wgScriptPath;
-        if(isExtensionEnabled('CCVExport')){
-            $me = Person::newFromWgUser();
-            if(($person->isRole(NI)) && $me->getId() == $person->getId()){
-                $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
-            }
-        }
-    }
-
-    /**
+   /**
      * Displays Sop Review of user
      */
     function showSop($person,$visibility){
@@ -476,17 +381,6 @@ EOF;
             }
         }
 
-    }
-    
-    /**
-     * Displays the photo for this person
-     */
-    function showPhoto($person, $visibility){
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top'>";
-        if($person->getPhoto() != ""){
-            $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
-        }
-        $this->html .= "<div id=\"special_links\"></div>";
     }
     
     function showEditPhoto($person, $visibility){

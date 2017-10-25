@@ -948,14 +948,6 @@ class CavendishTemplate2 extends QuickTemplate {
             if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && !$me->isRole(CI) && !$me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
                 redirect("$wgServer$wgScriptPath/index.php/Special:Sops");  
             }
-            elseif(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI) && !($me->getSopPdfUrl()== false) && $_GET['action'] != "viewNotifications"){
-                        redirect($me->getUrl());
-            }
-            
-            elseif(($wgTitle->getText() == "Main Page"|| $wgTitle->getText() == "UserLogin") && $me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
-                redirect($me->getUrl());
-
-            }
             wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
             wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
             //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");

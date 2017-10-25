@@ -1,12 +1,12 @@
 <?php
 
-class PersonGSMSOutcomeTab extends AbstractEditableTab {
+class PersonApplicantDataTab extends AbstractEditableTab {
 
     var $person;
     var $visibility;
 
-    function PersonGSMSOutcomeTab($person, $visibility){
-        parent::AbstractEditableTab("Final Application Adjudication");
+    function PersonApplicantDataTab($person, $visibility){
+        parent::AbstractEditableTab("Applicant Data");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -24,34 +24,130 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($this->canEdit()){
             $gsms = $this->person->getGSMSOutcome(true);
-            $this->html .= "<table class='gsms'>";
+            $this->html .= "<br/><table class='gsms'>";
 
-	    $this->html .= "<th>Final Applicant Adjudication </th>";
+	    $this->html .= "<th><font color='green'>".$this->person->getNameForForms()." ({$gsms['gsms_id']})</font></th>";
 
 	    $this->html .= "<tr>";
 	    $this->html .= "<td>";
 	    $this->html .= "<table class='gsms'>";
-	    //$gsms_degrees = array();
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Funding Note</td>";
-            $this->html .= "<td class='text'>{$gsms['funding_note']}</td>";
+            $this->html .= "<td class='label'>Email</td>";
+            $this->html .= "<td class='text'>{$gsms['email']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Department Decision</td>";
-            $this->html .= "<td class='text'>{$gsms['department_decision']}</td>";
+            $this->html .= "<td class='label'>Student ID</td>";
+            $this->html .= "<td class='text'>{$gsms['student_id']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>FGSR Decision</td>";
+            $this->html .= "<td class='label'>CS app#</td>";
             $this->html .= "<td class='text'>{$gsms['fgsr_decision']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Decision Response</td>";
+            $this->html .= "<td class='label'>Gender</td>";
+            $this->html .= "<td class='text'>{$gsms['gender']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>DOB</td>";
             $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
             $this->html .= "</tr>";
 
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Country of Birth</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Country of Citizenship</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Applicant Type</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Folder</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Education History</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>EPL Test</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>EPL Score</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Listen</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Write</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Read</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Speaking</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Academic Year</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Term</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Program Subplan Name</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Degree Code</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Program Name</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Admission Program Name</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Submitted Date</td>";
+            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "</tr>";
 	    $this->html .= "</table>";
 
             $this->html .= "</td>";

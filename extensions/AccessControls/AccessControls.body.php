@@ -455,6 +455,22 @@ function onAbortMove($oldtitle, $newtitle, $user, &$error) {
 }
 
 /**
+ * Abort login if user is deleted
+ */
+function onAbortLogin($user, $password, &$retval, &$msg){
+    $data = DBFunctions::select(array('mw_user'),
+                                array('user_id'),
+                                array('user_id' => $user->getId(),
+                                      'deleted' => 0));
+    if(count($data) > 0){
+        // User exists
+        return true;
+    }
+    // User does not exist/is deleted
+    return false;
+}
+
+/**
  * update permissions when a page has been moved
  * important: when a page is moved mediawiki will make simply change the title of the page (leaving
  * the pageid the way it is) and then will create a new page with the old title and a new page id

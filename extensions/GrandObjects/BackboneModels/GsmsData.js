@@ -1,4 +1,4 @@
-InfoSheet = Backbone.Model.extend({
+GsmsData = Backbone.Model.extend({
 
     initialize: function(){	
     },

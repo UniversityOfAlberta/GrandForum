@@ -4641,7 +4641,7 @@ class Person extends BackboneModel {
      * @return array gsms array of person
    **/    
     function getGSMS(){
-	$gsms = InfoSheet::newFromUserId($this->id);
+	$gsms = GsmsData::newFromUserId($this->id);
         return $gsms;
     }
 
@@ -4712,6 +4712,7 @@ class Person extends BackboneModel {
         }
         return $gsms;
     }
+
     /**
      * Returns courses the person has taken or is currently taking
      * @param date $start returns courses from the starting of this date

@@ -25,7 +25,13 @@ class Report extends AbstractReport{
     function redirect($out, $text) {
         global $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
+        if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI) && !($me->getSopPdfUrl()== false) && $_GET['action'] != "viewNotifications"){
+            redirect($me->getUrl());
+        }
+        elseif(($wgTitle->getText() == "Main Page"|| $wgTitle->getText() == "UserLogin") && $me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
+            redirect($me->getUrl());
+        }   
+        else if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
                 redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
         }
     } 

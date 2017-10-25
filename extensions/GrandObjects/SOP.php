@@ -13,6 +13,7 @@ class SOP extends BackboneModel{
     var $questions;
     var $user_id;
     var $date_created;
+    var $visible = false;
     
     /* watson values */
     var $sentiment_val;
@@ -126,6 +127,7 @@ class SOP extends BackboneModel{
             $this->word_count = $row['word_count'];
 
             $this->pdf = $row['pdf_data'];
+	    $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
     }
