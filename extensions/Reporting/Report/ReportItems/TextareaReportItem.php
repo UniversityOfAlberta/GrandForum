@@ -2,22 +2,19 @@
 
 class TextareaReportItem extends AbstractReportItem {
 
-    function render(){
-        global $wgOut, $wgServer, $wgScriptPath;
-        $item = $this->getHTML();
+    function getTinyMCE($mentions=null){
+        global $wgServer, $wgScriptPath;
         $limit = $this->getLimit();
-        if($limit > 0 && !strtolower($this->getAttr('rich', 'false')) == 'true'){
-            $item .= "<script type='text/javascript'>
-                $(document).ready(function(){
-                    var strlen = $('textarea[name={$this->getPostId()}]').val().length;
-                    if(
-                    changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
-                });
-            </script>";
+        $imgConst = DPI_CONSTANT*72/96;
+        $mentionPlugin = "";
+        $mentionSource = array();
+        if(count($mentions) > 0){
+            $mentionPlugin = "mention";
+            foreach($mentions as $mention){
+                $mentionSource[] = array("name" => $mention);
+            }
         }
-        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            $imgConst = DPI_CONSTANT*72/96;
-            $item .= "<script type='text/javascript'>
+        return"<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
                     $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
                                      \"<form id='tinyMCEUploadForm' action='$wgServer$wgScriptPath/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden'>\" +
@@ -42,7 +39,7 @@ class TextareaReportItem extends AbstractReportItem {
                         theme: 'modern',
                         readonly: readOnly,
                         menubar: false,
-                        plugins: 'link image charmap lists table paste wordcount',
+                        plugins: 'link image charmap lists table paste wordcount advlist $mentionPlugin',
                         toolbar: [
                             'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                         ],
@@ -61,6 +58,14 @@ class TextareaReportItem extends AbstractReportItem {
                                 $(el).css('width', el.naturalWidth/$imgConst);
                                 $(el).css('height', el.naturalHeight/$imgConst);
                             });
+                        },
+                        mentions: {
+                            source: ".json_encode($mentionSource).",
+                            insert: function(item) {
+                                return '<b>' + item.name + '</b>';
+                            },
+                            delay: 100,
+                            delimiter: '@'
                         },
                         setup: function(ed){
                             if('$limit' > 0){
@@ -81,6 +86,22 @@ class TextareaReportItem extends AbstractReportItem {
                     initResizeEvent();
                 });
             </script>";
+    }
+
+    function render(){
+        global $wgOut, $wgServer, $wgScriptPath;
+        $item = $this->getHTML();
+        $limit = $this->getLimit();
+        if($limit > 0 && !strtolower($this->getAttr('rich', 'false')) == 'true'){
+            $item .= "<script type='text/javascript'>
+                $(document).ready(function(){
+                    var strlen = $('textarea[name={$this->getPostId()}]').val().length;
+                    changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
+                });
+            </script>";
+        }
+        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            $item .= $this->getTinyMCE();
         }
         $item = $this->processCData($item);
         $wgOut->addHTML($item);

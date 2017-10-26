@@ -386,12 +386,12 @@
                     <tbody>
             ]]>
         </ReportItem> 
-        <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
                         <td align='left'>{$grant_project_id}<br />
-                            <p>{$grant_description}</p>
+                            {$grant_description}
                         </td>
                         <td align='left'>{$grant_sponsor}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
@@ -430,7 +430,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="footnotes" type="AutoCompleteTextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" set="PersonProductsReportItemSet" index="product_id" label="product_title" optional="true">
+        <ReportItem id="footnotes" type="AutoCompleteTextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" set="PersonOutputsReportItemSet" startDate="CYCLE_START" endDate="CYCLE_END" name="Outputs" tooltipOptionId="Id" tooltipOptionName="Title" index="output_id" label="output_title" optional="true">
             <![CDATA[
                 <h3>Footnotes</h3>
                 {$item}

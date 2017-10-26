@@ -51,6 +51,9 @@ class ReportItemCallback {
             "grant_start_date" => "getGrantStartDate",
             "grant_end_date" => "getGrantEndDate",
             "grant_total" => "getGrantTotal",
+            // Outputs
+            "output_id" => "getOutputId",
+            "output_title" => "getOutputTitle",
             // Reports
             "timestamp" => "getTimestamp",
             "post_id" => "getPostId",
@@ -437,6 +440,16 @@ class ReportItemCallback {
     function getGrantTotal(){
         $grant = Grant::newFromId($this->reportItem->productId);
         return number_format($grant->getTotal());
+    }
+    
+    function getOutputId(){
+        return $this->reportItem->extra." ".$this->reportItem->productId;
+    }
+    
+    function getOutputTitle(){
+        $class = $this->reportItem->extra;
+        $obj = $class::newFromId($this->reportItem->productId);
+        return $obj->getTitle();
     }
     
     function getReportHasStarted(){

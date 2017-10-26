@@ -19,7 +19,17 @@ class PersonOutputsReportItemSet extends ReportItemSet {
         $products->attributes = $this->attributes;
         $grants->attributes = $this->attributes;
         
-        $data = array_merge($products->getData(), $grants->getData());
+        $data = array();
+        foreach($products->getData() as $tuple){
+            $tuple['extra'] = 'Product';
+            $data[] = $tuple;
+        }
+        
+        foreach($grants->getData() as $tuple){
+            $tuple['extra'] = 'Grant';
+            
+            $data[] = $tuple;
+        }
         return $data;
     }
 
