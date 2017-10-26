@@ -48,10 +48,10 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                 $staticLabel->setValue('{$'.$label.'}');
                 $staticValue->setValue('{$'.$index.'}');
                 
-                $javascriptLabel = str_replace("'", "\'", str_replace("\'", "'", $staticLabel->processCData("")));
-                $javascriptValue = str_replace("'", "\'", str_replace("\'", "'", $staticValue->processCData("")));
-                $mentions[] = $javascriptLabel;
+                $mentions[] = trim($staticLabel->processCData(""));
                 if(!$rich){
+                    $javascriptLabel = str_replace("'", "\'", str_replace("\'", "'", $staticLabel->processCData("")));
+                    $javascriptValue = str_replace("'", "\'", str_replace("\'", "'", $staticValue->processCData("")));
                     $item .= "{$this->getId()}.push({'value':'{$javascriptValue}', 'label':'{$javascriptValue} - {$javascriptLabel}'});\n";
                 }
             }
