@@ -25,45 +25,16 @@ EditBioView = Backbone.View.extend({
         var button = $("#editGsmsUpload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = $.proxy(function(success, errors){
             // Purposefully global so that iframe can access
-            if(error == undefined || error == ""){
                 clearAllMessages();
-/*                var success = new Array();
-                var warning = new Array();
-                var nCreated = response.created.length;
-                var nError = response.error.length;
-                var nFunding = (response.funding != undefined) ? response.funding.length : 0;
-                var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
-                if(nCreated > 0){
-                    success.push("<b>" + nCreated + "</b> products were created");
+                if(success != ""){
+                    addSuccess(success);
                 }
-                if(nFunding > 0){
-                    success.push("<b>" + nFunding + "</b> Courses were created/updated");
+                if(errors != ""){
+                    addError(errors);
                 }
-                if(fundingFail > 0){
-                    warning.push("<b>" + fundingFail + "</b> Courses failed to import");
-                }
-                if(success.length > 0){
-                    addSuccess(success.join("<br />"));
-                }
-                else if (nError == 0){
-                    warning.push("Nothing was imported");
-                }
-                // Show errors/warnings/info
-                if(warning.length > 0){
-                    addWarning(warning.join("<br />"));
-                }
-                if(nError > 0){
-                    addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
-                }*/
                 button.prop("disabled", false);
-            }
-            else{
-                button.prop("disabled", false);
-                clearAllMessages();
-                addError(error);
-            }
             this.$(".throbber").hide();
         }, this);
         var form = this.$("form");

@@ -92,40 +92,26 @@ class EditGsmsBioAPI extends API{
 		$student_id = $student_obj->getId();
 		  //check if student exists
 		if($student_id != 0){
-		   $error_count=0;
+		   $error_count = 0;
 		   $update = false;
 		  //check if update or new
-		    $info_sheet = InfoSheet::newFromUserId($student_id);
-                    if($info_sheet->user_id != ""){
-			$update = true;
-		    }
-		    $info_sheet->user_id = $student_id;
-		    $info_sheet->gpa60 = $student['gpa60'];
-		    $info_sheet->gpafull = $student['gpafull'];
-		    $info_sheet->gpafull_credits = $student['gpafull_credits'];
-		    $info_sheet->gpafull2 = $student['gpafull2'];
-		    $info_sheet->gpafull_credits2 = $student['gpafull_credits2'];
-		    $info_sheet->notes = $student['notes'];
-		    $info_sheet->stats = $student['stats'];
-                    $info_sheet->anatomy = $student['anatomy'];
-                    $info_sheet->failures = $student['failures'];
-                    $info_sheet->withdrawals = $student['withdrawals'];
-                    $info_sheet->canadian = $student['canadian'];
-                    $info_sheet->international = $student['international'];
-                    $info_sheet->indigenous = $student['indigenous'];
-                    $info_sheet->saskatchewan = $student['saskatchewan'];
-                    $info_sheet->degrees = $student['degrees'];
-
-		    if(!$update){
-			$info_sheet->create();
-		    }
-		    else{
-			$info_sheet->update();
-		    }
+                   $data = DBFunctions::select(array('grand_gsms'),
+                                               array('user_id'),
+                                               array('user_id'=> EQ($student_id)));
+                   if(count($data)==0){
+                       DBFunctions::insert('grand_gsms',
+                                     array('user_id' => $student_id),
+                                           true);
+                   }
+                   
+                   DBFunctions::update('grand_gsms',
+                            array('additional' => serialize($student)),
+                            array('user_id' => EQ($student_id)));
                     DBFunctions::commit();
+		    $success[] = "<b>{$student['name']}</b> updated.";
 		}
 		else{
-			$errors[] = "<b>$student</b> failed.  Student not found.";
+			$errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
 		}
 		
         }
@@ -134,7 +120,12 @@ class EditGsmsBioAPI extends API{
                 $errors[] = "Please upload a .xls file";
                 $error_count++;
 	}
-        $success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
+	if(count($success) <= 6){
+            $success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
+	}
+	else{
+	    $success = "All updates successful.";
+	}
         $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
 
 

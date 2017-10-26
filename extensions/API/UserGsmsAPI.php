@@ -31,31 +31,32 @@ class UserGsmsAPI extends API{
 	    $degrees[] = $degree;
 	}
         $person = Person::newFromName($_POST['user_name']);
-	$data = DBFunctions::select(array('grand_person_gsms'),
+	$data = DBFunctions::select(array('grand_gsms'),
 			    array('user_id'),
 			    array('user_id'=> EQ($person->getId())));
 	if(count($data)==0){
-            DBFunctions::insert('grand_person_gsms',
+            DBFunctions::insert('grand_gsms',
                                 array('user_id' => $person->getId()),
                                 true);
 	}
-        DBFunctions::update('grand_person_gsms',
-                            array('gpa60' => trim($_POST['gpa']),
-				  'gpafull' => trim($_POST['gpafull']),
-				  'gpafull_credits' => trim($_POST['gpafull_credits']),
+        $gsms_array = array('gpa60' => trim($_POST['gpa']),
+                                  'gpafull' => trim($_POST['gpafull']),
+                                  'gpafull_credits' => trim($_POST['gpafull_credits']),
                                   'gpafull2' => trim($_POST['gpafull2']),
                                   'gpafull_credits2' => trim($_POST['gpafull_credits2']),
-				  'notes' => trim($_POST['notes']),
+                                  'notes' => trim($_POST['notes']),
                                   'indigenous' => trim(@$_POST['indigenous']),
                                   'canadian' => trim(@$_POST['canadian']),
                                   'saskatchewan' => trim(@$_POST['saskatchewan']),
                                   'international' => trim(@$_POST['international']),
                                   'withdrawals' => trim($_POST['withdrawals']),
-				  'anatomy' => trim(@$_POST['anatomy']),
-				  'stats' => trim(@$_POST['stats']),
-				  'failures' => trim($_POST['failures']),
-                                  'degrees' => serialize($degrees)),
+                                  'anatomy' => trim(@$_POST['anatomy']),
+                                  'stats' => trim(@$_POST['stats']),
+                                  'failures' => trim($_POST['failures']),
+                                  'degrees' => $degrees);
 
+        DBFunctions::update('grand_gsms',
+                            array('additional' => serialize($gsms_array)),
                             array('user_id' => EQ($person->getId())));
 
         DBFunctions::update('grand_sop',

@@ -5,9 +5,16 @@
 
 class GsmsData extends BackboneModel{
 
-    static $cache = array();
+    //static $cache = array();
+    var $id;
     var $user_id;
+    var $gsms_id;
+    var $student_id;
+
 //General data
+    var $status;
+    var $applicant_number;
+    var $gender;
     var $date_of_birth;
     var $program_name;
     var $country_of_birth;
@@ -51,9 +58,31 @@ class GsmsData extends BackboneModel{
     var $saskatchewan;
     var $degrees = array();
 
+    function GsmsData($data, $id){
+        global $config;
+        if(count($data) > 0){
+	    $this->user_id = $data[0]['user_id'];
+            $this->gender = $data[0]['gender'];
+            $this->gsms_id = $data[0]['gsms_id'];
+            $this->applicant_number = $data[0]['applicant_number'];
+            $this->date_of_birth = $data[0]['date_of_birth'];
+            $this->program_name = $data[0]['program_name'];
+            $this->country_of_birth = $data[0]['country_of_birth'];
+            $this->country_of_citizenship = $data[0]['country_of_citizenship'];
+            $this->applicant_type = $data[0]['applicant_type'];
+            $this->education_history = $data[0]['education_history'];
+            $this->department = $data[0]['department'];
+        }
+        if($config->getValue('networkName') == 'GARS'){
+            $this->getOTGARS($id);
+        }
+    }
 
-    // Constructor
-    function GsmsData($data){
+
+    function getOTGARS($id){
+        $data = DBFunctions::select(array('grand_person_gsms'),
+                                    array('*'),
+                                    array('user_id' => EQ($id)));
         if(count($data) > 0){
             $this->user_id = $data[0]['user_id'];
             $this->gpa60 = $data[0]['gpa60'];
@@ -83,14 +112,10 @@ class GsmsData extends BackboneModel{
     * course exists with that id, it will return an empty course.
     */
     static function newFromUserId($id){
-        //check if exists in cache for easy access
-        if(isset(self::$cache[$id])){
-            return self::$cache[$id];
-        }
-        $data = DBFunctions::select(array('grand_person_gsms'),
+        $data = DBFunctions::select(array('grand_gsms'),
                                     array('*'),
                                     array('user_id' => EQ($id)));
-        $info_sheet = new GsmsData($data);
+        $info_sheet = new GsmsData($data, $id);
         return $info_sheet;
     }
 
@@ -156,28 +181,30 @@ class GsmsData extends BackboneModel{
      * @return array of object
     */
     function toArray(){
-        global $wgUser;
+        global $wgUser, $config;
         if(!$wgUser->isLoggedIn()){
             return array();
         }
 	$person = Person::newFromId($this->user_id);
-        $json = array('user_id' =>$this->user_id,
-		      'gpa60' => $this->gpa60,
-                      'gpafull' => $this->gpafull,
-                      'gpafull_credits' => $this->gpafull_credits,
-                      'gpafull2' => $this->gpafull2,
-                      'gpafull_credits2' => $this->gpafull_credits2,
-                      'notes' => $this->notes,
-                      'anatomy' => $this->anatomy,
-                      'stats' => $this->stats,
-                      'degree' => $this->degree,
-                      'failures' => $this->failures,
-                      'withdrawals' => $this->withdrawals,
-                      'canadian' => $this->canadian,
-                      'international' => $this->international,
-                      'indigenous' => $this->indigenous,
-                      'saskatchewan' => $this->saskatchewan,
-                      'degrees' => $this->getDegrees());
+        if($config->getValue('networkName') == 'GARS'){
+            $json = array('user_id' =>$this->user_id,
+	    	          'gpa60' => $this->gpa60,
+                          'gpafull' => $this->gpafull,
+                          'gpafull_credits' => $this->gpafull_credits,
+                          'gpafull2' => $this->gpafull2,
+                          'gpafull_credits2' => $this->gpafull_credits2,
+                          'notes' => $this->notes,
+                          'anatomy' => $this->anatomy,
+                          'stats' => $this->stats,
+                          'degree' => $this->degree,
+                          'failures' => $this->failures,
+                          'withdrawals' => $this->withdrawals,
+                          'canadian' => $this->canadian,
+                          'international' => $this->international,
+                          'indigenous' => $this->indigenous,
+                          'saskatchewan' => $this->saskatchewan,
+                          'degrees' => $this->getDegrees());
+        }
 
         return $json;
 
@@ -189,7 +216,7 @@ class GsmsData extends BackboneModel{
 	}
 	return $this->degrees;
     }
-
+    
     function delete(){
             //TODO:implement function
     }

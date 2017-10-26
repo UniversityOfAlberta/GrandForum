@@ -276,16 +276,16 @@ class SOP extends BackboneModel{
    */
     function toArray(){
         global $wgUser;
-        if(!$wgUser->isLoggedIn()){
+     /*   if(!$wgUser->isLoggedIn()){
             return array();
-        }
+        }*/
         
         $user = Person::newFromId($this->getUser());
         $author = array('id' => $user->getId(),
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS();
-	      $nationality = array();
+	$nationality = array();
         $nationality[] = ($gsms->indigenous == "Yes") ? "Indigenous" : "";
         $nationality[] = ($gsms->canadian == "Yes") ? "Canadian" : "";
         $nationality[] = ($gsms->saskatchewan == "Yes") ? "Saskatchewan" : "";
@@ -370,7 +370,7 @@ class SOP extends BackboneModel{
 		      'gsms_url' => $this->getGSMSUrl());
 
           // Get from Config which forum we are looking at to add extra columns
-          $json = array_merge($json, $this->getCSColumns());
+          //$json = array_merge($json, $this->getCSColumns());
         return $json;
     }
 
