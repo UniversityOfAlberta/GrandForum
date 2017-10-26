@@ -30,9 +30,9 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', '');
     this.closeCurrentView();
-    var sops = new Sops();
-    sops.fetch();
-    this.currentView = new SopsView({el: $("#currentView"), model: sops});
+    var gsms = new GsmsDataAll();
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
 
 pageRouter.on('route:editSop', function (id) {
