@@ -19,7 +19,7 @@ SopsRowView = Backbone.View.extend({
         for(m=0;m<i.annotations.length;m++){
             if(i.annotations[m].tags != null){
             	for(n=0;n<i.annotations[m].tags.length;n++){
-                    var comment_column = "#span"+i.id;
+                    var comment_column = "#span"+i.sop_id;
 		    if(m == i.annotations.length-1){
 			$(comment_column).append(i.annotations[m].tags[n]);
 			break;

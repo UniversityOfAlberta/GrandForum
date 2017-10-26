@@ -1,49 +1,13 @@
 <div id="profile1">
 <h1><a href='<%=author.url%>'><%= author.name %></a></h1>
 </div>
-<div id="accordion" style="width:100%">
-    <div>
-        <h3><a href="#">From FGSR</a></h3>
-        <div>
-            <%if(pdf_data.Education != undefined){ %>
-            <b>Degree:</b> <%= pdf_data.Education[0].degree%><br />
-            <b>Institution:</b>
-		 <%= pdf_data.Education[0].institution%><br /><br />
-            <%}else{%>
- 
-  <% if(gsms_data){ %>
-   <b>PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+  <% if(sop_check){ %>
+   <b>SoP PDF : </b><a href="<%= sop_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
-            <b></b><br /><br />
-            <%}%>
-            <%if(pdf_data.Referees != undefined){ %>
-            <table class="style1">
-                <tr class="style1">
-                    <th class="style1">Referee</th>
-                    <th class="style1">Position</th>
-                    <th class="style1">Type</th>
-                    <th class="style1">Reference Letter</th>
-                </tr>
-                <% for(var i=0; i < pdf_data.Referees.length;i++){ %>
-                
-                <tr class="style1">
-                    <td class="style1"><%= pdf_data.Referees[i].name %>
-                    </td>
-                    <td class="style1" width="100px"><%= pdf_data.Referees[i].position %>
-                    </td>
-                    <td class="style1"><%= pdf_data.Referees[i].type_of_reference %>
-                    </td>
-                    <td class="style1"><%= pdf_data.Referees[i].responses %>
-                    </td>
-                </tr>
-                <%}%>
-                
-            </table>
-            <%}else{%>
-            <b>No Reference Information Available</b>
-            <%}%>
-        </div>
-    </div>
+  <% if(gsms_data){ %>
+   <b>GSMS PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+    <% } %>
+<div id="accordion" style="width:100%; margin-top:50px">
     <div>
         <h3><a href="#">Statement of Purpose</a></h3>
         <div id="sop_acc" style="padding-top:20px">

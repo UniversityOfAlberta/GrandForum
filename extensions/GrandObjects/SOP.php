@@ -284,12 +284,12 @@ class SOP extends BackboneModel{
         $author = array('id' => $user->getId(),
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
-        $gsms = $user->getGSMS();
+        $gsms = $user->getGSMS()->additional;
 	$nationality = array();
-        $nationality[] = ($gsms->indigenous == "Yes") ? "Indigenous" : "";
-        $nationality[] = ($gsms->canadian == "Yes") ? "Canadian" : "";
-        $nationality[] = ($gsms->saskatchewan == "Yes") ? "Saskatchewan" : "";
-        $nationality[] = ($gsms->international == "Yes") ? "International" : "";
+        $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
+        $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
+        $nationality[] = ($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
+        $nationality[] = ($gsms['international'] == "Yes") ? "International" : "";
 
 	$nationality_note = "";
 	foreach($nationality as $note){
@@ -331,9 +331,9 @@ class SOP extends BackboneModel{
                       'date_created' => $this->getDateCreated(),
                       'url' => $this->getUrl(),
                       'author' => $author,
-            		      'gsms' => $gsms->toArray(),
-            		      'admit' => $this->getFinalAdmit(),
-            		      'nationality_note' => $nationality_note,
+            	      'gsms' => $gsms,
+            	      'admit' => $this->getFinalAdmit(),
+                      'nationality_note' => $nationality_note,
                       'reviewers' => $reviewers,
                       'sentiment_val' => round($this->sentiment_val,2),
                       'sentiment_type' => $this->sentiment_type,
@@ -367,6 +367,8 @@ class SOP extends BackboneModel{
                       'annotations' => $this->annotations,
                       'pdf_data' => $this->getPdf(true),
 		      'gsms_data' => $this->checkGSMS(),
+                      'sop_check' => $this->checkSOP(),
+                      'sop_url' => $this->getSopUrl(),
 		      'gsms_url' => $this->getGSMSUrl());
 
           // Get from Config which forum we are looking at to add extra columns
@@ -886,6 +888,25 @@ class SOP extends BackboneModel{
 	return $url;
 	}
 	return "";
+    }
+
+    function checkSOP(){
+        $person = Person::newFromId($this->user_id);
+        $url = $person->getSopPdfUrl();
+        if($url != ""){
+            return true;
+        }
+        return false;
+    }
+
+
+    function getSopUrl(){
+        if($this->checkSOP()){
+        $person = Person::newFromId($this->user_id);
+        $url = $person->getSopPdfUrl();
+        return $url;
+        }
+        return "";
     }
 }
 

@@ -23,11 +23,9 @@ class PersonGSMSTab extends AbstractEditableTab {
     function generateBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($this->canEdit()){
-            $gsms = $this->person->getGSMS();
-	    $gsms_degrees = $gsms->getDegrees();
-	    if(!is_array($gsms_degrees)){
-		unserialize($gsms_degrees);
-	    }
+            $gsms_data = $this->person->getGSMS();
+	    $gsms = $gsms_data->additional;
+	    $gsms_degrees = $gsms['degrees'];
             $this->html .= "<table class='gsms'>";
 
 	    $this->html .= "<th>Most Recent Academic Degree </th>";
@@ -47,27 +45,27 @@ class PersonGSMSTab extends AbstractEditableTab {
 	    }
 	    $this->html .= "<tr>";
             $this->html .= "<td class='label'>GPA (over last 60 credits):</td>";
-            $this->html .= "<td class='num'>{$gsms->gpa60}</td>";
+            $this->html .= "<td class='num'>{$gsms['gpa60']}</td>";
             $this->html .= "</tr>";
             
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>GPA (over best full year)/number of credits:</td>";
-            $this->html .= "<td class='num'>{$gsms->gpafull}/{$gsms->gpafull_credits}</td>";
+            $this->html .= "<td class='num'>{$gsms['gpafull']}/{$gsms['gpafull_credits']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>GPA2 (over best full year)/number of credits:</td>";
-            $this->html .= "<td class='num'>{$gsms->gpafull2}/{$gsms->gpafull_credits2}</td>";
+            $this->html .= "<td class='num'>{$gsms['gpafull2']}/{$gsms['gpafull_credits2']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Number of Failures:</td>";
-            $this->html .= "<td class='num'>{$gsms->failures}</td>";
+            $this->html .= "<td class='num'>{$gsms['failures']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Number of Withdrawals:</td>";
-            $this->html .= "<td class='num'>{$gsms->withdrawals}</td>";
+            $this->html .= "<td class='num'>{$gsms['withdrawals']}</td>";
             $this->html .= "</tr>";
 
 	    $this->html .= "</table>";
@@ -99,37 +97,37 @@ class PersonGSMSTab extends AbstractEditableTab {
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Notes:</td>";
-            $this->html .= "<td>{$gsms->notes}</td>";
+            $this->html .= "<td>{$gsms['notes']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Indigenous:</td>";
-            $this->html .= "<td>{$gsms->indigenous}</td>";
+            $this->html .= "<td>{$gsms['indigenous']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Canadian:</td>";
-            $this->html .= "<td>{$gsms->canadian}</td>";
+            $this->html .= "<td>{$gsms['canadian']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Saskatchewan:</td>";
-            $this->html .= "<td>{$gsms->saskatchewan}</td>";
+            $this->html .= "<td>{$gsms['saskatchewan']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>International:</td>";
-            $this->html .= "<td>{$gsms->international}</td>";
+            $this->html .= "<td>{$gsms['international']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Anatomy:</td>";
-            $this->html .= "<td>{$gsms->anatomy}</td>";
+            $this->html .= "<td>{$gsms['anatomy']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Stats:</td>";
-            $this->html .= "<td>{$gsms->stats}</td>";
+            $this->html .= "<td>{$gsms['stats']}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "</table>";
@@ -147,10 +145,11 @@ class PersonGSMSTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $gsms = $this->person->getGSMS();
+        $gsms_data = $this->person->getGSMS();
+        $gsms = $gsms_data->additional;
+        $gsms_degrees = $gsms['degrees'];
 	$sop = $this->person->getSOP();
 	$visible = $sop->visible;
-        $gsms_degrees = $gsms->getDegrees();
         
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 
@@ -169,22 +168,22 @@ class PersonGSMSTab extends AbstractEditableTab {
                 vertical-align: bottom;
             }
         </style>";
-        $indigenousYes = ($gsms->indigenous == "Yes") ? "checked" : "";
-        $canadianYes = ($gsms->canadian == "Yes") ? "checked" : "";
-        $saskatchewanYes = ($gsms->saskatchewan == "Yes") ? "checked" : "";
-        $internationalYes = ($gsms->international == "Yes") ? "checked" : "";
+        $indigenousYes = ($gsms['indigenous'] == "Yes") ? "checked" : "";
+        $canadianYes = ($gsms['canadian'] == "Yes") ? "checked" : "";
+        $saskatchewanYes = ($gsms['saskatchewan'] == "Yes") ? "checked" : "";
+        $internationalYes = ($gsms['international'] == "Yes") ? "checked" : "";
 
         $viewYes = ($visible == "true") ? "checked" : "";
 
  
-        $anatomyYes = ($gsms->anatomy == "Yes") ? "checked" : "";
-        $anatomyNo  = ($gsms->anatomy == "No")  ? "checked" : "";
-        $anatomyInProgress  = ($gsms->anatomy == "In-Progress")  ? "checked" : "";
+        $anatomyYes = ($gsms['anatomy'] == "Yes") ? "checked" : "";
+        $anatomyNo  = ($gsms['anatomy'] == "No")  ? "checked" : "";
+        $anatomyInProgress  = ($gsms['anatomy'] == "In-Progress")  ? "checked" : "";
 
         
-        $statsYes = ($gsms->stats == "Yes") ? "checked" : "";
-        $statsNo  = ($gsms->stats == "No")  ? "checked" : "";
-        $statsInProgress  = ($gsms->stats == "In-Progress")  ? "checked" : "";
+        $statsYes = ($gsms['stats'] == "Yes") ? "checked" : "";
+        $statsNo  = ($gsms['stats'] == "No")  ? "checked" : "";
+        $statsInProgress  = ($gsms['stats'] == "In-Progress")  ? "checked" : "";
 
         $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
         $this->html .= "<table id='gsms_bio'>";
@@ -195,24 +194,24 @@ class PersonGSMSTab extends AbstractEditableTab {
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>GPA (over last 60 credits):</td>";
-        $this->html .= "<td><input name='gpa' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms->gpa60}' /></td>";
+        $this->html .= "<td><input name='gpa' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms['gpa60']}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>GPA (over best full year)/number of credits:</td>";
-        $this->html .= "<td><input name='gpafull' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms->gpafull}' />/
-                            <input name='gpafull_credits' type='number' step='1' min='0' size='4' value='{$gsms->gpafull_credits}' /></td>";
+        $this->html .= "<td><input name='gpafull' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms['gpafull']}' />/
+                            <input name='gpafull_credits' type='number' step='1' min='0' size='4' value='{$gsms['gpafull_credits']}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>GPA2 (over best full year)/number of credits:</td>";
-        $this->html .= "<td><input name='gpafull2' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms->gpafull2}' />/
-                            <input name='gpafull_credits2' type='number' step='1' min='0' size='4' value='{$gsms->gpafull_credits2}' /></td>";
+        $this->html .= "<td><input name='gpafull2' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms['gpafull2']}' />/
+                            <input name='gpafull_credits2' type='number' step='1' min='0' size='4' value='{$gsms['gpafull_credits2']}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Notes:</td>";
-        $this->html .= "<td style='width:600px;'><input name='notes' type='text' value='{$gsms->notes}' style='width:200px' /></td>";
+        $this->html .= "<td style='width:600px;'><input name='notes' type='text' value='{$gsms['notes']}' style='width:200px' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
@@ -244,12 +243,12 @@ class PersonGSMSTab extends AbstractEditableTab {
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Number of Failures:</td>";
-        $this->html .= "<td><input name='failures' type='number' step='1' min='0' value='{$gsms->failures}' /></td>";
+        $this->html .= "<td><input name='failures' type='number' step='1' min='0' value='{$gsms['failures']}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Number of Withdrawals:</td>";
-        $this->html .= "<td><input name='withdrawals' type='number' step='1' min='0' value='{$gsms->withdrawals}' /></td>";
+        $this->html .= "<td><input name='withdrawals' type='number' step='1' min='0' value='{$gsms['withdrawals']}' /></td>";
         $this->html .= "</tr>";
 
         if(count($gsms_degrees) ==0){

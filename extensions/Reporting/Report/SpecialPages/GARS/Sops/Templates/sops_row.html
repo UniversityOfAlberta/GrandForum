@@ -1,66 +1,114 @@
 <td align="center" style="width:30px">
-   <b><a href="<%= url %>" id="sop<%= id %>" target="_blank"><%= author.name %></a></b><br />
-   <%=date_created %>   
+   <b><span style="white-space: nowrap;"><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
+   (<%=student_data.email %>)<br /><%= gender %>  
 </td>
-<td>
-   <% if(gsms_data){ %>
-   <a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a>
-    <% } %>
-</td>
-<td align="right" style="white-space: nowrap;" id='GPA60'>
-    <%= gsms.gpa60 %>
-</td>
-<td align="right" style="white-space: nowrap;" id='GPABest'>
-    <% if(gsms.gpafull != '' && (gsms.gpafull != 0 && gsms.gpafull_credits!= 0)){ %>
-    <%= gsms.gpafull %>/<%= gsms.gpafull_credits %><br />
-    <% } %>
-    <% if(gsms.gpafull2 != '' && (gsms.gpafull2 != 0 && gsms.gpafull_credits2!= 0)){ %>
-    <%= gsms.gpafull2 %>/<%= gsms.gpafull_credits2 %>
-    <% } %>
-</td>
-<td id='failures_withdrawals' align='right'>
-    <%= gsms.failures %>
-</td>
-<td id='failures_failures' align='right'>
-    <%= gsms.withdrawals %>
-</td>
-<td id='anatomy' style="white-space: nowrap;">
-    <%= gsms.anatomy %>
-</td>
-<td id='stats' style="white-space: nowrap;">
-    <%= gsms.stats %>
-</td>
-<td id='degree' style="width:30px">
-<% for(var i=0; i < gsms.degrees.length;i++){ %>
 
-    <b><%= gsms.degrees[i].degree %></b> (<%= gsms.degrees[i].institution %>)<br />
-<% } %>
-</td>
 <td style="white-space: nowrap;" id='nationality_notes'>
-<%= nationality_note %>
+    <%= gsms_id %><br />
+    <%= applicant_number %><br />
+    <%= student_id %>
 </td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= status %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= date_of_birth %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= country_of_citizenship %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= applicant_type %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= education_history %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= department %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= epl_test %><br /><%= epl_score %><br /><%= epl_listen %><br /><%= epl_write %><br /><%= epl_read %><br /><%= epl_speaking %>
+</td>
+
+<td id='degree' style="width:30px">
+  <% for(var i=0; i < additional.degrees.length;i++){ %>
+
+    <b><%= additional.degrees[i].degree %></b> (<%= additional.degrees[i].institution %>)<br />
+  <% } %>
+</td>
+
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= nationality_note %>
+</td>
+
+<!--  department specific -->
+<td align="right" style="white-space: nowrap;" id='GPA60'>
+    <%= additional.gpa60 %>
+</td>
+
+<td align="right" style="white-space: nowrap;" id='GPABest'>
+    <% if(additional.gpafull != '' && (additional.gpafull != 0 && additional.gpafull_credits!= 0)){ %>
+    <%= additional.gpafull %>/<%= additional.gpafull_credits %><br />
+    <% } %>
+    <% if(additional.gpafull2 != '' && (additional.gpafull2 != 0 && additional.gpafull_credits2!= 0)){ %>
+    <%= additional.gpafull2 %>/<%= additional.gpafull_credits2 %>
+    <% } %>
+</td>
+
+<td id='failures_withdrawals' align='right'>
+    <%= additional.failures %>
+</td>
+
+<td id='failures_failures' align='right'>
+    <%= additional.withdrawals %>
+</td>
+
+<td id='anatomy' style="white-space: nowrap;">
+    <%= additional.anatomy %>
+</td>
+
+
+<td id='stats' style="white-space: nowrap;">
+    <%= additional.stats %>
+</td>
+
+<td>
+</td>
+
+<!-- reviewer info -->
 <td style="width:300px" id='notes'>
-    <%= gsms.notes %>
+    <%= additional.notes %>
 </td>
+
 <td style="white-space: nowrap;">
-<% for(var i=0; i < reviewers.length;i++){ %>
+    <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
 	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
 	<% } %>
 
 	<br />
 
-<% } %>
+    <% } %>
 </td>
+
 <td style="white-space: nowrap;">
-<% for(var i=0; i < reviewers.length;i++){ %>
+    <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].decision %><br />
 
-<% } %>
+    <% } %>
 </td>
+
 <td style="width:200px">
-    <span id="span<%= id %>"></span>
+    <span id="span<%= sop_id %>"></span>
 </td>
+
 <td>
     <%= admit %>
 </td>

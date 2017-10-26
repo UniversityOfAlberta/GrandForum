@@ -117,8 +117,10 @@ $apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
 //Course
 $apiRequest->addAction('Hidden','course/:id', 'CourseAPI');
 $apiRequest->addAction('Hidden','courses', 'CoursesAPI');
+//GsmsData
+$apiRequest->addAction('Hidden','gsmsdata/:id', 'GsmsDataAPI');
+$apiRequest->addAction('Hidden','gsmsdatas', 'GsmsDataAllAPI');
 
-$apiRequest->addAction('Hidden','infosheet/:id', 'InfoSheetAPI');
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js?".filemtime("extensions/GrandObjects/BackboneModels/RelationModel.js")."'></script>\n";

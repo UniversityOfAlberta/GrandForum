@@ -165,9 +165,14 @@ SopsView = Backbone.View.extend({
     filterFinalAdmitType: function(settings,data,dataIndex){
         var input = $('#finalAdmitType').val().toUpperCase();
         var name = data[14];
+        if(name != undefined){
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
+        }
+        else{
+	    return true;
+        }
         return false;
     },
 
