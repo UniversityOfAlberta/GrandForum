@@ -56,9 +56,9 @@ class Journal extends BackboneModel {
      * Returns all Journals
      * @return Journals The array of all Journal objects
      */
-     static function getAllJournals(){
-         $journals = array();
-         $data = DBFunctions::select(array('grand_journals'),
+    static function getAllJournals(){
+        $journals = array();
+        $data = DBFunctions::select(array('grand_journals'),
                                      array('*'));
         
         foreach($data as $row){
@@ -68,82 +68,82 @@ class Journal extends BackboneModel {
             }
         }
         return $journals;
-     }
+    }
 
-     static function getAllJournalsBySearch($string){
-         $journals = array();
-         $strings = explode(" ", unaccentChars($string));
+    static function getAllJournalsBySearch($string){
+        $journals = array();
+        $strings = explode(" ", unaccentChars($string));
         
         $data = DBFunctions::select(array('grand_journals'),
                                     array('*'));
         
         foreach($data as $row){
-        
-            $found = true;
-            foreach ($strings as $string){
+        $found = true;
+            foreach($strings as $string){
                 $title = unaccentChars($row['title']); // removes accented chars + lowers <-- exists in Javascript
                 $description = unaccentChars($row['description']);
                 $year = unaccentChars($row['year']);
                 $short_title = unaccentChars($row['short_title']);
                 $iso_abbrev = unaccentChars($row['iso_abbrev']);
-                $results = preg_grep("/$string/", array($title, $year, $description, $short_title, $iso_abbrev));
-                if (count($results) == 0){ // everything must match
+                $issn = unaccentChars($row['issn']);
+                $results = preg_grep("/$string/", array($title, $year, $description, $short_title, $iso_abbrev, $issn));
+                if(count($results) == 0){ // everything must match
                     $found = false;
                     break;
                 }
             }
-            if ($found){
+            if($found){
                 $journal = new Journal(array($row));
-                if ($journal != null && $journal->getId() != 0){
+                if($journal != null && $journal->getId() != 0){
                     $journals[] = $journal;
                 }
             }
         }
         return $journals;         
-     }
+    }
 
-     function getId(){
-         return $this->id;
-     }
+    function getId(){
+        return $this->id;
+    }
 
-     function getImpactFactor(){
-         return $this->impact_factor;
-     }
+    function getImpactFactor(){
+        return $this->impact_factor;
+    }
 
-     function getRankNum(){
-         return $this->ranking_numerator;
-     }
+    function getRankNum(){
+        return $this->ranking_numerator;
+    }
 
-     function getRankDenom(){
-         return $this->ranking_denominator;
-     }
+    function getRankDenom(){
+        return $this->ranking_denominator;
+    }
 
-     function getRank(){
-         return "{$this->ranking_numerator}/{$this->ranking_denominator}";
-     }
+    function getRank(){
+        return "{$this->ranking_numerator}/{$this->ranking_denominator}";
+    }
 
-     function create(){
+    function create(){
 
-     }
+    }
 
-     function update(){
+    function update(){
 
-     }
+    }
 
-     function delete(){
+    function delete(){
 
-     }
+    }
 
-     function exists(){
+    function exists(){
 
-     }
+    }
      
-     function getCacheId(){
+    function getCacheId(){
 
-     }
+    }
 
-     function toArray(){ //whatever's here, add to joural.js
-         $json = array(
+    function toArray(){ //whatever's here, add to joural.js
+        $json = array(
             'id' => $this->id,
             'year' => $this->year,
             'short_title' => $this->short_title,
@@ -157,11 +157,9 @@ class Journal extends BackboneModel {
             'impact_factor' => $this->impact_factor,
             'cited_half_life' => $this->cited_half_life,
             'eigenfactor' => $this->eigenfactor
-         );
-         return $json;
-     }
-
-
+        );
+        return $json;
+    }
 
 }
 

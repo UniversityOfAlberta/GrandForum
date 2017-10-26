@@ -247,35 +247,49 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
+    renderJournalsAutocomplete: function(){
+        if(this.$("input[name=data_published_in]").length > 0){
+            var autoComplete = {
+                source: $.proxy(function(request, response){
+                    var journals = new Journals();
+                    journals.search = request.term;
+                    journals.fetch({success: function(collection){
+                        var data = _.map(collection.toJSON(), function(journal){
+                            return {id: journal.id, 
+                                    label: journal.title + " " + journal.year + " (" + journal.description + ")", 
+                                    value: journal.title,
+                                    journal: journal.title,
+                                    impact_factor: journal.impact_factor,
+                                    category_ranking: journal.category_ranking,
+                                    eigen_factor: journal.eigenfactor,
+                                    issn: journal.issn
+                            };
+                        });
+                        response(data);
+                    }});
+                }, this),
+                
+                minLength: 2,
+                select: $.proxy(function(event, ui){
+                    _.defer($.proxy(function(){
+                        this.$("input[name=data_published_in]").val(ui.item.journal).change();
+                        this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
+                        this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
+                        this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
+                        this.$("input[name=data_issn]").val(ui.item.issn).change();
+                    }, this));
+                }, this)
+            };
+            
+            this.$("input[name=data_issn]").autocomplete(autoComplete);
+            this.$("input[name=data_published_in]").autocomplete(autoComplete);
+        }
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
-        this.$("input[name=data_published_in]" ).autocomplete({ //name = data published in ... jquery selector: tag[...]
-            source: $.proxy(function( request, response ) {
-                var journals = new Journals();
-                journals.search = request.term;
-                journals.fetch({success: function( collection ) {
-                    var data = _.map(collection.toJSON(), function(journal){
-                        return {id: journal.id, 
-                                label: journal.title + " " + journal.year + " (" + journal.description + ")", 
-                                value: journal.title,
-                                impact_factor: journal.impact_factor,
-                                category_ranking: journal.category_ranking,
-                                eigen_factor: journal.eigenfactor
-                        };
-                    });
-                    response(data);
-                }});
-            }, this ),
-
-            minLength: 2,
-            select: $.proxy(function(event, ui){
-                this.$("input[name=data_published_in]").val(ui.item.value).change();
-                this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
-                this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
-                this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
-            }, this)
-        });
+        this.renderJournalsAutocomplete();
         
         if(productStructure.categories[this.model.get('category')] != undefined &&
            (productStructure.categories[this.model.get('category')].types[this.model.get('type')] != undefined &&
