@@ -4609,7 +4609,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('pdf'),
                                     array('user_id' => EQ($this->getId()),
-					  'type' => 'RPTP_CS',
+					  'type' => 'RPTP_CS_FULL',
 					  'year' => YEAR));
         if(count($data) > 0){
 	    return $data[0]['pdf'];
@@ -4625,7 +4625,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('pdf'),
                                     array('user_id' => EQ($this->getId()),
-                                          'type' => 'RPTP_CS',
+                                          'type' => 'RPTP_CS_FULL',
                                           'year' => YEAR));
 
         if(count($data) > 0){
