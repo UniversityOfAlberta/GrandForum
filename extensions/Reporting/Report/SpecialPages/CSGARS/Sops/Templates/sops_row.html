@@ -4,9 +4,16 @@
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
+  <% if(gsms_id != 0){ %>
     <%= gsms_id %><br />
+  <% } %>
+  <% if(applicant_number != 0){ %>
     <%= applicant_number %><br />
+  <% } %>
+  <% if(student_id != 0){ %>
     <%= student_id %>
+  <% } %>
+
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
@@ -25,7 +32,7 @@
     <%= applicant_type %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td id='nationality_notes'>
     <%= education_history %>
 </td>
 
