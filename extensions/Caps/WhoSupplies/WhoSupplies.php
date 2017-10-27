@@ -162,7 +162,6 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As reported in the media, Mifepristone is not making inroads into New Brunswick; only 14 physicians have registered for the medical abortion training (Feb. 27th, 2017) <a href='http://www.cbc.ca/news/canada/new-brunswick/mifegymiso-canada-health-doctors-1.4000643' target='_blank'>read more</a></li>
-                    <li>As reported in the media, as of October 16th, 2017, 33 physicians, 31 pharmacists and 1 nurse have completed the online training program in New Brunswick, <a href='http://thebruns.ca/2017/10/12/miscommunication-leads-to-persistent-barriers-in-access-of-abortion-pill/' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
