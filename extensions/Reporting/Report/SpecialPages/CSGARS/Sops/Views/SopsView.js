@@ -171,7 +171,7 @@ SopsView = Backbone.View.extend({
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
-            var name = data[18];
+            var name = data[17];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
