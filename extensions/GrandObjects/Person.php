@@ -2982,7 +2982,9 @@ class Person extends BackboneModel {
             return $this->isThemeCoordinator();
         }
         if($role == EVALUATOR){
-            return $this->isEvaluator();
+            if($this->isEvaluator()){
+                return true;
+            }
         }
         $roles = array();
         $role_objs = $this->getRoles();

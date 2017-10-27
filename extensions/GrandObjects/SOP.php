@@ -284,7 +284,7 @@ class SOP extends BackboneModel{
         $author = array('id' => $user->getId(),
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
-        $gsms = $user->getGSMS()->additional;
+        $gsms = $user->getGSMS()->getAdditional();
 	$nationality = array();
         $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
         $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
