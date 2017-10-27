@@ -65,7 +65,7 @@ class AdminTabs extends BackbonePage {
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("GSMS PDF Upload", "$wgServer$wgScriptPath/index.php/Special:AdminTabs");
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Reviewer Assignment", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-2");
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Student Stats Edit", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-3");
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Final Application Adjudication", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-4");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("GSMS CSV", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-4");
         }
         return true;
     }
