@@ -940,6 +940,7 @@ abstract class AbstractReport extends SpecialPage {
         if($submit){
             $this->submitReport($person);
         }
+        DBFunctions::commit();
         header('Content-Type: application/json');
         header('Content-Length: '.strlen(json_encode($json)));
         echo json_encode($json);
