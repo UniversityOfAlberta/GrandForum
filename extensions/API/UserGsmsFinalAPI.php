@@ -28,7 +28,7 @@ class UserGsmsFinalAPI extends API{
 	    $array_info['gsms_id'] = $row[3];
 	    $array_info['student_id'] = $row[4];
 	    $array_info['cs_app'] = $row[5];
-	    $array_info['dob'] = $row[6];
+	    $array_info['date_of_birth'] = $row[6];
 	    $array_info['email'] = $row[7];
 	    $array_info['academic_year'] = $row[8];
 	    $array_info['term'] = $row[9];
@@ -50,12 +50,12 @@ class UserGsmsFinalAPI extends API{
             $array_info['fgsr_gpa'] = $row[25];
             $array_info['gpa_scale'] = $row[26];
             $array_info['normalized_gpa'] = $row[27];
-            $array_info['elp_test'] = $row[28];
-            $array_info['elp_score'] = $row[29];
-            $array_info['listen'] = $row[30];
-            $array_info['write'] = $row[31];
-            $array_info['read'] = $row[32];
-            $array_info['speaking'] = $row[33];
+            $array_info['epl_test'] = $row[28];
+            $array_info['epl_score'] = $row[29];
+            $array_info['epl_listen'] = $row[30];
+            $array_info['epl_write'] = $row[31];
+            $array_info['epl_read'] = $row[32];
+            $array_info['epl_speaking'] = $row[33];
             $array_info['funding_note'] = $row[34];
             $array_info['department_decision'] = $row[35];
             $array_info['fgsr_decision'] = $row[36];
@@ -107,25 +107,49 @@ class UserGsmsFinalAPI extends API{
 		   $error_count=0;
                    $update = false;
                   //check if update or new
-                    $info_sheet = InfoSheet::newFromUserId($student_id);
-                    if($info_sheet->user_id != ""){
-                        $update = true;
+                    $gsms_sheet = GsmsData::newFromUserId($student_id);
+                              $gsms_sheet->gender = $student['gender'];
+                              $gsms_sheet->gsms_id = $student['gsms_id'];
+                              $gsms_sheet->date_of_birth = $student['date_of_birth'];
+                              $gsms_sheet->program_name = $student['program_name'];
+                              $gsms_sheet->country_of_birth = $student['country_of_birth'];
+                              $gsms_sheet->country_of_citizenship = $student['country_of_citizenship'];
+                              $gsms_sheet->applicant_type = $student['applicant_type'];
+                              $gsms_sheet->education_history = $student['education_history'];
+                              $gsms_sheet->department = $student['department'];
+                              $gsms_sheet->epl_test = $student['epl_test'];
+                              $gsms_sheet->epl_score = $student['epl_score'];
+                              $gsms_sheet->epl_listen = $student['epl_listen'];
+                              $gsms_sheet->epl_write = $student['epl_write'];
+                              $gsms_sheet->epl_read = $student['epl_read'];
+                              $gsms_sheet->epl_speaking = $student['epl_speaking'];
+                              $gsms_sheet->cs_app = $student['cs_app'];
+                              $gsms_sheet->academic_year = $student['academic_year'];
+                              $gsms_sheet->term = $student['term'];
+                              $gsms_sheet->subplan_name = $student['subplan_name'];
+                              $gsms_sheet->program = $student['program'];
+                              $gsms_sheet->degree_code = $student['degree_code'];
+                              $gsms_sheet->admission_program_name = $student['admission_program_name'];
+                              $gsms_sheet->submitted_date = $student['submitted_date'];
+                              $gsms_sheet->folder = $student['folder'];
+                              $gsms_sheet->department_gpa = $student['department_gpa'];
+                              $gsms_sheet->department_gpa_scale = $student['department_gpa_scale'];
+                              $gsms_sheet->department_normalized_gpa = $student['department_normalized_gpa'];
+                              $gsms_sheet->fgsr_gpa = $student['fgsr_gpa'];
+                              $gsms_sheet->fgsr_gpa_scale = $student['fgsr_gpa_scale'];
+                              $gsms_sheet->fgsr_normalized_gpa = $student['fgsr_normalized_gpa'];
+                              $gsms_sheet->funding_note = $student['funding_note'];
+                              $gsms_sheet->department_decision = $student['department_decision'];
+                              $gsms_sheet->fgsr_decision = $student['fgsr_decision'];
+                              $gsms_sheet->decision_response = $student['decision_response'];
+                              $gsms_sheet->general_notes = $student['general_notes'];
+                    if($gsms_sheet->user_id == ""){
+                        $gsms_sheet->user_id = $student_id;
+                        $gsms_sheet->create();
                     }
-                    if(!$update){
-                    	$info_sheet->user_id = $student_id;
-                        $info_sheet->create();
+                    else{
+                        $gsms_sheet->update();
                     }
-		    unset($student['name']);//added to make sure anonymous 
-        	    DBFunctions::update('grand_person_gsms',
-                            array('final_gsms' => serialize($student),
-				  'final_decision' => $student['fgsr_decision']),
-                            array('user_id' => EQ($student_id)));
-
-                    DBFunctions::update('grand_person_gsms',
-                            array('final_gsms' => serialize($student),
-                                  'final_decision' => $student['fgsr_decision']),
-                            array('user_id' => EQ($student_id)));
-		   //put update here
 		    $success[] = $student_name;
                     DBFunctions::commit();
 		}
@@ -141,12 +165,13 @@ class UserGsmsFinalAPI extends API{
 	}
         //$success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
 	if(count($errors) == 0){
-		$success = "All students successfully updated.";
+            $success = "All students successfully updated.";
 	}
 	else{
-		$success = (count($success) > 0) ? (count($success)) . " students were updated.";
+            $success = (count($success) > 0) ? (count($success)) . " students were updated." : "";
+            $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
+
 	}
-        $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
 	
 
         DBFunctions::commit();

@@ -56,12 +56,11 @@ class UserGsmsAPI extends API{
                                   'degrees' => $degrees);
 
         DBFunctions::update('grand_gsms',
-                            array('additional' => serialize($gsms_array)),
+                            array('additional' => serialize($gsms_array),
+                                  'visible' => $visible,
+                                  'status' => trim($_POST['status'])),
                             array('user_id' => EQ($person->getId())));
 
-        DBFunctions::update('grand_sop',
-                            array('reviewer' => $visible),
-                            array('user_id' => EQ($person->getId())));
         $person->getUser()->invalidateCache();
         if(!$noEcho){
             echo "User's GPA updated \n";

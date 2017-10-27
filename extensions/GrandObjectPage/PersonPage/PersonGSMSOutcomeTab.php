@@ -23,7 +23,7 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
     function generateBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($this->canEdit()){
-            $gsms = $this->person->getGSMSOutcome(true);
+            $gsms = $this->person->getGSMS();
             $this->html .= "<table class='gsms'>";
 
 	    $this->html .= "<th>Final Applicant Adjudication </th>";
@@ -31,25 +31,24 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
 	    $this->html .= "<tr>";
 	    $this->html .= "<td>";
 	    $this->html .= "<table class='gsms'>";
-	    //$gsms_degrees = array();
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Funding Note</td>";
-            $this->html .= "<td class='text'>{$gsms['funding_note']}</td>";
+            $this->html .= "<td class='text'>{$gsms->funding_note}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Department Decision</td>";
-            $this->html .= "<td class='text'>{$gsms['department_decision']}</td>";
+            $this->html .= "<td class='text'>{$gsms->department_decision}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>FGSR Decision</td>";
-            $this->html .= "<td class='text'>{$gsms['fgsr_decision']}</td>";
+            $this->html .= "<td class='text'>{$gsms->fgsr_decision}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Decision Response</td>";
-            $this->html .= "<td class='text'>{$gsms['decision_response']}</td>";
+            $this->html .= "<td class='text'>{$gsms->decision_response}</td>";
             $this->html .= "</tr>";
 
 	    $this->html .= "</table>";
@@ -80,8 +79,7 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $gsms = $this->person->getGSMSOutcome(true);
-        
+        $gsms = $this->person->getGSMS();
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 
             input[type=number]::-webkit-outer-spin-button { 
@@ -99,56 +97,30 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
                 vertical-align: bottom;
             }
         </style>";
-            $fSelected = ($gsms['term'] == "fall") ? "selected='selected'" : "";
-            $wSelected = ($gsms['term'] == "winter") ? "selected='selected'" : "";
-            $sSelected = ($gsms['term'] == "spring") ? "selected='selected'" : "";
-            $suSelected = ($gsms['term'] == "summer") ? "selected='selected'" : "";
-
-            $rejSelected = ($gsms['folder'] == "Rejected Apps") ? "selected='selected'" : "";
-            $declinedSelected = ($gsms['folder'] == "Offer Declined") ? "selected='selected'" : "";
-            $withSelected = ($gsms['folder'] == "Withdrawn") ? "selected='selected'" : "";
-            $waitSelected = ($gsms['folder'] == "Waitlist") ? "selected='selected'" : "";
-            $acceptedSelected = ($gsms['folder'] == "Offer Accepted") ? "selected='selected'" : "";
-
 
 
         $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
         $this->html .= "<table id='gsms_bio'>";
         
         $this->html .= "<tr>";
-        $this->html .= "<td class='label'>Academic Year: </td>";
-        $this->html .= "<td><input name='academic_year' type='text' value='{$gsms['academic_year']}' /></td>";
+        $this->html .= "<td class='label'>Funding Note: </td>";
+        $this->html .= "<td><input name='funding_note' type='text' value='{$gsms->funding_note}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
-        $this->html .= "<td class='label'>Term: </td>";
-        $this->html .= "<td><select name='term'><option value='fall' $fSelected>Fall</option><option value='winter' $wSelected>Winter</option><option value='spring' $sSelected>Spring</option><option value='summer' $suSelected>Summer</option></select></td>";
-        $this->html .= "</tr>";
-
-        $this->html .= "<tr>";
-        $this->html .= "<td class='label'>Program: </td>";
-        $this->html .= "<td><input name='program' type='text' value='{$gsms['program']}' /></td>";
+        $this->html .= "<td class='label'>Department Decision: </td>";
+        $this->html .= "<td><input name='department_decision' type='text' value='{$gsms->department_decision}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
 
-        $this->html .= "<td class='label'>Degree Code: </td>";
-        $this->html .= "<td><input name='degree' type='text' value='{$gsms['degree']}'/></td>";
+        $this->html .= "<td class='label'>FGSR Decision: </td>";
+        $this->html .= "<td><input name='fgsr_decision' type='text' value='{$gsms->fgsr_decision}'/></td>";
         $this->html .= "</tr>";
-
-        $this->html .= "<tr>";
-        $this->html .= "<td class='label'>Folder: </td>";
-        $this->html .= "<td>";
-        $this->html .= "<select name='folder'><option value='Rejected Apps' $rejSelected>Rejected Apps</option><option value='Offer Declined' $declinedSelected>Offer Declined</option><option value='Offer Accepted' $acceptedSelected>Offer Accepted</option><option value='Withdrawn' $withSelected>Withdrawn</option><option value='Waitlist' $waitSelected>Waitlist</option></select>";
-        $this->html .= "</td>";
-
-        $this->html .= "<tr rowspan=2>";
-        $this->html .= "</tr>";
-
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Decision Response: </td>";
-        $this->html .= "<td> <input name='decision_response' type='text' value='{$gsms['decision_response']}'/></td>";
+        $this->html .= "<td> <input name='decision_response' type='text' value='{$gsms->decision_response}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "</table>";

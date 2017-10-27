@@ -13,28 +13,25 @@ class UserGsmsOutcomeAPI extends API{
 
     function doAction($noEcho=false){
         $person = Person::newFromName($_POST['user_name']);
-	$gsms_array = array();
-	$gsms_array['academic_year'] = $_POST['academic_year'];
-	$gsms_array['term'] = $_POST['term'];
-        $gsms_array['program'] = $_POST['program'];
-        $gsms_array['degree'] = $_POST['degree'];
-        $gsms_array['folder'] = $_POST['folder'];
-        $gsms_array['decision_response'] = $_POST['decision_response'];
-	
-	$data = DBFunctions::select(array('grand_person_gsms'),
-			    array('user_id'),
-			    array('user_id'=> EQ($person->getId())));
-	if(count($data)==0){
-            DBFunctions::insert('grand_person_gsms',
+        $data = DBFunctions::select(array('grand_gsms'),
+                            array('user_id'),
+                            array('user_id'=> EQ($person->getId())));
+        if(count($data)==0){
+            DBFunctions::insert('grand_gsms',
                                 array('user_id' => $person->getId()),
                                 true);
-	}
-        DBFunctions::update('grand_person_gsms',
-                            array('final_gsms' => serialize($gsms_array)),
-                            array('user_id' => EQ($person->getId())));
+        }
+                  $gsms_sheet = GsmsData::newFromUserId($person->getId());
+                              $gsms_sheet->funding_note = trim($_POST['funding_note']);
+                              $gsms_sheet->department_decision = trim($_POST['department_decision']);
+                              $gsms_sheet->fgsr_decision = $_POST['fgsr_decision'];
+                              $gsms_sheet->decision_response = trim($_POST['decision_response']);
+
+            $gsms_sheet->update();
+
         $person->getUser()->invalidateCache();
         if(!$noEcho){
-            echo "User's Gsms Outcome updated \n";
+            echo "User's GPA updated \n";
         }
         }
 

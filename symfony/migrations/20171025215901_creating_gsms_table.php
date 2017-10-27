@@ -48,6 +48,7 @@ class CreatingGsmsTable extends AbstractMigration
               ->addColumn('epl_listen','string')
               ->addColumn('epl_write','string')
               ->addColumn('epl_read','string')
+              ->addColumn('epl_speaking', 'string')
               ->addColumn('additional','text')
               ->addIndex(array('user_id'))
               ->addIndex(array('gsms_id'))

@@ -513,10 +513,9 @@ class SOP extends BackboneModel{
     */
     function getAdmitResult($user){
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
-	    $blob_address = ReportBlob::create_address('RP_OT', 'OT_REVIEW', 'Q13', $this->getId());
+	    $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
 	    $blob->load($blob_address);
 	    $data = $blob->getData();
-
         if($data == 'Yes'){
             return "Admit";
         }

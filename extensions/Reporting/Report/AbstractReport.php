@@ -913,14 +913,20 @@ abstract class AbstractReport extends SpecialPage {
             $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
+            //When they submit, an SoP is added to the table
 	    $sop =  SOP::newFromUserId($me->getId());
 	    if(!is_array($sop)){
 	    	$sop = new SOP(array());
 	    	$sop->user_id = $me->getId();
 	    	$sop->create();
 	        $sop = SOP::newFromUserId($me->getId());
+                $gsms_data = new GsmsData(array());
+                $gsms_data->user_id = $me->getId();
+                $gsms_data->status = "Application Completed";
+                $gsms_data->visible = "true";
+                $gsms_data->create();
 	    }
-	    //$sop->updateStatistics(); 
+	    //$sop->updateStatistics(); //This SHOULD call TASHA
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
             	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";

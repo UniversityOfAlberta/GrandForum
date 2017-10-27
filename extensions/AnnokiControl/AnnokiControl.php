@@ -145,8 +145,8 @@ $egAnnokiExtensions['AdminTabs'] = array('name' => 'AdminTabs',
                                          'path' => "$IP/extensions/AdminTabs/AdminTabs.php");
 $egAnnokiExtensions['Courses'] = array('name' => 'Courses',
                                          'path' => "$IP/extensions/Courses/Courses.php");
-
-
+$egAnnokiExtensions['AssignReviewer'] = array('name' => 'AssignReviewer',
+                                         'path' => "$IP/extensions/AssignReviewer/AssignReviewer.php");
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){

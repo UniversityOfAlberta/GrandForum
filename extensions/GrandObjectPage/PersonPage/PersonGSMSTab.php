@@ -24,7 +24,7 @@ class PersonGSMSTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($this->canEdit()){
             $gsms_data = $this->person->getGSMS();
-	    $gsms = $gsms_data->additional;
+	    $gsms = $gsms_data->getAdditional();
 	    $gsms_degrees = $gsms['degrees'];
             $this->html .= "<table class='gsms'>";
 
@@ -146,10 +146,10 @@ class PersonGSMSTab extends AbstractEditableTab {
     function generateEditBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $gsms_data = $this->person->getGSMS();
-        $gsms = $gsms_data->additional;
+        $gsms = $gsms_data->getAdditional();
         $gsms_degrees = $gsms['degrees'];
 	$sop = $this->person->getSOP();
-	$visible = $sop->visible;
+	$visible = $gsms_data->visible;
         
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 
@@ -168,6 +168,10 @@ class PersonGSMSTab extends AbstractEditableTab {
                 vertical-align: bottom;
             }
         </style>";
+        $applicationCompleted = ($gsms_data->status == "Application Completed") ? "selected='selected'" : "";
+        $gsmsCompleted = ($gsms_data->status == "GSMS Completed") ? "selected='selected'" : "";
+        $reviewCompleted = ($gsms_data->status == "Review Completed") ? "selected='selected'" : "";
+
         $indigenousYes = ($gsms['indigenous'] == "Yes") ? "checked" : "";
         $canadianYes = ($gsms['canadian'] == "Yes") ? "checked" : "";
         $saskatchewanYes = ($gsms['saskatchewan'] == "Yes") ? "checked" : "";
@@ -190,6 +194,11 @@ class PersonGSMSTab extends AbstractEditableTab {
 
         $this->html .= "<tr>";
         $this->html .= "<td> <input name='view' type='checkbox' value='true' $viewYes /> Visible &nbsp";
+        $this->html .= "</tr>";
+
+        $this->html .= "<tr>";
+        $this->html .= "<td class='label'>Status: </td>";
+        $this->html .= "<td><select name='status'><option value='Application Completed' $applicationCompleted>Application Completed</option><option value='GSMS Completed' $gsmsCompleted>GSMS Completed</option><option value='Review Completed' $reviewCompleted>Review Completed</option></select></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";

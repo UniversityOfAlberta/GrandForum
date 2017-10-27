@@ -170,10 +170,11 @@ class APIRequest{
         $this->addAction('User Accounts', 'EditGsmsBio', 'EditGsmsBioAPI');
         $this->addAction('User Accounts', 'EditGsmsOutcome', 'UserGsmsFinalAPI');
 	$this->addAction('User Accounts', 'EditUserGsmsOutcome', 'UserGsmsOutcomeAPI');
+        $this->addAction('User Accounts', 'EditApplicantData', 'UserApplicantDataAPI');
+
 		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
-
 	}
 }
 
