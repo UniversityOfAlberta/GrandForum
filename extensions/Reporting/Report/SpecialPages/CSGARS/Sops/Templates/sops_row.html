@@ -73,6 +73,9 @@
 <!-- reviewer info -->
 
 <td style="white-space: nowrap;">
+    <% if(reviewers.length == 0) { %>
+        <a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">Assign Reviewers</a>
+    <% } %>
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
 	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
