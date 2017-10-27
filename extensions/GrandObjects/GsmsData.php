@@ -365,33 +365,33 @@ class GsmsData extends BackboneModel{
         $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
         //var_dump($moreJson['areas_of_study']);
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
 
-        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
+        $moreJson['supervisors'] = @implode(", ", $blob['q14']);
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
-        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
+        $moreJson['scholarships_held'] = @implode(", ", $blob['q16']);
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
-        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
+        $moreJson['scholarships_applied'] = @implode(", ", $blob['q15']);
 
-        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
-        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
-        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
-        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
-        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
+        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
+        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
+        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
+        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
 
         // # of Publications
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
         $moreJson['num_publications'] = @count($blob['qResExp2']);
 
         // # of awards
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
         $moreJson['num_awards'] = @count($blob['qAwards']);
 
         // Courses (number of courses, number of areas)
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
+        $moreJson['courses'] = @implode(", ", $blob['qCourses']);
 
         return $moreJson;
 

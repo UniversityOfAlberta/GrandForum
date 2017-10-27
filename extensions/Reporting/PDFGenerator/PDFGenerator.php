@@ -842,7 +842,7 @@ if ( isset($pdf) ) {
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
         //exec("/usr/local/bin/pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
-        exec("pdftk \"/tmp/{$name}{$rand}pdf\" cat output \"/tmp/{$name}{$rand}nomarks\"");
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
         
         $gs = 'gs';
         $uname = strtolower(php_uname());

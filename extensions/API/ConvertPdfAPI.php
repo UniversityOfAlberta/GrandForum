@@ -167,7 +167,7 @@ class ConvertPdfAPI extends API{
             }
             
             if($userId != 0){
-                $content_parsed = mysql_real_escape_string($contents);
+                $content_parsed = DBFunctions::escape($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
                 $sdata = serialize($data);
