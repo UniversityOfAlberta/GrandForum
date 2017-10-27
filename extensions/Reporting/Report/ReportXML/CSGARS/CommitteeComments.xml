@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Committee Review" reportType="RP_COM" pdfType="RPTP_COM" pdfFiles="OTComPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role role="Manager">
+        <Role role="Faculty">
             <SectionPermission id="review student" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Role role="Manager">
+            <SectionPermission id="review student" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="Admin">
             <SectionPermission id="review student" permissions="rw" />
@@ -46,7 +51,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Admin)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles},Chair)},{contains({$user_full_roles}, Admin)})}">
                 <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
