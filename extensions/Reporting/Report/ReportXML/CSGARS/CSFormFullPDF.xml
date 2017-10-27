@@ -58,13 +58,6 @@
 
         <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
-            
-	       <table width='100%'>
-                <tr width='100%'>
-                    <td style="width: 50%;
-                        vertical-align: top;
-                        box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                        padding: 0px 16px 16px 16px;" >
                         <h1>Research Interests</h1>
                         <h3>Area of Study</h3>
                         {$item}
@@ -98,18 +91,10 @@
             <![CDATA[
                         <h3>Need for Financial Support</h3>
                         {$item}
-                    </td> <!-- end the first chunk -->
             ]]>
         </ReportItem>
         <ReportItem id="q19" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q19" width="40px" orientation="horizontal">
             <![CDATA[
-    		        <!-- second chunk start -->
-                    <td style="
-                        width: 50%;
-                        vertical-align: top;
-                        overflow: hidden; 
-                        box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
-                        padding: 0px 16px 16px 16px;">
                         <h1>GPA</h1>
                         <table>
                             <tr>
@@ -134,12 +119,10 @@
                             	   <h3 style='white-space: nowrap;'>Normalized GPA</h3>
                             	   {$item}
                         	    </td>
-                            </tr>
             ]]>
         </ReportItem>
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100" width="200px">
             <![CDATA[	
-                            <tr>
                         	    <td style='padding: 0.25em'>
                             	   <h3>Institution</h3>
                             	   {$item}
@@ -197,9 +180,6 @@
             <![CDATA[
                     <h3>Upload GRE Transcript (PDF)</h3>
                     {$item}
-                    </td> <!-- end second chunk -->
-                </tr>
-            </table>
             ]]>
         </ReportItem>
     </ReportSection>
