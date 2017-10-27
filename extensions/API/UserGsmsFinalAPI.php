@@ -169,9 +169,10 @@ class UserGsmsFinalAPI extends API{
 	}
 	else{
             $success = (count($success) > 0) ? (count($success)) . " students were updated." : "";
-            $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
 
 	}
+            $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
+
 	
 
         DBFunctions::commit();
