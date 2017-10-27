@@ -76,9 +76,12 @@ if(isset($_SERVER['uid'])){
     SetupShibAuth();
 }
 else if(isset($_GET['clearSession'])){
+    global $wgUser;
     session_unset();
     session_destroy();
-    $wgUser->doLogout();
+    if($wgUser != null){
+        $wgUser->doLogout();
+    }
 }
 
 ?>

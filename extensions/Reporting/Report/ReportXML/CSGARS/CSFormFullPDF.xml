@@ -176,7 +176,7 @@
                         </table>
             ]]>
         </ReportItem>
-        <ReportItem id="q28" type="Upload" blobType="BLOB_RAW" blobItem="qUploadGRE" width="100px" mimeType=".pdf" fileSize="5">
+        <ReportItem id="q28" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="qUploadGRE" width="100px" mimeType=".pdf" fileSize="5">
             <![CDATA[
                     <h3>Upload GRE Transcript (PDF)</h3>
                     {$item}
