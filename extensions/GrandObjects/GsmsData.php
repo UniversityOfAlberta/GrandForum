@@ -190,7 +190,8 @@ class GsmsData extends BackboneModel{
                                           '`department_decision`' => $this->department_decision,
                                           '`fgsr_decision`' => $this->fgsr_decision,
                                           '`decision_response`' => $this->decision_response,
-                                          '`general_notes`' => $this->general_notes));
+                                          '`general_notes`' => $this->general_notes,
+                                          '`visible`' => $this->visible));
         }
     }
 
@@ -239,7 +240,8 @@ class GsmsData extends BackboneModel{
                                           '`department_decision`' => $this->department_decision,
                                           '`fgsr_decision`' => $this->fgsr_decision,
                                           '`decision_response`' => $this->decision_response,
-                                          '`general_notes`' => $this->general_notes),
+                                          '`general_notes`' => $this->general_notes,
+                                          '`visible`' => $this->visible),
 				     array('user_id' => EQ($this->user_id)));
         }
 	return true;
