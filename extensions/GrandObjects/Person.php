@@ -85,7 +85,7 @@ class Person extends BackboneModel {
         }
         else {
             $me = Person::newFromWgUser();
-            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+            if(!$me->isRoleAtLeast(EVALUATOR) && $me->getId() != $person->id){
                 $person = new Person(array());
             }
         }
@@ -117,7 +117,7 @@ class Person extends BackboneModel {
         }
         else {
             $me = Person::newFromWgUser();
-            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+            if(!$me->isRoleAtLeast(EVALUATOR) && $me->getId() != $person->id){
                 $person = new Person(array());
             }
         }
@@ -202,7 +202,7 @@ class Person extends BackboneModel {
         }
         else {
             $me = Person::newFromWgUser();
-            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+            if(!$me->isRoleAtLeast(EVALUATOR) && $me->getId() != $person->id){
                 $person = new Person(array());
             }
         }
@@ -262,7 +262,7 @@ class Person extends BackboneModel {
             }
             else {
                 $me = Person::newFromWgUser();
-                if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+                if(!$me->isRoleAtLeast(EVALUATOR) && $me->getId() != $person->id){
                     $person = new Person(array());
                 }
             }
