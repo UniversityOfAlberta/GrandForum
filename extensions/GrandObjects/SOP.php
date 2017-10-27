@@ -439,17 +439,19 @@ class SOP extends BackboneModel{
    */
     function getContent($asString=false){
         if($this->questions == null){
-	    $qs = array('Q1', 'Q2', 'Q3', 'Q4', 'Q5');
-	    $qstrings = array('(Describe how your personal background and experiences would make you a good occupational therapist)',
+	    $qs = array('Q1');
+/*	    $qstrings = array('(Describe how your personal background and experiences would make you a good occupational therapist)',
 			      '(Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy)',
 			      '(Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta)',
 			      '(Outline the key way Canada\'s health care system can meet the challenges of tomorrow)',
-			      '(Is there anything else you would like to tell us to help the Admissions Committee in making their decision?)');
+			      '(Is there anything else you would like to tell us to help the Admissions Committee in making their decision?)');*/
+            $qstrings = array("(Applicant's Statement of Purpose)");
+
             $questions = array();
             $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
 	    $qnumber = 0;
             foreach($qs as $q){
-                $blob_address = ReportBlob::create_address('RP_OT', 'OT_QUESTIONS', $q, 0);
+                $blob_address = ReportBlob::create_address('RP_CS', 'CS_QUESTIONS_tab2', 'QSOP', 0);
 	            $blob->load($blob_address);
 	            $data = $blob->getData();
 	            $questions[$q.' '.$qstrings[$qnumber]] = $data;
