@@ -97,7 +97,7 @@ class PersonCVGrantsReportItemSet extends ReportItemSet {
                     continue;
                 }
                 $tuple = self::createTuple();
-                $tuple['project_id'] = $grant->id;
+                $tuple['product_id'] = $grant->id;
                 $data[] = $tuple;
             }
         }
