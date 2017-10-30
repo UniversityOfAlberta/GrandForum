@@ -228,10 +228,10 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose (for PhD applicants only)" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>Please let us know who you are, what has influenced your career path so far, what are your long-term professional interests, and why you want to pursue graduate studies in our department.</h3>
+                <h3>A PhD applicant must submit a statement of purpose.  This statement outlining research goals and their relation to the research of Computing Science faculty members at the University of Alberta.</h3>
                 {$item}
             ]]>
         </ReportItem>
