@@ -34,24 +34,6 @@
                     </td>
             ]]>
         </ReportItem>
-        <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
-            <![CDATA[
-                    <td style="padding: 0.25em;">
-                    <h3>Student ID</h3>
-                    {$item}
-                    </td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
-            <![CDATA[
-                    <td style="padding: 0.25em;">
-                    <h3>CS Application Number</h3>
-                    {$item}
-                    </td>
-                </tr>
-                </table>
-            ]]>
-        </ReportItem>
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="true">
