@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="OT Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="OTFormPDF" ajax="true" disabled="false">
-    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true" blobSection="CS_Questions_tab0">
+        <ReportItem id="report_info_head" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS OT Application</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS OT Application</h4><p style="margin-top: 1em;">GSMS ID: {$item}</p></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
                 <br />
                 <br />
@@ -15,10 +15,10 @@
                 <br />
                 <br />
                 <br />
-                <br />
             ]]>
         </ReportItem>
     </ReportSection>
+    <!--
     <ReportSection id="gsms_ids" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100" >
             <![CDATA[
@@ -27,6 +27,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
+-->
     <ReportSection id="questions" tooltip="Questions" name="Letter of Intent" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
@@ -53,25 +54,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
-
-        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
-            <![CDATA[
-                <h3>Max Grade</h3>
-                {$item}
-                <div id='max_grade_warning_container'></div>
-            ]]>
-        </ReportItem>
-
-        <ReportItem id="qpa60q1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpa60Entries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100" class="wikitable">
-            <![CDATA[
-                <h3>Course History</h3>
-                {$item}
-                <div id='warning_container'></div>
-            ]]>
-        </ReportItem>
-
-    </ReportSection>
+   
    
 </Report>
 
