@@ -58,8 +58,9 @@
     </ReportSection>
     <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
+        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade" default="100">
             <![CDATA[
+                <p>Please list the courses in your transcript for your most recent 60 credits</p>
                 <h3>Max Grade<span title="The maximum grade achievable for the classes below. E.g. 4.0" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
                 <div id='max_grade_warning_container'></div>
