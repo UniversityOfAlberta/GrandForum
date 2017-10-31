@@ -71,9 +71,9 @@
             ]]>
         </ReportItem>
     
-        <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+        <ReportItem id="q14" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" max="3" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors<span title="Choose up to 3 potential supervisors." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
@@ -243,7 +243,7 @@
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose (for PhD applicants only)" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>A PhD applicant must submit a statement of purpose.  This statement outlining research goals and their relation to the research of Computing Science faculty members at the University of Alberta.</h3>
+                <h3>A PhD applicant must submit a statement of purpose. Outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application.</h3>
                 {$item}
             ]]>
         </ReportItem>

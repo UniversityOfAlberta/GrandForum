@@ -25,7 +25,7 @@ class SelectReportItem extends AbstractReportItem {
 	}
 	
 	function parseOptions(){
-	    $options = @explode("|", $this->attributes['options']);
+	    $options = @explode("|", $this->getAttr('options'));
 	    return $options;
 	}
 	
