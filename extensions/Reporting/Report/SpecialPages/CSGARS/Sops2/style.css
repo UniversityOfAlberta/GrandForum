@@ -1,0 +1,296 @@
+/* Any custom styles should go here */
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.annotator-filter{top: inherit;
+		}
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}
+
+#editDialog {
+    font-size: 9pt;
+}
+
+div.ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 0.5em 1em 0.5em !important;
+}
+
+table.wikitable {
+    border: hidden !important;
+    margin: 0;
+    padding: 0;
+}
+
+table.wikitable tr.even {
+    background: #FFFFFF;
+}
+
+table.wikitable tr.odd {
+    background: #F2F2F2;
+}
+
+table.wikitable tr.deleted {
+    background: #FEB8B8;
+}
+
+/* AtD error styles */
+
+.hiddenSpellError
+{
+   border-bottom: 2px solid red;
+   cursor: default;
+}
+
+.hiddenGrammarError
+{
+   border-bottom: 2px solid green;
+   cursor: default;
+}
+
+.hiddenSuggestion
+{
+   border-bottom: 2px solid blue;
+   cursor: default;
+}
+
+/* */
+.AtD_proofread_button 
+{
+   width: 14px;
+   height: 14px;
+   background-image: url('../images/writing.gif');
+   display: block;
+}
+
+.AtD_edit_button 
+{
+   width: 14px;
+   height: 14px;
+   background-image: url('../images/editing.gif');
+   display: block;
+}
+
+/* Menu styles derived from:
+ * jquery.spellchecker.js - a simple jQuery Spell Checker
+ * Copyright (c) 2008 Richard Willis
+ * MIT license  : http://www.opensource.org/licenses/mit-license.php
+ * Project      : http://jquery-spellchecker.googlecode.com
+ */
+
+#suggestmenu 
+{
+   background: #fff;
+   position: absolute;
+   display: none;
+   z-index: 9999;
+   overflow: none;
+   margin-top: 1px;
+   text-align: left;
+   font-size: 12px;
+   font-family: Tahoma, Verdana, Arial, Helvetica;
+}
+
+#suggestmenu strong 
+{
+   background: #ddd;
+   font-weight: bold;
+   padding:3px 6px 3px 6px;    
+   display:block;               
+   border:1px solid #ccc;
+   color: black;
+}
+
+#suggestmenu em 
+{
+   text-align:center;    
+   padding:3px 6px 3px 6px;    
+   display:block;               
+   border-top:1px solid #ccc;
+   border-left:1px solid #ccc;
+}
+
+#suggestmenu a, #suggestmenu a:visited 
+{
+   background: #fff;
+   border-left:1px solid #bbb;
+   border-right:1px solid #bbb;
+   padding:3px 6px 3px 6px;
+   display:block;
+   margin:0px;
+   text-decoration:none;
+   color:#333;
+   outline:none
+}
+
+#suggestmenu a.first, #suggestmenu a.first:visited 
+{
+   border-top:1px solid #ccc
+}
+
+.spell_sep_bottom 
+{
+   border-bottom: 1px solid #ccc;
+}
+
+.spell_sep_top 
+{
+   border-top: 1px solid #ccc;
+}
+
+#suggestmenu a:hover 
+{
+   color:#000;
+   background: #dbecf3
+}
+
+#suggestmenu .foot 
+{
+   border-top:1px solid #ddd;
+   background:#fff
+}
+
+#suggestmenu .foot a, #suggestmenu .foot a:visited 
+{
+   outline:none
+}
+
+
+/***
+ * Annotator Categories Plugin CSS.
+ ***/
+
+.annotator-categories {
+    border-top: solid 1px #eee;
+}
+
+.annotator-category:hover {
+    cursor: pointer;
+}
+
+.annotator-categories h4{
+    font-size: 13px;
+    display: block;
+    margin: 5px 0px 5px 5px;
+}
+
+.annotator-viewer ul li .annotator-category {
+    text-align: center;
+    width: 33%;
+}
+
+.annotator-category {
+    padding: 7px;
+    margin: 1px 1px 0px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    border-radius: 6px 6px 6px 6px;
+    color: black;
+    display: inline-block;
+    background-color: rgba(255, 255, 10, .3);
+}
+
+.annotator-category-none {
+
+}
+
+/* For different color categories, set different color values here */
+.annotator-category-0,
+.annotator-category-1,
+.annotator-category-2,
+.annotator-category-3,
+.annotator-category-4,
+.annotator-category-5,
+.annotator-category-6,
+.annotator-category-7
+{
+    background-color: rgba(22,147,165, .2);
+}
+
+.annotator-category-selected {
+    background-color: rgba(196,223,44,1) !important;
+}
+
+#annotation-plugin-select-category{
+    width: 100%;
+}
+.annotator-filter{
+    position:static !important;
+
+}
+
+    .multiselect {
+        width: 350px;
+    }
+
+    .multiselect2 {
+        width: 30px;
+    }
+.selectBox {
+    position: relative;
+}
+.selectBox select {
+    width: 100%;
+    font-weight: bold;
+}
+.overSelect {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+}
+#checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+    z-index:10000;
+}
+#checkboxes label {
+    display: block;
+}
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
+#nationboxes {
+    display: none;
+    border: 1px #dadada solid;
+    z-index:10000;
+    width:130px;
+}
+#nationboxes label {
+    display: block;
+}
+#nationboxes label:hover {
+    background-color: #1e90ff;
+}
+

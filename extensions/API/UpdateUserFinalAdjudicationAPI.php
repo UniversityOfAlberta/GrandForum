@@ -1,17 +1,19 @@
 <?php
 
-class UserGsmsOutcomeAPI extends API{
+class UpdateUserFinalAdjudicationAPI extends API{
 
-    function UserGsmsOutcomeAPI(){
+    function UpdateUserFinalAdjudicationAPI(){
     }
 
     function processParams($params){
-        if(isset($_POST['gpa']) && $_POST['gpa'] != ""){
-            $_POST['gpa'] = str_replace("'", "&#39;", $_POST['gpa']);
-        }
     }
 
     function doAction($noEcho=false){
+        global $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        if(!$me->isRoleAtLeast(MANAGER)){
+            return;
+        }   
         $person = Person::newFromName($_POST['user_name']);
         $data = DBFunctions::select(array('grand_gsms'),
                             array('user_id'),
@@ -31,7 +33,7 @@ class UserGsmsOutcomeAPI extends API{
 
         $person->getUser()->invalidateCache();
         if(!$noEcho){
-            echo "User's GPA updated \n";
+            echo "User's Final Adjudication updated \n";
         }
         }
 

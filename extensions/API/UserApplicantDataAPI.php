@@ -12,6 +12,11 @@ class UserApplicantDataAPI extends API{
     }
 
     function doAction($noEcho=false){
+        global $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        if(!$me->isRoleAtLeast(MANAGER)){
+            return;
+        }
         $person = Person::newFromName($_POST['user_name']);
 	$data = DBFunctions::select(array('grand_gsms'),
 			    array('user_id'),

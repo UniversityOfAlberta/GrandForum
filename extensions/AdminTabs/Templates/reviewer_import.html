@@ -2,7 +2,7 @@
         <h2>Reviewers Bulk Upload</h2>
         <p>Please upload your Excel file using this <a href='<%= wgServer + wgScriptPath %>/skins/demoxls.xls' target="_blank">template</a>. Name should have the year in brackets. Example: reviewers_file(2011).xls</p>
         <iframe name="fileUpload" style="display:none;"></iframe>
-        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.UploadReviewers" method="POST" enctype="multipart/form-data">
+        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadReviewers" method="POST" enctype="multipart/form-data">
             <input type="file" name="reviewers" /><br />
         <form><br />
         <input id="reviewerUpload" type="button" value="Upload" /> <span class="throbber" style="display:none;"></span>

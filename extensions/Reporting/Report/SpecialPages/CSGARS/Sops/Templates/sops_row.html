@@ -80,8 +80,6 @@
 <!-- reviewer info -->
 
 <td style="white-space: nowrap;">
-    <% if(reviewers.length == 0) { %>
-    <% } %>
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
 	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
@@ -90,8 +88,10 @@
 	<br />
 
     <% } %>
-        <a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a>
+    <% if(me.getRoleString().get('roleString').indexOf('Manager') !== -1 || me.getRoleString().get('roleString').indexOf('Admin') !== -1) { %>
 
+        <a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a>
+    <% } %>
 </td>
 
 <td style="white-space: nowrap;">
