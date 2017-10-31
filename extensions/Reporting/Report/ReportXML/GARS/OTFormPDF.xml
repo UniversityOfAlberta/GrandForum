@@ -27,7 +27,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="questions" tooltip="Questions" name="Letter of Intent" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
                 <h3>Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.</h3>
@@ -68,14 +68,6 @@
                 <h3>Course History</h3>
                 {$item}
                 <div id='warning_container'></div>
-            ]]>
-        </ReportItem>
-
-        <ReportItem id="qpa60q2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpa60Output" limit="100" width="100px" optional="true">
-            <![CDATA[
-                <h3>GPA</h3>
-                {$item}
-                
             ]]>
         </ReportItem>
 
