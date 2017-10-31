@@ -130,15 +130,23 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserWebsite', 'UserWebsiteAPI');
 		$this->addAction('User Accounts', 'updateUserNationality', 'UserNationalityAPI');
 		$this->addAction('User Accounts', 'updateUserStakeholder', 'UserStakeholderAPI');
-        $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
-        $this->addAction('User Accounts', 'updateUserGender', 'UserGenderAPI');
+                $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
+                $this->addAction('User Accounts', 'updateUserGender', 'UserGenderAPI');
 		$this->addAction('User Accounts', 'updateUserUniversity', 'UserUniversityAPI');
 		$this->addAction('User Accounts', 'updateUserProfile', 'UserProfileAPI');
 		$this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
 		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
+                //SOP things
                 $this->addAction('User Accounts', 'getUserPdf', 'UserPdfAPI');
                 $this->addAction('User Accounts', 'getSopPdf', 'UserSopPdfAPI');
-
+                $this->addAction('User Accounts', 'convertPdf', 'ConvertPdfAPI');
+                $this->addAction('User Accounts', 'updateUserDepartmentInfo', 'UpdateUserDepartmentAPI');
+                $this->addAction('User Accounts', 'uploadReviewers', 'UploadReviewersAPI');
+                $this->addAction('User Accounts', 'uploadUserOTBio', 'UserOTBioAPI');
+                $this->addAction('User Accounts', 'userGsmsBulkUpload', 'UserGsmsBulkUploadAPI');
+                $this->addAction('User Accounts', 'updateUserFinalAdjudication', 'UpdateUserFinalAdjudicationAPI');
+                $this->addAction('User Accounts', 'updateApplicantData', 'UserApplicantDataAPI');
+                $this->addAction('User Accounts', 'assignReviewer', 'AssignReviewersAPI');
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', 'AddContributionAPI');
@@ -161,17 +169,9 @@ class APIRequest{
 		
 		// HIDDENS
 
-        //POST
-        $this->addAction('Hidden', 'updateSop', 'UpdateSopStatisticsAPI');
-        $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
-        $this->addAction('User Accounts', 'convertPdf', 'ConvertPdfAPI');
-        $this->addAction('User Accounts', 'usergsms', 'UserGsmsAPI');
-        $this->addAction('User Accounts', 'UploadReviewers', 'UploadReviewersAPI');
-        $this->addAction('User Accounts', 'EditGsmsBio', 'EditGsmsBioAPI');
-        $this->addAction('User Accounts', 'EditGsmsOutcome', 'UserGsmsFinalAPI');
-	$this->addAction('User Accounts', 'EditUserGsmsOutcome', 'UserGsmsOutcomeAPI');
-        $this->addAction('User Accounts', 'EditApplicantData', 'UserApplicantDataAPI');
-        $this->addAction('User Accounts', 'AssignReviewer', 'AssignReviewersAPI');
+                //POST
+                $this->addAction('Hidden', 'updateSop', 'UpdateSopStatisticsAPI');
+                $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
 		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');

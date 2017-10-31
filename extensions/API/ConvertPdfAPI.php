@@ -143,6 +143,9 @@ class ConvertPdfAPI extends API{
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
+        if(!$user->isRoleAtLeast(MANAGER)){
+            return;
+        }   
         
         $tmpfiles = $_FILES['file_field']['tmp_name'];
         if(!is_array($tmpfiles)){

@@ -49,6 +49,7 @@ SopsView = Backbone.View.extend({
         "click input[type=checkbox]": "reloadTable",
         "click #clearFiltersButton" : "clearFilters",
         "click #filterMeOnly": "reloadTable",
+        "click #nationalityBox" : "showNationalityBoxes",
         "click #selectTagBox" : "showCheckboxes",
         "click #showfilter" : "showFilter",
     },
@@ -69,8 +70,20 @@ SopsView = Backbone.View.extend({
         }
     },
 
+    showNationalityBoxes: function(){
+        var checkboxes = document.getElementById("nationboxes");
+        if (!this.expanded2) {
+            checkboxes.style.display = "block";
+            checkboxes.style.position = "absolute";
+            checkboxes.style.background="white";
+            this.expanded2 = true;
+        } else { 
+            checkboxes.style.display = "none";
+            this.expanded2 = false;
+        }
+    },
+
     showCheckboxes: function(){
-console.log("HI");
         var checkboxes = document.getElementById("checkboxes");
         if (!this.expanded) {
             checkboxes.style.display = "block";
@@ -89,18 +102,18 @@ console.log("HI");
     this.reloadTable();
     },
 
-    filterCitizenship: function(settings,data,dataIndex){
-        var input = $('#countryOfCitizenshipInput').val().toUpperCase();
-        var name = data[4];
+    filterDegreeName: function(settings,data,dataIndex){
+        var input = $('#degreeInput').val().toUpperCase();
+        var name = data[8];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
         return false;
     },
 
-    filterDepartmentName: function(settings,data,dataIndex){
-        var input = $('#DepartmentInput').val().toUpperCase();
-        var name = data[7];
+    filterInstitutionName: function(settings,data,dataIndex){
+        var input = $('#InstitutionNameInput').val().toUpperCase();
+        var name = data[8];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -110,7 +123,7 @@ console.log("HI");
     filterGPA: function(settings,data,dataIndex){
         var min = parseFloat($('#referenceNameInputMin').val(),0);
         var max = parseFloat($('#referenceNameInputMax').val(),0);
-        var gpa = parseFloat( data[12] ) || 0; // use column 2
+        var gpa = parseFloat( data[2] ) || 0; // use column 2
     //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
@@ -122,19 +135,27 @@ console.log("HI");
         return false;
     },
 
-    filterReviewType: function(settings,data,dataIndex){
-        var input = $('#statusType').val().toUpperCase();
-        var name = data[2];
+    filterAnatomyType: function(settings,data,dataIndex){
+        var input = $('#anatomyType').val().toUpperCase();
+        var name = data[6];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
         return false;
     },
 
+    filterStatsType: function(settings,data,dataIndex){
+        var input = $('#statsType').val().toUpperCase();
+        var name = data[7];
+                if(name.toUpperCase().indexOf(input) > -1){
+                        return true;
+                }
+        return false;
+    },
 
     filterAdmitType: function(settings,data,dataIndex){
         var input = $('#admitType').val().toUpperCase();
-        var name = data[18];
+        var name = data[12];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -143,28 +164,23 @@ console.log("HI");
 
     filterFinalAdmitType: function(settings,data,dataIndex){
         var input = $('#finalAdmitType').val().toUpperCase();
-        var name = data[21];
-        if(name != undefined){
+        var name = data[14];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
-        }
-        else{
-	    return true;
-        }
         return false;
     },
 
     filterByTags: function(settings,data,dataIndex){
-        var tags = data[20].replace(/<\/?[^>]+(>|$)/g, "").split(",");
+        var tags = data[13].replace(/<\/?[^>]+(>|$)/g, "").split(",");
         if($('#filterByTags').is(':checked')){
             for(j = 0; j < tags.length; j++){
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
-                if($('#'+tag).is(':checked')){
+        if($('#'+tag).is(':checked')){
                     return true;
-                }
+        }
+                return false;
             }
-            return false;
         }
         return true;
    },
@@ -172,7 +188,7 @@ console.log("HI");
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
-            var name = data[17];
+            var name = data[11];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
@@ -181,19 +197,35 @@ console.log("HI");
     return true;
    },
 
+    filterByNationality: function(settings,data,dataIndex){
+        var tags = data[9].split(",");
+        if($('#indigenous').is(':checked') || $('#canadian').is(':checked') || $('#saskatchewan').is(':checked') || $('#international').is(':checked')){
+            for(j = 0; j < tags.length; j++){
+                var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
+                if($('#'+tag).is(':checked')){
+                    return true;
+                }
+                return false;
+            }
+        }
+        return true;
+   },
+
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
-            this.filterReviewType,
+            this.filterDegreeName,
+            this.filterInstitutionName,
+            this.filterAnatomyType,
+            this.filterStatsType,
             this.filterAdmitType,
             this.filterFinalAdmitType,
             this.filterMineOnly,
             this.filterByTags,
-            this.filterCitizenship,
-            this.filterDepartmentName,
+            this.filterByNationality,
         );
         return this.$el;
     }

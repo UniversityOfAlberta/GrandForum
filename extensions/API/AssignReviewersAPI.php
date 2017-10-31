@@ -25,8 +25,12 @@ class AssignReviewersAPI extends API{
         $_POST['student_id'] = $_POST['student_id'];
     }
 
-	function doAction($noEcho=false){
-		global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+    function doAction($noEcho=false){
+	global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+        $me = Person::newFromId($wgUser->getId());
+        if(!$me->isRoleAtLeast(MANAGER)){
+            return;
+        }
         if(!isset($_POST['users']) || count($_POST['users']) == 0){
             $_POST['users'] = array();
         }
@@ -48,12 +52,12 @@ class AssignReviewersAPI extends API{
 
         }
         return true;
-	}
+    }
 	
 	
-        function isLoginRequired(){
+    function isLoginRequired(){
 		return true;
-	}
+    }
 }
 
 ?>

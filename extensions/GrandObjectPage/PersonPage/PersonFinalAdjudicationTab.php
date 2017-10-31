@@ -1,11 +1,11 @@
 <?php
 
-class PersonGSMSOutcomeTab extends AbstractEditableTab {
+class PersonFinalAdjudicationTab extends AbstractEditableTab {
 
     var $person;
     var $visibility;
 
-    function PersonGSMSOutcomeTab($person, $visibility){
+    function PersonFinalAdjudicationTab($person, $visibility){
         parent::AbstractEditableTab("Final Application Adjudication");
         $this->person = $person;
         $this->visibility = $visibility;
@@ -16,7 +16,7 @@ class PersonGSMSOutcomeTab extends AbstractEditableTab {
         $_POST['user_name'] = $this->person->getName();
         $_POST['degree_count'] = $this->person->getName();
 
-        $api = new UserGsmsOutcomeAPI();
+        $api = new UpdateUserFinalAdjudicationAPI();
         $api->doAction(true);
     }
 

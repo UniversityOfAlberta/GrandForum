@@ -16,7 +16,7 @@ class PersonGSMSTab extends AbstractEditableTab {
         $_POST['user_name'] = $this->person->getName();
         $_POST['degree_count'] = $this->person->getName();
 
-        $api = new UserGsmsAPI();
+        $api = new UpdateUserDepartmentAPI();
         $api->doAction(true);
     }
 

@@ -53,6 +53,9 @@ class UploadReviewersAPI extends API{
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
+        if(!$user->isRoleAtLeast(MANAGER)){
+            return;
+        }
 
         $xls = $_FILES['reviewers'];
         $xls_name = $xls['name'];

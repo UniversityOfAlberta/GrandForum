@@ -1,8 +1,8 @@
 <?php
 
-class EditGsmsBioAPI extends API{
+class UserOTBioAPI extends API{
 
-    function EditGsmsBioAPI(){
+    function UserOTBioAPI(){
     }
 
     function processParams($params){
@@ -73,7 +73,9 @@ class EditGsmsBioAPI extends API{
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
-
+        if(!$user->isRoleAtLeast(MANAGER)){
+            return;
+        }
         $xls = $_FILES['students_gsms'];
         if(isset($xls['type']) &&
             ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream") &&
