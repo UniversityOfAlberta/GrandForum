@@ -12,20 +12,7 @@
     <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
             <![CDATA[
-                
                 <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="studentID" type="Text" blobType="BLOB_TEXT" blobItem="studentID" limit="100" >
-            <![CDATA[
-                <h3>Student ID<span title="Generated when an applicant establishes a relationship with the U of A in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="csAppNum" type="Text" blobType="BLOB_TEXT" blobItem="csAppNum" limit="100" >
-            <![CDATA[
-                <h3>CS Application Number<span title="This number is generated when an application is created for an applicant in Campus Solution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -33,7 +20,7 @@
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Advanced Man-Machine Interfaces|Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Games|Computer Graphics|Computer Vision and Multimedia Communication|Database Systems|Machine Learning|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+        <ReportItem id="q13" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
             <style>
                     .flex-container {
@@ -53,6 +40,7 @@
                       flex-grow:         <number>;
                     }
                 </style>
+                <h3>Please provide information about (a) the areas of research which you are considering to pursue, (a) the faculty members that you would like to work with, (c) your scholarships (if you hold one or have applied for one), and (d) your GPA and GRE (if applicable) scores.</h3>
                 <div class="flex-container">
                 <div class="flex-item" style="
                     min-width: 370px; 
@@ -238,13 +226,12 @@
             </div> <!-- end flex container -->
             ]]>
         </ReportItem>
-
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose (for PhD applicants only)" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>Statement of Purpose</h3>
+                <h3>A PhD applicant must submit a statement of purpose.  This statement outlining research goals and their relation to the research of Computing Science faculty members at the University of Alberta.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -253,7 +240,7 @@
     <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
-                <h3>Research Experience</h3>
+                <h3>Please describe any research projects you have been involved with and list any publications you may have co-authored.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -269,6 +256,7 @@
     <ReportSection id="awards" tooltip="Awards" name="Awards" blobSection="CS_QUESTIONS_tab4" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qAwards" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%">
             <![CDATA[
+                <h3>Please list any awards you have received. If the award had a monetary value, please let us know the amount; else leave the corresponding input box empty.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -277,6 +265,7 @@
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
             <![CDATA[
+                <h3>Please list all the degrees you have received starting with the most recent one; the computing-science courses that you have taken during your most recent degree, and, if you have completed a MSc thesis, its title and its abstract. For each course, please provide your grade; if it was pass/fail, leave the grade boxes empty).</h3>
                 <h3>Degrees</h3>
                 {$item}
             ]]>
@@ -382,7 +371,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         </ReportItemSet>

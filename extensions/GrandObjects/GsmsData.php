@@ -366,7 +366,6 @@ class GsmsData extends BackboneModel{
         //var_dump($moreJson['areas_of_study']);
 
         $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
-
         $moreJson['supervisors'] = @implode(", ", $blob['q14']);
 
         $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
@@ -391,7 +390,16 @@ class GsmsData extends BackboneModel{
 
         // Courses (number of courses, number of areas)
         $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = @implode(", ", $blob['qCourses']);
+        $courses = array();
+        //var_dump($blob);
+        //exit;
+        if (isset($blob['qEducation2'])) {
+          foreach ($blob['qEducation2'] as $el) {
+            $courses[] = $el['course'];
+          }
+        }
+        $moreJson['courses'] = @implode(", ", $courses);
+        //$moreJson['courses'] = @implode(", ", $blob['qEducation2'][0]);
 
         return $moreJson;
 
