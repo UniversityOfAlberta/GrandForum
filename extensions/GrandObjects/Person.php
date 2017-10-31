@@ -1259,7 +1259,7 @@ class Person extends BackboneModel {
     function getId(){
         global $config;
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(CI) && !$config->getValue('hqpIsPublic')){
             return 0;
         }
         return $this->id;
@@ -4606,15 +4606,8 @@ class Person extends BackboneModel {
      * @return text stream of SoP PDF
    **/
     function getSopPdf(){
-        $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('pdf'),
-                                    array('user_id' => EQ($this->getId()),
-					  'type' => 'RPTP_CS_FULL',
-					  'year' => YEAR));
-        if(count($data) > 0){
-	    return $data[0]['pdf'];
-	}
-	return false;
+      $sop=SOP::newFromUserId($this->id);
+      return $sop->getSopPdf();
     }
 
     /**
@@ -4622,20 +4615,8 @@ class Person extends BackboneModel {
      * @return String url of SoP pdf
    **/
     function getSopPdfUrl(){
-        $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('pdf'),
-                                    array('user_id' => EQ($this->getId()),
-                                          'type' => 'RPTP_CS_FULL',
-                                          'year' => YEAR));
-
-        if(count($data) > 0){
-	    $pdf_data = $data[0]['pdf'];
-	    if($pdf_data != ""){
-                global $wgServer, $wgScriptPath;
-                return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&last=true&user=".$this->getId();
-	    }
-	}
-	return false;
+      $sop=SOP::newFromUserId($this->id);
+        return $sop->getSopUrl();
     }
 
     /**

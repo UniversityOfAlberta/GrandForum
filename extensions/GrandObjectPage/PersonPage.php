@@ -111,12 +111,12 @@ class PersonPage {
 		
                 $tabbedPage = new TabbedPage("person");
 		$tabbedPage->addTab(new PersonSopTab($person, $visibility));
-                if($person->getGSMSPdfUrl() != ""){
+                if($person->getGSMSPdfUrl() != "" && $me->isRoleAtLeast(MANAGER)){
                     $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
                 }
 
                     $tabbedPage->addTab(new PersonApplicantDataTab($person, $visibility));
-		if($me->isRoleAtLeast("Admin")){
+		if($me->isRoleAtLeast(MANAGER)){
                     $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
 		}
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){

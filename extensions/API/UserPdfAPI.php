@@ -11,9 +11,6 @@ class UserPdfAPI extends API{
     function doAction($noEcho=false){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        if(!$me->isRoleAtLeast(ADMIN)){
-            return;
-        }
 	$user_id = $_GET["user"];
      $data = DBFunctions::select(array('grand_sop'),
                                     array('pdf_contents', 'pdf_data'),
