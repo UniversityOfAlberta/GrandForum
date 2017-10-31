@@ -110,7 +110,9 @@ class GsmsData extends BackboneModel{
     static function newFromUserId($id){
         $data = DBFunctions::select(array('grand_gsms'),
                                     array('*'),
-                                    array('user_id' => EQ($id)));
+                                    array('user_id' => EQ($id)),
+                                    array('submitted_date' => 'DESC'),
+                                    array(1));
         $info_sheet = new GsmsData($data, $id);
         return $info_sheet;
     }
