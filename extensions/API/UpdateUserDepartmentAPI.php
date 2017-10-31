@@ -1,17 +1,19 @@
 <?php
 
-class UserGsmsAPI extends API{
+class UpdateUserDepartmentAPI extends API{
 
-    function UserGsmsAPI(){
+    function UpdateUserDepartmentAPI(){
     }
 
     function processParams($params){
-        if(isset($_POST['gpa']) && $_POST['gpa'] != ""){
-            $_POST['gpa'] = str_replace("'", "&#39;", $_POST['gpa']);
-        }
     }
 
     function doAction($noEcho=false){
+        global $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        if(!$me->isRoleAtLeast(MANAGER)){
+            return;
+        }
 	if(!isset($_POST['view'])){
 	    $visible = false;
 	}
@@ -63,7 +65,7 @@ class UserGsmsAPI extends API{
 
         $person->getUser()->invalidateCache();
         if(!$noEcho){
-            echo "User's GPA updated \n";
+            echo "User's Department Information updated \n";
         }
         }
 

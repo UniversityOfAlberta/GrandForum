@@ -9,6 +9,11 @@ class UserSopPdfAPI extends API{
     }
 
     function doAction($noEcho=false){
+        global $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        if(!$me->isRoleAtLeast(EVALUATOR)){
+            return;
+        }
 	$user_id = $_GET["user"];
 	$person = Person::newFromId($user_id);
 	

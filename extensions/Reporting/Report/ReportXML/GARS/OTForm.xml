@@ -8,7 +8,30 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="OTintroduction" type="ReportSection" pagebreak="false" >
+        <ReportItem id="introOT" type="Text" blobType="BLOB_TEXT" blobItem="introOT" limit="100" >
+            <![CDATA[
+                <h3>The GARS system collects information required by the Occupational Therapy (OT) Department graduate-review process.</h3>
+                <h3>Please note:<ul>
+                    <li>You only have to provide this information once, even if you are applying to multiple graduate OT programs.</li>
+                    <li>You must provide to GARS your GSMS ID, so that we can cross-reference the information in GARS with the information in GSMS.</li>
+                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca">support@gars.ualberta.ca</a>.
+                </li></ul></h3>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="gsms_ids" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100" >
+            <![CDATA[
+                <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="questions" tooltip="SoP Questions" name="SoP Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
                 <h3>Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.</h3>
@@ -36,8 +59,9 @@
     </ReportSection>
     <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
+        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade" default="100">
             <![CDATA[
+                <p>Please list the courses in your transcript for your most recent 60 credits</p>
                 <h3>Max Grade<span title="The maximum grade achievable for the classes below. E.g. 4.0" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
                 <div id='max_grade_warning_container'></div>
@@ -130,7 +154,10 @@
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
+            <![CDATA[
+            <h3>On this page you can review the information you have provided to the OT Department. Please ensure that this information is accurate and complete to the best of your knowledge.</h3>
+            {$item}
+            ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="eula" name="Declaration" title="Declaration" tooltip="Declaration" blobSection="OT_EULA" type="EULA">
@@ -151,9 +178,9 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your OT GARS data will be generated and submitted to the OT department. At this point, you will no longer be able to edit your OT GARS data. Please review the correctness of the information you have provided through the Review step." />
         </ReportItemSet>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
