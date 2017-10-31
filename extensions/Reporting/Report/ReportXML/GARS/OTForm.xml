@@ -16,7 +16,8 @@
                 <h3>Please note:<ul>
                     <li>You only have to provide this information once, even if you are applying to multiple graduate OT programs.</li>
                     <li>You must provide to GARS your GSMS ID, so that we can cross-reference the information in GARS with the information in GSMS.</li>
-                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca.">support@gars.ualberta.ca.</a></li></ul></h3>
+                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca">support@gars.ualberta.ca</a>.
+                </li></ul></h3>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -58,8 +59,9 @@
     </ReportSection>
     <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
 
-        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
+        <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade" default="100">
             <![CDATA[
+                <p>Please list the courses in your transcript for your most recent 60 credits</p>
                 <h3>Max Grade<span title="The maximum grade achievable for the classes below. E.g. 4.0" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
                 <div id='max_grade_warning_container'></div>

@@ -3267,9 +3267,9 @@ class Title {
 	 * @return String containing capitalized title
 	 */
 	public static function capitalize( $text, $ns = NS_MAIN ) {
-		global $wgContLang;
+		global $wgContLang, $wgCapitalLinks;
 
-		if ( MWNamespace::isCapitalized( $ns ) ) {
+		if ( MWNamespace::isCapitalized( $ns ) && $wgCapitalLinks) {
 			return $wgContLang->ucfirst( $text );
 		} else {
 			return $text;

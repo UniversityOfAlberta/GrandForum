@@ -573,13 +573,13 @@ class User {
 	 * @return bool
 	 */
 	public static function isValidUserName( $name ) {
-		global $wgContLang, $wgMaxNameChars;
+		global $wgContLang, $wgMaxNameChars, $wgCapitalLinks;
 
 		if ( $name == ''
 		|| User::isIP( $name )
 		|| strpos( $name, '/' ) !== false
 		|| strlen( $name ) > $wgMaxNameChars
-		|| $name != $wgContLang->ucfirst( $name ) ) {
+		|| ($wgCapitalLinks && $name != $wgContLang->ucfirst( $name ))) {
 			wfDebugLog( 'username', __METHOD__ .
 				": '$name' invalid due to empty, IP, slash, length, or lowercase" );
 			return false;
@@ -888,8 +888,10 @@ class User {
 	 */
 	public static function getCanonicalName( $name, $validate = 'valid' ) {
 		// Force usernames to capital
-		global $wgContLang;
-		$name = $wgContLang->ucfirst( $name );
+		global $wgContLang, $wgCapitalLinks;
+		if($wgCapitalLinks){
+		    $name = $wgContLang->ucfirst( $name );
+		}
 
 		# Reject names containing '#'; these will be cleaned up
 		# with title normalisation, but then it's too late to
@@ -3535,6 +3537,7 @@ class User {
 		$dbw = wfGetDB( DB_MASTER );
 		$inWrite = $dbw->writesOrCallbacksPending();
 		$seqVal = $dbw->nextSequenceValue( 'user_user_id_seq' );
+
 		$dbw->insert( 'user',
 			array(
 				'user_id' => $seqVal,

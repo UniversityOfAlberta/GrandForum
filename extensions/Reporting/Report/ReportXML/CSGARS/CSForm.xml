@@ -12,17 +12,18 @@
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
         <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100" >
             <![CDATA[
-                <h3>The GARS system collects information required by the Computing Science (CS) Department graduate-review process.</h3>
-                <h3>Please note:<ul>
-                    <li>You only have to provide this information once, even if you are applying to multiple graduate CS programs.</li>
-                    <li>You must provide to GARS your GSMS ID, so that we can cross-reference the information in GARS with the information in GSMS.</li>
-                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca.">support@gars.ualberta.ca.</a></li></ul></h3>
+                <h3>The Department of Computing Science uses the Graduate Admission Review System (GARS) to collect information supplemental to that you submit through U of A's Graduate Studies Management System (GSMS), for review of your application.</h3>
+                </br>
+                Please note:<ul>
+                    <li>The supplemental information needs to be provided only once, even if you are applying to multiple programs in Computing Science (e.g., thesis-based Masters and course-based Masters).</li>
+                    <li>You must apply first through GSMS to obtain your GSMS ID, and then provide to GARS this ID so that we can cross-reference the information between GARS and GSMS.</li>
+                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca">support@gars.ualberta.ca</a>.</li></ul>
             ]]>
         </ReportItem>
     </ReportSection>
 
     <ReportSection id="gsms_id" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
-        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+        <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
                 <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
@@ -52,7 +53,7 @@
                       flex-grow:         <number>;
                     }
                 </style>
-                <h3>Please provide information about (a) the areas of research which you are considering to pursue, (a) the faculty members that you would like to work with, (c) your scholarships (if you hold one or have applied for one), and (d) your GPA and GRE (if applicable) scores.</h3>
+                <h3>Please provide information about (a) the areas of research which you are considering to pursue, (b) the faculty members that you would like to work with, (c) your scholarships (if you hold one or have applied for one), and (d) your GPA and GRE (if applicable) scores.</h3>
                 <div class="flex-container">
                 <div class="flex-item" style="
                     min-width: 370px; 
@@ -71,9 +72,9 @@
             ]]>
         </ReportItem>
     
-        <ReportItem id="q14" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+        <ReportItem id="q14" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" max="3" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors<span title="Choose up to 3 potential supervisors." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
@@ -243,7 +244,7 @@
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose (for PhD applicants only)" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>A PhD applicant must submit a statement of purpose.  This statement outlining research goals and their relation to the research of Computing Science faculty members at the University of Alberta.</h3>
+                <h3>A PhD applicant must submit a statement of purpose. Outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application.</h3>
                 {$item}
             ]]>
         </ReportItem>
