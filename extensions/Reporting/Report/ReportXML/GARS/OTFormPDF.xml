@@ -19,6 +19,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="gsms_ids" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100" >
+            <![CDATA[
+                <h3>GSMS ID</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[

@@ -12,17 +12,18 @@
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
         <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100" >
             <![CDATA[
-                <h3>The GARS system collects information required by the Computing Science (CS) Department graduate-review process.</h3>
-                <h3>Please note:<ul>
-                    <li>You only have to provide this information once, even if you are applying to multiple graduate CS programs.</li>
-                    <li>You must provide to GARS your GSMS ID, so that we can cross-reference the information in GARS with the information in GSMS.</li>
-                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca">support@gars.ualberta.ca</a>.</li></ul></h3>
+                <h3>The Department of Computing Science uses the Graduate Admission Review System (GARS) to collect information supplemental to that you submit through U of A's Graduate Studies Management System (GSMS), for review of your application.</h3>
+                </br>
+                Please note:<ul>
+                    <li>The supplemental information needs to be provided only once, even if you are applying to multiple programs in Computing Science (e.g., thesis-based Masters and course-based Masters).</li>
+                    <li>You must apply first through GSMS to obtain your GSMS ID, and then provide to GARS this ID so that we can cross-reference the information between GARS and GSMS.</li>
+                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca">support@gars.ualberta.ca</a>.</li></ul>
             ]]>
         </ReportItem>
     </ReportSection>
 
     <ReportSection id="gsms_id" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
-        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+        <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
                 <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}

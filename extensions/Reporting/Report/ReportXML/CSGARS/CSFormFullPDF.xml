@@ -23,15 +23,11 @@
     </ReportSection>
 
     <!-- Page1: IDs, GPA, GRE, Areas, and Faculty members -->
-    <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
-        <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
+    <ReportSection id="gsms_id" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
-                <table style="width: 100%; margin-bottom: 1em">
-                <tr>
-                    <td style="padding: 0.25em;">
-                        <h3>GSMS ID</h3>
-                        {$item}
-                    </td>
+                    <h3>GSMS ID</h3>
+                    {$item}
             ]]>
         </ReportItem>
     </ReportSection>
