@@ -52,7 +52,8 @@
     }
     
     function handleSubmit(){
-        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
+        global $wgUser, $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
+        $wgUser = User::newFromId(1);
         $form = createForm();
         $status = $form->validate();
         if($status){
@@ -63,13 +64,17 @@
             $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-            $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+            $_POST['wpName'] = "{$_POST['wpEmail']}";
+            //$_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             $_POST['wpUserType'] = $config->getValue('shibDefaultRole');
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
             
-            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
+            /*if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+            }*/
+            if(!User::isValidEmailAddr($_POST['wpEmail'])){
+                $wgMessage->addError("'{$_POST['wpEmail']}' is not a valid email address");
             }
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;
@@ -78,10 +83,24 @@
                 $wgGroupPermissions['*']['createaccount'] = false;
                 GrandAccess::$alreadyDone = array();
                 if($result){
+                    
                     // Don't make the user a candidate
                     DBFunctions::update('mw_user',
                                         array('candidate' => 0),
                                         array('user_name' => $_POST['wpName']));
+                    
+                    // Make sure the 'real name' is set
+                    /*DBFunctions::update('mw_user',
+                                        array('user_real_name' => $_POST['wpRealName']),
+                                        array('user_name' => $_POST['wpName']));*/
+                                        
+                    $person = Person::newFromName($_POST['wpName']);
+                    $user = $person->getUser();
+
+                    $user->setRealName($_POST['wpRealName']);
+                    $user->saveSettings();
+                    
+                    DBFunctions::commit();        
                     $form->reset();
                     $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
                     redirect("$wgServer$wgScriptPath");
