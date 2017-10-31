@@ -72,8 +72,12 @@
             /*if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
             }*/
+            $personCheck = Person::newFromEmail(trim($_POST['wpEmail']));
             if(!User::isValidEmailAddr($_POST['wpEmail'])){
                 $wgMessage->addError("'{$_POST['wpEmail']}' is not a valid email address");
+            }
+            else if($personCheck != null && $personCheck->getId() != 0){
+                $wgMessage->addError("There is already a user with this email address");
             }
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;
