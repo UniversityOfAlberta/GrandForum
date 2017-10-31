@@ -163,13 +163,15 @@ class DepartmentTab extends AbstractTab {
         foreach($hqps as $hqp){
             $papers = $hqp->getPapersAuthored("Publication", ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
-                $uni = $hqp->getUniversityDuring($paper->getDate(), $paper->getDate());
-                $pos = @$uni['position'];
-                if(in_array(strtolower($pos), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral", "pdf","post-doctoral fellow"))){
-                    $gradPapers[$paper->getId()] = $paper;
-                }
-                else if(in_array(strtolower($pos), array("ugrad", "undergraduate", "undergraduate student"))){
-                    $ugradPapers[$paper->getId()] = $paper;
+                if($paper->getData('peer_reviewed') == "Yes"){
+                    $uni = $hqp->getUniversityDuring($paper->getDate(), $paper->getDate());
+                    $pos = @$uni['position'];
+                    if(in_array(strtolower($pos), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral", "pdf","post-doctoral fellow"))){
+                        $gradPapers[$paper->getId()] = $paper;
+                    }
+                    else if(in_array(strtolower($pos), array("ugrad", "undergraduate", "undergraduate student"))){
+                        $ugradPapers[$paper->getId()] = $paper;
+                    }
                 }
             }
         }
