@@ -1012,7 +1012,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 $person = Person::newFromName($_POST['wpName']);
                 $user = User::newFromName($_POST['wpName']);
                 if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-                    $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
+                    $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.<br />";
                     if(isset($_POST['wpMailmypassword'])){
                         $failMessage .= "<b>Password request failed</b>";
                     }
@@ -1062,8 +1062,8 @@ class CavendishTemplate2 extends QuickTemplate {
 You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
-Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
+Your login ID is your email address (case sensitive)
+If you have forgotten your password please enter your login ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
                 $emailPassword = "
                 
                 <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
@@ -1163,7 +1163,7 @@ If you have forgotten your password please enter your login and ID and request a
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
     <table style='width:185px;'>
         $message
-        <tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
+        <tr class='tooltip' title="Your username is your email address (case-sensitive)">
             <td class="mw-input mw-input-string">
                 <input type='text' class='loginText highlightsBackground0' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Username"
                     tabindex="1" size='20' />
