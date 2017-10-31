@@ -57,7 +57,7 @@
 
         <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade">
             <![CDATA[
-                <h3>Max Grade<span title="The maximum grade achievable for the classes below. E.g. 4.0" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>Max Grade</h3>
                 {$item}
                 <div id='max_grade_warning_container'></div>
             ]]>
@@ -73,7 +73,7 @@
 
         <ReportItem id="qpa60q2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpa60Output" limit="100" width="100px" optional="true">
             <![CDATA[
-                <h3>GPA<span title="Auto-calculated value from above courses, normalized to the 4-point scale" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>GPA</h3>
                 {$item}
                 
             ]]>
