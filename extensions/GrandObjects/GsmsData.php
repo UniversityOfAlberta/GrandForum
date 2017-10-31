@@ -311,10 +311,11 @@ class GsmsData extends BackboneModel{
 
            //adding nationality as one string
             $nationality = array();
-            $nationality[] = ($this->additional['indigenous'] == "Yes") ? "Indigenous" : "";
-            $nationality[] = ($this->additional['canadian'] == "Yes") ? "Canadian" : "";
-            $nationality[] = ($this->additional['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
-            $nationality[] = ($this->additional['international'] == "Yes") ? "International" : "";
+            $additionals = $this->getAdditional();
+            $nationality[] = ($additionals['indigenous'] == "Yes") ? "Indigenous" : "";
+            $nationality[] = ($additionals['canadian'] == "Yes") ? "Canadian" : "";
+            $nationality[] = ($additionals['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
+            $nationality[] = ($additionals['international'] == "Yes") ? "International" : "";
 
             $nationality_note = "";
             foreach($nationality as $note){

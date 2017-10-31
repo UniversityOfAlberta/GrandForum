@@ -1,6 +1,7 @@
 <?php
 // The purpose of this file is to simply include the other datastructures
 require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
+
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("MENTORS", 'Mentors');
@@ -20,6 +21,9 @@ autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Sop');
 autoload_register('GrandObjects/API/Course');
 autoload_register('GrandObjects/API/GsmsData');
+
+require_once("AbstractSop.php");
+
 
 global $apiRequest;
 // Person

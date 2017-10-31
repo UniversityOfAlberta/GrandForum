@@ -51,22 +51,68 @@ abstract class AbstractSop extends BackboneModel{
 
 
   /**
+   * getContent Gets the SOP Content
+   * @return array with answers to questions
+   */
+    abstract function getContent($asString=false);
+    abstract function checkGSMS();
+    abstract function getSopPdf();
+    abstract function getGSMSUrl();
+    abstract function getSopUrl();
+    abstract function checkSop();
+
+    function getCSColumns() {
+        $moreJson = array();
+        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
+        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
+        //var_dump($moreJson['areas_of_study']);
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
+        
+        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
+        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
+        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
+
+        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
+        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
+        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
+        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
+
+        // # of Publications
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
+        $moreJson['num_publications'] = @count($blob['qResExp2']);
+
+        // # of awards
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
+        $moreJson['num_awards'] = @count($blob['qAwards']);
+
+        // Courses (number of courses, number of areas)
+        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
+        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
+
+        return $moreJson;
+
+    }
+
+  /**
    * newFromId Returns an SOP object from a given id
    * @param $id
    * @return $sop SOP object
    */
     static function newFromId($id){
-        if(isset(self::$cache[$id])){
-            return self::$cache[$id];
-        }
-        self::generateCache();
-        $data = array();
-        if(isset(self::$idsCache[$id])){
-            $data[] = self::$idsCache[$id];
-        }
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('*'),
+                                    array('id' => EQ($id)));
+        if(count($data)>0){
         $sop = new SOP($data);
-        $cache[$id] = $sop;
         return $sop;
+	}
+        return new SOP(array());
     }
 
   /**
@@ -82,7 +128,7 @@ abstract class AbstractSop extends BackboneModel{
 	    $sop = SOP::newFromId($data[0]['id']);
 	    return $sop;
 	}
-	return false;
+	return new SOP(array());
     }
 
   /**
@@ -153,44 +199,6 @@ abstract class AbstractSop extends BackboneModel{
         $data = $blb->getData();
         
         return $data;
-    }
-
-    function getCSColumns() {
-        $moreJson = array();
-        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
-        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
-        //var_dump($moreJson['areas_of_study']);
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
-        
-        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
-        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
-        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
-
-        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
-        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
-        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
-        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
-        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
-
-        // # of Publications
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
-        $moreJson['num_publications'] = @count($blob['qResExp2']);
-
-        // # of awards
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
-        $moreJson['num_awards'] = @count($blob['qAwards']);
-
-        // Courses (number of courses, number of areas)
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
-
-        return $moreJson;
-
     }
 
     function getOTColumns() {
@@ -405,6 +413,15 @@ abstract class AbstractSop extends BackboneModel{
         return $this->id;
     }
 
+  /**
+   * getId Gets the SOP id
+   * @return mixed
+   */
+    function getUserId(){
+        return $this->user_id;
+    }
+
+
     /**
      * Returns information taken from PDF uploaded as an array
      * @param bool $asHtml if response should replace new lines with <br />
@@ -431,43 +448,6 @@ abstract class AbstractSop extends BackboneModel{
     */
     function getPersonalityStats(){
 	    return unserialize($this->personality_stats);
-    }
-
-  /**
-   * getContent Gets the SOP Content
-   * @return array with answers to questions
-   */
-    function getContent($asString=false){
-        if($this->questions == null){
-	    $qs = array('Q1');
-/*	    $qstrings = array('(Describe how your personal background and experiences would make you a good occupational therapist)',
-			      '(Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy)',
-			      '(Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta)',
-			      '(Outline the key way Canada\'s health care system can meet the challenges of tomorrow)',
-			      '(Is there anything else you would like to tell us to help the Admissions Committee in making their decision?)');*/
-            $qstrings = array("(Applicant's Statement of Purpose)");
-
-            $questions = array();
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
-	    $qnumber = 0;
-            foreach($qs as $q){
-                $blob_address = ReportBlob::create_address('RP_CS', 'CS_QUESTIONS_tab2', 'QSOP', 0);
-	            $blob->load($blob_address);
-	            $data = $blob->getData();
-	            $questions[$q.' '.$qstrings[$qnumber]] = $data;
-		    $qnumber++;
-            }
-            $this->questions = $questions;
-        }
-	    $this->content = $this->questions;
-	    if($asString){
-             $string = "";
-             foreach($this->content as $question => $answer){
-                $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
-             }
-             return $string;
-	    }
-        return $this->content;
     }
 
    /**
@@ -872,43 +852,6 @@ abstract class AbstractSop extends BackboneModel{
 	    $this->getPersonalityScore();
 	    return SOP::newFromId($this->id);
     }
-
-    function checkGSMS(){
-	$person = Person::newFromId($this->user_id);
-	$url = $person->getGSMSPdfUrl();
-	if($url != ""){
-	    return true;
-	}
-	return false;
-    }
-
-    function getGSMSUrl(){
-	if($this->checkGSMS()){
-        $person = Person::newFromId($this->user_id);
-        $url = $person->getGSMSPdfUrl();
-	return $url;
-	}
-	return "";
-    }
-
-    function checkSOP(){
-        $person = Person::newFromId($this->user_id);
-        $url = $person->getSopPdfUrl();
-        if($url != ""){
-            return true;
-        }
-        return false;
-    }
-
-
-    function getSopUrl(){
-        if($this->checkSOP()){
-        $person = Person::newFromId($this->user_id);
-        $url = $person->getSopPdfUrl();
-        return $url;
-        }
-        return "";
-    }
 }
-
+require_once("SopModels/".$config->getValue("networkName")."/SOP.php");
 ?>
