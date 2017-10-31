@@ -9,7 +9,19 @@
         </Role>
     </Permissions>
 
-    <ReportSection id="gsms_ids" tooltip="GSMS IDs" name="GSMS IDs" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
+        <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100" >
+            <![CDATA[
+                <h3>The GARS system collects information required by the Computing Science (CS) Department graduate-review process.</h3>
+                <h3>Please note:<ul>
+                    <li>You only have to provide this information once, even if you are applying to multiple graduate CS programs.</li>
+                    <li>You must provide to GARS your GSMS ID, so that we can cross-reference the information in GARS with the information in GSMS.</li>
+                    <li>If you have any questions regarding the GARS system, or any concerns regarding your GARS data, please contact <a href="mailto:support@gars.ualberta.ca.">support@gars.ualberta.ca.</a></li></ul></h3>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="gsms_id" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID" limit="100" >
             <![CDATA[
                 <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -265,8 +277,9 @@
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
             <![CDATA[
-                <h3>Please list all the degrees you have received starting with the most recent one; the computing-science courses that you have taken during your most recent degree, and, if you have completed a MSc thesis, its title and its abstract. For each course, please provide your grade; if it was pass/fail, leave the grade boxes empty).</h3>
+                
                 <h3>Degrees</h3>
+                <p>Please list all the degrees you have received starting with the most recent one</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -274,6 +287,7 @@
         <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|Category|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
             <![CDATA[
                 <h3>Courses Taken</h3>
+                <p>Please list the computing-science courses that you have taken during your most recent degree. For each course, please provide your grade; if it was pass/fail, leave the grade boxes empty).</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -281,6 +295,7 @@
         <ReportItem id="qEducation3" type="Text" blobType="BLOB_TEXT" blobItem="qThesisTitle" limit="150" width="98%">
             <![CDATA[
                 <h3>Masters Thesis Title</h3>
+                <p>If you have completed a MSc thesis, please list its title and its abstract.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -348,7 +363,10 @@
 
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
+            <![CDATA[
+            <h3>On this page you can review the information you have provided to the CS Department. Please ensure that this information is accurate and complete to the best of your knowledge.</h3>
+            {$item}
+            ]]>
         </ReportItem>
     </ReportSection>
 
@@ -373,7 +391,7 @@
 
     <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step."/>
         </ReportItemSet>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
