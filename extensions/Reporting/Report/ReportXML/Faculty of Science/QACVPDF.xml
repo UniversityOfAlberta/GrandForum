@@ -139,7 +139,7 @@
                     <ul>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" peerReviewed="true" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
@@ -166,7 +166,7 @@
                     <ul>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" status="Invited" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
