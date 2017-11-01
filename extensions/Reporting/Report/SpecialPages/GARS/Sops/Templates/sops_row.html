@@ -4,9 +4,15 @@
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
+  <% if(gsms_id != 0){ %>
     <%= gsms_id %><br />
+  <% } %>
+  <% if(applicant_number != 0){ %>
     <%= applicant_number %><br />
+  <% } %>
+  <% if(student_id != 0){ %>
     <%= student_id %>
+  <% } %>
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
@@ -83,10 +89,6 @@
 </td>
 
 <!-- reviewer info -->
-<td style="width:300px" id='notes'>
-    <%= additional.notes %>
-</td>
-
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
@@ -104,7 +106,9 @@
 
     <% } %>
 </td>
-
+<td style="width:300px" id='notes'>
+    <%= additional.notes %>
+</td>
 <td style="width:200px">
     <span id="span<%= sop_id %>"></span>
 </td>
