@@ -647,7 +647,8 @@ abstract class AbstractSop extends BackboneModel{
                         word_count=$word_count, sentlen_ave=$sentlen_ave,
                         wordletter_ave=$wordletter_ave
 	            WHERE id={$this->id};";
-	    $status = DBFunctions::execSQL($sql,true);
+	    //$status = DBFunctions::execSQL($sql,true);
+        $status = false;
         if($status){
             DBFunctions::commit();
         }
@@ -693,7 +694,8 @@ abstract class AbstractSop extends BackboneModel{
                 SET sentiment_type='$sentiment_type', sentiment_val='$sentiment_val'
                 WHERE id={$this->id};";
 
-        $status = DBFunctions::execSQL($sql,true);
+        //$status = DBFunctions::execSQL($sql,true);
+        $status = false;
         if($status){
             DBFunctions::commit();
         }
@@ -743,7 +745,9 @@ abstract class AbstractSop extends BackboneModel{
                 SET emotion_stats='".serialize($emotions_array)."'
                 WHERE id={$this->id};";
 
-        $status = DBFunctions::execSQL($sql,true);
+//        $status = DBFunctions::execSQL($sql,true);
+        $status = false;
+
         if($status){
             DBFunctions::commit();
         }
@@ -789,7 +793,9 @@ abstract class AbstractSop extends BackboneModel{
                 SET personality_stats='".serialize($result)."'
                 WHERE id={$this->id};";
 
-        $status = DBFunctions::execSQL($sql,true);
+//        $status = DBFunctions::execSQL($sql,true);
+        $status = false;
+
         if($status){
             DBFunctions::commit();
         }
@@ -833,7 +839,9 @@ abstract class AbstractSop extends BackboneModel{
         $sql = "UPDATE grand_sop
                 SET errors=$errors
                 WHERE id={$this->id};";
-        $status = DBFunctions::execSQL($sql,true);
+        //$status = DBFunctions::execSQL($sql,true);
+        $status = false;
+
         if($status){
             DBFunctions::commit();
         }

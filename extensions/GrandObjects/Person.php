@@ -78,7 +78,6 @@ class Person extends BackboneModel {
                                           'rp_section' => 'CS_Questions_tab0',
                                           'rp_item' => 'gsmsIDCS',
                                           'data' => $gsms_id));
-        $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
             return Person::newFromId($data[0]['user_id']);
         }

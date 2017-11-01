@@ -40,12 +40,15 @@ class AssignReviewersAPI extends API{
             $ids[] = $reviewer->getId();
         }
         $student = $_POST['student_id'];
-        $sql = "DELETE FROM grand_eval WHERE sub_id = '$student'";
-        $status = DBFunctions::execSQL($sql, true);
+        DBFunctions::delete('grand_eval',
+                            array('sub_id' => $student));
         foreach($ids as $reviewer_id){
             $year = YEAR;
-            $sql = "INSERT INTO grand_eval VALUES ('$reviewer_id', '$student', 'sop', '$year')";
-            $status = DBFunctions::execSQL($sql, true);
+            $status = DBFunctions::insert('grand_evals',
+                                    array('`user_id`'          => $reviewer_id,
+                                          '`sub_id`'              => $student,
+                                          '`type`'       => 'sop',
+                                          '`year`'        => $year));
             if($status){
                                 DBFunctions::commit();
             }
