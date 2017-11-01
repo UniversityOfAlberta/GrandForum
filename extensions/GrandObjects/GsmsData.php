@@ -122,9 +122,8 @@ class GsmsData extends BackboneModel{
         $gsms_array = array();
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(EVALUATOR)){
-            $data = DBFunctions::select(array('grand_gsms'),
-                                        array('id'),
-                                        array('visible' => "true"));
+            $sql = "SELECT user_id, id, max(submitted_date) as date FROM grand_gsms WHERE visible = 'true' GROUP BY user_id ORDER BY submitted_date";
+            $data = DBFunctions::execSQL($sql);
         }
         if(count($data) >0){
             foreach($data as $gsms){
