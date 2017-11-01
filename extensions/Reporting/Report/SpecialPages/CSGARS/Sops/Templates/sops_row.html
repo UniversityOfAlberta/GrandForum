@@ -74,7 +74,11 @@
 </td>
 
 <td align="right" id='notes'>
-    <%= additional.courses %>
+    <div class="ellipsis tooltip" title="<%= additional.courses %>" style="border-bottom: none">
+      <div>
+        <%= additional.courses %>
+      </div>
+    </div>
 </td>
 
 <!-- reviewer info -->
