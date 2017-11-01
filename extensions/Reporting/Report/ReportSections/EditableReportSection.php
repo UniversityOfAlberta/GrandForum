@@ -96,11 +96,6 @@ class EditableReportSection extends AbstractReportSection {
         }
         $allSections = $this->getParent()->sections;
         $saveText = "";
-        foreach($allSections as $section){
-            if($section->name == "Submit" && $section->checkPermission('r')){
-                $saveText = "<br /><small>Once you have saved and reviewed your text you will need to generate/submit your report by going to the <a style='cursor:pointer;' onclick=\"$('a#Submit').click()\">Submit</a> section.</small>";
-            }
-        }
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>

@@ -31,7 +31,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="questions" tooltip="SoP Questions" name="SoP Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="questions" tooltip="Letter of Intent Questions" name="Letter of Intent" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
             <![CDATA[
                 <h3>Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.</h3>

@@ -7,12 +7,12 @@
         $formTable = new FormTable("form_table");
         
         $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
+        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
+        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
@@ -68,13 +68,16 @@
             //$_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             $_POST['wpUserType'] = $config->getValue('shibDefaultRole');
             $_POST['wpSendMail'] = "true";
-            $_POST['candidate'] = "1";
             
             /*if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
             }*/
+            $personCheck = Person::newFromEmail(trim($_POST['wpEmail']));
             if(!User::isValidEmailAddr($_POST['wpEmail'])){
                 $wgMessage->addError("'{$_POST['wpEmail']}' is not a valid email address");
+            }
+            else if($personCheck != null && $personCheck->getId() != 0){
+                $wgMessage->addError("There is already a user with this email address");
             }
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;
@@ -88,15 +91,11 @@
                     DBFunctions::update('mw_user',
                                         array('candidate' => 0),
                                         array('user_name' => $_POST['wpName']));
-                    
-                    // Make sure the 'real name' is set
-                    /*DBFunctions::update('mw_user',
-                                        array('user_real_name' => $_POST['wpRealName']),
-                                        array('user_name' => $_POST['wpName']));*/
                                         
                     $person = Person::newFromName($_POST['wpName']);
                     $user = $person->getUser();
-
+                    
+                    // Make sur ethe 'real name' is set
                     $user->setRealName($_POST['wpRealName']);
                     $user->saveSettings();
                     
