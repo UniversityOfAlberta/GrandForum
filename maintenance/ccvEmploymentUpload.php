@@ -27,9 +27,10 @@
         $name = $personalInfo["first_name"] . " " . $personalInfo["last_name"];
         $person = Person::newFromName($name);
         if($person->getId() != 0){
+            $degrees = $cv->getDegrees();
             $employment = $cv->getEmployment();
             $hqps = $cv->getStudentsSupervised();
-
+            UploadCCVAPI::updateDegrees($person, $degrees);
             UploadCCVAPI::updateEmployment($person, $employment);
             UploadCCVAPI::updateHQPPresentPosition($person, $hqps);
             

@@ -400,6 +400,30 @@ class CommonCV // {{{
     }
     return $records;
    } // }}}
+   
+   /**
+   * Parses the list of degrees and returns (some of its) data
+   * as an associative array for convenience
+   */
+  public function getDegrees() // {{{
+   {
+    global $CCV_CONST;
+    $records = array();
+    $elements = $this->m_xpath->query("//section[@id='aee5a225a504442fb83f716235cfb587']");
+    for ($i = 0; !is_null($elements) && $i < $elements->length; $i++)
+    {
+      $record = array();
+      $id = $this->get_xpath("@recordId", $elements->item($i));
+      $record['type'] = $this->getCaptionFromValue($this->get_xpath("field[@id='a83a0af883924c57bb66107cc32b6d5e']/lov/@id", $elements->item($i)), "Degree Type");
+      $record['organization'] = $this->get_xpath("field[@id='6e225f28f003427aa79aa68ff0aa3865']/refTable/linkedWith[@refOrLovId='ee597e9073b6479b94f903ca08f81903']/@value", $elements->item($i));
+      $record['department'] = $this->get_xpath("field[@id='35696972e69541dd86a80521d3737b26']/value", $elements->item($i));
+      @list($record["start_year"], $record["start_month"]) = explode("/", $this->get_xpath("field[@id='337ee6b2606c4c899f0e0c4ec3bd6ec2']/value", $elements->item($i)));
+      @list($record["end_year"], $record["end_month"]) = explode("/", $this->get_xpath("field[@id='4b818aef68a84743b19149d376032afb']/value", $elements->item($i)));
+
+      $records[$id] = $record;
+    }
+    return $records;
+   } // }}}
   
   /**
    * Parses the list of courses taught info and returns (some of its) data

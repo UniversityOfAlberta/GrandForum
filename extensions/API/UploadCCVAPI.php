@@ -453,6 +453,136 @@ class UploadCCVAPI extends API{
     }
     
     /**
+     * Adds the degrees information to the person's history
+     * @param Person $person The Person to update
+     * @param array $degrees The array containing the degrees ccv data
+     * @return boolean The status of the update
+     */
+    function updateDegrees($person, $degrees){
+        $status = true;
+        foreach($degrees as $deg){
+            // Reload the University/Position Data
+            $universities = Person::getAllUniversities();
+            $positions = Person::getAllPositions();
+            
+            $start_date = $deg['start_year']."-".str_pad($deg['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            if($deg['end_year'] == "" || $deg['end_month'] == ""){
+                $end_date = "0000-00-00 00:00:00";
+            }
+            else{
+                $end_date = $deg['end_year']."-".str_pad($deg['end_month'], 2, '0', STR_PAD_LEFT)."-".str_pad(cal_days_in_month(CAL_GREGORIAN, $deg['end_month'], $deg['end_year']), 2, '0', STR_PAD_LEFT)." 00:00:00";
+            }
+            
+            $department = $deg['department'];
+            $university = Person::getDefaultUniversity();
+            $uniFound = false;
+            $uniName = $deg['organization'];
+            foreach($universities as $id => $uni){
+                if($uni == $uniName){
+                    $university = $id;
+                    $uniFound = true;
+                    break;
+                }
+                if($uni == $university){
+                    $university = $id;
+                }
+            }
+            if(!$uniFound && ($uniName != "")){
+                // University not Found, so add it
+                
+                $otherId = DBFunctions::select(array('grand_provinces'),
+                                               array('id'),
+                                               array('province' => EQ('Other')));
+                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
+                DBFunctions::insert('grand_universities',
+                                    array('university_name' => $uniName,
+                                          'province_id'     => $otherId,
+                                          '`order`'    => 10001));
+                $university = DBFunctions::select(array('grand_universities'),
+                                                  array('university_id'),
+                                                  array('university_name' => EQ($uniName)));
+                $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
+            }
+            $position = Person::getDefaultPosition();
+            $rank = $deg['type']; // title has the position data.
+            switch($rank){
+                default:
+                case "Bachelor's":
+                case "Bachelor's Honours":
+                case "Bachelor's Equivalent":
+                case "Affiliate":
+                case "Certificate":
+                case "Diploma":
+                    $rank = "Undergraduate";
+                    break;
+                case "Master's Thesis":
+                case "Master's non-Thesis":
+                case "Master's Equivalent":
+                    $rank = "Graduate Student - Master's";
+                    break;
+                case "Doctorate":
+                case "Habilitation":
+                    $rank = "Graduate Student - Doctoral";
+                    break;
+                case "Post-doctorate":
+                    $rank = "Post-Doctoral Fellow";
+                    break;
+            }
+            $posFound = false;
+            foreach($positions as $id => $pos){
+                if(strtolower($pos) == strtolower($rank)){
+                    $position = $id;
+                    $posFound = true;
+                    break;
+                }
+                if($pos == $position){
+                    $position = $id;
+                }
+            }
+            if(!$posFound){
+                // Position not Found, so add it
+                DBFunctions::insert('grand_positions',
+                                    array('position' => $rank,
+                                          '`order`'    => 10001));
+                $position = DBFunctions::select(array('grand_positions'),
+                                                array('position_id'),
+                                                array('position' => EQ($rank)));
+                $position = (isset($position[0])) ? $position[0]['position_id'] : Person::getDefaultPosition();
+            }
+            $data = DBFunctions::select(array('grand_user_university'),
+                                        array('*'),
+                                        array('user_id'       => EQ($person->getId()),
+                                              'university_id' => EQ($university),
+                                              'department'    => EQ($department),
+                                              'position_id'   => EQ($position),
+                                              'end_date'      => EQ($end_date)));
+            if(count($data) > 0){
+                // This is the current university which is in the system, just update the start date
+                $status = $status && 
+                          DBFunctions::update('grand_user_university',
+                                              array('start_date' => $start_date),
+                                              array('id' => EQ($data[0]['id'])));
+            }
+            else if(count(DBFunctions::select(array('grand_user_university'),
+                                              array('*'),
+                                              array('user_id'       => EQ($person->getId()),
+                                                    'university_id' => EQ($university),
+                                                    'position_id'   => EQ($position)))) == 0){
+                // Make sure this exact entry is not already entered (allow department and end_date to be different)
+                $status = $status && 
+                          DBFunctions::insert('grand_user_university',
+                                              array('user_id'       => $person->getId(),
+                                                    'university_id' => $university,
+                                                    'department'    => $department,
+                                                    'position_id'   => $position,
+                                                    'start_date'    => $start_date,
+                                                    'end_date'      => $end_date));
+            }
+        }
+        return $status;
+    }
+    
+    /**
      * Adds the employment information to the person's history
      * @param Person $person The Person to update
      * @param array $employment The array containing the employment ccv data
