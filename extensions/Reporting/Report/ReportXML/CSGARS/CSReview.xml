@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="OT Review" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSReviewPDF" ajax="true" disabled="false">
+<Report name="CS Review" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSReviewPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="OT">
             <SectionPermission id="review student" permissions="rw" />
