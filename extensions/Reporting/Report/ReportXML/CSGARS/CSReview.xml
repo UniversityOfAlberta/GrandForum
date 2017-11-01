@@ -7,7 +7,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="considerations" tooltip="Special considerations that make this application compelling?" name="Special Considerations" blobSection="OT_REVIEW" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="considerations" tooltip="Special considerations that make this application compelling?" name="Special Considerations" blobSection="CS_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No" user="{$userId}">
             <![CDATA[
                 <h3>Special Considerations That Make This Application Compelling?</h3>
@@ -20,9 +20,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="RadioReportItem" blobItem="Q3" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
+        <ReportItem id="q3" type="RadioReportItem" blobItem="Q3" blobType="BLOB_TEXT" orientation="horizontal" options="Accept|Reject">
             <![CDATA[
-                <h3>Rank</h3>
+                <h3>Decision</h3>
                 {$item}
             ]]>
         </ReportItem>
