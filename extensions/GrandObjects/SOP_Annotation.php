@@ -265,7 +265,8 @@ class SOP_Annotation {
                 'quote' => $this->quote),
               true
             );
-
+            $this->quote = DBFunctions::escape($this->quote);
+            $this->text = DBFunctions::escape($this->text);
             $statement = "SELECT * FROM `grand_sop_annotation` WHERE `quote` LIKE '%".$this->quote."%' AND `text` LIKE '%".$this->text."%'";
             $data = DBFunctions::execSQL($statement);
             if($status){
