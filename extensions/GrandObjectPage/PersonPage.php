@@ -30,6 +30,9 @@ class PersonPage {
             permissionError();
         }
         $me = Person::newFromId($wgUser->getId());
+        if($me->isRole(CI) && ($me->getSopPdfUrl()== false)){
+            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+        }
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if(!isset($wgRoleValues[$nsText])){
             // Namespace is not a role namespace
