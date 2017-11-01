@@ -22,10 +22,10 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="gsms_id" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+    <ReportSection id="gsms_id" tooltip="Applicant ID" name="Applicant ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
-                <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>Applicant ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
