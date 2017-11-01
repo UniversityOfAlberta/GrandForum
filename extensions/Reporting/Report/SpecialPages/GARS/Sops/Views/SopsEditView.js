@@ -31,6 +31,7 @@ SopsEditView = Backbone.View.extend({
 
 
     },
+
     check_joy: function(){                $('#joy_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
                             'OK': function () {
                                 $(this).dialog('close')

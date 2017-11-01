@@ -98,6 +98,7 @@
 	<br />
 
     <% } %>
+        <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 
 <td style="white-space: nowrap;">
@@ -105,6 +106,7 @@
         <%= reviewers[i].decision %><br />
 
     <% } %>
+        <span class="assign_button_space" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 <td style="width:300px" id='notes'>
     <%= additional.notes %>

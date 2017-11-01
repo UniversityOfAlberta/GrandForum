@@ -13,6 +13,15 @@ SopsView = Backbone.View.extend({
             this.render();
         }, this);
     },
+
+    renderRoles: function(){
+        var rolestring = me.roleString.get('roleString');
+        console.log(rolestring);
+        if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
+           console.log("HI");
+            $('.assign_button').css('visibility','visible');
+        }
+    },
     
     addRows: function(){
         if(this.table != undefined){
@@ -70,7 +79,6 @@ SopsView = Backbone.View.extend({
     },
 
     showCheckboxes: function(){
-console.log("HI");
         var checkboxes = document.getElementById("checkboxes");
         if (!this.expanded) {
             checkboxes.style.display = "block";
@@ -185,6 +193,7 @@ console.log("HI");
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
             this.filterReviewType,

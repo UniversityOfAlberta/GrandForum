@@ -6,6 +6,7 @@ SopsView = Backbone.View.extend({
     lastTimeout: null,
     expanded: false,
     expanded2: false,
+
     initialize: function(){
         this.template = _.template($('#sops_template').html());
         this.listenTo(this.model, "sync", function(){
@@ -14,6 +15,11 @@ SopsView = Backbone.View.extend({
         }, this);
     },
     
+    renderRoles: function(){
+        if(me.roleString.get('roleString').indexOf('Manager') !== -1 || me.roleString.get('roleString').indexOf('Admin') !== -1){
+            $('.assign_button').css('visibility','visible');
+        }
+    },
     addRows: function(){
         if(this.table != undefined){
             this.table.destroy();
@@ -220,6 +226,7 @@ SopsView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
             this.filterDegreeName,

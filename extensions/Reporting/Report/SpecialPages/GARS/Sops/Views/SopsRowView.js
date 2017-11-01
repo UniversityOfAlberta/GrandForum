@@ -7,6 +7,7 @@ SopsRowView = Backbone.View.extend({
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "sync", this.render);
+
     },
 
     events: {
