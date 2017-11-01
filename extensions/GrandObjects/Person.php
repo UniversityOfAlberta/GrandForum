@@ -66,12 +66,18 @@ class Person extends BackboneModel {
 
 
     /**
-     * Returns a new Person from the given email (null if not found)
+     * Returns a new Person from the given GSMS Id (null if not found)
      * In the event of a collision, the first user is returned
-     * @param string $email The email address of the Person
-     * @return Person The Person from the given email
+     * @param string $gsms_id The GSMS ID of the Person
+     * @return Person The Person from the given GSMS Id
      */
     static function newFromGSMSId($gsms_id){
+        $data = DBFunctions::select(array('grand_gsms'),
+                                    array('user_id'),
+                                    array('gsms_id' => $gsms_id));
+        if(count($data) >0){
+            return Person::newFromId($data[0]['user_id']);
+        }
         $data = DBFunctions::select(array('grand_report_blobs'),
                                     array('user_id'),
                                     array('rp_type' => 'RP_CS',

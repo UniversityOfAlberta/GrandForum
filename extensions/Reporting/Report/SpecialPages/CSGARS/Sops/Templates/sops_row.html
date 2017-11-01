@@ -92,16 +92,13 @@
 	<br />
 
     <% } %>
-    <% if(me.getRoleString().get('roleString').indexOf('Manager') !== -1 || me.getRoleString().get('roleString').indexOf('Admin') !== -1) { %>
-
-        <a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a>
-    <% } %>
+        <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].decision %><br />
-
+        <span class="assign_button_space" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
     <% } %>
 </td>
 
