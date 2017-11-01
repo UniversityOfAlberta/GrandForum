@@ -145,7 +145,7 @@ abstract class AbstractSop extends BackboneModel{
 
             $this->sentiment_val = $row['sentiment_val'];
             $this->sentiment_type = $row['sentiment_type'];
-            $this->personality_stats = $row['personality_stats'];
+            $this->personality_stats = unserialize($row['personality_stats']);
             $emotions_array = unserialize($row['emotion_stats']);
             $this->anger_score = $emotions_array['anger'];
             $this->disgust_score = $emotions_array['disgust'];
@@ -447,7 +447,7 @@ abstract class AbstractSop extends BackboneModel{
     * @return array
     */
     function getPersonalityStats(){
-	    return unserialize($this->personality_stats);
+	    return $this->personality_stats;
     }
 
    /**

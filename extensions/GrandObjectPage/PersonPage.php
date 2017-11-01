@@ -30,8 +30,11 @@ class PersonPage {
             permissionError();
         }
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(CI) && ($me->getSopPdfUrl()== false)){
+        if($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "GARS"){
             redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+        }
+        elseif($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "CSGARS"){
+            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
         }
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if(!isset($wgRoleValues[$nsText])){

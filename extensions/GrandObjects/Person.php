@@ -63,7 +63,31 @@ class Person extends BackboneModel {
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
-    
+
+
+    /**
+     * Returns a new Person from the given email (null if not found)
+     * In the event of a collision, the first user is returned
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
+    static function newFromGSMSId($gsms_id){
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('user_id'),
+                                    array('rp_type' => 'RP_CS',
+                                          'rp_section' => 'CS_Questions_tab0',
+                                          'rp_item' => 'gsmsIDCS',
+                                          'data' => $gsms_id));
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return null;
+        }
+    }
+
+ 
     /**
      * Returns a new Person from the given id
      * @param int $id The id of the person

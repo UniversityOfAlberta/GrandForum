@@ -69,10 +69,9 @@ class UserGsmsBulkUploadAPI extends API{
     function readXLS($file){
         $dir = dirname(__FILE__);
         require_once($dir . '/../../Classes/PHPExcel/IOFactory.php');
-
         $objReader = PHPExcel_IOFactory::createReaderForFile($file);
         $class = get_class($objReader);
-        if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007" && $class != "PHPExcel_Reader_HTML"){
+        if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007" && $class != "PHPExcel_Reader_HTML" && $class != "PHPExcel_Reader_CSV"){
             return false;
         }
         $objReader->setReadDataOnly(true);
@@ -90,24 +89,27 @@ class UserGsmsBulkUploadAPI extends API{
         }   
         $xls = $_FILES['gsms_outcome'];
         if(isset($xls['type']) &&
-            ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream") || $xls['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+            ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream" || $xls['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+             || $xls['type'] == 'text/csv')&&
             $xls['size'] > 0 ){
             $error = "";
             $success = array();
             $errors = array();
             $xls_cells = $this->readXLS($xls['tmp_name']);
 	    if($xls_cells === false){
-		$errors[] = "Please upload a .xls file";
-		$error_count++;
+		$errors[] = "Please upload a .xls or .csv file";
 	    }
             $data = $this->extract_excel_data($xls_cells);
 	    foreach($data as $student){
-		$student_obj = Person::newFromNameLike($student['name']);	
+		$student_obj = Person::newFromGSMSId($student['gsms_id']);
+                if($student_obj == null){
+                    $errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
+                    continue;
+                }	
 		$student_id = $student_obj->getId();
 		$student_name = $student['name'];
 		  //check if student exists
 		if($student_id != 0){
-		   $error_count=0;
                    $update = false;
                   //check if update or new
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
@@ -158,13 +160,13 @@ class UserGsmsBulkUploadAPI extends API{
 		}
 		else{
 			$errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
+                        $error_count= $error_count+1;
 		}
 		
         }
 	}
 	else{
-                $errors[] = "Please upload a .xls file";
-                $error_count++;
+                $errors[] = "Please upload a .xls or .csv file";
 	}
         //$success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
 	if(count($errors) == 0){
@@ -174,7 +176,12 @@ class UserGsmsBulkUploadAPI extends API{
             $success = (count($success) > 0) ? (count($success)) . " students were updated." : "";
 
 	}
+        if(count($errors) < 5){
             $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
+        }
+        else{
+            $errors =(count($errors))." students could not be found.";
+        }
 
 	
 
