@@ -142,7 +142,9 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Award', $startRange, $endRange));
+                    if($visibility['isMe']){
+                        $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Award', $startRange, $endRange));
+                    }
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Publication', $startRange, $endRange));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Presentation', $startRange, $endRange));
                     if($visibility['isMe']){
@@ -153,10 +155,10 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonGrantsTab($person, $visibility, $startRange, $endRange));
                     //$tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI)){
+                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCoursesTab($person,$visibility, $startRange, $endRange));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI)  && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility, $startRange, $endRange));
                 }
                 if($person->isRole(HQP) || $person->wasLastRole(HQP)){
