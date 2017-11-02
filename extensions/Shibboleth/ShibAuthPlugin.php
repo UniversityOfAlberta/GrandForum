@@ -551,9 +551,8 @@ function ShibUserLoadFromSession($user, &$result)
 	$api = $config->getValue('facultyAPI');
 	if ($api != null) {
 		$json = json_decode(file_get_contents($api));
-		$email = $user->getEmail();
-	    foreach($json as $prof) {
-	    	if (($prof->department == "Computing Science") && ($prof->email == $email)) {
+	    foreach($json as $prof){
+	    	if (($prof->department == "Computing Science") && ($prof->email == $shib_email)) {
 	    		$role = EVALUATOR;
 	    		break;
 	    	}
