@@ -1008,7 +1008,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 else{
                     $_POST['wpName'] = $_POST['wpUsername'];
                 }
-                $_POST['wpName'] = sanitizeInput($_POST['wpName']);
+                $_POST['wpName'] = str_replace("_", " ", sanitizeInput($_POST['wpName']));
                 $_POST['wpUsername'] = $_POST['wpName'];
                 $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
                 $person = Person::newFromName($_POST['wpName']);
