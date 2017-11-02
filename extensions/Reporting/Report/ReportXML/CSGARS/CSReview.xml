@@ -20,15 +20,21 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="RadioReportItem" blobItem="Q3" blobType="BLOB_TEXT" orientation="horizontal" options="Accept|Reject">
+        <ReportItem id="q3" type="RadioReportItem" blobItem="Q3" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
             <![CDATA[
-                <h3>Decision</h3>
+                <h3>Rank</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q4" type="TextArea" blobItem="Q4" blobType="BLOB_TEXT">
             <![CDATA[
-                <h3>Justification for Recommendation</h3>
+                <h3>Justification for Ranking</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Supervise" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h3>Are you willing to supervise this student?</h3>
                 {$item}
             ]]>
         </ReportItem>
