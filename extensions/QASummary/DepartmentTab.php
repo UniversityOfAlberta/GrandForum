@@ -58,9 +58,14 @@ class DepartmentTab extends AbstractTab {
         }
         $courses = array();
         $merged = array();
-        foreach($this->depts as $dept){
-            $merged = array_merge($merged, Course::newFromSubjectCatalog($dept, ""));
+        foreach($people as $person){
+            foreach($person->getCoursesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
+                $merged[] = $course;
+            }
         }
+        /*foreach($this->depts as $dept){
+            $merged = array_merge($merged, Course::newFromSubjectCatalog($dept, ""));
+        }*/
         foreach($merged as $course){
             $courses["{$course->subject} {$course->catalog}"][] = $course;
         }
@@ -100,9 +105,7 @@ class DepartmentTab extends AbstractTab {
             $html .= "<tr><td>{$person->getReversedName()}</td>";
             $personCourses = array();
             foreach($person->getCoursesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
-                if(in_array($course->subject, $this->depts)){
-                    $personCourses["{$course->subject} {$course->catalog}"] = "{$course->subject} {$course->catalog}";
-                }
+                $personCourses["{$course->subject} {$course->catalog}"] = "{$course->subject} {$course->catalog}";
             }
             ksort($personCourses);
             $html .= "<td>".implode(", ", $personCourses)."</td></tr>";
