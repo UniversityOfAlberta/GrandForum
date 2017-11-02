@@ -34,9 +34,19 @@
         </ReportItem>
         
         <!-- Employment/Education History -->
-        <ReportItem id="employmentbookmark" type="BookmarkReportItem" title="Employment and Education History">
+        <ReportItem id="educationbookmark" type="BookmarkReportItem" title="Education History">
             <![CDATA[
-                <h2>Employment and Education History</h2>
+                <h2>Education History</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="education" type="PersonEducationReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employmentbookmark" type="BookmarkReportItem" title="Employment History">
+            <![CDATA[
+                <h2>Employment History</h2>
             ]]>
         </ReportItem>
         <ReportItem id="employment" type="PersonEmploymentReportItem">
