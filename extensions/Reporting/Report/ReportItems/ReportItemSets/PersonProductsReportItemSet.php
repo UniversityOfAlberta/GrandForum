@@ -5,7 +5,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $category = $this->getAttr("category", "all");
-        $productType = $this->getAttr("productType", "");
+        $productType = explode("|", $this->getAttr("productType", ""));
         $peerReviewed = $this->getAttr("peerReviewed", "");
         $status = $this->getAttr("status", "");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
@@ -25,7 +25,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         //$products = $person->getPapers($category, false, 'both', true, "Public");
         if(is_array($products)){
             foreach($products as $prod){
-                if(($productType == "" || $productType == $prod->getType()) &&
+                if((count($productType) == 0 || in_array($prod->getType(), $productType)) &&
                    ($peerReviewed == "" || ($prod->getData('peer_reviewed') == $peerReviewed)) &&
                    ($status == "" || ($prod->getStatus() == $status))){
                     $tuple = self::createTuple();

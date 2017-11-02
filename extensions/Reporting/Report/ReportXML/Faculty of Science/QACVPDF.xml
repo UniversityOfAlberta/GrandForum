@@ -146,10 +146,11 @@
                 <![CDATA[
                     <h2>Publications</h2>
                     <i>bold = graduate student; underline = undergraduate student</i>
+                    <h3>Journals</h3>
                     <ul>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
@@ -157,6 +158,43 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItem id="productsfooter" type="StaticReportItem">
+                <![CDATA[
+                    </ul>
+                ]]>
+            </ReportItem>
+            <ReportItem id="conferencebookmark" type="StaticReportItem">
+                <![CDATA[
+                    <h3>Conference Papers</h3>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="conferences" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="conferencefooter" type="StaticReportItem">
+                <![CDATA[
+                    </ul><br />
+                ]]>
+            </ReportItem>
+            
+            <ReportItem id="otherbookmark" type="StaticReportItem">
+                <![CDATA[
+                    <h3>Other</h3>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="others" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="otherfooter" type="StaticReportItem">
                 <![CDATA[
                     </ul><br />
                 ]]>
