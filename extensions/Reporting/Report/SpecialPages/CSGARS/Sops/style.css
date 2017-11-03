@@ -341,9 +341,22 @@ table.wikitable tr.deleted {
     z-index: 1;
 }
 
-/*
-.ellipsis:hover span.tooltiptext {
-    background: red;
-    visibility: visible;
-}*/
+#filter-pane {
+  width: 310px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  background: #FCFCFC;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: block;
+  position: fixed;
+  left: 0px;
+  z-index:1000;
+}
+
+#clearFiltersButton {
+  width: 50%;
+  margin: 0 auto;
+}
 

@@ -8,6 +8,7 @@ SopsView = Backbone.View.extend({
     expanded2: false,
     initialize: function(){
         this.template = _.template($('#sops_template').html());
+        $(this).data('name', 'show');
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;
             this.render();
@@ -60,6 +61,7 @@ SopsView = Backbone.View.extend({
         "click #filterMeOnly": "reloadTable",
         "click #selectTagBox" : "showCheckboxes",
         "click #showfilter" : "showFilter",
+        "click #hidefilter" : "showFilter",
     },
 
     reloadTable: function(){
@@ -68,14 +70,17 @@ SopsView = Backbone.View.extend({
 
     showFilter: function(){
         if ($(this).data('name') == 'show') {
-            $("#filters").animate().hide();
+            $('#filter-pane').stop().animate({left: -5 }, 300, 'swing');
+            //$("#filters").animate().hide();
             $(this).data('name', 'hide');
-            $(this).val('Show Filter Options');
+            $('#showfilter').attr('value', 'Hide Filter Options');
         } else {
-            $("#filters").animate().show();
+            $('#filter-pane').stop().animate({left: -350 }, 300, 'swing');
+            //$("#filters").animate().show();
             $(this).data('name', 'show')
-            $(this).val('Hide Filter Options');
+            $('#showfilter').attr('value', 'Show Filter Options');
         }
+        
     },
 
     showCheckboxes: function(){
@@ -177,6 +182,21 @@ SopsView = Backbone.View.extend({
         return true;
    },
 
+   filterNumPubs: function(settings,data,dataIndex){
+        var min = parseFloat($('#numPubsInputMin').val(),0);
+        var max = parseFloat($('#numPubsInputMax').val(),0);
+        var pubs = parseFloat( data[14] ) || 0; // use column 14
+        //check if num pubs inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && pubs <= max ) ||
+             ( min <= pubs   && isNaN( max ) ) ||
+             ( min <= pubs   && pubs <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
@@ -203,6 +223,7 @@ SopsView = Backbone.View.extend({
             this.filterByTags,
             this.filterCitizenship,
             this.filterDepartmentName,
+            this.filterNumPubs,
         );
         return this.$el;
     }
