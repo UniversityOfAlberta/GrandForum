@@ -96,7 +96,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician", "Pharmacist", "Nurse Practitioner", "Facility Staff", "Other"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician", "Pharmacist", "Nurse Practitioner", "Midwife", "Facility Staff", "Other"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
@@ -262,7 +262,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $roleRow->append($roleLabel)->append($roleField);
 
             $otherRoleLabel = new Label("other_role_label", "Spécifiez Rôle", "Le rôle de l'utilisateur", VALIDATE_NOTHING);
-            $otherRoleField = new SelectBox("other_role_field", "other_Role", "", array("Administrateur", "Conseiller", "Infirmière", "Commis de bureau"), VALIDATE_NOTHING);
+            $otherRoleField = new SelectBox("other_role_field", "other_Role", "", array("Administrateur", "Conseiller", "Infirmière", "Sage-Femme", "Commis de bureau"), VALIDATE_NOTHING);
             $otherRoleRow = new FormTableRow("other_role_row");
             $otherRoleRow->attr("style","display:none");
             $otherRoleRow->append($otherRoleLabel)->append($otherRoleField);
