@@ -1,6 +1,6 @@
 <?php
 
-class PersonEmploymentTab extends AbstractTab {
+class PersonEmploymentTab extends AbstractEditableTab {
 
     var $person;
     var $visibility;
@@ -14,6 +14,17 @@ class PersonEmploymentTab extends AbstractTab {
         $this->person = $person;
         $this->visibility = $visibility;
         $this->tooltip = "Contains a table with a list of this Person's eduction/employment history.";
+    }
+    
+    function handleEdit(){
+        
+    }
+    
+    function canEdit(){
+        $me = Person::newFromWgUser();
+        return (($this->visibility['isMe'] || 
+                 $this->visibility['isSupervisor']) &&
+                $me->isAllowedToEdit($this->person));
     }
 
     function generateBody(){
@@ -53,6 +64,39 @@ class PersonEmploymentTab extends AbstractTab {
             $this->html .= "<h3>{$key}</h3>".implode("<br style='line-height:0.5em;' />", $item);
         }
         
+    }
+    
+    function generateEditBody(){
+        global $wgServer, $wgScriptPath, $wgOut;
+        // Load the scripts for Manage People so that the University editing can be used
+        $managePeople = new ManagePeople();
+        $managePeople->loadTemplates();
+        $managePeople->loadModels();
+        $managePeople->loadHelpers();
+        $managePeople->loadViews();
+        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
+        $this->html .= "<div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add Institution' />
+        <script type='text/javascript'>
+            var model = new Person({id: {$this->person->getId()}});
+            var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
+            $('#addUniversity').click(function(){
+                view.addUniversity();
+            });
+            $('form').on('submit', function(e){
+                if($('input[value=\"Save {$this->name}\"]').is(':visible')){
+                    var requests = view.saveAll();
+                    e.preventDefault();
+                    $('input[value=\"Save {$this->name}\"]').prop('disabled', true);
+                    $.when.apply($, requests).then(function(){
+                        $('form').off('submit');
+                        $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
+                        _.delay(function(){
+                            $('input[value=\"Save {$this->name}\"]').click();
+                        }, 25);
+                    });
+                }
+            });
+        </script>";
     }
 
 }    
