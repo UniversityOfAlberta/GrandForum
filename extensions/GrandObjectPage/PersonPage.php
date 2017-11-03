@@ -141,6 +141,9 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
+                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                    $tabbedPage->addTab(new PersonEmploymentTab($person, $visibility));
+                }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
                     if($visibility['isMe']){
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Award', $startRange, $endRange));
