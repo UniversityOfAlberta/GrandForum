@@ -809,6 +809,14 @@ if ( isset($pdf) ) {
             $data = json_decode($blob->getData());
             if($data != null){
                 file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
+                exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+                      -q \\
+                      -dNOPAUSE \\
+                      -dBATCH \\
+                      -sDEVICE=pdfwrite \\
+                      -sOutputFile=\"/tmp/{$pdf}\" \\
+                      -c .setpdfwrite \\
+                      -f \"/tmp/{$pdf}\"");
                 $attached[] = "\"/tmp/{$pdf}\"";
             }
         }
@@ -843,16 +851,8 @@ if ( isset($pdf) ) {
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
         //exec("/usr/local/bin/pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
         exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
-        
-        $gs = 'gs';
-        $uname = strtolower(php_uname());
-		if (strpos($uname, "darwin") !== false) {
-		    // It's OSX
-			//echo exec("which pdftk");
-			//echo "hello there";
-		    $gs = 'gs_mac';
-		}
-        exec("$IP/extensions/Reporting/PDFGenerator/{$gs} \\
+
+        exec("$IP/extensions/Reporting/PDFGenerator/gs \\
                 -q \\
                 -dBATCH \\
                 -dNOPAUSE \\
