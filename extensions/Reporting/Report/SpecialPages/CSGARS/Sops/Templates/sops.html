@@ -1,8 +1,8 @@
 <input type="button" id="showfilter" value="Show Filter Options" style="background: #079651;" />
 <input type="checkbox" id="filterMeOnly"/>Show mine only
-<br />
+
 <div id="filters" style="left: 300px; margin-top:10px; display:block;">
-    <div id="filter-pane" style="left: -350px;">
+    <div id="filter-pane" style="left: -365px;">
       <div id="filter-header" style="width: 100%; height:45px; border-bottom: 1px solid #079651; text-align:center;">
         <h1 style="margin:7px auto auto 24px; position: absolute; left: 0;">Filters</h1>
         <button style="margin:10px auto auto auto;" id="clearFiltersButton">Clear Filters</button>
@@ -68,7 +68,7 @@
                 <select><option>Select Tags</option></select>
                 <div class="overSelect"></div>
               </div>
-              <div id="checkboxes">
+              <div id="checkboxes" style="max-height: 200px; overflow-y: auto;">
                 <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
                 <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalqualities"  unchecked/>Negative personal qualities</label>
                 <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
@@ -91,9 +91,35 @@
           </td>
         </tr>
         <tr>
+          <td align="right"><b>Scholarships Held:</b></td>
+          <td>
+              <div id="heldScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldNSERC"  unchecked/>NSERC</label>
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldAITF"  unchecked/>AITF</label>
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldVanier"  unchecked/>Vanier</label>
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><b>Scholarships Applied For:</b></td>
+          <td>
+              <div id="appliedScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedNSERC"  unchecked/>NSERC</label>
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedAITF"  unchecked/>AITF</label>
+                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedVanier"  unchecked/>Vanier</label>
+              </div>
+          </td>
+        </tr>
+        <tr>
           <td align="right"><b>Publications:</b></td>
           <td>
-            <input type="text" class="filter_option" id="numPubsInputMin" placeholder="0" style="width: 20px"> to <input type="text" class="filter_option" id="numPubsInputMax" placeholder="1" style="width: 20px">
+            <input type="text" class="filter_option" id="numPubsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numPubsInputMax" style="width: 20px">
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><b>Awards:</b></td>
+          <td>
+            <input type="text" class="filter_option" id="numAwardsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numAwardsInputMax" style="width: 20px">
           </td>
         </tr>
       </table>

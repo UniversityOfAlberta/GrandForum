@@ -13,6 +13,10 @@ SopsView = Backbone.View.extend({
             this.sops = this.model;
             this.render();
         }, this);
+        setInterval(function () {
+            var pad = $('#bodyContent').css('padding-left');
+            $('#filter-pane').css('margin-left', parseInt(pad)-16);
+        }, 16);
     },
 
     renderRoles: function(){
@@ -75,7 +79,7 @@ SopsView = Backbone.View.extend({
             $(this).data('name', 'hide');
             $('#showfilter').attr('value', 'Hide Filter Options');
         } else {
-            $('#filter-pane').stop().animate({left: -350 }, 300, 'swing');
+            $('#filter-pane').stop().animate({left: -365 }, 300, 'swing');
             //$("#filters").animate().show();
             $(this).data('name', 'show')
             $('#showfilter').attr('value', 'Show Filter Options');
@@ -197,6 +201,61 @@ SopsView = Backbone.View.extend({
         return false;
     },
 
+    filterNumAwards: function(settings,data,dataIndex){
+        var min = parseFloat($('#numAwardsInputMin').val(),0);
+        var max = parseFloat($('#numAwardsInputMax').val(),0);
+        var awards = parseFloat( data[15] ) || 0; // use column 15
+        //check if num awards inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && awards <= max ) ||
+             ( min <= awards   && isNaN( max ) ) ||
+             ( min <= awards   && awards <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
+    filterScholHeld: function(settings,data,dataIndex){
+        var values = data[11].split('/')[0].split(",");
+
+        var options = {};
+        options["NSERC"] = $('#heldNSERC')[0].checked;
+        options["AITF"] = $('#heldAITF')[0].checked;
+        options["Vanier"] = $('#heldVanier')[0].checked;
+
+        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
+            return false;
+        }
+        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
+            return false;
+        }
+        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+            return false;
+        }
+        return true;
+    }, 
+
+    filterScholApplied: function(settings,data,dataIndex){
+        var values = data[11].split('/')[1].split(",");
+
+        var options = {};
+        options["NSERC"] = $('#appliedNSERC')[0].checked;
+        options["AITF"] = $('#appliedAITF')[0].checked;
+        options["Vanier"] = $('#appliedVanier')[0].checked;
+
+        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
+            return false;
+        }
+        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
+            return false;
+        }
+        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+            return false;
+        }
+        return true;
+    }, 
+
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
@@ -224,6 +283,9 @@ SopsView = Backbone.View.extend({
             this.filterCitizenship,
             this.filterDepartmentName,
             this.filterNumPubs,
+            this.filterNumAwards,
+            this.filterScholHeld,
+            this.filterScholApplied,
         );
         return this.$el;
     }
