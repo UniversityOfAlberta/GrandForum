@@ -14,7 +14,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="TextArea" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
+        <ReportItem id="q2" type="Textarea" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
             <![CDATA[
                 <h3>Explain</h3>
                 {$item}
@@ -26,7 +26,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextArea" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
+        <ReportItem id="q4" type="Textarea" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
             <![CDATA[
                 <h3>Justification for Ranking</h3>
                 {$item}

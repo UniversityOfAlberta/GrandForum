@@ -217,7 +217,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterScholHeld: function(settings,data,dataIndex){
-        var values = data[11].split('/')[0].split(",");
+        var values = data[11].split('/')[0].split(", ");
 
         var options = {};
         options["NSERC"] = $('#heldNSERC')[0].checked;
@@ -237,7 +237,7 @@ SopsView = Backbone.View.extend({
     }, 
 
     filterScholApplied: function(settings,data,dataIndex){
-        var values = data[11].split('/')[1].split(",");
+        var values = data[11].split('/')[1].split(", ");
 
         var options = {};
         options["NSERC"] = $('#appliedNSERC')[0].checked;
