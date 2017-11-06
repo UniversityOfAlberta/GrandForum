@@ -445,6 +445,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf">
+            <![CDATA[
+                <h2>Letters of Support</h2>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="11 - Other Funding" title="Section 11 - Other Funding">
         <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" sizes="120|150|100|200|75|75" multiple="true">
