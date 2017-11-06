@@ -256,6 +256,20 @@ SopsView = Backbone.View.extend({
         return true;
     }, 
 
+    filterBirthday: function(settings,data,dataIndex){
+        var birthday = new Date(data[3]);
+        var span = $('#filterDoBSpan').find(":selected").text();
+        var filterdate = $('#filterDoB').datepicker('getDate');
+
+        var operation = {
+            '--':     function(a, b) { return true; },
+            'before': function(a, b) { return a < b; },
+            'after':  function(a, b) { return a > b; }
+        };
+
+        return operation[span](birthday, filterdate);
+    },
+
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
@@ -286,7 +300,16 @@ SopsView = Backbone.View.extend({
             this.filterNumAwards,
             this.filterScholHeld,
             this.filterScholApplied,
+            this.filterBirthday,
         );
+        this.$("#filterDoB").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:-18",
+            defaultDate: "-18y"
+        });
+            
         return this.$el;
     }
 });
