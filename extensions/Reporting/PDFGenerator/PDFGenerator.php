@@ -809,14 +809,14 @@ if ( isset($pdf) ) {
             $data = json_decode($blob->getData());
             if($data != null){
                 file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
-                exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+                /*exec("$IP/extensions/Reporting/PDFGenerator/gs \\
                       -q \\
                       -dNOPAUSE \\
                       -dBATCH \\
                       -sDEVICE=pdfwrite \\
                       -sOutputFile=\"/tmp/{$pdf}\" \\
                       -c .setpdfwrite \\
-                      -f \"/tmp/{$pdf}\"");
+                      -f \"/tmp/{$pdf}\"");*/
                 $attached[] = "\"/tmp/{$pdf}\"";
             }
         }
