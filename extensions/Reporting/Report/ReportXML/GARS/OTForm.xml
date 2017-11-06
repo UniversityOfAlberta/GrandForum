@@ -22,10 +22,10 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="gsms_ids" tooltip="GSMS ID" name="GSMS ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+    <ReportSection id="gsms_ids" tooltip="GSMS ID/Admissions Number" name="GSMS ID" title="GSMS ID/Admissions Number" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100" >
             <![CDATA[
-                <h3>GSMS ID<span title="A system-generated ID in GSMS from when an applicant creates an application" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>GSMS ID/Admissions Number<span title="Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application in order to proceed. If you are already a UoA student, please enter your Student ID here." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>

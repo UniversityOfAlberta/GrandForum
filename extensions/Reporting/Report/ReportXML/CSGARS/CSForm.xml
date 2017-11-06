@@ -189,6 +189,7 @@
             <![CDATA[
                     <h1 style="margin-top: 16px">GRE</h1>
                     <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
+                    <p><b>Please upload your GRE score report here.</b></p>
                     <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
 

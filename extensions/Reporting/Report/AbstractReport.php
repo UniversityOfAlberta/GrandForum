@@ -916,15 +916,24 @@ abstract class AbstractReport extends SpecialPage {
             //When they submit, an SoP is added to the table
 	    $sop =  SOP::newFromUserId($me->getId());
 	    if(!is_array($sop)){
+
+            $gsms_id = "";
+            if($config->getValue('networkName') == 'GARS') {
+                $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_OT', 'CS_Questions_tab0', 'gsmsID_OT');
+            } else if ($config->getValue('networkName') == 'CSGARS') {
+                $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_CS', 'CS_Questions_tab0', 'gsmsIDCS');
+            }
+
 	    	$sop = new SOP(array());
 	    	$sop->user_id = $me->getId();
 	    	$sop->create();
 	        $sop = SOP::newFromUserId($me->getId());
-                $gsms_data = new GsmsData(array());
-                $gsms_data->user_id = $me->getId();
-                $gsms_data->status = "Application Completed";
-                $gsms_data->visible = "true";
-                $gsms_data->create();
+            $gsms_data = new GsmsData(array());
+            $gsms_data->user_id = $me->getId();
+            $gsms_data->status = "Application Completed";
+            $gsms_data->visible = "true";
+            $gsms_data->gsms_id = $gsms_id;
+            $gsms_data->create();
 	    }
 	    //$sop->updateStatistics(); //This SHOULD call TASHA
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
@@ -947,6 +956,16 @@ abstract class AbstractReport extends SpecialPage {
         ob_flush();
         flush();
         exit;
+    }
+
+    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem){
+        $projectId = 0;
+        $blb = new ReportBlob($blobType, $year, $this->person->getId(), $projectId);
+        $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+
+        return $data;
     }
     
     // Marks the report as submitted
