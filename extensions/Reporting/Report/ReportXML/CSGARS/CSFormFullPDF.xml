@@ -177,7 +177,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobSection="CS_QUESTIONS_tab4" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%" class="wikitable">
+        <ReportItem id="qAwards" type="MultiTextReportItem" labels="Award Title|Date|Adjudicating Organizations|Award Amount ($)" types="Text|Date|Text|Integer" start="1" multiple="true" blobSection="CS_QUESTIONS_tab4" blobType="BLOB_ARRAY" blobItem="qAwards" limit="150" width="98%" class="wikitable">
             <![CDATA[
                 <h3>Awards</h3>
                 {$item}
