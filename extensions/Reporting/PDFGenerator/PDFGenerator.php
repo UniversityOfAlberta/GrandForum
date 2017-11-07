@@ -809,15 +809,15 @@ if ( isset($pdf) ) {
             $data = json_decode($blob->getData());
             if($data != null){
                 file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
-                /*exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+                exec("$IP/extensions/Reporting/PDFGenerator/gs \\
                       -q \\
                       -dNOPAUSE \\
                       -dBATCH \\
                       -sDEVICE=pdfwrite \\
-                      -sOutputFile=\"/tmp/{$pdf}\" \\
+                      -sOutputFile=\"/tmp/{$pdf}unencrypted\" \\
                       -c .setpdfwrite \\
-                      -f \"/tmp/{$pdf}\"");*/
-                $attached[] = "\"/tmp/{$pdf}\"";
+                      -f \"/tmp/{$pdf}\"");
+                $attached[] = "\"/tmp/{$pdf}unencrypted\"";
             }
         }
         $attached = implode(" ", $attached);
@@ -869,6 +869,7 @@ if ( isset($pdf) ) {
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             if(file_exists("/tmp/{$pdf}")){
                 unlink("/tmp/{$pdf}");
+                unlink("/tmp/{$pdf}unencrypted");
             }
         }
         $GLOBALS['chapters'] = array();
