@@ -159,6 +159,27 @@
                     {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="qCountry" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry">
+            <![CDATA[
+                    <h1>Citizenship</h1>
+                    <table width='100%'>
+                        <tr width='100%'>
+                            <td style='width:50%;'>
+                                <h3>Country of Citizenship</h3>
+                                {$item}
+                            </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qImmigrationStatus" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">
+            <![CDATA[
+                            <td style='width:50%;'>
+                                <h3>Immigration Status</h3>
+                                {$item}
+                            </td>
+                        </tr>
+                    </table>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <!-- End page1 -->
 

@@ -25,7 +25,8 @@
     <ReportSection id="gsms_id" tooltip="Applicant ID" name="Applicant ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
         <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
-                <h3>Applicant ID<span title="Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application in order to proceed. If you are already a UoA student, please enter your Student ID here." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>Applicant ID</h3>
+                <p>Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application in order to proceed. If you are already a UoA student, please enter your Student ID here.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -72,9 +73,9 @@
             ]]>
         </ReportItem>
     
-        <ReportItem id="q14" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" max="3" width="300px">
+        <ReportItem id="q14" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
@@ -96,7 +97,7 @@
 
         <ReportItem id="q17" type="Radio" blobType="BLOB_TEXT" blobItem="Q17" limit="900" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <h3>*Need for Financial Support<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Need Financial Support (RA/TA)?<span title="Do you require financial support for graduate studies?" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
                 </div>
             ]]>
@@ -121,7 +122,7 @@
 
                     <div>
                         <div style="display: inline-block; vertical-align: top;">
-                            <h3>*GPA<span title="Enter your GPA based on your most recent two years of full time study." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            <h3>*Your GPA<span title="Enter your GPA based on your most recent two years of full time study." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                             {$item}
                         </div>
                 
@@ -130,7 +131,7 @@
         <ReportItem id="q20" type="Integer" decimals="2" blobType="BLOB_TEXT" blobItem="Q20" width="40px" orientation="horizontal">
             <![CDATA[
                         <div style="display: inline-block; vertical-align: top; margin-left: 16px">
-                            <h3>*GPA Scale<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            <h3>*Max GPA Possible<span title="Your GPA is based on a scale out of" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                             {$item}
                         </div>
                     </div>
@@ -140,7 +141,7 @@
         <ReportItem id="q21" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="Q21" width="40px" optional="true">
             <![CDATA[
                     <div style="display: inline-block; vertical-align: top;">
-                        <h3>Normalized GPA<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        <h3>Normalized GPA on 4-Point Scale<span title="Calculated field. Normalized GPA on the 4 point scale." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                         {$item}
                         <script type="text/javascript">
                             var calculateNormalizedGPA = function() {
@@ -178,7 +179,7 @@
         </ReportItem>
         <ReportItem id="q22" type="Text" blobType="BLOB_TEXT" blobItem="Q22" limit="100" width="200px">
             <![CDATA[
-                    <div style="display: inline-block; vertical-align: top; margin-left: 16px">
+                    <div style="display: inline-block; vertical-align: top;">
                         <h3>*Institution<span title="The GPA stated above based on your most recent two years of full time study was achieved at this institution" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                         {$item}
                     </div>
@@ -236,16 +237,30 @@
             <![CDATA[
                     <h3>Upload GRE Transcript (PDF)</h3>
                     {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry">
+            <![CDATA[
+                    <h1>Citizenship</h1>
+                    <h3>Country of Citizenship</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="qImmigrationStatus" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">
+            <![CDATA[
+                    <h3>Immigration Status<span title="INT = International<br/>CDN = Canadian Citizen<br/>PR = Permanent Resident of Canada" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    {$item}
                 </div> <!-- end flex item2 -->
             </div> <!-- end flex container -->
             ]]>
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose (for PhD applicants only)" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>A PhD applicant must submit a statement of purpose. Outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application.</h3>
+                <h3>Statement of Purpose (PhD Applicant Only)</h3>
+                <p>This statement should outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -254,12 +269,12 @@
     <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
-                <h3>Please describe any research projects you have been involved with and list any publications you may have co-authored.</h3>
+                <h3>Describe any prior research experience relevant to your intended area of research at the University of Alberta.   This information will help us identify your potential supervisors.</h3>
                 {$item}
             ]]>
         </ReportItem>
 
-        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="1000" heights="67" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
+        <ReportItem id="qResExp2" type="MultiTextReportItem" labels="Publications" types="TextArea" sizes="900" heights="67" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qPublications" limit="150">
             <![CDATA[
                 <h3>Publications</h3>
                 {$item}
@@ -288,22 +303,29 @@
 
         <ReportItem id="qEducation2" type="MultiTextReportItem" types="Text|Select({getString(CS_Interests)})|Integer|Integer" labels="Course|Category|Grade|Max Grade" start="1" sizes="350||75|75" multiple="true" blobType="BLOB_ARRAY" blobItem="qCourses" limit="150" width="98%">
             <![CDATA[
-                <h3>Courses Taken</h3>
-                <p>Please list the computing-science courses that you have taken during your most recent degree. For each course, please provide your grade; if it was pass/fail, leave the grade boxes empty).</p>
+                <h3>Courses Taken (to be completed by applicants without a CS undergraduate degree only)</h3>
+                <p>Applicants to CS graduate program without an undergraduate degree in CS must demonstrate knowledge equivalent to having successfully completed 6 undergraduate CS courses in the following four areas:</p>
+                <ul>
+                  <li>Theory</li>
+                  <li>Computer Systems and Architecture</li>
+                  <li>Software</li>
+                  <li>Applications</li>
+                </ul>
+                <p>Describe how you meet this CS background requirement with a list of courses on your transcript or equivalent training/experience.</p>
                 {$item}
             ]]>
         </ReportItem>
 
         <ReportItem id="qEducation3" type="Text" blobType="BLOB_TEXT" blobItem="qThesisTitle" limit="150" width="98%">
             <![CDATA[
-                <h3>Masters Thesis Title</h3>
+                <h3>Masters Thesis Title (PhD Applicant Only)</h3>
                 <p>If you have completed a MSc thesis, please list its title and its abstract.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="qEducation4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qThesisAbstract" limit="1000">
             <![CDATA[
-                <h3>Thesis Abstract</h3>
+                <h3>Thesis Abstract (PhD Applicant Only)</h3>
                 {$item}
             ]]>
         </ReportItem>
