@@ -352,6 +352,7 @@ table.wikitable tr.deleted {
   display: block;
   position: fixed;
   left: 0px;
+  top: 125px;
   z-index:1000;
 }
 

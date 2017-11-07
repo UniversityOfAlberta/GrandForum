@@ -75,11 +75,13 @@ SopsView = Backbone.View.extend({
     showFilter: function(){
         if ($(this).data('name') == 'show') {
             $('#filter-pane').stop().animate({left: -5 }, 300, 'swing');
+            $('#bodyContent').stop().animate({left: 330 }, 300, 'swing');
             //$("#filters").animate().hide();
             $(this).data('name', 'hide');
             $('#showfilter').attr('value', 'Hide Filter Options');
         } else {
             $('#filter-pane').stop().animate({left: -365 }, 300, 'swing');
+            $('#bodyContent').stop().animate({left: 0 }, 300, 'swing');
             //$("#filters").animate().show();
             $(this).data('name', 'show')
             $('#showfilter').attr('value', 'Show Filter Options');
