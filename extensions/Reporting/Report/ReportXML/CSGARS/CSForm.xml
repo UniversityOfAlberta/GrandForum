@@ -26,7 +26,7 @@
         <ReportItem id="gsmsIDCS" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
                 <h3>Applicant ID</h3>
-                <p>Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application in order to proceed. If you are already a UoA student, please enter your Student ID here.</p>
+                <p>Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application. This number is available once you have submitted your application to FGSR.</p>
                 {$item}
             ]]>
         </ReportItem>
