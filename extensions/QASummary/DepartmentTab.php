@@ -114,7 +114,7 @@ class DepartmentTab extends AbstractTab {
         
         $awards = array();
         foreach($people as $person){
-            foreach($person->getPapersAuthored("Award", ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $award){
+            foreach($person->getPapersAuthored("Award", "1900-01-01", ($year+1)."-12-31") as $award){
                 if($award->getData('scope') != ''){
                     $awards[$award->getData('scope')][] = $award;
                 }
@@ -142,20 +142,33 @@ class DepartmentTab extends AbstractTab {
                   </script>";
         $html .= "<h2>Awards Summary Table</h2>";
         foreach($awards as $scope => $as){
+            usort($as, function($a, $b){
+                return $b->getAcceptanceYear() - $a->getAcceptanceYear();
+            });
             $html .= "<h3>{$scope}</h3>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <tr>
                         <th width='35%'>Title</th>
                         <th width='35%'>Awarded By</th>
                         <th width='20%'>Recipient Last Names</th>
-                        <th width='10%'>Year</th>
+                        <th width='10%'>Years</th>
                     </tr>";
             foreach($as as $award){
                 $authors = array();
                 foreach($award->getAuthors() as $author){
                     $authors[] = $author->getLastName();
                 }
-                $html .= "<tr><td>{$award->getTitle()}</td><td>{$award->getData('awarded_by')}</td><td>".implode(", ", $authors)."</td><td>{$award->getYear()}</td></tr>";
+                $years = "";
+                if($award->getAcceptanceYear() != $award->getYear()){
+                    $years = "{$award->getAcceptanceYear()} - {$award->getYear()}";
+                }
+                else if($award->getAcceptanceYear() != ""){
+                    $years = "{$award->getAcceptanceYear()}";
+                }
+                else if($award->getYear() != ""){
+                    $years = "{$award->getYear()}";
+                }
+                $html .= "<tr><td>{$award->getTitle()}</td><td>{$award->getData('awarded_by')}</td><td>".implode(", ", $authors)."</td><td>{$years}</td></tr>";
             }
             $html .= "</table>";
         }
