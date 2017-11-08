@@ -265,8 +265,8 @@ SopsView = Backbone.View.extend({
 
         var operation = {
             '--':     function(a, b) { return true; },
-            'before': function(a, b) { return a < b; },
-            'after':  function(a, b) { return a > b; }
+            'before': function(a, b) { if(filterdate){return a < b;} else {return true;} },
+            'after':  function(a, b) { if(filterdate){return a > b;} else {return true;} }
         };
 
         return operation[operator](birthday, filterdate);

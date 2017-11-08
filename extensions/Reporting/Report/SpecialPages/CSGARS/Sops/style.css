@@ -365,6 +365,7 @@ table.wikitable tr.deleted {
   height: -webkit-calc(100% - 45px);
   height: -o-calc(100% - 45px);
   height: calc(100% - 45px);
+  margin-top: 8px;
 }
 
 #clearFiltersButton {
