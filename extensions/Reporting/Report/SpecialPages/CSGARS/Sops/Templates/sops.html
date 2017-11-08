@@ -8,134 +8,169 @@
         <button style="margin:10px auto auto auto;" id="clearFiltersButton">Clear Filters</button>
         <button style="right:14px; top: 12px; position:absolute; width: 20px; padding: 2px;" id="hidefilter">&#x2715;</button>
       </div>
-      <table>
-        <tr>
-          <td align="right"><b>GPA:</b></td>
-          <td>
-            <input type="text" class="filter_option" id="referenceNameInputMin" placeholder="Search here..." style="width: 20px"> to <input type="text" class="filter_option" id="referenceNameInputMax" placeholder="Search here..." style="width: 20px">
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Country of Citizenship:</b></td>
-          <td> <input type="text" class="filter_option" id="countryOfCitizenshipInput" placeholder="Search here..." style="width: 205px"></td>
-        </tr>
-        <tr>
-          <td align="right"><b>Date of Birth:</b></td>
-          <td>
-            <select id="filterDoBSpan" class="filter_option" style="width: 88px">
-              <option value="" selected="selected">--</option>
-              <option value="before" >before</option>
-              <option value="after">after</option>
-            </select>
-            <input type="text" id="filterDoB" class="filter_option" style="width:110px;" />
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Department:</b></td>
-          <td> <input type="text" class="filter_option" id="DepartmentInput" placeholder="Search here..." style="width: 205px"></td>
-        </tr>
-        <tr>
-          <td align="right"><text><b>Status:</b></text></td>
-          <td>
-            <select id="statusType"  class="filter_option" style="width: 225px">
-              <option value="" selected="selected">--</option>
-              <option value="Application Completed">Application Completed</option>
-              <option value="GSMS Completed">GSMS Completed</option>
-              <option value="Review Completed">Review Completed</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><text><b>Admit:</b></text></td>
-          <td>
-            <select id="admitType" class="filter_option" style="width: 225px">
-              <option value="" selected="selected">--</option>
-              <option value="admit">Admit</option>
-              <option value="reject">Reject</option>
-              <option value="undecided">Undecided</option>
-              <option value="special consideration">Special Consideration</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><text><b>Final Decision:</b></text></td>
-          <td>
-            <select id="finalAdmitType" class="filter_option" style="width: 225px">
-              <option value="" selected="selected">--</option>
-              <option value="admit">Admit</option>
-              <option value="reject">Reject</option>
-              <option value="waitlist">Waitlist</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          </br>
-          <td align="right"><b>Filter by Tags:</b></td>
-          <td>
-          <input type="checkbox" id="filterByTags" class="filter_option check_tags"/>
-          
-            <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: middle">
-              <div id="selectTagBox" class="selectBox" style="width: 206px">
-                <select><option>Select Tags</option></select>
-                <div class="overSelect"></div>
+      <div id="filter-container">
+        <table>
+          <tr>
+            <td align="right"><b>GPA:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="referenceNameInputMin" placeholder="Search here..." style="width: 20px"> to <input type="text" class="filter_option" id="referenceNameInputMax" placeholder="Search here..." style="width: 20px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Date of Birth:</b></td>
+            <td>
+              <select id="filterDoBSpan" class="filter_option" style="width: 88px">
+                <option value="" selected="selected">--</option>
+                <option value="before" >before</option>
+                <option value="after">after</option>
+              </select>
+              <input type="text" id="filterDoB" class="filter_option" style="width:110px;" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Country of Citizenship:</b></td>
+            <td> <input type="text" class="filter_option" id="countryOfCitizenshipInput" placeholder="Search here..." style="width: 205px"></td>
+          </tr>
+          <tr>
+            <td align="right"><b>Department:</b></td>
+            <td> <input type="text" class="filter_option" id="DepartmentInput" placeholder="Search here..." style="width: 205px"></td>
+          </tr>
+          <tr>
+            <td align="right"><text><b>Status:</b></text></td>
+            <td>
+              <select id="statusType"  class="filter_option" style="width: 225px">
+                <option value="" selected="selected">--</option>
+                <option value="Application Completed">Application Completed</option>
+                <option value="GSMS Completed">GSMS Completed</option>
+                <option value="Review Completed">Review Completed</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><text><b>Admit:</b></text></td>
+            <td>
+              <select id="admitType" class="filter_option" style="width: 225px">
+                <option value="" selected="selected">--</option>
+                <option value="admit">Admit</option>
+                <option value="reject">Reject</option>
+                <option value="undecided">Undecided</option>
+                <option value="special consideration">Special Consideration</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><text><b>Final Decision:</b></text></td>
+            <td>
+              <select id="finalAdmitType" class="filter_option" style="width: 225px">
+                <option value="" selected="selected">--</option>
+                <option value="admit">Admit</option>
+                <option value="reject">Reject</option>
+                <option value="waitlist">Waitlist</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            </br>
+            <td align="right"><b>Filter by Tags:</b></td>
+            <td>
+            <input type="checkbox" id="filterByTags" class="filter_option check_tags"/>
+            
+              <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: middle">
+                <div id="selectTagBox" class="selectBox" style="width: 206px">
+                  <select><option>Select Tags</option></select>
+                  <div class="overSelect"></div>
+                </div>
+                <div id="checkboxes" style="max-height: 200px; overflow-y: auto;">
+                  <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalqualities"  unchecked/>Negative personal qualities</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience" style="width: 10px;" unchecked/>Understanding of OT incorporated into personal experience</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
+                  <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
+                </div>
               </div>
-              <div id="checkboxes" style="max-height: 200px; overflow-y: auto;">
-                <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalqualities"  unchecked/>Negative personal qualities</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience" style="width: 10px;" unchecked/>Understanding of OT incorporated into personal experience</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
-                <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Scholarships Held:</b></td>
-          <td>
-              <div id="heldScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldNSERC"  unchecked/>NSERC</label>
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldAITF"  unchecked/>AITF</label>
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldVanier"  unchecked/>Vanier</label>
-              </div>
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Scholarships Applied For:</b></td>
-          <td>
-              <div id="appliedScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedNSERC"  unchecked/>NSERC</label>
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedAITF"  unchecked/>AITF</label>
-                <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedVanier"  unchecked/>Vanier</label>
-              </div>
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Publications:</b></td>
-          <td>
-            <input type="text" class="filter_option" id="numPubsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numPubsInputMax" style="width: 20px">
-          </td>
-        </tr>
-        <tr>
-          <td align="right"><b>Awards:</b></td>
-          <td>
-            <input type="text" class="filter_option" id="numAwardsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numAwardsInputMax" style="width: 20px">
-          </td>
-        </tr>
-      </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Scholarships Held:</b></td>
+            <td>
+                <div id="heldScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldNSERC"  unchecked/>NSERC</label>
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldAITF"  unchecked/>AITF</label>
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="heldVanier"  unchecked/>Vanier</label>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Scholarships Applied For:</b></td>
+            <td>
+                <div id="appliedScholCheckboxes" style="display: table; width: 100%; table-layout: fixed;">
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedNSERC"  unchecked/>NSERC</label>
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedAITF"  unchecked/>AITF</label>
+                  <label style="display: table-cell; text-align: center;"><input type="checkbox" class="filter_option check_tags" id="appliedVanier"  unchecked/>Vanier</label>
+                </div>
+            </td>
+          </tr>
+        </table>
+        <table >
+          <tr>
+            <td align="right"><b>GRE Verbal:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterValGreVerbalMin" style="width: 30px"> to <input type="text" class="filter_option" id="filterValGreVerbalMax" style="width: 30px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>GRE Quantitative:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterValGreQuantMin" style="width: 30px"> to <input type="text" class="filter_option" id="filterValGreQuantMax" style="width: 30px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>GRE Analytical:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterValGreAnalyticalMin" style="width: 30px"> to <input type="text" class="filter_option" id="filterValGreAnalyticalMax" style="width: 30px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>GRE CS:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterValGreCSMin" style="width: 30px"> to <input type="text" class="filter_option" id="filterValGreCSMax" style="width: 30px">
+            </td>
+          </tr>
+        </table>
+        <table >
+          <tr>
+            <td align="right"><b>Publications:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="numPubsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numPubsInputMax" style="width: 20px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Awards:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="numAwardsInputMin" style="width: 20px"> to <input type="text" class="filter_option" id="numAwardsInputMax" style="width: 20px">
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Courses:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterCourses" placeholder="Search here..." style="width: 205px">
+            <td>
+          </tr>
+        </table>
+      </div>
     </div>
-
 </div>
   <!--End of of Search & Filters-->
   

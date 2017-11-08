@@ -73,6 +73,7 @@ body {
     width:200px;
     min-width:200px;
     max-width:200px;
+  	z-index: 2;
 }
 
 #side.menu-in {
@@ -128,7 +129,6 @@ body {
     padding-right: 30px;
     padding-left: 230px;
     padding-top: 15px;
-    z-index: 0;
     background: transparent;
 }
 

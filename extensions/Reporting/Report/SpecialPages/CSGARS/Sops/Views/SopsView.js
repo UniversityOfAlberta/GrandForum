@@ -260,7 +260,7 @@ SopsView = Backbone.View.extend({
 
     filterBirthday: function(settings,data,dataIndex){
         var birthday = new Date(data[3]);
-        var span = $('#filterDoBSpan').find(":selected").text();
+        var operator = $('#filterDoBSpan').find(":selected").text();
         var filterdate = $('#filterDoB').datepicker('getDate');
 
         var operation = {
@@ -269,7 +269,76 @@ SopsView = Backbone.View.extend({
             'after':  function(a, b) { return a > b; }
         };
 
-        return operation[span](birthday, filterdate);
+        return operation[operator](birthday, filterdate);
+    },
+
+    filterGREVerbal: function(settings,data,dataIndex){
+        var min = parseFloat($('#filterValGreVerbalMin').val(),0);
+        var max = parseFloat($('#filterValGreVerbalMax').val(),0);
+        var gre = parseFloat( data[13].split(", ")[0] ) || 0;
+        //check if gre inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && gre <= max ) ||
+             ( min <= gre   && isNaN( max ) ) ||
+             ( min <= gre   && gre <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
+    filterGREQuantitative: function(settings,data,dataIndex){
+        var min = parseFloat($('#filterValGreQuantMin').val(),0);
+        var max = parseFloat($('#filterValGreQuantMax').val(),0);
+        var gre = parseFloat( data[13].split(", ")[1] ) || 0;
+        //check if gre inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && gre <= max ) ||
+             ( min <= gre   && isNaN( max ) ) ||
+             ( min <= gre   && gre <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
+    filterGREAnalytical: function(settings,data,dataIndex){
+        var min = parseFloat($('#filterValGreAnalyticalMin').val(),0);
+        var max = parseFloat($('#filterValGreAnalyticalMax').val(),0);
+        var gre = parseFloat( data[13].split(", ")[2] ) || 0;
+        //check if gre inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && gre <= max ) ||
+             ( min <= gre   && isNaN( max ) ) ||
+             ( min <= gre   && gre <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
+    filterGRECS: function(settings,data,dataIndex){
+        var min = parseFloat($('#filterValGreCSMin').val(),0);
+        var max = parseFloat($('#filterValGreCSMax').val(),0);
+        var gre = parseFloat( data[13].split(", ")[3] ) || 0;
+        //check if gre inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && gre <= max ) ||
+             ( min <= gre   && isNaN( max ) ) ||
+             ( min <= gre   && gre <= max ) )
+        {
+            return true;
+        }
+        return false;
+    },
+
+    filterCourses: function(settings,data,dataIndex){
+        var input = $('#filterCourses').val().toUpperCase();
+        var courses = data[16];
+        if(courses.toUpperCase().indexOf(input) > -1){
+                return true;
+        }
+        return false;
     },
 
     filterMineOnly: function(settings,data,dataIndex){
@@ -303,6 +372,11 @@ SopsView = Backbone.View.extend({
             this.filterScholHeld,
             this.filterScholApplied,
             this.filterBirthday,
+            this.filterGREVerbal,
+            this.filterGREQuantitative,
+            this.filterGREAnalytical,
+            this.filterGRECS,
+            this.filterCourses,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',

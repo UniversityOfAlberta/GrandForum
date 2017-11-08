@@ -353,7 +353,18 @@ table.wikitable tr.deleted {
   position: fixed;
   left: 0px;
   top: 125px;
-  z-index:1000;
+  bottom: 10px;
+  z-index: 1;
+}
+
+#filter-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: -moz-calc(100% - 45px);
+  height: -webkit-calc(100% - 45px);
+  height: -o-calc(100% - 45px);
+  height: calc(100% - 45px);
 }
 
 #clearFiltersButton {
