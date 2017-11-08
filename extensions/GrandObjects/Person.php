@@ -360,6 +360,13 @@ class Person extends BackboneModel {
                         strtolower("$lastName ".substr($firstName, 0, 1)),
                         strtolower(substr($firstName, 0, 1)." $lastName")
                     );
+                    $splitLastNames = explode(" ", $lastName);
+                    if(count($splitLastNames) > 1){
+                        // User has multiple last names
+                        foreach($splitLastNames as $last){
+                            $keys[] = strtolower(substr($firstName, 0, 1)." $last");
+                        }
+                    }
                     if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                         $keys[] = strtolower(substr($firstName, 0, 1)." $lastName");
                     }

@@ -57,11 +57,6 @@
         
         <!-- Honors and Awards -->
         <ReportItemSet id="award_if" type="If" if="{>({getNProducts(1900-01-01, {$next_year}-12-31, Award, all,, false)}, 0)}">
-            <!--ReportItem id="awardpagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
                 <![CDATA[
                     <h2>Honors and Awards</h2>
@@ -99,11 +94,6 @@
         
         <!-- Courses Taught -->
         <ReportItemSet id="courses_if" type="If" if="{>({$user_courses_count},0)}">
-            <!--ReportItem id="coursespagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses Taught">
                 <![CDATA[
                     <h2>Courses Taught</h2>
@@ -118,11 +108,6 @@
         
         <!-- Supervision and Training Responsibilities -->
         <ReportItemSet id="supervision_if" type="If" if="{>({add({$user_grad_count},{$user_fellow_count},{$user_tech_count},{$user_ugrad_count})},0)}">
-            <!--ReportItem id="studentspagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
                 <![CDATA[
                     <h2>Supervision and Training Responsibilities</h2>
@@ -207,11 +192,6 @@
 
         <!-- Presentations -->
         <ReportItemSet id="presentations_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
-            <!--ReportItem id="presentationpagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
                 <![CDATA[
                     <h2>Presentations <i>(by staff member)</i></h2>
@@ -234,11 +214,6 @@
         
         <!-- Grants -->
         <ReportItemSet id="grants_if" type="If" if="{>({$user_grant_count},0)}">
-            <!--ReportItem id="grantspagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
                     <h2>Research Funding</h2>
@@ -280,11 +255,6 @@
 
         <!-- Patents -->
         <ReportItemSet id="patents_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Patent/Spin-Off, all,, false)}, 0)}">
-            <!--ReportItem id="patentspagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
                 <![CDATA[
                     <h2>Patents</h2>
@@ -307,11 +277,6 @@
         
         <!-- Service to the University and the Profession -->
         <ReportItemSet id="committees_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental Committee|Faculty Committee|University Committee|Scientific Committee|Community Outreach Committee|Other Committee,, false)}, 0)}">
-            <!--ReportItem id="servicespagebreak" type="PageBreakReportItem">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem-->
             <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service to the University and the Profession">
                 <![CDATA[
                     <h2>Service to the University and the Profession</h2>

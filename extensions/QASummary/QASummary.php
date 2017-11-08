@@ -17,7 +17,7 @@ class QASummary extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
-        $tabbedPage = new TabbedPage("qasummary");
+        $tabbedPage = new TabbedAjaxPage("qasummary");
         
         $tabbedPage->addTab(new DepartmentTab("Physics", array("PHYS")));
         $tabbedPage->addTab(new DepartmentTab("Chemistry", array("CHEM")));

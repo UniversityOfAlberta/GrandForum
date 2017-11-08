@@ -13,7 +13,7 @@ class DepartmentTab extends AbstractTab {
     
     function generateBody(){
         global $wgOut, $config, $wgServer, $wgScriptPath;
-        if(isset($_GET['generatePDF']) && isset($_GET['tab']) && $_GET['tab'] != $this->id){
+        if(isset($_GET['generatePDF']) && isset($_GET['showTab']) && $_GET['showTab'] != $this->id){
             // Wanting to generate a pdf, but it isn't for this tab, don't waste time
             return;
         }
@@ -243,14 +243,14 @@ class DepartmentTab extends AbstractTab {
         $report = new Report();
         $report->pdfType = "QA_SUMMARY: {$this->department}";
         $report->year = YEAR;
-        if(isset($_GET['generatePDF']) && isset($_GET['tab']) && $_GET['tab'] == $this->id){
+        if(isset($_GET['generatePDF']) && isset($_GET['showTab']) && $_GET['showTab'] == $this->id){
             $report->headerName = " ";
             $wgOut->clearHTML();
             $wgOut->addHTML($html);
             $wgOut->disable();
             $report->generatePDF();
         }
-        else if(isset($_GET['downloadCSV']) && isset($_GET['tab']) && $_GET['tab'] == $this->id){
+        else if(isset($_GET['downloadCSV']) && isset($_GET['showTab']) && $_GET['showTab'] == $this->id){
             $ids = array();
             foreach($people as $person){
                 $ids[] = $person->getId();
@@ -289,7 +289,7 @@ class DepartmentTab extends AbstractTab {
             else{
                 $this->html .= "<button type='button' id='download{$this->id}' disabled>Download PDF</button>";
             }
-            $this->html .= "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:QASummary?tab={$this->id}&downloadCSV' target='_blank'>Download HQP Moved On</a>";
+            $this->html .= "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:QASummary?showTab={$this->id}&downloadCSV' target='_blank'>Download HQP Moved On</a>";
             $this->html .= "&nbsp;<span id='generate{$this->id}_throbber' class='throbber' style='display:none;'></span>";
             $this->html .= "<script type='text/javascript'>
                 $('#generate{$this->id}').click(function(){
@@ -297,7 +297,7 @@ class DepartmentTab extends AbstractTab {
                     $('#download{$this->id}').prop('disabled', true);
                     $('#generate{$this->id}_throbber').css('display', 'inline-block');
                     $.ajax({
-                        url : wgServer + wgScriptPath +'/index.php/Special:QASummary?tab={$this->id}&generatePDF', 
+                        url : wgServer + wgScriptPath +'/index.php/Special:QASummary?showTab={$this->id}&generatePDF', 
                         success : function(data){
                             for(index in data){
                                 val = data[index];

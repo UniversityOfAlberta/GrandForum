@@ -305,13 +305,17 @@
                 continue;
             }
             DBFunctions::update('mw_user',
-                                array('employee_id' => $student['EMPLID']),
+                                array('employee_id' => $student['EMPLID'],
+                                      'first_name' => $usernames[1],
+                                      'last_name' => $usernames[0]),
                                 array('user_id' => EQ($user->getId())));
             
             $person = new Person(array());
             $person->id = $user->getId();
             $person->name = $user->getName();
             $person->realname = $realName;
+            $person->firstName = $usernames[1];
+            $person->lastName = $usernames[0];
             Person::$namesCache[$person->getName()] = $person;
             Person::$employeeIdsCache[$student['EMPLID']] = $person;
             Person::$idsCache[$person->getId()] = $person;
@@ -401,16 +405,21 @@
         show_status(++$iterationsSoFar, count($students));
     }
     
+    Person::$namesCache = array();
+    Person::$idsCache = array();
+    Person::$cache = array();
+    Person::$cache = array();
+    
     $iterationsSoFar = 0;
     echo "\nImporting HQP From eFEC\n";
     foreach($responsibilities as $row){
         $username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
         $username = explode(",", $username, 2);
         if(count($username) > 1){
-            $username = "{$username[1]}.{$username[0]}";
+            $username = trim("{$username[1]}.{$username[0]}");
         }
         else{
-            $username = $username[0];
+            $username = trim($username[0]);
         }
         
         $realName = $username;
@@ -418,12 +427,12 @@
         $username = str_replace("'", ".", $username);
         $username = preg_replace("/\".*\"/", "", $username);
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
-        $person = Person::newFromName($username);
-        if(($person->getId() == 0) &&
-           ($row['responsibility'] == 'phd' ||
-            $row['responsibility'] == 'msc' ||
-            $row['responsibility'] == 'meng' ||
-            $row['responsibility'] == 'ma')){
+        $person = Person::newFromNameLike(str_replace(".", " ", $realName));
+        if((($row['responsibility'] == 'phd' && isset($hqpUniversities[$person->getId()]['Doctoral Program'])) ||
+            ($row['responsibility'] == 'msc' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
+            ($row['responsibility'] == 'meng' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
+            ($row['responsibility'] == 'ma' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course'])))) &&
+           ($sup != null && isset($hqpRelations[$sup->getId()][$person->getId()]))){
             // Don't actually create these users, but keep track of them for publication authors
             $person = new Person(array());
             $person->name = $realName;
@@ -436,7 +445,7 @@
         $email = "";
         if($person == null || $person->getId() == 0){
             // First create the user
-            $user = User::createNew($username, array('real_name' => "$realName", 
+            $user = User::createNew($username, array('real_name' => str_replace(".", " ", "$realName"), 
                                                      'password' => User::crypt(mt_rand()), 
                                                      'email' => $email));
             if($user == null){
@@ -612,6 +621,9 @@
         $product->title = trim(str_replace("•", "", str_replace("￼", "", $publication['title'])));
         $product->date = $publication['publication_date'];
         $product->acceptance_date = $publication['acceptance_date'];
+        if($product->date == ""){
+            $product->date = $product->acceptance_date;
+        }
         $product->status = "Published";
         $product->access = "Public";
         

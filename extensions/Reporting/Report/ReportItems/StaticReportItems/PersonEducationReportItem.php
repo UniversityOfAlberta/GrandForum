@@ -38,15 +38,19 @@ class PersonEducationReportItem extends StaticReportItem {
     function render(){
         global $wgOut;
         $item = $this->getHTML();
-        $item = $this->processCData($item);
-        $wgOut->addHTML($item);
+        if($item != ""){
+            $item = $this->processCData($item);
+            $wgOut->addHTML($item);
+        }
     }
     
     function renderForPDF(){
         global $wgOut;
         $item = $this->getHTML();
-        $item = $this->processCData($item);
-        $wgOut->addHTML($item);
+        if($item != ""){
+            $item = $this->processCData($item);
+            $wgOut->addHTML($item);
+        }
     }
 }
 
