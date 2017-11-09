@@ -358,7 +358,8 @@ table.wikitable tr.deleted {
 }
 
 #filter-container {
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-right: 16px;
   overflow-x: hidden;
   width: 100%;
   height: -moz-calc(100% - 45px);
