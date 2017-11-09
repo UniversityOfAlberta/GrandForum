@@ -439,7 +439,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf">
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Letters of Support</h2>
                 {$item}
@@ -455,43 +455,43 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="Supporting Documents" title="Supporting Documents" pagebreak="false">
-        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/zip">
             <![CDATA[
                 <h2>Project team Information</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <h2>Budget</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Team Member CVs</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Required Signatures</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Proof of Study Submission to Research Ethics Board</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Proof of Completion of one of CIHR Institute of Gender and Health’s (IGH) online sex- and gender-based analysis training modules</h2>
                 {$item}
