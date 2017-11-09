@@ -215,7 +215,7 @@ class DepartmentTab extends AbstractTab {
                                                       'page' => \$pdf->get_page_number(),
                                                       'subs' => array());
                   </script>";
-        $html .= "<h2>Undergradate Student Publications</h2>";
+        $html .= "<h2>Undergraduate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($ugradPapers)."</p>";
         $html .= "<small>Undergraduate student name underlined</small><br />";
         $html .= "<ul>";
