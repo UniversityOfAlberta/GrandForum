@@ -461,7 +461,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="Supporting Documents" title="Supporting Documents">
-        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx,application/vnd.ms-excel">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx,.xls,application/vnd.ms-excel">
             <![CDATA[
                 <h2>Project team Information</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
