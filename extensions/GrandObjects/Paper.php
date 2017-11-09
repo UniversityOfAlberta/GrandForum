@@ -1307,7 +1307,9 @@ class Paper extends BackboneModel{
                         $name = "{$a->getNameForProduct()}";
                     }
                     else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
+                        $yearAgo = strtotime("{$this->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
+                        $yearAgo = date('Y-m-d', $yearAgo);
+                        $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
                         foreach($unis as $uni){
                             if(strstr($uni['position'], "Graduate Student") !== false ||
                                strstr($uni['position'], "Post-Doctoral Fellow") !== false){
