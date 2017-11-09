@@ -455,13 +455,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="Supporting Documents" title="Supporting Documents" pagebreak="false">
-        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/zip">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <h2>Project team Information</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.ms-excel">
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/zip">
             <![CDATA[
                 <h2>Budget</h2>
                 {$item}
