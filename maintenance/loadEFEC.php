@@ -442,6 +442,7 @@
             continue;
         }
         
+        $person = Person::newFromName($username);
         $email = "";
         if($person == null || $person->getId() == 0){
             // First create the user

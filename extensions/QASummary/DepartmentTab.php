@@ -26,7 +26,7 @@ class DepartmentTab extends AbstractTab {
         $phds = array();
         $techs = array();
         $pdfs = array();
-        foreach(Person::getAllPeople(NI) as $person){
+        foreach(Person::getAllPeopleDuring(NI, ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
             foreach($person->getUniversitiesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
                 if($uni['department'] == $this->department){
                     $people[$person->getId()] = $person;
@@ -34,7 +34,7 @@ class DepartmentTab extends AbstractTab {
                 }
             }
         }
-        foreach(Person::getAllPeople(HQP) as $person){
+        foreach(Person::getAllPeopleDuring(HQP, ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
             foreach($person->getUniversitiesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
                 if($uni['department'] == $this->department){
                     $hqps[$person->getId()] = $person;
@@ -217,7 +217,7 @@ class DepartmentTab extends AbstractTab {
                   </script>";
         $html .= "<h2>Undergradate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($ugradPapers)."</p>";
-        $html .= "<small>Graduate student name boldfaced</small><br />";
+        $html .= "<small>Undergraduate student name underlined</small><br />";
         $html .= "<ul>";
         foreach($ugradPapers as $paper){
             $html .= "<li>{$paper->getCitation()}</li>";

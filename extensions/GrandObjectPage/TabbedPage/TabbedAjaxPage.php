@@ -61,22 +61,36 @@ class TabbedAjaxPage extends TabbedPage {
                         }
                     });
                     $('#{$this->id}').tabs({
-                        selected: i , 
-                        beforeLoad: function(event, ui) {
-                            ui.panel.html('<span class=\"throbber\"></span>');
+                        selected: i,
+                        cache:true,
+                        load: function (e, ui) {
+                            $('#currentViewSpinner').remove();
+                            $('#{$this->id}').show();
+                        },
+                        select: function(event, ui) {
+                            var panel = $(ui.panel);
+                            if(panel.is(':empty')) {
+                                panel.append('<div class=\"throbber\"></div>');
+                            }
                         }
                     });
                 }
                 else{
                     $('#{$this->id}').tabs({
-                        selected: {$active_tab}, 
-                        beforeLoad: function(event, ui) {
-                            ui.panel.html('<div class=\"throbber\"></div>');
+                        selected: {$active_tab},
+                        cache:true,
+                        load: function (e, ui) {
+                            $('#currentViewSpinner').remove();
+                            $('#{$this->id}').show();
+                        },
+                        select: function(event, ui) {
+                            var panel = $(ui.panel);
+                            if(panel.is(':empty')) {
+                                panel.append('<div class=\"throbber\"></div>');
+                            }
                         }
                     });
                 }
-                $('#currentViewSpinner').remove();
-                $('#{$this->id}').show();
         </script>");
         foreach($this->tabs as $key => $tab){
             $wgOut->addHTML("<script type='text/javascript'>
