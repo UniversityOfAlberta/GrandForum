@@ -72,7 +72,7 @@
                         <![CDATA[
                             <div id="proj{$user_id}">
                             <table class='wikitable'>
-                                <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,CFN_PL,0,{$user_id},0)}</td></tr>
+                                <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
                                 <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
                                 <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                             </table>
@@ -583,7 +583,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     <![CDATA[
                         <div id="proj{$user_id}">
                         <table class='wikitable'>
-                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,CFN_PL,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
                             <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
@@ -1119,7 +1119,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     <![CDATA[
                         <div id="proj{$user_id}">
                         <table class='wikitable'>
-                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,CFN_PL,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
                             <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
