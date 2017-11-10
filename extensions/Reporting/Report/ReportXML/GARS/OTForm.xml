@@ -58,6 +58,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <!--
     <ReportSection id="gpa60_page" tooltip="Last 60 Credits GPA" name="Last 60 Credits GPA" blobSection="OT_QUESTIONS_gpa" type="EditableReportSection" pagebreak="false">
 
         <ReportItem id="qpa60MaxGrade" type="Integer" min="0" decimals="2" blobType="BLOB_TEXT" blobItem="gpa60MaxGrade" default="100">
@@ -153,6 +154,7 @@
         </ReportItem>
 
     </ReportSection>
+-->
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
