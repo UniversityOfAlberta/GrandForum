@@ -361,10 +361,14 @@ class Person extends BackboneModel {
                         strtolower(substr($firstName, 0, 1)." $lastName")
                     );
                     $splitLastNames = explode(" ", $lastName);
+                    $splitFirstNames = explode(" ", $firstName);
                     if(count($splitLastNames) > 1){
                         // User has multiple last names
                         foreach($splitLastNames as $last){
-                            $keys[] = strtolower(substr($firstName, 0, 1)." $last");
+                            foreach($splitFirstNames as $first){
+                                $keys[] = "$first $last";
+                                $keys[] = strtolower(substr($first, 0, 1)." $last");
+                            }
                         }
                     }
                     if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){

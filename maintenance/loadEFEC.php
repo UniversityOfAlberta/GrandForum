@@ -428,6 +428,7 @@
         $username = preg_replace("/\".*\"/", "", $username);
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
         $person = Person::newFromNameLike(str_replace(".", " ", $realName));
+        //file_put_contents("nameCache.txt", implode("\n", array_keys(Person::$namesCache)));
         if((($row['responsibility'] == 'phd' && isset($hqpUniversities[$person->getId()]['Doctoral Program'])) ||
             ($row['responsibility'] == 'msc' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
             ($row['responsibility'] == 'meng' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
@@ -442,7 +443,7 @@
             continue;
         }
         
-        $person = Person::newFromName($username);
+        //$person = Person::newFromName($username);
         $email = "";
         if($person == null || $person->getId() == 0){
             // First create the user
