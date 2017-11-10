@@ -105,7 +105,7 @@ class ApplicationsTable extends SpecialPage{
     function generateCat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("RP_CATALYST_APPLICATION", $this->nis, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
