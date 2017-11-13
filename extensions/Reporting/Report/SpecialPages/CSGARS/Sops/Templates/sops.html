@@ -2,8 +2,8 @@
 <input type="checkbox" id="filterMeOnly"/>Show mine only
 
 <div id="filters" style="left: 300px; margin-top:10px; display:block;">
-    <div id="filter-pane" style="left: -365px;">
-      <div id="filter-header" style="width: 100%; height:45px; border-bottom: 1px solid #079651; text-align:center;">
+    <div id="filter-pane">
+      <div id="filter-header">
         <h1 style="margin:7px auto auto 24px; position: absolute; left: 0;">Filters</h1>
         <button style="margin:10px auto auto auto;" id="clearFiltersButton">Clear Filters</button>
         <button style="right:14px; top: 12px; position:absolute; width: 20px; padding: 2px;" id="hidefilter">&#x2715;</button>
@@ -70,12 +70,11 @@
             </td>
           </tr>
           <tr>
-            </br>
             <td align="right"><b>Filter by Tags:</b></td>
             <td>
-            <input type="checkbox" id="filterByTags" class="filter_option check_tags"/>
+            <input type="checkbox" id="filterByTags" class="filter_option check_tags" />
             
-              <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: middle">
+              <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: bottom; position: relative;">
                 <div id="selectTagBox" class="selectBox" style="width: 206px">
                   <select><option>Select Tags</option></select>
                   <div class="overSelect"></div>
@@ -166,6 +165,18 @@
             <td align="right"><b>Courses:</b></td>
             <td>
               <input type="text" class="filter_option" id="filterCourses" placeholder="Search here..." style="width: 205px">
+            <td>
+          </tr>
+          <tr>
+            <td align="right"><b>Notes:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterNotes" placeholder="Search here..." style="width: 205px">
+            <td>
+          </tr>
+          <tr>
+            <td align="right"><b>Comments:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterComments" placeholder="Search here..." style="width: 205px">
             <td>
           </tr>
         </table>

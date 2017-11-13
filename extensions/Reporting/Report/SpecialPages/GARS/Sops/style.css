@@ -294,3 +294,34 @@ table.wikitable tr.deleted {
     background-color: #1e90ff;
 }
 
+#filter-pane {
+  width: 310px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  background: #FCFCFC;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: block;
+  position: fixed;
+  left: 0px;
+  top: 125px;
+  z-index: 1;
+}
+
+#filter-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: -moz-calc(100% - 45px);
+  height: -webkit-calc(100% - 45px);
+  height: -o-calc(100% - 45px);
+  height: calc(100% - 45px);
+  margin-top: 8px;
+}
+
+#clearFiltersButton {
+  width: 50%;
+  margin: 0 auto;
+}
+

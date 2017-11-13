@@ -265,8 +265,8 @@ SopsView = Backbone.View.extend({
 
         var operation = {
             '--':     function(a, b) { return true; },
-            'before': function(a, b) { return a < b; },
-            'after':  function(a, b) { return a > b; }
+            'before': function(a, b) { if(filterdate){return a < b;} else {return true;} },
+            'after':  function(a, b) { if(filterdate){return a > b;} else {return true;} }
         };
 
         return operation[operator](birthday, filterdate);
@@ -341,6 +341,24 @@ SopsView = Backbone.View.extend({
         return false;
     },
 
+    filterNotes: function(settings,data,dataIndex){
+        var input = $('#filterNotes').val().toUpperCase();
+        var courses = data[19];
+        if(courses.toUpperCase().indexOf(input) > -1){
+                return true;
+        }
+        return false;
+    },
+
+    filterComments: function(settings,data,dataIndex){
+        var input = $('#filterComments').val().toUpperCase();
+        var courses = data[20];
+        if(courses.toUpperCase().indexOf(input) > -1){
+                return true;
+        }
+        return false;
+    },
+
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if($('#filterMeOnly').is(':checked')){
@@ -377,6 +395,8 @@ SopsView = Backbone.View.extend({
             this.filterGREAnalytical,
             this.filterGRECS,
             this.filterCourses,
+            this.filterNotes,
+            this.filterComments,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',

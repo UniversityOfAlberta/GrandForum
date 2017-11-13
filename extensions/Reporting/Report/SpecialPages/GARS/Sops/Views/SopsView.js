@@ -9,10 +9,15 @@ SopsView = Backbone.View.extend({
 
     initialize: function(){
         this.template = _.template($('#sops_template').html());
+        $(this).data('name', 'show');
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;
             this.render();
         }, this);
+        setInterval(function () {
+            var pad = $('#bodyContent').css('padding-left');
+            $('#filter-pane').css('margin-left', parseInt(pad)-16);
+        }, 16);
     },
     
     renderRoles: function(){
@@ -58,6 +63,7 @@ SopsView = Backbone.View.extend({
         "click #nationalityBox" : "showNationalityBoxes",
         "click #selectTagBox" : "showCheckboxes",
         "click #showfilter" : "showFilter",
+        "click #hidefilter" : "showFilter",
     },
 
     reloadTable: function(){
@@ -66,14 +72,19 @@ SopsView = Backbone.View.extend({
 
     showFilter: function(){
         if ($(this).data('name') == 'show') {
-            $("#filters").animate().hide();
+            $('#filter-pane').stop().animate({left: -5 }, 300, 'swing');
+            $('#bodyContent').stop().animate({left: 330 }, 300, 'swing');
+            //$("#filters").animate().hide();
             $(this).data('name', 'hide');
-            $(this).val('Show Filter Options');
+            $('#showfilter').attr('value', 'Hide Filter Options');
         } else {
-            $("#filters").animate().show();
+            $('#filter-pane').stop().animate({left: -365 }, 300, 'swing');
+            $('#bodyContent').stop().animate({left: 0 }, 300, 'swing');
+            //$("#filters").animate().show();
             $(this).data('name', 'show')
-            $(this).val('Hide Filter Options');
+            $('#showfilter').attr('value', 'Show Filter Options');
         }
+        
     },
 
     showNationalityBoxes: function(){
@@ -129,7 +140,7 @@ SopsView = Backbone.View.extend({
     filterGPA: function(settings,data,dataIndex){
         var min = parseFloat($('#referenceNameInputMin').val(),0);
         var max = parseFloat($('#referenceNameInputMax').val(),0);
-        var gpa = parseFloat( data[2] ) || 0; // use column 2
+        var gpa = parseFloat( data[11] ) || 0; // use column 11
     //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
@@ -222,6 +233,20 @@ SopsView = Backbone.View.extend({
         return true;
    },
 
+   filterBirthday: function(settings,data,dataIndex){
+        var birthday = new Date(data[3]);
+        var operator = $('#filterDoBSpan').find(":selected").text();
+        var filterdate = $('#filterDoB').datepicker('getDate');
+
+        var operation = {
+            '--':     function(a, b) { return true; },
+            'before': function(a, b) { if(filterdate){return a < b;} else {return true;} },
+            'after':  function(a, b) { if(filterdate){return a > b;} else {return true;} }
+        };
+
+        return operation[operator](birthday, filterdate);
+    },
+
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
@@ -238,7 +263,15 @@ SopsView = Backbone.View.extend({
             this.filterMineOnly,
             this.filterByTags,
             this.filterByNationality,
+            this.filterBirthday,
         );
+        this.$("#filterDoB").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:-18",
+            defaultDate: "-18y"
+        });
         return this.$el;
     }
 });
