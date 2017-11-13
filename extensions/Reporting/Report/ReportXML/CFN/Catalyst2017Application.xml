@@ -431,6 +431,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="information_upload" blobItem="INFORMATION_UPLOAD" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <p>Or upload the above information as a pdf document that will get appended to the end of the application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="10 - Partnerships" title="Section 10 - Partnerships &amp; Letters of Support">
         <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" labels="Partner Organization/Research Receptor|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
