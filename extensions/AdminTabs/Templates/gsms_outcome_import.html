@@ -1,6 +1,6 @@
 <div id="gsms_outcome_tab">
         <h2>GSMS CSV Bulk Upload</h2>
-        <p>Please upload your Excel file using this <a href='<%= wgServer + wgScriptPath %>/skins/demoxls.xls' target="_blank">template</a>.</p>
+        <p>Please upload your Excel/CSV file that you downloaded from GSMS.</p>
         <iframe name="fileUpload" style="display:none;"></iframe>
         <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.userGsmsBulkUpload" method="POST" enctype="multipart/form-data">
             <input type="file" name="gsms_outcome" /><br />
