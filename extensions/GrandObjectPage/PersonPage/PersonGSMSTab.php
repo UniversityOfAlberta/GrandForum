@@ -196,11 +196,11 @@ class PersonGSMSTab extends AbstractEditableTab {
         $this->html .= "<td> <input name='view' type='checkbox' value='true' $viewYes /> Visible &nbsp";
         $this->html .= "</tr>";
 
-        $this->html .= "<tr>";
+/*        $this->html .= "<tr>";
         $this->html .= "<td class='label'>Status: </td>";
         $this->html .= "<td><select name='status'><option value='Application Completed' $applicationCompleted>Application Completed</option><option value='GSMS Completed' $gsmsCompleted>GSMS Completed</option><option value='Review Completed' $reviewCompleted>Review Completed</option></select></td>";
         $this->html .= "</tr>";
-        
+  */      
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>GPA (over last 60 credits):</td>";
         $this->html .= "<td><input name='gpa' type='number' step='0.01' min='0' max='4' size='4' value='{$gsms['gpa60']}' /></td>";

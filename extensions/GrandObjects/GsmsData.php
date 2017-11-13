@@ -283,6 +283,7 @@ class GsmsData extends BackboneModel{
                   'epl_write' => $this->epl_write,
                   'epl_read' => $this->epl_read,
                   'epl_speaking' => $this->epl_speaking,
+                  'folder' => $this->folder,
                   'additional' => $this->getAdditional());
 
       // Not sure if specific from here //	
