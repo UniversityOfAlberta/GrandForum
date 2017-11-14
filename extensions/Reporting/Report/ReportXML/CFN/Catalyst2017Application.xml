@@ -425,13 +425,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="9 - Supporting Information" title="Section 9 - Supporting Information">
-        <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true">
+        <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true" optional="true">
             <![CDATA[
                 <p>Provide tables and figures and a list of references as necessary to support sections above.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="information_upload" blobItem="INFORMATION_UPLOAD" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+        <ReportItem id="information_upload" blobItem="INFORMATION_UPLOAD" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf" optional="true">
             <![CDATA[
                 <p>Or upload the above information as a pdf document that will get appended to the end of the application.</p>
                 {$item}
