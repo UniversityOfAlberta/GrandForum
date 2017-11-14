@@ -119,6 +119,15 @@ SopsView = Backbone.View.extend({
     this.reloadTable();
     },
 
+    filterCitizenship: function(settings,data,dataIndex){
+        var input = $('#countryOfCitizenshipInput').val().toUpperCase();
+        var name = data[4];
+                if(name.toUpperCase().indexOf(input) > -1){
+                        return true;
+                }
+        return false;
+    },
+
     filterDegreeName: function(settings,data,dataIndex){
         var input = $('#degreeInput').val().toUpperCase();
         var name = data[8];
@@ -254,6 +263,7 @@ SopsView = Backbone.View.extend({
         me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
+            this.filterCitizenship,
             this.filterDegreeName,
             this.filterInstitutionName,
             this.filterAnatomyType,
