@@ -86,7 +86,8 @@ class GsmsData extends BackboneModel{
             $this->program = $data[0]['program'];
             $this->degree_code = $data[0]['degree_code'];
             $this->admission_program_name = $data[0]['admission_program_name'];
-            $this->submitted_date = $data[0]['submitted_date'];
+            $sub = explode(" ",$data[0]['submitted_date']);
+            $this->submitted_date = $sub[0];
             $this->folder = $data[0]['folder'];
             $this->department_gpa = $data[0]['department_gpa'];
             $this->department_gpa_scale = $data[0]['department_gpa_scale'];
@@ -160,7 +161,7 @@ class GsmsData extends BackboneModel{
                                           '`gender`' => $this->gender,
                                           '`gsms_id`' => $this->gsms_id,
                                           '`applicant_number`' => $this->applicant_number,
-                                          '`date_of_birth`' => $this->date_of_birth,
+                                          '`date_of_birth`' => $this->date_of_birth." 00:00:00",
                                           '`program_name`' => $this->program_name,
                                           '`country_of_birth`' => $this->country_of_birth,
                                           '`country_of_citizenship`' => $this->country_of_citizenship,
@@ -209,7 +210,7 @@ class GsmsData extends BackboneModel{
                                           '`student_id`' => $this->student_id,
                                           '`gsms_id`' => $this->gsms_id,
                                           '`applicant_number`' => $this->applicant_number,
-                                          '`date_of_birth`' => $this->date_of_birth,
+                                          '`date_of_birth`' => $this->date_of_birth." 00:00:00",
                                           '`program_name`' => $this->program_name,
                                           '`country_of_birth`' => $this->country_of_birth,
                                           '`country_of_citizenship`' => $this->country_of_citizenship,
@@ -230,7 +231,7 @@ class GsmsData extends BackboneModel{
                                           '`program`' => $this->program,
                                           '`degree_code`' => $this->degree_code,
                                           '`admission_program_name`' => $this->admission_program_name,
-                                          '`submitted_date`' => $this->submitted_date,
+                                          '`submitted_date`' => $this->submitted_date." 00:00:00",
                                           '`folder`' => $this->folder,
                                           '`department_gpa`' => $this->department_gpa,
                                           '`department_gpa_scale`' => $this->department_gpa_scale,
