@@ -277,7 +277,7 @@ EOF;
             $person = Person::newFromId($_GET['person']);
             $text .= $person->getProfile()."\n";
             
-            $products = $person->getPapers("all", false, 'both', true, 'Public');
+            $products = $person->getPapers("Publication", false, 'both', true, 'Public');
             foreach($products as $product){
                 $text .= $product->getTitle()."\n";
                 $text .= $product->getDescription()."\n";
