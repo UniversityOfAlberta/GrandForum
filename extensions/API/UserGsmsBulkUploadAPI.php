@@ -223,7 +223,7 @@ class UserGsmsBulkUploadAPI extends API{
           //students found in gsms table but not in csv:
         $foundgsmsstring = implode(", ", $found_gsms);
         $in_gars = array();
-        $sql = "SELECT user_id FROM grand_gsms WHERE gsms_id NOT IN ($foundgsmsstring)";
+        $sql = "SELECT DISTINCT(user_id) FROM grand_gsms WHERE gsms_id NOT IN ($foundgsmsstring)";
         $data = DBFunctions::execSQL($sql);
         if(count($data)>0){
             foreach($data as $student_id){
