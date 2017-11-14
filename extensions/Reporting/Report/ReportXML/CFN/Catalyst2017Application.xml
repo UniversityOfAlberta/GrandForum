@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2017" ajax="true">
+<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2017" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI" subType="CAT2017Applicant" start="2017-08-01" end="2017-12-31">
             <SectionPermission id="information" permissions="rw" />
