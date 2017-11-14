@@ -219,7 +219,7 @@ class UserGsmsBulkUploadAPI extends API{
             }
         }
         $not_in_gars_string = implode("<br />", $not_in_gars);
-        $not_finished_string = implode("br />", $not_finished);
+        $not_finished_string = implode("<br />", $not_finished);
           //students found in gsms table but not in csv:
         $foundgsmsstring = implode(", ", $found_gsms);
         $in_gars = array();
