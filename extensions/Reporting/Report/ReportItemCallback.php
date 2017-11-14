@@ -1581,6 +1581,12 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
+        $md5 = $blb->getMD5();
+        if($md5 != ""){
+            return $md5;
+        }
+        $blb = new ReportBlob(BLOB_RAW, $year, $personId, $projectId);
+        $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
     
