@@ -44,7 +44,7 @@ class AssignReviewersAPI extends API{
                             array('sub_id' => $student));
         foreach($ids as $reviewer_id){
             $year = YEAR;
-            $status = DBFunctions::insert('grand_evals',
+            $status = DBFunctions::insert('grand_eval',
                                     array('`user_id`'          => $reviewer_id,
                                           '`sub_id`'              => $student,
                                           '`type`'       => 'sop',
