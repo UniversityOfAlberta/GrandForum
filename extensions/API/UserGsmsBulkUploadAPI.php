@@ -29,7 +29,7 @@ class UserGsmsBulkUploadAPI extends API{
 	    }
             $application_year_array = explode("/",$row[8]);
             $application_year = $application_year_array[0]; 
-            if($application_year != YEAR){
+            if($application_year != YEAR+1){
                 continue;
             }
             $data_array_num = 0;

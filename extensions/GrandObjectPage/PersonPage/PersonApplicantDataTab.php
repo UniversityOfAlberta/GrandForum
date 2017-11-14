@@ -191,6 +191,12 @@ class PersonApplicantDataTab extends AbstractEditableTab {
             $sSelected = ($gsms->term == "spring") ? "selected='selected'" : "";
             $suSelected = ($gsms->term == "summer") ? "selected='selected'" : "";
 
+            $bSelected = ($gsms->folder == "") ? "selected='selected'" : "";
+            $progSelected = ($gsms->folder == "In Progress") ? "selected='selected'" : "";
+            $rprogrSelected = ($gsms->folder == "Review in Progress") ? "selected='selected'" : "";
+            $newappSelected = ($gsms->folder == "New Applications") ? "selected='selected'" : "";
+
+
             $rejSelected = ($gsms->folder == "Rejected Apps") ? "selected='selected'" : "";
             $declinedSelected = ($gsms->folder == "Offer Declined") ? "selected='selected'" : "";
             $withSelected = ($gsms->folder == "Withdrawn") ? "selected='selected'" : "";
@@ -253,7 +259,16 @@ class PersonApplicantDataTab extends AbstractEditableTab {
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Folder: </td>";
         $this->html .= "<td>";
-        $this->html .= "<select name='folder'><option value='Rejected Apps' $rejSelected>Rejected Apps</option><option value='Offer Declined' $declinedSelected>Offer Declined</option><option value='Offer Accepted' $acceptedSelected>Offer Accepted</option><option value='Withdrawn' $withSelected>Withdrawn</option><option value='Waitlist' $waitSelected>Waitlist</option></select>";
+        $this->html .= "<select name='folder'>
+                        <option value='' $bSelected>--</option>
+                        <option value='' $newappSelected>New Applications</option>
+                        <option value='In Progress' $progSelected>In Progress</option>
+                        <option value='Review in Prgoress' $rprogrSelected>Review in Progress</option>
+                        <option value='Rejected Apps' $rejSelected>Rejected Apps</option>
+                        <option value='Offer Declined' $declinedSelected>Offer Declined</option>
+                        <option value='Offer Accepted' $acceptedSelected>Offer Accepted</option>
+                        <option value='Withdrawn' $withSelected>Withdrawn</option>
+                        <option value='Waitlist' $waitSelected>Waitlist</option></select>";
         $this->html .= "</td>";
 
         $this->html .= "<tr>";
