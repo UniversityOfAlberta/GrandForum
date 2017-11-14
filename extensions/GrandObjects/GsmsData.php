@@ -57,7 +57,7 @@ class GsmsData extends BackboneModel{
         global $config;
         if(count($data) > 0){
             $this->id = $data[0]['id'];
-	    $this->user_id = $data[0]['user_id'];
+            $this->user_id = $data[0]['user_id'];
             $this->status = $data[0]['status'];
             $this->visible = $data[0]['visible'];
             $this->gender = $data[0]['gender'];
@@ -66,7 +66,8 @@ class GsmsData extends BackboneModel{
             $this->applicant_number = $data[0]['applicant_number'];
             $dob = explode(" ", $data[0]['date_of_birth']);
             $this->date_of_birth = $dob[0];
-            $this->program_name = $data[0]['program_name'];
+            $program_name = nl2br(implode("\n", explode("; ", $data[0]['program_name'])));
+            $this->program_name = $program_name;
             $this->country_of_birth = $data[0]['country_of_birth'];
             $this->country_of_citizenship = $data[0]['country_of_citizenship'];
             $this->applicant_type = $data[0]['applicant_type'];
