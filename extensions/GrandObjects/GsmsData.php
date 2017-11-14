@@ -64,7 +64,8 @@ class GsmsData extends BackboneModel{
             $this->student_id = $data[0]['student_id'];
             $this->gsms_id = $data[0]['gsms_id'];
             $this->applicant_number = $data[0]['applicant_number'];
-            $this->date_of_birth = $data[0]['date_of_birth'];
+            $dob = $data[0]['date_of_birth'];
+            $this->date_of_birth = explode(" ", $dob)[0];
             $this->program_name = $data[0]['program_name'];
             $this->country_of_birth = $data[0]['country_of_birth'];
             $this->country_of_citizenship = $data[0]['country_of_citizenship'];
