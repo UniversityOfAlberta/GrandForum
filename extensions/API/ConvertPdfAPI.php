@@ -154,21 +154,28 @@ class ConvertPdfAPI extends API{
         
         $success = array();
         $errors = array();
+        $num_file = 0;
         foreach($tmpfiles as $tmpfile){
             $contents = file_get_contents($tmpfile);
             $data = $this->extract_pdf_data($contents);
-            
-            $data['first_name'] = explode(" ", $data['first_name']);
+           //change this! 
+            /*$data['first_name'] = explode(" ", $data['first_name']);
             $data['first_name'] = @$data['first_name'][0];
-            
+            */
             if(isset($_POST['id'])){
                 $userId = $_POST['id'];
             }
             else{
-                $person = Person::newFromNameLike($data['first_name']." ".$data['last_name']);
+                $files_array = explode(".",$_FILES['file_field']['name'][0]);
+                $person = Person::newFromGSMSId($files_array[$num_file]);
+                if($person == null){
+                    $errors[] = "<b>{$data['first_name']} {$data['last_name']} ({$files_array[$num_file]})</b> failed.  User not found.";
+                    $num_file++;
+                    continue;
+                }
                 $userId = $person->getId();
             }
-            
+            $num_file++;
             if($userId != 0){
                 $content_parsed = DBFunctions::escape($contents);
                 // Person Found

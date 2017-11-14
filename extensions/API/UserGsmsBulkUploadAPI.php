@@ -67,7 +67,7 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['gender'] = $row[16];
             $array_info['country_of_birth'] = $row[17];
             $array_info['country_of_citizenship'] = $row[18];
-            $array_info['application_type'] = $row[19];
+            $array_info['applicant_type'] = $row[19];
             $array_info['folder'] = $row[20];
             $array_info['education_history'] = $row[21];
             $array_info['department_gpa'] = $row[22];
@@ -133,14 +133,20 @@ class UserGsmsBulkUploadAPI extends API{
 		$student_obj = Person::newFromGSMSId($student['gsms_id']);
                 if($student_obj == null){
                     $errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
-                    $notfound[] = "{$student['name']} ({$student['email']})";
+                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
                     continue;
                 }	
 		$student_id = $student_obj->getId();
 		$student_name = $student['name'];
 		  //check if student exists
 		if($student_id != 0){
-                   $found_gsms[] = "'{$student['gsms_id']}'"; 
+                  //check to make sure submitted gsms
+                    $gsms_sheet = GsmsData::newFromUserId($student_id);
+                    if($gsms_sheet->user_id == ""){
+                        $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
+                        continue;
+                    }
+                   $found_gsms[] = "'{$student['gsms_id']}'";
                    $updated_students[] = "{$student['name']} ({$student['email']})";
                    $update = false;
                   //check if update or new
@@ -180,20 +186,14 @@ class UserGsmsBulkUploadAPI extends API{
                               $gsms_sheet->fgsr_decision = @$student['fgsr_decision'];
                               $gsms_sheet->decision_response = @$student['decision_response'];
                               $gsms_sheet->general_notes = @$student['general_notes'];
-                    if($gsms_sheet->user_id == ""){
-                        $gsms_sheet->user_id = $student_id;
-                        $gsms_sheet->create();
-                    }
-                    else{
-                        $gsms_sheet->update();
-                    }
+                              $gsms_sheet->visible = 'true';
+                    $gsms_sheet->update();
 		    $success[] = $student_name;
                     DBFunctions::commit();
 		}
 		else{
-			$errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
-                    $notfound[] = "{$student['name']} ({$student['email']})";
-                        $error_count= $error_count+1;
+                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
+                    $error_count= $error_count+1;
 		}
 		
         }
@@ -201,9 +201,26 @@ class UserGsmsBulkUploadAPI extends API{
 	else{
                 $errors[] = "Please upload a .xls or .csv file";
 	}
+          //successfully updated students:
         $updated_students_string = implode("<br />", $updated_students);
-            $success = "<b>The following students were updated properly</b>:<br />".$updated_students_string;
-        $notfoundstring = implode("<br />", $notfound);
+        $success = "<b>The following students were updated properly</b>:<br />".$updated_students_string;
+          //students not found in gsms table:
+        $not_in_gars = array();
+        $not_finished = array();
+        foreach($notfound as $student_gsms_string){
+            $student_gsms_array = explode(",",$student_gsms_string);
+            $student_gsms = $student_gsms_array[0];
+            $student_obj = Person::newFromGSMSId($student_gsms);
+            if($student_obj == null){
+                $not_in_gars[] = "{$student_gsms_array[1]}({$student_gsms_array[2]})";
+            }
+            else{
+                $not_finished[] = "{$student_obj->getRealName()}({$student_obj->getEmail()})";
+            }
+        }
+        $not_in_gars_string = implode("<br />", $not_in_gars);
+        $not_finished_string = implode("br />", $not_finished);
+          //students found in gsms table but not in csv:
         $foundgsmsstring = implode(", ", $found_gsms);
         $in_gars = array();
         $sql = "SELECT user_id FROM grand_gsms WHERE gsms_id NOT IN ($foundgsmsstring)";
@@ -217,10 +234,9 @@ class UserGsmsBulkUploadAPI extends API{
             }
         }
         $in_gars_string = implode("<br />", $in_gars);
-        $errors = "<b>The following students from GSMS do not have a GARS application submitted:</b><br />".$notfoundstring."<br /><br /><b>The following students have a GARS application, but are not in GSMS:</b><br />".$in_gars_string;
-
+          //putting everything together
+        $errors = "<b>The following students from GSMS do not have a GARS account:</b><br />$not_in_gars_string<br /><br /><b>The following students have a GARS account, but have not submitted an application yet:</b><br />$not_finished_string<br /><br /><b>The following students have a GARS application, but are not in GSMS:</b><br />$in_gars_string";
 	
-
         DBFunctions::commit();
                 echo <<<EOF
                 <html>
