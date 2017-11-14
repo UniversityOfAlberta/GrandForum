@@ -166,10 +166,10 @@ class ConvertPdfAPI extends API{
                 $userId = $_POST['id'];
             }
             else{
-                $files_array = explode(".",$_FILES['file_field']['name'][0]);
-                $person = Person::newFromGSMSId($files_array[$num_file]);
+                $files_array = explode(".",$_FILES['file_field']['name'][$num_file]);
+                $person = Person::newFromGSMSId($files_array[0]);
                 if($person == null){
-                    $errors[] = "<b>{$data['first_name']} {$data['last_name']} ({$files_array[$num_file]})</b> failed.  User not found.";
+                    $errors[] = "<b>{$data['first_name']} {$data['last_name']} ({$files_array[0]})</b> failed.  User not found.";
                     $num_file++;
                     continue;
                 }
