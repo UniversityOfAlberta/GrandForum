@@ -196,7 +196,7 @@
 
             ]]>
         </ReportItem>
-        <ReportItem id="q24" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
+        <ReportItem id="q24" type="Integer" decimals="3" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">
             <![CDATA[
                     <div class="flex-container">
                         <div class="flex-item">
@@ -205,7 +205,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q25" type="Integer" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
+        <ReportItem id="q25" type="Integer" decimals="3" max="170" blobType="BLOB_TEXT" blobItem="Q25" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Quantitative<span title="Score 130-170." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -213,7 +213,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q26" type="Integer" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
+        <ReportItem id="q26" type="Integer" decimals="3" max="6" blobType="BLOB_TEXT" blobItem="Q26" limit="100" width="100px" optional="true">
             <![CDATA[
                         <div class="flex-item">
                             <h3>Analytical<span title="Score 0-6." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
@@ -221,7 +221,7 @@
                         </div>
             ]]>
         </ReportItem>
-        <ReportItem id="q27" type="Integer" blobType="BLOB_TEXT" blobItem="Q27" limit="100" width="100px" optional="false">
+        <ReportItem id="q27" type="Integer" decimals="3" blobType="BLOB_TEXT" blobItem="Q27" limit="100" width="100px" optional="false">
             <![CDATA[
                         <div class="flex-item">
                             <h3>GRE CS</h3>
