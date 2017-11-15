@@ -59,7 +59,8 @@ abstract class AbstractSop extends BackboneModel{
     abstract function getSopPdf();
     abstract function getGSMSUrl();
     abstract function getSopUrl();
-    abstract function checkSop();
+    abstract function checkSop(); 
+    abstract function getReviewers();
 
     function getCSColumns() {
         $moreJson = array();
@@ -467,29 +468,6 @@ abstract class AbstractSop extends BackboneModel{
     }
 
    /**
-    * returns an array of the faculty staff that have finished reviewing this SOP.
-    * this checks only if the last question was answered which is 'admit or not admit?'
-    * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
-    */
-    function getReviewers(){
-        $sql = "SELECT DISTINCT(user_id), data
-                FROM grand_report_blobs
-                WHERE rp_section = 'OT_REVIEW'
-		        AND rp_item = 'Q13'
-		        AND rp_subitem =".$this->id;
-        $data = DBFunctions::execSQL($sql);
-	    $reviewers = array();
-        if(count($data)>0){
-            foreach($data as $user){
-		        if($user['data'] != ''){
-                    $reviewers[] = $user['user_id'];
-		        }
-            }
-        }
-	    return $reviewers;
-    }
-
-   /**
     * returns string if SOP was suggested to be admitted or not by the user specified in argument.
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
@@ -575,6 +553,7 @@ abstract class AbstractSop extends BackboneModel{
         }
         return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops?embed#/{$this->getId()}/edit";
     }
+
 
   /**
    * getReadabilityScore Updates and returns readablility score for the SOP

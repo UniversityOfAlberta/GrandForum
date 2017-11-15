@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="CS Review" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSReviewPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role role="OT">
+        <Role role="Faculty">
+            <SectionPermission id="review student" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="Manager">
+            <SectionPermission id="review student" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="Admin">
             <SectionPermission id="review student" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
