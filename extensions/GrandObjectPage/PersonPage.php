@@ -119,12 +119,12 @@ class PersonPage {
                 }
                 // Set the value of the Profile start/end fields
                 if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $person->getId()){
-                    $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : CYCLE_START;
-                    $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : CYCLE_END;
+                    $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : "0000-00-00";
+                    $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : date('Y-m-d');
                 }
                 else{
-                    $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : CYCLE_START;
-                    $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : CYCLE_END;
+                    $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : "0000-00-00";
+                    $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : date('Y-m-d');
                 }
                 $tabbedPage = new TabbedPage("person");
                 
