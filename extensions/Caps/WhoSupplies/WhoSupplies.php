@@ -30,6 +30,7 @@ class WhoSupplies extends SpecialPage{
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                     <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso®, <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
                     <li>On May 18th, Health Canada released a Dear Healthcare Professional Letter to clarify the different requirements associate with Mifegymiso®, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/63330a-eng.php' target='_blank'>read more</a></li>
+                    <li>On November 7th, 2017, Health Canada announced significant changes to mifepristone distribution, prescribing and dispensing processes. To view Health Canada's communication, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>click here</a>. For a summary developed by the CAPS team, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews'>click here</a></li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
@@ -37,6 +38,7 @@ class WhoSupplies extends SpecialPage{
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                     <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
                     <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso®, <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
+                    <li>On November 7th, 2017 Health Canada announced that all pharmacists across Canada may dispense Mifegymiso® directly to patients. <a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> to view an excellent resource developed by our partners at the Canadian Pharmacists Association.</li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
@@ -55,6 +57,7 @@ class WhoSupplies extends SpecialPage{
                     <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of November 7th 2017.</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
@@ -126,6 +129,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Pharmacist Regulations</h3>
                 <ul>
                     <li>In June, 2017, the Manitoba College of Pharmacists approved guidelines for the distribution of Mifegymiso® in Manitoba, specifying that pharmacist's in Manitoba cannot dispense Mifegymiso® directly to a patient, <a target='_blank' href='http://www.cphm.ca/uploaded/web/Guidelines/Mifegymiso/Final%20Mifegymiso%20Guideline%20for%20Pharmacists.pdf'>read more</a></li>
+                    <li>On November 7th, 2017 Health Canada announced that all pharmacists across Canada may dispense Mifegymiso® directly to patients. <a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> to view an excellent resource developed by our partners at the Canadian Pharmacists Association.</li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
