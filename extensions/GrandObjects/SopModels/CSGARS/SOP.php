@@ -211,6 +211,24 @@ class SOP extends AbstractSop{
         }
             return $reviewers;
     }
+
+   /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getAdmitResult($user){
+        $sql = "SELECT data
+                FROM grand_report_blobs
+                WHERE rp_section = 'OT_REVIEW'
+                        AND rp_item = 'CS_Review_Rank'
+                        AND user_id = '$user'
+                        AND proj_id =".$this->id;
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return $data[0]['data'];
+        }
+       return '--';
+    }
 }
 
 ?>
