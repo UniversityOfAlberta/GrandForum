@@ -67,7 +67,7 @@ class GsmsData extends BackboneModel{
             $dob = explode(" ", $data[0]['date_of_birth']);
             $this->date_of_birth = $dob[0];
             $program_name = nl2br(implode("\n", explode("; ", $data[0]['program_name'])));
-            $this->program_name = $program_name;
+            $this->program_name = $data[0]['program_name'];
             $this->country_of_birth = $data[0]['country_of_birth'];
             $this->country_of_citizenship = $data[0]['country_of_citizenship'];
             $this->applicant_type = $data[0]['applicant_type'];
@@ -251,6 +251,13 @@ class GsmsData extends BackboneModel{
 	return true;
     }
 
+    function getProgramName($br = true){
+       if($br){
+           return implode("<br />", explode(", ", $this->program_name));
+       }
+       return $this->program_name;
+    }
+
     /**
      * Returns an array of this object
      * @return array of object
@@ -274,7 +281,7 @@ class GsmsData extends BackboneModel{
  	          'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
-                  'program_name' => $this->program_name,
+                  'program_name' => $this->getProgramName(true),
                   'country_of_birth' => $this->country_of_birth,
                   'country_of_citizenship' => $this->country_of_citizenship,
                   'applicant_type' => $this->applicant_type,
@@ -376,7 +383,8 @@ class GsmsData extends BackboneModel{
         $supervisors = "";
         if (isset($blob['q14'])) {
           foreach ($blob['q14'] as $el) {
-            $supervisors[] = explode(" ", $el)[1];
+            $sup_array = explode(" ", $el);
+            $supervisors[] = $sup_array[1];
           }
         }
         $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));

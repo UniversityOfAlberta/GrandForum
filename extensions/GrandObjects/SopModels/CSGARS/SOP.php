@@ -6,6 +6,7 @@ mb_internal_encoding("UTF-8");
  */
 class SOP extends AbstractSop{
 
+
   /**
    * SOP constructor.
    * @param $data
@@ -191,6 +192,29 @@ class SOP extends AbstractSop{
             }
         }
         return "";
+    }
+
+   /**
+    * returns an array of the faculty staff that have finished reviewing this SOP.
+    * this checks only if the last question was answered which is 'admit or not admit?'
+    * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
+    */
+    function getReviewers(){
+        $sql = "SELECT DISTINCT(user_id), data
+                FROM grand_report_blobs
+                WHERE rp_section = 'OT_REVIEW'
+                        AND rp_item = 'CS_Review_Supervise'
+                        AND proj_id =".$this->id;
+        $data = DBFunctions::execSQL($sql);
+            $reviewers = array();
+        if(count($data)>0){
+            foreach($data as $user){
+                        if($user['data'] != ''){
+                    $reviewers[] = $user['user_id'];
+                        }
+            }
+        }
+            return $reviewers;
     }
 }
 
