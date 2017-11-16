@@ -230,7 +230,9 @@ class SOP extends AbstractSop{
                         AND proj_id =".$this->id;
         $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
-            return $data[0]['data'];
+            if($data[0]['data'] != ""){
+                return $data[0]['data'];
+            }
         }
        return '--';
     }
