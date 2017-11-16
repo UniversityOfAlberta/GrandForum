@@ -51,17 +51,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
-        <Instructions>
-            <![CDATA[
-                <ol>
-                    <li>Please score all sections.  You can use decimals in your scores.</li>
-                    <li>Please provide comments to justify your scores.</li>
-                    <li>Overall Competition Goal: Fund research investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
-                    <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li> 
-                    <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
-                </ol>
-            ]]>
-        </Instructions>
         <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                       {contains({$user_full_roles},ISAC)}
                                                      )},
@@ -77,7 +66,15 @@
                                 <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                             </table>
                             {$item}
-                            <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
+                            <p class='info'>
+                                <ol>
+                                    <li>Please score all sections.  You can use decimals in your scores.</li>
+                                    <li>Please provide comments to justify your scores.</li>
+                                    <li>Overall Competition Goal: Fund research investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
+                                    <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li> 
+                                    <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
+                                </ol>
+                            </p>
                         ]]>
                     </ReportItem>
                     <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="CAT_EX_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
@@ -566,17 +563,6 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
         </ReportItem>
     </ReportSection>
     <ReportSection id="src_review" name="SRC Review" blobSection="CAT_SRC_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
-        <Instructions>
-            <![CDATA[
-                <ol>
-                    <li>Please score all sections.  You can use decimals in your scores.</li>
-                    <li>Please provide comments to justify your scores.</li>
-                    <li>Overall Competition Goal: Fund research investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
-                    <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li>
-                    <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
-                </ol>
-            ]]>
-        </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-SRC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                 <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2017Application" buttonName="Download Application">
@@ -588,7 +574,15 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
                         {$item}
-                        <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
+                        <p class='info'>
+                            <ol>
+                                <li>Please score all sections.  You can use decimals in your scores.</li>
+                                <li>Please provide comments to justify your scores.</li>
+                                <li>Overall Competition Goal: Fund research investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
+                                <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li> 
+                                <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
+                            </ol>
+                        </p>
                     ]]>
                 </ReportItem>
                 <ReportItem id="src_1" blobType="BLOB_TEXT" blobItem="CAT_CAT_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
@@ -1103,16 +1097,6 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="rmc_review" name="RMC Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
-        <Instructions>
-            <![CDATA[
-                <ol>
-                    <li>Please score all sections.  You can use decimals in your scores.</li>
-                    <li>Competition Goal: To advance previously funded CFN research evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
-                    <li>Because of the limited overall budget and expected high interest for this competition, the budget/budget justification will be a major evaluation criterion.  Note: Increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</li>
-                    <li>Proposals that secure cash and/or in kind matching contributions beyond the minimum 1:1 match will be at an advantage.</li>
-                </ol>
-            ]]>
-        </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-RMC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                 <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2017Application" buttonName="Download Application">
@@ -1124,7 +1108,14 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
                         {$item}
-                        <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
+                        <p class='info'>
+                            <ol>
+                                <li>Please score all sections.  You can use decimals in your scores.</li>
+                                <li>Competition Goal: To advance previously funded CFN research evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
+                                <li>Because of the limited overall budget and expected high interest for this competition, the budget/budget justification will be a major evaluation criterion.  Note: Increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</li>
+                                <li>Proposals that secure cash and/or in kind matching contributions beyond the minimum 1:1 match will be at an advantage.</li>
+                            </ol>
+                        </p>
                     ]]>
                 </ReportItem>
                 <ReportItem id="rmc_1" blobType="BLOB_TEXT" blobItem="CAT_RMC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
