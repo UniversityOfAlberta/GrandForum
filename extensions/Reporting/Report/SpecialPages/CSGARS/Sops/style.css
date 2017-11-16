@@ -381,3 +381,10 @@ table.wikitable tr.deleted {
   margin: 0 auto;
 }
 
+.stickyHeader {
+    position: sticky;
+    top: -16px;
+    background: #DEDEDE;
+    border-bottom: 1px solid #AAAAAA !important;
+}
+

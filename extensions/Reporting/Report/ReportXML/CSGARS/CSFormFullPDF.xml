@@ -268,7 +268,7 @@
 
     <!-- Page4: SoP -->
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
+        <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" reportLimits="true" limit="4500" height="1000px">
             <![CDATA[
                 {$item}
             ]]>

@@ -1,4 +1,5 @@
 <?php
+mb_internal_encoding("UTF-8");
 
 /**
  * @package GrandObjects
@@ -113,7 +114,11 @@ class SOP extends AbstractSop{
 	    if($asString){
              $string = "";
              foreach($this->content as $question => $answer){
-                $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
+                //$answer = str_replace("\r", "", $answer);
+                //$answer = str_replace("\00", "", $answer);\
+                $length = strlen(utf8_decode($answer));
+                //$lengthDiff = strlen($answer) - $length;
+                $string = $string."<b>". $question."</b>"."<br /><br />".nl2br(substr($answer, 0, $length))."<br /><br />";
              }
              return $string;
 	    }
