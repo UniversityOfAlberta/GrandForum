@@ -450,43 +450,6 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         ]]>
                     </ReportItem>
                     
-                    <ReportItem id="ex_11" blobType="BLOB_TEXT" blobItem="CAT_EX_11" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                        <![CDATA[
-                            <h2>11. Partnerships</h2>
-                            <p>Do the applicants have the appropriate partners to carry out the study and do the partners appear fully committed to, and meaningfully involved in the project?  Note: Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding.  As an example, if the PI requests $100,000 from CFN then the PI must secure an additional minimum $100,000 in partner contributions.</p>
-                            <table class='wikitable' width='100%'>
-                                <tr>
-                                    <th width='23%'>Unacceptable<br />
-                                        <small>(score = 0)</small>
-                                    </th>
-                                    <th width='23%'>Borderline<br />
-                                        <small>(score = 1)</small>
-                                    </th>
-                                    <th width='23%'>Good/Solid<br />
-                                        <small>(score = 3)</small>
-                                    </th>
-                                    <th width='23%'>Excellent<br />
-                                        <small>(score = 4)</small>
-                                    </th>
-                                    <th width='8%'>Your score<br />
-                                        <small>(Max 4)</small></th>
-                                </tr>
-                                <tr>
-                                    <td class='small' valign='top'>Applicants have not established partnerships for the proposed study or have listed partners that have not committed to the minimum 1:1 partner contribution (1:1; partner funding:CFN funding).</td>
-                                    <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and all partner contributions are in-kind (i.e., no cash).  In addition, many of the partners appear to be appropriate (i.e., lack the expertise, experience etc...) for the planned study and thus are likely to be meaningfully involved in the study.</td>
-                                    <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and a small percentage (<10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
-                                    <td class='small' valign='top'>Applicants have partners that have committed more than the minimum 1:1 partner contribution, and a significant percentage (>10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, all partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
-                                    <td align='center'>{$item}</td>
-                                </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="ex_11_comments" type="Textarea" blobItem="CAT_EX_11_COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <b>Comments: Please provide comments to justify your score:</b> {$item}
-                        ]]>
-                    </ReportItem>
-                    
                     <ReportItem id="total1" type="StaticReportItem">
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -500,10 +463,9 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                          {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$user_id},{$my_id},0)},
                                          {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$user_id},{$my_id},0)},
                                          {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_10,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_11,{$user_id},{$my_id},0)}
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_10,{$user_id},{$my_id},0)}
                                     )}
-                                </b> (Score out of 44)</p>
+                                </b> (Score out of 40)</p>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total5">
                                     {round(
@@ -518,10 +480,9 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                                      {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_10,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_11,{$user_id},{$my_id},0)}
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_10,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 44)}
+                                            , 40)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score converted out of 5)</p>
@@ -534,7 +495,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                         }
                                     });
                                     $("#proj{$user_id}_total").html(Math.round(total*100)/100);
-                                    $("#proj{$user_id}_total5").html(Math.round((total/44)*5*100)/100 );
+                                    $("#proj{$user_id}_total5").html(Math.round((total/40)*5*100)/100 );
                                 });
                             </script>
                             </div>
