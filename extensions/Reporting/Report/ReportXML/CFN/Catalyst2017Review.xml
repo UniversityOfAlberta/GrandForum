@@ -546,7 +546,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         </div>
                     ]]>
                 </ReportItem>
-                <ReportItem id="src_1" blobType="BLOB_TEXT" blobItem="CAT_CAT_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                <ReportItem id="src_1" blobType="BLOB_TEXT" blobItem="CAT_SRC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>1. Scientific Excellence - Background, Knowledge Gap(s), and Rationale.</h2>
                         <p>Is the importance and rationale of the study justified?  The applicant was asked to provide a comprehensive review of the relevant background literature and identify knowledge gaps and clearly state the rationale for the project</p>
