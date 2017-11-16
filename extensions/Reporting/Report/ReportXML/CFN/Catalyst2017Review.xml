@@ -66,7 +66,7 @@
                                 <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                             </table>
                             {$item}
-                            <p class='info'>
+                            <div class='info'>
                                 <ol>
                                     <li>Please score all sections.  You can use decimals in your scores.</li>
                                     <li>Please provide comments to justify your scores.</li>
@@ -74,7 +74,7 @@
                                     <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li> 
                                     <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
                                 </ol>
-                            </p>
+                            </div>
                         ]]>
                     </ReportItem>
                     <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="CAT_EX_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
@@ -574,7 +574,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
                         {$item}
-                        <p class='info'>
+                        <div class='info'>
                             <ol>
                                 <li>Please score all sections.  You can use decimals in your scores.</li>
                                 <li>Please provide comments to justify your scores.</li>
@@ -582,7 +582,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                 <li>This Catalyst Grant Program will fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li> 
                                 <li>CFN is looking to invest a maximum of $650,00 in this competition.</li>
                             </ol>
-                        </p>
+                        </div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="src_1" blobType="BLOB_TEXT" blobItem="CAT_CAT_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
@@ -1108,14 +1108,14 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                             <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
                         </table>
                         {$item}
-                        <p class='info'>
+                        <div class='info'>
                             <ol>
                                 <li>Please score all sections.  You can use decimals in your scores.</li>
                                 <li>Competition Goal: To advance previously funded CFN research evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
                                 <li>Because of the limited overall budget and expected high interest for this competition, the budget/budget justification will be a major evaluation criterion.  Note: Increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</li>
                                 <li>Proposals that secure cash and/or in kind matching contributions beyond the minimum 1:1 match will be at an advantage.</li>
                             </ol>
-                        </p>
+                        </div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="rmc_1" blobType="BLOB_TEXT" blobItem="CAT_RMC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
