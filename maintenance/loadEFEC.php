@@ -458,8 +458,8 @@
                     }
                 }
                 
-                if(!$found){
-                    // Do a third check looking for name matches for people with no supervisor yet
+                if(!$found && isset($hqpUniversities[$person->getId()])){
+                    // Do a third check looking for name matches for hqp with no supervisor yet
                     $found = true;
                     foreach($hqpRelations as $supId => $hqpIds){
                         if(isset($hqpIds[$person->getId()])){
