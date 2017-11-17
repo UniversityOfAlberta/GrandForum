@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CS Review" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSReviewPDF" ajax="true" disabled="false">
+<Report name="CSReview" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSReviewPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="Faculty">
             <SectionPermission id="review student" permissions="rw" />
@@ -17,28 +17,16 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="cs_student_review" tooltip="Student Review" name="Review" blobSection="CS_REVIEW" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q1" type="RadioReportItem" blobItem="CS_Review_SpecialCons" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No" user="{$userId}">
-            <![CDATA[
-                <h3>Special Considerations That Make This Application Compelling?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q2" type="Textarea" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
-            <![CDATA[
-                <h3>Explain</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+    <ReportSection id="cs_student_review" tooltip="Student Review" name="Review Student" blobSection="CS_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
             <![CDATA[
-                <h3>Rank</h3>
+                <h3>Rating</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q4" type="Textarea" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
             <![CDATA[
-                <h3>Justification for Ranking</h3>
+                <h3>Comments</h3>
                 {$item}
             ]]>
         </ReportItem>
