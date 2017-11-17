@@ -66,6 +66,7 @@ SopsView = Backbone.View.extend({
         "click #selectTagBox" : "showCheckboxes",
         "click #showfilter" : "showFilter",
         "click #hidefilter" : "showFilter",
+        "click #selectAreasBox" : "showAreasCheckboxes",
     },
 
     reloadTable: function(){
@@ -91,6 +92,19 @@ SopsView = Backbone.View.extend({
 
     showCheckboxes: function(){
         var checkboxes = document.getElementById("checkboxes");
+        if (!this.expanded) {
+            checkboxes.style.display = "block";
+            checkboxes.style.position = "absolute";
+            checkboxes.style.background="white";
+            this.expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            this.expanded = false;
+        }
+    },
+
+    showAreasCheckboxes: function(){
+        var checkboxes = document.getElementById("areasCheckboxes");
         if (!this.expanded) {
             checkboxes.style.display = "block";
             checkboxes.style.position = "absolute";
@@ -181,6 +195,26 @@ SopsView = Backbone.View.extend({
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
                 if($('#'+tag).is(':checked')){
                     return true;
+                }
+            }
+            return false;
+        }
+        return true;
+   },
+
+   filterByAreasOfInterest: function(settings,data,dataIndex){
+        var allAreas = ['algorithmicstheory','artificialintelligence','bioinformatics','communicationnetworks',
+        'computerarchitecture','computergames','computergraphics','computervision','databasesystems','hci','multimediacommunication',
+        'machinelearning','numericalanalysis','operatingsystems','reinforcementlearning','robotics',
+        'softwareengineering','softwaresystems','statisticalmachinelearning'];
+        var chosen = data[9].replace(/\s/g, '').replace('//','').toLowerCase().split(",");
+        if($('#filterByAoI').is(':checked')){
+            for(j = 0; j < allAreas.length; j++){
+                if($('#'+allAreas[j]).is(':checked')) {
+                    if ($.inArray(allAreas[j], chosen) != -1) {
+                        return true;
+                    }
+                    return false;
                 }
             }
             return false;
@@ -397,6 +431,7 @@ SopsView = Backbone.View.extend({
             this.filterCourses,
             this.filterNotes,
             this.filterComments,
+            this.filterByAreasOfInterest,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',

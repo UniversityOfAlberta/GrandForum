@@ -269,15 +269,15 @@ table.wikitable tr.deleted {
     position: absolute;
     left: 0; right: 0; top: 0; bottom: 0;
 }
-#checkboxes {
+.checkboxesSelect {
     display: none;
     border: 1px #dadada solid;
     z-index:10000;
 }
-#checkboxes label {
+.checkboxesSelect label {
     display: block;
 }
-#checkboxes label:hover {
+.checkboxesSelect label:hover {
     background-color: #1e90ff;
 }
 
