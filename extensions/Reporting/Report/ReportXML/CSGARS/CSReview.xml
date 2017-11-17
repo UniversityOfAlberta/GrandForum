@@ -32,7 +32,8 @@
         </ReportItem>
         <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Supervise" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
             <![CDATA[
-                <h3>Are you willing to supervise this student?</h3>
+                <h3><i>If you are a faculty member reviewing this applicant, please respond to the following question:</i></h3>
+                <p>Are you willing to supervise this applicant?</p>
                 {$item}
             ]]>
         </ReportItem>
