@@ -207,7 +207,7 @@ SopsView = Backbone.View.extend({
         'computerarchitecture','computergames','computergraphics','computervision','databasesystems','hci','multimediacommunication',
         'machinelearning','numericalanalysis','operatingsystems','reinforcementlearning','robotics',
         'softwareengineering','softwaresystems','statisticalmachinelearning'];
-        var chosen = data[9].replace(/\s/g, '').replace('//','').toLowerCase().split(",");
+        var chosen = data[9].replace(/\s/g, '').replace('/','').toLowerCase().split(",");
         if($('#filterByAoI').is(':checked')){
             for(j = 0; j < allAreas.length; j++){
                 if($('#'+allAreas[j]).is(':checked')) {
