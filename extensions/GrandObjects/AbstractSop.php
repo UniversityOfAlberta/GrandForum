@@ -61,6 +61,9 @@ abstract class AbstractSop extends BackboneModel{
     abstract function getSopUrl();
     abstract function checkSop(); 
     abstract function getReviewers();
+    abstract function getAdmitResult($user);
+
+
 
     function getCSColumns() {
         $moreJson = array();
@@ -466,34 +469,6 @@ abstract class AbstractSop extends BackboneModel{
         $string = preg_replace('/[^A-Za-z.,\']/', ' ',$string);
         return $string;
     }
-
-   /**
-    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
-    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
-    */
-    function getAdmitResult($user){
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
-	    $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
-	    $blob->load($blob_address);
-	    $data = $blob->getData();
-        if($data == 'Yes'){
-            return "Admit";
-        }
-        elseif($data == 'No'){
-            return "Reject";
-        }
-	elseif($data == 'Special Consideration'){
-	    return "Special Consideration";
-	}
-	elseif($data == 'Undecided'){
-            return "Undecided";
-	}
-	else{
-	    return "--";
-	}
-    }
-
-
    /**
     * returns string if SOP was suggested to be admitted or not by the user specified in argument.
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
