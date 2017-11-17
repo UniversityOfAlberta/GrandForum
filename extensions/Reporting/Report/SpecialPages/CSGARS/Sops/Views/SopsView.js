@@ -222,6 +222,20 @@ SopsView = Backbone.View.extend({
         return true;
    },
 
+   filterSupervisors: function(settings,data,dataIndex){
+        console.log("doing things");
+        var filtersupervisors = $("#filterSelectSupervisors").chosen().val();
+        var studentsupervisors = data[10].split(", ");
+        if (filtersupervisors != null) {
+            for (var i = 0; i < filtersupervisors.length; ++i) {
+                if ($.inArray(filtersupervisors[i], studentsupervisors) == -1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+   },
+
    filterNumPubs: function(settings,data,dataIndex){
         var min = parseFloat($('#numPubsInputMin').val(),0);
         var max = parseFloat($('#numPubsInputMax').val(),0);
@@ -432,6 +446,7 @@ SopsView = Backbone.View.extend({
             this.filterNotes,
             this.filterComments,
             this.filterByAreasOfInterest,
+            this.filterSupervisors,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',
@@ -439,6 +454,10 @@ SopsView = Backbone.View.extend({
             changeYear: true,
             yearRange: "-100:-18",
             defaultDate: "-18y"
+        });
+        //var that = this;
+        this.$('#filterSelectSupervisors').chosen({ max_selected_options: 0 }).change(function(){
+            // This is where the supervisor selector registers a change
         });
             
         return this.$el;
