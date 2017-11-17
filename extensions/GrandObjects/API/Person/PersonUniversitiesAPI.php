@@ -38,19 +38,19 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
-        $uniCheck = DBFunctions::select(array('grand_universities'),
-                                        array('*'),
-                                        array('university_name' => $this->POST('university')));
+        $university = University::newFromName($this->POST('university'));
         $posCheck = DBFunctions::select(array('grand_positions'),
                                         array('*'),
                                         array('position' => $this->POST('position')));
         
-        if(count($uniCheck) == 0){
+        if($university == null || $university->getId() == 0){
             // Create new University
             DBFunctions::insert('grand_universities',
                                 array('university_name' => $this->POST('university'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
+            unset(University::$cache[$this->POST('university')]);
+            $university = University::newFromName($this->POST('university'));
         }
         
         if(count($posCheck) == 0){
@@ -64,19 +64,14 @@ class PersonUniversitiesAPI extends RESTAPI {
         $university_id = "";
         $position_id = "";
        
-        $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
         
         $department = $this->POST('department');
         $researchArea = $this->POST('researchArea');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
-        
-        foreach($universities as $university){
-            if($this->POST('university') == $university->getName()){
-                $university_id = $university->getId();
-            }
-        }
+
+        $university_id = $university->getId();
         
         foreach($positions as $id => $position){
             if($this->POST('position') == $position){

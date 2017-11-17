@@ -95,12 +95,18 @@ function NOT_IN($values){
     return array("NOT IN", "('".implode("','", $values)."')");
 }
 
+$whereI = 0;
+
 function WHERE_OR($value){
-    return " OR ".$value;
+    global $whereI;
+    $i = str_pad($whereI++, 4, 0, STR_PAD_LEFT);
+    return "$i OR ".$value;
 }
 
 function WHERE_AND($value){
-    return " AND ".$value;
+    global $whereI;
+    $i = str_pad($whereI++, 4, 0, STR_PAD_LEFT);
+    return "$i AND ".$value;
 }
 
 /**
@@ -275,6 +281,9 @@ class DBFunctions {
 	    }
 	    foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
+            if(strpos($key, " OR ") !== false || strpos($key, " AND ") !== false){
+                $key = substr($key, 4); // Remove the unique index
+            }
             if(is_array($value)){
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
@@ -298,10 +307,10 @@ class DBFunctions {
             foreach($whereSQL as $key => $where){
                 if($key > 0){
                     if(strpos($where, " OR ") === 0){
-                        $where = str_replace_first(" OR ", " OR ", $where);
+                        //$where = str_replace_first(" OR ", " OR ", $where);
                     }
                     else if(strpos($where, " AND ") === 0){
-                        $where = str_replace_first(" AND ", " AND ", $where);
+                        //$where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
@@ -356,6 +365,9 @@ class DBFunctions {
 	    $table = DBFunctions::escape($table);
 	    foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
+            if(strpos($key, " OR ") !== false || strpos($key, " AND ") !== false){
+                $key = substr($key, 4); // Remove the unique index
+            }
             if(is_array($value)){
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
@@ -370,10 +382,10 @@ class DBFunctions {
             foreach($whereSQL as $key => $where){
                 if($key > 0){
                     if(strpos($where, " OR ") === 0){
-                        $where = str_replace_first(" OR ", " OR ", $where);
+                        //$where = str_replace_first(" OR ", " OR ", $where);
                     }
                     else if(strpos($where, " AND ") === 0){
-                        $where = str_replace_first(" AND ", " AND ", $where);
+                        //$where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
@@ -413,6 +425,9 @@ class DBFunctions {
         $whereSQL = array();
         foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
+            if(strpos($key, " OR ") !== false || strpos($key, " AND ") !== false){
+                $key = substr($key, 4); // Remove the unique index
+            }
             if(is_array($value)){
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
@@ -426,10 +441,10 @@ class DBFunctions {
             foreach($whereSQL as $key => $where){
                 if($key > 0){
                     if(strpos($where, " OR ") === 0){
-                        $where = str_replace_first(" OR ", " OR ", $where);
+                        //$where = str_replace_first(" OR ", " OR ", $where);
                     }
                     else if(strpos($where, " AND ") === 0){
-                        $where = str_replace_first(" AND ", " AND ", $where);
+                        //$where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";

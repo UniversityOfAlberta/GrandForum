@@ -146,7 +146,12 @@ class Person extends BackboneModel {
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
-            $data[] = self::$namesCache[$name];
+            if(isset(self::$namesCache[$name][0])){
+                $data[] = self::$namesCache[$name][0];
+            }
+            else{
+                $data[] = self::$namesCache[$name];
+            }
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
@@ -214,17 +219,30 @@ class Person extends BackboneModel {
      * Similarity is based on re-arranging the name where there are spaces, or dots etc.
      * Abbreviated names will also attempt to be matched
      * @param string $name The name of the Person
+     * @param boolean $multiple Whether to return multiple people
      * @return Person the Person that matches the name
      */
-    static function newFromNameLike($name){
+    static function newFromNameLike($name, $multiple=false){
         $name = Person::cleanName($name);
         $name = unaccentChars(strtolower($name));
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
-            $data[] = self::$namesCache[$name];
+            $data = self::$namesCache[$name];
         }
-        return @Person::newFromId($data[0]['user_id']);
+        if(isset($data['user_id'])){
+            return @Person::newFromId($data['user_id']);
+        } else {
+            if($multiple){
+                $people = array();
+                foreach($data as $row){
+                    $people[] = Person::newFromId($row['user_id']);
+                }
+                return $people;
+            }else{
+                return @Person::newFromId($data[0]['user_id']);
+            }
+        }
     }
 
     /**
@@ -342,52 +360,58 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
-                self::$idsCache[$row['user_id']] = $row;
-                self::$employeeIdsCache[$row['employee_id']] = $row;
-                
-                $keys = array();
-                if(!Cache::exists("nameCache_{$row['user_id']}")){
-                    // This is just caching the ids for namescache
-                    $exploded = explode(".", unaccentChars($row['user_name']));
-                    $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
-                    $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
-                    $middleName = unaccentChars($row['middle_name']);
-                    $keys = array(
-                        strtolower($row['user_name']),
-                        strtolower("$firstName $lastName"),
-                        strtolower("$lastName $firstName"),
-                        strtolower("$firstName ".substr($lastName, 0, 1)),
-                        strtolower("$lastName ".substr($firstName, 0, 1)),
-                        strtolower(substr($firstName, 0, 1)." $lastName")
-                    );
-                    $splitLastNames = explode(" ", $lastName);
-                    $splitFirstNames = explode(" ", $firstName);
-                    if(count($splitLastNames) > 1){
-                        // User has multiple last names
-                        foreach($splitLastNames as $last){
-                            foreach($splitFirstNames as $first){
-                                $keys[] = "$first $last";
-                                $keys[] = strtolower(substr($first, 0, 1)." $last");
-                            }
-                        }
-                    }
-                    if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                        $keys[] = strtolower(substr($firstName, 0, 1)." $lastName");
-                    }
-                    if($middleName != ""){
-                        $keys[] = strtolower("$firstName $middleName $lastName");
-                        $keys[] = strtolower("$firstName ".substr($middleName, 0, 1)." $lastName");
-                        $keys[] = strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1));
-                    }
-                    Cache::store("nameCache_{$row['user_id']}", $keys);
-                }
-                else{
-                    $keys = Cache::fetch("nameCache_{$row['user_id']}");
-                }
-                foreach($keys as $key){
-                    self::$namesCache[$key] = $row;
-                }
+                self::addRowToNamesCache($row);
             }
+        }
+    }
+    
+    static function addRowToNamesCache($row){
+        self::$idsCache[$row['user_id']] = $row;
+        self::$employeeIdsCache[$row['employee_id']] = $row;
+        
+        $keys = array();
+        if(!Cache::exists("nameCache_{$row['user_id']}")){
+            // This is just caching the ids for namescache
+            $exploded = explode(".", unaccentChars($row['user_name']));
+            $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
+            $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
+            $middleName = unaccentChars($row['middle_name']);
+            $keys = array(
+                strtolower($row['user_name']),
+                strtolower(str_replace(".", " ", $row['user_name'])),
+                strtolower("$firstName $lastName"),
+                strtolower("$lastName $firstName"),
+                strtolower("$firstName ".substr($lastName, 0, 1)),
+                strtolower("$lastName ".substr($firstName, 0, 1)),
+                strtolower(substr($firstName, 0, 1)." $lastName")
+            );
+            $splitLastNames = explode(" ", $lastName);
+            $splitFirstNames = explode(" ", $firstName);
+            //if(count($splitLastNames) > 1){
+                // User has multiple last names
+                foreach($splitLastNames as $last){
+                    foreach($splitFirstNames as $first){
+                        $keys[] = "$first $last";
+                        $keys[] = strtolower(substr($first, 0, 1)." $last");
+                    }
+                }
+            //}
+            if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
+                $keys[] = strtolower(substr($firstName, 0, 1)." $lastName");
+            }
+            if($middleName != ""){
+                $keys[] = strtolower("$firstName $middleName $lastName");
+                $keys[] = strtolower("$firstName ".substr($middleName, 0, 1)." $lastName");
+                $keys[] = strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1));
+            }
+            Cache::store("nameCache_{$row['user_id']}", $keys);
+        }
+        else{
+            $keys = Cache::fetch("nameCache_{$row['user_id']}");
+        }
+        $keys = array_unique($keys);
+        foreach($keys as $key){
+            self::$namesCache[$key][] = $row;
         }
     }
     

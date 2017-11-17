@@ -288,7 +288,7 @@
     echo "\nImporting HQP From Spreadsheet\n";
     foreach($students as $student){
         $person = Person::newFromEmployeeId($student['EMPLID']);
-        if(($person == null || $person->getId() == 0) && $student['CAMPUS_ID'] != ""){
+        if(($person == null || $person->getId() == 0)){
             // First create the user
             $usernames = explode(",", $student['NAME']);
             $firsts = explode(" ", $usernames[1]);
@@ -296,7 +296,7 @@
             $username = str_replace(" ", "", $firsts[0].".".$usernames[0]);
             $username = str_replace("'", "", $username);
             $username = preg_replace("/\".*\"/", "", $username);
-            $email = $student['CAMPUS_ID']."@ualberta.ca";
+            $email = ($student['CAMPUS_ID'] != "") ? $student['CAMPUS_ID']."@ualberta.ca" : "";
             $user = User::createNew($username, array('real_name' => "$realName", 
                                                      'password' => User::crypt(mt_rand()), 
                                                      'email' => $email));
@@ -344,6 +344,7 @@
                 $endMonth = substr($endDate, 3, 2);
                 $endDate = "$endYear-$endMonth-$endDay";
             }
+            
             
             $supervisor = Person::newFromEmployeeId($student['SUPERVISOR_ID']);
             if($supervisor != null && $supervisor->getId() != 0){
@@ -408,7 +409,6 @@
     Person::$namesCache = array();
     Person::$idsCache = array();
     Person::$cache = array();
-    Person::$cache = array();
     
     $iterationsSoFar = 0;
     echo "\nImporting HQP From eFEC\n";
@@ -422,48 +422,83 @@
             $username = trim($username[0]);
         }
         
+        if($row['ended'] == "" && $row['status'] == "withdrew"){
+            $row['ended'] = substr($row['created_at'], 0, 4)."-06-30";
+        }
+        
         $realName = $username;
         $username = str_replace(" ", ".", $username);
         $username = str_replace("'", ".", $username);
         $username = preg_replace("/\".*\"/", "", $username);
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
-        $person = Person::newFromNameLike(str_replace(".", " ", $realName));
-        //file_put_contents("nameCache.txt", implode("\n", array_keys(Person::$namesCache)));
-        if((($row['responsibility'] == 'phd' && isset($hqpUniversities[$person->getId()]['Doctoral Program'])) ||
-            ($row['responsibility'] == 'msc' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
-            ($row['responsibility'] == 'meng' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course']))) ||
-            ($row['responsibility'] == 'ma' && (isset($hqpUniversities[$person->getId()]['Masters Thesis']) || isset($hqpUniversities[$person->getId()]['Masters Course'])))) &&
-           ($sup != null && isset($hqpRelations[$sup->getId()][$person->getId()]))){
-            // Don't actually create these users, but keep track of them for publication authors
-            $person = new Person(array());
-            $person->name = $realName;
-            $person->realname = $realName;
-            $respIdMap[$row['id']] = $person;
-            show_status(++$iterationsSoFar, count($responsibilities));
-            continue;
+        $person = null;
+        $potentials = Person::newFromNameLike(str_replace(".", " ", $realName), true);
+        foreach($potentials as $person){
+            $found = false;
+            if($sup != null && isset($hqpRelations[$sup->getId()][$person->getId()])){
+                // Match found, has the same supervisor
+               $found = true;
+            }
+            else {
+                if($sup != null && isset($hqpUniversities[$person->getId()])){
+                    // Do a second check looking for name matches for people having the same dept/position
+                    foreach($hqpUniversities[$person->getId()] as $pos => $uni){
+                        $otherStart = ($uni['startDate'] != "") ? $uni['startDate'] : "0000-00-00";
+                        $otherEnd = ($uni['endDate'] != "" || $uni['endDate'] != "0000-00-00") ? $uni['endDate'] : "9999-99-99";
+                        $thisStart = ($row['started'] != "") ? $row['started'] : "0000-00-00";
+                        $thisEnd = ($row['ended'] != "" || $row['ended'] != "0000-00-00") ? $row['ended'] : "9999-99-99";
+
+                        if($uni['title'] == $titleMap[$row['responsibility']] && $uni['department'] == $sup->getDepartment() &&
+                           (($thisStart >= $otherStart && $thisStart <= $otherEnd) || 
+                            ($thisEnd   <= $otherEnd   && $thisEnd   >= $otherStart) ||
+                            ($thisStart <= $otherStart && $thisEnd   >= $otherEnd))){
+                            $found = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if(!$found){
+                    // Do a third check looking for name matches for people with no supervisor yet
+                    $found = true;
+                    foreach($hqpRelations as $supId => $hqpIds){
+                        if(isset($hqpIds[$person->getId()])){
+                            // Supervisor was found, so don't use them
+                            $found = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if($found){
+                break;
+            }
         }
         
-        //$person = Person::newFromName($username);
+        if(!$found){
+            // Match not found, only consider exact matches
+            //$person = Person::newFromName($username);
+            $person = null;
+        }
+
         $email = "";
         if($person == null || $person->getId() == 0){
             // First create the user
-            $user = User::createNew($username, array('real_name' => str_replace(".", " ", "$realName"), 
-                                                     'password' => User::crypt(mt_rand()), 
-                                                     'email' => $email));
-            if($user == null){
-                show_status(++$iterationsSoFar, count($responsibilities));
-                continue;
-            }
-            $person = new Person(array());
-            $person->id = $user->getId();
-            $person->name = $user->getName();
-            $person->realname = $realName;
-            Person::$namesCache[$person->getName()] = $person;
-            Person::$idsCache[$person->getId()] = $person;
-            Person::$cache[strtolower($person->getName())] = $person;
-            Person::$cache[$person->getId()] = $person;
+            $extra = "";
+            do {
+                $user = User::createNew($username.$extra, array('real_name' => str_replace(".", " ", "$realName"), 
+                                                                'password' => User::crypt(mt_rand()), 
+                                                                'email' => $email));
+                $extra++;
+            } while ($user == null);
+            
+            $data = DBFunctions::select(array('mw_user'),
+                                        array('*'),
+                                        array('user_id' => EQ($user->getId())));
+            Person::addRowToNamesCache($data[0]);
+            $person = Person::newFromId($user->getId());
         }
-        
+
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){
             // Update Role info
@@ -528,7 +563,6 @@
     
     Person::$namesCache = array();
     Person::$idsCache = array();
-    Person::$cache = array();
     Person::$cache = array();
     
     $iterationsSoFar = 0;
