@@ -70,76 +70,38 @@
             </td>
           </tr>
           <tr>
-            <td align="right"><b>Filter by Tags:</b></td>
-            <td>
-            <input type="checkbox" id="filterByTags" class="filter_option check_tags" />
-            
-              <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: bottom; position: relative;">
-                <div id="selectTagBox" class="selectBox" style="width: 206px">
-                  <select><option>Select Tags</option></select>
-                  <div class="overSelect"></div>
-                </div>
-                <div class="checkboxesSelect" id="checkboxes" style="max-height: 200px; overflow-y: auto;">
-                  <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalqualities"  unchecked/>Negative personal qualities</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience" style="width: 10px;" unchecked/>Understanding of OT incorporated into personal experience</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
             <td align="right"><b>Area(s) of Interest:</b></td>
             <td>
-            <input type="checkbox" id="filterByAoI" class="filter_option check_tags" />
-            
-              <div class="multiselect" style="display:inline-block; width: 200px; vertical-align: bottom; position: relative;">
-                <div id="selectAreasBox" class="selectBox" style="width: 206px">
-                  <select><option>Select Areas</option></select>
-                  <div class="overSelect"></div>
-                </div>
-                <div class="checkboxesSelect" id="areasCheckboxes" style="max-height: 200px; overflow-y: auto;">
-                  <label><input type="checkbox" class="filter_option check_tags" id="algorithmicstheory"  unchecked/>Algorithmics/Theory</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="artificialintelligence"  unchecked/>Artificial Intelligence</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="bioinformatics"  unchecked/>Bioinformatics</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="communicationnetworks"  unchecked/>Communication Networks</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="computerarchitecture" unchecked/>Computer Architecture</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="computergames"  unchecked/>Computer Games</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="computergraphics"  unchecked/>Computer Graphics</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="computervision"  unchecked/>Computer Vision</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="databasesystems"  unchecked/>Database Systems</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="hci"  unchecked/>HCI</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="multimediacommunication"  unchecked/>Multimedia Communication</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="machinelearning"  unchecked/>Machine Learning</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="numericalanalysis"  unchecked/>Numerical Analysis</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="operatingsystems"  unchecked/>Operating Systems</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="reinforcementlearning"  unchecked/>Reinforcement Learning</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="robotics"  unchecked/>Robitics</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="softwareengineering"  unchecked/>Software Engineering</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="softwaresystems"  unchecked/>Software Systems</label>
-                  <label><input type="checkbox" class="filter_option check_tags" id="statisticalmachinelearning"  unchecked/>Statistical Machine Learning</label>
-                </div>
-              </div>
+              <input type='hidden' name='filterAoI' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectAoI'  multiple>
+                <option>Algorithmics/Theory</option>
+                <option>Artificial Intelligence</option>
+                <option>Bioinformatics</option>
+                <option>Communication Networks</option>
+                <option>Computer Architecture</option>
+                <option>Computer Games</option>
+                <option>Computer Graphics</option>
+                <option>Computer Vision</option>
+                <option>Database Systems</option>
+                <option>HCI</option>
+                <option>Multimedia Communication</option>
+                <option>Machine Learning</option>
+                <option>Numerical Analysis</option>
+                <option>Operating Systems</option>
+                <option>Reinforcement Learning</option>
+                <option>Robotics</option>
+                <option>Software Engineering</option>
+                <option>Software Systems</option>
+                <option>Statistical Machine Learning</option>
+              </select>
+             
             </td>
           </tr>
           <tr>
             <td align="right"><b>Supervisors:</b></td>
             <td>
               <input type='hidden' name='filterSupervisors' />
-              <select style='width: 225px;' id='filterSelectSupervisors'  multiple>
+              <select class='filter_option' style='width: 225px;' id='filterSelectSupervisors'  multiple>
                 <option>Ali</option>
                 <option>Amaral</option>
                 <option>Ardakanian</option>

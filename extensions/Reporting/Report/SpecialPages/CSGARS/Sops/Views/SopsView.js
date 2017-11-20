@@ -44,6 +44,7 @@ SopsView = Backbone.View.extend({
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'autoWidth': false,
+                                                     'fixedHeader': true,
                                                      'dom': 'Bfrtip',
                                                      'buttons': [
                                                         {
@@ -70,7 +71,7 @@ SopsView = Backbone.View.extend({
     },
 
     reloadTable: function(){
-    this.table.draw();
+        this.table.draw();
     },
 
     showFilter: function(){
@@ -117,9 +118,10 @@ SopsView = Backbone.View.extend({
     },
 
     clearFilters: function(){
-    $('.filter_option').val("");
-    $('.filter_option').prop('checked', false);
-    this.reloadTable();
+        $('.filter_option').val("");
+        $('.filter_option').prop('checked', false);
+        $('.filter_option').trigger("chosen:updated");
+        this.reloadTable();
     },
 
     filterCitizenship: function(settings,data,dataIndex){
@@ -203,27 +205,19 @@ SopsView = Backbone.View.extend({
    },
 
    filterByAreasOfInterest: function(settings,data,dataIndex){
-        var allAreas = ['algorithmicstheory','artificialintelligence','bioinformatics','communicationnetworks',
-        'computerarchitecture','computergames','computergraphics','computervision','databasesystems','hci','multimediacommunication',
-        'machinelearning','numericalanalysis','operatingsystems','reinforcementlearning','robotics',
-        'softwareengineering','softwaresystems','statisticalmachinelearning'];
-        var chosen = data[9].replace(/\s/g, '').replace('/','').toLowerCase().split(",");
-        if($('#filterByAoI').is(':checked')){
-            for(j = 0; j < allAreas.length; j++){
-                if($('#'+allAreas[j]).is(':checked')) {
-                    if ($.inArray(allAreas[j], chosen) != -1) {
-                        return true;
-                    }
+        var filterSelected= $("#filterSelectAoI").chosen().val();
+        var aois = data[9].split(", ");
+        if (filterSelected != null) {
+            for (var i = 0; i < filterSelected.length; ++i) {
+                if ($.inArray(filterSelected[i], aois) == -1) {
                     return false;
                 }
             }
-            return false;
         }
         return true;
    },
 
    filterSupervisors: function(settings,data,dataIndex){
-        console.log("doing things");
         var filtersupervisors = $("#filterSelectSupervisors").chosen().val();
         var studentsupervisors = data[10].split(", ");
         if (filtersupervisors != null) {
@@ -455,10 +449,8 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
-        //var that = this;
-        this.$('#filterSelectSupervisors').chosen({ max_selected_options: 0 }).change(function(){
-            // This is where the supervisor selector registers a change
-        });
+        this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
+        this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
             
         return this.$el;
     }
