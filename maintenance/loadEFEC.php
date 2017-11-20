@@ -573,15 +573,23 @@
     }
     
     $iterationsSoFar = 0;
+    echo "\nCreating HQP Relations\n";
     $nRelations = 0;
-    foreach($hqpRelations as $sup){
-        foreach($sup as $hqp){
+    foreach($hqpRelations as $supId => $sup){
+        // First check to make sure that the person isn't listed as both Supervisor and Co-Supervisor
+        foreach($sup as $hqpId => $hqp){
+            if(isset($hqp[SUPERVISES]) && isset($hqp[CO_SUPERVISES])){
+                unset($hqp[CO_SUPERVISES]);
+                $sUser = Person::newFromId($supId);
+                $hqpUser = Person::newFromId($hqpId);
+                echo "DUPLICATE: {$sUser->getName()} -> {$hqpUser->getName()}\n";
+            }
+            $hqpRelations[$supId][$hqpId] = $hqp;
             foreach($hqp as $rel){
                 $nRelations++;
             }
         }
     }
-    echo "\nCreating HQP Relations\n";
     foreach($hqpRelations as $sup){
         foreach($sup as $hqp){
             foreach($hqp as $rel){
