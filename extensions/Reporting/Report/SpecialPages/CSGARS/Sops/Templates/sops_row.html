@@ -86,13 +86,11 @@
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
-	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
-	<% } %>
-
-	<br />
-
-    <% } %>
-        <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
+      	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
+      	<% } %>
+  <br />
+  <% } %>
+  <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 
 <td style="white-space: nowrap;">

@@ -146,7 +146,7 @@ SopsView = Backbone.View.extend({
         var min = parseFloat($('#referenceNameInputMin').val(),0);
         var max = parseFloat($('#referenceNameInputMax').val(),0);
         var gpa = parseFloat( data[12] ) || 0; // use column 2
-    //check if gpa inbetween min-max
+        //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
              ( min <= gpa   && isNaN( max ) ) ||
@@ -223,6 +223,20 @@ SopsView = Backbone.View.extend({
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
                 if ($.inArray(filtersupervisors[i], studentsupervisors) == -1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+   },
+
+   filterReviewers: function(settings,data,dataIndex){
+        var filterreviewers = $("#filterSelectReviewers").chosen().val();
+        var reviewers = data[17];
+        console.log(reviewers);
+        if (filterreviewers != null) {
+            for (var i = 0; i < filterreviewers.length; ++i) {
+                if (reviewers.indexOf(filterreviewers[i]) == -1) {
                     return false;
                 }
             }
@@ -441,6 +455,7 @@ SopsView = Backbone.View.extend({
             this.filterComments,
             this.filterByAreasOfInterest,
             this.filterSupervisors,
+            this.filterReviewers,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',
@@ -451,6 +466,7 @@ SopsView = Backbone.View.extend({
         });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
+        this.$('#filterSelectReviewers').chosen({ placeholder_text_multiple: 'Select Reviewers' });
             
         return this.$el;
     }

@@ -421,6 +421,18 @@ input[type=radio][disabled]:hover {
     border: none !important;
 }
 
+div.chosen-container.chosen-container-multi > ul.chosen-choices {
+	border-radius: 15px;
+}
+
+div.chosen-with-drop.chosen-container-multi > ul.chosen-choices {
+	border-radius: 15px 15px 0 0;
+} 
+
+.search-choice {
+	border-radius: 10px !important;
+}
+
 .custom-combobox-input {
     background: #FFFFFF !important;
     font-weight: bold;
