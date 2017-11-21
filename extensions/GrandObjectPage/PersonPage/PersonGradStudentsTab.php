@@ -93,17 +93,30 @@ class PersonGradStudentsTab extends AbstractTab {
             $relations = $this->person->getRelationsDuring('all', $startDate, $endDate);
         }
         $students = array();
+        $hqpsDone = array();
         foreach($relations as $r){
             $hqp = $r->getUser2();
-            
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
             $start_date = substr($r->getStartDate(), 0, 10);
             $end_date = substr($r->getEndDate(), 0, 10);
             
             if($end_date != "0000-00-00"){
-                $university = $hqp->getUniversityDuring($end_date, $end_date);
+                $universities = $hqp->getUniversitiesDuring($end_date, $end_date);
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), $hqpTypes)){
+                        break;
+                    }
+                }
             }
             else{
-                $university = $hqp->getUniversity();
+                $universities = $hqp->getUniversitiesDuring($end_date, "2100-00-00");
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), $hqpTypes)){
+                        break;
+                    }
+                }
             }
             
             $uni = $university['university'];
@@ -158,6 +171,7 @@ class PersonGradStudentsTab extends AbstractTab {
             if(count($awardCitations) > 0){
                 $html .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }
+            $hqpsDone[$hqp->getId()] = true;
         }
         $html .= "</tbody></table>";
         return $html;
