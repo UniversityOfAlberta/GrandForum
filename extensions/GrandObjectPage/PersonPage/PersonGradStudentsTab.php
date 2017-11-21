@@ -104,18 +104,14 @@ class PersonGradStudentsTab extends AbstractTab {
             
             if($end_date != "0000-00-00"){
                 $universities = $hqp->getUniversitiesDuring($end_date, $end_date);
-                foreach($universities as $university){
-                    if(in_array(strtolower($university['position']), $hqpTypes)){
-                        break;
-                    }
-                }
             }
             else{
                 $universities = $hqp->getUniversitiesDuring($end_date, "2100-00-00");
-                foreach($universities as $university){
-                    if(in_array(strtolower($university['position']), $hqpTypes)){
-                        break;
-                    }
+            }
+            
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), $hqpTypes)){
+                    break;
                 }
             }
             

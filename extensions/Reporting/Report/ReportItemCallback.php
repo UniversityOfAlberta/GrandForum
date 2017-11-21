@@ -1162,15 +1162,22 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
-                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
             }
             else{
-                $university = $relation->getUser2()->getUniversity();
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
             }
-            if(in_array(strtolower($university['position']), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
-                
-                $count++;
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
             }
         }
         return $count;
@@ -1184,14 +1191,22 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
-                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
             }
             else{
-                $university = $relation->getUser2()->getUniversity();
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
             }
-            if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow"))){
-                $count++;
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow"))){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
             }
         }
         return $count;
@@ -1204,15 +1219,24 @@ class ReportItemCallback {
             $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
         );
         $count = 0;
+        $hqpsDone = array();
         foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
-                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
             }
             else{
-                $university = $relation->getUser2()->getUniversity();
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
             }
-            if(in_array(strtolower($university['position']), array("technician", "ra", "research/technical assistant", "professional end user"))){
-                $count++;
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), array("technician", "ra", "research/technical assistant", "professional end user"))){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
             }
         }
         return $count;
@@ -1225,15 +1249,24 @@ class ReportItemCallback {
             $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
         );
         $count = 0;
+        $hqpsDone = array();
         foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
-                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
             }
             else{
-                $university = $relation->getUser2()->getUniversity();
+                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
             }
-            if(in_array(strtolower($university['position']), array("ugrad", "undergraduate", "undergraduate student"))){
-                $count++;
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), array("ugrad", "undergraduate", "undergraduate student"))){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
             }
         }
         return $count;
