@@ -1245,7 +1245,7 @@
                         {set(nReviewers, 0)}
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-EX" includeSelf="true">
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
                     <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)},)},
@@ -1273,7 +1273,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2017Application" buttonName="Download Application">
                     <![CDATA[
                         <div style="margin: 10px;">
                         {$item}
@@ -1298,7 +1298,7 @@
                             <tbody>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="KT-EX" includeSelf="true">
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
                     <ReportItem id="row" type="StaticReportItem">
                         <![CDATA[
                             <tr>
