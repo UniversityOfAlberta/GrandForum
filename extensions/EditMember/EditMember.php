@@ -33,7 +33,22 @@ class EditMember extends SpecialPage{
                                 $('.datepicker').datepicker({showOn: 'both',
                                                             buttonImage: '../skins/calendar.gif',
                                                             buttonText: 'Date',
-                                                            buttonImageOnly: true});
+                                                            buttonImageOnly: true,
+                                                            onChangeMonthYear: function (year, month, inst) {
+                                                                var curDate = $(this).datepicker('getDate');
+                                                                if (curDate == null)
+                                                                    return;
+                                                                if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                                                    curDate.setYear(year);
+                                                                    curDate.setMonth(month - 1);
+                                                                    while(curDate.getMonth() != month -1){
+                                                                        curDate.setDate(curDate.getDate() - 1);
+                                                                    }
+                                                                    $(this).datepicker('setDate', curDate);
+                                                                    $(this).trigger('change');
+                                                                }
+                                                            }
+                                                        });
                                 $('.datepicker').datepicker('option','dateFormat', 'yy-mm-dd');
                                 $('.datepicker').datepicker('option','showAnim', 'blind');
                                 $('.datepicker').keydown(function(){
@@ -1043,6 +1058,20 @@ class EditMember extends SpecialPage{
                     dateFormat: 'yy-mm-dd',
                     changeMonth: true,
                     changeYear: true,
+                    onChangeMonthYear: function (year, month, inst) {
+                        var curDate = $(this).datepicker('getDate');
+                        if (curDate == null)
+                            return;
+                        if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                            curDate.setYear(year);
+                            curDate.setMonth(month - 1);
+                            while(curDate.getMonth() != month -1){
+                                curDate.setDate(curDate.getDate() - 1);
+                            }
+                            $(this).datepicker('setDate', curDate);
+                            $(this).trigger('change');
+                        }
+                    },
                     onClose: function(selectedDate){
                         $('.datepicker_end[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'minDate', selectedDate);
                     }
@@ -1051,6 +1080,20 @@ class EditMember extends SpecialPage{
                     dateFormat: 'yy-mm-dd',
                     changeMonth: true,
                     changeYear: true,
+                    onChangeMonthYear: function (year, month, inst) {
+                        var curDate = $(this).datepicker('getDate');
+                        if (curDate == null)
+                            return;
+                        if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                            curDate.setYear(year);
+                            curDate.setMonth(month - 1);
+                            while(curDate.getMonth() != month -1){
+                                curDate.setDate(curDate.getDate() - 1);
+                            }
+                            $(this).datepicker('setDate', curDate);
+                            $(this).trigger('change');
+                        }
+                    },
                     onClose: function(selectedDate){
                         $('.datepicker_start[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'maxDate', selectedDate);
                     }

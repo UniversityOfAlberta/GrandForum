@@ -198,7 +198,21 @@ EOF;
                 $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
                 $("input.calendar").each(function(i, el){
                     $(el).datepicker({
-                        dateFormat: $(el).attr('data-dateFormat')
+                        dateFormat: $(el).attr('data-dateFormat'),
+                        onChangeMonthYear: function (year, month, inst) {
+                            var curDate = $(this).datepicker('getDate');
+                            if (curDate == null)
+                                return;
+                            if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                curDate.setYear(year);
+                                curDate.setMonth(month - 1);
+                                while(curDate.getMonth() != month -1){
+                                    curDate.setDate(curDate.getDate() - 1);
+                                }
+                                $(this).datepicker('setDate', curDate);
+                                $(this).trigger('change');
+                            }
+                        }
                     });
                 });
                 $("#table_{$this->getPostId()} tbody").sortable({

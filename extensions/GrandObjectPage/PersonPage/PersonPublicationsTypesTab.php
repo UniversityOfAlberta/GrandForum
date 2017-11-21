@@ -29,7 +29,21 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
                                 dateFormat: 'yy-mm-dd',
                                 changeMonth: true,
                                 changeYear: true,
-                                yearRange: '1900:".(date('Y')+3)."'
+                                yearRange: '1900:".(date('Y')+3)."',
+                                onChangeMonthYear: function (year, month, inst) {
+                                    var curDate = $(this).datepicker('getDate');
+                                    if (curDate == null)
+                                        return;
+                                    if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                        curDate.setYear(year);
+                                        curDate.setMonth(month - 1);
+                                        while(curDate.getMonth() != month -1){
+                                            curDate.setDate(curDate.getDate() - 1);
+                                        }
+                                        $(this).datepicker('setDate', curDate);
+                                        $(this).trigger('change');
+                                    }
+                                }
                             });
                             $('div#{$this->id} input[type=button]').click(function(){
                                 var startRange = $('div#{$this->id} input[name=startRange]').val();

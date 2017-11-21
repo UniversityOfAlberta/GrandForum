@@ -35,7 +35,10 @@
         'honors thesis' => "Honors Thesis",
         'ma' => "Graduate Student - Master's",
         'high school' => "High School Student",
-        'meng' => "Graduate Student - Master's"
+        'meng' => "Graduate Student - Master's",
+        'Masters Course' => "Graduate Student - Master's Course",
+        "Masters Thesis" => "Graduate Student - Master's Thesis",
+        "Doctoral Program" => "Graduate Student - Doctoral"
     );
     
     $productCategoryMap = array(
@@ -326,12 +329,12 @@
         
         if($person->getId() != 0){
             // Update Role info
-            if(!isset($hqpRoles[$person->getId()])){
+            if(!isset($hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])])){
                 $r = new Role(array());
                 $r->user = $person->getId();
                 $r->role = HQP;
                 $r->startDate = $student['ADMISSION_START_DT'];
-                $hqpRoles[$person->getId()] = $r;
+                $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])] = $r;
             }
             
             $endDate = $student['COMPLETION_DT'];
@@ -358,7 +361,7 @@
                         break;
                 }
                 
-                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][$roleType])){
+                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$student['PROG_TYPE']])])){
                     $rel = new Relationship(array());
                     $rel->user1 = $supervisor->getId();
                     $rel->user2 = $person->getId();
@@ -366,42 +369,32 @@
                     $rel->endDate = $endDate;
                     $rel->type = $roleType;
                     
-                    $hqpRelations[$supervisor->getId()][$person->getId()][$roleType] = $rel;
+                    $hqpRelations[$supervisor->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$student['PROG_TYPE']])] = $rel;
                 }
-                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][$roleType];
+                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$student['PROG_TYPE']])];
                 $relation->startDate = min($relation->getStartDate(), $student['ADMISSION_START_DT']);
                 $relation->endDate   = max($relation->getEndDate(),   $endDate);
             }
             
-            if(!isset($hqpUniversities[$person->getId()][$student['PROG_TYPE']])){
+            if(!isset($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])])){
                 $uni = array();
                 $uni['university'] = "University of Alberta";
                 $uni['department'] = $student['UASA_ACAD_PLN1_D30'];
                 $uni['startDate'] = $student['ADMISSION_START_DT'];
                 $uni['title'] = "";
                 $uni['endDate'] = $endDate;
-                switch($student['PROG_TYPE']){
-                    case "Masters Course":
-                        $uni['title'] = "Graduate Student - Master's Course";
-                        break;
-                    case "Masters Thesis":
-                        $uni['title'] = "Graduate Student - Master's Thesis";
-                        break;
-                    case "Doctoral Program":
-                        $uni['title'] = "Graduate Student - Doctoral";
-                        break;
-                }
-                $hqpUniversities[$person->getId()][$student['PROG_TYPE']] = $uni;
+                $uni['title'] = @$titleMap[$student['PROG_TYPE']];
+                $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])] = $uni;
             }
             
-            $university = $hqpUniversities[$person->getId()][$student['PROG_TYPE']];
+            $university = $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])];
             $university['startDate'] = min($university['startDate'], $student['ADMISSION_START_DT']);
             $university['endDate'] = max($university['endDate'], $endDate);
             
-            $role = $hqpRoles[$person->getId()];
+            $role = $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])];
             $role->startDate = min($role->getStartDate(), $student['ADMISSION_START_DT']);
             $role->endDate   = max($role->getEndDate(),   $endDate);
-            $hqpRoles[$person->getId()] = $role;
+            $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])] = $role;
         }
         show_status(++$iterationsSoFar, count($students));
     }
@@ -502,11 +495,13 @@
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){
             // Update Role info
-            if(!isset($hqpRoles[$person->getId()])){
+            if(!isset($hqpRoles[$person->getId()][$titleMap[$row['responsibility']]])){
                 $r = new Role(array());
                 $r->user = $person->getId();
                 $r->role = HQP;
-                $hqpRoles[$person->getId()] = $r;
+                $r->startDate = $row['started'];
+                $r->endDate = $row['ended'];
+                $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]] = $r;
             }
             if($sup != null){
                 switch($row['role']){
@@ -522,7 +517,7 @@
                         break;
                 }
             
-                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$roleType])){
+                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]])){
                     $rel = new Relationship(array());
                     $rel->user1 = $sup->getId();
                     $rel->user2 = $person->getId();
@@ -530,31 +525,31 @@
                     $rel->endDate = $row['ended'];
                     $rel->type = $roleType;
                     
-                    $hqpRelations[$sup->getId()][$person->getId()][$roleType] = $rel;
+                    $hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]] = $rel;
                 }
                 
-                $relation = $hqpRelations[$sup->getId()][$person->getId()][$roleType];
+                $relation = $hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]];
                 $relation->startDate = min($relation->getStartDate(), $row['started']);
                 $relation->endDate   = max($relation->getEndDate(),   $row['ended']);
             }
             
-            $role = $hqpRoles[$person->getId()];
+            $role = $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]];
             $role->startDate = min($role->getStartDate(), $row['started']);
             $role->endDate   = max($role->getEndDate(),   $row['ended']);
-            $hqpRoles[$person->getId()] = $role;
+            $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]] = $role;
         }
         
-        if(!isset($hqpUniversities[$person->getId()][$row['responsibility']])){
+        if(!isset($hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]])){
             $uni = array();
             $uni['university'] = "University of Alberta";
             $uni['department'] = ($sup != null) ? $sup->getDepartment() : "";
             $uni['startDate'] = $row['started'];
             $uni['endDate'] = $row['ended'];
             $uni['title'] = $titleMap[$row['responsibility']];
-            $hqpUniversities[$person->getId()][$row['responsibility']] = $uni;
+            $hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]] = $uni;
         }
         
-        $university = $hqpUniversities[$person->getId()][$row['responsibility']];
+        $university = $hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]];
         $university['startDate'] = min($university['startDate'], $row['started']);
         $university['endDate'] = max($university['endDate'], $row['ended']);
         
@@ -567,9 +562,15 @@
     
     $iterationsSoFar = 0;
     echo "\nCreating HQP Roles\n";
-    foreach($hqpRoles as $id => $role){
-        $role->create();
-        show_status(++$iterationsSoFar, count($hqpRoles));
+    $nRoles = 0;
+    foreach($hqpRoles as $id => $roles){
+        $nRoles += count($roles);
+    }
+    foreach($hqpRoles as $id => $roles){
+        foreach($roles as $role){
+            $role->create();
+            show_status(++$iterationsSoFar, $nRoles);
+        }
     }
     
     $iterationsSoFar = 0;
@@ -579,22 +580,27 @@
         // First check to make sure that the person isn't listed as both Supervisor and Co-Supervisor
         foreach($sup as $hqpId => $hqp){
             if(isset($hqp[SUPERVISES]) && isset($hqp[CO_SUPERVISES])){
-                unset($hqp[CO_SUPERVISES]);
-                $sUser = Person::newFromId($supId);
-                $hqpUser = Person::newFromId($hqpId);
-                echo "DUPLICATE: {$sUser->getName()} -> {$hqpUser->getName()}\n";
+                foreach($hqp[SUPERVISES] as $k => $s){
+                    if(isset($hqp[CO_SUPERVISES][$k])){
+                        unset($hqp[CO_SUPERVISES][$k]);
+                    }
+                }
             }
             $hqpRelations[$supId][$hqpId] = $hqp;
-            foreach($hqp as $rel){
-                $nRelations++;
+            foreach($hqp as $rels){
+                foreach($rels as $rel){
+                    $nRelations++;
+                }
             }
         }
     }
     foreach($hqpRelations as $sup){
         foreach($sup as $hqp){
-            foreach($hqp as $rel){
-                $rel->create();
-                show_status(++$iterationsSoFar, $nRelations);
+            foreach($hqp as $rels){
+                foreach($rels as $rel){
+                    $rel->create();
+                    show_status(++$iterationsSoFar, $nRelations);
+                }
             }
         }
     }

@@ -69,7 +69,25 @@ class PersonFECTab extends AbstractEditableTab {
         $this->html .= "<script type='text/javascript'>
             $('input.calendar').keyup(function(){ return false; });
             $('input.calendar').keydown(function(){ return false; });
-            $('input.calendar').datepicker({dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true, yearRange: '1900:".(date('Y')+3)."'});
+            $('input.calendar').datepicker({dateFormat: 'yy-mm-dd', 
+                                            changeYear: true, 
+                                            changeMonth: true, 
+                                            yearRange: '1900:".(date('Y')+3)."'
+                                            onChangeMonthYear: function (year, month, inst) {
+                                                var curDate = $(this).datepicker('getDate');
+                                                if (curDate == null)
+                                                    return;
+                                                if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                                    curDate.setYear(year);
+                                                    curDate.setMonth(month - 1);
+                                                    while(curDate.getMonth() != month -1){
+                                                        curDate.setDate(curDate.getDate() - 1);
+                                                    }
+                                                    $(this).datepicker('setDate', curDate);
+                                                    $(this).trigger('change');
+                                                }
+                                            }
+                                          });
             $('<span style=\"vertical-align: middle;\" class=\"delete-icon\" title=\"Clear Date\"></span>').insertAfter('input.calendar').click(function(){ $(this).prev().val('0000-00-00'); });
         </script>";
     }

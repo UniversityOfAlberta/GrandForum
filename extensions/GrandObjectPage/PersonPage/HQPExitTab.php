@@ -170,8 +170,22 @@ class HQPExitTab extends AbstractEditableTab {
                                                         showOn: 'both',
                                                         buttonImage: '../skins/calendar.gif',
                                                         buttonText: 'Date',
-                                                        buttonImageOnly: true
-                                                       });
+                                                        buttonImageOnly: true,
+                                                        onChangeMonthYear: function (year, month, inst) {
+                                                            var curDate = $(this).datepicker('getDate');
+                                                            if (curDate == null)
+                                                                return;
+                                                            if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                                                curDate.setYear(year);
+                                                                curDate.setMonth(month - 1);
+                                                                while(curDate.getMonth() != month -1){
+                                                                    curDate.setDate(curDate.getDate() - 1);
+                                                                }
+                                                                $(this).datepicker('setDate', curDate);
+                                                                $(this).trigger('change');
+                                                            }
+                                                        }
+                                                     });
                 $('.datepicker', container).keydown(function(){
                     return false;
                 });
