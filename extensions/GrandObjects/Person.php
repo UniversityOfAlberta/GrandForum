@@ -131,7 +131,7 @@ class Person extends BackboneModel {
      */
     static function newFromName($name){
         global $wgUser;
-        $name = strtolower(str_replace(' ', '.', $name));
+        $name = strtolower($name);
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
         }

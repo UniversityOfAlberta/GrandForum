@@ -40,6 +40,7 @@ class CreateUserAPI extends API{
         // Finished manditory checks
         $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
         if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1"){
+            $_POST['wpName'] = str_replace('_', ' ', $_POST['wpName']);
             // First check to see if the user already exists
             $person = Person::newFromName($_POST['wpName']);
             if($person != null && $person->getName() != ""){
