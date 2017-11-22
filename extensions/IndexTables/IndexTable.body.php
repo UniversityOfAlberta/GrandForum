@@ -363,7 +363,8 @@ class IndexTable {
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
-        $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
+        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
+        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
         if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
             $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
         }
