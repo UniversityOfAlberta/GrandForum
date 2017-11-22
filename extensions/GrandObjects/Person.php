@@ -3863,6 +3863,15 @@ class Person extends BackboneModel {
         return $histories;
     }
     
+    function getProductHistoryLastYear(){
+        $histories = $this->getProductHistories();
+        $year = "";
+        foreach($histories as $history){
+            $year = max($year, $history->getYear());
+        }
+        return $year;
+    }
+    
     /**
      * Returns the date that this person became leader of the given Project
      * @param Project $project The Project that this person is/was a leader of

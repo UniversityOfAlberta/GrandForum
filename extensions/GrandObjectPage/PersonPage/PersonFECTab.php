@@ -36,6 +36,13 @@ class PersonFECTab extends AbstractEditableTab {
             return "";
         }
         $this->person->getFecPersonalInfo();
+        $eFECLastYear = $this->person->getProductHistoryLastYear();
+        if($eFECLastYear != ""){
+            $this->html .= "<div style='float:right; display: inline-block;'>Counts for publications are calculated based on what was reported in eFEC up to June 30, {$eFECLastYear}.  Publication counts after that date are calculated from entries in the Forum.</div>";
+        }
+        else{
+            $this->html ."<div style='float: right; display: inline-block;'>Publication counts are calculated based on entries in the Forum</div>";
+        }
         $this->html .= "<table>";
         $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>";
         $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td>".substr($this->person->dateOfAppointment, 0, 10)."</td></tr>";
@@ -47,6 +54,7 @@ class PersonFECTab extends AbstractEditableTab {
         $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td>".substr($this->person->dateOfLastDegree, 0, 10)."</td></tr>";
         $this->html .= "<tr><td align='right'><b>Last Degree:</b></td><td>".$this->person->lastDegree."</td></tr>";
         $this->html .= "</table>";
+        
     }
     
     function generateEditBody(){
