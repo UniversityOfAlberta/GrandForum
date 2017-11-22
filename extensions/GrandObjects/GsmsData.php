@@ -360,6 +360,7 @@ class GsmsData extends BackboneModel{
                                   'gpafull2' => "",
                                   'gpafull_credits2' => "",
                                   'notes' => "",
+                                  'casper' => "",
                                   'indigenous' => "",
                                   'canadian' => "",
                                   'saskatchewan' => "",

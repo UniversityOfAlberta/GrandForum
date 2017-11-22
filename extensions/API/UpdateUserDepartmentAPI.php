@@ -47,6 +47,7 @@ class UpdateUserDepartmentAPI extends API{
                                   'gpafull2' => trim($_POST['gpafull2']),
                                   'gpafull_credits2' => trim($_POST['gpafull_credits2']),
                                   'notes' => trim($_POST['notes']),
+                                  'casper' => trim($_POST['casper']),
                                   'indigenous' => trim(@$_POST['indigenous']),
                                   'canadian' => trim(@$_POST['canadian']),
                                   'saskatchewan' => trim(@$_POST['saskatchewan']),
@@ -59,8 +60,7 @@ class UpdateUserDepartmentAPI extends API{
 
         DBFunctions::update('grand_gsms',
                             array('additional' => serialize($gsms_array),
-                                  'visible' => $visible,
-                                  'status' => trim($_POST['status'])),
+                                  'visible' => $visible),
                             array('user_id' => EQ($person->getId())));
 
         $person->getUser()->invalidateCache();

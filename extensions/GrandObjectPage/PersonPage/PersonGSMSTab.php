@@ -100,6 +100,12 @@ class PersonGSMSTab extends AbstractEditableTab {
             $this->html .= "<td>{$gsms['notes']}</td>";
             $this->html .= "</tr>";
 
+
+            $this->html .= "<tr>";
+            $this->html .= "<td class='label'>Casper:</td>";
+            $this->html .= "<td>{$gsms['casper']}</td>";
+            $this->html .= "</tr>";
+
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Indigenous:</td>";
             $this->html .= "<td>{$gsms['indigenous']}</td>";
@@ -221,6 +227,11 @@ class PersonGSMSTab extends AbstractEditableTab {
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Notes:</td>";
         $this->html .= "<td style='width:600px;'><input name='notes' type='text' value='{$gsms['notes']}' style='width:200px' /></td>";
+        $this->html .= "</tr>";
+
+        $this->html .= "<tr>";
+        $this->html .= "<td class='label'>Casper:</td>";
+        $this->html .= "<td style='width:600px;'><input name='casper' type='text' value='{$gsms['casper']}' style='width:200px' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
