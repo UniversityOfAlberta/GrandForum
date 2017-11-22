@@ -236,6 +236,23 @@ class SOP extends AbstractSop{
         }
        return '--';
     }
+
+    function getCSEducationalHistory($html_string=false){
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab6", "qDegrees");
+        $degrees = $blob['qEducation1'];
+        if($html_string){
+           if(count($degrees) >0){
+               $html_array = array();
+               foreach($degrees as $degree){
+                   $html_array[] = "<b>{$degree['degree']}</b> ({$degree['university']})";
+               }
+               return implode("<br /><br />", $html_array);
+           }
+           return "";
+        }
+        return $degrees;
+
+    }
 }
 
 ?>
