@@ -133,7 +133,7 @@ class UserGsmsBulkUploadAPI extends API{
 		$student_obj = Person::newFromGSMSId($student['gsms_id']);
                 if($student_obj == null){
                     $errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
-                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
+                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                     continue;
                 }	
 		$student_id = $student_obj->getId();
@@ -143,7 +143,7 @@ class UserGsmsBulkUploadAPI extends API{
                   //check to make sure submitted gsms
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
                     if($gsms_sheet->user_id == ""){
-                        $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
+                        $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                         continue;
                     }
                    $found_gsms[] = "'{$student['gsms_id']}'";
@@ -192,7 +192,7 @@ class UserGsmsBulkUploadAPI extends API{
                     DBFunctions::commit();
 		}
 		else{
-                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']}";
+                    $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                     $error_count= $error_count+1;
 		}
 		
@@ -212,10 +212,10 @@ class UserGsmsBulkUploadAPI extends API{
             $student_gsms = $student_gsms_array[0];
             $student_obj = Person::newFromGSMSId($student_gsms);
             if($student_obj == null){
-                $not_in_gars[] = "{$student_gsms_array[1]}({$student_gsms_array[2]})";
+                $not_in_gars[] = "{$student_gsms_array[1]}({$student_gsms_array[2]}) - {$student_gsms_array[3]}";
             }
             else{
-                $not_finished[] = "{$student_obj->getRealName()}({$student_obj->getEmail()})";
+                $not_finished[] = "{$student_obj->getRealName()}({$student_obj->getEmail()}) - {$student_gsms_array[3]}";
             }
         }
         $not_in_gars_string = implode("<br />", $not_in_gars);
