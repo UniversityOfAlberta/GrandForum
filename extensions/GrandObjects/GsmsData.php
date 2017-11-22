@@ -273,6 +273,12 @@ class GsmsData extends BackboneModel{
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
         $sop = SOP::newFromUserId($this->user_id);
+        if($config->getValue('networkName') == 'CSGARS'){
+            $degrees = $sop->getCSEducationalHistory(true);
+        }
+        else{
+            $degrees = $this->education_history;
+        }
         $json = array('user_id' =>$this->user_id,
                   'status' => $this->status,
                   'student_data' => $student_data,
@@ -285,7 +291,7 @@ class GsmsData extends BackboneModel{
                   'country_of_birth' => $this->country_of_birth,
                   'country_of_citizenship' => $this->country_of_citizenship,
                   'applicant_type' => $this->applicant_type,
-                  'education_history' => $this->education_history,
+                  'education_history' => $degrees,
                   'department' => $this->department,
                   'epl_test' => $this->epl_test,
                   'epl_score' => $this->epl_score,
@@ -360,6 +366,7 @@ class GsmsData extends BackboneModel{
                                   'gpafull2' => "",
                                   'gpafull_credits2' => "",
                                   'notes' => "",
+                                  'casper' => "",
                                   'indigenous' => "",
                                   'canadian' => "",
                                   'saskatchewan' => "",

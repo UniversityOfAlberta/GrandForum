@@ -158,10 +158,6 @@ class ConvertPdfAPI extends API{
         foreach($tmpfiles as $tmpfile){
             $contents = file_get_contents($tmpfile);
             $data = $this->extract_pdf_data($contents);
-           //change this! 
-            /*$data['first_name'] = explode(" ", $data['first_name']);
-            $data['first_name'] = @$data['first_name'][0];
-            */
             if(isset($_POST['id'])){
                 $userId = $_POST['id'];
             }
