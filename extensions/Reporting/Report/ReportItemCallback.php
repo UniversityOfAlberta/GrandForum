@@ -718,7 +718,6 @@ class ReportItemCallback {
         $phdYear = max("1900", $this->getUserPhdYear());
         $year = $this->reportItem->getReport()->year;
         $person = Person::newFromId($this->reportItem->personId);
-        
         $count = 0;
         for($y=$phdYear; $y <= $year; $y++){
             switch($type){

@@ -39,10 +39,35 @@ class PersonFECTab extends AbstractEditableTab {
         $eFECLastYear = $this->person->getProductHistoryLastYear();
         if($eFECLastYear != ""){
             $eFECLastYear++;
-            $this->html .= "<div style='float:right; display: inline-block;'>Counts for publications are calculated based on what was reported in eFEC up to June 30, {$eFECLastYear}.  Publication counts after that date are calculated from entries in the Forum.</div>";
+            $report = new DummyReport("FEC", $this->person, null, $eFECLastYear);
+            $reportSection = new ReportSection();
+            $reportItem = new StaticReportItem();
+            $reportItem->parent = $reportSection;
+            $reportSection->parent = $report;
+            $reportItem->personId = $this->person->getId();
+            $callback = new ReportItemCallback($reportItem);
+            $products = $this->person->getPapersAuthored("Publication", ($eFECLastYear)."-07-01", "2100-01-01", false);
+            $count = 0;
+            $peerCount = 0;
+            foreach($products as $product){
+                if($product->getData('peer_reviewed') == "Yes"){
+                    $peerCount++;
+                }
+                $count++;
+            }
+            $this->html .= "<div style='float:right; display: inline-block;'>The lifetime total count of publications reported by the eFEC system by June 30, {$eFECLastYear} was {$callback->getUserLifetimePublicationCount('Publication')}. An additional {$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
         }
         else{
-            $this->html ."<div style='float: right; display: inline-block;'>Publication counts are calculated based on entries in the Forum</div>";
+            $products = $this->person->getPapersAuthored("Publication", "1900-07-01", "2100-01-01", false);
+            $count = 0;
+            $peerCount = 0;
+            foreach($products as $product){
+                if($product->getData('peer_reviewed') == "Yes"){
+                    $peerCount++;
+                }
+                $count++;
+            }
+            $this->html .= "<div style='float: right; display: inline-block;'>{$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
         }
         $this->html .= "<table>";
         $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>";
