@@ -3,7 +3,7 @@
 class PersonPublicationsTypesTab extends PersonPublicationsTab {
 
     function PersonPublicationsTypesTab($person, $visibility, $category='all', $startRange="0000-00-00", $endRange=CYCLE_END){
-        parent::PersonPublicationsTab($person, $visibility, $category, $startRange="0000-00-00", $endRange=CYCLE_END);
+        parent::PersonPublicationsTab($person, $visibility, $category, $startRange, $endRange);
     }
 
     function generateBody(){
