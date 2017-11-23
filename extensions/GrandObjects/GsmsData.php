@@ -316,9 +316,25 @@ class GsmsData extends BackboneModel{
             $reviewers[] = array('id' => $person->getId(),
                              'name' => $person->getNameForForms(),
                              'url' => $person->getUrl(),
-                             'decision' => $sop->getAdmitResult($reviewer->getId()));
+                             'decision' => $sop->getAdmitResult($reviewer->getId()),
+                             'rank' => $sop->getReviewRanking($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
+
+
+        $otherReviewers = array();
+        /*
+        $other_array = $student->getOtherEvaluators(YEAR);
+        foreach($other_array as $other){
+            $otherReviewers[] = array('id' => $other->getId(),
+                             'name' => $other->getNameForForms(),
+                             'url' => $other->getUrl(),
+                             'decision' => $sop->getAdmitResult($other->getId()),
+                             'rank' => $sop->getReviewRanking($other->getId()));
+        }
+        */
+        $json['other_reviewers'] = $otherReviewers;
+        
 
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
@@ -342,7 +358,7 @@ class GsmsData extends BackboneModel{
             $json['nationality_note'] = $nationality_note;
         }
         if($config->getValue('networkName') == 'CSGARS'){
-            $json['additional'] = array_merge($json['additional'],$this->getCSColumns());
+            $json['additional'] = array_merge($json['additional'],$sop->getColumns());
         }
 
         return $json;

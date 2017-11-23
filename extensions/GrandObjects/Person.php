@@ -4483,6 +4483,30 @@ class Person extends BackboneModel {
     }
 
     /**
+     * Returns a list of all faculty evaluating this Person who are not assigned as reviewers
+     * @param string $year The year of the evaluation
+     * @return array The list of People who reviewed this Person without being assigned to them
+     */
+    function getOtherEvaluators($year = YEAR){
+      // WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
+      // AND b.proj_id = '{$this->getSop()->id}'
+        $sql = "SELECT DISTINCT b.user_id
+                FROM grand_report_blobs b 
+                WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
+                    AND b.year = '2017'
+                    AND b.proj_id = '10'
+                    AND b.rp_type = 'RP_OTT'
+                    AND b.rp_item = 'CS_Review_Rank'";
+
+        $data = DBFunctions::execSQL($sql);
+        $subs = array();
+        foreach($data as $id){
+            $subs[] = Person::newFromId($id);
+        }
+        return $subs;
+    }
+
+    /**
      * Returns the allocation for this Person for year $year
      * @param string $year The allocation year to use
      * @return array The allocation information

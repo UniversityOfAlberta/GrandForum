@@ -62,46 +62,9 @@ abstract class AbstractSop extends BackboneModel{
     abstract function checkSop(); 
     abstract function getReviewers();
     abstract function getAdmitResult($user);
-
-
-
-    function getCSColumns() {
-        $moreJson = array();
-        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
-        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
-        //var_dump($moreJson['areas_of_study']);
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
-        
-        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
-        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
-        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
-
-        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
-        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
-        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
-        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
-        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
-
-        // # of Publications
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
-        $moreJson['num_publications'] = @count($blob['qResExp2']);
-
-        // # of awards
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
-        $moreJson['num_awards'] = @count($blob['qAwards']);
-
-        // Courses (number of courses, number of areas)
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
-
-        return $moreJson;
-
-    }
+    abstract function getColumns();
+    
+    function getReviewRanking() {return '--';}
 
   /**
    * newFromId Returns an SOP object from a given id
@@ -287,7 +250,7 @@ abstract class AbstractSop extends BackboneModel{
    * @return array
    */
     function toArray(){
-        global $wgUser;
+        global $wgUser, $config;
      /*   if(!$wgUser->isLoggedIn()){
             return array();
         }*/
@@ -335,7 +298,6 @@ abstract class AbstractSop extends BackboneModel{
              $agreeableness = $personality['personality'][3]['percentile'];
              $neurotism = $personality['personality'][4]['percentile'];
         }
-        $this->getCSColumns();
         $json = array('id' => $this->getId(),
                       'content' => $this->getContent(),
                       'content_string' => $this->getContent(true),
@@ -384,7 +346,7 @@ abstract class AbstractSop extends BackboneModel{
 		      'gsms_url' => $this->getGSMSUrl());
 
           // Get from Config which forum we are looking at to add extra columns
-          //$json = array_merge($json, $this->getCSColumns());
+          $json = array_merge($json, $this->getColumns());
         return $json;
     }
 

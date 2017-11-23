@@ -25,7 +25,7 @@
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
-    <%= country_of_citizenship %>
+    <%= additional.country_of_citizenship_full %>
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
@@ -82,22 +82,36 @@
 </td>
 
 <!-- reviewer info -->
-
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <%= reviewers[i].name %>
-      	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
-      	<% } %>
+        <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
   <br />
   <% } %>
   <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 
+<!-- reviewer average -->
 <td style="white-space: nowrap;">
+    <% var avg=0; %>
+    <% var ignore=0; %>
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <%= reviewers[i].decision %><br />
+        <% if(reviewers[i].rank != '--') { %>
+          <% avg += parseInt(reviewers[i].rank); %>
+        <% } else { %>
+          <% ignore += 1; %>
+        <% } %>
     <% } %>
+    <% avg /= reviewers.length - ignore; %>
+    <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
         <span class="assign_button_space" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
+</td>
+
+<!-- faculty info -->
+<td style="white-space: nowrap;">
+</td>
+
+<!-- faculty average -->
+<td style="white-space: nowrap;">
 </td>
 
 <td style="width:300px" id='notes'>

@@ -125,12 +125,14 @@ SopsView = Backbone.View.extend({
     },
 
     filterCitizenship: function(settings,data,dataIndex){
-        var input = $('#countryOfCitizenshipInput').val().toUpperCase();
-        var name = data[4];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
-                }
-        return false;
+        var filtercountry = $("#filterSelectCountry").chosen().val();
+        var studentcountry = data[4];
+        if (filtercountry != null) {
+            if ($.inArray(studentcountry, filtercountry) == -1) {
+                return false;
+            }
+        }
+        return true;
     },
 
     filterDepartmentName: function(settings,data,dataIndex){
@@ -464,6 +466,7 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
+        this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
         this.$('#filterSelectReviewers').chosen({ placeholder_text_multiple: 'Select Reviewers' });
