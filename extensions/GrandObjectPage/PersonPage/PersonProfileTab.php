@@ -219,7 +219,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile($wgUser->isLoggedIn()))."</p>";
+        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile(false))."</p>";
     }
     
     /**
@@ -244,16 +244,8 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
-        $this->html .= "<table>
-                            <tr>
-                                <td align='right' valign='top'><b>Live on Website:</b></td>
-                                <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
-                            </tr>
-                            <tr>
-                                <td align='right' valign='top'><b>Live on Forum:</b></td>
-                                <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
-                            </tr>
-                        </table>";
+        $this->html .= "<textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea>
+                        <textarea style='display: none; width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea>";
     }
     
     function showCloud($person, $visibility){
@@ -382,7 +374,7 @@ EOF;
         $visibilityCopy = $visibility;
         $visibilityCopy['isMe'] = false;
         $tab = new PersonDashboardTab($person, $visibilityCopy);
-        $tab->showTopProducts($person, $visibilityCopy, 5);
+        //$tab->showTopProducts($person, $visibilityCopy, 5);
         $string = $tab->html;
         return $string;
     }
@@ -392,7 +384,7 @@ EOF;
         $visibilityCopy = $visibility;
         $visibilityCopy['isMe'] = false;
         $tab = new PersonDashboardTab($person, $visibilityCopy);
-        $tab->showEditTopProducts($person, $visibilityCopy, 5);
+        //$tab->showEditTopProducts($person, $visibilityCopy, 5);
         $string = $tab->html;
         return $string;
     }
