@@ -701,8 +701,17 @@ class ReportItemCallback {
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
-        $products = $person->getPapersAuthored($type, $start_date, $end_date, true);
-        return count($products);
+        $products = $person->getPapersAuthored($type, $start_date, $end_date, false);
+        $count = 0;
+        foreach($products as $product){
+            if($type == "Publication" && $product->getData('peer_reviewed') == "Yes"){
+                $count++;
+            }
+            else{
+                $count++;
+            }
+        }
+        return $count;
     }
 
     function getUserLifetimePublicationCount($type='all'){
