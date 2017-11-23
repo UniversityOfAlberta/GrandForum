@@ -54,15 +54,18 @@ class PersonEmploymentTab extends AbstractEditableTab {
             }
         }
         
-        $this->html .= "<h2>Education History</h2>";
+        $this->html .= "<table width='100%'>
+            <tr>
+                <td valign='top' width='50%'>
+                <h2>Education History</h2>";
         foreach($education as $key => $item){
             $this->html .= "<h3>{$key}</h3>".implode("<br style='line-height:0.5em;' />", $item);
         }
-        
-        $this->html .= "<h2>Employment History</h2>";
+        $this->html .= "</td><td valign='top' width='50%'><h2>Employment History</h2>";
         foreach($employment as $key => $item){
             $this->html .= "<h3>{$key}</h3>".implode("<br style='line-height:0.5em;' />", $item);
         }
+        $this->html .= "</td></tr></table>";
         
     }
     
