@@ -135,13 +135,18 @@ SopsView = Backbone.View.extend({
         return true;
     },
 
-    filterDepartmentName: function(settings,data,dataIndex){
-        var input = $('#DepartmentInput').val().toUpperCase();
-        var name = data[7];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterProgramName: function(settings,data,dataIndex){
+        var filterprograms = $("#filterSelectProgramName").chosen().val();
+        var studentprogram = data[7];
+        if (filterprograms != null) {
+            for (var i = 0; i < filterprograms.length; ++i) {
+                if (studentprogram.indexOf(filterprograms[i]) > -1) {
+                    return true;
                 }
-        return false;
+            }
+            return false;
+        }
+        return true;
     },
 
     filterGPA: function(settings,data,dataIndex){
@@ -442,7 +447,7 @@ SopsView = Backbone.View.extend({
             this.filterMineOnly,
             this.filterByTags,
             this.filterCitizenship,
-            this.filterDepartmentName,
+            this.filterProgramName,
             this.filterNumPubs,
             this.filterNumAwards,
             this.filterScholHeld,
@@ -467,6 +472,7 @@ SopsView = Backbone.View.extend({
             defaultDate: "-18y"
         });
         this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
+        this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
         this.$('#filterSelectReviewers').chosen({ placeholder_text_multiple: 'Select Reviewers' });

@@ -238,12 +238,18 @@
                 <option>Zambia</option>
                 <option>Zimbabwe</option>
               </select>
-             
             </td>
           </tr>
           <tr>
             <td align="right"><b>Program Name:</b></td>
-            <td> <input type="text" class="filter_option" id="DepartmentInput" placeholder="Search here..." style="width: 205px"></td>
+            <td>
+              <input type='hidden' name='filterProgramName' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectProgramName'  multiple>
+                <option>Master of Science (Thes)</option>
+                <option>Master of Science (Crse)</option>
+                <option>Doctor of Philosophy</option>
+              </select>
+            </td>
           </tr>
           <tr>
             <td align="right"><text><b>Folder:</b></text></td>
