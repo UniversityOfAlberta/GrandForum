@@ -108,10 +108,20 @@
 
 <!-- faculty info -->
 <td style="white-space: nowrap;">
+  <% for(var i=0; i < other_reviewers.length;i++){ %>
+        <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+  <br />
+  <% } %>
 </td>
 
 <!-- faculty average -->
 <td style="white-space: nowrap;">
+  <% var avg=0; %>
+    <% for(var i=0; i < other_reviewers.length;i++){ %>
+      <% avg += parseInt(other_reviewers[i].rank); %>
+    <% } %>
+    <% avg /= other_reviewers.length; %>
+    <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 
 <td style="width:300px" id='notes'>

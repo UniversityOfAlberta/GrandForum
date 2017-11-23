@@ -323,7 +323,7 @@ class GsmsData extends BackboneModel{
 
 
         $otherReviewers = array();
-        /*
+        
         $other_array = $student->getOtherEvaluators(YEAR);
         foreach($other_array as $other){
             $otherReviewers[] = array('id' => $other->getId(),
@@ -332,7 +332,7 @@ class GsmsData extends BackboneModel{
                              'decision' => $sop->getAdmitResult($other->getId()),
                              'rank' => $sop->getReviewRanking($other->getId()));
         }
-        */
+        
         $json['other_reviewers'] = $otherReviewers;
         
 

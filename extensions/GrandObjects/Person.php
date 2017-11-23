@@ -4488,20 +4488,22 @@ class Person extends BackboneModel {
      * @return array The list of People who reviewed this Person without being assigned to them
      */
     function getOtherEvaluators($year = YEAR){
-      // WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
-      // AND b.proj_id = '{$this->getSop()->id}'
-        $sql = "SELECT DISTINCT b.user_id
-                FROM grand_report_blobs b 
-                WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
-                    AND b.year = '2017'
-                    AND b.proj_id = '10'
-                    AND b.rp_type = 'RP_OTT'
-                    AND b.rp_item = 'CS_Review_Rank'";
-
-        $data = DBFunctions::execSQL($sql);
         $subs = array();
-        foreach($data as $id){
-            $subs[] = Person::newFromId($id);
+        $sop = $this->getSop();
+        if ($sop != '') {
+          $sql = "SELECT DISTINCT b.user_id
+                  FROM grand_report_blobs b 
+                  WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
+                      AND b.year = '{$year}'
+                      AND b.proj_id = '{$sop->id}'
+                      AND b.rp_type = 'RP_OTT'
+                      AND b.rp_item = 'CS_Review_Rank'
+                      AND b.data <> ''";
+
+          $data = DBFunctions::execSQL($sql);
+          foreach($data as $row){
+              $subs[] = Person::newFromId($row['user_id']);
+          }
         }
         return $subs;
     }
