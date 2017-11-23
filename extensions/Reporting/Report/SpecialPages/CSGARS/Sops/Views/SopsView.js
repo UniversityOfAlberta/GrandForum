@@ -240,7 +240,6 @@ SopsView = Backbone.View.extend({
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = $("#filterSelectReviewers").chosen().val();
         var reviewers = data[17];
-        console.log(reviewers);
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
                 if (reviewers.indexOf(filterreviewers[i]) == -1) {
