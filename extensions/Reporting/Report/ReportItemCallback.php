@@ -683,7 +683,7 @@ class ReportItemCallback {
     }
 
     function getUserPublicationCount($start_date,$end_date,$type='Publication'){
-        $year = substr($end_date, 0, 4);
+        $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
         switch($type){
             default:
@@ -715,13 +715,13 @@ class ReportItemCallback {
             switch($type){
                 default:
                 case "Publication":
-                    $previousCounts = $person->getProductHistories($y, "Previous Refereed");
+                    $previousCounts = $person->getProductHistories($y-1, "Previous Refereed");
                     break;
                 case "Book":
-                    $previousCounts = $person->getProductHistories($y, "Previous Book");
+                    $previousCounts = $person->getProductHistories($y-1, "Previous Book");
                     break;
                 case "Patent":
-                    $previousCounts = $person->getProductHistories($y, "Previous Patent");
+                    $previousCounts = $person->getProductHistories($y-1, "Previous Patent");
                     break;
             }
             if(count($previousCounts) > 0){

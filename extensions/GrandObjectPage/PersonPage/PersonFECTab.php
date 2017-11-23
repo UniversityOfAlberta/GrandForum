@@ -38,6 +38,7 @@ class PersonFECTab extends AbstractEditableTab {
         $this->person->getFecPersonalInfo();
         $eFECLastYear = $this->person->getProductHistoryLastYear();
         if($eFECLastYear != ""){
+            $eFECLastYear++;
             $this->html .= "<div style='float:right; display: inline-block;'>Counts for publications are calculated based on what was reported in eFEC up to June 30, {$eFECLastYear}.  Publication counts after that date are calculated from entries in the Forum.</div>";
         }
         else{
