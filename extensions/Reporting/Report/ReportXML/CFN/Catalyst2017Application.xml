@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2017" ajax="true">
+<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2017" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI" subType="CAT2017Applicant" start="2017-08-01" end="2017-12-31">
             <SectionPermission id="information" permissions="rw" />
@@ -425,9 +425,15 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="9 - Supporting Information" title="Section 9 - Supporting Information">
-        <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true">
+        <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true" optional="true">
             <![CDATA[
                 <p>Provide tables and figures and a list of references as necessary to support sections above.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="information_upload" blobItem="INFORMATION_UPLOAD" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf" optional="true">
+            <![CDATA[
+                <p>Or upload the above information as a pdf document that will get appended to the end of the application.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -445,7 +451,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf">
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Letters of Support</h2>
                 {$item}
@@ -461,49 +467,49 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="Supporting Documents" title="Supporting Documents">
-        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx,.xls,application/vnd.ms-excel">
             <![CDATA[
                 <h2>Project team Information</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".zip,application/zip">
             <![CDATA[
                 <h2>Budget</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Budget.xlsx'>template Excel document</a> and upload a <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing completed excel budget documents for each Principal Investigator.  Name the ZIP file CAT2017-##_Surname_Budget.  (The Surname refers to the Project Leader’s surname).</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
                 <p>Please upload a <b>single PDF document</b> containing all PI CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Team Member CVs</h2>
                 <p>Please upload a <b>single PDF document</b> containing all Team Member CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Required Signatures</h2>
                 <p>Submit a <b>single PDF</b> containing signature documents for each Principal Investigator.  Name the PDF document CAT2017-##_Surname_Signatures.pdf.  (The Surname refers to the Project Leader’s surname).  The template document can be downloaded <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Required Signatures.docx'>here</a>.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Proof of Study Submission to Research Ethics Board</h2>
                 <p>Submit a <b>single PDF</b> containing proof of ethics submission for each investigator.  Name the PDF document CAT2017-##_Surname_REB.pdf.  (The Surname refers to the Project Leader’s surname).</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
             <![CDATA[
                 <h2>Proof of Completion of one of CIHR Institute of Gender and Health’s (IGH) online sex- and gender-based analysis training modules</h2>
                 <p>Submit the PDF certificate that you (Project Leader) received after completing one of the IGH’s online sex- and gender-based analysis training modules.  Name the PDF certificate, CAT2017-##_Surname_IGH.pdf, where Surname = investigator’s surname.</p>

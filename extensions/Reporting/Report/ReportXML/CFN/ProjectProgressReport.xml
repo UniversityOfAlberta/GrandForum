@@ -84,7 +84,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
@@ -116,7 +116,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
@@ -148,7 +148,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">

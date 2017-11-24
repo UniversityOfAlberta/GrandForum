@@ -1020,10 +1020,15 @@ class ReportItemCallback {
         return $this->reportItem->personId;
     }
     
-    function getUserRoles(){
+    function getUserRoles($start=null, $end=null){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
-        $roles = $person->getRoles();
+        if($start != null && $end != null){
+            $roles = $person->getRolesDuring($start, $end);
+        }
+        else{
+            $roles = $person->getRoles();
+        }
         $roleNames = array();
         foreach($roles as $role){
             if($project != null && $project->getId() != 0){
@@ -1038,10 +1043,10 @@ class ReportItemCallback {
         return implode(", ", $roleNames);
     }
     
-    function getUserFullRoles(){
+    function getUserFullRoles($start=null, $end=null){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
-        $roles = $this->getUserRoles();
+        $roles = $this->getUserRoles($start, $end);
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
@@ -1580,6 +1585,12 @@ class ReportItemCallback {
         }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
+        $result = $blb->load($addr, true);
+        $md5 = $blb->getMD5();
+        if($md5 != ""){
+            return $md5;
+        }
+        $blb = new ReportBlob(BLOB_RAW, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
