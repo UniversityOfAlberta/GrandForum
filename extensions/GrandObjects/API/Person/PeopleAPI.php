@@ -22,9 +22,18 @@ class PeopleAPI extends RESTAPI {
                 }
                 else{
                     // Get the specific role
-                    $people = Person::getAllPeople($role);
+                    if(strstr($role, "Former-") !== false){
+                        $people = Person::getAllPeopleDuring(str_replace("Former-", "", $role), "0000-00-00", date('Y-m-d'));
+                    }
+                    else{
+                        $people = Person::getAllPeople($role);
+                    }
                 }
                 foreach($people as $person){
+                    if(strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
+                        // Person is still the specified role, don't show on the 'former' table
+                        continue;
+                    }
                     if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
                     }
