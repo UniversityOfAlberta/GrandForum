@@ -94,7 +94,7 @@
                                   array('a.name', 'a.category', 'a.faculty_staff_member_id', 'a.reporting_year' => 'year', 's.name' => 'scope'),
                                   array('a.award_scope_id' => EQ(COL('s.id'))));
                                   
-    $otherAwards = DBFunctions::execSQL("SELECT * FROM bddEfec2_development.all_awards");
+    $otherAwards = DBFunctions::execSQL("SELECT * FROM bddEfec2_development.all_awards WHERE `Year` != ''");
     
     $staff = DBFunctions::select(array('bddEfec2_development.faculty_staff_members'),
                                  array('*'));
