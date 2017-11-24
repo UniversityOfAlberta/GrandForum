@@ -7,17 +7,23 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="RMC">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="table" permissions="" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
         <Role role="STAFF+">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="table" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="RMC">
-            <SectionPermission id="materials" permissions="r" />
-            <SectionPermission id="table" permissions="" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="" />
+        <Role role="MANAGER">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Person id="2513">
             <SectionPermission id="materials" permissions="r" />
