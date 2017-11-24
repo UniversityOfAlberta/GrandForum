@@ -1242,6 +1242,33 @@ class Paper extends BackboneModel{
         return ($this->deleted === "1");
     }
     
+    /**
+     * Returns the year that this Product was reported
+     * @param integer $user_id The id of the user
+     * @return boolean The year that this Product was reported
+     */
+    function getReportedForPerson($user_id){
+        $cacheId = "reported_year_".$user_id."_".$this->getId();
+        if(Cache::exists($cacheId)){
+            return Cache::fetch($cacheId);
+        }
+        else{
+            $data = DBFunctions::select(array('grand_products_reported'),
+                                array('year'),
+                                array('user_id' => EQ($user_id),
+                                      'product_id' => EQ($this->getId())));
+            if(isset($data[0])){
+                Cache::store($cacheId, $data[0]['year']);
+                return $data[0]['year'];
+            }
+            else{
+                Cache::store($cacheId, "");
+                return "";
+            }
+        }
+        return "";
+    }
+    
     function getCitationFormat(){
         $categories = self::structure();
         if(@$categories['categories'][$this->getCategory()]['types'][$this->getType()]['citationFormat'] != ""){
@@ -1257,7 +1284,8 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false){
+        $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
@@ -1267,6 +1295,7 @@ class Paper extends BackboneModel{
         if($showPeerReviewed){
             $status = ($showStatus) ? $this->getStatus() : "";
             $peer_rev = "";
+            $reported = "";
             $ifranking = "";
             $ranking = $this->getData(array('category_ranking'));
             $if = $this->getData(array('impact_factor'));
@@ -1277,6 +1306,13 @@ class Paper extends BackboneModel{
                 }
                 else if($this->getData('peer_reviewed') == "No"){
                     $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
+                }
+            }
+            if($showReported){
+                $reportedYear = $this->getReportedForPerson($me->getId());
+                if($reportedYear != ""){
+                    $reportedYear++;
+                    $reported = "&nbsp;/&nbsp;Reported: $reportedYear";
                 }
             }
             if($if != "" && $ranking != ""){
@@ -1292,7 +1328,7 @@ class Paper extends BackboneModel{
                 }
                 $ifranking = "IF: {$if}; Ranking: {$ranking}{$jType}<br />";
             }
-            $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>";
+            $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}{$reported}</div>";
         }
         return trim("{$format}{$peerDiv}");
     }

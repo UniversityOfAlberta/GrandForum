@@ -116,7 +116,7 @@ class PersonPublicationsTab extends AbstractTab {
                 }
 
                 $string .= "<tr>";
-                $string .= "<td>{$paper->getCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
+                $string .= "<td>{$paper->getCitation(true, true, true, true)}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
                 if(is_array($this->category) || $this->category == "all"){
                     $string .= "<td align='center'>{$paper->getCategory()}</td>";
                 }
