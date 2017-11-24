@@ -893,8 +893,8 @@
             $product->create(false);
             
             if($author->getId() != 0){
-                $reportedYear = substr($product->date, 0, 4);
-                $reportedMonth = substr($product->date, 5, 5);
+                $reportedYear = substr($product->acceptance_date, 0, 4);
+                $reportedMonth = substr($product->acceptance_date, 5, 5);
                 if($reportedMonth < "07-01"){
                     $reportedYear--;
                 }
@@ -1019,7 +1019,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1027,7 +1027,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($community_outreach_committees));
     }
     
@@ -1056,7 +1056,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1064,7 +1064,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($departmental_committees));
     }
     
@@ -1093,7 +1093,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1101,7 +1101,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($faculty_committees));
     }
     
@@ -1130,7 +1130,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1138,7 +1138,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($other_committees));
     }
     
@@ -1170,7 +1170,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1178,7 +1178,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($scientific_committees));
     }
     
@@ -1207,7 +1207,7 @@
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
         $product->create(false);
-        foreach($product->authors as $author){
+        /*foreach($product->authors as $author){
             if($author->getId() != 0){
                 $reportedYear = $committee['reporting_year'];
                 DBFunctions::insert('grand_products_reported',
@@ -1215,7 +1215,7 @@
                                           'user_id' => $author->getId(),
                                           'year' => $reportedYear));
             }
-        }
+        }*/
         show_status(++$iterationsSoFar, count($university_committees));
     }
     
