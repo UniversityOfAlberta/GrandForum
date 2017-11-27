@@ -23,8 +23,8 @@ SopsView = Backbone.View.extend({
         var rolestring = me.roleString.get('roleString');
         console.log(rolestring);
         if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
-           console.log("HI");
-            $('.assign_button').css('visibility','visible');
+            //console.log("HI");
+            $('.assign_button').css('display','inline');
         }
     },
     
