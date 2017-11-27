@@ -2934,6 +2934,10 @@ class Person extends BackboneModel {
             return ($this->isRole(AR.'-Candidate', $project) || 
                     $this->isRole(CI.'-Candidate', $project));
         }
+        if($role == 'Former-'.NI){
+            return ($this->isRole('Former-'.AR, $project) || 
+                    $this->isRole('Former-'.CI, $project));
+        }
         if($role == PL || $role == 'PL'){
             return ($project != null) ? $this->leadershipOf($project) : $this->isProjectLeader();
         }
@@ -2962,6 +2966,10 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRoles();
+        
+        if(strstr($role, "Former-") !== false){
+            return ($this->isRoleDuring(str_replace("Former-", "", $role), "0000-00-00", date('Y-m-d'), $project) && !$this->isRole(str_replace("Former-", "", $role), $project));
+        }
         
         if(count($role_objs) > 0){
             $defaultSkip = false;
