@@ -51,7 +51,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles},Chair)},{contains({$user_full_roles}, Manager)})}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Chair)}, {contains({$user_full_roles}, Manager)},{contains({$user_full_roles}, Admin)})}">
                 <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
