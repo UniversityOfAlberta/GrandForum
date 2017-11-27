@@ -263,13 +263,13 @@
             </td>
           </tr>
           <tr>
-            <td align="right"><text><b>Decision:</b></text></td>
+            <td align="right"><b>Decision:</b></td>
             <td>
-              <select id="finalAdmitType" class="filter_option" style="width: 225px">
-                <option value="" selected="selected">--</option>
-                <option value="admit">Admit</option>
-                <option value="reject">Reject</option>
-                <option value="waitlist">Waitlist</option>
+              <input type='hidden' name='filterDecision' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectDecision'  multiple>
+                <option>Admit</option>
+                <option>Reject</option>
+                <option>Waitlist</option>
               </select>
             </td>
           </tr>

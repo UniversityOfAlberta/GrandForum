@@ -178,18 +178,18 @@ SopsView = Backbone.View.extend({
         return true;
     },
 
-    filterFinalAdmitType: function(settings,data,dataIndex){
-        var input = $('#finalAdmitType').val().toUpperCase();
-        var name = data[21];
-        if(name != undefined){
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterDecision: function(settings,data,dataIndex){
+        var input = $('#filterSelectDecision').chosen().val();
+        var decision = data[23];
+        if (input != null) {
+            for (var i = 0; i < input.length; ++i) {
+                if (input[i] == decision) {
+                    return true;
                 }
+            }
+            return false;
         }
-        else{
-	    return true;
-        }
-        return false;
+        return true;
     },
 
     filterByTags: function(settings,data,dataIndex){
@@ -445,7 +445,7 @@ SopsView = Backbone.View.extend({
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
             this.filterFolder,
-            this.filterFinalAdmitType,
+            this.filterDecision,
             this.filterMineOnly,
             this.filterByTags,
             this.filterCitizenship,
@@ -475,6 +475,7 @@ SopsView = Backbone.View.extend({
         });
         this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
         this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
+        this.$('#filterSelectDecision').chosen({ placeholder_text_multiple: 'Select Decision' });
         this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
