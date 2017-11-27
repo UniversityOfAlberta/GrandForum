@@ -252,30 +252,18 @@
             </td>
           </tr>
           <tr>
-            <td align="right"><text><b>Folder:</b></text></td>
+            <td align="right"><b>Folder:</b></td>
             <td>
-              <select id="statusType"  class="filter_option" style="width: 225px">
-                <option value="" selected="selected">--</option>
-                <option value="Application Completed">Application Completed</option>
-                <option value="GSMS Completed">GSMS Completed</option>
-                <option value="Review Completed">Review Completed</option>
+              <input type='hidden' name='filterFolder' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectFolder'  multiple>
+                <option>New Applications</option>
+                <option>In Progress</option>
+                <option>Review in Progress</option>
               </select>
             </td>
           </tr>
           <tr>
-            <td align="right"><text><b>Admit:</b></text></td>
-            <td>
-              <select id="admitType" class="filter_option" style="width: 225px">
-                <option value="" selected="selected">--</option>
-                <option value="admit">Admit</option>
-                <option value="reject">Reject</option>
-                <option value="undecided">Undecided</option>
-                <option value="special consideration">Special Consideration</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td align="right"><text><b>Final Decision:</b></text></td>
+            <td align="right"><text><b>Decision:</b></text></td>
             <td>
               <select id="finalAdmitType" class="filter_option" style="width: 225px">
                 <option value="" selected="selected">--</option>

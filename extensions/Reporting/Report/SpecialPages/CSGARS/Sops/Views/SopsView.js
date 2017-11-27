@@ -164,23 +164,18 @@ SopsView = Backbone.View.extend({
         return false;
     },
 
-    filterReviewType: function(settings,data,dataIndex){
-        var input = $('#statusType').val().toUpperCase();
-        var name = data[2];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterFolder: function(settings,data,dataIndex){
+        var input = $('#filterSelectFolder').chosen().val();
+        var folder = data[2];
+        if (input != null) {
+            for (var i = 0; i < input.length; ++i) {
+                if (folder.indexOf(input[i]) > -1) {
+                    return true;
                 }
-        return false;
-    },
-
-
-    filterAdmitType: function(settings,data,dataIndex){
-        var input = $('#admitType').val().toUpperCase();
-        var name = data[18];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
-                }
-        return false;
+            }
+            return false;
+        }
+        return true;
     },
 
     filterFinalAdmitType: function(settings,data,dataIndex){
@@ -449,8 +444,7 @@ SopsView = Backbone.View.extend({
         me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
-            this.filterReviewType,
-            this.filterAdmitType,
+            this.filterFolder,
             this.filterFinalAdmitType,
             this.filterMineOnly,
             this.filterByTags,
@@ -480,6 +474,7 @@ SopsView = Backbone.View.extend({
             defaultDate: "-18y"
         });
         this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
+        this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
         this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
