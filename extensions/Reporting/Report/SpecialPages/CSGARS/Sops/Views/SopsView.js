@@ -216,10 +216,11 @@ SopsView = Backbone.View.extend({
         var aois = data[9].split(", ");
         if (filterSelected != null) {
             for (var i = 0; i < filterSelected.length; ++i) {
-                if ($.inArray(filterSelected[i], aois) == -1) {
-                    return false;
+                if ($.inArray(filterSelected[i], aois) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -229,10 +230,11 @@ SopsView = Backbone.View.extend({
         var studentsupervisors = data[10].split(", ");
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                if ($.inArray(filtersupervisors[i], studentsupervisors) == -1) {
-                    return false;
+                if ($.inArray(filtersupervisors[i], studentsupervisors) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -242,10 +244,11 @@ SopsView = Backbone.View.extend({
         var reviewers = data[17];
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
-                if (reviewers.indexOf(filterreviewers[i]) == -1) {
-                    return false;
+                if (reviewers.indexOf(filterreviewers[i]) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -288,13 +291,16 @@ SopsView = Backbone.View.extend({
         options["AITF"] = $('#heldAITF')[0].checked;
         options["Vanier"] = $('#heldVanier')[0].checked;
 
-        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
-            return false;
+        if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
+            return true;
         }
-        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
-            return false;
+        if (options["AITF"] && ($.inArray("AITF", values) != -1)) {
+            return true;
         }
-        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+        if (options["Vanier"] && ($.inArray("Vanier", values) != -1)) {
+            return true;
+        }
+        if (options["NSERC"] || options["AITF"] || options["Vanier"]) {
             return false;
         }
         return true;
@@ -308,13 +314,16 @@ SopsView = Backbone.View.extend({
         options["AITF"] = $('#appliedAITF')[0].checked;
         options["Vanier"] = $('#appliedVanier')[0].checked;
 
-        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
-            return false;
+        if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
+            return true;
         }
-        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
-            return false;
+        if (options["AITF"] && ($.inArray("AITF", values) != -1)) {
+            return true;
         }
-        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+        if (options["Vanier"] && ($.inArray("Vanier", values) != -1)) {
+            return true;
+        }
+        if (options["NSERC"] || options["AITF"] || options["Vanier"]) {
             return false;
         }
         return true;
