@@ -3721,9 +3721,10 @@ class Person extends BackboneModel {
      * @param string $endRange The end date (end of the current reporting year if not specified)
      * @param boolean $includeHQP Whether or not to include HQP in the result
      * @param boolean $networkRelated Whether or not the products need to be associated with a project
+     * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -3749,6 +3750,20 @@ class Person extends BackboneModel {
             }
         }
         
+        /*
+        if($useReported){
+            $year = substr($startRange, 0, 4);
+            $data = DBFunctions::execSQL("SELECT p.*
+                                          FROM grand_product p LEFT JOIN grand_products_reported r ON r.product_id = p.id, grand_product_authors a
+                                          WHERE r.year = '$year'
+                                          AND a.product_id = p.id
+                                          AND a.author = '{$this->getId()}'");
+            if($){
+                
+            }
+            return;
+        }*/
+        
         $papers = Product::getByIds($papers);
         $structure = Product::structure();
         foreach($papers as $paper){
@@ -3759,7 +3774,7 @@ class Person extends BackboneModel {
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
                (($date >= $startRange && $date <= $endRange) ||
-                ($acceptanceDateLabel == "Start Date" && $dateLabel = "End Date" && 
+                ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange)))){

@@ -8,6 +8,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $productType = explode("|", $this->getAttr("productType", ""));
         $peerReviewed = $this->getAttr("peerReviewed", "");
         $status = $this->getAttr("status", "");
+        $submitProductYear = (strtolower($this->getAttr("submitProductYear", "false")) == "true");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
@@ -16,6 +17,14 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $categories = explode("|", $category);
         $products = array();
         foreach($categories as $cat){
+            if($submitProductYear && isset($_GET['generatePDF']) && !isset($_GET['preview'])){
+                $cat = DBFunctions::escape($cat);
+                $year = DBFunctions::escape($this->getReport()->year-1);
+                DBFunctions::execSQL("DELETE FROM grand_products_reported
+                                      WHERE product_id IN (SELECT id FROM grand_products WHERE category = '{$cat}')
+                                      AND user_id = '{$person->getId()}'
+                                      AND year = '{$year}'", true);
+            }
             $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP));
         }
         
@@ -28,9 +37,18 @@ class PersonProductsReportItemSet extends ReportItemSet {
                 if((implode("", $productType) == "" || in_array($prod->getType(), $productType)) &&
                    ($peerReviewed == "" || ($prod->getData('peer_reviewed') == $peerReviewed)) &&
                    ($status == "" || ($prod->getStatus() == $status))){
-                    $tuple = self::createTuple();
-                    $tuple['product_id'] = $prod->id;
-                    $data[] = $tuple;
+                    $reportedYear = $prod->getReportedForPerson($this->personId);
+                    if($reportedYear == "" || $reportedYear == $this->getReport()->year-1){
+                        if($submitProductYear && isset($_GET['generatePDF']) && !isset($_GET['preview'])){
+                            DBFunctions::insert('grand_products_reported',
+                                                array('product_id' => $prod->getId(),
+                                                      'user_id' => $person->getId(),
+                                                      'year' => $this->getReport()->year-1));
+                        }
+                        $tuple = self::createTuple();
+                        $tuple['product_id'] = $prod->id;
+                        $data[] = $tuple;
+                    }
                 }
             }
         }

@@ -142,6 +142,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
         $set = $this->getAttr("set", "");
         if(class_exists($set)){
             $reportItemSet = new $set();
+            $reportItemSet->parent = $this->getParent();
             $reportItemSet->setPersonId($this->personId);
             $reportItemSet->setProjectId($this->projectId);
             $reportItemSet->setMilestoneId($this->milestoneId);

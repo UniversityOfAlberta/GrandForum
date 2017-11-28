@@ -6,6 +6,9 @@ class PersonOutputsReportItemSet extends ReportItemSet {
         $products = new PersonProductsReportItemSet();
         $grants = new PersonGrantsReportItemSet();
         
+        $products->parent = $this->getParent();
+        $grants->parent = $this->getParent();
+        
         $products->setPersonId($this->personId);
         $products->setProjectId($this->projectId);
         $products->setMilestoneId($this->milestoneId);
