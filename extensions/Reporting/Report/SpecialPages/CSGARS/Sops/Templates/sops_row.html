@@ -37,7 +37,9 @@
 </td>
 
 <td style="white-space: nowrap;" id='program_name'>
-    <%= program_name %>
+    <% var t = program_name.replace(/Master of Science/g, 'MSc.'); %>
+    <%= t.replace(/Doctor of Philosophy/g, 'PhD') %>
+  
 </td>
 
 <td style="white-space: nowrap;" id='epl'>
