@@ -3,6 +3,7 @@ SopsRowView = Backbone.View.extend({
     tagName: 'tr',
     parent: null,
     template: _.template($('#sops_row_template').html()),
+    additionalNotesDialog: null,
     
     initialize: function(options){
         this.parent = options.parent;
@@ -10,10 +11,15 @@ SopsRowView = Backbone.View.extend({
     },
 
     events: {
+        'click #additionalNotes': 'addNotes',
+    },
+
+    addNotes: function() {
+        this.additionalNotesDialog.dialog("open");
     },
 
     render: function(){
-	var i = this.model.toJSON();
+	    var i = this.model.toJSON();
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
         for(m=0;m<i.annotations.length;m++){
@@ -28,6 +34,34 @@ SopsRowView = Backbone.View.extend({
                 }
             }
         }
+        var model = this.model;
+        var view = this;
+        var previousAdditional;
+        this.additionalNotesDialog = this.$("#additionalNotesDialog").dialog({
+            //modal: true,
+            autoOpen: false,
+            open: function(event, ui) {
+                previousAdditional = _.clone(model.get('additional'));
+            },
+            closeOnEscape: true,
+            buttons: {
+                Save: function() {
+                    model.save();
+                    $(this).dialog("close");
+                    view.$('#notes .throbber').show();
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            },
+            close: function() {
+                model.set('additional', previousAdditional);
+                $('textarea', $(this)).val(previousAdditional.notes);
+            },
+            show: { effect: "drop", direction: "down", duration: 250 },
+        });
+        this.additionalNotesDialog.parent().appendTo(this.$("#notes"));
+        this.parent.renderRoles();
         return this.$el;
     }
 });

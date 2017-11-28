@@ -122,7 +122,16 @@ HTML.TextArea = function(view, attr, options){
     $(el).text(HTML.Value(view, attr));
     var events = view.events;
     view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
-        view.model.set(attr, $(e.target).val());
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = $(e.target).val();
+            view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger('change', view.model);
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
     };
     view.delegateEvents(events);
     $(el).wrap('div');

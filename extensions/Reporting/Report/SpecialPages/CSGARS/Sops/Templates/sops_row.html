@@ -16,64 +16,64 @@
 
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='folder'>
     <%= folder %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='dob'>
     <%= date_of_birth %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='citizenship'>
     <%= additional.country_of_citizenship_full %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='applicant_type'>
     <%= applicant_type %>
 </td>
 
-<td id='nationality_notes'>
+<td id='education_history'>
     <%= education_history %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='program_name'>
     <%= program_name %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='epl'>
     <%= epl_test %><br /><%= epl_score %><br /><%= epl_listen %><br /><%= epl_write %><br /><%= epl_read %><br /><%= epl_speaking %>
 </td>
 
 <!--  department specific -->
-<td id='notes'>
+<td id='aos'>
     <%= additional.areas_of_study %>
 </td>
 
-<td id='notes'>
+<td id='supervisors'>
     <%= additional.supervisors %>
 </td>
 
-<td id='notes'>
+<td id='scholarships'>
     <%= additional.scholarships_held %>/<%= additional.scholarships_applied %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='gpaNormalized'>
     <%= additional.gpaNormalized %>
 </td>
 
-<td id='notes'>
+<td id='gres'>
     <%= additional.gre1 %>, <%= additional.gre2 %>, <%= additional.gre3 %>, <%= additional.gre4 %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='pubs'>
     <%= additional.num_publications %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='awards'>
     <%= additional.num_awards %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='courses'>
     <div class="ellipsis tooltip" title="<%= additional.courses %>" style="border-bottom: none">
       <div>
         <%= additional.courses %>
@@ -124,8 +124,14 @@
 </td>
 
 <td style="width:300px" id='notes'>
-    <%= additional.notes %>
-    <!-- <span class="assign_button" style="display:none"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span> -->
+    <%= nl2br(additional.notes) %>
+    <span class="assign_button" style="display:none" id="additionalNotes">
+      <a class="button">Edit</a>
+      <span class="throbber" style="display:none"></span>
+    </span>
+    <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
+      <%= HTML.TextArea(this, 'additional.notes', {}) %>
+    </div>
 </td>
 
 <td style="width:200px">

@@ -206,7 +206,7 @@ class GsmsData extends BackboneModel{
     function update(){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn()){
-                DBFunctions::update('grand_gsms',
+                $status = DBFunctions::update('grand_gsms',
                                     array('`gender`' => $this->gender,
                                           '`student_id`' => $this->student_id,
                                           '`gsms_id`' => $this->gsms_id,
@@ -247,6 +247,7 @@ class GsmsData extends BackboneModel{
                                           '`general_notes`' => $this->general_notes,
                                           '`visible`' => $this->visible),
 				     array('user_id' => EQ($this->user_id)));
+                //DBFunctions::commit();
         }
 	return true;
     }
@@ -279,12 +280,13 @@ class GsmsData extends BackboneModel{
         else{
             $degrees = $this->education_history;
         }
-        $json = array('user_id' =>$this->user_id,
+        $json = array('id' =>$this->id,
+                  'user_id' =>$this->user_id,
                   'status' => $this->status,
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
- 	          'applicant_number' => $this->applicant_number,
+ 	                'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
                   'program_name' => $this->getProgramName(true),
