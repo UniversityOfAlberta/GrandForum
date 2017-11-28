@@ -124,13 +124,16 @@
 </td>
 
 <td style="width:300px" id='notes'>
-    <%= nl2br(additional.notes) %>
+  <% _.each(additional.notes, function(note, key) { %>
+    <%= note %> (<%= key %>)
+    <br />
+  <% }); %>
     <span class="assign_button" style="display:none" id="additionalNotes">
       <a class="button">Edit</a>
       <span class="throbber" style="display:none"></span>
     </span>
     <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
-      <%= HTML.TextArea(this, 'additional.notes', {}) %>
+      <%= HTML.TextArea(this, 'additional.notes.u' + me.get('id'), {}) %>
     </div>
 </td>
 

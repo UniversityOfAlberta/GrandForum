@@ -56,7 +56,7 @@ SopsRowView = Backbone.View.extend({
             },
             close: function() {
                 model.set('additional', previousAdditional);
-                $('textarea', $(this)).val(previousAdditional.notes);
+                $('textarea', $(this)).val(previousAdditional.notes['u'+me.get('id')]);
             },
             show: { effect: "drop", direction: "down", duration: 250 },
         });
