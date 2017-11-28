@@ -9,7 +9,7 @@ SopsView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($('#sops_template').html());
         $(this).data('name', 'show');
-        this.listenTo(this.model, "sync", function(){
+        this.listenToOnce(this.model, "sync", function(){
             this.sops = this.model;
             this.render();
         }, this);
@@ -41,6 +41,7 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
+        console.log("create data table");
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'autoWidth': false,
@@ -438,6 +439,7 @@ SopsView = Backbone.View.extend({
    },
 
     render: function(){
+        console.log("rendering");
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
