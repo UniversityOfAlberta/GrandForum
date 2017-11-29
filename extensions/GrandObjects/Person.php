@@ -924,6 +924,8 @@ class Person extends BackboneModel {
                       'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName(),
+                      'firstname' => $this->getFirstName(),
+                      'lastname' => $this->getLastName(),
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
