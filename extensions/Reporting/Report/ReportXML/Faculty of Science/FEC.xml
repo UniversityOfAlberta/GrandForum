@@ -150,7 +150,7 @@
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication|Patent/Spin-Off" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication|Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
@@ -181,7 +181,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
@@ -217,7 +217,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
@@ -245,7 +245,7 @@
                 <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity"  useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_citation}</td><td>{$product_type}</td></tr>

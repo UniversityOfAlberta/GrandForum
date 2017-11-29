@@ -9,6 +9,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $peerReviewed = $this->getAttr("peerReviewed", "");
         $status = $this->getAttr("status", "");
         $submitProductYear = (strtolower($this->getAttr("submitProductYear", "false")) == "true");
+        $useProductYear = (strtolower($this->getAttr("useProductYear", "false")) == "true");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
@@ -38,7 +39,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                    ($peerReviewed == "" || ($prod->getData('peer_reviewed') == $peerReviewed)) &&
                    ($status == "" || ($prod->getStatus() == $status))){
                     $reportedYear = $prod->getReportedForPerson($this->personId);
-                    if($reportedYear == "" || $reportedYear == $this->getReport()->year-1){
+                    if(!$useProductYear || $reportedYear == "" || $reportedYear == $this->getReport()->year-1){
                         if($submitProductYear && isset($_GET['generatePDF']) && !isset($_GET['preview'])){
                             DBFunctions::insert('grand_products_reported',
                                                 array('product_id' => $prod->getId(),
