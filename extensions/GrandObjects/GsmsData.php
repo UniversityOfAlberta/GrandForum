@@ -205,6 +205,12 @@ class GsmsData extends BackboneModel{
     */
     function update(){
         $me = Person::newFromWGUser();
+        $lastname = preg_replace('/[^\wA-zÀ-ÿ]/', '', $me->getLastName());
+        $notes = (array) $this->additional["notes"];
+        if ($notes[$lastname] == "") {
+          unset($notes[$lastname]);
+          $this->additional["notes"] = $notes;
+        }
         if($me->isLoggedIn()){
                 $status = DBFunctions::update('grand_gsms',
                                     array('`gender`' => $this->gender,
@@ -379,21 +385,21 @@ class GsmsData extends BackboneModel{
     }
     function getOTColumns(){
         $gsms_array = array('gpa60' => "",
-                                  'gpafull' => "",
-                                  'gpafull_credits' => "",
-                                  'gpafull2' => "",
-                                  'gpafull_credits2' => "",
-                                  'notes' => "",
-                                  'casper' => "",
-                                  'indigenous' => "",
-                                  'canadian' => "",
-                                  'saskatchewan' => "",
-                                  'international' =>"",
-                                  'withdrawals' => "",
-                                  'anatomy' => "",
-                                  'stats' => "",
-                                  'failures' => "",
-                                  'degrees' => array());
+                            'gpafull' => "",
+                            'gpafull_credits' => "",
+                            'gpafull2' => "",
+                            'gpafull_credits2' => "",
+                            'notes' => "",
+                            'casper' => "",
+                            'indigenous' => "",
+                            'canadian' => "",
+                            'saskatchewan' => "",
+                            'international' =>"",
+                            'withdrawals' => "",
+                            'anatomy' => "",
+                            'stats' => "",
+                            'failures' => "",
+                            'degrees' => array());
         return $gsms_array;
     }
 
