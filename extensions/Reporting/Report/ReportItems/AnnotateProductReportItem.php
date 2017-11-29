@@ -20,13 +20,19 @@ class AnnotateProductReportItem extends AbstractReportItem {
                 <tr>
                     <td align='right' style='white-space:nowrap;'><b>Type of User:</b></td>
                     <td>
-                        <select>
+                        <select name='type'>
                             <option <% if(type == ''){ %>selected <% } %>></option>
                             <option <% if(type == 'Undergraduate Student'){ %>selected <% } %>>Undergraduate Student</option>
                             <option <% if(type == 'Graduate Student'){ %>selected <% } %>>Graduate Student</option>
                             <option <% if(type == 'Faculty'){ %>selected <% } %>>Faculty</option>
                             <option <% if(type == 'None of the Above'){ %>selected <% } %>>None of the Above</option>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align='right' style='white-space:nowrap;'><b>Email:</b></td>
+                    <td>
+                        <input type='text' name='email' value='<%= email %>' />
                     </td>
                 </tr>
             </table>
@@ -91,7 +97,8 @@ class AnnotateProductReportItem extends AbstractReportItem {
                     Save: function(){
                         {$this->getPostId()}_data[$('#{$this->getPostId()}_name').text()] = {
                             name: $('#{$this->getPostId()}_name').text(),
-                            type: $('select', $(this)).val()
+                            type: $('select[name=type]', $(this)).val(),
+                            email: $('input[name=email]', $(this)).val().replace(/'/g, '&#39;')
                         };
                         $('textarea[name={$this->getPostId()}]').val(JSON.stringify({$this->getPostId()}_data));
                         {$this->getPostId()}_render();
@@ -108,8 +115,9 @@ class AnnotateProductReportItem extends AbstractReportItem {
                 var name = $(this).text();
                 var obj = {$this->getPostId()}_data[name];
                 var type = (obj != undefined) ? obj.type : '';
+                var email = (obj != undefined) ? obj.email : '';
                 var template = _.template($('#{$this->getPostId()}_template').html());
-                $('#{$this->getPostId()}_dialog').html(template({name: name, type: type}));
+                $('#{$this->getPostId()}_dialog').html(template({name: name, type: type, email: email}));
                 $('#{$this->getPostId()}_dialog').dialog('open');
             });
         </script>";
