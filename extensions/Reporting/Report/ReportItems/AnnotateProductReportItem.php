@@ -72,13 +72,16 @@ class AnnotateProductReportItem extends AbstractReportItem {
                             $(el).css('font-weight', 'normal');
                             break;
                         case '':
-                            $(el).css('text-decoration', '');
-                            $(el).css('font-weight', '');
+                            $(el)[0].style.textDecoration = $(el)[0].oldStyle.textDecoration;
+                            $(el)[0].style.fontWeight = $(el)[0].oldStyle.fontWeight;
                             break;
                     }
                 });
             };
             
+            $('#{$this->getPostId()}_span span.citation_author').each(function(i, el){
+                $(el)[0].oldStyle = _.clone($(el)[0].style);
+            });
             {$this->getPostId()}_render();
             
             $('#{$this->getPostId()}_dialog').dialog({

@@ -1351,11 +1351,11 @@ class Paper extends BackboneModel{
                         foreach($unis as $uni){
                             if(strstr($uni['position'], "Graduate Student") !== false ||
                                strstr($uni['position'], "Post-Doctoral Fellow") !== false){
-                                $name = "<b><span class='citation_author'>{$a->getNameForProduct()}</span></b>";
+                                $name = "<span style='font-weight: bold;' class='citation_author'>{$a->getNameForProduct()}</span>";
                             }
                             else if(strstr($uni['position'], "Undergraduate") !== false ||
                                     strstr($uni['position'], "Summer Student") !== false){
-                                $name = "<u><span class='citation_author'>{$a->getNameForProduct()}</span></u>";
+                                $name = "<span style='text-decoration: underline;' class='citation_author'>{$a->getNameForProduct()}</span>";
                             }
                         }
                     }
