@@ -263,10 +263,10 @@ abstract class AbstractSop extends BackboneModel{
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS()->getAdditional();
         $nationality = array();
-        $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
-        $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
-        $nationality[] = ($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
-        $nationality[] = ($gsms['international'] == "Yes") ? "International" : "";
+        $nationality[] = @($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
+        $nationality[] = @($gsms['canadian'] == "Yes") ? "Canadian" : "";
+        $nationality[] = @($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
+        $nationality[] = @($gsms['international'] == "Yes") ? "International" : "";
 
         $nationality_note = "";
         foreach($nationality as $note){

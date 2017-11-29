@@ -127,7 +127,12 @@
 
 <td style="width:300px" id='notes'>
   <% _.each(additional.notes, function(note, key) { %>
-    <%= key %>: <%= note %>
+    <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+    <% if (key == lastname) { %>
+      <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% } else { %>
+      <font style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% } %>
     <br />
   <% }); %>
     <span class="assign_button" style="display:none" id="additionalNotes">
@@ -135,7 +140,8 @@
       <span class="throbber" style="display:none"></span>
     </span>
     <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
-      <%= HTML.TextArea(this, 'additional.notes.' + me.get('lastname'), {}) %>
+      <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+      <%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>
     </div>
 </td>
 

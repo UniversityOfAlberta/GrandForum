@@ -38,8 +38,9 @@ SopsRowView = Backbone.View.extend({
         var view = this;
         var previousAdditional;
         this.additionalNotesDialog = this.$("#additionalNotesDialog").dialog({
-            //modal: true,
             autoOpen: false,
+            resizable: false,
+            //height: 400,
             open: function(event, ui) {
                 previousAdditional = _.clone(model.get('additional'));
             },
