@@ -1289,7 +1289,9 @@ class Paper extends BackboneModel{
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
-        $format = preg_replace_callback($regex, "self::formatCitation", $format);
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink) {
+            return $this->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink);
+        }, $format);
         
         $peerDiv = "";
         if($showPeerReviewed){
@@ -1340,7 +1342,7 @@ class Paper extends BackboneModel{
                 if($a->getId()){
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
-                        $name = "{$a->getNameForProduct()}";
+                        $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
                     else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
                         $yearAgo = strtotime("{$this->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
@@ -1349,16 +1351,16 @@ class Paper extends BackboneModel{
                         foreach($unis as $uni){
                             if(strstr($uni['position'], "Graduate Student") !== false ||
                                strstr($uni['position'], "Post-Doctoral Fellow") !== false){
-                                $name = "<b>{$a->getNameForProduct()}</b>";
+                                $name = "<b><span class='citation_author'>{$a->getNameForProduct()}</span></b>";
                             }
                             else if(strstr($uni['position'], "Undergraduate") !== false ||
                                     strstr($uni['position'], "Summer Student") !== false){
-                                $name = "<u>{$a->getNameForProduct()}</u>";
+                                $name = "<u><span class='citation_author'>{$a->getNameForProduct()}</span></u>";
                             }
                         }
                     }
                     else{
-                        $name = "{$a->getNameForProduct()}";
+                        $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
                     if($hyperlink){
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
@@ -1368,10 +1370,11 @@ class Paper extends BackboneModel{
                     }
                 }
                 else{
-                    $authors[] = $a->getNameForProduct();
+                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                 }
             }
         }
+
         $authors = implode("; ", $authors);
     
         $date = $this->getDate();
@@ -1381,7 +1384,7 @@ class Paper extends BackboneModel{
             $title = "<a href='{$this->getUrl()}'>{$this->title}</a>";
         }
         else{
-            $title = $title;
+            $title = $this->title;
         }
         $type = $this->type;
         $pages = $this->getData(array('ms_pages', 'pages'));

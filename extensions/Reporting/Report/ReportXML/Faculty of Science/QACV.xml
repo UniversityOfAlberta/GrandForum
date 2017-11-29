@@ -25,6 +25,66 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="products" name="Publications" blobSection="PRODUCTS" type="EditableReportSection">
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <p><i>bold = graduate student; underline = undergraduate student</i></p>
+                <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/forum_test/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
+                <h2>Journals</h2>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">{$item}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                </ul>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <h2>Conference Papers</h2>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">{$item}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                </ul>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <h2>Other</h2>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">{$item}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                </ul>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>

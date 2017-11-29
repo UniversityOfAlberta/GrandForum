@@ -220,7 +220,7 @@ abstract class AbstractReportItem {
         }
         if(!($parent instanceof AbstractReportSection)){
             $extraId = $this->getExtraIndex();
-            $postId = @$parent->getPostId()."_p1{$this->personId}_p2{$this->projectId}_m{$this->milestoneId}_e{$extraId}".$postId;
+            $postId = @$parent->getPostId()."_p1{$this->personId}_p2{$this->projectId}_p3{$this->productId}_m{$this->milestoneId}_e{$extraId}".$postId;
         }
         else{
             $postId = str_replace(" ", "", $parent->name).$postId;
