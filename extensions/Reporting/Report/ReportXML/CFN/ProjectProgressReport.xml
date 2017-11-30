@@ -82,7 +82,7 @@
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
-            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
+            <ReportItem id="role" type="StaticReportItem">
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
@@ -114,7 +114,7 @@
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
-            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
+            <ReportItem id="role" type="StaticReportItem">
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
@@ -146,7 +146,7 @@
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
-            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
+            <ReportItem id="role" type="StaticReportItem">
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
@@ -444,7 +444,7 @@
                         <table class='wikitable'>
                     ]]>
                 </ReportItem>
-                <ReportItem id="grant" type="TextReportItem" width="300px" blobType="BLOB_TEXT" blobItem="SSA_HQP_GRANT" blobSubItem="{$user_id}">
+                <ReportItem id="grant" type="StaticReportItem">
                     <![CDATA[
                         <tr>
                             <td class='label'>Grant Title:</td>
