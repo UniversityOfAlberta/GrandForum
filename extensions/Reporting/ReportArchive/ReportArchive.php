@@ -72,21 +72,17 @@ class ReportArchive extends SpecialPage {
                 }
                 else {
                     $ext = "pdf";
-                    if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP || $type == RPTP_HQP_ZIP){
+                    if(strstr($type, "RPTP_QACVS") !== false){
                         $ext = "zip";
                     }
                     $tst = $sto->metadata('timestamp');
                     // Make timestamp usable in filename.
                     $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
                     if($wgTitle->getText() == "ReportArchive"){
-                        if($type == RPTP_PROJ_ZIP){
-                            $name = "ProjectReports_{$tst}.zip";
-                        }
-                        else if($type == RPTP_NI_ZIP){
-                            $name = "NIReports_{$tst}.zip";
-                        }
-                        else if($type == RPTP_HQP_ZIP){
-                            $name = "HQPReports_{$tst}.zip";
+                        if(strstr($type, "RPTP_QACVS") !== false){
+                            $name = str_replace("RPTP_", "", $type);
+                            
+                            $name = "{$name}.zip";
                         }
                         else{
                             $report = AbstractReport::newFromToken($tok);

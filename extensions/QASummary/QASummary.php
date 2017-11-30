@@ -1,6 +1,7 @@
 <?php
 
 require_once("DepartmentTab.php");
+require_once("QACVGenerator.php");
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['QASummary'] = 'QASummary'; # Let MediaWiki know about the special page.

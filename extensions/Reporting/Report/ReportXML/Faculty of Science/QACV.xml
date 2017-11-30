@@ -84,6 +84,25 @@
                 </ul>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <h2>Presentations</h2>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" status="Invited" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">{$item}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                </ul>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="report_review" type="ReviewReportItem">
