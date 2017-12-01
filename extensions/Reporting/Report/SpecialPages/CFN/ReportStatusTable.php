@@ -87,13 +87,13 @@ class ReportStatusTable extends SpecialPage{
                             <ul>
                                 <li><a href='#final'>Final Project</a></li>
                                 <li><a href='#progress'>Project Progress</a></li>
-                                <li><a href='#ifp_final_2015'>IFP2015 Final </a></li>
-                                <li><a href='#ifp_progress_2015'>IFP2015 Progress </a></li>
-                                <li><a href='#ifp_final_2016'>IFP2016 Final  (Special)</a></li>
+                                <li><a href='#ifp_final_2015'>IFP2015 Final</a></li>
+                                <li><a href='#ifp_progress_2015'>IFP2015 Progress</a></li>
+                                <li><a href='#ifp_final_2016'>IFP2016 Final (Spec)</a></li>
                                 <li><a href='#ifp_progress_2016'>IFP2016 Progress </a></li>
-                                <li><a href='#ifp2016_final_2016'>IFP2016 Final </a></li>
-                                <li><a href='#ifp_progress_2017'>IFP2017 Progress </a></li>
-                                <li><a href='#ifp2017_final_2017'>IFP2017 Final </a></li>
+                                <li><a href='#ifp2016_final_2016'>IFP2016 Final</a></li>
+                                <li><a href='#ifp_progress_2017'>IFP2017 Progress</a></li>
+                                <li><a href='#ifp2017_final_2017'>IFP2017 Final</a></li>
                                 <li><a href='#ssa'>SSA2015</a></li>
                                 <li><a href='#ssa2016'>SSA2016</a></li>
                                 <li><a href='#ssa2017'>SSA2017</a></li>
