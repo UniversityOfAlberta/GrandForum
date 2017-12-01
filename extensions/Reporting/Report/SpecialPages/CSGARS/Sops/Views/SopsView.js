@@ -41,7 +41,30 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
-        console.log("create data table");
+        var buttonDownload = {
+            exportOptions: {
+                format: {
+                    body: function ( data, row, column, node ) {
+                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
+                        var ret;
+                        data = $('<div>' + data + '</div>').text();
+                        if ((column === 17) || (column === 19)) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                        // Clean up Notes column for downloaded excel/csv
+                        } else if (column === 21) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                            ret = ret.replace(/[\n\r].*Additional Notesclose\s*([^\n\r]*)/, "");
+                        } else {
+                            ret = data;
+                        }
+                        return ret;
+                    }
+                }
+            }
+        };
+
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'autoWidth': false,
@@ -51,12 +74,28 @@ SopsView = Backbone.View.extend({
                                                         {
                                                             extend: 'colvis',
                                                             className: 'btn btn-primary',
-                                                            text: 'Column Visibility'
-                                                        }
-                                                     ],
+                                                            text: 'Column Visibility',
+                                                        },
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'csv',
+                                                            text: 'CSV',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } ),
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'excel',
+                                                            text: 'Excel',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } )/*,
+                                                        {
+                                                            extend: 'pdf',
+                                                            className: 'btn btn-primary',
+                                                            text: 'PDF'
+                                                        }*/
+                                                     ], 
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        //this.$('#listTable_length').prepend("<div id='download_btns' style='margin-left:112px; margin-top: 6px; vertical-align:baseline;'>Download: <a class='buttons-csv buttons-html5'>CSV</a>, <a class='buttons-excel buttons-html5'>Excel</a></div>")
     },
 
     events: {
@@ -439,7 +478,6 @@ SopsView = Backbone.View.extend({
    },
 
     render: function(){
-        console.log("rendering");
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
