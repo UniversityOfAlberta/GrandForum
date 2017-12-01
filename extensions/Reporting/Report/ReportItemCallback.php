@@ -1031,6 +1031,9 @@ class ReportItemCallback {
         }
         $roleNames = array();
         foreach($roles as $role){
+            if($role->getRole() == PL){
+                continue;
+            }
             if($project != null && $project->getId() != 0){
                 if($role->hasProject($project)){
                     $roleNames[$role->getRole()] = $role->getRole();
