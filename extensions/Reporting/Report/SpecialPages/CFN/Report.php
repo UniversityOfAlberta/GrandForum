@@ -50,18 +50,18 @@ class Report extends AbstractReport{
                 }
             }
         }
-        if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("KT2017Applicant")){
-            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);*/
-        }
+        /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("KT2017Applicant")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);
+        }*/
         /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("CAT2017Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2017Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CAT Application", "{$url}Catalyst2017Application", $selected);
         }*/
-        if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2017Applicant")){
+        /*if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2017Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
-        }
+        }*/
         foreach($projects as $project){
             if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
                 if(strstr($project->getName(), "SSA2016") === false && 
