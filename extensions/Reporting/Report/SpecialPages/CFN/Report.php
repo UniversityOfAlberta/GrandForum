@@ -128,7 +128,7 @@ class Report extends AbstractReport{
                 
             }
         }
-        if(count($students) > 0){
+        /*if(count($students) > 0){
             $processedIFP2017 = false;
             foreach($students as $student){
                 if(!$processedIFP2017 && $student->isSubRole("IFP2017Applicant")){
@@ -137,7 +137,7 @@ class Report extends AbstractReport{
                     $processedIFP2017 = true;
                 }
             }
-        }
+        }*/
         if($person->isSubRole('IFP')){
             $ifpDeleted = false;
             $ifp2016 = false;
