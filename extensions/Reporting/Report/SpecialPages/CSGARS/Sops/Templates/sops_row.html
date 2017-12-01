@@ -16,64 +16,66 @@
 
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: wrap;" id='folder'>
     <%= folder %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='dob'>
     <%= date_of_birth %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
-    <%= country_of_citizenship %>
+<td style="white-space: nowrap;" id='citizenship'>
+    <%= additional.country_of_citizenship_full %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='applicant_type'>
     <%= applicant_type %>
 </td>
 
-<td id='nationality_notes'>
+<td id='education_history'>
     <%= education_history %>
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
-    <%= program_name %>
+<td style="white-space: nowrap;" id='program_name'>
+    <% var t = program_name.replace(/Master of Science/g, 'MSc.'); %>
+    <%= t.replace(/Doctor of Philosophy/g, 'PhD') %>
+  
 </td>
 
-<td style="white-space: nowrap;" id='nationality_notes'>
+<td style="white-space: nowrap;" id='epl'>
     <%= epl_test %><br /><%= epl_score %><br /><%= epl_listen %><br /><%= epl_write %><br /><%= epl_read %><br /><%= epl_speaking %>
 </td>
 
 <!--  department specific -->
-<td id='notes'>
+<td id='aos'>
     <%= additional.areas_of_study %>
 </td>
 
-<td id='notes'>
+<td id='supervisors'>
     <%= additional.supervisors %>
 </td>
 
-<td id='notes'>
+<td id='scholarships'>
     <%= additional.scholarships_held %>/<%= additional.scholarships_applied %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='gpaNormalized'>
     <%= additional.gpaNormalized %>
 </td>
 
-<td id='notes'>
+<td id='gres'>
     <%= additional.gre1 %>, <%= additional.gre2 %>, <%= additional.gre3 %>, <%= additional.gre4 %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='pubs'>
     <%= additional.num_publications %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='awards'>
     <%= additional.num_awards %>
 </td>
 
-<td align="right" id='notes'>
+<td align="right" id='courses'>
     <div class="ellipsis tooltip" title="<%= additional.courses %>" style="border-bottom: none">
       <div>
         <%= additional.courses %>
@@ -82,26 +84,65 @@
 </td>
 
 <!-- reviewer info -->
-
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <%= reviewers[i].name %>
-      	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
-      	<% } %>
+        <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
   <br />
   <% } %>
-  <span class="assign_button" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
+  <span class="assign_button" style="display:none"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
 </td>
 
+<!-- reviewer average -->
 <td style="white-space: nowrap;">
+    <% var avg=0; %>
+    <% var ignore=0; %>
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <%= reviewers[i].decision %><br />
+        <% if(reviewers[i].rank != '--') { %>
+          <% avg += parseInt(reviewers[i].rank); %>
+        <% } else { %>
+          <% ignore += 1; %>
+        <% } %>
     <% } %>
-        <span class="assign_button_space" style="visibility:hidden"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
+    <% avg /= reviewers.length - ignore; %>
+    <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
+</td>
+
+<!-- faculty info -->
+<td style="white-space: nowrap;">
+  <% for(var i=0; i < other_reviewers.length;i++){ %>
+        <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+  <br />
+  <% } %>
+</td>
+
+<!-- faculty average -->
+<td style="white-space: nowrap;">
+  <% var avg=0; %>
+    <% for(var i=0; i < other_reviewers.length;i++){ %>
+      <% avg += parseInt(other_reviewers[i].rank); %>
+    <% } %>
+    <% avg /= other_reviewers.length; %>
+    <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 
 <td style="width:300px" id='notes'>
-    <%= additional.notes %>
+  <% _.each(additional.notes, function(note, key) { %>
+    <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+    <% if (key == lastname) { %>
+      <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% } else { %>
+      <font style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% } %>
+    <br />
+  <% }); %>
+    <span class="assign_button" style="display:none" id="additionalNotes">
+      <a class="button">+</a>
+      <span class="throbber" style="display:none"></span>
+    </span>
+    <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
+      <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+      <%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>
+    </div>
 </td>
 
 <td style="width:200px">

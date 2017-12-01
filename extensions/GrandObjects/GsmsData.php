@@ -205,8 +205,14 @@ class GsmsData extends BackboneModel{
     */
     function update(){
         $me = Person::newFromWGUser();
+        $lastname = preg_replace('/[^\wA-zÀ-ÿ]/', '', $me->getLastName());
+        $notes = (array) $this->additional["notes"];
+        if ($notes[$lastname] == "") {
+          unset($notes[$lastname]);
+          $this->additional["notes"] = $notes;
+        }
         if($me->isLoggedIn()){
-                DBFunctions::update('grand_gsms',
+                $status = DBFunctions::update('grand_gsms',
                                     array('`gender`' => $this->gender,
                                           '`student_id`' => $this->student_id,
                                           '`gsms_id`' => $this->gsms_id,
@@ -247,6 +253,7 @@ class GsmsData extends BackboneModel{
                                           '`general_notes`' => $this->general_notes,
                                           '`visible`' => $this->visible),
 				     array('user_id' => EQ($this->user_id)));
+                //DBFunctions::commit();
         }
 	return true;
     }
@@ -279,12 +286,13 @@ class GsmsData extends BackboneModel{
         else{
             $degrees = $this->education_history;
         }
-        $json = array('user_id' =>$this->user_id,
+        $json = array('id' =>$this->id,
+                  'user_id' =>$this->user_id,
                   'status' => $this->status,
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
- 	          'applicant_number' => $this->applicant_number,
+ 	                'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
                   'program_name' => $this->getProgramName(true),
@@ -316,9 +324,25 @@ class GsmsData extends BackboneModel{
             $reviewers[] = array('id' => $person->getId(),
                              'name' => $person->getNameForForms(),
                              'url' => $person->getUrl(),
-                             'decision' => $sop->getAdmitResult($reviewer->getId()));
+                             'decision' => $sop->getAdmitResult($reviewer->getId()),
+                             'rank' => $sop->getReviewRanking($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
+
+
+        $otherReviewers = array();
+        
+        $other_array = $student->getOtherEvaluators(YEAR);
+        foreach($other_array as $other){
+            $otherReviewers[] = array('id' => $other->getId(),
+                             'name' => $other->getNameForForms(),
+                             'url' => $other->getUrl(),
+                             'decision' => $sop->getAdmitResult($other->getId()),
+                             'rank' => $sop->getReviewRanking($other->getId()));
+        }
+        
+        $json['other_reviewers'] = $otherReviewers;
+        
 
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
@@ -342,7 +366,7 @@ class GsmsData extends BackboneModel{
             $json['nationality_note'] = $nationality_note;
         }
         if($config->getValue('networkName') == 'CSGARS'){
-            $json['additional'] = array_merge($json['additional'],$this->getCSColumns());
+            $json['additional'] = array_merge($json['additional'],$sop->getColumns());
         }
 
         return $json;
@@ -361,21 +385,21 @@ class GsmsData extends BackboneModel{
     }
     function getOTColumns(){
         $gsms_array = array('gpa60' => "",
-                                  'gpafull' => "",
-                                  'gpafull_credits' => "",
-                                  'gpafull2' => "",
-                                  'gpafull_credits2' => "",
-                                  'notes' => "",
-                                  'casper' => "",
-                                  'indigenous' => "",
-                                  'canadian' => "",
-                                  'saskatchewan' => "",
-                                  'international' =>"",
-                                  'withdrawals' => "",
-                                  'anatomy' => "",
-                                  'stats' => "",
-                                  'failures' => "",
-                                  'degrees' => array());
+                            'gpafull' => "",
+                            'gpafull_credits' => "",
+                            'gpafull2' => "",
+                            'gpafull_credits2' => "",
+                            'notes' => "",
+                            'casper' => "",
+                            'indigenous' => "",
+                            'canadian' => "",
+                            'saskatchewan' => "",
+                            'international' =>"",
+                            'withdrawals' => "",
+                            'anatomy' => "",
+                            'stats' => "",
+                            'failures' => "",
+                            'degrees' => array());
         return $gsms_array;
     }
 

@@ -883,7 +883,7 @@ if ( isset($pdf) ) {
      * Adds a pdf to the end of the PDF
      * @param string $pdf The id of the pdf
      */
-    function attachPDF($pdf){
+    static function attachPDF($pdf){
         global $wgOut;
         $pdf = strip_tags($pdf);
         $wgOut->addHTML("<script type='text/php'>

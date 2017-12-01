@@ -179,13 +179,12 @@ EOF;
         $recommended = $this->getAttr('recommended', false);
         $reportLimits = strtolower($this->getAttr('reportLimits', "false"));
         $length = strlen(utf8_decode($blobValue));
-        $lengthDiff = strlen($blobValue) - $length;
         $class = "inlineMessage";
         if($limit > 0 && $reportLimits == "true"){
             if(!$recommended){
                 $type = "maximum of";
-                $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
-                $blobValue2 = substr($blobValue, $limit + $lengthDiff);
+                $blobValue1 = mb_substr($blobValue, 0, $limit);
+                $blobValue2 = mb_substr($blobValue, $limit);
                 if($blobValue2 != ""){
                     //if(isset($_GET['preview'])){
                         $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";

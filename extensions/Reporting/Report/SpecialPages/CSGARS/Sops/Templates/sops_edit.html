@@ -9,6 +9,13 @@
     <% } %>
 <div id="accordion" style="width:100%; margin-top:50px">
     <div>
+        <h3><a href="#">GARS PDF</a></h3>
+        <div>
+            <iframe style="width:70%;height:1000px;border:0px;margin: 0 auto; display:block;" src="<%= sop_url %>#zoom=100"></iframe>
+        </div>
+    </div>
+    <% if (_.values(content).join().trim() != '') { %>
+    <div>
         <h3><a href="#">Statement of Purpose</a></h3>
         <div id="sop_acc" style="padding-top:20px">
             <div style="padding-top:30px">
@@ -241,10 +248,11 @@
             </div>
         </div>
     </div>
+    <% } %>
     <div>
         <h3><a href="#">Review</a></h3>
         <div>
-            <iframe style="width:100%;height:1000px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=CSReview&project=Sop:<%= id %>&embed"></iframe>
+            <iframe style="width:100%;height:525px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=CSReview&project=Sop:<%= id %>&embed"></iframe>
         </div>
     </div>
     <div>
