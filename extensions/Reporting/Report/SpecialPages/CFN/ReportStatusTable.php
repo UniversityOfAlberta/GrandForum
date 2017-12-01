@@ -29,10 +29,12 @@ class ReportStatusTable extends SpecialPage{
     
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $hqps = Person::getAllPeople(HQP);
-        $nis = Person::getAllPeople(NI);
+        $hqps = Person::getAllPeopleDuring(HQP, "0000-00-00", "2100-00-00");
+        $nis = Person::getAllPeopleDuring(NI, "0000-00-00", "2100-00-00");
         $ifpFinal = array();
         $ifpProgress = array();
+        $ifp2016HQP = array();
+        $ifp2017HQP = array();
         $ifp2016Final = array(
             Person::newFromId(235),
             Person::newFromId(308),
@@ -44,8 +46,18 @@ class ReportStatusTable extends SpecialPage{
         foreach($hqps as $hqp){
             if($hqp->isSubRole('IFP')){
                 $ifpDeleted = false;
-                foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+                $ifp2016 = false;
+                $ifp2017 = false;
+                foreach($hqp->leadershipDuring("0000-00-00", "2100-00-00") as $project){
                     $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
+                    $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false);
+                    $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false);
+                }
+                if($ifp2017){
+                    $ifp2017HQP[] = $hqp;
+                }
+                if($ifp2016){
+                    $ifp2016HQP[] = $hqp;
                 }
                 if(!$ifpDeleted){
                     $ifpProgress[] = $hqp;
@@ -75,11 +87,13 @@ class ReportStatusTable extends SpecialPage{
                             <ul>
                                 <li><a href='#final'>Final Project 2015</a></li>
                                 <li><a href='#progress'>Project Progress 2015</a></li>
-                                <li><a href='#ifp_final_2015'>IFP Final 2015</a></li>
-                                <li><a href='#ifp_progress_2015'>IFP Progress 2015</a></li>
-                                <li><a href='#ifp_final_2016'>IFP Final 2016 (Special)</a></li>
-                                <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
-                                <li><a href='#ifp2016_final_2016'>IFP Final 2016</a></li>
+                                <li><a href='#ifp_final_2015'>IFP2015 Final </a></li>
+                                <li><a href='#ifp_progress_2015'>IFP2015 Progress </a></li>
+                                <li><a href='#ifp_final_2016'>IFP2016 Final  (Special)</a></li>
+                                <li><a href='#ifp_progress_2016'>IFP2016 Progress </a></li>
+                                <li><a href='#ifp2016_final_2016'>IFP2016 Final </a></li>
+                                <li><a href='#ifp_progress_2017'>IFP2017 Progress </a></li>
+                                <li><a href='#ifp2017_final_2017'>IFP2017 Final </a></li>
                                 <li><a href='#ssa'>SSA 2015</a></li>
                                 <li><a href='#ssa2016'>SSA 2016</a></li>
                                 <li><a href='#ssa2017'>SSA 2017</a></li>
@@ -89,8 +103,10 @@ class ReportStatusTable extends SpecialPage{
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',     $ifpFinal, 2015);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015',  $ifpProgress, 2015);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',     $ifp2016Final, 2015);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016',  $ifpProgress, 2016);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2016_final_2016', $ifpFinal, 2016);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016',  $ifp2016HQP, 2016);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2016_final_2016', $ifp2016HQP, 2016);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2017',  $ifp2017HQP, 2017);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2017_final_2017', $ifp2017HQP, 2017);
         $this->addTable('HQPReport',                'ssa',                $ssa, 2015);
         $this->addProjectTable('SSAReport',         'ssa2016',            2016, $ssa2016);
         $this->addProjectTable('SSAReport',         'ssa2017',            2017, $ssa2017);
