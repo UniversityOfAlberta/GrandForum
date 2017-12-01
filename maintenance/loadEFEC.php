@@ -28,17 +28,27 @@
         '' => "",
         'phd' => "Graduate Student - Doctoral",
         'bsc' => "Undergraduate",
-        'msc' => "Graduate Student - Master's",
+        'msc' => "Graduate Student - Master's Thesis",
         'research/technical assistant' => "Research/Technical Assistant",
         'pdf' => "Post-Doctoral Fellow",
         'research associate' => "Research Associate",
         'honors thesis' => "Honors Thesis",
-        'ma' => "Graduate Student - Master's",
+        'ma' => "Graduate Student - Master's Thesis",
         'high school' => "High School Student",
-        'meng' => "Graduate Student - Master's",
+        'meng' => "Graduate Student - Master's Thesis",
         'Masters Course' => "Graduate Student - Master's Course",
         "Masters Thesis" => "Graduate Student - Master's Thesis",
         "Doctoral Program" => "Graduate Student - Doctoral"
+    );
+    
+    $deptMap = array(
+        "Chemistry" => "Chemistry",
+        "Mathematical & Statistical Sci" => "Mathematical And Statistical Sciences",
+        "Earth & Atmospheric Sciences" => "Earth And Atmospheric Sciences",
+        "Biological Sciences" => "Biological Sciences",
+        "Physics" => "Physics",
+        "Psychology" => "Psychology",
+        "Computing Science" => "Computing Science"
     );
     
     $productCategoryMap = array(
@@ -380,7 +390,7 @@
             if(!isset($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])])){
                 $uni = array();
                 $uni['university'] = "University of Alberta";
-                $uni['department'] = $student['UASA_ACAD_PLN1_D30'];
+                $uni['department'] = (isset($deptMap[$student['UASA_ACAD_PLN1_D30']])) ? $deptMap[$student['UASA_ACAD_PLN1_D30']] : $student['UASA_ACAD_PLN1_D30'];
                 $uni['startDate'] = $student['ADMISSION_START_DT'];
                 $uni['title'] = "";
                 $uni['endDate'] = $endDate;
@@ -437,11 +447,10 @@
                 if($sup != null && isset($hqpUniversities[$person->getId()])){
                     // Do a second check looking for name matches for people having the same dept/position
                     foreach($hqpUniversities[$person->getId()] as $pos => $uni){
-                        $otherStart = ($uni['startDate'] != "") ? $uni['startDate'] : "0000-00-00";
-                        $otherEnd = ($uni['endDate'] != "" || $uni['endDate'] != "0000-00-00") ? $uni['endDate'] : "9999-99-99";
+                        $otherStart = ($uni['startDate'] != "" && $uni['startDate'] != null) ? $uni['startDate'] : "0000-00-00";
+                        $otherEnd = ($uni['endDate'] != "" && $uni['endDate'] != "0000-00-00") ? $uni['endDate'] : "9999-99-99";
                         $thisStart = ($row['started'] != "") ? $row['started'] : "0000-00-00";
-                        $thisEnd = ($row['ended'] != "" || $row['ended'] != "0000-00-00") ? $row['ended'] : "9999-99-99";
-
+                        $thisEnd = ($row['ended'] != "" && $row['ended'] != "0000-00-00") ? $row['ended'] : "9999-99-99";
                         if($uni['title'] == $titleMap[$row['responsibility']] && $uni['department'] == $sup->getDepartment() &&
                            (($thisStart >= $otherStart && $thisStart <= $otherEnd) || 
                             ($thisEnd   <= $otherEnd   && $thisEnd   >= $otherStart) ||
