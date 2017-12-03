@@ -398,6 +398,7 @@ class Person extends BackboneModel {
             //}
             if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                 $keys[] = strtolower(substr($firstName, 0, 1)." $lastName");
+                $keys[] = strtolower(trim(unaccentChars($row['user_real_name'])));
             }
             if($middleName != ""){
                 $keys[] = strtolower("$firstName $middleName $lastName");

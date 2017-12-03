@@ -270,9 +270,14 @@ EOF;
             $text .= $person->getProfile()."\n";
             
             $products = $person->getPapers("Publication", false, 'both', true, 'Public');
+            $grants = $person->getGrants();
             foreach($products as $product){
                 $text .= $product->getTitle()."\n";
                 $text .= $product->getDescription()."\n";
+            }
+            foreach($grants as $grant){
+                //$text .= $grant->getTitle()."\n";
+                $text .= $grant->getDescription()."\n";
             }
             CommonWords::$commonWords[] = strtolower($person->getFirstName());
             CommonWords::$commonWords[] = strtolower($person->getLastName());
