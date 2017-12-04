@@ -45,10 +45,13 @@ SopsView = Backbone.View.extend({
             exportOptions: {
                 format: {
                     body: function ( data, row, column, node ) {
-                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
                         var ret;
                         data = $('<div>' + data + '</div>').text();
-                        if ((column === 17) || (column === 19)) {
+                        // add a newline after each education entry
+                        if ((column === 6)) {
+                            ret = data.replace(/(\))([a-zA-Z])/g, '$1\n$2');
+                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
+                        } else if ((column === 17) || (column === 19)) {
                             ret = data.replace(/\s\s+/g, '\n');
                             ret = ret.replace(/\+/g, "");
                         // Clean up Notes column for downloaded excel/csv
