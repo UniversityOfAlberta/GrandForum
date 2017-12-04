@@ -142,14 +142,14 @@ class AnnotateProductReportItem extends AbstractReportItem {
                 if(isset($data[$name])){
                     switch($data[$name]->type){
                         case 'Undergraduate Student':
-                            $span->setAttribute('style', 'text-decoration: underline;');
+                            $span->setAttribute('style', 'text-decoration: underline !important;');
                             break;
                         case 'Graduate Student':
-                            $span->setAttribute('style', 'font-weight: bold;');
+                            $span->setAttribute('style', 'font-weight: bold !important;');
                             break;
                         case 'Faculty':
                         case 'None of the Above':
-                            $span->setAttribute('style', 'font-weight: normal; text-decoration: none;');
+                            $span->setAttribute('style', 'font-weight: normal !important; text-decoration: none !important;');
                             break;
                     }
                 }
