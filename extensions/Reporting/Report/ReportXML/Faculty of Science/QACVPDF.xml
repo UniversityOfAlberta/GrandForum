@@ -217,7 +217,7 @@
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
                     <h2>Research Funding</h2>
-                    <i>Total funding awarded from external sources only and available during the reporting period</i>
+                    <i>Total funding >= $10k awarded from external sources only and available during the reporting period</i>
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
