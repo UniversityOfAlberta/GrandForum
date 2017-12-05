@@ -378,9 +378,8 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        if($me->isLoggedIn() && 
-           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
-            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
+        if($me->isLoggedIn()){
+            $contactHeader = "<th style='white-space: nowrap;'>Email</th>";
         }
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
@@ -452,7 +451,6 @@ class IndexTable {
             }
             if($contactHeader != ''){
                 $wgOut->addHTML("<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>");
-                $wgOut->addHTML("<td align='left'>{$person->getPhoneNumber()}</td>");
             }
             if($idHeader != ''){
                 $wgOut->addHTML("<td>{$person->getId()}</td>");
