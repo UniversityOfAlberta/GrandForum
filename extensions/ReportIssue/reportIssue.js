@@ -2,7 +2,7 @@ $(document).ready(function(){
     
     var dataToSend = {};
     
-    $("div#side").append("<div id='reportIssue'><button>Report Issue</button><span class='throbber' style='display:none;'></span></div>");
+    $("div#header").append("<div id='reportIssue'><button>Report Issue</button><span class='throbber' style='display:none;'></span></div>");
     
     $("div#reportIssueDialog").dialog({
         autoOpen: false,
