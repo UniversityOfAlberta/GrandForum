@@ -431,7 +431,7 @@ class Paper extends BackboneModel{
             return self::$dataCache["me".$project.$category.$grand];
         }
         $me = Person::newFromWgUser();
-        $sql = "SELECT SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created
+        $sql = "SELECT *
              FROM grand_products WHERE
             (access_id = '{$me->getId()}'
             OR created_by = '{$me->getId()}')
