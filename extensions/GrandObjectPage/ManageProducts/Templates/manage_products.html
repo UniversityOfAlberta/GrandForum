@@ -8,7 +8,7 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="doiDialog" style="display:none;" title="Add From DOI">
-    <p>You can import a single <%= productsTerm.toLowerCase() %> from a DOI (<a href="http://www.doi.org/" target="_blank">Digital Object Identifier</a>).  Please note that not all <%= productsTerm.pluralize().toLowerCase() %> will be able to be imported from doi.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+    <p>You can import a single publication from a DOI (Digital Object Identifier). If the "overwrite" option is selected, previously uploaded publications with the same title will be updated.</p>
     <b>DOI:</b> <input type="text" width="20" name="doi" placeholder="10.1000/182" />
     <br /><br /><input type="checkbox" id="doi_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
     <div class="throbber" style="float:right;display:none;"></div>
@@ -33,7 +33,7 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="bibtexDialog" style="display:none;" title="Import BibTeX">
-    <p>You can import BibTeX references by pasting all your BibTeX references in the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the <%= siteName %>, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+    <p>You can import a list publications by pasting a list of BibTeX references in the textbox below. The imported publications will appear in the table below, marked as "private", and will not be reflected in the AR or QA CV. To release these private entries, after having reviewed that they were imported correctly (many publishers' bibtex entries are ill-formed) simply uncheck the "private" checkbox in the Output Management table. If the "overwrite" option is selected, previously uploaded publications with the same title will be updated.</p>
     <textarea style="resize: none; height:300px; font-size: 11px; font-family: monospace;" name="bibtex"></textarea>
     <br /><br /><input type="checkbox" id="bibtex_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
     <div class="throbber" style="float:right;display:none;"></div>
@@ -64,7 +64,7 @@
         <button id="addProductButton">Add <%= productsTerm %></button>
     <% } %>
     <button id="addFromDOIButton">Add From DOI</button>
-    <button id="uploadCCVButton">Upload CCV</button>
+    <!--button id="uploadCCVButton">Upload CCV</button-->
     <button id="importBibTexButton">Import BibTeX</button>
     <% if(productStructure.categories['Activity'] != undefined && 
           productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
