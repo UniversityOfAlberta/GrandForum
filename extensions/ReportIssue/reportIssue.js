@@ -10,8 +10,11 @@ $(document).ready(function(){
         buttons: {
             "Submit": function(){
                 dataToSend.comments = $("div#reportIssueDialog textarea").val();
+                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
                 $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, $.proxy(function(response){
                     $(this).dialog('close');
+                    clearSuccess();
+                    addSuccess('The issue has been reported.');
                 }, this));
             },
             "Cancel": function(){
@@ -28,8 +31,10 @@ $(document).ready(function(){
                     img: canvas.toDataURL(),
                     url: document.location.toLocaleString(),
                     browser: navigator.userAgent,
-                    comments: ''
+                    comments: '',
+                    email: ''
                 };
+                //$("div#reportIssueDialog").append('<img src="' + canvas.toDataURL() + '" />');
                 $("div#reportIssueDialog").dialog('open');
                 $("div#reportIssue .throbber").hide();
             }
