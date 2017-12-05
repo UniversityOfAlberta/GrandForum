@@ -205,7 +205,7 @@ class DepartmentTab extends AbstractTab {
         $html .= "<small>Graduate student name boldfaced</small><br />";
         $html .= "<ul>";
         foreach($gradPapers as $paper){
-            $html .= "<li>{$paper->getCitation()}</li>";
+            $html .= "<li>{$paper->getCitation(false, false, true, false)}</li>";
         }
         $html .= "</ul>";
         
@@ -220,7 +220,7 @@ class DepartmentTab extends AbstractTab {
         $html .= "<small>Undergraduate student name underlined</small><br />";
         $html .= "<ul>";
         foreach($ugradPapers as $paper){
-            $html .= "<li>{$paper->getCitation()}</li>";
+            $html .= "<li>{$paper->getCitation(false, false, true, false)}</li>";
         }
         $html .= "</ul>";
         
