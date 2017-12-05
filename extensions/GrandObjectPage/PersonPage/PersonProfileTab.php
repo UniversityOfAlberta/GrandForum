@@ -402,7 +402,7 @@ EOF;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
             if(($person->isRole(NI)) && $me->getId() == $person->getId()){
-                $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport'>Download CCV</a>";
+                //$this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport'>Download CCV</a>";
             }
         }
     }
