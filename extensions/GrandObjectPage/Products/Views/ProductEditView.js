@@ -229,6 +229,19 @@ ProductEditView = Backbone.View.extend({
                                                           });
         this.$("#productAuthors").html(html);
         createSwitcheroos();
+        
+        /*
+        // Testing Tagit
+        var html = HTML.TagIt(this, 'authors.fullname', {
+            strictValues: false, 
+            values: _.pluck(this.model.get('authors'), 'fullname'),
+            options: {
+                removeConfirmation: false,
+                availableTags: this.allPeople.pluck('fullName')
+            }
+        });
+        this.$("#productAuthors").html(html);
+        this.$("#productAuthors .tagit").sortable();*/
     },
     
     renderAuthors: function(){

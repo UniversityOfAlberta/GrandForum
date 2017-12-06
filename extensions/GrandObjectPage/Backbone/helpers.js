@@ -399,11 +399,16 @@ HTML.TagIt = function(view, attr, options){
         }
         var field = attr.substr(0, index);
         if(attr.indexOf('.') != -1){
-            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = newItems;
+            view.model.set(attr.substr(0, index), _.clone(data), {silent: true});
+            //view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
         }
         else{                
             view.model.set(attr, _.clone(newItems), {silent: true});
         }
+        console.log(view.model.get('authors'), newItems);
     };
     view.delegateEvents(events);
     return el;
