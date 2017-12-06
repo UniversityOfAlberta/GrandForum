@@ -27,6 +27,7 @@ ManagePeopleView = Backbone.View.extend({
     addRows: function(){
         var searchStr = "";
         var order = [2, 'asc'];
+        var order = [[4, "desc"], [3, "desc"]];
         if(_.contains(allowedRoles, MANAGER)){
             order = [4, 'asc'];
         }

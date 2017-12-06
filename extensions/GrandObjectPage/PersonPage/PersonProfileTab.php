@@ -189,7 +189,7 @@ class PersonProfileTab extends AbstractEditableTab {
 
             $this->person->firstName = @$_POST['first_name'];
             $this->person->lastName = @$_POST['last_name'];
-            $this->person->realName = @"{$_POST['first_name']} {$_POST['last_name']}";
+            $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
             $this->person->employeeId = @$_POST['employeeId'];
             $this->person->gender = @$_POST['gender'];
             $this->person->twitter = @$_POST['twitter'];
