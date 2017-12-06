@@ -69,10 +69,10 @@ class AddMember extends SpecialPage{
                     $types = "";
                 }
                 
-                $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
-                $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
+                $_POST['wpFirstName'] = $_POST['wpFirstName'];
+                $_POST['wpLastName'] = $_POST['wpLastName'];
                 $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-                $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+                $_POST['wpName'] = str_replace(" ", "", str_replace("&#39;", "", $_POST['wpFirstName']).".".str_replace("&#39;", "", $_POST['wpLastName']));
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = $types;
                 $_POST['wpNS'] = $nss;
@@ -190,6 +190,8 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
+                            <input type='hidden' name='wpFirstName' value='{$request->getFirstName()}' />
+                            <input type='hidden' name='wpLastName' value='{$request->getLastName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
@@ -226,12 +228,12 @@ class AddMember extends SpecialPage{
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
-        $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user", VALIDATE_NOT_NULL);
         $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
-        $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameField->registerValidation(new SimilarUserValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
         $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));

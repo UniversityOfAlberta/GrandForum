@@ -7,6 +7,8 @@ class RequestUserAPI extends API{
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpSendEmail", true, "Whether or not to send a registration email", "true");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
+        $this->addPOST("wpFirstName", false, "The User's first name", "First Name");
+        $this->addPOST("wpLastName", false, "The User's last name", "Last Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
@@ -34,7 +36,7 @@ class RequestUserAPI extends API{
 		    }
 		}
 		$name = $_POST['wpName'];
-		if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $name)){
+		if(!preg_match("/^[À-Ÿa-zA-Z\- ]+\.[À-Ÿa-zA-Z\- ]+$/", $name)){
 		    if($doEcho){
 		        echo "This User Name is not in the format 'FirstName.LastName'.\n";
 		        exit;
@@ -98,6 +100,8 @@ class RequestUserAPI extends API{
 		$wpEmail = isset($_POST['wpEmail']) ? $_POST['wpEmail'] : "";
 		$wpSendEmail = isset($_POST['wpSendEmail']) ? $_POST['wpSendEmail'] : "";
 		$wpRealName = isset($_POST['wpRealName']) ? $_POST['wpRealName'] : "";
+		$wpFirstName = isset($_POST['wpFirstName']) ? $_POST['wpFirstName'] : "";
+		$wpLastName = isset($_POST['wpLastName']) ? $_POST['wpLastName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
 		$university = isset($_POST['university']) ? $_POST['university'] : "";
@@ -116,6 +120,8 @@ class RequestUserAPI extends API{
 		                          'wpEmail' => $wpEmail,
 		                          'wpSendEmail' => $wpSendEmail,
 		                          'wpRealName' => $wpRealName,
+		                          'wpFirstName' => $wpFirstName,
+		                          'wpLastName' => $wpLastName,
 		                          'wpUserType' => $wpUserType,
 		                          'wpNS' => $wpNS,
 		                          'university' => $university,
