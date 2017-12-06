@@ -31,3 +31,16 @@
            <% if(doubtful) { %> font-weight:bold; <% } %>" align="left" >
     <a href="<%= url %>"><%= reversedName %></a>
 </td>
+<td align="center">
+    <%= start.substr(0, 10) %>
+</td>
+<td align="center">
+    <% if(end == '0000-00-00 00:00:00'){ %>
+        Current
+    <% } else { %>
+        <%= end.substr(0, 10) %>
+    <% } %>
+</td>
+<td>
+    <%= position %>
+</td>

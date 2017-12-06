@@ -491,7 +491,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $sql = "SELECT user_id, university_name, department, position, end_date, research_area
+            $sql = "SELECT user_id, university_name, department, position, start_date, end_date, research_area
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
@@ -503,6 +503,7 @@ class Person extends BackboneModel {
                         array("university" => $row['university_name'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
+                              "start"      => $row['start_date'],
                               "date"       => $row['end_date'],
                               "research_area" => $row['research_area']);
                 }
@@ -964,6 +965,7 @@ class Person extends BackboneModel {
                                  'title' => $role->getTitle());
             }
         }
+        $university = $this->getUniversity();
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -981,10 +983,12 @@ class Person extends BackboneModel {
                       'orcId' => $this->getOrcId(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
-                      'university' => $this->getUni(),
-                      'department' => $this->getDepartment(),
-                      'position' => $this->getPosition(),
-                      'researchArea' => $this->getResearchArea(),
+                      'university' => $university['university'],
+                      'department' => $university['department'],
+                      'position' => $university['position'],
+                      'start' => $university['start'],
+                      'end' => $university['date'],
+                      'researchArea' => $university['research_area'],
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
