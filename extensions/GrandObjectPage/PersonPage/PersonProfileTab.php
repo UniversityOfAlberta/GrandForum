@@ -169,6 +169,9 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserPhoneAPI();
             $api->doAction(true);
             
+            $this->person->firstName = @$_POST['first_name'];
+            $this->person->lastName = @$_POST['last_name'];
+            $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
             $this->person->gender = @$_POST['gender'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
@@ -559,6 +562,14 @@ EOF;
         }
         
         $this->html .= "<table>
+                            <tr>
+                                <td align='right'><b>First Name:</b></td>
+                                <td><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Last Name:</b></td>
+                                <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
+                            </tr>
                             <tr>
                                 <td align='right'><b>Email:</b></td>
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
