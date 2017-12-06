@@ -113,6 +113,21 @@ class Contribution extends BackboneModel {
     
     function toArray(){
         $partners = array();
+        $authors = array();
+        foreach($this->getAuthors() as $author){
+            if($author instanceof Person){
+                $authors[] = array('id' => $author->getId(),
+                                   'name' => $author->getNameForProduct(),
+                                   'fullname' => $author->getNameForForms(),
+                                   'url' => $author->getUrl());
+            }
+            else{
+                $authors[] = array('id' => 0,
+                                   'name' => $author,
+                                   'fullname' => $author,
+                                   'url' => "");
+            }
+        }
         foreach($this->getPartners() as $partner){
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
@@ -124,9 +139,11 @@ class Contribution extends BackboneModel {
                                 "total" => $this->getTotalFor($partner));
         }
         return array("id" => $this->getId(),
+                     "revId" => $this->getRevId(),
                      "name" => $this->getName(),
                      "start" => $this->getStartDate(),
                      "end" => $this->getEndDate(),
+                     "authors" => $authors,
                      "partners" => $partners,
                      "cash" => $this->getCash(),
                      "inkind" => $this->getKind(),

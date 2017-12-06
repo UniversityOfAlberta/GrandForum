@@ -4,18 +4,27 @@ Contribution = Backbone.Model.extend({
     
     },
 
-    urlRoot: 'index.php?action=api.contribution',
+    url: function(){
+        if(this.get('revId') != ""){
+            return 'index.php?action=api.contribution/' + this.get('id') + '/' + this.get('revId');
+        }
+        else{
+            return 'index.php?action=api.contribution/' + this.get('id');
+        }
+    },
 
     defaults: function() {
         return{
             id: null,
+            revId: "",
             name: "",
-            start => "",
-            end => "",
-            partners => new Array(),
-            cash => "",
-            inkind => "",
-            total => ""
+            start: "",
+            end: "",
+            authors: new Array(),
+            partners: new Array(),
+            cash: "",
+            inkind: "",
+            total: ""
         };
     }
 

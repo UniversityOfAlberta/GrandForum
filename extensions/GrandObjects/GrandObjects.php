@@ -18,6 +18,7 @@ autoload_register('GrandObjects/API');
 autoload_register('GrandObjects/API/Person');
 autoload_register('GrandObjects/API/Role');
 autoload_register('GrandObjects/API/Project');
+autoload_register('GrandObjects/API/Contribution');
 autoload_register('GrandObjects/API/Freeze');
 autoload_register('GrandObjects/API/Product');
 autoload_register('GrandObjects/API/University');
@@ -91,6 +92,8 @@ $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyA
 
 // Contribution
 $apiRequest->addAction('Hidden','contribution', 'ContributionAPI');
+$apiRequest->addAction('Hidden','contribution/:id', 'ContributionAPI');
+$apiRequest->addAction('Hidden','contribution/:id/:rev_id', 'ContributionAPI');
 
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
