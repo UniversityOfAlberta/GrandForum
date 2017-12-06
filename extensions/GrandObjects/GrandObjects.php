@@ -89,6 +89,9 @@ $apiRequest->addAction('Hidden','bibliography', 'BibliographyAPI');
 $apiRequest->addAction('Hidden','bibliography/:id', 'BibliographyAPI');
 $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');
 
+// Contribution
+$apiRequest->addAction('Hidden','contribution', 'ContributionAPI');
+
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
 $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
@@ -137,6 +140,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js?".filemtime("extensions/GrandObjects/BackboneModels/Role.js")."'></script>\n";
 	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Contribution.js?".filemtime("extensions/GrandObjects/BackboneModels/Contribution.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Bibliography.js?".filemtime("extensions/GrandObjects/BackboneModels/Bibliography.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js?".filemtime("extensions/GrandObjects/BackboneModels/Virtu.js")."'></script>\n";
