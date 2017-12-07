@@ -134,6 +134,7 @@ class Contribution extends BackboneModel {
                                 "industry" => $partner->getIndustry(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
+                                "subtype" => $this->getHumanReadableSubTypeFor($partner),
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
@@ -141,6 +142,7 @@ class Contribution extends BackboneModel {
         return array("id" => $this->getId(),
                      "revId" => $this->getRevId(),
                      "name" => $this->getName(),
+                     "description" => $this->getDescription(),
                      "start" => $this->getStartDate(),
                      "end" => $this->getEndDate(),
                      "authors" => $authors,
@@ -151,7 +153,61 @@ class Contribution extends BackboneModel {
     }
     
     function create(){
-        return false;
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('id'),
+                                    array(),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            $id = $data[0]['id'];
+        }
+        DBFunctions::insert('grand_contributions',
+                            array('id' => $id + 1,
+                                  'name' => $this->name,
+                                  'users' => serialize($this->people),
+                                  'description' => $this->description,
+                                  'access_id' => $me->getId(),
+                                  'start_date' => $this->start_date,
+                                  'end_date' => $this->end_date));
+        $this->rev_id = DBFunctions::insertId();
+        DBFunctions::insert('grand_contribution_edits',
+                            array('id' => $id + 1,
+                                  'user_id' => $me->getId()));
+        foreach($this->projects as $project){
+            DBFunctions::insert('grand_contributions_projects',
+                                array('contribution_id' => $this->rev_id,
+                                      'project_id' => $project));
+        }
+        foreach($this->partners as $key => $partner){
+            $value = $partner['id'];
+            if($value == ""){
+                $value = $partner['name'];
+            }
+            DBFunctions::insert('grand_contributions_partners',
+                                array('contribution_id' => $this->rev_id,
+                                      'partner' => $value,
+                                      'contact' => $partner['contacts'],
+                                      'industry' => $partner['industries'],
+                                      'level' => $partner['levels'][$key],
+                                      'type' => $partner['type'][$key],
+                                      'subtype' => $partner['subtype'][$key],
+                                      'cash' => $partner['cash'][$key],
+                                      'kind' => $partner['kind'][$key]));
+        }
+        foreach($this->people as $author){
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person != null && $person->getName() != null){
+                    if($contribution->getAccessId() != $person->getId() && 
+                       $contribution->getAccessId() != 0){
+                        continue;
+                    }
+                    Notification::addNotification($me, $person, "Contribution Created", "A new Contribution entitled <i>{$this->getName()}</i>, has been created with yourself listed as one of the researchers", "{$this->getUrl()}");
+                }
+            }
+        }
+        return $this;
     }
     
     function update(){
@@ -322,12 +378,18 @@ class Contribution extends BackboneModel {
                     $people[] = Person::newFromId($pId);
                 }
                 else{
-                    $person = Person::newFromNameLike($pId);
+                    $person = Person::newFromName($pId);
                     if($person != null && $person->getName() != ""){
                         $people[] = $person;
                     }
                     else{
-                        $people[] = $pId;
+                        $person = Person::newFromNameLike($pId);
+                        if($person != null && $person->getName() != ""){
+                            $people[] = $person;
+                        }
+                        else{
+                            $people[] = $pId;
+                        }
                     }
                 }
             }
