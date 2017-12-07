@@ -14,6 +14,221 @@
             <iframe style="width:70%;height:1000px;border:0px;margin: 0 auto; display:block;" src="<%= sop_url %>#zoom=100"></iframe>
         </div>
     </div>
+    <div>
+        <h3><a href="#">GSMS Data</a></h3>
+        <div style="padding-bottom: 30px">
+            <div style="display: inline-block; width: 100%;">
+                <h3 style="float:left;"><%= student_data.name %> <% if(gsms_id != 0){ %>(<%= gsms_id %>)<% } %>
+                    <% if(program_name != ''){ %>applying to <%= program_name %> <% } %>
+                </h3>
+                <h3 style="float:right;">GPA (normalized): <%= additional.gpaNormalized %></h3>
+            </div>
+            <br/>
+            <%=student_data.email %>   <%= gender %>
+            <div class="flex-container" style="display: block;">
+                <div class="flex-item" style="width:44%; min-width: 400px;">
+                    <b>Folder:</b> <%= folder %><br/>
+                    <b>Date of Birth:</b> <%= date_of_birth %><br/>
+                    <b>Country:</b> <%= additional.country_of_citizenship_full %><br/>
+                    <b>Applicant Type:</b> <%= applicant_type %><br/><br/>
+
+                    <b>Education History:</b><br/>
+                    <% var ed_hist = education_history.replace(/<br \/><br \/>/g, '<br />'); %>
+                    <% ed_hist = ed_hist.replace(/<b>/g, ''); %>
+                    <% ed_hist = ed_hist.replace(/<\/b>/g, ''); %>
+                    <%= ed_hist %><br/><br/>
+
+                    <b>Areas of Study:</b><br/>
+                    <%= additional.areas_of_study %><br/>
+                    <b>Supervisors:</b><br/>
+                    <% var supers = additional.supervisors.replace(/<br \/>/g, ''); %>
+                    <%= supers %><br/><br/>
+
+                    <b>Courses:</b><br/>
+                    <% if (additional.courses == "") { %>No courses were listed<% } else { %>
+                        <div title="<%= additional.courses %>" style="border-bottom: none; max-height: 100px; overflow-y: auto;">
+                            <%= additional.courses %>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="flex-item" style="width:24%;">
+                    <b>Scholarships</b><br/>
+                    <% var held = (additional.scholarships_held != "") ? additional.scholarships_held : "--" %>
+                    Held: <%= held %><br/>
+                    <% var applied = (additional.scholarships_applied != "") ? additional.scholarships_applied : "--" %>
+                    Applied: <%= applied %><br/><br/>
+                    <div style="display:inline-block;">
+                        <table style="float: left">
+                            <tr>
+                                <% var epltest = (epl_test != "") ? epl_test : "--" %>
+                                <td><b>EPL Test:</b></td>
+                                <td align="right"><%=epltest%></td>
+                            </tr>
+                            <tr>
+                                <% var listening = (epl_listen != "") ? epl_listen : "--" %>
+                                <td>Listening:</td>
+                                <td align="right"><%=listening%></td>
+                            </tr>
+                            <tr>
+                                <% var writing = (epl_write != "") ? epl_write : "--" %>
+                                <td>Writing:</td>
+                                <td align="right"><%=writing%></td>
+                            </tr>
+                        </table>
+                        <table style="float: left; margin-left:5px;">
+                            <tr>
+                                <% var score = (epl_score != "") ? epl_score : "--" %>
+                                <td><b>EPL Score:</b></td>
+                                <td align="right"><%=score%></td>
+                            </tr>
+                            <tr>
+                                <% var reading = (epl_read != "") ? epl_read : "--" %>
+                                <td>Reading:</td>
+                                <td align="right"><%=reading%></td>
+                            </tr>
+                            <tr>
+                                <% var speaking = (epl_speaking != "") ? epl_speaking : "--" %>
+                                <td>Speaking:</td>
+                                <td align="right"><%=speaking%></td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                    <div>
+                        <b>GRE</b><br/>
+                        <table>
+                            <tr>
+                                <% var gre = (additional.gre1 != null) ? additional.gre1 : "--" %>
+                                <td>Verbal:</td>
+                                <td align="right"><%= gre %></td>
+                            </tr>
+                            <tr>
+                                <% var gre = (additional.gre2 != null) ? additional.gre2 : "--" %>
+                                <td>Quantitative:</td>
+                                <td align="right"><%= gre %></td>
+                            </tr>
+                            <tr>
+                                <% var gre = (additional.gre3 != null) ? additional.gre3 : "--" %>
+                                <td>Analytical:</td>
+                                <td align="right"><%= gre %></td>
+                            </tr>
+                            <tr>
+                                <% var gre = (additional.gre4 != null) ? additional.gre4 : "--" %>
+                                <td>CS:</td>
+                                <td align="right"><%= gre %></td>
+                            </tr>
+                        </table>
+                    </div><br/>
+
+                    <b>Number of Publications: </b><%= additional.num_publications %><br/>
+                    <b>Number of Awards: </b> <%= additional.num_awards %><br/>
+                
+                </div>
+                <div class="flex-item" style="width:24%;">
+                    <% if (reviewers.length == 0) { %>
+                        <b>Reviewers</b><br/>
+                        No assigned reviewers<br/>
+                    <% } else { %>
+                        <table style="width:100%;" class="gsms-mini-table">
+                            <thead>
+                                <tr style="background-color: #F5F5F5;">
+                                    <th><b>Reviewers</b></th>
+                                    <th style="text-align: right;"><b>Rank</b></th>
+                                </tr>
+                            </thead>
+                            <% for(var i=0; i < reviewers.length;i++){ %>
+                                <tr>
+                                    <td><%= reviewers[i].name %>:</td><td align="right"><%= reviewers[i].rank %></td>
+                                </tr>
+                            <% } %>
+                            <tr style="background-color: #F5F5F5;">
+                            <td><b>Average Rank:</b></td>
+                            <% var avg=0; %>
+                            <% var ignore=0; %>
+                            <% for(var i=0; i < reviewers.length;i++){ %>
+                                <% if(reviewers[i].rank != '--') { %>
+                                  <% avg += parseInt(reviewers[i].rank); %>
+                                <% } else { %>
+                                  <% ignore += 1; %>
+                                <% } %>
+                            <% } %>
+                            <% if ((reviewers.length - ignore) == 0) { %>
+                                <td align="right">--</td> 
+                            <% } else { %>
+                                <% avg /= reviewers.length - ignore; %>
+                                <td align="right"><%= avg.toFixed(2) %></td>
+                            <% } %>
+                        </table>
+                    <% } %>
+                    <br/>
+
+                    <% if (other_reviewers.length == 0) { %>
+                        <b>Faculty Reviewers</b><br/>
+                        No other reviewers<br/>
+                    <% } else { %>
+                        <table style="width:100%" class="gsms-mini-table">
+                            <thead>
+                                <tr style="background-color: #F5F5F5;">
+                                    <th><b>Faculty</b></th>
+                                    <th style="text-align: right;"><b>Rank</b></th>
+                                </tr>
+                            </thead>
+                            <% for(var i=0; i < other_reviewers.length;i++){ %>
+                                <tr>
+                                    <td><%= other_reviewers[i].name %></td><td align="right"><%= other_reviewers[i].rank %></td>
+                                </tr>
+                            <% } %>
+                            <tr style="background-color: #F5F5F5;">
+                                <td><b>Average Rank:</b></td>
+                                <% var avg=0; %>
+                                <% for(var i=0; i < other_reviewers.length;i++){ %>
+                                  <% avg += parseInt(other_reviewers[i].rank); %>
+                                <% } %>
+                                <% avg /= other_reviewers.length; %>
+                                <td align="right"><%= avg.toFixed(2) %></td>
+                            </tr>
+                        </table>
+                    <% } %>
+                        
+                    <br/>
+
+                    <b>Notes:</b><br/>
+                    <% if (additional.notes.length == 0) { %>
+                        No notes to show
+                    <% } else { %>
+                        <% _.each(additional.notes, function(note, key) { %>
+                            <%= key %>: <%= note %>
+                            <br />
+                        <% }); %>
+                    <% } %>
+                </div>
+                <table>
+                    <tr>
+                        <td style="white-space: nowrap;" id='nationality_notes'>
+                          <% if(applicant_number != 0){ %>
+                            <%= applicant_number %><br />
+                          <% } %>
+                          <% if(student_id != 0){ %>
+                            <%= student_id %>
+                          <% } %>
+
+                        </td>
+
+
+
+                        <td style="width:200px">
+                            <span id="span<%= sop_id %>"></span>
+                        </td>
+
+                        <td>
+                            <%= admit %>
+                        </td>
+
+                    </tr>
+                </table> 
+            </div>
+
+        </div>
+    </div>
     <% if (_.values(content).join().trim() != '') { %>
     <div>
         <h3><a href="#">Statement of Purpose</a></h3>
