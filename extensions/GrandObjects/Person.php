@@ -2963,8 +2963,9 @@ class Person extends BackboneModel {
         foreach($this->getGrants() as $grant){
             $grantStart = $grant->getStartDate();
             $grantEnd = $grant->getEndDate();
-            if(($start <= $grantStart && $end >= $grantStart) ||
-               ($start >= $grantStart && $end <= $grantEnd)){
+            if(($grantStart >= $start && $grantStart <= $end) ||
+               ($grantEnd >= $start && $grantEnd <= $end) ||
+               ($grantStart <= $start && $grantEnd >= $end)){
                 $grants[] = $grant;
             }
         }
@@ -2980,8 +2981,9 @@ class Person extends BackboneModel {
         foreach($this->getGrantAwards() as $grant){
             $grantStart = $grant->start_year;
             $grantEnd = $grant->end_year;
-            if(($start <= $grantStart && $end >= $grantStart) ||
-               ($start >= $grantStart && $end <= $grantEnd)){
+            if(($grantStart >= $start && $grantStart <= $end) ||
+               ($grantEnd >= $start && $grantEnd <= $end) ||
+               ($grantStart <= $start && $grantEnd >= $end)){
                 $grants[] = $grant;
             }
         }
