@@ -24,6 +24,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
                             <option <% if(type == ''){ %>selected <% } %>></option>
                             <option <% if(type == 'Undergraduate Student'){ %>selected <% } %>>Undergraduate Student</option>
                             <option <% if(type == 'Graduate Student'){ %>selected <% } %>>Graduate Student</option>
+                            <option <% if(type == 'Postdoctoral Student'){ %>selected <% } %>>Postdoctoral Student</option>
                             <option <% if(type == 'Faculty'){ %>selected <% } %>>Faculty</option>
                             <option <% if(type == 'None of the Above'){ %>selected <% } %>>None of the Above</option>
                         </select>
@@ -68,6 +69,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
                             $(el).css('text-decoration', 'underline');
                             $(el).css('font-weight', 'normal');
                             break;
+                        case 'Postdoctoral Student':
                         case 'Graduate Student':
                             $(el).css('font-weight', 'bold');
                             $(el).css('text-decoration', 'none');
@@ -144,6 +146,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
                         case 'Undergraduate Student':
                             $span->setAttribute('style', 'text-decoration: underline !important;');
                             break;
+                        case 'Postdoctoral Student':
                         case 'Graduate Student':
                             $span->setAttribute('style', 'font-weight: bold !important;');
                             break;

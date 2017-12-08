@@ -14,19 +14,21 @@ class GrantPage extends BackbonePage {
     }
     
     function getTemplates(){
-        return array('grant',
+        return array('Backbone/*',
+                     'grant',
                      'grants',
                      'edit_grant');
     }
     
     function getViews(){
-        return array('GrantView',
+        return array('Backbone/*',
+                     'GrantView',
                      'GrantsView',
                      'EditGrantView');
     }
     
     function getModels(){
-        return array();
+        return array('Backbone/*');
     }
     
     static function createToolboxLinks(&$toolbox){

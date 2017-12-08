@@ -190,22 +190,38 @@ EditGrantView = Backbone.View.extend({
 	    this.$("#contributions .sortable-search input").keyup($.proxy(changeFn, this));
     },
     
-    renderCoPI: function(){
-        var xhrs = new Array();
-        var people = new Array();
-        _.each(this.model.get('copi'), function(copi){
-            var person = new Person({id: copi});
-            people.push(person);
-            xhrs.push(person.fetch());
+    renderCoapplicantsWidget: function(){
+        var left = _.pluck(this.model.get('coapplicants'), 'fullname');
+        var right = _.difference(this.allPeople.pluck('fullName'), left);
+        var objs = [];
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
         });
-        $.when.apply($, xhrs).then($.proxy(function(){
-            this.$("#copi").empty();
-            var html = new Array();
-            _.each(people, $.proxy(function(copi){
-                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
-            }, this));
-            this.$("#copi").html(html.join("; "));
-        }, this));
+        var html = HTML.Switcheroo(this, 'coapplicants.fullname', {name: 'Co-Applicant',
+                                                                   left: left,
+                                                                   right: right,
+                                                                   objs: objs
+                                                                  });
+        this.$("#coapplicants").html(html);
+        createSwitcheroos();
+    },
+    
+    renderCoapplicants: function(){
+        if(this.allPeople != null && this.allPeople.length > 0){
+            this.renderCoapplicantsWidget();
+        }
+        else{
+            this.allPeople = new People();
+            this.allPeople.fetch();
+            var spin = spinner("coapplicants", 10, 20, 10, 3, '#888');
+            this.allPeople.bind('sync', function(){
+                if(this.allPeople.length > 0){
+                    this.renderCoapplicantsWidget();
+                }
+            }, this);
+        }
     },
 
     render: function(){
@@ -217,7 +233,7 @@ EditGrantView = Backbone.View.extend({
         }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
-        this.renderCoPI();
+        this.renderCoapplicants();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
