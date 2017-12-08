@@ -75,7 +75,7 @@
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <h2>Responsibilities Variation</h2>
-                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
+                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf' target='_blank'>Faculty Agreement</a>?
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
