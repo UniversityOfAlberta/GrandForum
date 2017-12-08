@@ -121,7 +121,7 @@
         </ReportItem>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
-                <h2>Teaching Development And Innovation</h2>
+                <h2>Teaching Development and Innovation</h2>
                 <small>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</small>
                 {$item}
             ]]>

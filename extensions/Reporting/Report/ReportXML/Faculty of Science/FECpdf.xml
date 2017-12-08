@@ -115,7 +115,7 @@
         </ReportItem>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" multiple="true" optional="true">
             <![CDATA[
-                <h3>Teaching Development And Innovation</h3>
+                <h3>Teaching Development and Innovation</h3>
                 {$item}
             ]]>
         </ReportItem>
