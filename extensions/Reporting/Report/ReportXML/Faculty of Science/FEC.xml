@@ -146,7 +146,7 @@
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
                 <h2>Publications</h2>
-                <small>bold = graduate student; underline = undergraduate student</small>
+                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>

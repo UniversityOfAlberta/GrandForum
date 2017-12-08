@@ -152,7 +152,7 @@
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
                 <h2>Publications</h2>
-                <i>bold = graduate student; underline = undergraduate student</i>
+                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <ul>
             ]]>
         </ReportItem>

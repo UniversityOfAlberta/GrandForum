@@ -28,7 +28,7 @@
     <ReportSection id="products" name="Publications" blobSection="PRODUCTS" type="EditableReportSection">
         <ReportItem id="head" type="Static">
             <![CDATA[
-                <p><i>bold = graduate student; underline = undergraduate student</i></p>
+                <p><small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small></p>
                 <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/forum_test/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
                 <h2>Journals</h2>
                 <ul>
