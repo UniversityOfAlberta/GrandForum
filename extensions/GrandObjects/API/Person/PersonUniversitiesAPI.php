@@ -5,6 +5,7 @@ class PersonUniversitiesAPI extends RESTAPI {
     function doGET(){
         $person = Person::newFromId($this->getParam('id'));
         $universities = $person->getPersonUniversities();
+        
         if($this->getParam('personUniversityId') != ""){
             // Single University
             foreach($universities as $university){

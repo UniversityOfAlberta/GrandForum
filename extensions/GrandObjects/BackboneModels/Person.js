@@ -40,8 +40,10 @@ Person = Backbone.Model.extend({
         });*/
         
         this.bind("error", function(e, response, options){
-            clearAllMessages();
-            addError(response.responseText);
+            if(response.responseText != ''){
+                clearAllMessages();
+                addError(response.responseText);
+            }
         });
     },
     
