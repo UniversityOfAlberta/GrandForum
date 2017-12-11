@@ -111,7 +111,7 @@
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(!val.hidden){ %>
             <tr>
-                <td class="label"><%= val.label %>:
+                <td style="width:1%;white-space:nowrap;" class="label"><%= val.label %>:
                     <% if(val.type == "File"){ %>
                         <small style="display:block;line-height:6px;">(Max 5MB)</small>
                     <% } %>
