@@ -67,6 +67,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addFromDOI: function(){
+        $("input[name=doi]", this.doiDialog).val('');
         this.doiDialog.dialog('open');
     },
     
@@ -75,6 +76,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     importBibTeX: function(){
+        $("textarea[name=bibtex]", this.bibtexDialog).val('');
         this.bibtexDialog.dialog('open');
     },
     
