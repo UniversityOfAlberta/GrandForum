@@ -445,20 +445,20 @@ EOF;
                             </tr>";
                 $this->html .= "<tr>
                                 <td align='right'><b>Google Scholar URL:</b></td>
-                                <td><input type='text' size='30' name='googleScholarUrl' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                                <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
                             </tr>";
                 $this->html .= "<tr>
                                 <td align='right'><b>Sciverse Id:</b></td>
-                                <td><input type='text' size='30' name='sciverseId' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
+                                <td><input type='text' size='30' name='sciverseId' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
                             </tr>";
                 $this->html .= "<tr>
                                 <td align='right'><b>ORCID:</b></td>
-                                <td><input type='text' size='30' name='orcId' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
+                                <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
                             </tr>";
         }
         $this->html .=  "<tr>
                                 <td align='right'><b>Twitter Account:</b></td>
-                                <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                                <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>
