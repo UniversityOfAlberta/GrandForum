@@ -560,7 +560,7 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Delete": $.proxy(function(){
+	            "Yes": $.proxy(function(){
 	                var model = this.deleteDialog.model;
 	                if(model.get('deleted') != true){
 	                    $("div.throbber", this.deleteDialog).show();
@@ -594,7 +594,7 @@ ManageProductsView = Backbone.View.extend({
                         addError('This ' + model.get('category') + ' is already deleted');
                     }
 	            }, this),
-	            "Cancel": $.proxy(function(){
+	            "No": $.proxy(function(){
 	                this.deleteDialog.dialog('close');
 	            }, this)
 	        }
@@ -612,7 +612,7 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Delete": $.proxy(function(e){
+	            "Yes": $.proxy(function(e){
 	                var button = $(e.currentTarget);
 	                button.prop("disabled", true);
                     var xhrs = new Array();
@@ -653,7 +653,7 @@ ManageProductsView = Backbone.View.extend({
                         this.deletePrivateDialog.dialog('close');
                     }, this));
 	            }, this),
-	            "Cancel": $.proxy(function(){
+	            "No": $.proxy(function(){
 	                this.deletePrivateDialog.dialog('close');
 	            }, this)
 	        }
