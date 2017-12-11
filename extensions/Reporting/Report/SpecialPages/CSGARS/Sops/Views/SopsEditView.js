@@ -342,6 +342,7 @@ SopsEditView = Backbone.View.extend({
       /**TEST**/
       console.log(this.model);
       var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
+      mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
       $(document).ready(function () {
           $("#accordion > div").accordion({

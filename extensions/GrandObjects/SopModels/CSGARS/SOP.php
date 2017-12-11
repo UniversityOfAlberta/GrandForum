@@ -201,7 +201,6 @@ class SOP extends AbstractSop{
                                     array('user_id' => EQ($this->user_id),
                                           'type' => 'RPTP_CS_FULL',
                                           'year' => YEAR));
-
         if(count($data) > 0){
             $pdf_data = $data[0]['pdf'];
             if($pdf_data != ""){

@@ -11,7 +11,7 @@
     <div>
         <h3><a href="#">GARS PDF</a></h3>
         <div>
-            <iframe style="width:70%;height:1000px;border:0px;margin: 0 auto; display:block;" src="<%= sop_url %>#zoom=100"></iframe>
+            <iframe style="width:70%;height:1000px;border:0px;margin: 0 auto; display:block;" src="<%= sop_url %>"></iframe>
         </div>
     </div>
     <div>
@@ -117,11 +117,11 @@
                                 <td align="right"><%= gre %></td>
                             </tr>
                         </table>
-                    </div><br/>
+                    </div>
+                    <br/>
 
                     <b>Number of Publications: </b><%= additional.num_publications %><br/>
                     <b>Number of Awards: </b> <%= additional.num_awards %><br/>
-                
                 </div>
                 <div class="flex-item" style="width:24%;">
                     <% if (reviewers.length == 0) { %>
@@ -200,8 +200,6 @@
                             <br />
                         <% }); %>
                     <% } %>
-
-
                 </div>
             </div>
 
