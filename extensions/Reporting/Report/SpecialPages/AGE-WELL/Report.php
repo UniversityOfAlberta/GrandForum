@@ -106,6 +106,7 @@ class Report extends AbstractReport {
             foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
+                       preg_match("/.*-SIP A[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CIP[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CAT[0-9]+.*/", $project->getName()) != 0){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPProjectEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
