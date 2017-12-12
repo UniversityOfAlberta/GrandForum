@@ -411,9 +411,6 @@
         </ReportItem>
         <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
             <![CDATA[
-                <p><b>Budget Limitations:</b><br />
-                3) Professional & Tech. Services/contracts - a maximum of $5000 can be used towards payment of consulting fees<br />
-                6) Materials, supplies & other expenditures - a maximum of $5000 can be used towards patent fees</p>
                 <h3>Budget Justification</h3>
                 <p>Please use the following categories in your budget justification as appropriate. Note that SIP funding includes specific budget caps in some categories.</p>
                 <ol>
