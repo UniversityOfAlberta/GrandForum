@@ -52,6 +52,8 @@ class SOP extends AbstractSop{
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
     }
 
+    function getColumns() {return array();}
+
 
    /**
     * returns an array of the faculty staff that have finished reviewing this SOP.

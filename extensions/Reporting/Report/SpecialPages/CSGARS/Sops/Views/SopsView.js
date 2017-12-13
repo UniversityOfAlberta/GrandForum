@@ -9,7 +9,7 @@ SopsView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($('#sops_template').html());
         $(this).data('name', 'show');
-        this.listenTo(this.model, "sync", function(){
+        this.listenToOnce(this.model, "sync", function(){
             this.sops = this.model;
             this.render();
         }, this);
@@ -21,10 +21,10 @@ SopsView = Backbone.View.extend({
 
     renderRoles: function(){
         var rolestring = me.roleString.get('roleString');
-        console.log(rolestring);
+        //console.log(rolestring);
         if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
-           console.log("HI");
-            $('.assign_button').css('visibility','visible');
+            //console.log("HI");
+            $('.assign_button').css('display','inline');
         }
     },
     
@@ -41,6 +41,33 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
+        var buttonDownload = {
+            exportOptions: {
+                format: {
+                    body: function ( data, row, column, node ) {
+                        var ret;
+                        data = $('<div>' + data + '</div>').text();
+                        // add a newline after each education entry
+                        if ((column === 6)) {
+                            ret = data.replace(/(\))([a-zA-Z])/g, '$1\n$2');
+                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
+                        } else if ((column === 17) || (column === 19)) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                        // Clean up Notes column for downloaded excel/csv
+                        } else if (column === 21) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                            ret = ret.replace(/[\n\r].*Additional Notesclose\s*([^\n\r]*)/, "");
+                        } else {
+                            ret = data;
+                        }
+                        return ret;
+                    }
+                }
+            }
+        };
+
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'autoWidth': false,
@@ -50,12 +77,28 @@ SopsView = Backbone.View.extend({
                                                         {
                                                             extend: 'colvis',
                                                             className: 'btn btn-primary',
-                                                            text: 'Column Visibility'
-                                                        }
-                                                     ],
+                                                            text: 'Column Visibility',
+                                                        },
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'csv',
+                                                            text: 'CSV',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } ),
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'excel',
+                                                            text: 'Excel',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } )/*,
+                                                        {
+                                                            extend: 'pdf',
+                                                            className: 'btn btn-primary',
+                                                            text: 'PDF'
+                                                        }*/
+                                                     ], 
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        //this.$('#listTable_length').prepend("<div id='download_btns' style='margin-left:112px; margin-top: 6px; vertical-align:baseline;'>Download: <a class='buttons-csv buttons-html5'>CSV</a>, <a class='buttons-excel buttons-html5'>Excel</a></div>")
     },
 
     events: {
@@ -125,21 +168,28 @@ SopsView = Backbone.View.extend({
     },
 
     filterCitizenship: function(settings,data,dataIndex){
-        var input = $('#countryOfCitizenshipInput').val().toUpperCase();
-        var name = data[4];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
-                }
-        return false;
+        var filtercountry = $("#filterSelectCountry").chosen().val();
+        var studentcountry = data[4];
+        if (filtercountry != null) {
+            if ($.inArray(studentcountry, filtercountry) == -1) {
+                return false;
+            }
+        }
+        return true;
     },
 
-    filterDepartmentName: function(settings,data,dataIndex){
-        var input = $('#DepartmentInput').val().toUpperCase();
-        var name = data[7];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterProgramName: function(settings,data,dataIndex){
+        var filterprograms = $("#filterSelectProgramName").chosen().val();
+        var studentprogram = data[7];
+        if (filterprograms != null) {
+            for (var i = 0; i < filterprograms.length; ++i) {
+                if (studentprogram.indexOf(filterprograms[i]) > -1) {
+                    return true;
                 }
-        return false;
+            }
+            return false;
+        }
+        return true;
     },
 
     filterGPA: function(settings,data,dataIndex){
@@ -157,37 +207,32 @@ SopsView = Backbone.View.extend({
         return false;
     },
 
-    filterReviewType: function(settings,data,dataIndex){
-        var input = $('#statusType').val().toUpperCase();
-        var name = data[2];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterFolder: function(settings,data,dataIndex){
+        var input = $('#filterSelectFolder').chosen().val();
+        var folder = data[2];
+        if (input != null) {
+            for (var i = 0; i < input.length; ++i) {
+                if (folder.indexOf(input[i]) > -1) {
+                    return true;
                 }
-        return false;
+            }
+            return false;
+        }
+        return true;
     },
 
-
-    filterAdmitType: function(settings,data,dataIndex){
-        var input = $('#admitType').val().toUpperCase();
-        var name = data[18];
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
+    filterDecision: function(settings,data,dataIndex){
+        var input = $('#filterSelectDecision').chosen().val();
+        var decision = data[23];
+        if (input != null) {
+            for (var i = 0; i < input.length; ++i) {
+                if (input[i] == decision) {
+                    return true;
                 }
-        return false;
-    },
-
-    filterFinalAdmitType: function(settings,data,dataIndex){
-        var input = $('#finalAdmitType').val().toUpperCase();
-        var name = data[21];
-        if(name != undefined){
-                if(name.toUpperCase().indexOf(input) > -1){
-                        return true;
-                }
+            }
+            return false;
         }
-        else{
-	    return true;
-        }
-        return false;
+        return true;
     },
 
     filterByTags: function(settings,data,dataIndex){
@@ -209,10 +254,11 @@ SopsView = Backbone.View.extend({
         var aois = data[9].split(", ");
         if (filterSelected != null) {
             for (var i = 0; i < filterSelected.length; ++i) {
-                if ($.inArray(filterSelected[i], aois) == -1) {
-                    return false;
+                if ($.inArray(filterSelected[i], aois) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -222,10 +268,11 @@ SopsView = Backbone.View.extend({
         var studentsupervisors = data[10].split(", ");
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                if ($.inArray(filtersupervisors[i], studentsupervisors) == -1) {
-                    return false;
+                if ($.inArray(filtersupervisors[i], studentsupervisors) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -233,13 +280,13 @@ SopsView = Backbone.View.extend({
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = $("#filterSelectReviewers").chosen().val();
         var reviewers = data[17];
-        console.log(reviewers);
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
-                if (reviewers.indexOf(filterreviewers[i]) == -1) {
-                    return false;
+                if (reviewers.indexOf(filterreviewers[i]) != -1) {
+                    return true;
                 }
             }
+            return false;
         }
         return true;
    },
@@ -282,13 +329,16 @@ SopsView = Backbone.View.extend({
         options["AITF"] = $('#heldAITF')[0].checked;
         options["Vanier"] = $('#heldVanier')[0].checked;
 
-        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
-            return false;
+        if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
+            return true;
         }
-        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
-            return false;
+        if (options["AITF"] && ($.inArray("AITF", values) != -1)) {
+            return true;
         }
-        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+        if (options["Vanier"] && ($.inArray("Vanier", values) != -1)) {
+            return true;
+        }
+        if (options["NSERC"] || options["AITF"] || options["Vanier"]) {
             return false;
         }
         return true;
@@ -302,13 +352,16 @@ SopsView = Backbone.View.extend({
         options["AITF"] = $('#appliedAITF')[0].checked;
         options["Vanier"] = $('#appliedVanier')[0].checked;
 
-        if (options["NSERC"] && (jQuery.inArray("NSERC", values) == -1)) {
-            return false;
+        if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
+            return true;
         }
-        if (options["AITF"] && (jQuery.inArray("AITF", values) == -1)) {
-            return false;
+        if (options["AITF"] && ($.inArray("AITF", values) != -1)) {
+            return true;
         }
-        if (options["Vanier"] && (jQuery.inArray("Vanier", values) == -1)) {
+        if (options["Vanier"] && ($.inArray("Vanier", values) != -1)) {
+            return true;
+        }
+        if (options["NSERC"] || options["AITF"] || options["Vanier"]) {
             return false;
         }
         return true;
@@ -434,13 +487,12 @@ SopsView = Backbone.View.extend({
         me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
-            this.filterReviewType,
-            this.filterAdmitType,
-            this.filterFinalAdmitType,
+            this.filterFolder,
+            this.filterDecision,
             this.filterMineOnly,
             this.filterByTags,
             this.filterCitizenship,
-            this.filterDepartmentName,
+            this.filterProgramName,
             this.filterNumPubs,
             this.filterNumAwards,
             this.filterScholHeld,
@@ -464,6 +516,10 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
+        this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
+        this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
+        this.$('#filterSelectDecision').chosen({ placeholder_text_multiple: 'Select Decision' });
+        this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
         this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
         this.$('#filterSelectReviewers').chosen({ placeholder_text_multiple: 'Select Reviewers' });

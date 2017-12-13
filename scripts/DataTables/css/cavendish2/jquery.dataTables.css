@@ -93,7 +93,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #E8E8E8; }
 }
 
 .dataTables_length * {
-    vertical-align: middle;
+    vertical-align: baseline;
 }
 
 

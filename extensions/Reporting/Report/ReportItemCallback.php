@@ -1122,7 +1122,7 @@ class ReportItemCallback {
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
-                    $roles .= ", PL";
+                    $roles .= "&#44; PL";
                 }
                 else{
                     $roles .= "PL";
@@ -1131,7 +1131,7 @@ class ReportItemCallback {
         }
         else if($person->isProjectLeader()){
             if($roles != ""){
-                $roles .= ", PL";
+                $roles .= "&#44; PL";
             }
             else{
                 $roles .= "PL";

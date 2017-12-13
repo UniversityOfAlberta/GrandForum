@@ -72,7 +72,7 @@ HTML.Element = function(html, options){
 
 HTML.Name = function(attr){
     if(attr.indexOf('.') != -1){
-        return attr.replace('.', '_');
+        return attr.split(".").join("_");
     }
     else{
         return attr;
@@ -81,13 +81,25 @@ HTML.Name = function(attr){
 
 HTML.Value = function(view, attr){
     if(attr.indexOf('.') != -1){
-        var index = attr.indexOf('.');
-        var data = view.model.get(attr.substr(0, index));
-        var ret = data[attr.substr(index+1)];
-        if(ret == undefined){
-            ret = "";
+        var elems = attr.split(".");
+        var last = _.last(elems);
+        data = view.model.get(elems[0]);
+        for (var i = 1; i < elems.length; ++i) {
+            if (data[elems[i]] == undefined) {
+                return '';
+            } else {
+                data = data[elems[i]];
+            }
         }
-        return ret;
+        return data;
+
+        // var index = attr.indexOf('.');
+        // var data = view.model.get(attr.substr(0, index));
+        // var ret = data[attr.substr(index+1)];
+        // if(ret == undefined){
+        //     ret = "";
+        // }
+        // return ret;
     }
     else{
         return view.model.get(attr);
@@ -122,7 +134,47 @@ HTML.TextArea = function(view, attr, options){
     $(el).text(HTML.Value(view, attr));
     var events = view.events;
     view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
-        view.model.set(attr, $(e.target).val());
+        if(attr.indexOf('.') != -1){
+
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if ((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        //console.log(data);
+                        data = {};
+                        data[elems[depth]] = {};
+                        //console.log(data[elems[depth]]);
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    //console.log(elems[depth], data[elems[depth]]);
+                    //console.log(data);
+                    return data;
+                } else {
+                    //console.log($(e.target).val());
+                    return $(e.target).val();
+                }
+            }
+
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            // var originalData = data;
+            // for (var i = 1; i < elems.length-1; ++i) {
+            //     data = data[elems[i]];
+            //     console.log("hellooooo");
+            // }
+            // data[_.last(elems)] = $(e.target).val();
+            view.model.set(elems[0], _.clone(data));
+
+            //var index = attr.indexOf('.');
+            //var data = view.model.get(attr.substr(0, index));
+            //data[attr.substr(index+1)] = $(e.target).val();
+            //view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger('change', view.model);
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
     };
     view.delegateEvents(events);
     $(el).wrap('div');

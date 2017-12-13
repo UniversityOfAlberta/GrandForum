@@ -46,7 +46,7 @@ abstract class AbstractSop extends BackboneModel{
     var $word_count;
 
     /* other */
-    var $annotations = array();	
+    var $annotations = array(); 
     var $pdf;    
 
 
@@ -62,46 +62,9 @@ abstract class AbstractSop extends BackboneModel{
     abstract function checkSop(); 
     abstract function getReviewers();
     abstract function getAdmitResult($user);
-
-
-
-    function getCSColumns() {
-        $moreJson = array();
-        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
-        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
-        //var_dump($moreJson['areas_of_study']);
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
-        
-        $moreJson['supervisors'] = @implode(", ", array($blob['q14']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
-        $moreJson['scholarships_held'] = @implode(", ", array($blob['q16']));
-
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
-        $moreJson['scholarships_applied'] = @implode(", ", array($blob['q15']));
-
-        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
-        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
-        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
-        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
-        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, 0, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
-
-        // # of Publications
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
-        $moreJson['num_publications'] = @count($blob['qResExp2']);
-
-        // # of awards
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
-        $moreJson['num_awards'] = @count($blob['qAwards']);
-
-        // Courses (number of courses, number of areas)
-        $blob = $this->getBlobValue(BLOB_ARRAY, 0, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
-        $moreJson['courses'] = @implode(", ", array($blob['qEducation2']));
-
-        return $moreJson;
-
-    }
+    abstract function getColumns();
+    
+    function getReviewRanking() {return '--';}
 
   /**
    * newFromId Returns an SOP object from a given id
@@ -115,7 +78,7 @@ abstract class AbstractSop extends BackboneModel{
         if(count($data)>0){
         $sop = new SOP($data);
         return $sop;
-	}
+  }
         return new SOP(array());
     }
 
@@ -128,11 +91,11 @@ abstract class AbstractSop extends BackboneModel{
         $data = DBFunctions::select(array('grand_sop'),
                                     array('id'),
                                     array('user_id' => EQ($id)));
-	if(count($data)>0){
-	    $sop = SOP::newFromId($data[0]['id']);
-	    return $sop;
-	}
-	return new SOP(array());
+  if(count($data)>0){
+      $sop = SOP::newFromId($data[0]['id']);
+      return $sop;
+  }
+  return new SOP(array());
     }
 
   /**
@@ -177,7 +140,7 @@ abstract class AbstractSop extends BackboneModel{
             $this->word_count = $row['word_count'];
 
             $this->pdf = $row['pdf_data'];
-	    $this->visible = $row['reviewer'];
+            $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
     }
@@ -264,8 +227,8 @@ abstract class AbstractSop extends BackboneModel{
    */
     function create(){
         $status = DBFunctions::insert('grand_sop',
-				     array('user_id' => $this->user_id),
-				     true);
+             array('user_id' => $this->user_id),
+             true);
     }
 
   /**
@@ -287,35 +250,37 @@ abstract class AbstractSop extends BackboneModel{
    * @return array
    */
     function toArray(){
-        global $wgUser;
-     /*   if(!$wgUser->isLoggedIn()){
+        global $wgUser, $config;
+        /* 
+        if(!$wgUser->isLoggedIn()){
             return array();
-        }*/
+        }
+        */
         
         $user = Person::newFromId($this->getUser());
         $author = array('id' => $user->getId(),
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS()->getAdditional();
-	$nationality = array();
-        $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
-        $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
-        $nationality[] = ($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
-        $nationality[] = ($gsms['international'] == "Yes") ? "International" : "";
+        $nationality = array();
+        $nationality[] = @($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
+        $nationality[] = @($gsms['canadian'] == "Yes") ? "Canadian" : "";
+        $nationality[] = @($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
+        $nationality[] = @($gsms['international'] == "Yes") ? "International" : "";
 
-	$nationality_note = "";
-	foreach($nationality as $note){
-	    if($note != ""){
-		$nationality_note .= $note.',<br />';
-	    }
-	}
+        $nationality_note = "";
+        foreach($nationality as $note){
+            if($note != ""){
+                $nationality_note .= $note.',<br />';
+            }
+        }
         $reviewers = array();
-	$student = Person::newFromId($this->user_id);
-	$reviewer_array = $student->getEvaluators(YEAR,"sop"); 
+        $student = Person::newFromId($this->user_id);
+        $reviewer_array = $student->getEvaluators(YEAR,"sop"); 
         //foreach($this->getReviewers() as $id){
-	foreach($reviewer_array as $reviewer){
+        foreach($reviewer_array as $reviewer){
             //$person = Person::newFromId($id);
-	    $person = $reviewer;
+            $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
@@ -335,7 +300,6 @@ abstract class AbstractSop extends BackboneModel{
              $agreeableness = $personality['personality'][3]['percentile'];
              $neurotism = $personality['personality'][4]['percentile'];
         }
-        $this->getCSColumns();
         $json = array('id' => $this->getId(),
                       'content' => $this->getContent(),
                       'content_string' => $this->getContent(true),
@@ -343,8 +307,8 @@ abstract class AbstractSop extends BackboneModel{
                       'date_created' => $this->getDateCreated(),
                       'url' => $this->getUrl(),
                       'author' => $author,
-            	      'gsms' => $gsms,
-            	      'admit' => $this->getFinalAdmit(),
+                      'gsms' => $gsms,
+                      'admit' => $this->getFinalAdmit(),
                       'nationality_note' => $nationality_note,
                       'reviewers' => $reviewers,
                       'sentiment_val' => round($this->sentiment_val,2),
@@ -378,13 +342,13 @@ abstract class AbstractSop extends BackboneModel{
                       'word_count' => $this->word_count,
                       'annotations' => $this->annotations,
                       'pdf_data' => $this->getPdf(true),
-		      'gsms_data' => $this->checkGSMS(),
+                      'gsms_data' => $this->checkGSMS(),
                       'sop_check' => $this->checkSOP(),
                       'sop_url' => $this->getSopUrl(),
-		      'gsms_url' => $this->getGSMSUrl());
+                      'gsms_url' => $this->getGSMSUrl());
 
-          // Get from Config which forum we are looking at to add extra columns
-          //$json = array_merge($json, $this->getCSColumns());
+        // Get from Config which forum we are looking at to add extra columns
+        $json = array_merge($json, $this->getColumns());
         return $json;
     }
 
@@ -432,8 +396,8 @@ abstract class AbstractSop extends BackboneModel{
      * @return $pdf the array of information previously parsed from PDF upload
      */
     function getPdf($asHtml=false){
-	    $pdf = unserialize($this->pdf);
-	    if($asHtml && isset($pdf['Referees'])){
+      $pdf = unserialize($this->pdf);
+      if($asHtml && isset($pdf['Referees'])){
                 $refs = $pdf['Referees'];
                 $i = 0;
                 if(is_array($refs)){
@@ -442,8 +406,8 @@ abstract class AbstractSop extends BackboneModel{
                         $i++;
                     }
                 }
-	    }
-	    return $pdf;
+      }
+      return $pdf;
     }
 
    /**
@@ -451,7 +415,7 @@ abstract class AbstractSop extends BackboneModel{
     * @return array
     */
     function getPersonalityStats(){
-	    return $this->personality_stats;
+      return $this->personality_stats;
     }
 
    /**
@@ -474,11 +438,11 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAnnotations(){
-	$annotations = array();
-	foreach($this->annotations as $annotation){
+  $annotations = array();
+  foreach($this->annotations as $annotation){
 
-	}
-	return $annotations;
+  }
+  return $annotations;
     }
 
    /**
@@ -490,14 +454,14 @@ abstract class AbstractSop extends BackboneModel{
         $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q1', $this->getId());
         $blob->load($blob_address);
         $data = $blob->getData();
-	if($data == "Waitlist"){
-	    $number = 1;
-	    $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+  if($data == "Waitlist"){
+      $number = 1;
+      $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
             $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q3', $this->getId());
             $blob->load($blob_address);
             $number = $blob->getData();
-	    return $data.' '.$number;
-	}	
+      return $data.' '.$number;
+  } 
         return $data;
     }
 
@@ -506,7 +470,7 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed
    */
     function getUser(){
-	    return $this->user_id;
+      return $this->user_id;
     }
 
   /**
@@ -514,7 +478,7 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed
    */
     function getDateCreated(){
-	    return $this->date_created;
+      return $this->date_created;
     }
 
     /**
@@ -535,10 +499,10 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed|string
    */
     function getReadabilityScore(){
-	    $content = $this->getContentToSend();
+      $content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/readability_score";
         $curl_post_fields_array = array('content'=>$content);
-	    $curl_post_fields = json_encode($curl_post_fields_array);
+      $curl_post_fields = json_encode($curl_post_fields_array);
         $curl_header = array('Content-Type: application/json');
         $curl_array = array(
             CURLOPT_URL => $curl_url,
@@ -560,19 +524,19 @@ abstract class AbstractSop extends BackboneModel{
         if(empty($error)){
             $result = $data;
         }
-	    $result = json_decode($result, true);
+      $result = json_decode($result, true);
 
-	    $ari_grade = $result["ari"]["us_grade"];
-	    $ari_age = $result["ari"]["min_age"];
-	    $colemanliau_grade = $result["colemanliau"]["us_grade"];
-	    $colemanliau_age = $result["colemanliau"]["min_age"];
-	    $dalechall_index = $result["dalechall"]["readingindex"];
-	    $dalechall_grade = $result["dalechall"]["us_grade"];
-	    $dalechall_age = $result["dalechall"]["min_age"];
-	    $fleschkincaid_grade = $result["fleschkincaid"]["us_grade"];
-	    $fleschkincaid_age = $result["fleschkincaid"]["min_age"];
-	    $smog_grade = $result["smog"]["us_grade"];
-	    $smog_age = $result["smog"]["min_age"];
+      $ari_grade = $result["ari"]["us_grade"];
+      $ari_age = $result["ari"]["min_age"];
+      $colemanliau_grade = $result["colemanliau"]["us_grade"];
+      $colemanliau_age = $result["colemanliau"]["min_age"];
+      $dalechall_index = $result["dalechall"]["readingindex"];
+      $dalechall_grade = $result["dalechall"]["us_grade"];
+      $dalechall_age = $result["dalechall"]["min_age"];
+      $fleschkincaid_grade = $result["fleschkincaid"]["us_grade"];
+      $fleschkincaid_age = $result["fleschkincaid"]["min_age"];
+      $smog_grade = $result["smog"]["us_grade"];
+      $smog_age = $result["smog"]["min_age"];
 
         $readability_score
             = ($ari_grade + $colemanliau_grade + $dalechall_grade +
@@ -583,14 +547,14 @@ abstract class AbstractSop extends BackboneModel{
                $fleschkincaid_age + $smog_age)
               / 5;
 
-	    $reading_ease = $result["flesch"]["reading_ease"];
+      $reading_ease = $result["flesch"]["reading_ease"];
  
         $word_count = $result["flesch"]["scores"]["word_count"];
-	    $sentlen_ave = $result["dalechall"]["scores"]["sentlen_average"];
-	    $wordletter_ave = $result["dalechall"]["scores"]["wordlen_average"];
+      $sentlen_ave = $result["dalechall"]["scores"]["sentlen_average"];
+      $wordletter_ave = $result["dalechall"]["scores"]["wordlen_average"];
 
-	    $sql = "UPDATE grand_sop
-		    SET readability_score=$readability_score, min_age=$min_age, 
+      $sql = "UPDATE grand_sop
+        SET readability_score=$readability_score, min_age=$min_age, 
                         reading_ease=$reading_ease, ari_grade=$ari_grade,
                         ari_age=$ari_age, colemanliau_grade=$colemanliau_grade,
                         colemanliau_age=$colemanliau_age, dalechall_index=$dalechall_index,
@@ -600,14 +564,14 @@ abstract class AbstractSop extends BackboneModel{
                         smog_grade=$smog_grade, smog_age=$smog_age,
                         word_count=$word_count, sentlen_ave=$sentlen_ave,
                         wordletter_ave=$wordletter_ave
-	            WHERE id={$this->id};";
-	    //$status = DBFunctions::execSQL($sql,true);
+              WHERE id={$this->id};";
+      //$status = DBFunctions::execSQL($sql,true);
         $status = false;
         if($status){
             DBFunctions::commit();
         }
 
-	    return $result;
+      return $result;
     }
 
   /**
@@ -615,8 +579,8 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed|string
    */
     function getSentimentScore(){
-	    $content = $this->getContentToSend();
-	    $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+      $content = $this->getContentToSend();
+      $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         $curl_url = "http://162.246.157.115/tasha/sentiment";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -662,7 +626,7 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed|string
    */
     function getEmotionsScore(){
-	    $content = $this->getContentToSend();
+      $content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/emotions";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -688,7 +652,7 @@ abstract class AbstractSop extends BackboneModel{
             $result = $data;
         }
         $result = json_decode($result, true);
-	    $emotions_array = array();
+      $emotions_array = array();
         $emotions_array['anger'] = $result['docEmotions']['anger'];
         $emotions_array['disgust'] = $result['docEmotions']['disgust'];
         $emotions_array['fear'] = $result['docEmotions']['fear'];
@@ -789,7 +753,7 @@ abstract class AbstractSop extends BackboneModel{
             $result = $data;
         }
         $result = json_decode($result, true);
-	    $errors = $result['errors'];	
+      $errors = $result['errors'];  
         $sql = "UPDATE grand_sop
                 SET errors=$errors
                 WHERE id={$this->id};";
@@ -807,12 +771,12 @@ abstract class AbstractSop extends BackboneModel{
    * @return SOP
    */
     function updateStatistics(){
-    //	$this->getSyntaxErrorCount();
-	    $this->getReadabilityScore();
-	    $this->getSentimentScore();
-	    $this->getEmotionsScore();
-	    $this->getPersonalityScore();
-	    return SOP::newFromId($this->id);
+    //  $this->getSyntaxErrorCount();
+      $this->getReadabilityScore();
+      $this->getSentimentScore();
+      $this->getEmotionsScore();
+      $this->getPersonalityScore();
+      return SOP::newFromId($this->id);
     }
 }
 require_once("SopModels/".$config->getValue("networkName")."/SOP.php");

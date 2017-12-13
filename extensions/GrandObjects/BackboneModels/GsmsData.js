@@ -1,19 +1,20 @@
 GsmsData = Backbone.Model.extend({
 
-    initialize: function(){	
+    initialize: function(){ 
     },
 
     urlRoot: 'index.php?action=api.gsmsdata',
+    idAttribute: 'user_id',
 
     defaults: function() {
-        return{
+        return {
             id:null,
-	    review_status: null,
-	    applicant_number: null,
-	    gender: "",
-	    data_of_birth: "",
-	    program_name: "",
-	    country_of_birth: "",
+            review_status: null,
+            applicant_number: null,
+            gender: "",
+            data_of_birth: "",
+            program_name: "",
+            country_of_birth: "",
             country_of_citizenship: "",
             applicant_type: "",
             education_history: "",

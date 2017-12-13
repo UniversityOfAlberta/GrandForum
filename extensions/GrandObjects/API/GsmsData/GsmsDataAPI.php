@@ -38,7 +38,15 @@ class GsmsDataAPI extends RESTAPI {
    * @return bool
    */
     function doPUT(){
-	return false;
+      if($this->getParam('id') != ""){
+        $me = Person::newFromWgUser();
+        $info_sheet = GsmsData::newFromUserId($this->getParam('id'));
+        if($me->isRoleAtLeast(MANAGER)) {
+            $info_sheet->additional = (array) $this->POST('additional');
+            $info_sheet->update();
+        }
+      }
+	    return $this->doGET();
         //todo
     }
 

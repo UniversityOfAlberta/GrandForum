@@ -27,14 +27,14 @@
             	$('#reportBody').css('min-height',0);
 
             	$(document).ready(function () {
-                    $('input[value=\'Waitlist\']').click(function () {
-                        $('#waitlist_num').show();
-                    });
                     $('input[value=\'Admit\']').click(function () {
-                        $('#waitlist_num').hide();
+                        $('#admit_opt').show();
+                    });
+                    $('input[value=\'Waitlist\']').click(function () {
+                        $('#admit_opt').hide();
                     });
                     $('input[value=\'Reject\']').click(function () {
-                        $('#waitlist_num').hide();
+                        $('#admit_opt').hide();
                     });
 
                 });
@@ -42,8 +42,8 @@
 
 
                 var intervalId = setInterval(function(){
-                    if ($('#waitlist_num').is(':visible') && $('[value=Waitlist]').attr('checked') != 'checked'){
-	                $('#waitlist_num').hide();
+                    if ($('#admit_opt').is(':visible') && $('[value=Admit]').attr('checked') != 'checked'){
+	                $('#admit_opt').hide();
                         clearInterval(intervalId);
                         intervalId = null;
                     }
@@ -51,18 +51,33 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles},Chair)},{contains({$user_full_roles}, Manager)})}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Chair)}, {contains({$user_full_roles}, Manager)},{contains({$user_full_roles}, Admin)})}">
                 <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
                         {$item}</td></tr><br /><br />
                     ]]>
                 </ReportItem>
-	        <ReportItem id="wait_num" personId="0" type="IntegerReportItem" min="0" width="50px" blobItem="Q3" blobSubItem="{$project_id}">
+	        <ReportItem id="program" personId="0" type="Text" blobItem="Q3" blobSubItem="{$project_id}">
         	    <![CDATA[
-                	<span id='waitlist_num'><b>Waitlist number:</b> {$item}</span>
+                	<span id='admit_opt'><table><tr><td><b>Program:</b></td><td>{$item}</td></tr>
            	    ]]>
         	</ReportItem>
+                <ReportItem id="funding" personId="0" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
+                    <![CDATA[
+                        <tr><td><b>Funding:</b></td><td> {$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q5" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+                    <![CDATA[
+                        <tr><td>Supervisor:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="area" personId="0" type="Text" blobItem="Q5" blobType="BLOB_TEXT" sopBlob="true" blobSubItem="{$project_id}">
+                    <![CDATA[
+                        <tr><td><b>Area:</b></td><td> {$item}</td></tr></table></span>
+                    ]]>
+                </ReportItem>
             	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
                     <![CDATA[
 			<span 'style=font:size 14px;'><h3>Comments:</h3></span>
@@ -70,7 +85,7 @@
                     ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!contains({$user_full_roles}, Admin)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({!contains({$user_full_roles},Manager)},{!contains({$user_full_roles}, Chair)})}">
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
 		Decision:<br />

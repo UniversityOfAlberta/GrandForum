@@ -38,6 +38,7 @@ class UserOTBioAPI extends API{
 	    $array_info['international'] = $row[10];
 	    $array_info['anatomy'] = $row[11];
 	    $array_info['stats'] = $row[12];
+            $array_info['casper'] = $row[14];
 	    $degrees = array();
 	    $degree_array = explode(",",$row[13]);
 	    foreach($degree_array as $degree){

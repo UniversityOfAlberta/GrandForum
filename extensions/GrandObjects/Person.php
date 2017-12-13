@@ -131,7 +131,7 @@ class Person extends BackboneModel {
      */
     static function newFromName($name){
         global $wgUser;
-        $name = strtolower(str_replace(' ', '.', $name));
+        $name = strtolower($name);
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
         }
@@ -924,6 +924,8 @@ class Person extends BackboneModel {
                       'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName(),
+                      'firstname' => $this->getFirstName(),
+                      'lastname' => $this->getLastName(),
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
@@ -4478,6 +4480,32 @@ class Person extends BackboneModel {
         $subs = array();
         foreach($data as $row){
             $subs[] = Person::newFromId($row['user_id']);
+        }
+        return $subs;
+    }
+
+    /**
+     * Returns a list of all faculty evaluating this Person who are not assigned as reviewers
+     * @param string $year The year of the evaluation
+     * @return array The list of People who reviewed this Person without being assigned to them
+     */
+    function getOtherEvaluators($year = YEAR){
+        $subs = array();
+        $sop = $this->getSop();
+        if ($sop != '') {
+          $sql = "SELECT DISTINCT b.user_id
+                  FROM grand_report_blobs b 
+                  WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
+                      AND b.year = '{$year}'
+                      AND b.proj_id = '{$sop->id}'
+                      AND b.rp_type = 'RP_OTT'
+                      AND b.rp_item = 'CS_Review_Rank'
+                      AND b.data <> ''";
+
+          $data = DBFunctions::execSQL($sql);
+          foreach($data as $row){
+              $subs[] = Person::newFromId($row['user_id']);
+          }
         }
         return $subs;
     }
