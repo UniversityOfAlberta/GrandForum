@@ -267,6 +267,9 @@ ProductEditView = Backbone.View.extend({
                 ).change();
             }
         });
+        this.$el.on('mouseover', 'div[name=authors_fullname] li.tagit-choice', function(){
+            $(this).css('cursor', 'move');
+        });
     },
     
     renderAuthors: function(){
