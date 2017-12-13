@@ -181,13 +181,20 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Manager)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Faculty)}, {contains({$user_full_roles}, Chair)})}">
                 <ReportItem id="table_header" type="StaticReportItem">
                     <![CDATA[
                     <br />
                     ]]>
                 </ReportItem>
 	</ReportItemSet>
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{==({$review_count},0)}">
+                <ReportItem id="table_header" type="StaticReportItem">
+                    <![CDATA[
+                     No Other Reviews Completed to Display
+                    ]]>
+                </ReportItem>
+        </ReportItemSet>
         <ReportItemSet id="professors" type="AllSopReviewerReportItemSet" roles="Professor" sort_reversed="true">
             <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!=({$my_id}, {$user_id})}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}" sop="true">

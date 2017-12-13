@@ -129,6 +129,7 @@ class ReportItemCallback {
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
             //SOP
+            "review_count" => "getReviewCount",
             "sop_table" => "getSopTable",
             // Other
             "wgUserId" => "getWgUserId",
@@ -1108,6 +1109,9 @@ class ReportItemCallback {
                 $roleNames[$role->getRole()] = $role->getRole();
             }
         }
+        if($this->getNetworkName() == "GARS" || $this->getNetworkName() == "CSGARS"){
+            return implode("; ", $roleNames);
+        }
         return implode(", ", $roleNames);
     }
     
@@ -1809,6 +1813,12 @@ class ReportItemCallback {
     
     function getReportSection(){
         return $this->reportItem->getSection()->name;
+    }
+
+    function getReviewCount(){
+        $sop = SOP::newFromId($this->getProjectId());
+        $reviewers = $sop->getReviewers();
+        return count($reviewers);
     }
 
     function getSopTable(){
