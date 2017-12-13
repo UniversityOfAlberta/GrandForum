@@ -1024,7 +1024,7 @@ class Person extends BackboneModel {
             $_POST['wpNS'] = array();
             $_POST['wpSendMail'] = true;
             $specialUserLogin = new LoginForm($wgRequest, 'signup');
-            $specialUserLogin->execute();
+            $specialUserLogin->execute('signup');
             $status = DBFunctions::update('mw_user', 
                                     array('employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
@@ -1049,10 +1049,7 @@ class Person extends BackboneModel {
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("idsCache_{$this->getId()}");
-            $person = Person::newFromName($_POST['wpName']);
-            if($person->exists()){
-                return $status;
-            }
+            return true;
         }
         return false;
     }

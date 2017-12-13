@@ -214,14 +214,15 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthorsWidget: function(){
-        var left = _.pluck(this.model.get('authors'), 'fullname');
-        var right = _.difference(this.allPeople.pluck('fullName'), left);
+        //var left = _.pluck(this.model.get('authors'), 'fullname');
+        //var right = _.difference(this.allPeople.pluck('fullName'), left);
         var objs = [];
         this.allPeople.each(function(p){
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
                                        fullname: p.get('fullName')};
         });
+        /*
         var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'author',
                                                           'left': left,
                                                           'right': right,
@@ -229,19 +230,43 @@ ProductEditView = Backbone.View.extend({
                                                           });
         this.$("#productAuthors").html(html);
         createSwitcheroos();
+        */
         
-        /*
         // Testing Tagit
+        var delimiter = ';';
         var html = HTML.TagIt(this, 'authors.fullname', {
-            strictValues: false, 
             values: _.pluck(this.model.get('authors'), 'fullname'),
+            strictValues: false, 
+            objs: objs,
             options: {
+                placeholderText: 'Enter authors here...',
+                allowSpaces: true,
+                allowDuplicates: false,
                 removeConfirmation: false,
-                availableTags: this.allPeople.pluck('fullName')
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter,
+                availableTags: this.allPeople.pluck('fullName'),
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 2){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                }
             }
         });
         this.$("#productAuthors").html(html);
-        this.$("#productAuthors .tagit").sortable();*/
+        this.$("#productAuthors .tagit").sortable({
+            stop: function(event,ui) {
+                $('input[name=authors_fullname]').val(
+                    $(".tagit-label",$(this))
+                        .clone()
+                        .text(function(index,text){ return (index == 0) ? text : delimiter + text; })
+                        .text()
+                ).change();
+            }
+        });
     },
     
     renderAuthors: function(){

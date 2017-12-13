@@ -377,7 +377,7 @@ HTML.MiscAutoComplete = function(view, attr, options){
 HTML.TagIt = function(view, attr, options){
     options.name = HTML.Name(attr);
     var tagit = new TagIt(options);
-    var tagitView = new TagItView({model: tagit});
+    tagitView = new TagItView({model: tagit});
     var el = tagitView.render();
     $("input", el).attr('id', 'tagit_' + attr);
     
@@ -395,20 +395,25 @@ HTML.TagIt = function(view, attr, options){
         var newItems = new Array();
         for(cId in current){
             var c = current[cId];
-            newItems.push(c);
+            var tuple = {};
+            tuple[subName] = c;
+            if(options.objs != undefined && options.objs[c] != undefined){
+                newItems.push(options.objs[c]);
+            }
+            else{
+                newItems.push(tuple);
+            }
         }
         var field = attr.substr(0, index);
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
             data[attr.substr(index+1)] = newItems;
-            view.model.set(attr.substr(0, index), _.clone(data), {silent: true});
-            //view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
         }
         else{                
             view.model.set(attr, _.clone(newItems), {silent: true});
         }
-        console.log(view.model.get('authors'), newItems);
     };
     view.delegateEvents(events);
     return el;

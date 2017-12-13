@@ -1,5 +1,5 @@
 <?php
-//require_once("CCVImport/CCVImport.php");
+require_once("CCVImport/CCVImport.php");
 
 $dir = dirname(__FILE__) . '/';
 

@@ -4,13 +4,15 @@ TagIt = Backbone.Model.extend({
     
     },
     
-    defaults: {
-        name: 'tagit',
-        capitalize: false,
-        values: Array(),
-        strictValues: true,
-        suggestions: Array(),
-        options: Array(),
+    defaults: function() {
+        return {
+            name: 'tagit',
+            capitalize: false,
+            values: new Array(),
+            strictValues: true,
+            suggestions: new Array(),
+            options: new Array()
+        }
     } 
     
 });

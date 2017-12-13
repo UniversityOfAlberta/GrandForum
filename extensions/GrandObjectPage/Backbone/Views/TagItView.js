@@ -72,7 +72,6 @@ TagItView = Backbone.View.extend({
     render: function(){
         var that = this;
         this.$el.html(this.template(this.model.toJSON()));
-        this.$("ul.tagit").val(this.model.get('values').join(', '));
         this.$("ul.tagit").tagit(this.model.get('options'));
         if(this.model.get('capitalize')){
             this.$("ul.tagit").css('text-transform', 'uppercase');

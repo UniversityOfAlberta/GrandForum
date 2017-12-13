@@ -4,7 +4,7 @@ CCVImportView = Backbone.View.extend({
 
     initialize: function(options){
         this.people = new People();
-        this.people.roles = [NI];
+        this.people.roles = [INACTIVE,NI];
         this.parent = options.parent;
         if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
             this.model.set("person", me);

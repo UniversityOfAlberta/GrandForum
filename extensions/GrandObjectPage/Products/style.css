@@ -1,0 +1,3 @@
+div[name=authors_fullname] li.tagit-choice {
+    cursor: move;
+}

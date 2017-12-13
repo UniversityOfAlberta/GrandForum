@@ -59,6 +59,9 @@ class UploadCCVAPI extends API{
             return null;
         }
         $structure = $this->structure['categories'][$category]['types'][$type];
+        if($paper['date_month'] == ""){
+            $paper['date_month'] = "01";
+        }
         $product = new Product(array());
         $product->title = str_replace("&#39;", "'", $paper['title']);
         $product->category = $category;
