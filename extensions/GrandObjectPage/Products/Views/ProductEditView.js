@@ -257,6 +257,7 @@ ProductEditView = Backbone.View.extend({
             }
         });
         this.$("#productAuthors").html(html);
+        this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         this.$("#productAuthors .tagit").sortable({
             stop: function(event,ui) {
                 $('input[name=authors_fullname]').val(
