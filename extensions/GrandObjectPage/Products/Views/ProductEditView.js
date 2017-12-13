@@ -239,7 +239,7 @@ ProductEditView = Backbone.View.extend({
             strictValues: false, 
             objs: objs,
             options: {
-                placeholderText: 'Enter authors here...',
+                placeholderText: 'Enter ' + this.model.getAuthorsLabel().pluralize().toLowerCase() + ' here...',
                 allowSpaces: true,
                 allowDuplicates: false,
                 removeConfirmation: false,
