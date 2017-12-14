@@ -332,7 +332,7 @@
             </ReportItemSet>
             
             <!-- Scientific -->
-            <!--ReportItemSet id="scientific_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific Committee,, false)}, 0)}">
+            <ReportItemSet id="scientific_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific Committee,, false)}, 0)}">
                 <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Scientific</h3>
@@ -345,7 +345,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet-->
+            </ReportItemSet>
             
             <!-- Outreach and Community Engagement -->
             <ReportItemSet id="community_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach Committee,, false)}, 0)}">
@@ -364,7 +364,7 @@
             </ReportItemSet>
             
             <!-- Other -->
-            <!--ReportItemSet id="other_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other Committee,, false)}, 0)}">
+            <ReportItemSet id="other_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other Committee,, false)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
                     <![CDATA[
                     	<h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Other</h3>
@@ -377,7 +377,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet-->
+            </ReportItemSet>
         </ReportItemSet>
         
         <!-- Footer -->
