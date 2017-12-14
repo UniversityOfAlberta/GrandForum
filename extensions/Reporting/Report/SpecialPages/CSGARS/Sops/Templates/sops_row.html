@@ -125,7 +125,7 @@
     <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 
-<td style="width:300px" id='notes'>
+<td id='notes'>
   <% _.each(additional.notes, function(note, key) { %>
     <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
     <% if (key == lastname) { %>

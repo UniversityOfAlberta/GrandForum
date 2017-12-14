@@ -381,14 +381,6 @@ table.wikitable tr.deleted {
   margin: 0 auto;
 }
 
-.stickyHeader {
-    position: sticky;
-    top: -16px;
-    background: #DEDEDE;
-    border-bottom: 1px solid #AAAAAA !important;
-    z-index: 1;
-}
-
 .flex-container {
   width: 100%;
   display: -webkit-flex; /* Safari */
