@@ -140,6 +140,8 @@ Person = Backbone.Model.extend({
         orcId: '',
         university: '',
         position: '',
+        start: '',
+        end: '',
         roles: new Array(),
         department: '',
         researchArea: '',

@@ -234,6 +234,7 @@ class CommonCV // {{{
       @list($record["end_year"], $record["end_month"]) = explode("/", $date);
       $record["funding_title"] = $this->get_xpath("field[@id='735545eb499e4cc6a949b4b375a804e8']/value", $elements->item($i));
       $record["funding_type"] = $this->get_xpath("field[@id='931b92a5ffed4e5aa9c7b3a0afd5f8ba']/lov/@id", $elements->item($i));
+      $record["funding_status"] = $this->get_xpath("field[@id='0991ead151e3445ca7537aa15acbec57']/lov", $elements->item($i));
       $record["funding_program"] = $this->get_xpath("section[@id='376b8991609f46059a3d66028f005360']/field[@id='97231512141a452a82151cc162e9a59c']/value", $elements->item($i));
       $record["funder"] = $this->get_xpath("section[@id='376b8991609f46059a3d66028f005360']/field[@id='67e083b070954e91bcbb1cc70131145a']/lov/@id", $elements->item($i));
       $record["otherfunder"] = $this->get_xpath("section[@id='376b8991609f46059a3d66028f005360']/field[@id='1bdead14642545f3971a59997d82da67']/value", $elements->item($i));
@@ -609,7 +610,7 @@ class CommonCV // {{{
           return $caption;
       }
     }
-    return "?";
+    return "";
   } // }}}
   
   /**

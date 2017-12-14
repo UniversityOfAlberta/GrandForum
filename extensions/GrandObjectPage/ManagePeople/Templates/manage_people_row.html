@@ -32,12 +32,14 @@
     <a href="<%= url %>"><%= reversedName %></a>
 </td>
 <td align="center">
-    <%= start.substr(0, 10) %>
+    <% if(start != null){ %>
+        <%= start.substr(0, 10) %>
+    <% } %>
 </td>
 <td align="center">
     <% if(end == '0000-00-00 00:00:00'){ %>
         Current
-    <% } else { %>
+    <% } else if(end != null) { %>
         <%= end.substr(0, 10) %>
     <% } %>
 </td>

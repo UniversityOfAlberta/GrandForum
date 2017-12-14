@@ -28,6 +28,15 @@ class Grant extends BackboneModel {
         return $grant;
     }
     
+    static function newFromTitle($title){
+        // Warning: There could be grants with duplicate titles
+        $data = DBFunctions::select(array('grand_grants'),
+                                    array('*'),
+                                    array('title' => EQ($title)));
+        $grant = new Grant($data);
+        return $grant;
+    }
+    
     static function newFromProjectId($projectId){
         $data = DBFunctions::select(array('grand_grants'),
                                     array('*'),

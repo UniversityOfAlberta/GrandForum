@@ -67,21 +67,23 @@ ManagePeopleRowView = Backbone.View.extend({
 
 	    // Sanity Check 1: Incomplete Student Data Check - highlights students with empty dataset
         var complete = {complete: true};
-	    if ( _.size(_.filter( [this.model.get('university').trim().toLowerCase(),
-	                                  this.model.get('position').trim().toLowerCase(),
-	                                  this.model.get('department').trim().toLowerCase()],
-	                                 function(val){
-	                                    return (val != "" && 
-	                                            val != undefined && 
-	                                            val != "unknown");
-	                                 }
-	                         )
-	               ) != 3
-	        ){ complete.complete = false; }
+	    if(_.size(_.filter([this.model.get('university'),
+                            this.model.get('position'),
+                            this.model.get('department')],
+                            function(val){
+                                return (val != undefined && 
+                                        val.trim().toLowerCase() != "" && 
+                                        val.trim().toLowerCase() != "unknown");
+                            }
+                          )
+	    ) != 3){
+	        complete.complete = false;
+	    }
         
         // Sanity Check 2: Relationship with Faculty Member
         var doubtful = {doubtful: false};
-        if (me.get('department').trim().toLowerCase() != this.model.get('department').trim().toLowerCase()){
+        if (me.get('department') != null && this.model.get('department') != null &&
+            me.get('department').trim().toLowerCase() != this.model.get('department').trim().toLowerCase()){
             doubtful.doubtful = true;
         }
 
