@@ -154,6 +154,10 @@ class Bibliography extends BackboneModel{
     }
     
     function create(){
+        if(($this->getTitle() == null) || ($this->getTitle() == "")) {
+            return false;
+        }
+
         foreach($this->editors as $key => $editor){
             if(is_object($editor)){
                 $this->editors[$key] = $editor->id;
@@ -179,6 +183,10 @@ class Bibliography extends BackboneModel{
     }
     
     function update(){
+        if(($this->getTitle() == null) || ($this->getTitle() == "")) {
+            return false;
+        }
+        
         foreach($this->editors as $key => $editor){
             if(is_object($editor)){
                 $this->editors[$key] = $editor->id;
