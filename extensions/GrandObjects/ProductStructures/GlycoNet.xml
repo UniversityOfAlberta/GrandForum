@@ -179,6 +179,24 @@
     <!-- Presentations -->
     <Presentations category="Presentation">
 
+        <Presentation type="Conference Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Poster Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
         <Presentation type="Departmental Lecture" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
