@@ -422,7 +422,7 @@ EOF;
 		    @page {
                 margin-top: {$margins['top']}cm;
                 margin-right: {$margins['right']}cm;
-                margin-bottom: {$margins['bottom']}cm;
+                margin-bottom: ". ($margins['bottom']) ."cm;
                 margin-left: {$margins['left']}cm;
             }
 		
@@ -761,7 +761,7 @@ EOF;
             $h = $pdf->get_height();
 
             // Draw a line along the bottom
-            $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
+            $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).';
             if("'.trim($headerName).'" != ""){
                 $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
                          '.PDFGenerator::cmToPixels($margins['top']).', 
@@ -770,9 +770,9 @@ EOF;
                          $color, 0.5);
             }
             $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-                     $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+                     $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
                      $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-                     $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+                     $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
                      $color, 0.5);
             $pdf->close_object();
             $pdf->add_object($foot, "all");
@@ -783,9 +783,9 @@ EOF;
             $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
 
             $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
+            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', $text, $font, $size2, $color, 0.01);
             
-            $pdf->page_text('.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', "'.utf8_encode($footer).'", $font, $size2, $color, 0.01);';
+            $pdf->page_text('.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', "'.utf8_encode($footer).'", $font, $size2, $color, 0.01);';
   
         foreach($headerLines as $i => $line){
             $pages .= '$pdf->page_text('.PDFGenerator::cmToPixels($margins['left']).', '.PDFGenerator::cmToPixels($margins['top']).' - ($text_height * '.($nHeaderLines-$i).') - 1, "'.utf8_encode($line).'", $font, $size, $color, 0.01);';
