@@ -79,7 +79,7 @@ SopsView = Backbone.View.extend({
                                                      'bFilter': true,
                                                      'dom': 'Bfrtip',
                                                      'autoWidth': true,
-                                                     // 'scrollX': true,
+                                                     'scrollX': true,
                                                      'fixedColumns':   
                                                         {
                                                             leftColumns: 1
