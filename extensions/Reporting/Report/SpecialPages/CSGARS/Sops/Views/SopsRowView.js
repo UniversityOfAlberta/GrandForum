@@ -15,7 +15,45 @@ SopsRowView = Backbone.View.extend({
     },
 
     addNotes: function() {
-        this.additionalNotesDialog.dialog("open");
+        if (this.additionalNotesDialog == null) {
+            var additionalNotesDialogId = 'additionalNotes_' + this.model.attributes['id'];
+            var model = this.model;
+            var view = this;
+            var previousAdditional;
+            this.additionalNotesDialog = $("#" + additionalNotesDialogId);
+            this.additionalNotesDialog.dialog({
+                autoOpen: false,
+                resizable: false,
+                //height: 400,
+                open: function(event, ui) {
+                    previousAdditional = _.clone(model.get('additional'));
+                },
+                closeOnEscape: true,
+                buttons: {
+                    "Save": function() {
+                        model.save();
+                        $(this).dialog("close");
+                        view.$('#notes .throbber').show();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function() {
+                    model.set('additional', previousAdditional);
+                    $('textarea', $(this)).val(previousAdditional.notes[me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '')]);
+                },
+                show: { effect: "drop", direction: "down", duration: 250 }
+            });
+            this.additionalNotesDialog.parent().appendTo(this.$("#notes"));
+        }
+        
+
+        //var additionalNotesDialogId = 'additionalNotes_' + this.model.attributes['id'];
+
+        //$('#my-dialog').parent().css({position:"fixed"}).end().dialog('open');
+        this.additionalNotesDialog.parent().css({position:"fixed"}).end().dialog('open');
+        //$("#additionalNotes_" + this.model.attributes['id']).dialog('open');
     },
 
     render: function(){
@@ -34,34 +72,8 @@ SopsRowView = Backbone.View.extend({
                 }
             }
         }
-        var model = this.model;
-        var view = this;
-        var previousAdditional;
-        this.additionalNotesDialog = this.$("#additionalNotesDialog").dialog({
-            autoOpen: false,
-            resizable: false,
-            //height: 400,
-            open: function(event, ui) {
-                previousAdditional = _.clone(model.get('additional'));
-            },
-            closeOnEscape: true,
-            buttons: {
-                Save: function() {
-                    model.save();
-                    $(this).dialog("close");
-                    view.$('#notes .throbber').show();
-                },
-                Cancel: function() {
-                    $(this).dialog("close");
-                }
-            },
-            close: function() {
-                model.set('additional', previousAdditional);
-                $('textarea', $(this)).val(previousAdditional.notes['u'+me.get('id')]);
-            },
-            show: { effect: "drop", direction: "down", duration: 250 },
-        });
-        this.additionalNotesDialog.parent().appendTo(this.$("#notes"));
+        this.additionalNotesDialog = null;
+
         this.parent.renderRoles();
         return this.$el;
     }

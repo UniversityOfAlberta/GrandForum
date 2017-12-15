@@ -139,7 +139,8 @@
       <a class="button">+</a>
       <span class="throbber" style="display:none"></span>
     </span>
-    <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
+    <% var additionalNotesDialogId = 'additionalNotes_' + id; %>
+    <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;">
       <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
       <%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>
     </div>

@@ -30,15 +30,21 @@ SopsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        var sops_row_views = new Array();
         if(this.table != undefined){
             this.table.destroy();
         }
         this.sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
+            sops_row_views.push(row);
             this.$("#sopRows").append(row.$el);
             row.render();
+            //console.log(row.additionalNotesDialog);
         }, this));
         this.createDataTable();
+        // _.each(sops_row_views, function(view) {
+        //     //view.additionalNotesDialog.parent().appendTo(view.$("#notes"));
+        // });
     },
     
     createDataTable: function(){

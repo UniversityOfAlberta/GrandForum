@@ -123,7 +123,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #E8E8E8; }
     -webkit-border-bottom-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    border:0px solid #AAAAAA !important;
+    border: 1px solid #CCC !important;
     height: 30px;
     line-height: 30px;
 }
