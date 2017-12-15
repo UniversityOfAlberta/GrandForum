@@ -1,116 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
 
-    <!-- Activities -->
-    <Activities category="Activity">
-        <Activity type="Event Organization" status="Invited|Not Invited">
-            <data>
-                <field label="Event Type" type="Select" options="Conference|Panel|Seminar|Workshop|Other">event_type</field>
-                <field label="Event Title" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Conference Attendance" status="Invited|Not Invited">
-            <data>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Student Volunteering" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Ethics Application">
-            <data>
-                <field label="Ethics Office" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Work on Committee" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Leadership Position">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Position" type="String">position</field>
-                <field label="Level" type="Select" options="Local|National|International">level</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Meeting">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizer" type="String">organizer</field>
-                <field label="Status" type="String">status</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Blog">
-            <data>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Product type="Start-Up">
-            <data>
-                <field label="Company Name" type="String">name</field>
-            </data>
-        </Product>
-        
-        <Activity type="Internship">
-            <data>
-                <field label="Skill Set Learned" type="String">skill_set_learned</field>
-                <field label="Start Date" type="Date">start_date</field>
-                <field label="End Date" type="Date">end_date</field>
-                <field label="Where/What Organization" type="String">organization</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Student Exchange">
-            <data>
-                <field label="Skill Set Learned" type="String">skill_set_learned</field>
-                <field label="Start Date" type="Date">start_date</field>
-                <field label="End Date" type="Date">end_date</field>
-                <field label="Where/What Organization" type="String">organization</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Summer Institute Attendance">
-            <data>
-                <field label="Skill Set Learned" type="String">skill_set_learned</field>
-                <field label="Start Date" type="Date">start_date</field>
-                <field label="End Date" type="Date">end_date</field>
-                <field label="Where/What Organization" type="String">organization</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Misc" status="Invited|Not Invited">
-            <data>
-                <field label="Event Title" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-    </Activities>
-
     <!-- Publications -->
     <Publications category="Publication">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -596,6 +486,116 @@
             </data>
         </Publication>
     </Publications>
+
+    <!-- Activities -->
+    <Activities category="Activity">
+        <Activity type="Event Organization" status="Invited|Not Invited">
+            <data>
+                <field label="Event Type" type="Select" options="Conference|Panel|Seminar|Workshop|Other">event_type</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Conference Attendance" status="Invited|Not Invited">
+            <data>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Student Volunteering" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Ethics Application">
+            <data>
+                <field label="Ethics Office" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Work on Committee" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Leadership Position">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Position" type="String">position</field>
+                <field label="Level" type="Select" options="Local|National|International">level</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Meeting">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Blog">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Product type="Start-Up">
+            <data>
+                <field label="Company Name" type="String">name</field>
+            </data>
+        </Product>
+        
+        <Activity type="Internship">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Student Exchange">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Summer Institute Attendance">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+    </Activities>
 
     <!-- Presentations -->
     <Presentations category="Presentation">
