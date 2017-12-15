@@ -102,11 +102,23 @@ class PersonGradStudentsTab extends AbstractTab {
             $start_date = substr($r->getStartDate(), 0, 10);
             $end_date = substr($r->getEndDate(), 0, 10);
             
+            
+            
             if($end_date != "0000-00-00"){
+                // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($end_date, $end_date);
             }
             else{
+                // Person is still continuing
                 $universities = $hqp->getUniversitiesDuring($end_date, "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
             }
             
             foreach($universities as $university){
