@@ -19,12 +19,11 @@ function addMessage(type, message, scroll, selector){
         $(selector + ' .' + type).slideDown(250);
     }
     if(scroll == true){
-        var parent = $(selector).parent().get(0);
-        if(parent.scrollHeight > parent.clientHeight){
+        var parent = $(selector).scrollParent();
+        try {
             $(parent).animate({scrollTop: $(selector).position().top}, 300);
-        }
-        else{
-            $('html,body').animate({scrollTop: $(selector).offset().top}, 300);
+        } catch (e){
+            $('html,body').animate({scrollTop: $(selector).position().top}, 300);
         }
     }
 }
