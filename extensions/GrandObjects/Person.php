@@ -3773,6 +3773,9 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $acceptanceDate = $paper->getAcceptanceDate();
             $date = $paper->getDate();
+            if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
+                $acceptanceDate = $date;
+            }
             $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["date_label"];
             $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["acceptance_date_label"];
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
