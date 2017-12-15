@@ -20,9 +20,9 @@ function addMessage(type, message, scroll, selector){
     }
     if(scroll == true){
         var parent = $(selector).scrollParent();
-        try {
+        if((parent[0] != document)){
             $(parent).animate({scrollTop: $(selector).position().top}, 300);
-        } catch (e){
+        } else {
             $('html,body').animate({scrollTop: $(selector).position().top}, 300);
         }
     }
