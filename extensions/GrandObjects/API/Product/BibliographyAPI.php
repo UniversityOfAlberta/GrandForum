@@ -26,7 +26,10 @@ class BibliographyAPI extends RESTAPI {
         $bib->editors = $this->POST('editors');
         $bib->products = $this->POST('products');
         $bib->thread_id = $this->POST('thread_id');
-        $bib->create();
+        $status = $bib->create();
+        if(!$status) {
+            $this->throwError("Could not create bibliography");
+        }
         return $bib->toJSON();
     }
     
@@ -36,7 +39,10 @@ class BibliographyAPI extends RESTAPI {
         $bib->description = $this->POST('description');
         $bib->editors = $this->POST('editors');
         $bib->products = $this->POST('products');
-        $bib = $bib->update();
+        $status = $bib = $bib->update();
+        if(!$status) {
+            $this->throwError("Could not create bibliography");
+        }
         return $bib->toJSON();
     }
     

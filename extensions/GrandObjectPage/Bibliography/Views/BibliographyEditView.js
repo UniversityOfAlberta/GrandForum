@@ -21,7 +21,7 @@ BibliographyEditView = Backbone.View.extend({
         this.template = _.template($('#bibliography_edit_template').html());
         
         this.allProducts = new Products();
-        this.allProducts.category = 'Publication';
+        this.allProducts.category = _.first(_.keys(productStructure.categories));
         this.allProducts.fetch();
         
         this.allPeople = new People();
@@ -33,6 +33,11 @@ BibliographyEditView = Backbone.View.extend({
     },
     
     saveBibliography: function(){
+        if (this.model.get("title").trim() == '') {
+            clearWarning();
+            addWarning('Title must not be empty', true);
+            return;
+        }
         this.$(".throbber").show();
         this.$("#saveBibliography").prop('disabled', true);
         this.model.save(null, {
