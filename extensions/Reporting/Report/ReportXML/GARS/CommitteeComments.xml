@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Committee Review" reportType="RP_COM" pdfType="RPTP_COM" pdfFiles="OTComPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role role="Reviewer">
+        <Role role="Faculty">
             <SectionPermission id="review student" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="r" />
@@ -56,7 +56,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Chair)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Manager)}, {contains({$user_full_roles}, Chair)})}">
                 <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
@@ -75,7 +75,7 @@
                     ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!contains({$user_full_roles}, Admin)}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({!contains({$user_full_roles}, Manager)}, {!contains({$user_full_roles}, Chair)})}">
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
 		Decision:<br />

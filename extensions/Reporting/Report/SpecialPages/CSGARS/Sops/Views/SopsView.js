@@ -25,38 +25,117 @@ SopsView = Backbone.View.extend({
         if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
             //console.log("HI");
             $('.assign_button').css('display','inline');
+            this.table.draw();
         }
     },
     
     addRows: function(){
+        var sops_row_views = new Array();
         if(this.table != undefined){
             this.table.destroy();
         }
         this.sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
+            sops_row_views.push(row);
             this.$("#sopRows").append(row.$el);
             row.render();
+            //console.log(row.additionalNotesDialog);
         }, this));
         this.createDataTable();
+        // _.each(sops_row_views, function(view) {
+        //     //view.additionalNotesDialog.parent().appendTo(view.$("#notes"));
+        // });
     },
     
     createDataTable: function(){
-        console.log("create data table");
+        var buttonDownload = {
+            exportOptions: {
+                format: {
+                    body: function ( data, row, column, node ) {
+                        var ret;
+                        data = $('<div>' + data + '</div>').text();
+                        // add a newline after each education entry
+                        if ((column === 6)) {
+                            ret = data.replace(/(\))([a-zA-Z])/g, '$1\n$2');
+                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
+                        } else if ((column === 17) || (column === 19)) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                        // Clean up Notes column for downloaded excel/csv
+                        } else if (column === 21) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                            ret = ret.replace(/[\n\r].*Additional Notesclose\s*([^\n\r]*)/, "");
+                        } else {
+                            ret = data;
+                        }
+                        return ret;
+                    }
+                }
+            }
+        };
+
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
-                                                     'autoWidth': false,
-                                                     'fixedHeader': true,
                                                      'dom': 'Bfrtip',
+                                                     'autoWidth': true,
+                                                     'scrollX': true,
+                                                     'fixedColumns':   
+                                                        {
+                                                            leftColumns: 1
+                                                        },
+                                                     'columns': [
+                                                        { 'width': '225px' }, // User email gender
+                                                        { 'width': '95px' },  // GSMS ID
+                                                        { 'width': '55px' },  // Folder
+                                                        { 'width': '70px' },  // DoB
+                                                        { 'width': '70px' },  // Country
+                                                        { 'width': '70px' },  // Applicant Type
+                                                        { 'width': '140px' }, // Education history
+                                                        { 'width': '70px' },  // Program Name
+                                                        { 'width': '70px' },  // EPL
+                                                        { 'width': '110px' },  // Areas
+                                                        { 'width': '75px' },  // Supervisors
+                                                        { 'width': '80px' },  // Scholarships Held/Applied
+                                                        { 'width': '75px' },  // GPA Normalized
+                                                        { 'width': '70px' },  // GRE
+                                                        { 'width': '70px' },  // Number of Publications
+                                                        { 'width': '70px' },  // Awards
+                                                        { 'width': '110px' },  // Courses
+                                                        { 'width': '120px' },  // Reviewers
+                                                        { 'width': '70px' },  // Avg Rev Rank
+                                                        { 'width': '120px' },  // Faculty
+                                                        { 'width': '70px' },  // Avg Faculty Rank
+                                                        { 'width': '120px' },  // Notes
+                                                        { 'width': '70px' },  // Comments
+                                                        { 'width': '70px' }   // Decision
+                                                      ],
                                                      'buttons': [
                                                         {
                                                             extend: 'colvis',
                                                             className: 'btn btn-primary',
-                                                            text: 'Column Visibility'
-                                                        }
-                                                     ],
+                                                            text: 'Column Visibility',
+                                                        },
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'csv',
+                                                            text: 'CSV',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } ),
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'excel',
+                                                            text: 'Excel',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } )/*,
+                                                        {
+                                                            extend: 'pdf',
+                                                            className: 'btn btn-primary',
+                                                            text: 'PDF'
+                                                        }*/
+                                                     ], 
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        //this.$('#listTable_length').prepend("<div id='download_btns' style='margin-left:112px; margin-top: 6px; vertical-align:baseline;'>Download: <a class='buttons-csv buttons-html5'>CSV</a>, <a class='buttons-excel buttons-html5'>Excel</a></div>")
     },
 
     events: {
@@ -439,7 +518,6 @@ SopsView = Backbone.View.extend({
    },
 
     render: function(){
-        console.log("rendering");
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();

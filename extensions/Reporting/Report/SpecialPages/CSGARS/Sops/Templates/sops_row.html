@@ -1,5 +1,5 @@
 <td align="center" style="width:30px">
-   <b><span style="white-space: nowrap;"><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
+   <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
    (<%=student_data.email %>)<br /><%= gender %>  
 </td>
 
@@ -125,7 +125,7 @@
     <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 
-<td style="width:300px" id='notes'>
+<td id='notes'>
   <% _.each(additional.notes, function(note, key) { %>
     <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
     <% if (key == lastname) { %>
@@ -139,7 +139,8 @@
       <a class="button">+</a>
       <span class="throbber" style="display:none"></span>
     </span>
-    <div title="Additional Notes" id="additionalNotesDialog" style="display:none">
+    <% var additionalNotesDialogId = 'additionalNotes_' + id; %>
+    <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;">
       <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
       <%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>
     </div>

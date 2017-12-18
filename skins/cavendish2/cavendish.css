@@ -1888,6 +1888,7 @@ div.dt-buttons > a {
 
 div.dt-button-collection {
 	max-height: 400px;
+	min-width: 200px;
 	overflow-y: auto !important;
 }
 
@@ -1901,6 +1902,25 @@ div.dt-button-collection {
 	background-color: #CCCCCC !important;
 	color: black !important;
 	background-image: none !important;
+}
+
+a.buttons-html5 {
+	border: none !important;
+    color: #048849 !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 1em !important;
+    border-radius: 0 !important;
+    left: 10px;
+    margin-right: 1em !important;
+}
+
+a.buttons-html5::before { 
+	content: url('../icons/ualberta/ic_file_download_24px.svg');
+	display: inline-block;
+    vertical-align: middle;
+    height: ...;
+    line-height: normal;
 }
 
 
