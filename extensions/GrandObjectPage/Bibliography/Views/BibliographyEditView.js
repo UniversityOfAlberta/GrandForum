@@ -5,6 +5,7 @@ BibliographyEditView = Backbone.View.extend({
     productView: null,
     spinner: null,
     allPeople: null,
+    bibtexDialog: null,
 
     initialize: function(){
         this.model.fetch({
@@ -28,6 +29,7 @@ BibliographyEditView = Backbone.View.extend({
         this.allPeople.fetch();
         
         this.listenTo(this.allProducts, "sync", this.renderProductsWidget);
+        this.listenTo(this.allProducts, "reset", this.renderProductsWidget);
         this.listenTo(this.allPeople, "sync", this.renderEditorsWidget);
         $(document).mousedown(this.hidePreview);
     },
@@ -143,7 +145,8 @@ BibliographyEditView = Backbone.View.extend({
         "click #saveBibliography": "saveBibliography",
         "click #cancel": "cancel",
         "mouseover #products .sortable-list li": "previewProduct",
-        "mouseout #products .sortable-list li": "hidePreview"
+        "mouseout #products .sortable-list li": "hidePreview",
+        "click #bibImportBibTeX": "importBibTeX"
     },
     
     renderEditorsWidget: function(){
@@ -228,6 +231,7 @@ BibliographyEditView = Backbone.View.extend({
     },
     
     renderProductsWidget: function(){
+        console.log("rendering");
         var model = this.model;
         if(headerColor != "#333333"){
             // Headers were changed, use this color
@@ -248,8 +252,13 @@ BibliographyEditView = Backbone.View.extend({
         this.$("#products .sortable-widget").show();
         
         // Left Side (Current)
+        this.$("#products #sortable1").empty();
         _.each(products, $.proxy(function(p){
-            var product = this.allProducts.findWhere({id: p.id.toString()});
+            if (!_.isObject(p)) {
+                var product = this.allProducts.findWhere({id: p});
+            } else {
+                var product = this.allProducts.findWhere({id: p.id.toString()});
+            }
             if(product != null){
                 var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
                 this.$("#products #sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
@@ -257,10 +266,10 @@ BibliographyEditView = Backbone.View.extend({
         }, this));
         
         //Right Side (Available)
+        this.$("#products #sortable2").empty();
         this.allProducts.each($.proxy(function(product){
             var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
-            // console.log("product: ", products);
-            if(!_.contains(_.pluck(products, 'id'), product.get('id'))){
+            if ((!_.contains(_.pluck(products, 'id'), product.get('id'))) && (!_.contains(products, product.get('id').toString()))) {
                 this.$("#products #sortable2").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
             }
         }, this));
@@ -313,6 +322,10 @@ BibliographyEditView = Backbone.View.extend({
 	    this.$("#products .sortable-search input").change($.proxy(changeFn, this));
 	    this.$("#products .sortable-search input").keyup($.proxy(changeFn, this));
     },
+
+    importBibTeX: function(){
+        this.bibtexDialog.dialog('open');
+    },
     
     render: function(){
         if(this.model.isNew()){
@@ -324,6 +337,76 @@ BibliographyEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProductsWidget();
         this.renderEditorsWidget();
+
+        this.bibtexDialog = this.$("#bibtexDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            width: "800px",
+            open: function(){
+                $("html").css("overflow", "hidden");
+            },
+            beforeClose: function(){
+                $("html").css("overflow", "auto");
+            },
+            buttons: {
+                "Import": $.proxy(function(e){
+                    var button = $(e.currentTarget);
+                    button.prop("disabled", true);
+                    var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
+                    var overwrite = $("input[name=overwrite]:checked", this.bibtexDialog).val();
+                    $("div.throbber", this.bibtexDialog).show();
+                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite, private: 'no'}, $.proxy(function(response){
+                        var data = response.data;
+                        if(!_.isUndefined(data.created)){
+                            var ids = _.pluck(data.created, 'id');
+                            var oldIds = this.model.get('products');
+                            var duplicateIds = _.pluck(data.duplicates, 'id');
+                            var allIds = _.union(oldIds, ids, duplicateIds);
+                            var strAllIds = new Array();
+                            for (var i=0; i<allIds.length; ++i) {
+                                strAllIds.push(allIds[i].toString());
+                            }
+
+                            this.model.set('products', strAllIds);
+                            this.allProducts.add(data.created);
+                            this.renderProductsWidget();
+                        }
+                        clearAllMessages();
+                        if(response.errors.length > 0){
+                            addError(response.errors.join("<br />"));
+                        }
+                        if(!_.isUndefined(data.created)){
+                            var nCreated = data.created.length;
+                            var nError = response.messages.length;
+                            
+                            if(nCreated > 0){
+                                addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
+                            }
+                            if(nError > 0){
+                                addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+                            }
+                        }
+                        button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
+                        this.bibtexDialog.dialog('close');
+                    }, this)).fail($.proxy(function(){
+                        clearAllMessages();
+                        addError("There was an error importing the BibTeX references");
+                        button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
+                        this.bibtexDialog.dialog('close');
+                    }, this));
+                }, this),
+                "Cancel": $.proxy(function(){
+                    this.bibtexDialog.dialog('close');
+                }, this)    
+            }
+            
+        });
+
         return this.$el;
     }
 
