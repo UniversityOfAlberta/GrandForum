@@ -286,10 +286,6 @@
         show_status(++$iterationsSoFar, count($staff));
     }
     
-    // Adding Employment History
-    echo "\nImporting Employment History from CCV\n";
-    require_once("ccvEmploymentUpload.php");
-    
     Person::$universityCache = array();
     
     // Adding HQP
@@ -569,6 +565,12 @@
     Person::$namesCache = array();
     Person::$idsCache = array();
     Person::$cache = array();
+    
+    // Adding Employment History
+    echo "\nImporting Employment History from CCV\n";
+    require_once("ccvEmploymentUpload.php");
+    
+    Person::$universityCache = array();
     
     $iterationsSoFar = 0;
     echo "\nCreating HQP Roles\n";

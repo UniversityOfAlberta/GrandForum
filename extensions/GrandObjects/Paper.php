@@ -1284,13 +1284,13 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false){
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false){
         $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink) {
-            return $this->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink);
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP) {
+            return $this->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
         }, $format);
         
         $peerDiv = "";
@@ -1335,18 +1335,24 @@ class Paper extends BackboneModel{
         return trim("{$format}{$peerDiv}");
     }
     
-    private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+    private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
         $authors = array();
+        $me = null;
+        //if($highlightOnlyMyHQP !== false){
+            $me = Person::newFromId($highlightOnlyMyHQP);
+        //}
         if(strstr(strtolower($matches[0]), "authors") !== false){
+            $yearAgo = strtotime("{$this->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
+            $yearAgo = date('Y-m-d', $yearAgo);
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
                         $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
-                    else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $yearAgo = strtotime("{$this->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
-                        $yearAgo = date('Y-m-d', $yearAgo);
+                    else if(($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)) &&
+                            (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
+                             ($highlightOnlyMyHQP === false))){
                         $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
                         foreach($unis as $uni){
                             if(strstr($uni['position'], "Graduate Student") !== false ||

@@ -793,7 +793,7 @@ class Person extends BackboneModel {
                     $people[] = $row;
                 }
                 else{
-                    $people[strtolower($person->getNameForForms())] = $person;
+                    $people[strtolower($person->getName())] = $person;
                 }
             }
             if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
@@ -811,7 +811,7 @@ class Person extends BackboneModel {
                                 $people[] = $row;
                             }
                             else{
-                                $people[strtolower($person->getNameForForms())] = $person;
+                                $people[strtolower($person->getName())] = $person;
                             }
                         }
                     }
@@ -836,7 +836,7 @@ class Person extends BackboneModel {
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
                     if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                        $people[strtolower($person->getNameForForms())] = $person;
+                        $people[strtolower($person->getName())] = $person;
                     }
                 }
             }
@@ -858,7 +858,7 @@ class Person extends BackboneModel {
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
-                $people[strtolower($person->getNameForForms())] = $person;
+                $people[strtolower($person->getName())] = $person;
             }
         }
         ksort($people);
@@ -877,7 +877,7 @@ class Person extends BackboneModel {
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
-                $people[strtolower($person->getNameForForms())] = $person;
+                $people[strtolower($person->getName())] = $person;
             }
         }
         ksort($people);
@@ -907,7 +907,7 @@ class Person extends BackboneModel {
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
                 if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                    $people[strtolower($person->getNameForForms())] = $person;
+                    $people[strtolower($person->getName())] = $person;
                 }
             }
         }
@@ -4730,21 +4730,16 @@ class Person extends BackboneModel {
      * @param string $relationship The type of Relationship
      * @return boolean Whether or not this Person is related to another Person
      */
-    function RelatedToDuring($person, $relationship, $start_date, $end_date){
-        if( $person instanceof Person ){
-            $person_id = $person->getId();
-            $data = DBFunctions::select(array('grand_relations'),
-                                        array('*'),
-                                        array('user1' => EQ($this->getId()),
-                                              'user2' => EQ($person->getId()),
-                                              'type' => EQ($relationship),
-                                              'start_date' => EQ($start_date),
-                                              'end_date' => EQ($end_date)));
-            return (count($data) > 0);
+    function isRelatedToDuring($person, $relationship, $start_date, $end_date){
+        if($person instanceof Person){
+            $relations = $this->getRelationsDuring($relationship, $start_date, $end_date);
+            foreach($relations as $relation){
+                if($relation->getUser2()->getId() == $person->getId()){
+                    return true;
+                }
+            }
         }
-        else{
-            return null;
-        }
+        return false;
     }
 }
 ?>
