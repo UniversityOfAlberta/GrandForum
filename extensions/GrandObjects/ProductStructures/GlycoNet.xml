@@ -712,6 +712,7 @@
         <Presentation type="Conference Presentation" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
@@ -721,6 +722,7 @@
         <Presentation type="Poster Presentation" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
@@ -730,6 +732,7 @@
         <Presentation type="Departmental Lecture" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
@@ -739,6 +742,7 @@
         <Presentation type="Departmental Seminar" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
@@ -748,6 +752,7 @@
         <Presentation type="Distinguished Lecture" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
@@ -757,6 +762,7 @@
         <Presentation type="Group Seminar" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="Host Research Group" type="String">host_research_group</field>
@@ -767,6 +773,7 @@
         <Presentation type="{$networkName} Seminar" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
                 <field label="Host Department" type="String">host_department</field>
                 <field label="URL" type="URL">url</field>
