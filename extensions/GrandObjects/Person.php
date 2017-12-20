@@ -2010,7 +2010,9 @@ class Person extends BackboneModel {
                     $universities[] = array("university" => $row['university_name'],
                                             "department" => $row['department'],
                                             "position"   => $row['position'],
-                                            "research_area" => $row['research_area']);
+                                            "research_area" => $row['research_area'],
+                                            "start" => $row['start_date'],
+                                            "end" => $row['end_date']);
                 }
             }
         }

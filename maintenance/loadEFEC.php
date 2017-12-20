@@ -345,6 +345,8 @@
             }
             
             $endDate = $student['COMPLETION_DT'];
+            $relEndDate = $student['END_DATE'];
+            
             if(trim($endDate) == ""){
                 $endDate = $student['END_DATE'];
             }
@@ -355,6 +357,15 @@
                 $endDate = "$endYear-$endMonth-$endDay";
             }
             
+            if(trim($relEndDate) == ""){
+                $relEndDate = $endDate;
+            }
+            if(strstr($relEndDate, "/") !== false){
+                $endYear = substr($relEndDate, 6, 4);
+                $endDay = substr($relEndDate, 0, 2);
+                $endMonth = substr($relEndDate, 3, 2);
+                $relEndDate = "$endYear-$endMonth-$endDay";
+            }
             
             $supervisor = Person::newFromEmployeeId($student['SUPERVISOR_ID']);
             if($supervisor != null && $supervisor->getId() != 0){
@@ -373,14 +384,14 @@
                     $rel->user1 = $supervisor->getId();
                     $rel->user2 = $person->getId();
                     $rel->startDate = $student['ADMISSION_START_DT'];
-                    $rel->endDate = $endDate;
+                    $rel->endDate = $relEndDate;
                     $rel->type = $roleType;
                     
                     $hqpRelations[$supervisor->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$student['PROG_TYPE']])] = $rel;
                 }
                 $relation = $hqpRelations[$supervisor->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$student['PROG_TYPE']])];
                 $relation->startDate = min($relation->getStartDate(), $student['ADMISSION_START_DT']);
-                $relation->endDate   = max($relation->getEndDate(),   $endDate);
+                $relation->endDate   = max($relation->getEndDate(),   $relEndDate);
             }
             
             if(!isset($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])])){
@@ -397,6 +408,7 @@
             $university = $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])];
             $university['startDate'] = min($university['startDate'], $student['ADMISSION_START_DT']);
             $university['endDate'] = max($university['endDate'], $endDate);
+            $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])] = $university;
             
             $role = $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", @$titleMap[$student['PROG_TYPE']])];
             $role->startDate = min($role->getStartDate(), $student['ADMISSION_START_DT']);
@@ -501,13 +513,13 @@
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){
             // Update Role info
-            if(!isset($hqpRoles[$person->getId()][$titleMap[$row['responsibility']]])){
+            if(!isset($hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])])){
                 $r = new Role(array());
                 $r->user = $person->getId();
                 $r->role = HQP;
                 $r->startDate = $row['started'];
                 $r->endDate = $row['ended'];
-                $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]] = $r;
+                $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $r;
             }
             if($sup != null){
                 switch($row['role']){
@@ -523,7 +535,7 @@
                         break;
                 }
             
-                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]])){
+                if(!isset($hqpRelations[$sup->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])])){
                     $rel = new Relationship(array());
                     $rel->user1 = $sup->getId();
                     $rel->user2 = $person->getId();
@@ -531,33 +543,38 @@
                     $rel->endDate = $row['ended'];
                     $rel->type = $roleType;
                     
-                    $hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]] = $rel;
+                    $hqpRelations[$sup->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $rel;
                 }
                 
-                $relation = $hqpRelations[$sup->getId()][$person->getId()][$roleType][$titleMap[$row['responsibility']]];
+                $relation = $hqpRelations[$sup->getId()][$person->getId()][$roleType][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])];
                 $relation->startDate = min($relation->getStartDate(), $row['started']);
                 $relation->endDate   = max($relation->getEndDate(),   $row['ended']);
             }
             
-            $role = $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]];
+            $role = $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])];
             $role->startDate = min($role->getStartDate(), $row['started']);
             $role->endDate   = max($role->getEndDate(),   $row['ended']);
-            $hqpRoles[$person->getId()][$titleMap[$row['responsibility']]] = $role;
+            $hqpRoles[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $role;
         }
         
-        if(!isset($hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]])){
+        if(!isset($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])])){
             $uni = array();
             $uni['university'] = "University of Alberta";
             $uni['department'] = ($sup != null) ? $sup->getDepartment() : "";
             $uni['startDate'] = $row['started'];
             $uni['endDate'] = $row['ended'];
             $uni['title'] = $titleMap[$row['responsibility']];
-            $hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]] = $uni;
+            $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $uni;
         }
         
-        $university = $hqpUniversities[$person->getId()][$titleMap[$row['responsibility']]];
+        $university = $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])];
         $university['startDate'] = min($university['startDate'], $row['started']);
         $university['endDate'] = max($university['endDate'], $row['ended']);
+        $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $university;
+        if($person->getName() == "Matthew.Delaney"){
+            var_dump($university);
+            var_dump($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])]);
+        }
         
         show_status(++$iterationsSoFar, count($responsibilities));
     }
@@ -620,8 +637,8 @@
     $iterationsSoFar = 0;
     echo "\nCreating HQP Universities\n";
     foreach($hqpUniversities as $id => $unis){
+        $person = Person::newFromId($id);
         foreach($unis as $uni){
-            $person = Person::newFromId($id);
             addUserUniversity($person, $uni['university'], $uni['department'], $uni['title'], $uni['startDate'], $uni['endDate']);
         }
         show_status(++$iterationsSoFar, count($hqpUniversities));

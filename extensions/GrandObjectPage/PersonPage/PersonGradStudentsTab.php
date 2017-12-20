@@ -99,18 +99,16 @@ class PersonGradStudentsTab extends AbstractTab {
             if(isset($hqpsDone[$hqp->getId()])){
                 continue;
             }
-            $start_date = substr($r->getStartDate(), 0, 10);
-            $end_date = substr($r->getEndDate(), 0, 10);
+            //$start_date = substr($r->getStartDate(), 0, 10);
+            //$end_date = substr($r->getEndDate(), 0, 10);
             
-            
-            
-            if($end_date != "0000-00-00"){
+            if($endDate != "0000-00-00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($end_date, $end_date);
+                $universities = $hqp->getUniversitiesDuring($endDate, $endDate);
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($end_date, "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($endDate, "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything
@@ -127,13 +125,39 @@ class PersonGradStudentsTab extends AbstractTab {
                 }
             }
             
+            $minRelation = $r;
+            $minInterval = 1000000;
+            foreach($relations as $rel){
+                // Find the best matching relation
+                // Probably slow
+                
+                if($rel->getUser2() == $r->getUser2()){
+                    $start1 = new DateTime($university['start']);
+                    $start2 = new DateTime($rel->getStartDate());
+                    $end1   = new DateTime($university['end']);
+                    $end2   = new DateTime($rel->getEndDate());
+                    $startInterval = intval($start1->diff($start2)->format('%a')); // Difference in days
+                    $endInterval = intval($end1->diff($end2)->format('%a')); // Difference in days
+                    $minInterval = min($minInterval, $startInterval);
+                    if($minInterval == $startInterval){
+                        $minRelation = $rel;
+                    }
+                }
+            }
+            $r = $minRelation;
+            $startDate = substr($r->getStartDate(), 0, 10);
+            $endDate = substr($r->getEndDate(), 0, 10);
+            
             $uni = $university['university'];
             $research_area = $university['research_area'];
             $position = $university['position'];
             if(!in_array(strtolower($position), $hqpTypes)){
                 continue;
             }
-            $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
+            if($r->getEndDate() == "0000-00-00" || $university['end'] < $r->getEndDate()){
+                $end_date = $university['end'];
+            }
+            $end_date = ($endDate == '0000-00-00')? "Current" : $endDate;
             $hqp_name = $hqp->getNameForForms();
             $role = $r->getType();
             $repeat_check = false;
@@ -170,7 +194,7 @@ class PersonGradStudentsTab extends AbstractTab {
             "<tr>
                 <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                 <td style='white-space: nowrap;'>$position</td>
-                <td style='white-space: nowrap;'>$start_date</td>
+                <td style='white-space: nowrap;'>$startDate</td>
                 <td style='white-space: nowrap;'>$end_date</td>
                 <!--td>$research_area</td-->
                 <!--td></td><td>".implode("; ",$names)."</td-->
