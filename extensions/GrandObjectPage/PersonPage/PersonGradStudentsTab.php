@@ -94,6 +94,7 @@ class PersonGradStudentsTab extends AbstractTab {
         }
         $students = array();
         $hqpsDone = array();
+        $rows = array();
         foreach($relations as $r){
             $hqp = $r->getUser2();
             if(isset($hqpsDone[$hqp->getId()])){
@@ -174,13 +175,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             $names = array();
-            /*$rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
-            foreach($rel as $rels){
-                if(count($rel) == 1){
-                   break;
-                }
-                $names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
-            } */
             $awards = $hqp->getPapersAuthored('Award', $startDate, $endDate);
             $awardCitations = array();
             foreach($awards as $award){
@@ -190,7 +184,7 @@ class PersonGradStudentsTab extends AbstractTab {
             if(count($awardCitations) > 0){
                 $rowspan = 2;
             }
-            $html .= 
+            $rows[$end_date.$startDate] = 
             "<tr>
                 <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                 <td style='white-space: nowrap;'>$position</td>
@@ -201,10 +195,12 @@ class PersonGradStudentsTab extends AbstractTab {
                 <td style='white-space: nowrap;'>$role</td>
             </tr>";
             if(count($awardCitations) > 0){
-                $html .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
+                $rows[$end_date.$startDate] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }
             $hqpsDone[$hqp->getId()] = true;
         }
+        ksort($rows);
+        $html .= implode(array_reverse($rows));
         $html .= "</tbody></table>";
         return $html;
     }
