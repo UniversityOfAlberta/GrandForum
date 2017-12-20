@@ -52,7 +52,7 @@ class ImportBibTeXAPI extends API{
         return $month;
     }
     
-    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false){
+    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false, $private=true){
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
@@ -107,7 +107,7 @@ class ImportBibTeXAPI extends API{
         if(!is_array($product->projects)){ $product->projects = array(); }
         $product->authors = array();
         if(!$product->exists()){
-            $product->access_id = $me->getId();
+            if ($private) { $product->access_id = $me->getId(); }
             $product->bibtex_id = $bibtex_id;
         }
         $product->access = "Public";
@@ -178,12 +178,14 @@ class ImportBibTeXAPI extends API{
             $bib = new Bibliography($fileName);
             unlink($fileName);
             $createdProducts = array();
+
             $errorProducts = array();
             $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
+            $private = (isset($_POST['private']) && strtolower($_POST['private']) == "yes") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite);
+                    $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite, $private);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
@@ -198,6 +200,7 @@ class ImportBibTeXAPI extends API{
                 return false;
             }
             $json = array('created' => array(),
+                          'duplicates' => array(),
                           'errors' => array());
             foreach($createdProducts as $product){
                 $json['created'][] = $product->toArray();
@@ -210,6 +213,10 @@ class ImportBibTeXAPI extends API{
                     $this->addError("A publication was missing an authors list");
                 }
                 else{
+                    $checkProduct = Product::newFromTitle($product['title']);
+                    if($checkProduct->exists()){
+                         $json['duplicates'][] = $checkProduct->toArray();
+                    }
                     $this->addMessage("Duplicate");
                 }
             }

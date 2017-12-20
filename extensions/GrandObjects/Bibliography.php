@@ -164,6 +164,12 @@ class Bibliography extends BackboneModel{
             }
         }
 
+        foreach($this->products as $key => $product){
+            if(is_object($product)){
+                $this->products[$key] = "{$product->id}";
+            }
+        }
+
         $thread = new Thread(array());
         $thread->title = $this->getTitle() . " comments";
         $thread->user_id = $this->getPerson()->getId();
@@ -192,6 +198,13 @@ class Bibliography extends BackboneModel{
                 $this->editors[$key] = $editor->id;
             }
         }
+
+        foreach($this->products as $key => $product){
+            if(is_object($product)){
+                $this->products[$key] = "{$product->id}";
+            }
+        }
+        
         DBFunctions::update('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,
