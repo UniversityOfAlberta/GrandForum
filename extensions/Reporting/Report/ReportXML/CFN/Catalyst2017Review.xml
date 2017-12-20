@@ -1071,21 +1071,40 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         {$item}
                         <div class='info'>
                             <ol>
-                                <li>Please score all sections.  You can use decimals in your scores.</li>
-                                <li>Competition Goal: To advance previously funded CFN research evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
-                                <li>Because of the limited overall budget and expected high interest for this competition, the budget/budget justification will be a major evaluation criterion.  Note: Increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</li>
-                                <li>Proposals that secure cash and/or in kind matching contributions beyond the minimum 1:1 match will be at an advantage.</li>
+                                <li>Please provide scores and comments for all evaluation criteria.</li>
+                                <li>You can use decimals in your scores.</li>
+                            </ol>
+                            <b>Note: Applicants were provided the following information:</b>
+                            <ol>
+                                <li>Goal of the Competition: To fund studies investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
+                                <li>The Catalyst Program supports novel/innovative pilot and feasibility studies (research or translational studies).</li>
+                                <li>Funding Details:  To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li>
+                                <li>CFN is looking to invest a maximum of $650,000 for this competition. In addition there are separate funds allocated for work to be conducted in the province of New Brunswick.</li>
+                                <li>Projects must fit within CFN’s strategic priorities and patient-oriented themes.  These are:
+                                    <ol>
+                                        <li>CFN’s strategic priorities are: Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes and Improving care across the continuum.</li>
+                                        <li>CFN’s patient-oriented themes are: Improved end-of-life care (EOL) and advance care planning (ACP); Improved acute care and critical care; Optimization of community care/residential care and Optimization of transitions of care.</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                            <b>Note in addition to a full study description the applicants were asked to:</b>
+                            <ol>
+                                <li>Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of Canadians living with frailty.</li>
+                                <li>Develop Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</li>
+                                <li>Demonstrate a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</li>
+                                <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the study in a meaningful manner.</li>
+                                <li>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the proposed study along a continuum leading to social or economic impacts or policy and practice change.</li>
+                                <li>Demonstrate meaningful partnerships and collaborations with other organizations and stakeholders (e.g. health care practices, service providers, care facilities, etc.) to create opportunities for knowledge exchange, translation and mobilization.  </li>
                             </ol>
                         </div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="rmc_1" blobType="BLOB_TEXT" blobItem="CAT_RMC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>1. Lay Summary</h2>
-                        <p>Is the lay summary described in a way that can be easily understood by those without prior experience of the subject. Please note that the lay summary It is not a slight modification of the scientific abstract or a simplification of the study; a well-written lay summary allows the public to understand research and its value, impact, and applications. Lay summaries also help juries evaluate research grant applications and facilitate use of the research by government, the public and private sectors, and the community at large.</p>
+                        <h2>1. Contribution to Long Term Impact of CFN</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1101,10 +1120,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The lay summary is highly technical and uses scientific terms and abbreviations that are not suitable for a general audience.</td>
-                                <td class='small' valign='top'>The lay summary is overly technical and uses some scientific terms and abbreviations that are mostly unnecessary.</td>
-                                <td class='small' valign='top'>The lay summary is well written and mostly utilizes non-technical/scientific terms that help a general audience better understand the project goals and objectives.</td>
-                                <td class='small' valign='top'>The lay summary is extremely well written.  The use of technical/scientific terms and abbreviations are all but eliminated except when absolutely necessary.  The summary is clear and concise and allows the general audience to understand the project goals and objectives and ultimately appreciate the value of the CAT study.</td>
+                                <td class='small' valign='top'>The proposal will not evaluate, or have the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will satisfactorily evaluate, and has the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do a good job of evaluating, and has good potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do an excellent job of evaluating, and has excellent potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1118,11 +1137,11 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_2" blobType="BLOB_TEXT" blobItem="CAT_RMC_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>2. Quality of Idea</h2>
-                        <p>How well does the applicant describe the study so that it addresses what has been asked.  The applicant was asked to: a. describe any success stories or real-world impacts that resulted from prior CAT activities related to the prior CFN-funded research project and also discuss the relevancy of this CAT proposal to the prior research project, b. describe the overall goal and objectives of the study and provide distinct outputs that support advances in health-related knowledge, health research, health care, health systems, and/or health outcomes for the care of Canadians living with frailty and c. describe the hypothesis and rationale of the study and articulate why the proposal is considered to have the potential to change the care of older Canadians living with frailty.</p>
+                        <h2>2. Contribution to Evidence Informed Practice and/or Policy
+</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1138,10 +1157,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>Relevancy of CAT study to prior CFN-funded research project is not provided; overall goal and objectives do not relate to Canadians living with frailty and/or are not consistent with the hypothesis and rationale.</td>
-                                <td class='small' valign='top'>CAT study is somewhat relevant to the prior CFN-funded research project but does not build upon the prior CAT activity associated with the research project; overall goal and objectives are described with outputs provided; hypothesis and rationale is reasonable.</td>
-                                <td class='small' valign='top'>CAT study is directly relevant to the prior CFN-funded research project but only partially builds upon the prior CAT activity associated with the research project; overall goal and objectives are described with measurable outputs provided; hypothesis and rationale are well thought through.</td>
-                                <td class='small' valign='top'>CAT study is directly relevant to the prior CFN-funded research project and completely builds upon the prior CAT activity associated with the research project; overall goal and objectives clearly demonstrate the potential for continued high impact on the care of Canadians living with frailty; hypothesis and rationale is well thought through and clearly articulated.</td>
+                                <td class='small' valign='top'>The outcomes of this project will not have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have an uncertain or minimal effect on practice, policy and/or socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have good potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have excellent potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1155,11 +1174,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_3" blobType="BLOB_TEXT" blobItem="CAT_RMC_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>3. Quality of the Idea - Evaluation Plan of Study Impact</h2>
-                        <p>How well does the applicant describe how the impact of the study will be measured and evaluated? The applicant was asked to clearly describe how you plan on measuring and evaluating the impact of your proposal on the care of older adults living with frailty.</p>
+                        <h2>3. Alignment with CFN's Mission</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1175,10 +1193,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The applicant fails to provide a description of the way the study impact will be measured and evaluated.</td>
-                                <td class='small' valign='top'>The applicant provides a very poor description of the methods and metrics that will be used to measure and evaluate the impact of the study and most of the metrics utlized are not appropriate to properly measure and evaluate impact.</td>
-                                <td class='small' valign='top'>The applicant provides a good description of the methods and metrics that will be used to measure and evaluate the impact of the study and most of the metrics utlized are appropriate to properly measure and evaluate impact.</td>
-                                <td class='small' valign='top'>The applicant provides an excellent description of the methods and metrics that will be used to measure and evaluate the impact of the study and all of the metrics utlized are appropriate to properly measure and evaluate impact.  In addition, the applicant provides details on how they intend on measuring the sustainability of the impact beyond the study period.</td>
+                                <td class='small' valign='top'>The proposed study is not aligned with CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is marginally focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is somewhat focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is highly focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1192,11 +1210,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_4" blobType="BLOB_TEXT" blobItem="CAT_RMC_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>4. Importance of Idea</h2>
-                        <p>How well does the applicant describe how the study will contribute to advancing health-related knowledge, health research, health care, health systems and/or health outcomes related to the care of Canadians living with frailty.</p>
+                        <h2>4. Alignment with CFN's Strategic Priorities</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1212,10 +1229,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>It is not clear how the study relates to Canadians living with frailty and/or it is not clear how the study will contribute to any of the areas described above.</td>
-                                <td class='small' valign='top'>The study is somewhat relevant to Canadians living with frailty and is somewhat applicable to at least one of the areas described above.</td>
-                                <td class='small' valign='top'>The study is relevant to Canadians living with frailty and clearly contributes to at least one of the areas described above.</td>
-                                <td class='small' valign='top'>The study is highly relevant to Canadians living with frailty and it is clear how it will contribute to at least one of the areas described above.</td>
+                                <td class='small' valign='top'>The proposed study is not aligned with any of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is somewhat aligned with one of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is well aligned with at least one of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is well aligned with two or more of CFN's priority areas (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1229,11 +1246,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_5" blobType="BLOB_TEXT" blobItem="CAT_RMC_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>5. Approach</h2>
-                        <p>How well does the applicant describe the study so that it addresses what has been asked in this section.  The applicant was asked to: a. describe the approaches and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s) and provide any additional budget justification (in addition to what is in budget document) as it relates to the approaches and methods. (The proposal should be developed using an appropriate CAT strategy based on a CAT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (http://www.who.int/ageing/publications/knowledge_translation.pdf)),  b. provide timelines showing when goals, objectives and outputs will be reached and provide any additional budget justification (in addition to what is in budget document) as it relates to the goals, objectives and outputs, and c. describe the potential barriers and challenges related to achieving the proposed goals and objectives and how applicant intends on overcoming these barriers and challenges.  Applicants were also asked to describe their mitigation strategy?</p>
+                        <h2>5. Strength of Networking</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1249,10 +1265,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>There is significant concern about meeting the goals and objectives of the study based on the approach described. The timeline provided is not sufficiently detailed and does not include a mitigation strategy.  There is no budget justification in this section or the budget document.</td>
-                                <td class='small' valign='top'>The approach for meeting the study goals and objectives is reasonable but needs improvement. A timeline is provided but lacks specific details, some challenges/barriers are described and a rudimentary mitigation strategy is provided.  A budget justification is provided, although additional details would have been helpful.</td>
-                                <td class='small' valign='top'>The approach for meeting the study goals and objectives is reasonable, and uses an appropriate CAT strategy. A detailed timeline is provided with consideration given to potential barriers along the way and a reasonable mitigation strategy is included.  A satisfactory budget justification is provided.</td>
-                                <td class='small' valign='top'>A comprehensive approach for meeting the study goals and objectives is well described and uses an appropriate CAT strategy. The timelines provided are specific and reasonable, with potential barriers and challenges well considered and addressed in the mitigation strategy.  A very detailed budget justification is provided.</td>
+                                <td class='small' valign='top'>The proposal does not describe how the study team will engage multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary investigators or stakeholders.  The proposal does not include international collaborations.</td>
+                                <td class='small' valign='top'>The proposal poorly describes how the study team will engage multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes some international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in satisfactory detail how the study team will engage a good number (3 to 4) of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes a good number (3 to 4) of international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in extensive detail how the study team will engage a large number (5 or more) of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes a substantial number (5 or more) of international collaborations.</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1266,11 +1282,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_6" blobType="BLOB_TEXT" blobItem="CAT_RMC_6" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>6. Experience, Expertise and Resources</h2>
-                        <p>How well does the applicant describe the study so that it addresses what has been asked in this section.  The applicant was asked to: a. describe the expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team member to show that he/she can lead and deliver on the proposed outputs and achieve the goals and objectives of this proposal, b. provide an estimate on the number of hours per week (contribution) for each Principal Investigator, Co-investigator, Partner and other critical team member that will be working on the study and describe why this is an appropriate level of engagement and/or commitment to deliver the proposed outputs and achieve the goals and objectives of this proposal, and c. for each Principal Investigator, Co-investigator, Partner and other critical team member describe why the environment (academic institution and/or other organization) is appropriate to enable the conduct and success of the project?</p>
+                        <h2>6. Strength of Partnerships</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1286,10 +1301,11 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The project team has limited experience/expertise with frailty and has not allocated sufficient time for the completion of the project. There is significant concern regarding the environment of critical team members and lack of appropriate partners and collaborators. </td>
-                                <td class='small' valign='top'>The project team has a few members with experience/expertise in frailty and may have underestimated the amount of time required to complete the project. The environment of critical team members is appropriate for completion of the project.  </td>
-                                <td class='small' valign='top'>All project team members have some direct experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project. The critical team members are from an environment that will enable the success of the proposed project.</td>
-                                <td class='small' valign='top'>All project team members have in-depth experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project, with some "buffer" time in case of delays.  All team members are from environments that will enable the success of the proposed project.</td>
+                                <td class='small' valign='top'>The applicants have a single partner that is providing only the minimum in-kind contribution but no cash.  
+The partner is an academic investigator/institution or a very small regional organization or company.  However, the partner is inappropriate (i.e., lacks the expertise, experience etc...) for the planned study and thus is unlikely to meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a couple of partners that are providing more than the minimum in-kind contribution but no cash.  The partners are academic investigators/institutions, small regional organizations and/or companies. At least one of the partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and thus will meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a few partners that are providing more than the minimum in-kind contribution and have committed a small cash component (<10%).  Most of the partners are large regional organizations and/or national organizations/companies. In addition, most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and thus will meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a few partners that are providing substantially more than the minimum in-kind contribution and have committed a substantial cash component (>10%).  Most of the partners are large regional organizations and/or national organizations/companies. In addition, all partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and  thus will meaningfully contribute to both the study and post-study KT activities.</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1303,11 +1319,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_7" blobType="BLOB_TEXT" blobItem="CAT_RMC_7" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>7. Capacity Building</h2>
-                        <p>Is the number of HQP and their level of training/experience and role/activities appropriate and meaningful for the study.  Please note that CFN funded proposals must contribute to the development of HQP through their inclusion as fully involved team members. Note: Meaningful involvement in the research components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.). </p>
+                        <h2>7. HQP Development</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1323,10 +1338,17 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The proposal does not have a plan for the development of HQP.</td>
-                                <td class='small' valign='top'>The project roles and responsibilities of each HQP have been somewhat described/delineated, but do not appear to be meaningful.</td>
-                                <td class='small' valign='top'>The project roles and responsibilities of each HQP have been satisfactorily described/delineated, and appear to be meaningful.</td>
-                                <td class='small' valign='top'>The project roles and responsibilities of each HQP have been very well described/dilineated and each HQP will be meanignfully involved in the study and in fact their role/responsibilities go beyond the traditional HQP.</td>
+                                <td class='small' valign='top'>HQP have not been identified as part of the study team.</td>
+                                <td class='small' valign='top'>Only one HQP has been identified. Their role in the project has been somewhat delineated, but does not appear to be meaningful.<br /> 
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is as expected and their roles in the project have been clearly delineated and are meaningful.<br />
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is higher than average and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.<br />
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).
+</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1340,11 +1362,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                 
                 <ReportItem id="rmc_8" blobType="BLOB_TEXT" blobItem="CAT_RMC_8" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>8. Project Networking and Engagement</h2>
-                        <p>How well does the applicant describe the study so that it addresses what has been asked in this section.  The applicant was asked to: a. describe the networking and engagement planned for this project across disciplines and sectors (note: CFN asks that projects represent a collaborative effort of different Investigators in more than one discipline and at more than one Institution), b. describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the study in a meaningful manner (note: meaningfully involved participation of knowledge users includes assisting in the planning and execution of the study).</p>
+                        <h2>8. Citizen Engagement</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
-                                <th width='23%'>Unacceptable<br />
+                                <th width='23%'>Poor<br />
                                     <small>(score = 0)</small>
                                 </th>
                                 <th width='23%'>Borderline<br />
@@ -1360,10 +1381,12 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The project involves investigators from only one discipline and institution. The study has a poorly designed plan to involve knowledge users.</td>
-                                <td class='small' valign='top'>The project involves investigators from a couple of different disciplines and institutions, and has a plan to involve different types of knowledge users; however, in a less than meaningful way.</td>
-                                <td class='small' valign='top'>The project involves investigators from a few unique disciplines and institutions. The study has a reasonable plan to involve different types of knowledge users in a meaningful way.</td>
-                                <td class='small' valign='top'>Project involves investigators from a diverse range of disciplines and many different institutions. The study has a comprehensive plan to involve different types of knowledge users in a meaningful way.</td>
+                                <td class='small' valign='top'>Patients, family members and knowledge users are not meaningfully involved, nor are they an integral part of the study team.<br /> 
+                                    <br />
+                                    For clarity, meaningful participation includes being involved in the planning and execution of the project and/or in assisting in the interpretation and translation/mobilization of the study findings.</td>
+                                <td class='small' valign='top'>There is some evidence to suggest that patients, family members and knowledge users may have played a minor role in helping to plan the study and/or may play a cursory role in study execution and interpretation of study findings.</td>
+                                <td class='small' valign='top'>There is good evidence to suggest that patients, family members and/or knowledge users have played a major role in helping to plan the study and/or will play a significant role in study execution and interpretation of study findings.</td>
+                                <td class='small' valign='top'>There is strong evidence to suggest that patients, family members and knowledge users have played a major role in helping to plan the study and will play a significant role in study execution and interpretation of study findings. </td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1375,119 +1398,6 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="rmc_9" blobType="BLOB_TEXT" blobItem="CAT_RMC_9" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                    <![CDATA[
-                        <h2>9. Partnerships</h2>
-                        <p>Do the applicants have the appropriate partners to carry out the study and do the partners appear fully committed to, and meaningfully involved in the project?  Note: CAT proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding.  As an example, if the PI requests $100,000 from CFN then the PI must secure an additional minimum $100,000 in partner contributions.)</p>
-                        <table class='wikitable' width='100%'>
-                            <tr>
-                                <th width='23%'>Unacceptable<br />
-                                    <small>(score = 0)</small>
-                                </th>
-                                <th width='23%'>Borderline<br />
-                                    <small>(score = 1)</small>
-                                </th>
-                                <th width='23%'>Good/Solid<br />
-                                    <small>(score = 3)</small>
-                                </th>
-                                <th width='23%'>Excellent<br />
-                                    <small>(score = 4)</small>
-                                </th>
-                                <th width='8%'>Your score<br />
-                                    <small>(Max 4)</small></th>
-                            </tr>
-                            <tr>
-                                <td class='small' valign='top'>Applicants have not established partnerships for the proposed study or have listed partners that have not committed to the minimum 1:1 partner contribution (1:1; partner funding:CFN funding).</td>
-                                <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and all partner contributions are in-kind (i.e., no cash).  In addition, many of the partners appear to be appropriate (i.e., lack the expertise, experience etc...) for the planned study and thus are likely to be meaningfully involved in the study.</td>
-                                <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and a small percentage (<10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
-                                <td class='small' valign='top'>Applicants have partners that have committed more than the minimum 1:1 partner contribution, and a significant percentage (>10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, all partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
-                                <td align='center'>{$item}</td>
-                            </tr>
-                        </table>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="rmc_9_comments" type="Textarea" blobItem="CAT_RMC_9_COMMENTS" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <b>Comments: Please provide comments to justify your score:</b> {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="rmc_10" blobType="BLOB_TEXT" blobItem="CAT_RMC_10" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                    <![CDATA[
-                        <h2>10. Budget Justification</h2>
-                        <p>Does the applicant justify the need for the budget items listed and are the costs associated with each item reasonable?  Please review the Budget document (Excel document) and if necessary refer to Section 3.2.1 (Approach) for additional budget justification.  Note applicants were advised that, because of the limited overall budget amount (for this CAT competition) and the expected high interest in this competition, the budget justification within submitted proposals will be a major evaluation criterion.</p>
-                        <table class='wikitable' width='100%'>
-                            <tr>
-                                <th width='23%'>Unacceptable<br />
-                                    <small>(score = 0)</small>
-                                </th>
-                                <th width='23%'>Borderline<br />
-                                    <small>(score = 1)</small>
-                                </th>
-                                <th width='23%'>Good/Solid<br />
-                                    <small>(score = 3)</small>
-                                </th>
-                                <th width='23%'>Excellent<br />
-                                    <small>(score = 4)</small>
-                                </th>
-                                <th width='8%'>Your score<br />
-                                    <small>(Max 4)</small></th>
-                            </tr>
-                            <tr>
-                                <td class='small' valign='top'>The budget was not appropriately justified and is unreasonable.</td>
-                                <td class='small' valign='top'>Parts of the budget are appropriately justified. </td>
-                                <td class='small' valign='top'>The entire budget is justified, although some components appear unreasonable.</td>
-                                <td class='small' valign='top'>The entire budget is justified and very reasonable.</td>
-                                <td align='center'>{$item}</td>
-                            </tr>
-                        </table>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="rmc_10_comments" type="Textarea" blobItem="CAT_RMC_10_COMMENTS" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <b>Comments: Please provide comments to justify your score:</b> {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="rmc_11" blobType="BLOB_TEXT" blobItem="CAT_RMC_11" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                    <![CDATA[
-                        <h2>11.  Budget Amount and Potential Impact</h2>
-                        <p>Does the potential impact of the study justify the requested total study budget?  Note that there was no maximum budget amount stipulated to applicants and thus applicants were advised that increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</p>
-                        <table class='wikitable' width='100%'>
-                            <tr>
-                                <th width='23%'>Unacceptable<br />
-                                    <small>(score = 0)</small>
-                                </th>
-                                <th width='23%'>Borderline<br />
-                                    <small>(score = 1)</small>
-                                </th>
-                                <th width='23%'>Good/Solid<br />
-                                    <small>(score = 3)</small>
-                                </th>
-                                <th width='23%'>Excellent<br />
-                                    <small>(score = 4)</small>
-                                </th>
-                                <th width='8%'>Your score<br />
-                                    <small>(Max 4)</small></th>
-                            </tr>
-                            <tr>
-                                <td class='small' valign='top'>The impact of the study is expected to be at the micro-level and thus the budget amount cannot be justified.  In this context "micro-level" impact refers to the study affecting a very small number of individuals, not necessarily representative of most older adults living with frailty and thus the study impact will not reach much beyond the small number of citizens in the study.</td>
-                                <td class='small' valign='top'>The impact of the study is expected to be at the meso-level and thus the budget amount may be appropriate.  In this context "meso-level" impact refers to the study affecting a small number of individuals in a single province.  However, the magnitude of the impact on this small group is likely to be high, although the ability to scale and spread these results in the future are likely low.</td>
-                                <td class='small' valign='top'>The impact of the study is expected to be at the macro-level and thus the budget amount is appropriate.  In this context "macro-level" impact refers to either of the following scenarios: 
-<ol>
-<li>study affects a large population of individuals, representative of most older adults living with frailty and thus the future impact should be applicable nation-wide, although the magnitude of the impact on this large population may be minor, or</li>
-<li>study affects a small number of indivuduals, but the impact is likely to be significant and the ability to scale and spread the results in the future are likely very high.</li></td>
-                                <td class='small' valign='top'>The impact of the study is expected to be at the macro-level and thus the budget amount is appropriate.  In this context "macro-level" impact refers to the study affecting a large population of individuals, representative of all older adults living with frailty and thus the impact should be nation-wide.  In addition, the magnitude of the impact to this large population is likely to be very significant.</td>
-                                <td align='center'>{$item}</td>
-                            </tr>
-                        </table>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="rmc_11_comments" type="Textarea" blobItem="CAT_RMC_11_COMMENTS" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <b>Comments: Please provide comments to justify your score:</b> {$item}
-                    ]]>
-                </ReportItem>
                 <ReportItem id="total1" type="StaticReportItem">
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -1499,12 +1409,9 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                      {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$user_id},{$my_id},0)},
                                      {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$user_id},{$my_id},0)},
                                      {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$user_id},{$my_id},0)},
-                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)},
-                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_9,{$user_id},{$my_id},0)},
-                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_10,{$user_id},{$my_id},0)},
-                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_11,{$user_id},{$my_id},0)}
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)}
                                 )}
-                            </b> (Score out of 44)</p>
+                            </b> (Score out of 32)</p>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total5">
                                 {round(
@@ -1517,12 +1424,9 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                                  {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$user_id},{$my_id},0)},
                                                  {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$user_id},{$my_id},0)},
                                                  {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$user_id},{$my_id},0)},
-                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)},
-                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_9,{$user_id},{$my_id},0)},
-                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_10,{$user_id},{$my_id},0)},
-                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_11,{$user_id},{$my_id},0)}
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)}
                                             )}
-                                        , 44)}
+                                        , 32)}
                                     , 5)}
                                 ,2 )}
                             </b> (Score converted out of 5)</p>
@@ -1535,10 +1439,15 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                                     }
                                 });
                                 $("#proj{$user_id}_total").html(Math.round(total*100)/100);
-                                $("#proj{$user_id}_total5").html(Math.round((total/44)*5*100)/100 );
+                                $("#proj{$user_id}_total5").html(Math.round((total/32)*5*100)/100 );
                             });
                         </script>
                         </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_suggestions" type="Textarea" blobItem="CAT_RMC_SUGGESTIONS" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>What suggestions do you have that would make this proposal more acceptable for funding?</b> {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="rmc_comments" type="Textarea" blobItem="CAT_RMC_COMMENTS" blobSubItem="{$user_id}" optional="true">
