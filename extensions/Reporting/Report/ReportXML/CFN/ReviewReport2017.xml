@@ -1687,7 +1687,7 @@
                                                  {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)},
                                                  {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)}
                                             )}
-                                        ,44)}
+                                        ,32)}
                                     ,5)}
                                 ,2)}
                             </td>
