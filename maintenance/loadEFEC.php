@@ -571,10 +571,6 @@
         $university['startDate'] = min($university['startDate'], $row['started']);
         $university['endDate'] = max($university['endDate'], $row['ended']);
         $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $university;
-        if($person->getName() == "Matthew.Delaney"){
-            var_dump($university);
-            var_dump($hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])]);
-        }
         
         show_status(++$iterationsSoFar, count($responsibilities));
     }
