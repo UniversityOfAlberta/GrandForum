@@ -6,8 +6,6 @@ class PersonEducationReportItem extends StaticReportItem {
         global $wgServer, $wgScriptPath;
         
         $person = Person::newFromId($this->personId);
-        $start = $this->getAttr('start', REPORTING_CYCLE_START);
-        $end = $this->getAttr('end', REPORTING_CYCLE_END);
         
         $employment = array_reverse($person->getUniversities());
         $items = array();
