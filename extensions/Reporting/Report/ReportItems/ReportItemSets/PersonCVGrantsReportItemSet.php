@@ -96,6 +96,10 @@ class PersonCVGrantsReportItemSet extends ReportItemSet {
                     //echo "Rule 300 {$grant->getTitle()}<br />";
                     continue;
                 }
+                else if($grant->getTotal() < 10000){
+                    // Total funding < $10k
+                    continue;
+                }
                 $tuple = self::createTuple();
                 $tuple['product_id'] = $grant->id;
                 $data[] = $tuple;
