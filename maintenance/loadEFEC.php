@@ -356,6 +356,9 @@
                 $endMonth = substr($endDate, 3, 2);
                 $endDate = "$endYear-$endMonth-$endDay";
             }
+            if($endDate == ""){
+                $endDate = "0000-00-00";
+            }
             
             if(trim($relEndDate) == ""){
                 $relEndDate = $endDate;
@@ -424,6 +427,7 @@
     
     $iterationsSoFar = 0;
     echo "\nImporting HQP From eFEC\n";
+    $hqpUniversitiesBeforeEFEC = $hqpUniversities;
     foreach($responsibilities as $row){
         $username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
         $username = explode(",", $username, 2);
@@ -569,7 +573,11 @@
         
         $university = $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])];
         $university['startDate'] = min($university['startDate'], $row['started']);
-        $university['endDate'] = max($university['endDate'], $row['ended']);
+        if(!isset($hqpUniversitiesBeforeEFEC[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])]) ||
+           $hqpUniversitiesBeforeEFEC[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])]['endDate'] != "0000-00-00"){
+            // Only change the end Date if there was no entry from FGSR or there was no end date
+            $university['endDate'] = max($university['endDate'], $row['ended']);
+        }
         $hqpUniversities[$person->getId()][str_replace(array(" Thesis", " Course"), "", $titleMap[$row['responsibility']])] = $university;
         
         show_status(++$iterationsSoFar, count($responsibilities));

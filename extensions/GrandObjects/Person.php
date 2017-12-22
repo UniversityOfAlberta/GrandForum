@@ -2035,7 +2035,8 @@ class Person extends BackboneModel {
         $array = array();
         if(count($data) > 0){
             foreach($data as $row){
-                $array[] = array("university" => $row['university_name'],
+                $array[] = array("id" => $row['id'],
+                                 "university" => $row['university_name'],
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
                                  "researchArea" => $row['research_area'],

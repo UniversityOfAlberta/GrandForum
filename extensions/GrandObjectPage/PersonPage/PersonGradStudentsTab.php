@@ -155,8 +155,8 @@ class PersonGradStudentsTab extends AbstractTab {
             if(!in_array(strtolower($position), $hqpTypes)){
                 continue;
             }
-            if($r->getEndDate() == "0000-00-00" || $university['end'] < $r->getEndDate()){
-                $end_date = $university['end'];
+            if($endDate == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate)){
+                $endDate = substr($university['end'], 0, 10);
             }
             $end_date = ($endDate == '0000-00-00')? "Current" : $endDate;
             $hqp_name = $hqp->getNameForForms();
