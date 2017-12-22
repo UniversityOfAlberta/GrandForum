@@ -57,7 +57,7 @@ class WhoSupplies extends SpecialPage{
                     <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
-                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of November 7th 2017.</li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of December 15th, 2017.</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
@@ -319,18 +319,19 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
-                    <li>Regulations regarding mifepristone are yet to be announced.</li>
+                    <li>For information on the jurisdictional requirements of prescribing and dispensing mifepristone in Quebec, <a href='http://www.cmq.org/nouvelle/en/pilule-abortive-directives-cliniques.aspx' target='_blank'>click here</a>.</li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
-                    <li>Regulations regarding mifepristone are yet to be announced.</li>
+                    <li>For information on the jurisdictional requirements of prescribing and dispensing mifepristone in Quebec, <a href='http://www.cmq.org/nouvelle/en/pilule-abortive-directives-cliniques.aspx' target='_blank'>click here</a>.</li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>Public coverage of Mifegymiso® is currently undergoing an evaluation process (Feb. 6th, 2017) <a href='http://www.cmq.org/nouvelle/en/recommandations-interimaires-bon-usage-mifegymiso.aspx'>read more</a></li>
                     <li>On July 6th, Quebec became the 4th province in Canada to announce full coverage of Mifegymiso®! To read more, <a href='http://www.msss.gouv.qc.ca/documentation/salle-de-presse/ficheCommunique.php?id=1359' target='_blank'>click here</a></li>
+                    <li>As reported in the media on December 15th, mifepristone became available in the province of <a href='http://montrealgazette.com/news/local-news/abortion-pill-will-be-available-in-quebec-as-of-dec-15' target='_blank'>Quebec</a> - for free!</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
