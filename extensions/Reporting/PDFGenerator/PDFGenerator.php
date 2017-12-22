@@ -547,15 +547,17 @@ EOF;
 		        font-size: ".($fontSize+(6*DPI_CONSTANT))."px;
 		        font-weight: bold;
 		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
+		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h2 {
-		        color: #00713B;
+		        color: #00713B !important;
 		        font-size: ".($fontSize+(4*DPI_CONSTANT))."px;
 		        font-weight: bold;
 		        padding: ".max(2, (2*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
 		        margin-top: ".(2*DPI_CONSTANT)."px;
+		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h3 {
@@ -564,12 +566,14 @@ EOF;
 		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
 		        margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
+		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h4 {
 		        margin-top:0;
 		        margin-bottom:0;
 		        font-size: ".($fontSize+(1*DPI_CONSTANT))."px;
+		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h1, #pdfBody h2, #pdfBody h3, #pdfBody h4 {
@@ -702,7 +706,7 @@ EOF;
             }
             
             #pdfBody .externalLink {
-                color: ".$config->getValue("highlightColor").";
+                color: ".$config->getValue("highlightColor")." !important;
                 text-decoration: none;
             }
             
