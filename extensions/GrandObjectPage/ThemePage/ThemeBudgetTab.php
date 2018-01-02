@@ -178,14 +178,22 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
+                        $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".($i-$startYear+1).".</p>";
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL WP Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item.</p>
-                                        <p>It is requested that all Y".(($i-$startYear)+1)." funds are distributed at this time. It is understood that WPLs may not know where/how all of the funds will be spent throughout the year. It is asked that the funds are handled by the WPLs throughout the year via invoicing/expense reimbursement, and avoid second order transfers, as funds are spent throughout the year.</p>
-                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
-                                        <h3>Carry Forward</h3>
-                                        <p>Total amount of the unspent Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget funds: $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
-                                        <p><small>*Note: the total amount of unspent funds will be deducted from your Year ".($i-$startYear+1)." budget. Please ensure that the reduction of Y".($i-$startYear)." unspent funds from your Year ".($i-$startYear+1)." budget is factored in above.</small></p>
+                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. ** Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
+                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
+                        $this->html .= "<p><b>Anticipated Unspent Project Funds:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                        
+                        $this->html .= "<p>Core Research Program: As stated in your Year 3 Extension Letter, there will be no permissible carry forward at the end of the $i/".substr(($i+1),2,2)." fiscal year. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        
+                        $this->html .= "<p>Innovation Hubs: Innovation Hubs can carry forward 15% of their total budget into the next fiscal year without approval. If greater than 15% project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                        
+                        $this->html .= "<p>Workpackages/Cross-Cutting Activities: No funds can be carried forward for WPs. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        
+                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end.  Innovation Hubs should use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in $i/".substr(($i+1),2,2)." once approved.</p>";
+                        
+                        $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";
