@@ -1,8 +1,11 @@
 BibliographyView = Backbone.View.extend({
     mention: null,
+    searchTerm: null,
+    products: null,
 
     initialize: function(){
         this.mention = new Array();
+        this.products = new Array();
         Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
@@ -24,7 +27,55 @@ BibliographyView = Backbone.View.extend({
     },
     
     events: {
-        "click #editBibliography": "editBibliography"
+        "click #editBibliography": "editBibliography",
+        "keyup #filterAuthors": "filterAuthors",
+        "submit #formFilterAuthors": "filterAuthors",
+        "click #submitFilterAuthor": "filterAuthors",
+        "change #filterOperand": "filterAuthors"
+    },
+
+    filterAuthors: function() {
+        var operand = this.$("#filterOperand").val();
+        var searchTerms = unaccentChars(this.$("#filterAuthors").val()).split(",");
+        var lis = this.$("#products li");
+
+        _.each(this.products, function(prod, index){
+            var authors = unaccentChars(_.pluck(prod.get('authors'), 'fullname').join(", "));
+            var show = null;
+            _.each(searchTerms, function(term, index) { // for each search term.
+
+                if (operand == "AND") {
+                    if (authors.indexOf(term) == -1) {
+                        show = false;
+                    } else if ((show == null) && (index == searchTerms.length - 1)) {
+                        show = true
+                    }
+                } else if (operand == "OR") {
+                    if (authors.indexOf(term) != -1) {
+                        show = true;
+                    } else if ((show == null) && (index == searchTerms.length - 1)) {
+                        show = false
+                    }
+                } else { // NOT
+                    if (authors.indexOf(term) != -1) {
+                        show = false;
+                    } else if ((show == null) && (index == searchTerms.length - 1)) {
+                        show = true
+                    }
+                    if (term == "") {
+                        show = true
+                    }
+                }
+            });
+
+            if (show) {
+                $(lis.get(index)).slideDown();
+            } else {
+                 $(lis.get(index)).slideUp();
+            }
+            
+        });
+
     },
     
     renderProducts: function(){
@@ -32,11 +83,11 @@ BibliographyView = Backbone.View.extend({
         var products = new Array();
         var citations = new Array();
         _.each(this.model.get('products'), function(prod){
-            console.log(prod);
             var product = new Product({id: prod.id});
             products.push(product);
             xhrs.push(product.fetch());
         });
+        this.products = products;
         $.when.apply(null, xhrs).done($.proxy(function(){
             var xhrs2 = new Array();
             var tags = new Array();
@@ -55,20 +106,21 @@ BibliographyView = Backbone.View.extend({
                     if (product.get('description'))
                     {
                         var id = product.get('id');
-                        this.$('#products ol').append("<p style='text-align:left;'><a id='abstract" + id + 
+                        this.$('#products li').last().append("<p style='text-align:left;'><a id='abstract" + id + 
                                                       "' style='cursor:pointer;'>Show/Hide Abstract</a><span style='float:right;'>" + 
                                                       product.get('tags').join(", ") + "</span></p></li>");
-                        this.$('#products ol').append("<div id='desc" + id + "' style='display:none;'>" + 
+                        this.$('#products li').last().append("<div id='desc" + id + "' style='display:none;'>" + 
                                                   product.get('description') + "</div></br>");
                         $("#abstract" + id).click(function() {
                             $("#desc" + id).slideToggle("slow");
                         });
                     } else {
-                        this.$('#products ol').append("<p><span style='float:right;'>" + 
+                        this.$('#products li').last().append("<p><span style='float:right;'>" + 
                                                       product.get('tags').join(", ") + "</span></p></li>");
                     }
                 }, this));
                 $(".pdfnodisplay").remove();
+                this.filterAuthors();
             }, this));
         }, this));
     },
