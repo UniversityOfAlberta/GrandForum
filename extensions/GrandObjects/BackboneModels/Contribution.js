@@ -1,7 +1,7 @@
 Contribution = Backbone.Model.extend({
 
     initialize: function(){
-    
+        
     },
 
     url: function(){
@@ -23,6 +23,7 @@ Contribution = Backbone.Model.extend({
             end: "",
             authors: new Array(),
             partners: new Array(),
+            projects: new Array(),
             cash: "",
             inkind: "",
             total: ""

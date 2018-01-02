@@ -113,6 +113,7 @@ class Contribution extends BackboneModel {
     
     function toArray(){
         $partners = array();
+        $projects = array();
         $authors = array();
         foreach($this->getAuthors() as $author){
             if($author instanceof Person){
@@ -128,6 +129,12 @@ class Contribution extends BackboneModel {
                                    'url' => "");
             }
         }
+        foreach($this->getProjects() as $project){
+            $projects[] = array('id' => $project->getId(),
+                                'name' => $project->getName(),
+                                'fullname' => $project->getFullName(),
+                                'url' => $project->getUrl());
+        }
         foreach($this->getPartners() as $partner){
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
@@ -139,6 +146,7 @@ class Contribution extends BackboneModel {
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
         }
+        
         return array("id" => $this->getId(),
                      "revId" => $this->getRevId(),
                      "name" => $this->getName(),
@@ -146,6 +154,7 @@ class Contribution extends BackboneModel {
                      "start" => $this->getStartDate(),
                      "end" => $this->getEndDate(),
                      "authors" => $authors,
+                     "projects" => $projects,
                      "partners" => $partners,
                      "cash" => $this->getCash(),
                      "inkind" => $this->getKind(),
@@ -538,6 +547,9 @@ class Contribution extends BackboneModel {
                 break;
             case "cont":
                 $type="Contract";
+                break;
+            case "fell":
+                $type="Fellowship";
                 break;
         }
         return $type;
