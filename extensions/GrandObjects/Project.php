@@ -387,6 +387,13 @@ class Project extends BackboneModel {
         return (count($data) > 0);
     }
     
+    static function areThereInnovationHubs(){
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                            array('id'),
+                                            array('type' => EQ('Innovation Hub')));
+        return (count($data) > 0);
+    }
+    
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
     function Project($data){

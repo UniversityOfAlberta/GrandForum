@@ -31,6 +31,19 @@ class IndexTable {
                                                                 "$selected");
         }
         
+        if(Project::areThereInnovationHubs()){
+            $proj = Project::newFromHistoricName($wgTitle->getNSText());
+            $hubsSubTab = TabUtils::createSubTab("Innovation Hubs");
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($project->getType() == "Innovation Hub"){
+                    $selected = ($proj!= null && $proj->getId() == $project->getId()) ? "selected" : "";
+                    $hubsSubTab['dropdown'][] = TabUtils::createSubTab($project->getName(), "{$project->getUrl()}", "$selected");
+                }
+            }
+        }
+        $tabs['Main']['subtabs'][] = $hubsSubTab;
+        
         if(count($themes) > 0){
             $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
                          ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
@@ -43,7 +56,7 @@ class IndexTable {
         
         if($config->getValue('projectsEnabled')){
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
-            $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
+            $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
             $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
             if(Project::areThereDeletedProjects()){
@@ -67,23 +80,18 @@ class IndexTable {
                 }
             }
         }
-        $hubsSubTab = TabUtils::createSubTab("Innovation Hubs");
+        
         $peopleSubTab = TabUtils::createSubTab("People");
         $roles = array_values($wgAllRoles);
         $roles[] = NI;
         sort($roles);
         foreach($roles as $role){
-            if(strstr($role, "AWNIH") === false && ($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
+            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
-            else if(strstr($role, "AWNIH") !== false){
-                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                $hubsSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
-            }
         }
         
-        $tabs['Main']['subtabs'][] = $hubsSubTab;
         if($config->getValue('projectsEnabled')){
             $tabs['Main']['subtabs'][] = $projectTab;
         }
