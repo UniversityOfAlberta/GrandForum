@@ -121,11 +121,21 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);
                 $justification = $blb->getData();
+                // Deviations
+                $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_DEVIATIONS', 0);
+                $result = $blb->load($addr);
+                $deviations = $blb->getData();
                 // Carry Forward Amount
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_CARRYOVERAMOUNT', 0);
                 $result = $blb->load($addr);
                 $carryOverAmount = ($blb->getData() != "") ? $blb->getData() : 0;
+                // Carry Forward
+                $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_CARRYOVER', 0);
+                $result = $blb->load($addr);
+                $carryOver = $blb->getData();
                 
                 if($allocation == ""){
                     $alloc = "TBA";
@@ -169,20 +179,28 @@ class ThemeBudgetTab extends AbstractEditableTab {
                     if($i > $startYear){
                         if($config->getValue('networkName') == "AGE-WELL"){
                             $justification = nl2br($justification);
+                            $deviations = nl2br($deviations);
+                            $carryOver = nl2br($carryOver);
                             $this->html .= "<h3>Budget Justification</h3>
                                             {$justification}
+                                            <h3>Budget Update</h3>
+                                            {$deviations}
                                             <h3>Carry Forward</h3>
-                                            <p><b>Amount:</b> \$".number_format($carryOverAmount)."</p>";
+                                            <p><b>Amount:</b> \$".number_format($carryOverAmount)."</p>
+                                            {$carryOver}";
                         }
                     }
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
                         $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".($i-$startYear+1).".</p>";
-                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL WP Budget.xlsx'>Budget Template</a>";
+                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
                                         <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. ** Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
-                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
+                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
+                                        <h3>Budget Update</h3>
+                                        <p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
+                        $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
                         $this->html .= "<p><b>Anticipated Unspent Project Funds:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
                         
                         $this->html .= "<p>Core Research Program: As stated in your Year 3 Extension Letter, there will be no permissible carry forward at the end of the $i/".substr(($i+1),2,2)." fiscal year. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
