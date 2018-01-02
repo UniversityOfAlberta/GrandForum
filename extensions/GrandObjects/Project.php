@@ -1107,12 +1107,14 @@ EOF;
      */
     function userCanEdit(){
         $me = Person::newFromWgUser();
+        if($this->getType() == "Innovation Hub" && $me->isMemberOf($this)){
+            // Members of Innovation Hubs should be able to edit
+            return true;
+        }
         if(!$me->isRoleAtLeast(STAFF) &&
            !$me->isRole(SD) && 
            !$me->isRole("CF") &&
-           (($this->getType() == "Innovation Hub" &&
-             $me->isMemberOf($this)) ||
-            ($this->isSubProject() &&
+           (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&
              !$me->leadershipOf($this->getParent()) &&
