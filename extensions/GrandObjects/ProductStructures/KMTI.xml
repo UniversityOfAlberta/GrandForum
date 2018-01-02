@@ -1,374 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
-    <!-- Activities -->
-    <Activities category="Activity">
-        <Activity type="Event Organization" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Workshop" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Panel" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Conference Attendance" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Student Volunteering" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Reviewing" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Ethics Application">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Ethics Office" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Work on Committee" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Meeting">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizer" type="String">organizer</field>
-                <field label="Status" type="String">status</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Misc" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-
-        <!--
-        There are a number of these in DB, but not supported in UI anymore
-        <Activity type="Panel" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-
-        <Activity type="Tutorial" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-        -->
-    </Activities>
-    
-    <!-- Artifacts -->
-    <Artifacts category="Artifact">
-        <Artifact type="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Open Software" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Number" type="String">number</field>
-            </data>
-        </Artifact>
-        
-        <Artifact type="Startup Company">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Company Name" type="String">name</field>
-            </data>
-        </Artifact>
-        
-        <Artifact type="Spin-Off Company">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Parent Company" type="String">parent_name</field>
-                <field label="Spin-Off Company" type="String">name</field>
-            </data>
-        </Artifact> 
-
-        <Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Artifact>
-        
-        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Artifact>
-    </Artifacts>    
-
-    <!-- Awards -->
-    
-    <Awards category="Award">
-        <Award type="Award">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Award>
-        
-        <Award type="Misc">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Award>
-    </Awards>
-    
-
-    <!-- Presentations -->
-    <Presentations category="Presentation">
-        <Presentation type="2MM" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Departmental Lecture" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Host Institution" type="String">host_institution</field>
-                <field label="Host Department" type="String">host_department</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Departmental Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Host Institution" type="String">host_institution</field>
-                <field label="Host Department" type="String">host_department</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Distinguished Lecture" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Host Institution" type="String">host_institution</field>
-                <field label="Host Department" type="String">host_department</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Group Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Host Institution" type="String">host_institution</field>
-                <field label="Host Department" type="String">host_department</field>
-                <field label="Host Research Group" type="String">host_research_group</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-        
-        <Presentation type="{$networkName} Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Host Institution" type="String">host_institution</field>
-                <field label="Host Department" type="String">host_department</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Keynote" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Misc" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Panel" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Paper Session" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="RNotes" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="Tutorial" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
-        <Presentation type="WIP" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-    </Presentations>
-    
-    <!-- Press -->
-    <Presses category="Press">
-        <Press type="International News" status="">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Press>
-        <Press type="Misc" status="">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Press>
-        <Press type="National News" status="">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Press>
-        <Press type="Provincial News" status="">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Press>
-        <Press type="University Press" status="">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Press>
-    </Presses>
-    
     <!-- Publications -->
     <Publications category="Publication">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -950,5 +581,374 @@
             <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
         </Publication>
     </Publications>
+
+    <!-- Activities -->
+    <Activities category="Activity">
+        <Activity type="Event Organization" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Workshop" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Panel" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Conference Attendance" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Student Volunteering" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Reviewing" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Ethics Application">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Ethics Office" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Work on Committee" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Meeting">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+
+        <!--
+        There are a number of these in DB, but not supported in UI anymore
+        <Activity type="Panel" status="Not Invited">
+            <Data>
+            </Data>
+        </Activity>
+
+        <Activity type="Tutorial" status="Not Invited">
+            <Data>
+            </Data>
+        </Activity>
+        -->
+    </Activities>
+    
+    <!-- Artifacts -->
+    <Artifacts category="Artifact">
+        <Artifact type="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+            </data>
+        </Artifact>
+
+        <Artifact type="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+            </data>
+        </Artifact>
+
+        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+            </data>
+        </Artifact>
+
+        <Artifact type="Open Software" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+
+        <Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Number" type="String">number</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="Startup Company">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Company Name" type="String">name</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="Spin-Off Company">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Parent Company" type="String">parent_name</field>
+                <field label="Spin-Off Company" type="String">name</field>
+            </data>
+        </Artifact> 
+
+        <Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+    </Artifacts>    
+
+    <!-- Awards -->
+    
+    <Awards category="Award">
+        <Award type="Award">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Award>
+        
+        <Award type="Misc">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Award>
+    </Awards>
+    
+
+    <!-- Presentations -->
+    <Presentations category="Presentation">
+        <Presentation type="2MM" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Departmental Lecture" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Departmental Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Distinguished Lecture" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Group Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="Host Research Group" type="String">host_research_group</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="{$networkName} Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Host Institution" type="String">host_institution</field>
+                <field label="Host Department" type="String">host_department</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Keynote" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Panel" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Paper Session" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="RNotes" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="Tutorial" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+
+        <Presentation type="WIP" status="Invited|Not Invited">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+    </Presentations>
+    
+    <!-- Press -->
+    <Presses category="Press">
+        <Press type="International News" status="">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Press>
+        <Press type="Misc" status="">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Press>
+        <Press type="National News" status="">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Press>
+        <Press type="Provincial News" status="">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Press>
+        <Press type="University Press" status="">
+            <data>
+                <field label="File" type="File">file</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Press>
+    </Presses>
 
 </Products>

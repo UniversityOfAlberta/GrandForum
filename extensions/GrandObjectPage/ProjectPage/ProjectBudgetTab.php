@@ -284,41 +284,25 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
+                        $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".($i-$startYear+1).".</p>";
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made.  Justifications should include the rationale for the requested item";
-                        if(strpos($project->getName(), "CC") !== 0){
-                            $this->html .= ", such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving";
-                        }
-                        $this->html .= ".</p>
+                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. ** Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
                                         <h3>Budget Update</h3>
-                                        <p>Please describe any proposed changes to your Year ".($i-$startYear+1)." ($i/".substr(($i+1),2,2).") ";
-                        if(strpos($project->getName(), "CC") !== 0){
-                            $this->html .= "budget from what was anticipated at the start of your project (e.g. changes to co-investigators, HQP or other significant adjustments).</p>";
-                        }
-                        else{
-                            $this->html .= "plans if your activities represent a significant shift in direction from previous years’ work.";
-                        }
-                        $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea>
-                                        <h3>Carry Forward</h3>";
-                        if(strpos($project->getName(), "CC") !== 0){
-                            $this->html .= "<p>Network Investigators are only eligible to carry forward 15% of the funds received. Only under exceptional circumstances will a greater than 15% carry forward be approved by the Research Management Committee (RMC). Unless the AGE-WELL RMC has granted approval, any amount above the carry forward maximum will be recalled.</p><br />";
-                        }
-                        else{
-                            $this->html .= "<p>Please list the anticipated amount of unspent funds held by this CC (project total and location where funds are held) as of March 31.</p><br />";
-                        }
-                        $this->html .= "<p>Total amount of the project budget you wish to carry forward to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p><br />
-                                        <p>If carry forward is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1);
-                        if(strpos($project->getName(), "CC") !== 0){
-                            $this->html .= ", including any amounts greater than fifteen percent (15%)";
-                        }
-                        $this->html .=".  Please also include a justification for how these funds will be spent in $i/".($i+1);
-                        if(strpos($project->getName(), "CC") !== 0){
-                            $this->html .= " once approved";
-                        }
-                        $this->html .= ".</p>
-                                        <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
+                                        <p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
+                        $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
+                        $this->html .= "<p><b>Anticipated Unspent Project Funds:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                        
+                        $this->html .= "<p>Core Research Program: As stated in your Year 3 Extension Letter, there will be no permissible carry forward at the end of the $i/".substr(($i+1),2,2)." fiscal year. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        
+                        $this->html .= "<p>Innovation Hubs: Innovation Hubs can carry forward 15% of their total budget into the next fiscal year without approval. If greater than 15% project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                        
+                        $this->html .= "<p>Workpackages/Cross-Cutting Activities: No funds can be carried forward for WPs. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        
+                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end.  Innovation Hubs should use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in $i/".substr(($i+1),2,2)." once approved.</p>";
+                        
+                        $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";

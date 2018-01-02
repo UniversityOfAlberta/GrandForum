@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
 
-    <!-- Scientific Excellence - Leadership -->
-    <Products category="Scientific Excellence - Leadership">
-    
-        <Product type="Award">
-            <data>
-                <field label="Frequency" type="String">frequency</field>
-                <field label="Awarding Institution" type="String">institution</field>
-                <field label="Value (if applicable)" type="String">value</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Product>
-        
-        <Product type="Certification">
-            <data></data>
-        </Product>
-    
-        <Product type="Ethics Application">
-            <data>
-                <field label="Ethics Office" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Product>
-        
-        <Product type="Work on Committee" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Product>
-        
-        <Product type="Leadership Position">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Position" type="String">position</field>
-                <field label="Level" type="Select" options="Local|National|International">level</field>
-            </data>
-        </Product>
-        
-        <Product type="Invited Presentation" status="">
-            <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="Level" type="Radio" options="National|International">level</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Product>
-        
-    </Products>
-    
     <!-- Scientific Excellence – Advancing Knowledge -->
     <Products category="Scientific Excellence - Advancing Knowledge">
         
@@ -497,6 +445,58 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Product>
+        
+    </Products>
+
+    <!-- Scientific Excellence - Leadership -->
+    <Products category="Scientific Excellence - Leadership">
+    
+        <Product type="Award">
+            <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Certification">
+            <data></data>
+        </Product>
+    
+        <Product type="Ethics Application">
+            <data>
+                <field label="Ethics Office" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Work on Committee" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Leadership Position">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Position" type="String">position</field>
+                <field label="Level" type="Select" options="Local|National|International">level</field>
+            </data>
+        </Product>
+        
+        <Product type="Invited Presentation" status="">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
+                <field label="URL" type="URL">url</field>
             </data>
         </Product>
         

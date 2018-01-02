@@ -9,7 +9,17 @@
     <% }) %>
     </ul>
 <% } %>
-<h2>Publications</h2>
+<h2>Publications
+    <div id="formFilterAuthors" style="position: relative;float: right;font-size: small;margin-top:-8px;">
+        Filter Authors: <input style="width:200px;" placeholder="Split names with commas" id="filterAuthors" type="text">
+        <span id="submitFilterAuthor" style="position:absolute;right:55px;bottom:6px;cursor:pointer;"><img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></span>
+        <select id="filterOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
+            <option value="AND" selected="selected">AND</option>
+            <option value="OR">OR</option>
+            <option value="NOT">NOT</option>
+        </select>
+    </div>
+</h2>
 <div id="products">
     <ol>
     

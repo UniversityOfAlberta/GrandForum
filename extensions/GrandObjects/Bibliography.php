@@ -154,9 +154,19 @@ class Bibliography extends BackboneModel{
     }
     
     function create(){
+        if(($this->getTitle() == null) || ($this->getTitle() == "")) {
+            return false;
+        }
+
         foreach($this->editors as $key => $editor){
             if(is_object($editor)){
                 $this->editors[$key] = $editor->id;
+            }
+        }
+
+        foreach($this->products as $key => $product){
+            if(is_object($product)){
+                $this->products[$key] = "{$product->id}";
             }
         }
 
@@ -179,11 +189,22 @@ class Bibliography extends BackboneModel{
     }
     
     function update(){
+        if(($this->getTitle() == null) || ($this->getTitle() == "")) {
+            return false;
+        }
+        
         foreach($this->editors as $key => $editor){
             if(is_object($editor)){
                 $this->editors[$key] = $editor->id;
             }
         }
+
+        foreach($this->products as $key => $product){
+            if(is_object($product)){
+                $this->products[$key] = "{$product->id}";
+            }
+        }
+        
         DBFunctions::update('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,

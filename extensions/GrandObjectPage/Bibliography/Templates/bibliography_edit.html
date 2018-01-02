@@ -1,3 +1,9 @@
+<div id="bibtexDialog" style="display:none;" title="Import BibTeX">
+    <p>You can import BibTeX references by pasting all your BibTeX references in the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, and will be <b>visible</b> to everyone else on the forum.  The imported <%= productsTerm.pluralize().toLowerCase() %> will be added to the list of <%= productsTerm.pluralize().toLowerCase() %> in this bibliography. If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+    <textarea style="resize: none; height:300px; font-size: 11px; font-family: monospace;" name="bibtex"></textarea>
+    <br /><br /><input type="checkbox" id="bibtex_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
 <div id="preview" style="display:none;"></div>
 <div>
     <b>Title:</b><br />
@@ -36,10 +42,13 @@
     </div>
 </div>
 <h2>Publications</h2>
-<p>Choose from the following list of <b>public</b> publications.  If you do not see a publication then you may need to <a href="<%= wgServer %><%= wgScriptPath %>/index.php/Special:ManageProducts">add it</a> or the publication might need to have its visibility set to 'Public'.</p>
+<p>Choose from the following list of <b>public</b> publications.  If you do not see a publication then you may need to <a href="<%= wgServer %><%= wgScriptPath %>/index.php/Special:ManageProducts">add it</a> or the publication might need to have its visibility set to 'Public'. You may also import publications directly from BibTeX; doing so adds any new publications to the list of public publications.</p>
 <div id="products" class="edit">
     <div class="sortable-widget">
         <div class="sortable-search">
+            <div style="position: absolute;left: 0;">
+                 <button id="bibImportBibTeX" type="button" style="position: absolute;left: 8px;">Import BibTeX</button> 
+            </div>
             <div>
                 <input type="text" placeholder="Search Available <%= productsTerm.pluralize() %>..." />
             </div>
@@ -68,7 +77,9 @@
 </div>
 <% if(!this.isDialog){ %>
     <div style="width:180px;display:inline-block;">
-        <button id="saveBibliography"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography</button><span class="throbber" style="display:none;"></span>
+        <button id="saveBibliography">
+            <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography
+        </button><span class="throbber" style="display:none;"></span>
     </div>
     <div style="width:180px;display:inline-block;">
         <button id="cancel">Cancel</button>
