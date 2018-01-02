@@ -1110,7 +1110,9 @@ EOF;
         if(!$me->isRoleAtLeast(STAFF) &&
            !$me->isRole(SD) && 
            !$me->isRole("CF") &&
-           (($this->isSubProject() &&
+           (($this->getType() == "Innovation Hub" &&
+             $me->isMemberOf($this)) ||
+            ($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&
              !$me->leadershipOf($this->getParent()) &&
