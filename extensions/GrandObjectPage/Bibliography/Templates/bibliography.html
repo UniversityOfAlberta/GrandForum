@@ -10,14 +10,31 @@
     </ul>
 <% } %>
 <h2>Publications
-    <div id="formFilterAuthors" style="position: relative;float: right;font-size: small;margin-top:-8px;">
-        Filter Authors: <input style="width:200px;" placeholder="Split names with commas" id="filterAuthors" type="text">
-        <span id="submitFilterAuthor" style="position:absolute;right:55px;bottom:6px;cursor:pointer;"><img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></span>
-        <select id="filterOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
-            <option value="AND" selected="selected">AND</option>
-            <option value="OR">OR</option>
-            <option value="NOT">NOT</option>
-        </select>
+    <button id="filtersBtn" type="button" style="position: relative;float: right;padding-top: 3px;padding-right: 4px;padding-bottom: 4px;padding-left: 7px;margin-top:-8px;">Filters
+        <!-- <img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>filterIcon.svg" /> -->
+        <svg style="margin-bottom: -3px;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+            <path id="svgPath" d="M2 2h13v2l-5 5v7l-3-2v-5l-5-5z"></path>
+        </svg>
+    </button>
+    <div id="filters" style="position: absolute;right: 12px;font-size: small; display:none;background: #FFF;border: 1px solid #ccc;padding: 6px;border-radius: 5px;">
+        <div id="formFilterAuthors">
+            Filter Authors: <input style="width:200px;" placeholder="Split names with commas" id="filterAuthors" type="text">
+            <!-- <span id="submitFilterAuthor" style="position:absolute;right:55px;bottom:6px;cursor:pointer;"><img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></span> -->
+            <select id="filterOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
+                <option value="AND" selected="selected">AND</option>
+                <option value="OR">OR</option>
+                <option value="NOT">NOT</option>
+            </select>
+        </div>
+        <div id="formFilterTags" style="float: right;margin-top:3px;">
+            Filter Tags: <input style="width:200px;" placeholder="Split tags with commas" id="filterAuthors" type="text">
+           <!--  <span id="submitFilterTag" style="position:absolute;right:55px;bottom:6px;cursor:pointer;"><img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></span> -->
+            <select id="filterTagOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
+                <option value="AND" selected="selected">AND</option>
+                <option value="OR">OR</option>
+                <option value="NOT">NOT</option>
+            </select>
+        </div>
     </div>
 </h2>
 <div id="products">

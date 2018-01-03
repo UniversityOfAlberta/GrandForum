@@ -28,10 +28,19 @@ BibliographyView = Backbone.View.extend({
     
     events: {
         "click #editBibliography": "editBibliography",
+        "click #filtersBtn": "showFilterOptions",
         "keyup #filterAuthors": "filterAuthors",
         "submit #formFilterAuthors": "filterAuthors",
         "click #submitFilterAuthor": "filterAuthors",
-        "change #filterOperand": "filterAuthors"
+        "change #filterOperand": "filterAuthors",
+    },
+
+    showFilterOptions: function() {
+        if(this.$('#filters').css('display') == "none") {
+            this.$("#filters").slideDown();
+        } else {
+            this.$("#filters").slideUp();
+        }
     },
 
     filterAuthors: function() {
