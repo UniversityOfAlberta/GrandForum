@@ -30,9 +30,9 @@ BibliographyView = Backbone.View.extend({
         "click #editBibliography": "editBibliography",
         "click #filtersBtn": "showFilterOptions",
         "keyup #filterAuthors": "filterAuthors",
-        "submit #formFilterAuthors": "filterAuthors",
-        "click #submitFilterAuthor": "filterAuthors",
         "change #filterOperand": "filterAuthors",
+        "keyup #filterTags": "filterTags",
+        "change #filterTagOperand": "filterTags",
     },
 
     showFilterOptions: function() {
@@ -46,27 +46,45 @@ BibliographyView = Backbone.View.extend({
     filterAuthors: function() {
         var operand = this.$("#filterOperand").val();
         var searchTerms = unaccentChars(this.$("#filterAuthors").val()).split(",");
+        var target = 'authors';
+        this.filterOptions(searchTerms, target, operand);
+    },
+
+    filterTags: function() {
+        var operand = this.$("#filterTagOperand").val();
+        var searchTerms = unaccentChars(this.$("#filterTags").val()).split(",");
+        var target = 'tags';
+        this.filterOptions(searchTerms, target, operand);
+    },
+
+    filterOptions: function(searchTerms, version, operand) {
+        // var operand = this.$("#filterTagOperand").val();
+        // var searchTerms = unaccentChars(this.$("#filterTags").val()).split(",");
         var lis = this.$("#products li");
 
         _.each(this.products, function(prod, index){
-            var authors = unaccentChars(_.pluck(prod.get('authors'), 'fullname').join(", "));
+            if (version == "tags") {
+                var target = unaccentChars(prod.get("tags").join(", "));
+            } else if (version == "authors") {
+                var target = unaccentChars(_.pluck(prod.get("authors"), 'fullname').join(", "));
+            }
             var show = null;
-            _.each(searchTerms, function(term, index) { // for each search term.
+            _.each(searchTerms, function(term, index) {
 
                 if (operand == "AND") {
-                    if (authors.indexOf(term) == -1) {
+                    if (target.indexOf(term) == -1) {
                         show = false;
                     } else if ((show == null) && (index == searchTerms.length - 1)) {
                         show = true
                     }
                 } else if (operand == "OR") {
-                    if (authors.indexOf(term) != -1) {
+                    if (target.indexOf(term) != -1) {
                         show = true;
                     } else if ((show == null) && (index == searchTerms.length - 1)) {
                         show = false
                     }
                 } else { // NOT
-                    if (authors.indexOf(term) != -1) {
+                    if (target.indexOf(term) != -1) {
                         show = false;
                     } else if ((show == null) && (index == searchTerms.length - 1)) {
                         show = true
@@ -84,7 +102,6 @@ BibliographyView = Backbone.View.extend({
             }
             
         });
-
     },
     
     renderProducts: function(){
