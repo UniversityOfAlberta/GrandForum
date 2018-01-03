@@ -176,7 +176,7 @@ EOF;
             $this->showRole(PL);
             $this->showRole(PA);
             if($this->project->getType() == "Innovation Hub"){
-                $this->showRole('all', 'Innovation Hub Team');
+                $this->showRole(null, 'Innovation Hub Team');
             }
             else{
                 if($this->project->getType() == "Administrative"){
