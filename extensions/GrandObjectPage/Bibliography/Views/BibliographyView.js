@@ -2,10 +2,12 @@ BibliographyView = Backbone.View.extend({
     mention: null,
     searchTerm: null,
     products: null,
+    tags: null,
 
     initialize: function(){
         this.mention = new Array();
         this.products = new Array();
+        this.tags = new Array();
         Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
@@ -46,20 +48,19 @@ BibliographyView = Backbone.View.extend({
     filterAuthors: function() {
         var operand = this.$("#filterOperand").val();
         var searchTerms = unaccentChars(this.$("#filterAuthors").val()).split(",");
-        var target = 'authors';
-        this.filterOptions(searchTerms, target, operand);
+        var version = 'authors';
+        this.filterOptions(searchTerms, version, operand);
     },
 
     filterTags: function() {
         var operand = this.$("#filterTagOperand").val();
         var searchTerms = unaccentChars(this.$("#filterTags").val()).split(",");
-        var target = 'tags';
-        this.filterOptions(searchTerms, target, operand);
+        var version = 'tags';
+        this.filterOptions(searchTerms, version, operand);
     },
 
     filterOptions: function(searchTerms, version, operand) {
-        // var operand = this.$("#filterTagOperand").val();
-        // var searchTerms = unaccentChars(this.$("#filterTags").val()).split(",");
+        console.log(this.tags);
         var lis = this.$("#products li");
 
         _.each(this.products, function(prod, index){
@@ -123,6 +124,7 @@ BibliographyView = Backbone.View.extend({
                 var listTags = product.get('tags');
                 for (i = 0; i < listTags.length; i++) {
                     this.mention.push({"name": listTags[i]});
+                    this.tags.push(listTags[i]);
                 }
             }, this));
 
