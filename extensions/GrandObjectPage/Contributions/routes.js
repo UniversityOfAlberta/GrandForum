@@ -17,7 +17,8 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        ":id": "showContribution"
+        ":id": "showContribution",
+        ":id/edit": "editContribution"
     }
 });
 
@@ -29,6 +30,13 @@ pageRouter.on('route:showContribution', function (id) {
     var contribution = new Contribution({'id': id});
     this.closeCurrentView();
     this.currentView = new ContributionView({el: $("#currentView"), model: contribution});
+});
+
+pageRouter.on('route:editContribution', function (id) {
+    // Get A single product
+    var contribution = new Contribution({'id': id});
+    this.closeCurrentView();
+    this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

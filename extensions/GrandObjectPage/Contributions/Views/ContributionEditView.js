@@ -1,6 +1,5 @@
-ProductEditView = Backbone.View.extend({
+ContributionEditView = Backbone.View.extend({
 
-    isDialog: false,
     projects: null,
     allProjects: null,
     otherProjects: null,
@@ -10,44 +9,31 @@ ProductEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:name", this.render);
         this.listenTo(this.model, "change:projects", this.render);
-        this.listenTo(this.model, "change:category", this.render);
-        this.listenTo(this.model, "change:type", this.render);
-        this.listenTo(this.model, "change:title", function(){
-            if(!this.isDialog){
-                main.set('title', this.model.get('title'));
-            }
-        });
-        if(options.isDialog != undefined){
-            this.isDialog = options.isDialog;
-        }
-        this.template = _.template($('#product_edit_template').html());
+        this.template = _.template($('#contribution_edit_template').html());
         this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
         this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
         
         this.allProjects = new Projects();
         this.allProjects.fetch();
-        var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
         me.getProjects();
-        tagsGet.then($.proxy(function(availableTags){
-            this.availableTags = availableTags;
-                me.projects.ready().then($.proxy(function(){
-                this.projects = me.projects.getCurrent();
-                this.allProjects.ready().then($.proxy(function(){
-                    var other = new Project({id: "-1", name: "Other"});
-                    other.id = "-1";
-                    this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
-                    this.otherProjects.add(other);
-                    this.oldProjects = this.allProjects.getOld();
-                    this.otherProjects.remove(this.projects.models);
-                    this.oldProjects.remove(this.projects.models);
-                    if(!this.model.isNew() && !this.isDialog){
-                        this.model.fetch();
-                    }
-                    else{
-                        _.defer(this.render);
-                    }
-                }, this));
+        me.projects.ready().then($.proxy(function(){
+            this.projects = me.projects.getCurrent();
+            this.allProjects.ready().then($.proxy(function(){
+                var other = new Project({id: "-1", name: "Other"});
+                other.id = "-1";
+                this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
+                this.otherProjects.add(other);
+                this.oldProjects = this.allProjects.getOld();
+                this.otherProjects.remove(this.projects.models);
+                this.oldProjects.remove(this.projects.models);
+                if(!this.model.isNew()){
+                    this.model.fetch();
+                }
+                else{
+                    _.defer(this.render);
+                }
             }, this));
         }, this));
         $(document).click($.proxy(function(e){
@@ -168,29 +154,23 @@ ProductEditView = Backbone.View.extend({
     },
     
     events: {
-        "click #saveProduct": "saveProduct",
+        "click #saveContribution": "saveContribution",
         "click #cancel": "cancel",
         "click div.showOther": "showOther",
         "click div.showSubprojects": "showSubprojects",
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch",
-        "change div#productProjects input[type=checkbox]": "toggleSelect"
+        "change div#contributionProjects input[type=checkbox]": "toggleSelect"
     },
     
     validate: function(){
-        if(this.model.get('title').trim() == ""){
-            return "The Product must have a title";
-        }
-        else if(this.model.get('category').trim() == ""){
-            return "The Product must have a category";
-        }
-        else if(this.model.get('type').trim() == ""){
-            return "The Product must have a type";
+        if(this.model.get('name').trim() == ""){
+            return "The Contribution must have a title";
         }
         return "";
     },
     
-    saveProduct: function(){
+    saveContribution: function(){
         var validation = this.validate();
         if(validation != ""){
             clearAllMessages();
@@ -198,23 +178,23 @@ ProductEditView = Backbone.View.extend({
             return;
         }
         this.$(".throbber").show();
-        this.$("#saveProduct").prop('disabled', true);
+        this.$("#saveContribution").prop('disabled', true);
         this.model.save(null, {
             success: $.proxy(function(){
                 this.$(".throbber").hide();
-                this.$("#saveProduct").prop('disabled', false);
+                this.$("#saveContribution").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
             }, this),
             error: $.proxy(function(o, e){
                 this.$(".throbber").hide();
-                this.$("#saveProduct").prop('disabled', false);
+                this.$("#saveContribution").prop('disabled', false);
                 clearAllMessages();
                 if(e.responseText != ""){
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Product", true);
+                    addError("There was a problem saving the Contribution", true);
                 }
             }, this)
         });
@@ -238,7 +218,7 @@ ProductEditView = Backbone.View.extend({
                                                           'right': right,
                                                           'objs': objs
                                                           });
-        this.$("#productAuthors").html(html);
+        this.$("#contributionAuthors").html(html);
         createSwitcheroos();
     },
     
@@ -249,7 +229,7 @@ ProductEditView = Backbone.View.extend({
         else{
             this.allPeople = new People();
             this.allPeople.fetch();
-            var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
+            var spin = spinner("contributionAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
                 if(this.allPeople.length > 0){
                     this.renderAuthorsWidget();
@@ -258,22 +238,10 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
-    renderTagsWidget: function(){
-        var html = HTML.TagIt(this, 'tags', {
-            strictValues: false, 
-            values: this.model.get('tags'),
-            options: {
-                removeConfirmation: false,
-                availableTags: this.availableTags
-            }
-        });
-        this.$("#productTags").html(html);
-    },
-    
     render: function(){
+        main.set('title', this.model.get('name'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
-        this.renderTagsWidget();
         return this.$el;
     }
 

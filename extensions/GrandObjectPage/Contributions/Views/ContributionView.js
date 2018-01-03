@@ -69,7 +69,6 @@ ContributionView = Backbone.View.extend({
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
         this.renderAuthors();
-        console.log(this.model.toJSON());
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteContribution").prop('disabled', true);
             clearInfo();

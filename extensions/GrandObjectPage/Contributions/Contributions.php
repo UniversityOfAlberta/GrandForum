@@ -15,13 +15,15 @@ class Contributions extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
                      'contribution',
+                     'contribution_edit',
                      'ManageProducts/manage_products_other_popup',
                      'ManageProducts/manage_products_projects_popup');
     }
     
     function getViews(){
         return array('Backbone/*',
-                     'ContributionView');
+                     'ContributionView',
+                     'ContributionEditView');
     }
     
     function getModels(){
