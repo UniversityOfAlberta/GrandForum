@@ -13,95 +13,104 @@
         <td align="right"><b>End Date:</b></td>
         <td><%= HTML.DatePicker(this, 'end', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
     </tr>
+    <tr>
 </table>
-<h2>Partners</h2>
-<% _.each(partners, function(partner){ %>
-    <h3><%= partner.name %></h3>
-    <table>
-        <% if(partner.contact != '' && partner.contact != null){ %>
-            <tr>
-                <td align="right"><b>Contact:</b></td>
-                <td><%= partner.contact %></td>
-            </tr>
-        <% } %>
-        <% if(partner.industry != '' && partner.industry != null){ %>
-            <tr>
-                <td align="right"><b>Sector:</b></td>
-                <td><%= partner.industry %></td>
-            </tr>
-        <% } %>
-        <% if(partner.level != '' && partner.level != null){ %>
-            <tr>
-                <td align="right"><b>Level:</b></td>
-                <td><%= partner.level %></td>
-            </tr>
-        <% } %>
-        <tr>
-            <td align="right"><b>Type:</b></td>
-            <td><%= partner.type %></td>
-        </tr>
-        <% if(partner.subtype != '' && partner.subtype != 'None'){ %>
-            <tr>
-                <td align="right"><b>SubType:</b></td>
-                <td><%= partner.subtype %></td>
-            </tr>
-        <% } %>
-        <% if(partner.type == "Cash" || 
-              partner.type == "Grant" || 
-              partner.type == "Chair" || 
-              partner.type == "Scholarship" || 
-              partner.type == "Fellowship" || 
-              partner.type == "Contract" ||
-              partner.type == "Cash and In-Kind" ||
-              partner.type == "None"){ %>
-            <tr>
-                <td align="right"><b>Cash:</b></td>
-                <td>$<%= number_format(partner.cash) %></td>
-            </tr>
-        <% } %>
-        <% if(partner.type == "In-Kind" || 
-              partner.type == "Cash and In-Kind"){ %>
-            <tr>
-                <td align="right"><b>In-Kind:</b></td>
-                <td>$<%= number_format(partner.inkind) %></td>
-            </tr>
-        <% } %>
-    </table>
-<% }) %>
-<div style="background:#EEE;padding:5px;">
-    <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>
-</div>
-<h2>Projects</h2>
-<div id="contributionProjects">
-    <table>
-        <% _.each(this.projects.models, function(p){ %>
-            <tr>
-                <td class="label"><%= p.get('name') %>:</td>
-                <td class="checkboxCell" style="width:40px;">
-                    <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                        <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
-                        <% if(p.get('subprojects').length > 0){ %>
-                            <div style="display:none;" class="subprojectPopup popupBox">
-                                
+<table width="100%">
+    <tr>
+        <td valign="top" width="50%">
+            <h2>Partners</h2>
+            <% _.each(partners, function(partner){ %>
+                <h3><%= partner.name %></h3>
+                <table>
+                    <% if(partner.contact != '' && partner.contact != null){ %>
+                        <tr>
+                            <td align="right"><b>Contact:</b></td>
+                            <td><%= partner.contact %></td>
+                        </tr>
+                    <% } %>
+                    <% if(partner.industry != '' && partner.industry != null){ %>
+                        <tr>
+                            <td align="right"><b>Sector:</b></td>
+                            <td><%= partner.industry %></td>
+                        </tr>
+                    <% } %>
+                    <% if(partner.level != '' && partner.level != null){ %>
+                        <tr>
+                            <td align="right"><b>Level:</b></td>
+                            <td><%= partner.level %></td>
+                        </tr>
+                    <% } %>
+                    <tr>
+                        <td align="right"><b>Type:</b></td>
+                        <td><%= partner.type %></td>
+                    </tr>
+                    <% if(partner.subtype != '' && partner.subtype != 'None'){ %>
+                        <tr>
+                            <td align="right"><b>SubType:</b></td>
+                            <td><%= partner.subtype %></td>
+                        </tr>
+                    <% } %>
+                    <% if(partner.type == "Cash" || 
+                          partner.type == "Grant" || 
+                          partner.type == "Chair" || 
+                          partner.type == "Scholarship" || 
+                          partner.type == "Fellowship" || 
+                          partner.type == "Contract" ||
+                          partner.type == "Cash and In-Kind" ||
+                          partner.type == "None"){ %>
+                        <tr>
+                            <td align="right"><b>Cash:</b></td>
+                            <td>$<%= number_format(partner.cash) %></td>
+                        </tr>
+                    <% } %>
+                    <% if(partner.type == "In-Kind" || 
+                          partner.type == "Cash and In-Kind"){ %>
+                        <tr>
+                            <td align="right"><b>In-Kind:</b></td>
+                            <td>$<%= number_format(partner.inkind) %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% }) %>
+            <div style="background:#EEE;padding:5px;">
+                <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>
+            </div>
+        </td>
+        <td valign="top" width="50%">
+            <h2>Projects</h2>
+            <div id="contributionProjects" style="margin-bottom: 150px;">
+                <table>
+                    <% _.each(this.projects.models, function(p){ %>
+                        <tr>
+                            <td class="label"><%= p.get('name') %>:</td>
+                            <td class="checkboxCell" style="width:40px;">
+                                <div class="checkboxOuter" data-project="<%= p.get('id') %>">
+                                    <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+                                    <% if(p.get('subprojects').length > 0){ %>
+                                        <div style="display:none;" class="subprojectPopup popupBox">
+                                            
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    <tr>
+                        <td class="label">Other:</td>
+                        <td class="checkboxCell" align="center" style="width:40px;">
+                            <div class="checkboxOuter">
+                                <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
+                                <div style="display:none;" class="otherPopup popupBox">
+                                    
+                                </div>
                             </div>
-                        <% } %>
-                    </div>
-                </td>
-            </tr>
-        <% }) %>
-        <tr>
-            <td class="label">Other:</td>
-            <td class="checkboxCell" align="center" style="width:40px;">
-                <div class="checkboxOuter">
-                    <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
-                    <div style="display:none;" class="otherPopup popupBox">
-                        
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
 <div style="display:inline-block;">
     <button id="saveContribution"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contribution</button><span class="throbber" style="display:none;"></span>
 </div>
