@@ -175,32 +175,37 @@ EOF;
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             $this->showRole(PL);
             $this->showRole(PA);
-            if($this->project->getType() == "Administrative"){
-                $this->showRole("NMO");
+            if($this->project->getType() == "Innovation Hub"){
+                $this->showRole('all', 'Innovation Hub Team');
             }
-            $this->showRole(CI);
-            $this->showRole(AR);
-            $this->html .= "</td><td width='50%' valign='top'>";
-            if($wgUser->isLoggedIn()){
-                $this->showRole(HQP);
+            else{
+                if($this->project->getType() == "Administrative"){
+                    $this->showRole("NMO");
+                }
+                $this->showRole(CI);
+                $this->showRole(AR);
+                $this->html .= "</td><td width='50%' valign='top'>";
+                if($wgUser->isLoggedIn()){
+                    $this->showRole(HQP);
+                }
+                $this->html .= "</td></tr>";
+                $this->html .= "<tr><td valign='top' width='50%'>";
+                $this->showRole(CHAMP);
+                $this->showRole(PARTNER);
+                $this->html .= "</td><td width='50%' valign='top'>";
+                $this->showRole(EXTERNAL);
             }
-            $this->html .= "</td></tr>";
-            $this->html .= "<tr><td valign='top' width='50%'>";
-            $this->showRole(CHAMP);
-            $this->showRole(PARTNER);
-            $this->html .= "</td><td width='50%' valign='top'>";
-            $this->showRole(EXTERNAL);
-            $this->html .= "</td></table>";
+            $this->html .= "</td></tr></table>";
         }
     }
     
-    function showRole($role){
+    function showRole($role, $text=null){
         global $config;
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
-        
+
         if(!$project->isDeleted()){
             $people = $project->getAllPeople($role);
         }
@@ -208,13 +213,18 @@ EOF;
             $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
         }
         if(count($people) > 0){
-            if($role == PL && count($people) == 1){
-                // There is normally just 1 PL, so only use singlular
-                $this->html .= "<h2><span class='mw-headline'>".ucwords($config->getValue('roleDefs', $role))."</span></h2>";
+            if($text != null){
+                $this->html .= "<h2><span class='mw-headline'>{$text}</span></h2>";
             }
             else{
-                // Other roles will normally have multiple people, but also pluralize if there is more than one PL
-                $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
+                if($role == PL && count($people) == 1){
+                    // There is normally just 1 PL, so only use singlular
+                    $this->html .= "<h2><span class='mw-headline'>".ucwords($config->getValue('roleDefs', $role))."</span></h2>";
+                }
+                else{
+                    // Other roles will normally have multiple people, but also pluralize if there is more than one PL
+                    $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
+                }
             }
         }
         $this->html .= "<ul>";
