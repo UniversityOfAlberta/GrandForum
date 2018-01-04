@@ -1002,29 +1002,9 @@ class Person extends BackboneModel {
         global $wgRequest;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
-            $wgRequest->setVal('wpCreateaccountMail', ($this->email!=""));
-            $wgRequest->setVal('wpCreateaccount', ($this->email==""));
-            $wgRequest->setSessionData('wsCreateaccountToken', 'true');
-            $wgRequest->setVal('wpCreateaccountToken', 'true');
-            $wgRequest->setVal('wpName', $this->name);
-            $wgRequest->setVal('wpEmail', $this->email);
-            if($this->email != ""){
-                $_POST['wpCreateaccount'] = false;
-                $_POST['wpCreateaccountMail'] = true;
-            }
-            else{
-                $_POST['wpCreateaccount'] = true;
-                $_POST['wpCreateaccountMail'] = false;
-            }
-            $_POST['wpCreateaccountToken'] = 'true';
-            $_POST['wpName'] = $this->name;
-            $_POST['wpEmail'] = $this->email;
-            $_POST['wpRealName'] = $this->realname;
-            $_POST['wpUserType'] = array();
-            $_POST['wpNS'] = array();
-            $_POST['wpSendMail'] = true;
-            $specialUserLogin = new LoginForm($wgRequest, 'signup');
-            $specialUserLogin->execute('signup');
+            $user = User::createNew($this->name, array('real_name' => $this->realname, 
+                                                       'password' => User::crypt(mt_rand()), 
+                                                       'email' => $this->email));
             $status = DBFunctions::update('mw_user', 
                                     array('employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),

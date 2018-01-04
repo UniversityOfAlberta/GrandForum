@@ -3,14 +3,24 @@
 class UploadCCVAPI extends API{
 
     static $diplomaMap = array("00000000000000000000000000000071" => "Undergraduate",
-                               "00000000000000000000000000000072" => "Masters Student",
-                               "00000000000000000000000000000073" => "PhD Student",
-                               "00000000000000000000000000000074" => "PostDoc",
-                               "00000000000000000000000000000081" => "Masters Student",
+                               "00000000000000000000000000000072" => "Graduate Student - Master's Thesis",
+                               "00000000000000000000000000000073" => "Graduate Student - Doctoral",
+                               "00000000000000000000000000000074" => "Post-Doctoral Fellow",
+                               "00000000000000000000000000000081" => "Graduate Student - Master's Course",
                                "00000000000000000000000000000083" => "Undergraduate",
                                "00000000000000000000000000000084" => "Undergraduate",
-                               "00000000000000000000000000000085" => "Masters Student",
-                               "00000000000000000000000000000086" => "PhD Student");
+                               "00000000000000000000000000000085" => "Graduate Student - Master's Course",
+                               "00000000000000000000000000000086" => "Graduate Student - Doctoral",
+                               "Master's" => "Graduate Student - Master's Thesis",
+                               "Master’s Thesis" => "Graduate Student - Master's Thesis",
+                               "Diploma" => "Undergraduate",
+                               "Master’s" => "Graduate Student - Master's Thesis",
+                               "Bachelor's" => "Undergraduate",
+                               "Bachelor’s" => "Undergraduate",
+                               "Undergraduate" => "Undergraduate",
+                               "Doctorate" => "Graduate Student - Doctoral",
+                               "PhD Student" => "Graduate Student - Doctoral",
+                               "Post-doctorate" => "Post-Doctoral Fellow");
                                
     static $genderMap = array("00000000000000000000000000000282" => "Male",
                               "00000000000000000000000000000283" => "Female",
@@ -177,7 +187,7 @@ class UploadCCVAPI extends API{
                 $start_date = "{$hqp['degree_start_year']}-".str_pad($hqp['degree_start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
             }
             else{
-                $start_date = "{$hqp['degree_start_year']}-".str_pad($hqp['degree_start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                $start_date = "{$hqp['start_year']}-".str_pad($hqp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
             }
             if(CommonCV::getCaptionFromValue($hqp['status'], "Degree Status") == "In Progress"){
                 // HQP is still active
@@ -218,10 +228,7 @@ class UploadCCVAPI extends API{
                                     array('university_name' => $hqp['institution'],
                                           'province_id'     => $otherId,
                                           '`order`'    => 10001));
-                $university = DBFunctions::select(array('grand_universities'),
-                                                  array('university_id'),
-                                                  array('university_name' => EQ($hqp['institution'])));
-                $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
+                $university = DBFunctions::insertId();
             }
             $position = Person::getDefaultPosition();
             $positions = Person::getAllPositions();
@@ -234,7 +241,7 @@ class UploadCCVAPI extends API{
                     $position = $id;
                 }
             }
-            /*if(count(DBFunctions::select(array('grand_roles'), 
+            if(count(DBFunctions::select(array('grand_roles'), 
                                          array('*'), 
                                          array('user_id'    => EQ($person->getId()),
                                                'role'       => EQ(HQP),
@@ -245,7 +252,7 @@ class UploadCCVAPI extends API{
                                           'role'        => HQP,
                                           'start_date'  => $start_date,
                                           'end_date'    => $end_date));
-            }*/
+            }
             if(count(DBFunctions::select(array('grand_relations'),
                                          array('*'),
                                          array('user1'      => EQ($supervisor->getId()),

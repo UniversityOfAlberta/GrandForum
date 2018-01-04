@@ -121,7 +121,7 @@
                 $key = $term . $classNbr . $component . $sect . $employeeID;
                 
                 // skip if key exists OR user is not a Faculty of Science Member
-                if (isset($grandCourses[$key]) || $userID == 0 || $role != "PI"){
+                if (isset($grandCourses[$key]) || $userID == 0 || ($role != "PI" && $role != "CO")){
                     continue;
                 }
 
