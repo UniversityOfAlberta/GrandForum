@@ -47,7 +47,6 @@ BibliographyView = Backbone.View.extend({
     },
 
     filter: function() {
-        console.log("filtering");
         this.$("#products li").show();
         this.filterAuthors();
         this.filterTags();
@@ -112,9 +111,7 @@ BibliographyView = Backbone.View.extend({
                             show = true;
                         }
                     }
-                }
-
-                    
+                }   
             }
 
             if (show) {
@@ -185,7 +182,7 @@ BibliographyView = Backbone.View.extend({
     unique: function (array) {
         return $.grep(array, function(el, index) {
             return index === $.inArray(el, array);
-        });
+        }).sort();
     },
     
     render: function(){
