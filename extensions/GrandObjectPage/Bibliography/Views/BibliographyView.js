@@ -17,7 +17,9 @@ BibliographyView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.template = _.template($('#bibliography_template').html());
         $(document).click(function(e) {
-            if ((!$.contains($("#filters")[0], e.target)) && (e.target != $("#filtersBtn")[0])) {
+            if ((!$.contains($("#filters")[0], e.target)) 
+                && (e.target != $("#filtersBtn")[0])
+                && (!$.contains($("#filtersBtn")[0], e.target))) {
                 $("#filters").slideUp();
             }
         });
