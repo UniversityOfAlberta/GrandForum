@@ -86,7 +86,7 @@ EOF;
         
         $typeRow = new FormTableRow("{$pre}_type_row");
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
-        $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
+        $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic", "Innovation Hub"), VALIDATE_NOT_NULL));
         
         $bigbetRow = new FormTableRow("{$pre}_bigbet_row");
         $bigbetRow->append(new Label("{$pre}_bigbet_label", "Big-Bet", "Whether or not this project is considered to be a 'Big-Bet' project", VALIDATE_NOT_NULL));

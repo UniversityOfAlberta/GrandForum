@@ -9,7 +9,7 @@ class ProjectProductAPI extends RESTAPI {
                 $this->throwError("This Project does not exist");
             }
             $json = array();
-            $products = $project->getPapers("all");
+            $products = $project->getPapers("all", "1900-00-00", "2100-00-00");
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'projectId'=> $this->getParam('id'),
