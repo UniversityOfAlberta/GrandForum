@@ -125,6 +125,10 @@
     background: #F8F8F8 !important;
 }
 
+.filter_option::-ms-expand {
+    display:none;
+}
+
 .chosen-container > ul {
     border-radius: 4px;
 }
