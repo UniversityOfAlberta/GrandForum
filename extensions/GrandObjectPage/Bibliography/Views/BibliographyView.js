@@ -33,7 +33,7 @@ BibliographyView = Backbone.View.extend({
         "click #filtersBtn": "showFilterOptions",
         "keyup #filterAuthors": "filterAuthors",
         "change #filterOperand": "filterAuthors",
-        "keyup #filterTags": "filterTags",
+        "change #filterSelectTags": "filterTags",
         "change #filterTagOperand": "filterTags",
     },
 
@@ -54,13 +54,12 @@ BibliographyView = Backbone.View.extend({
 
     filterTags: function() {
         var operand = this.$("#filterTagOperand").val();
-        var searchTerms = unaccentChars(this.$("#filterTags").val()).split(",");
+        var searchTerms = this.$("#filterSelectTags").val();
         var version = 'tags';
         this.filterOptions(searchTerms, version, operand);
     },
 
     filterOptions: function(searchTerms, version, operand) {
-        console.log(this.tags);
         var lis = this.$("#products li");
 
         _.each(this.products, function(prod, index){
@@ -70,6 +69,9 @@ BibliographyView = Backbone.View.extend({
                 var target = unaccentChars(_.pluck(prod.get("authors"), 'fullname').join(", "));
             }
             var show = null;
+            if (searchTerms.length == 0) {
+                show = true;
+            }
             _.each(searchTerms, function(term, index) {
 
                 if (operand == "AND") {
@@ -125,8 +127,16 @@ BibliographyView = Backbone.View.extend({
                 for (i = 0; i < listTags.length; i++) {
                     this.mention.push({"name": listTags[i]});
                     this.tags.push(listTags[i]);
+                    console.log("renderProducts:", this.tags);
                 }
             }, this));
+            this.tags = this.unique(this.tags);
+            _.each(this.tags, $.proxy(function(tag) {
+                var option = '<option value="' + tag + '">' + tag + '</option>';
+                console.log(option);
+                this.$('#filterSelectTags').append(option);
+            }, this));
+            this.$('#filterSelectTags').trigger("chosen:updated");
 
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
@@ -152,12 +162,19 @@ BibliographyView = Backbone.View.extend({
             }, this));
         }, this));
     },
+
+    unique: function (array) {
+        return $.grep(array, function(el, index) {
+            return index === $.inArray(el, array);
+        });
+    },
     
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.empty();
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProducts();
+        this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });   
         return this.$el;
     }
 
