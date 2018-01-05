@@ -116,7 +116,6 @@ HTML.TextBox = function(view, attr, options){
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
-
             var elems = attr.split(".");
             var recurse = function(data, depth) {
                 if (depth < elems.length) {
@@ -263,10 +262,25 @@ HTML.Select = function(view, attr, options){
     var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
-            var index = attr.indexOf('.');
-            var data = view.model.get(attr.substr(0, index));
-            data[attr.substr(index+1)] = $(e.target).val();
-            view.model.set(attr.substr(0, index), _.clone(data));
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if ((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    return $(e.target).val();
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
         }
         else{
             view.model.set(attr, $(e.target).val());
