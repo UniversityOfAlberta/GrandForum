@@ -70,9 +70,14 @@
                         <td align="right"><b>In-Kind:</b></td>
                         <td><%= HTML.TextBox(this, 'partners.' + i + '.inkind', {style: 'width: 75px'}) %>$</td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td><button class="deletePartner" data-id="<%= i %>">Delete Partner</button></td>
+                    </tr>
                 </table>
                 <hr />
             <% }, this)) %>
+            <button id="addPartner">Add Partner</button>
             <div style="background:#EEE;padding:5px;">
                 <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>
             </div>

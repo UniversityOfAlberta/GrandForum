@@ -11,6 +11,10 @@ ContributionEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:name", this.render);
         this.listenTo(this.model, "change:projects", this.render);
+        this.listenTo(this.model, "change:total", this.render);
+        this.listenTo(this.model, "add:partners", this.render);
+        this.listenTo(this.model, "delete:partners", this.render);
+        this.listenTo(this.model, "change:partners", this.renderPartners);
         this.template = _.template($('#contribution_edit_template').html());
         this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
         this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
@@ -160,7 +164,22 @@ ContributionEditView = Backbone.View.extend({
         "click div.showSubprojects": "showSubprojects",
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch",
-        "change div#contributionProjects input[type=checkbox]": "toggleSelect"
+        "change div#contributionProjects input[type=checkbox]": "toggleSelect",
+        "click button#addPartner": "addPartner",
+        "click button.deletePartner": "deletePartner"
+    },
+    
+    deletePartner: function(e){
+        var el = $(e.target);
+        var id = el.attr('data-id');
+        var partners = this.model.get('partners');
+        partners.splice(id, 1);
+        this.model.set('partners', _.clone(partners));
+        this.model.trigger('delete:partners');
+    },
+    
+    addPartner: function(){
+        this.model.addPartner();
     },
     
     validate: function(){
@@ -238,10 +257,16 @@ ContributionEditView = Backbone.View.extend({
         }
     },
     
+    renderPartners: function(){
+        console.log("RENDER PARTNERS");
+    },
+    
     render: function(){
+        console.log("RENDER");
         main.set('title', this.model.get('name'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
+        this.renderPartners();
         return this.$el;
     }
 
