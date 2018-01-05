@@ -650,11 +650,11 @@
         
         <Presentation type="Misc" status="Invited|Not Invited">
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccvtk="location" label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="String">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>

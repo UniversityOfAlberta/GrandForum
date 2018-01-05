@@ -177,6 +177,36 @@ class CommonCV // {{{
     }
     return $records;
   } // }}}
+  
+  /**
+   * Parses the list of presentations and returns (some of its) data
+   * as an associative array for convenience
+   */
+  public function getPresentations() // {{{
+  {
+    global $CCV_CONST;
+    $records = array();
+    $elements = $this->m_xpath->query("//section[@id='c7ce6f054e0941ea8b27127dbd4a26d0']");
+    for ($i = 0; !is_null($elements) && $i < $elements->length; $i++)
+    {
+      $id = $this->get_xpath("@recordId", $elements->item($i));
+      $record = array();
+      $record["title"] = $this->get_xpath("field[@id='3f6a7ac56ee64b7dbd84dba9d6e3302d']/value", $elements->item($i));
+      $record["authors"] = $this->get_xpath("field[@id='d1dde22650bf4c508cf997beee12ef50']/value", $elements->item($i));
+      $record["location"] = $this->get_xpath("field[@id='f4b5f1a1d181404ca9c0fea81f9a7e79']/lov", $elements->item($i));
+      $record["url"] = $this->get_xpath("field[@id='8f612e2d2b23458fa114d8a790c38e13']/value", $elements->item($i));
+      $record["event_title"] = $this->get_xpath("field[@id='8d882e55b0a54d0b8eec347f5502a19b']/value", $elements->item($i));
+      $record["status"] = $this->get_xpath("field[@id='720d2f02feaf4aacb06ce60be0c6f603']/lov", $elements->item($i));
+      $record["status"] = ($record["status"] == "Yes") ? "Invited" : "Not Invited";
+      $date = $this->get_xpath("field[@id='725e4c54320b474680feaf530567fdd3']/value", $elements->item($i));
+      @list($date_year, $date_month) = explode("/", $date);
+      $record["date_year"] = $date_year;
+      $record["date_month"] = $date_month;
+      $record["peer_reviewed"] = true;
+      $records[$id] = $record;
+    }
+    return $records;
+  } // }}}
 
   /**
    * Parses the list of supervised students and returns (some of its) data

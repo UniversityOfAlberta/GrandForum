@@ -76,8 +76,14 @@ class UploadCCVAPI extends API{
         $product->title = str_replace("&#39;", "'", $paper['title']);
         $product->category = $category;
         $product->type = $type;
-        $product->status = (isset($structure['ccv_status'][$paper['status']])) ? $structure['ccv_status'][$paper['status']] : "Published";
+        if($product->category == "Publication"){
+            $product->status = (isset($structure['ccv_status'][$paper['status']])) ? $structure['ccv_status'][$paper['status']] : "Published";
+        }
+        else if($product->category == "Presentation"){
+            $product->status = $paper["status"];
+        }
         $product->date = "{$paper['date_year']}-{$paper['date_month']}-01";
+        $product->acceptance_date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->data = array();
         $product->projects = array();
         $product->authors = array();
@@ -118,6 +124,12 @@ class UploadCCVAPI extends API{
             $obj = new stdClass;
             $obj->name = trim($author);
             $product->authors[] = $obj;
+        }
+        if($category == "Presentation"){
+            $obj = new stdClass;
+            $obj->id = $person->getId();
+            $product->authors[] = $obj;
+            $product->authors = array($obj);
         }
         foreach($paper as $key => $field){
             if($field != ""){
@@ -724,6 +736,7 @@ class UploadCCVAPI extends API{
                     $bookChapters = $cv->getBookChapters();
                     $reviewedConferencePapers = $cv->getReviewedConferencePapers();
                     $reviewedJournalPapers = $cv->getReviewedJournalPapers();
+                    $presentations = $cv->getPresentations();
                    
                     foreach($conferencePapers as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id);
@@ -745,6 +758,15 @@ class UploadCCVAPI extends API{
                     }
                     foreach($bookChapters as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id);
+                        if($product != null){
+                            $createdProducts[] = $product;
+                        }
+                        else{
+                            $errorProducts[] = $paper;
+                        }
+                    }
+                    foreach($presentations as $ccv_id => $paper){
+                        $product = $this->createProduct($person, $paper, "Presentation", "Misc", $ccv_id);
                         if($product != null){
                             $createdProducts[] = $product;
                         }
