@@ -2,10 +2,12 @@ BibliographyView = Backbone.View.extend({
     mention: null,
     searchTerm: null,
     products: null,
+    tags: null,
 
     initialize: function(){
         this.mention = new Array();
         this.products = new Array();
+        this.tags = new Array();
         Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
@@ -14,6 +16,13 @@ BibliographyView = Backbone.View.extend({
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#bibliography_template').html());
+        $(document).click(function(e) {
+            if ((!$.contains($("#filters")[0], e.target)) 
+                && (e.target != $("#filtersBtn")[0])
+                && (!$.contains($("#filtersBtn")[0], e.target))) {
+                $("#filters").slideUp();
+            }
+        });
     },
 
     subviewCreators: {
@@ -28,54 +37,99 @@ BibliographyView = Backbone.View.extend({
     
     events: {
         "click #editBibliography": "editBibliography",
-        "keyup #filterAuthors": "filterAuthors",
-        "submit #formFilterAuthors": "filterAuthors",
-        "click #submitFilterAuthor": "filterAuthors",
-        "change #filterOperand": "filterAuthors"
+        "click #filtersBtn": "showFilterOptions",
+        "keyup #filterAuthors": "filter",
+        "input #filterAuthors": "filter",
+        "change #filterOperand": "filter",
+        "change #filterSelectTags": "filter",
+        "change #filterTagOperand": "filter",
+    },
+
+    showFilterOptions: function() {
+        if(this.$('#filters').css('display') == "none") {
+            this.$("#filters").slideDown();
+        } else {
+            this.$("#filters").slideUp();
+        }
+    },
+
+    filter: function() {
+        this.$("#products li").show();
+        this.filterAuthors();
+        this.filterTags();
+
     },
 
     filterAuthors: function() {
         var operand = this.$("#filterOperand").val();
         var searchTerms = unaccentChars(this.$("#filterAuthors").val()).split(",");
+        var version = 'authors';
+        this.filterOptions(searchTerms, version, operand);
+    },
+
+    filterTags: function() {
+        var operand = this.$("#filterTagOperand").val();
+        var searchTerms = this.$("#filterSelectTags").val();
+        var version = 'tags';
+        this.filterOptions(searchTerms, version, operand);
+    },
+
+    filterOptions: function(searchTerms, version, operand) {
         var lis = this.$("#products li");
-
         _.each(this.products, function(prod, index){
-            var authors = unaccentChars(_.pluck(prod.get('authors'), 'fullname').join(", "));
-            var show = null;
-            _.each(searchTerms, function(term, index) { // for each search term.
+            if (version == "tags") {
+                var target = unaccentChars(prod.get("tags").join(", "));
+            } else if (version == "authors") {
+                var target = unaccentChars(_.pluck(prod.get("authors"), 'fullname').join(", "));
+            }
 
-                if (operand == "AND") {
-                    if (authors.indexOf(term) == -1) {
-                        show = false;
-                    } else if ((show == null) && (index == searchTerms.length - 1)) {
-                        show = true
-                    }
-                } else if (operand == "OR") {
-                    if (authors.indexOf(term) != -1) {
-                        show = true;
-                    } else if ((show == null) && (index == searchTerms.length - 1)) {
-                        show = false
-                    }
-                } else { // NOT
-                    if (authors.indexOf(term) != -1) {
-                        show = false;
-                    } else if ((show == null) && (index == searchTerms.length - 1)) {
-                        show = true
-                    }
-                    if (term == "") {
-                        show = true
-                    }
-                }
-            });
+            var show = true;
+
+            if ($(lis.get(index))[0].style.display == 'none') {
+                show = false;
+            } 
 
             if (show) {
-                $(lis.get(index)).slideDown();
+
+                for (i = 0; i < searchTerms.length; ++i) {
+                    term = searchTerms[i];
+                    if (operand == "AND") {
+                        if (target.indexOf(term) == -1) { // if we didn't find one
+                            show = false;
+                            break; // onto the next product
+                        } else if (i == searchTerms.length - 1) {
+                            show = true;
+                        }
+                    } else if (operand == "OR") {
+                        if (target.indexOf(term) != -1) { // found one
+                            show = true;
+                            break; // onto the next product
+                        } else if (i == searchTerms.length - 1) { // didn't find one
+                            show = false;
+                        }
+                    } else { // NOT
+                        if (target.indexOf(term) != -1) { // found one
+                            show = false;
+                            break; // onto the next product
+                        } else if (i == searchTerms.length - 1) {
+                            show = true;
+                        }
+                        if (term == "") {
+                            show = true;
+                        }
+                    }
+                }   
+            }
+
+            if (show) {
+                //$(lis.get(index)).slideDown();
+                $(lis.get(index)).show();
             } else {
-                 $(lis.get(index)).slideUp();
+                //$(lis.get(index)).slideUp();
+                $(lis.get(index)).hide();
             }
             
         });
-
     },
     
     renderProducts: function(){
@@ -97,8 +151,15 @@ BibliographyView = Backbone.View.extend({
                 var listTags = product.get('tags');
                 for (i = 0; i < listTags.length; i++) {
                     this.mention.push({"name": listTags[i]});
+                    this.tags.push(listTags[i]);
                 }
             }, this));
+            this.tags = this.unique(this.tags);
+            _.each(this.tags, $.proxy(function(tag) {
+                var option = '<option value="' + tag + '">' + tag + '</option>';
+                this.$('#filterSelectTags').append(option);
+            }, this));
+            this.$('#filterSelectTags').trigger("chosen:updated");
 
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
@@ -124,12 +185,19 @@ BibliographyView = Backbone.View.extend({
             }, this));
         }, this));
     },
+
+    unique: function (array) {
+        return $.grep(array, function(el, index) {
+            return index === $.inArray(el, array);
+        }).sort();
+    },
     
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.empty();
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProducts();
+        this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });   
         return this.$el;
     }
 
