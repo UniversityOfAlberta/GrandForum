@@ -21,147 +21,235 @@ class PersonApplicantDataTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        if($this->canEdit()){
-            $gsms = $this->person->getGSMS();
-            $this->html .= "<br/><table class='gsms'>";
+        if($this->canEdit()) {
+            $this->html .= "<style>
+            .flex-container {
+              width: 100%;
+              display: -webkit-flex; /* Safari */
+              display: flex;
+              -webkit-flex-direction: row; /* Safari */
+              flex-direction:         row;
+              -webkit-align-items: baseline; /* Safari */
+              align-items:         baseline;
+              justify-content: space-around;
+              align-content: stretch;
+              flex-wrap: wrap;
+            }
 
-	    $this->html .= "<th><font color='green'>".$this->person->getNameForForms()." ({$gsms->gsms_id})</font></th>";
+            .flex-item {
+              -webkit-flex-grow: <number>; /* Safari */
+              flex-grow:         <number>;
+              min-width: 0px; 
+              max-width: 1000px;
+              flex-grow: 1;
+              /*flex-basis: 350px;*/
+              display: inline-block;
+              vertical-align: top;
+              /*box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);*/
+              float: left;
+              margin-top: 10px;
+              margin-left: 15px;
+              line-height: 18px;
+              padding: 6px;
+              background: #F5F5F5;
+              border-radius:5px;
+              /*border: 1px solid darkgrey;*/
+              font-family: Helvetica, Verdana, sans-serif;
+              color: #444444;
+            }
+            </style>";
+            $gsms = $this->person->getGSMS()->toArray();
+            $this->html .= "<div><h3><a href='#'>GSMS Data</a></h3>";
+            $this->html .= "<div style='padding-bottom: 30px'>";
+            $this->html .= "<div style='display: inline-block; width: 100%;'>";
+            $this->html .= "<h3 style='float:left;'> {$gsms['student_data']['name']}";
+            if ($gsms['gsms_id'] != 0) {
+                $this->html .= " ({$gsms['gsms_id']})";
+            }
+            if ($gsms['program_name'] != '') {
+                $this->html .= " applying to {$gsms['program_name']}";
+            }
+            $this->html .= "</h3>";
+            
+            $this->html .= "<h3 style='float:right;'>GPA (normalized): {$gsms['additional']['gpaNormalized']}</h3></div>";
+            $this->html .= "{$gsms['student_data']['email']}   {$gsms['gender']}";
+            
+            $this->html .= "<div class='flex-container' style='display: block;'>
+                <div class='flex-item' style='width:44%; min-width: 400px;'>";
+            $this->html .= "<b>Folder:</b> {$gsms['folder']}<br/>";
+            $this->html .= "<b>Date of Birth:</b> {$gsms['date_of_birth']}<br/>";
+            $this->html .= "<b>Country:</b> {$gsms['additional']['country_of_citizenship_full']}<br/>";
+            $this->html .= "<b>Applicant Type:</b> {$gsms['applicant_type']}<br/><br/>";
 
-	    $this->html .= "<tr>";
-	    $this->html .= "<td>";
-	    $this->html .= "<table class='gsms'>";
+            $this->html .= "<b>Education History:</b><br/>";
+            $ed_hist = preg_replace('/<br \/><br \/>/', '<br />', $gsms['education_history']);
+            $ed_hist = preg_replace('/<b>/', '', $ed_hist);
+            $ed_hist = preg_replace('/<\/b>/', '', $ed_hist);
+            $this->html .= "{$ed_hist}<br/><br/>";
+
+            $this->html .= "<b>Areas of Study:</b><br/>";
+            $this->html .= "{$gsms['additional']['areas_of_study']}<br/>";
+            $this->html .= "<b>Supervisors:</b><br/>";
+            $supers = preg_replace('/<br \/>/', '', $gsms['additional']['supervisors']);
+            $this->html .= "{$supers}<br/><br/>";
+            $this->html .= "<b>Courses:</b><br/>";
+            if ($gsms['additional']['courses'] == "") {
+                $this->html .= "No courses were listed";
+            } else {
+                $this->html .= "<div title='{$gsms['additional']['courses']}' style='border-bottom: none; max-height: 100px; overflow-y: auto;'>";
+                $this->html .= "{$gsms['additional']['courses']}</div>";
+                
+            }
+            $this->html .= "</div>";
+
+            $this->html .= "<div class='flex-item' style='width:24%;'><b>Scholarships</b><br/>";
+            $held = ($gsms['additional']['scholarships_held'] != "") ? $gsms['additional']['scholarships_held'] : '--';
+            $this->html .= "Held: {$held}<br/>";
+            $applied = ($gsms['additional']['scholarships_applied'] != "") ? $gsms['additional']['scholarships_applied'] : '--';
+            $this->html .= "Applied: {$applied}<br/><br/>";
+            $this->html .= "<div style='display:inline-block;'>
+                        <table style='float: left'>";
             $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Email</td>";
-            $this->html .= "<td class='text'>{$this->person->getEmail()}</td>";
-            $this->html .= "</tr>";
+            $epltest = ($gsms['epl_test'] != "") ? $gsms['epl_test'] : '--';
+            $this->html .= "<td><b>EPL Test:</b></td>
+                                <td align='right'>{$epltest}</td>
+                            </tr>
+                            <tr>";
+            $listening = ($gsms['epl_listen'] != "") ? $gsms['epl_listen'] : '--';
+            $this->html .= "<td>Listening:</td>
+                                <td align='right'>{$listening}</td>
+                            </tr>
+                            <tr>";
+            $writing = ($gsms['epl_write'] != "") ? $gsms['epl_write'] : '--';
+            $this->html .= "<td>Writing:</td>
+                                <td align='right'>{$writing}</td>
+                            </tr>
+                        </table>";
+            $this->html .= "<table style='float: left; margin-left:5px;'>
+                            <tr>";
+            $score = ($gsms['epl_score'] != "") ? $gsms['epl_score'] : '--';
+            $this->html .= "<td><b>EPL Score:</b></td>
+                                <td align='right'>{$score}</td>
+                            </tr>
+                            <tr>";
+            $reading = ($gsms['epl_read'] != "") ? $gsms['epl_read'] : '--';
+            $this->html .= "<td>Reading:</td>
+                                <td align='right'>{$reading}</td>
+                            </tr>
+                            <tr>";
+            $speaking = ($gsms['epl_speaking'] != "") ? $gsms['epl_speaking'] : '--';
+            $this->html .= "<td>Speaking:</td>
+                                <td align='right'>{$speaking}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                    <div>
+                        <b>GRE</b><br/>
+                        <table>
+                            <tr>";
+            $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre1'] : '--';
+            $this->html .= "<td>Verbal:</td>
+                                <td align='right'>{$gre}</td>
+                            </tr>
+                            <tr>";
+            $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre2'] : '--';
+            $this->html .= "<td>Quantitative:</td>
+                                <td align='right'>{$gre}</td>
+                            </tr>
+                            <tr>";
+            $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre3'] : '--';
+            $this->html .= "<td>Analytical:</td>
+                                <td align='right'>{$gre}</td>
+                            </tr>
+                            <tr>";
+            $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre4'] : '--';
+            $this->html .= "<td>CS:</td>
+                                <td align='right'>{$gre}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>";
 
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Student ID</td>";
-            $this->html .= "<td class='text'>{$gsms->student_id}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>CS app#</td>";
-            $this->html .= "<td class='text'>{$gsms->cs_app}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Gender</td>";
-            $this->html .= "<td class='text'>{$gsms->gender}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>DOB</td>";
-            $this->html .= "<td class='text'>{$gsms->date_of_birth}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Country of Birth</td>";
-            $this->html .= "<td class='text'>{$gsms->country_of_birth}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Country of Citizenship</td>";
-            $this->html .= "<td class='text'>{$gsms->country_of_citizenship}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Applicant Type</td>";
-            $this->html .= "<td class='text'>{$gsms->applicant_type}</td>";
-            $this->html .= "</tr>";
-
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Folder</td>";
-            $this->html .= "<td class='text'>{$gsms->folder}</td>";
-            $this->html .= "</tr>";
-
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Education History</td>";
-            $this->html .= "<td class='text'>{$gsms->education_history}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>EPL Test</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_test}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>EPL Score</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_score}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Listen</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_listen}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Write</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_write}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Read</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_read}</td>";
-            $this->html .= "</tr>";
-
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Speaking</td>";
-            $this->html .= "<td class='text'>{$gsms->epl_speaking}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Academic Year</td>";
-            $this->html .= "<td class='text'>{$gsms->academic_year}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Term</td>";
-            $this->html .= "<td class='text'>{$gsms->term}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Program Subplan Name</td>";
-            $this->html .= "<td class='text'>{$gsms->subplan_name}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Degree Code</td>";
-            $this->html .= "<td class='text'>{$gsms->degree_code}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Program Name</td>";
-            $this->html .= "<td class='text'>{$gsms->program_name}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Admission Program Name</td>";
-            $this->html .= "<td class='text'>{$gsms->admission_program_name}</td>";
-            $this->html .= "</tr>";
-
-            $this->html .= "<tr>";
-            $this->html .= "<td class='label'>Submitted Date</td>";
-            $this->html .= "<td class='text'>{$gsms->submitted_date}</td>";
-            $this->html .= "</tr>";
-	    $this->html .= "</table>";
-
-            $this->html .= "</td>";
-            $this->html .= "<td>";
-
-            $this->html .= "</td>";
-            $this->html .= "<td>";
-       
-
-            $this->html .= "</td>";
-
-            $this->html .= "</tr>";
-
-            $this->html .= "</table><br />";
+            $this->html .= "<b>Number of Publications: </b> {$gsms['additional']['num_publications']}<br/>";
+            $this->html .= "<b>Number of Awards: </b> {$gsms['additional']['num_awards']}<br/></div>";
+            $this->html .= "<div class='flex-item' style='width:24%;'>";
+            if (empty($gsms['reviewers'])) {
+                $this->html .= "<b>Reviewers</b><br/>No assigned reviewers<br/>";
+            } else {
+                $this->html .= "<table style='width:100%;' class='gsms-mini-table'>
+                            <thead>
+                                <tr style='background-color: #F5F5F5;'>
+                                    <th><b>Reviewers</b></th>
+                                    <th style='text-align: right;'><b>Rank</b></th>
+                                </tr>
+                            </thead>";
+                for ($i=0; $i < sizeof($gsms['reviewers']); $i++) {
+                    $this->html .= "<tr><td>{$gsms['reviewers'][$i]['name']}:</td>
+                                    <td align='right'>{$gsms['reviewers'][$i]['rank']}</td>
+                                </tr>";
+                }
+                $this->html .= "<tr style='background-color: #F5F5F5;'>
+                            <td><b>Average Rank:</b></td>";
+                $avg=0;
+                $ignore=0;
+                for($i=0; $i < sizeof($gsms['reviewers']); $i++) {
+                    if($gsms['reviewers'][$i]['rank'] != '--') {
+                        $avg += (int)$gsms['reviewers'][$i]['rank'];
+                    } else {
+                        $ignore += 1;
+                    }
+                }
+                if ((sizeof($gsms['reviewers']) - $ignore) == 0) {
+                    $this->html .= "<td align='right'>--</td>"; 
+                } else {
+                    $avg /= sizeof($gsms['reviewers']) - $ignore;
+                    $this->html .= "<td align='right'>$avg</td>";
+                }
+                $this->html .= "</table>";
+            }
+            $this->html .= "<br/>";
+            if (empty($gsms['other_reviewers'])) {
+                $this->html .= "<b>Faculty Reviewers</b><br/>No other reviewers<br/>";
+            } else {
+                $this->html .= "<table style='width:100%' class='gsms-mini-table'>";
+                $this->html .= "<thead>
+                                    <tr style='background-color: #F5F5F5;'>
+                                        <th><b>Faculty</b></th>
+                                        <th style='text-align: right;'><b>Rank</b></th>
+                                    </tr>
+                                </thead>";
+                for ($i=0; $i < sizeof($gsms['other_reviewers']); $i++) {
+                    $this->html .= "<tr>
+                                        <td>{$gsms['other_reviewers'][$i]['name']}</td><td align='right'>{$gsms['other_reviewers'][$i]['rank']}</td>
+                                    </tr>";
+                }
+                $this->html = "<tr style='background-color: #F5F5F5;'>
+                                <td><b>Average Rank:</b></td>";
+                $avg=0;
+                for ($i=0; $i < sizeof($gsms['other_reviewers']); $i++) {
+                    $avg += (int)$gsms['other_reviewers'][$i]['rank'];
+                }
+                $avg /= sizeof($gsms['other_reviewers']);
+                $this->html .= "<td align='right'>{$avg}</td>
+                            </tr>
+                        </table>";
+            }
+            $this->html .= "<br/><b>Notes:</b><br/>";
+            if (empty($gsms['additional']['notes'])) {
+                $this->html .= "No notes to show";
+            } else {
+                var_dump(sizeof($gsms['additional']['notes']));
+                exit();
+                foreach ($gsms['additional']['notes'] as $key => $value) {
+                    $this->html .= "{$key}: {$value}<br />";
+                }
+            }                
+            $this->html .= "</div>
+            </div>
+        </div>
+    </div>";
         }
+        
         return $this->html;
     }
     
