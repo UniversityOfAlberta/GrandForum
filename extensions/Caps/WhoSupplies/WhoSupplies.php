@@ -108,12 +108,12 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    <li>As of January 15, 2018, mifepristone will be distributed by the BC Centre for Disease Control to pharmacies through British Columbia</li>
+                    <li>As of January 15, 2018, the BC Ministry of Health PharmaCare program will provide Mifegymiso® at no charge to BC Residents through BC's community pharmacies, <a href='http://www.vancourier.com/news/free-access-to-abortion-pill-a-game-changer-for-b-c-women-1.23135464' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
-                    <li>As of April 11th, 2017, in addition to Vancouver, Celopharma has shipped mifepristone to Burnaby, Cranbrook, Golden, Kamloops, Prince George, Whistler and Victoria, <a href='http://www.gov.bc.ca/pharmacarenewsletter' target='_blank'>read more</a></li>
+                    <li>As of January 15, 2018, mifepristone will be distributed by the BC Centre for Disease Control to pharmacies throughout British Columbia, <a href='https://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/newsletters/news18-001.pdf' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
