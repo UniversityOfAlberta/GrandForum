@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CAT Review" reportType="RP_CAT_REVIEW" pdfFiles="Catalyst2017Review" ajax="true" disabled="false" year="2017">
+<Report name="CAT Review" reportType="RP_CAT_REVIEW" pdfFiles="Catalyst2017Review" pdfType="RP_CAT_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
         <Role role="RMC">
             <SectionPermission id="eula" permissions="-" />
