@@ -207,7 +207,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                         $this->html .= "<td align='right'>--</td>"; 
                     } else {
                         $avg /= sizeof($gsms['reviewers']) - $ignore;
-                        $this->html .= "<td align='right'>$avg</td>";
+                        $this->html .= "<td align='right'>".number_format($avg, 2)."</td>";
                     }
                     $this->html .= "</tr>";
                     $this->html .= "</table>";
@@ -228,14 +228,14 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                                             <td>{$gsms['other_reviewers'][$i]['name']}</td><td align='right'>{$gsms['other_reviewers'][$i]['rank']}</td>
                                         </tr>";
                     }
-                    $this->html = "<tr style='background-color: #F5F5F5;'>
+                    $this->html .= "<tr style='background-color: #F5F5F5;'>
                                     <td><b>Average Rank:</b></td>";
                     $avg=0;
                     for ($i=0; $i < sizeof($gsms['other_reviewers']); $i++) {
                         $avg += (int)$gsms['other_reviewers'][$i]['rank'];
                     }
                     $avg /= sizeof($gsms['other_reviewers']);
-                    $this->html .= "<td align='right'>{$avg}</td>
+                    $this->html .= "<td align='right'>".number_format($avg)."</td>
                                 </tr>
                             </table>";
                 }
