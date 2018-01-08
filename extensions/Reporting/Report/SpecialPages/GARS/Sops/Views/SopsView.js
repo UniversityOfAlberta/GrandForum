@@ -40,8 +40,38 @@ SopsView = Backbone.View.extend({
     createDataTable: function(){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
-                                                     'autoWidth': false,
                                                      'dom': 'Bfrtip',
+                                                     'autoWidth': true,
+                                                     'scrollX': true,
+                                                     'fixedColumns':   
+                                                        {
+                                                            leftColumns: 1
+                                                        },
+                                                     'columns': [
+                                                        { 'width': '200px' }, // User email gender
+                                                        { 'width': '95px' },  // GSMS ID
+                                                        { 'width': '70px' },  // Status
+                                                        { 'width': '55px' },  // DoB
+                                                        { 'width': '55px' },  // Country
+                                                        { 'width': '70px' },  // Applicant Type
+                                                        { 'width': '180px' }, // Education history
+                                                        { 'width': '140px' },  // Department
+                                                        { 'width': '70px' },  // EPL
+                                                        { 'width': '110px' },  // Degree
+                                                        { 'width': '75px' },  // Nationality Notes
+                                                        { 'width': '80px' },  // GPA 60
+                                                        { 'width': '75px' },  // GPA / credits
+                                                        { 'width': '70px' },  // F
+                                                        { 'width': '70px' },  // W
+                                                        { 'width': '70px' },  // Anatomy
+                                                        { 'width': '70px' },  // Stats
+                                                        { 'width': '70px' },  // CASPER
+                                                        { 'width': '170px' },  // Reviewers
+                                                        { 'width': '70px' },  // Reviewer Decision
+                                                        { 'width': '70px' },  // Notes
+                                                        { 'width': '120px' },  // Comments
+                                                        { 'width': '120px' },  // Decision
+                                                      ],
                                                      'buttons': [
                                                         {
                                                             extend: 'colvis',

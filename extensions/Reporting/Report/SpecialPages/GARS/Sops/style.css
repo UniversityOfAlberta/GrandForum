@@ -294,6 +294,53 @@ table.wikitable tr.deleted {
     background-color: #1e90ff;
 }
 
+.ellipsis {
+  overflow: hidden;
+  max-height: 94px;
+  line-height: 1.5em;
+  display: inline-block;
+}
+
+.ellipsis:before {
+  content:"";
+  float: left;
+  width: 5px; height: 100px; }
+
+.ellipsis > *:first-child {
+  text-align: left;
+  float: right;
+  width: 100%;
+  margin-left: -5px; }    
+
+.ellipsis:after {
+  content: "\02026";  
+
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+
+  float: right; position: relative;
+  top: -20px; left: 100%; 
+  width: 3em; margin-left: -3em;
+  padding-right: 5px;
+  
+  text-align: right;
+}
+
+.ellipsis .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
 #filter-pane {
   width: 310px;
   padding-left: 16px;
@@ -323,5 +370,48 @@ table.wikitable tr.deleted {
 #clearFiltersButton {
   width: 50%;
   margin: 0 auto;
+}
+
+.flex-container {
+  width: 100%;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  -webkit-flex-direction: row; /* Safari */
+  flex-direction:         row;
+  -webkit-align-items: baseline; /* Safari */
+  align-items:         baseline;
+  justify-content: space-around;
+  align-content: stretch;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  -webkit-flex-grow: <number>; /* Safari */
+  flex-grow:         <number>;
+  min-width: 0px; 
+  max-width: 1000px;
+  flex-grow: 1;
+  /*flex-basis: 350px;*/
+  display: inline-block;
+  vertical-align: top;
+  /*box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);*/
+  float: left;
+  margin-top: 10px;
+  margin-left: 15px;
+  line-height: 18px;
+  padding: 6px;
+  background: #F5F5F5;
+  border-radius:5px;
+  /*border: 1px solid darkgrey;*/
+  font-family: Helvetica, Verdana, sans-serif;
+  color: #444444;
+}
+
+table.gsms-mini-table tr:nth-child(even) {
+  background-color: #EEE;
+}
+
+table.gsms-mini-table tr:nth-child(odd) {
+  background-color: #FFF;
 }
 
