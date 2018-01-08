@@ -103,21 +103,17 @@ class WhoSupplies extends SpecialPage{
                 <h3>Pharmacist Regulations</h3>
                 <ul>
                     <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
-                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
-                    <li>PharmaNet recently posted a newsletter detailing how pharmacies across BC will be able to access subsidized Mifegymiso. For more information, <a href='http://www.gov.bc.ca/pharmacarenewsletter' target='_blank'>click here</a></li>
+                    <li>On January 2, 2018, PharmaNet recently posted a newsletter detailing how pharmacies across BC will be able to access subsidized Mifegymiso. For more information, <a href='http://www.gov.bc.ca/pharmacarenewsletter' target='_blank'>click here</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    <li>In private clinics, individuals must pay out of pocket, ~$300 per package </li>
-                    <li>Mifegymiso® is being considered for possible coverage under the <a href='http://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/mifepristone-misoprostol-3509-info.pdf' target='_blank'>B.C. PharmaCare Program</a> (Feb. 14th, 2017)</li>
-                    <li>B.C.’s income-based drug plan, Fair PharmaCare, is now covering Mifegymiso for individuals on disability or income assistance (July 11th, 2017), <a href='https://pharmacareformularysearch.gov.bc.ca/faces/Search.xhtml' target='_blank'>read more</a>.</li>
-                    <li>As of January 15th, 2018, the BC Ministry of Health PharmaCare program will  provide Mifegymiso® at no charge to BC residents, through B.C.’s community pharmacies, <a href='http://www.vancourier.com/news/free-access-to-abortion-pill-a-game-changer-for-b-c-women-1.23135464' target='_blank'>read more</a></li>
+                    <li>As of January 15, 2018, mifepristone will be distributed by the BC Centre for Disease Control to pharmacies through British Columbia</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
-                    <li>As of April 11th, 2017, in addition to Vancouver, Celopharma has shipped mifepristone to Burnaby, Cranbrook, Golden, Kamloops, Prince George, Whistler and Victoria</li>
+                    <li>As of April 11th, 2017, in addition to Vancouver, Celopharma has shipped mifepristone to Burnaby, Cranbrook, Golden, Kamloops, Prince George, Whistler and Victoria, <a href='http://www.gov.bc.ca/pharmacarenewsletter' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
