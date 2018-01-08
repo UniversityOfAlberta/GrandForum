@@ -9,10 +9,10 @@ abstract class AbstractEditableTab extends AbstractTab {
     function showEditButton(){
         global $wgServer, $wgScriptPath, $wgTitle;
         if(isExtensionEnabled('Sops')){
-        	$this->html .= "<input type='hidden' name='edit' value='true' /><input type='submit' name='submit' value='Edit {$this->name}' />";
+        	$this->html .= "<input type='hidden' name='edit' value='true'/><input type='submit' name='submit' value='Edit {$this->name}'  style='display: block; clear: both;'/>";
 	}
 	else{
-            $this->html .= "<br /><input type='hidden' name='edit' value='true' /><input type='submit' name='submit' value='Edit {$this->name}' />";
+            $this->html .= "<br /><input type='hidden' name='edit' value='true' /><input type='submit' name='submit' value='Edit {$this->name}'  style='display: block; clear: both;'/>";
 	}
     }
     

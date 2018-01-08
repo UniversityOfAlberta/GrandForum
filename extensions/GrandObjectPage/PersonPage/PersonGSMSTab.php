@@ -21,7 +21,7 @@ class PersonGSMSTab extends AbstractEditableTab {
     }
 
     function generateBody(){
-        global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath, $config;
         if($this->canEdit()){
             $gsms_data = $this->person->getGSMS();
 	    $gsms = $gsms_data->getAdditional();
@@ -97,7 +97,21 @@ class PersonGSMSTab extends AbstractEditableTab {
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Notes:</td>";
-            $this->html .= "<td>{$gsms['notes']}</td>";
+            if ($config->getValue('networkName') == 'CSGARS') {
+                $temp = $gsms->toArray();
+                if (empty($temp['additional']['notes'])) {
+                    $this->html .= "<td>No notes</td>";
+                } else {
+                    $this->html .= "<td>";
+                    foreach ($temp['additional']['notes'] as $key => $value) {
+                        $this->html .= "{$key}: {$value}; ";
+                    }
+                    $this->html .= "</td>";
+                }  
+
+            } else {
+                $this->html .= "<td>{$gsms['notes']}</td>";
+            }
             $this->html .= "</tr>";
 
 

@@ -224,23 +224,10 @@ SopsEditView = Backbone.View.extend({
                   })
                   .annotator('addPlugin', 'MyTags', {
                     availableTags: [
-                      "positive personal qualities",
-                      "negative personal qualities",
-                      "relevant personal experience",
-                      "irrelevant information",
-                      "understanding of OT incorporated into personal experience",
-                      "interest in OT",
-                      "match to OT as career",
-                      "superficial understanding of OT",
-                      "accurate knowledge of OT",
-                      "mental/cognitive/spiritual health awareness",
-                      "inaccurate understanding of OT",
-                      "qualities related to being a successful student",
-                      "focus on physical aspect",
-                      "explanation of poor grades",
-                      "poorly written",
-                      "not convincing",
-                      "informal language",
+                      "other",
+                      "academic experience", 
+                      "professional experience", 
+                      "personal qualities",
                     ], // use tags
                   })
                   .annotator( 'addPlugin', 'Store', {
