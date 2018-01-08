@@ -30,6 +30,7 @@ class GsmsData extends BackboneModel{
     var $epl_read;
     var $epl_speaking;
     var $additional = array(); 
+    var $gsms_url;
 
 //added just incase
     var $cs_app;
@@ -280,6 +281,7 @@ class GsmsData extends BackboneModel{
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
         $sop = SOP::newFromUserId($this->user_id);
+        $this->gsms_url = $sop->getGSMSUrl();
         if($config->getValue('networkName') == 'CSGARS'){
             $degrees = $sop->getCSEducationalHistory(true);
         }
@@ -308,7 +310,8 @@ class GsmsData extends BackboneModel{
                   'epl_read' => $this->epl_read,
                   'epl_speaking' => $this->epl_speaking,
                   'folder' => $this->folder,
-                  'additional' => $this->getAdditional());
+                  'additional' => $this->getAdditional(),
+                  'gsms_url' => $this->gsms_url);
 
       // Not sure if specific from here //	
        //sop information needed in table

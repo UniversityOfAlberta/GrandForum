@@ -27,6 +27,7 @@ GsmsData = Backbone.Model.extend({
             epl_read: "",
             epl_speaking: "",
             additional: new Array(),
+            gsms_url: "",
         };
     }
 
