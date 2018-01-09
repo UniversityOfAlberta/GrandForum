@@ -25,6 +25,9 @@ class Report extends AbstractReport{
     function redirect($out, $text) {
         global $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
+        if($wgTitle->getText() == "FAQs") {
+            return true;
+        }
         if(@$_GET['report'] == "CSForm" && !($me->getSopPdfUrl()== false)){
             redirect($me->getUrl());
         }
