@@ -422,7 +422,7 @@ EOF;
 		    @page {
                 margin-top: {$margins['top']}cm;
                 margin-right: {$margins['right']}cm;
-                margin-bottom: ". ($margins['bottom']) ."cm;
+                margin-bottom: ". ($margins['bottom']+0.2) ."cm;
                 margin-left: {$margins['left']}cm;
             }
 		

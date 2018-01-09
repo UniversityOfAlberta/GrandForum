@@ -184,7 +184,7 @@ class PersonGradStudentsTab extends AbstractTab {
             if(count($awardCitations) > 0){
                 $rowspan = 2;
             }
-            $rows[$end_date.$startDate] = 
+            $rows[$end_date.$startDate.$hqp->getId()] = 
             "<tr>
                 <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                 <td style='white-space: nowrap;'>$position</td>
