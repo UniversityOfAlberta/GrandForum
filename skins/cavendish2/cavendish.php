@@ -982,6 +982,14 @@ class CavendishTemplate2 extends QuickTemplate {
                 $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
                 $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
             }
+            if($wgUser->isLoggedIn() && $config->getValue('networkName') == "CSGARS"){
+                $GLOBALS['toolbox']['Help'] = TabUtils::createToolboxHeader("Other");
+                $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQs");
+            }
+            if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GARS"){
+                $GLOBALS['toolbox']['Help'] = TabUtils::createToolboxHeader("Other");
+                $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQs");
+            }
             //$GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
             $person = Person::newFromId($wgUser->getId());
             //$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
