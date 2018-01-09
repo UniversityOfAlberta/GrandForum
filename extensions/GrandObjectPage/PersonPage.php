@@ -30,12 +30,7 @@ class PersonPage {
             permissionError();
         }
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "GARS"){
-            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
-        }
-        elseif($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "CSGARS"){
-            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
-        }
+        
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if(!isset($wgRoleValues[$nsText])){
             // Namespace is not a role namespace
@@ -59,6 +54,13 @@ class PersonPage {
                                                            $role == PL || $role == 'PL') && 
                $person->getName() != null && 
                $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))) {
+               if($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "GARS"){
+                   redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+               }
+               elseif($me->isRole(CI) && ($me->getSopPdfUrl()== false) && $config->getValue('networkName') == "CSGARS"){
+                   redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
+               }
+               
                 TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
