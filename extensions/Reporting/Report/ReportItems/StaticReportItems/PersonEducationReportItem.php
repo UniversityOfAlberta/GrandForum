@@ -10,7 +10,7 @@ class PersonEducationReportItem extends StaticReportItem {
         $employment = array_reverse($person->getUniversities());
         $items = array();
         foreach($employment as $emp){
-            if(in_array($emp['position'], array("Undergraduate", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow"))){
+            if(in_array($emp['position'], array("Undergraduate", "Graduate Student - Master's", "Graduate Student - Master's Thesis", "Graduate Student - Master's Course", "Graduate Student - Doctoral", "Post-Doctoral Fellow"))){
                 $startYear = substr($emp['start'], 0, 4)." - ";
                 $endYear = substr($emp['end'], 0, 4);
                 if($startYear == "0000 - "){
