@@ -20,14 +20,14 @@
         <td valign="top" width="50%">
             <h2>Partners</h2>
             <% _.each(partners, $.proxy(function(partner, i){ %>
-                <table>
+                <table id="partner<%= i %>">
                     <tr>
                         <td align="right"><b>Partner:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.name') %></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50'}) %></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Contact:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.contact') %></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.contact', {size: '50'}) %></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Sector:</b></td>
@@ -49,9 +49,10 @@
                                                                                         'Fellowship',
                                                                                         'Contract']}) %></td>
                     </tr>
-                    <tr>
+                    <tr id="subtype">
                         <td align="right"><b>SubType:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
+                        <td>
+                            <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
                                                                                            'Equipment, Software',
                                                                                            'Materials',
                                                                                            'Logistical Support of Field Work',
@@ -60,13 +61,15 @@
                                                                                            'Salaries of Scientific Staff',
                                                                                            'Salaries of Managerial and Administrative Staff',
                                                                                            'Project-related Travel',
-                                                                                           'Other']}) %></td>
+                                                                                           'Other']}) %>
+                            <span id="other_subtype"><%= HTML.TextBox(this, 'partners.' + i + '.other_subtype') %></span>
+                        </td>
                     </tr>
-                    <tr>
+                    <tr id="cash">
                         <td align="right"><b>Cash:</b></td>
                         <td><%= HTML.TextBox(this, 'partners.' + i + '.cash', {style: 'width: 75px'}) %>$</td>
                     </tr>
-                    <tr>
+                    <tr id="inkind">
                         <td align="right"><b>In-Kind:</b></td>
                         <td><%= HTML.TextBox(this, 'partners.' + i + '.inkind', {style: 'width: 75px'}) %>$</td>
                     </tr>

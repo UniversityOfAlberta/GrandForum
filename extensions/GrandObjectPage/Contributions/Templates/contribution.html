@@ -42,7 +42,13 @@
         <% if(partner.subtype != '' && partner.subtype != 'None'){ %>
             <tr>
                 <td align="right"><b>SubType:</b></td>
-                <td><%= partner.subtype %></td>
+                <td>
+                    <% if(partner.other_subtype != ""){ %>
+                        <%= partner.other_subtype %>
+                    <% } else { %>
+                        <%= partner.subtype %>
+                    <% } %>
+                </td>
             </tr>
         <% } %>
         <% if(partner.type == "Cash" || 

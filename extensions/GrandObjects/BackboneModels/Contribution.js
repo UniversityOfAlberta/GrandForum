@@ -44,6 +44,7 @@ Contribution = Backbone.Model.extend({
             level:	  "",
             type:	  "",
             subtype:  "",
+            other_subtype: "",
             cash:	  0,
             inkind:	  0,
             total:	  0

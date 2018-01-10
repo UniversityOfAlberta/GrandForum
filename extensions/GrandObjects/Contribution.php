@@ -156,17 +156,20 @@ class Contribution extends BackboneModel {
                                 'url' => $project->getUrl());
         }
         foreach($this->getPartners() as $partner){
+            $other_subtype = (!isset(self::$subTypeMap[$partner->subtype])) ? $partner->subtype : "";
+            $subtype = ($other_subtype != "") ? "Other" : $this->getHumanReadableSubTypeFor($partner);
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
                                 "industry" => $partner->getIndustry(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
-                                "subtype" => $this->getHumanReadableSubTypeFor($partner),
+                                "subtype" => $subtype,
+                                "other_subtype" => $other_subtype,
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
         }
-        
+
         return array("id" => $this->getId(),
                      "revId" => $this->getRevId(),
                      "name" => $this->getName(),
@@ -217,6 +220,7 @@ class Contribution extends BackboneModel {
             if($value == ""){
                 $value = $partner['name'];
             }
+            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
@@ -224,7 +228,7 @@ class Contribution extends BackboneModel {
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
-                                      'subtype' => @$subTypeMap[$partner['subtype']],
+                                      'subtype' => $subType,
                                       'cash' => $partner['cash'],
                                       'kind' => $partner['inkind']));
         }
@@ -291,6 +295,7 @@ class Contribution extends BackboneModel {
             if($value == ""){
                 $value = $partner['name'];
             }
+            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
@@ -298,7 +303,7 @@ class Contribution extends BackboneModel {
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
-                                      'subtype' => @$subTypeMap[$partner['subtype']],
+                                      'subtype' => $subType,
                                       'cash' => $partner['cash'],
                                       'kind' => $partner['inkind']));
         }
@@ -532,6 +537,8 @@ class Contribution extends BackboneModel {
                         $p->level = $row['level'];
                     }
                     $id = $p->getOrganization();
+                    $p->subtype = $row['subtype'];
+                    
                     $this->type[$id] = $row['type'];
                     
                     if($row['type'] == 'caki'){

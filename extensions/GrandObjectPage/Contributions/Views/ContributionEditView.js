@@ -259,7 +259,31 @@ ContributionEditView = Backbone.View.extend({
     
     renderPartners: function(){
         //console.log("RENDER PARTNERS");
-        console.log(this.model.get('partners'));
+        _.each(this.model.get('partners'), $.proxy(function(partner, i){
+            var type = partner.type;
+            var subtype = partner.subtype;
+            if(type == 'In-Kind'){
+                this.$("#partner" + i + " #inkind").show();
+                this.$("#partner" + i + " #cash").hide();
+                this.$("#partner" + i + " #subtype").show();
+            }
+            else if(type == 'Cash and In-Kind'){
+                this.$("#partner" + i + " #inkind").show();
+                this.$("#partner" + i + " #cash").show();
+                this.$("#partner" + i + " #subtype").show();
+            }
+            else{
+                this.$("#partner" + i + " #inkind").hide();
+                this.$("#partner" + i + " #cash").show();
+                this.$("#partner" + i + " #subtype").hide();
+            }
+            if(subtype == "Other"){
+                this.$("#partner" + i + " #other_subtype").show();
+            }
+            else{
+                this.$("#partner" + i + " #other_subtype").hide();
+            }
+        }, this));
     },
     
     render: function(){
