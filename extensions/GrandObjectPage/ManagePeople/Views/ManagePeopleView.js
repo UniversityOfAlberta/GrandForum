@@ -249,9 +249,10 @@ ManagePeopleView = Backbone.View.extend({
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
-        _.each(this.allPeople.sortBy('reversedName'), function(p){
+        _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
+            //console.log(this);
             this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + p.get('reversedName') + "</option>");
-        });
+        }, this));
         $("#selectExistingMember").chosen();
         this.addExistingMemberDialog.parent().css('overflow', 'visible');
     },
@@ -303,6 +304,7 @@ ManagePeopleView = Backbone.View.extend({
 	            }, this)
 	        }
 	    });
+	    this.$el.append(this.addExistingMemberDialog.parent());
         return this.$el;
     }
 
