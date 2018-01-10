@@ -20,7 +20,7 @@ ContributionView = Backbone.View.extend({
     },
     
     deleteContribution: function(){
-        if(this.model.get('deleted') != true){
+        if(confirm("Are you sure you want to delete this Contribution?")){
             this.model.destroy({
                 success: function(model, response) {
                     model.set(response);
@@ -37,10 +37,6 @@ ContributionView = Backbone.View.extend({
                     addError('The Contribution <i>' + response.name + '</i> was not deleted sucessfully');
                 }
             });
-        }
-        else{
-            clearAllMessages();
-            addError('This Contribution is already deleted');
         }
     },
     

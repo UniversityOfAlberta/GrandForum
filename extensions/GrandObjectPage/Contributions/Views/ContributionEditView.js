@@ -259,6 +259,7 @@ ContributionEditView = Backbone.View.extend({
     
     renderPartners: function(){
         //console.log("RENDER PARTNERS");
+        console.log(this.model.get('partners'));
     },
     
     render: function(){
