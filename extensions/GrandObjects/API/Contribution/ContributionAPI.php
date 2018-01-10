@@ -20,7 +20,8 @@ class ContributionAPI extends RESTAPI {
     function doPOST(){
         $contribution = new Contribution(array());
         $contribution->name = $this->POST('name');
-        $contribution->people = $this->POST('people');
+        $contribution->description = $this->POST('description');
+        $contribution->people = $this->POST('authors');
         $contribution->projects = $this->POST('projects');
         $contribution->partners = $this->POST('partners');
         $contribution->start_date = $this->POST('start');
@@ -36,7 +37,8 @@ class ContributionAPI extends RESTAPI {
             $contribution = Contribution::newFromId($this->getParam('id'));
         }
         $contribution->name = $this->POST('name');
-        $contribution->people = $this->POST('people');
+        $contribution->description = $this->POST('description');
+        $contribution->people = $this->POST('authors');
         $contribution->projects = $this->POST('projects');
         $contribution->partners = $this->POST('partners');
         $contribution->start_date = $this->POST('start');

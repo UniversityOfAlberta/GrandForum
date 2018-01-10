@@ -7,6 +7,26 @@
 class Contribution extends BackboneModel {
 
     static $cache = array();
+    static $typeMap = array("none" => "None",
+                            "cash" => "Cash",
+                            "caki" => "Cash and In-Kind",
+                            "inki" => "In-Kind",
+                            "grnt" => "Grant",
+                            "char" => "Chair",
+                            "scho" => "Scholarship",
+                            "cont" => "Contract",
+                            "fell" => "Fellowship");
+    static $subTypeMap = array("none" => "None",
+                               "equi" => "Equipment, Software",
+                               "mate" => "Materials",
+                               "logi" => "Logistical Support of Field Work",
+                               "srvc" => "Provision of Services",
+                               "faci" => "Use of Company Facilites",
+                               "sifi" => "Salaries of Scientific Staff",
+                               "mngr" => "Salaries of Managerial and Administrative Staff",
+                               "trvl" => "Project-related Travel",
+                               "othe" => "Other");
+    
 
     var $id;
     var $name;
@@ -36,11 +56,11 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["id$id"])){
             return self::$cache["id$id"];
         }
-        $sql = "SELECT *
-                FROM grand_contributions
-                WHERE id = '$id'
-                ORDER BY rev_id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('id' => $id),
+                                    array('rev_id' => 'DESC'),
+                                    array(1));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -55,12 +75,13 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["$name"])){
             return self::$cache["$name"];
         }
-        $sql = "SELECT c2.*
-                FROM grand_contributions c1, grand_contributions c2
-                WHERE c1.name = '$name'
-                AND c1.id = c2.id
-                ORDER BY c2.rev_id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('c1' => 'grand_contributions',
+                                          'c2' => 'grand_contributions'),
+                                    array('c2.*'),
+                                    array('c1.name' => EQ($name),
+                                          'c1.id' => EQ(COL('c2.id'))),
+                                    array('c2.rev_id' => 'DESC'),
+                                    array(1));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -75,10 +96,9 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["rev$id"])){
             return self::$cache["rev$id"];
         }
-        $sql = "SELECT *
-                FROM grand_contributions
-                WHERE rev_id = '$id'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('rev_id' => EQ($id)));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -158,7 +178,8 @@ class Contribution extends BackboneModel {
                      "partners" => $partners,
                      "cash" => $this->getCash(),
                      "inkind" => $this->getKind(),
-                     "total" => $this->getTotal());
+                     "total" => $this->getTotal(),
+                     "url" => $this->getUrl());
     }
     
     function create(){
@@ -188,21 +209,24 @@ class Contribution extends BackboneModel {
                                 array('contribution_id' => $this->rev_id,
                                       'project_id' => $project));
         }
+        $typeMap = array_flip(self::$typeMap);
+        $subTypeMap = array_flip(self::$subTypeMap);
         foreach($this->partners as $key => $partner){
-            $value = $partner['id'];
+            $partner = (array) $partner;
+            $value = @$partner['id'];
             if($value == ""){
                 $value = $partner['name'];
             }
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
-                                      'contact' => $partner['contacts'],
-                                      'industry' => $partner['industries'],
-                                      'level' => $partner['levels'][$key],
-                                      'type' => $partner['type'][$key],
-                                      'subtype' => $partner['subtype'][$key],
-                                      'cash' => $partner['cash'][$key],
-                                      'kind' => $partner['kind'][$key]));
+                                      'contact' => $partner['contact'],
+                                      'industry' => $partner['industry'],
+                                      'level' => $partner['level'],
+                                      'type' => @$typeMap[$partner['type']],
+                                      'subtype' => @$subTypeMap[$partner['subtype']],
+                                      'cash' => $partner['cash'],
+                                      'kind' => $partner['inkind']));
         }
         foreach($this->people as $author){
             if(is_numeric($author)){
@@ -220,7 +244,66 @@ class Contribution extends BackboneModel {
     }
     
     function update(){
-        return false;
+        $me = Person::newFromWgUser();
+        $people = array();
+        $projects = array();
+        foreach($this->people as $person){
+            if(is_object($person)){
+                $people[] = $person->id;
+            }
+            else{
+                $people[] = $person;
+            }
+        }
+        foreach($this->projects as $project){
+            if(is_object($project)){
+                $projects[] = $project->id;
+            }
+            else{
+                $projects[] = $project;
+            }
+        }
+        $this->people = $people;
+        $this->projects = $projects;
+        
+        DBFunctions::insert('grand_contributions',
+                            array('id' => $this->id,
+                                  'name' => $this->name,
+                                  'users' => serialize($this->people),
+                                  'description' => $this->description,
+                                  'access_id' => $me->getId(),
+                                  'start_date' => $this->start_date,
+                                  'end_date' => $this->end_date));
+        $this->rev_id = DBFunctions::insertId();
+        DBFunctions::insert('grand_contribution_edits',
+                            array('id' => $this->id,
+                                  'user_id' => $me->getId()));
+        foreach($this->projects as $project){
+            DBFunctions::insert('grand_contributions_projects',
+                                array('contribution_id' => $this->rev_id,
+                                      'project_id' => $project));
+        }
+        $typeMap = array_flip(self::$typeMap);
+        $subTypeMap = array_flip(self::$subTypeMap);
+        foreach($this->partners as $key => $partner){
+            $partner = (array) $partner;
+            $value = @$partner['id'];
+            if($value == ""){
+                $value = $partner['name'];
+            }
+            DBFunctions::insert('grand_contributions_partners',
+                                array('contribution_id' => $this->rev_id,
+                                      'partner' => $value,
+                                      'contact' => $partner['contact'],
+                                      'industry' => $partner['industry'],
+                                      'level' => $partner['level'],
+                                      'type' => @$typeMap[$partner['type']],
+                                      'subtype' => @$subTypeMap[$partner['subtype']],
+                                      'cash' => $partner['cash'],
+                                      'kind' => $partner['inkind']));
+        }
+        // Notifications
+        return $this;
     }
     
     function delete(){
@@ -329,16 +412,11 @@ class Contribution extends BackboneModel {
     function getName(){
         return $this->name;
     }
-    
-    // Returns the wiki formatted name of this Contribution
-	function getWikiName(){
-		return str_replace("?", "%3F", $this->name);
-	}
 	
 	// Returns the url of this Contribution
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/Contribution:{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/Special:Contributions#/{$this->getId()}";
 	}
 	
 	// Returns whether or not this Contribution belongs to the specified project
@@ -355,10 +433,9 @@ class Contribution extends BackboneModel {
     function getProjects(){
         if($this->projectsWaiting){
             $projects = array();
-            $sql = "SELECT *
-                    FROM `grand_contributions_projects`
-                    WHERE contribution_id = '{$this->rev_id}'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_contributions_projects'),
+                                        array('project_id'),
+                                        array('contribution_id' => EQ($this->rev_id)));
             if(count($data) > 0){
                 foreach($data as $row){
                     $projects[] = Project::newFromId($row['project_id']);
@@ -410,11 +487,10 @@ class Contribution extends BackboneModel {
     
     // Returns the parent of this Contribution
     function getParent(){
-        $sql = "SELECT rev_id
-                FROM grand_contributions
-                WHERE id = '{$this->id}'
-                AND rev_id < '{$this->rev_id}'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('id' => EQ($this->id),
+                                          'rev_id' => LT($this->rev_id)));
         $contribution = new Contribution($data);
         return $contribution;
     }
@@ -423,10 +499,9 @@ class Contribution extends BackboneModel {
     function getPartners(){
         if($this->partnersWaiting){
             $partners = array();
-            $sql = "SELECT *
-                    FROM `grand_contributions_partners`
-                    WHERE contribution_id = '{$this->rev_id}'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_contributions_partners'),
+                                        array('*'),
+                                        array('contribution_id' => EQ($this->rev_id)));
             if(count($data) > 0){
                 foreach($data as $row){
                     $p = Partner::newFromId($row['partner']);
@@ -521,37 +596,7 @@ class Contribution extends BackboneModel {
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->type[$id];
-        $type = "";
-        switch($type0){
-            default:
-            case "none":
-                $type = "None";
-                break;
-            case "cash":
-                $type="Cash";
-                break;
-            case "caki":
-                $type="Cash and In-Kind";
-                break;
-            case "inki":
-                $type="In-Kind";
-                break;
-            case "grnt":
-                $type="Grant";
-                break;
-            case "char":
-                $type="Chair";
-                break;
-            case "scho":
-                $type="Scholarship";
-                break;
-            case "cont":
-                $type="Contract";
-                break;
-            case "fell":
-                $type="Fellowship";
-                break;
-        }
+        $type = (isset(self::$typeMap[$type0])) ? self::$typeMap[$type0] : $type0;
         return $type;
     }
     
@@ -592,42 +637,7 @@ class Contribution extends BackboneModel {
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->subtype[$id];
-        $type = "";
-        switch($type0){
-            case "none":
-                $type = "None";
-                break;
-            case "equi":
-                $type="Equipment, Software";
-                break;
-            case "mate":
-                $type="Materials";
-                break;
-            case "logi":
-                $type="Logistical Support of Field Work";
-                break;
-            case "srvc":
-                $type="Provision of Services";
-                break;
-            case "faci":
-                $type="Use of Company Facilites";
-                break;
-            case "sifi":
-                $type="Salaries of Scientific Staff";
-                break;
-            case "mngr":
-                $type="Salaries of Managerial and Administrative Staff";
-                break;
-            case "trvl":
-                $type="Project-related Travel";
-                break;
-            case "othe":
-                $type="Other";
-                break;
-            default:
-                $type = $type0;
-                break;
-        }
+        $type = (isset(self::$subTypeMap[$type0])) ? self::$subTypeMap[$type0] : $type0;
         return $type;
     }
     

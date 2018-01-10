@@ -66,7 +66,8 @@ Contribution = Backbone.Model.extend({
             projects: new Array(),
             cash: 0,
             inkind: 0,
-            total: 0
+            total: 0,
+            url: ""
         };
     }
 
