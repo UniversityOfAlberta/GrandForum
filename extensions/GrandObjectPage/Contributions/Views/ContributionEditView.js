@@ -259,6 +259,7 @@ ContributionEditView = Backbone.View.extend({
     
     renderPartners: function(){
         //console.log("RENDER PARTNERS");
+        this.$("#saveContribution").prop('disabled', false);
         _.each(this.model.get('partners'), $.proxy(function(partner, i){
             var type = partner.type;
             var subtype = partner.subtype;
@@ -282,6 +283,36 @@ ContributionEditView = Backbone.View.extend({
             }
             else{
                 this.$("#partner" + i + " #other_subtype").hide();
+            }
+            
+            // Warnings
+            this.$("#warning" + i).empty();
+            var reg = /^\d*$/;
+            if(partner.name.trim() == ''){
+                this.$("#warning" + i).append("This partner is missing a name<br />");
+            }
+            if(partner.type.trim() == ''){
+                this.$("#warning" + i).append("Missing contribution type<br />");
+            }
+            if(this.$("#partner" + i + " #subtype").is(":visible") && partner.subtype.trim() == ''){
+                this.$("#warning" + i).append("Missing contribution sub-type<br />");
+            }
+            if(this.$("#partner" + i + " #other_subtype").is(":visible") && partner.other_subtype.trim() == ''){
+                this.$("#warning" + i).append("Missing contribution sub-type<br />");
+            }
+            if(this.$("#partner" + i + " #cash").is(":visible") && !reg.test(partner.cash)){
+                this.$("#warning" + i).append("Cash is not an integer<br />");
+            }
+            if(this.$("#partner" + i + " #inkind").is(":visible") && !reg.test(partner.inkind)){
+                this.$("#warning" + i).append("In-Kind is not an integer<br />");
+            }
+            
+            if(this.$("#warning" + i).text() != ""){
+                this.$("#warning" + i).show();
+                this.$("#saveContribution").prop('disabled', true);
+            }
+            else{
+                this.$("#warning" + i).hide();
             }
         }, this));
     },

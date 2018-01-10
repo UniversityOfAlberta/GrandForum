@@ -20,6 +20,7 @@
         <td valign="top" width="50%">
             <h2>Partners</h2>
             <% _.each(partners, $.proxy(function(partner, i){ %>
+                <div class="warning" style="display:none;" id="warning<%= i %>"></div>
                 <table id="partner<%= i %>">
                     <tr>
                         <td align="right"><b>Partner:</b></td>
@@ -50,7 +51,7 @@
                                                                                         'Contract']}) %></td>
                     </tr>
                     <tr id="subtype">
-                        <td align="right"><b>SubType:</b></td>
+                        <td align="right"><b>Sub-Type:</b></td>
                         <td>
                             <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
                                                                                            'Equipment, Software',
