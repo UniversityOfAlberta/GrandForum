@@ -9,12 +9,16 @@ ContributionEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:name", this.render);
         this.listenTo(this.model, "change:projects", this.render);
         this.listenTo(this.model, "change:total", this.render);
         this.listenTo(this.model, "add:partners", this.render);
         this.listenTo(this.model, "delete:partners", this.render);
         this.listenTo(this.model, "change:partners", this.renderPartners);
+        this.listenTo(this.model, "change:name", function(){
+            if(!this.isDialog){
+                main.set('title', this.model.get('name'));
+            }
+        });
         this.template = _.template($('#contribution_edit_template').html());
         this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
         this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
@@ -258,7 +262,6 @@ ContributionEditView = Backbone.View.extend({
     },
     
     renderPartners: function(){
-        //console.log("RENDER PARTNERS");
         this.$("#saveContribution").prop('disabled', false);
         _.each(this.model.get('partners'), $.proxy(function(partner, i){
             var type = partner.type;
@@ -318,8 +321,7 @@ ContributionEditView = Backbone.View.extend({
     },
     
     render: function(){
-        //console.log("RENDER");
-        main.set('title', this.model.get('name'));
+        //main.set('title', this.model.get('name'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderPartners();

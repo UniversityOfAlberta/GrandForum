@@ -26,17 +26,16 @@ class Contribution extends BackboneModel {
                                "mngr" => "Salaries of Managerial and Administrative Staff",
                                "trvl" => "Project-related Travel",
                                "othe" => "Other");
-    
 
     var $id;
     var $name;
     var $rev_id;
     var $people = array();
-    var $peopleWaiting;
+    var $peopleWaiting = true;
     var $projects;
-    var $projectsWaiting;
+    var $projectsWaiting = true;
     var $partners;
-    var $partnersWaiting;
+    var $partnersWaiting = true;
     var $type;
     var $subtype;
     var $cash;
@@ -195,8 +194,30 @@ class Contribution extends BackboneModel {
         if(count($data) > 0){
             $id = $data[0]['id'];
         }
+        $this->id = $id + 1;
+        $people = array();
+        $projects = array();
+        foreach($this->people as $person){
+            if(is_object($person)){
+                $people[] = $person->id;
+            }
+            else{
+                $people[] = $person;
+            }
+        }
+        foreach($this->projects as $project){
+            if(is_object($project)){
+                $projects[] = $project->id;
+            }
+            else{
+                $projects[] = $project;
+            }
+        }
+        $this->people = $people;
+        $this->projects = $projects;
+        
         DBFunctions::insert('grand_contributions',
-                            array('id' => $id + 1,
+                            array('id' => $this->id,
                                   'name' => $this->name,
                                   'users' => serialize($this->people),
                                   'description' => $this->description,
@@ -205,7 +226,7 @@ class Contribution extends BackboneModel {
                                   'end_date' => $this->end_date));
         $this->rev_id = DBFunctions::insertId();
         DBFunctions::insert('grand_contribution_edits',
-                            array('id' => $id + 1,
+                            array('id' => $this->id,
                                   'user_id' => $me->getId()));
         foreach($this->projects as $project){
             DBFunctions::insert('grand_contributions_projects',
@@ -232,18 +253,18 @@ class Contribution extends BackboneModel {
                                       'cash' => $partner['cash'],
                                       'kind' => $partner['inkind']));
         }
-        foreach($this->people as $author){
+        /*foreach($this->people as $author){
             if(is_numeric($author)){
                 $person = Person::newFromId($author);
                 if($person != null && $person->getName() != null){
-                    if($contribution->getAccessId() != $person->getId() && 
-                       $contribution->getAccessId() != 0){
+                    if($this->getAccessId() != $person->getId() && 
+                       $this->getAccessId() != 0){
                         continue;
                     }
                     Notification::addNotification($me, $person, "Contribution Created", "A new Contribution entitled <i>{$this->getName()}</i>, has been created with yourself listed as one of the researchers", "{$this->getUrl()}");
                 }
             }
-        }
+        }*/
         return $this;
     }
     

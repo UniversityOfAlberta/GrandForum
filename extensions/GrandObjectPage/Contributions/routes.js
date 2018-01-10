@@ -17,6 +17,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "new": "newContribution",
         ":id": "showContribution",
         ":id/edit": "editContribution"
     }
@@ -35,6 +36,13 @@ pageRouter.on('route:showContribution', function (id) {
 pageRouter.on('route:editContribution', function (id) {
     // Get A single product
     var contribution = new Contribution({'id': id});
+    this.closeCurrentView();
+    this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
+});
+
+pageRouter.on('route:newContribution', function () {
+    // Get A single product
+    var contribution = new Contribution();
     this.closeCurrentView();
     this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
 });
