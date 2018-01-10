@@ -307,7 +307,17 @@ class Contribution extends BackboneModel {
     }
     
     function delete(){
-        return false;
+        DBFunctions::delete('grand_contributions',
+                            array('id' => $this->id));
+        DBFunctions::delete('grand_contributions_partners',
+                            array('contribution_id' => $this->rev_id));
+        DBFunctions::delete('grand_contributions_projects',
+                            array('contribution_id' => $this->rev_id));
+        DBFunctions::delete('grand_contribution_edits',
+                            array('id' => $this->id));
+        $this->id = null;
+        $this->rev_id = null;
+        return true;
     }
     
     function exists(){

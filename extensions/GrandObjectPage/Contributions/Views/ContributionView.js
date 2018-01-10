@@ -23,17 +23,13 @@ ContributionView = Backbone.View.extend({
         if(this.model.get('deleted') != true){
             this.model.destroy({
                 success: function(model, response) {
-                    if(response.deleted == true){
-                        model.set(response);
-                        clearSuccess();
-                        clearError();
-                        addSuccess('The Contribution <i>' + response.name + '</i> was deleted sucessfully');
-                    }
-                    else{
-                        clearSuccess();
-                        clearError();
-                        addError('The Contribution <i>' + response.name + '</i> was not deleted sucessfully');
-                    }
+                    model.set(response);
+                    clearSuccess();
+                    clearError();
+                    addSuccess('The Contribution <i>' + response.name + '</i> was deleted sucessfully');
+                    this.$("#deleteContribution").prop('disabled', true);
+                    this.$("#editContribution").prop('disabled', true);
+                    
                 },
                 error: function(model, response) {
                     clearSuccess();
@@ -69,11 +65,6 @@ ContributionView = Backbone.View.extend({
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
         this.renderAuthors();
-        if(this.model.get('deleted') == true){
-            this.$el.find("#deleteContribution").prop('disabled', true);
-            clearInfo();
-            addInfo('This Contribution has been deleted, and will not show up anywhere else on the forum.');
-        }
         return this.$el;
     }
 
