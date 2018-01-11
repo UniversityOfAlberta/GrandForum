@@ -270,6 +270,7 @@ class Contribution extends BackboneModel {
                 }
             }
         }*/
+        $this->projectsWaiting = true;
         return $this;
     }
     
@@ -339,6 +340,7 @@ class Contribution extends BackboneModel {
                                       'kind' => $partner['inkind']));
         }
         // Notifications
+        $this->projectsWaiting = true;
         return $this;
     }
     
@@ -871,6 +873,9 @@ class Contribution extends BackboneModel {
         // There could probably be some stuff cached to speed it up.
         if($me == null){
             $me = Person::newFromWgUser();
+        }
+        if(!$me->isLoggedIn()){
+            return false;
         }
         if($me->isRoleAtLeast(STAFF)){
             return true;

@@ -190,7 +190,7 @@ function orderSpecialPages(&$aSpecialPages){
         //echo "$key\n";
         if(!$me->isRoleAtLeast(STAFF) && 
             ($key == "Log" || $key == "Listusers" ||
-             $key == "Listgrouprights" || $key == "Contributions" ||
+             $key == "Listgrouprights" ||
              $key == "BlockList" || $key == "Activeusers" || 
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
