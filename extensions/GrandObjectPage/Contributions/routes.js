@@ -17,6 +17,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "": "showContributions",
         "new": "newContribution",
         ":id": "showContribution",
         ":id/edit": "editContribution"
@@ -25,6 +26,19 @@ PageRouter = Backbone.Router.extend({
 
 // Initiate the router
 var pageRouter = new PageRouter;
+
+pageRouter.on('route:showContributions', function(){
+    // Show all Grants (the set of grants will vary depending on the user)
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contributions = new Contributions();
+        this.closeCurrentView();
+        this.currentView = new ContributionsView({el: $("#currentView"), model: contributions});
+    }
+});
 
 pageRouter.on('route:showContribution', function (id) {
     // Get A single product

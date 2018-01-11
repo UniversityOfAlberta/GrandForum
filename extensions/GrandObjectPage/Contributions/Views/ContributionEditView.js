@@ -321,7 +321,6 @@ ContributionEditView = Backbone.View.extend({
     },
     
     render: function(){
-        //main.set('title', this.model.get('name'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderPartners();

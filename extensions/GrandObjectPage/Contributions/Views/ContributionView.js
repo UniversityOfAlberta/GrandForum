@@ -45,7 +45,7 @@ ContributionView = Backbone.View.extend({
         var that = this;
         _.each(this.model.get('authors'), function(author, index){
             var link = new Link({id: author.id,
-                                 text: author.name.replace(/&quot;/g, ''),
+                                 text: author.name.replace(/"/g, ''),
                                  url: author.url,
                                  target: ''});
             views.push(new PersonLinkView({model: link}).render());

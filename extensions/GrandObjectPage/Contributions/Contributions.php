@@ -14,6 +14,7 @@ class Contributions extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
+                     'contributions',
                      'contribution',
                      'contribution_edit',
                      'ManageProducts/manage_products_other_popup',
@@ -22,6 +23,7 @@ class Contributions extends BackbonePage {
     
     function getViews(){
         return array('Backbone/*',
+                     'ContributionsView',
                      'ContributionView',
                      'ContributionEditView');
     }

@@ -199,7 +199,12 @@ class Contribution extends BackboneModel {
         $projects = array();
         foreach($this->people as $person){
             if(is_object($person)){
-                $people[] = $person->id;
+                if(isset($person->id)){
+                    $people[] = $person->id;
+                }
+                else{
+                    $people[] = $person->fullname;
+                }
             }
             else{
                 $people[] = $person;
@@ -274,7 +279,12 @@ class Contribution extends BackboneModel {
         $projects = array();
         foreach($this->people as $person){
             if(is_object($person)){
-                $people[] = $person->id;
+                if(isset($person->id)){
+                    $people[] = $person->id;
+                }
+                else{
+                    $people[] = $person->fullname;
+                }
             }
             else{
                 $people[] = $person;
