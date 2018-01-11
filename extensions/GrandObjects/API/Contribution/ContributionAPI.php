@@ -21,6 +21,8 @@ class ContributionAPI extends RESTAPI {
         $contribution = new Contribution(array());
         $contribution->name = $this->POST('name');
         $contribution->description = $this->POST('description');
+        $contribution->institution = $this->POST('institution');
+        $contribution->province = $this->POST('province');
         $contribution->people = $this->POST('authors');
         $contribution->projects = $this->POST('projects');
         $contribution->partners = $this->POST('partners');
@@ -38,6 +40,8 @@ class ContributionAPI extends RESTAPI {
         }
         $contribution->name = $this->POST('name');
         $contribution->description = $this->POST('description');
+        $contribution->institution = $this->POST('institution');
+        $contribution->province = $this->POST('province');
         $contribution->people = $this->POST('authors');
         $contribution->projects = $this->POST('projects');
         $contribution->partners = $this->POST('partners');

@@ -5,6 +5,14 @@
 <h2>Description</h2>
 <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 <table>
+    <tr class="tooltip" title="The institution where the contribution was used">
+        <td align="right"><b>Institution:</b></td>
+        <td><%= HTML.TextBox(this, 'institution', {size: '40'}) %><br /></td>
+    </tr>
+    <tr class="tooltip" title="The province in which that institution is located">
+        <td align="right"><b>Province:</b></td>
+        <td><%= HTML.TextBox(this, 'province', {size: '40'}) %><br /></td>
+    </tr>
     <tr>
         <td align="right"><b>Start Date:</b></td>
         <td><%= HTML.DatePicker(this, 'start', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
@@ -50,7 +58,7 @@
                                                                                         'Fellowship',
                                                                                         'Contract']}) %></td>
                     </tr>
-                    <tr id="subtype">
+                    <tr id="subtype_inkind">
                         <td align="right"><b>Sub-Type:</b></td>
                         <td>
                             <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
@@ -64,6 +72,27 @@
                                                                                            'Project-related Travel',
                                                                                            'Other']}) %>
                             <span id="other_subtype"><%= HTML.TextBox(this, 'partners.' + i + '.other_subtype') %></span>
+                        </td>
+                    </tr>
+                    <tr id="subtype_cash">
+                        <td align="right"><b>Sub-Type:</b></td>
+                        <td>
+                            <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
+                                                                                           'Salaries: Bachelors - Canadian and Permanent Residents',
+                                                                                           'Salaries: Bachelors - Foreign',
+                                                                                           'Salaries: Masters - Canadian and Permanent Residents',
+                                                                                           'Salaries: Masters - Foreign',
+                                                                                           'Salaries: Doctorate - Canadian and Permanent Residents',
+                                                                                           'Salaries: Doctorate - Foreign',
+                                                                                           'Salaries: Post-doctoral Canadian and Permanent residents',
+                                                                                           'Salaries: Postdoctoral',
+                                                                                           'Salaries: Other',
+                                                                                           'Salary and benefits of incumbent (Canada Research Chairs only)',
+                                                                                           'Professional and technical services/contracts',
+                                                                                           'Equipment (incl. powered vehicles)',
+                                                                                           'Materials, supplies and other expenditures',
+                                                                                           'Travel',
+                                                                                           'Other expenditures']}) %>
                         </td>
                     </tr>
                     <tr id="cash">

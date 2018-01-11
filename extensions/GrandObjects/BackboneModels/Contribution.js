@@ -60,6 +60,8 @@ Contribution = Backbone.Model.extend({
             revId: "",
             name: "",
             description: "",
+            institution: "",
+            province: "",
             start: "",
             end: "",
             authors: new Array(),

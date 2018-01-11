@@ -6,6 +6,8 @@
             <th>People</th>
             <th>Partners</th>
             <th>Projects</th>
+            <th>Institution</th>
+            <th>Province</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th>Total ($)</th>
@@ -29,6 +31,8 @@
                 <td><%= _.map(contribution.get('projects'), function(p){
                         return "<a href='" + p.url + "'>" + p.name + "</a>";
                     }).join(', ') %></td>
+                <td><%= contribution.get('institution') %></td>
+                <td><%= contribution.get('province') %></td>
                 <td><%= contribution.get('start') %></td>
                 <td><%= contribution.get('end') %></td>
                 <td align="right"><%= number_format(contribution.get('total')) %></td>

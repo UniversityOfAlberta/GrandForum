@@ -25,7 +25,22 @@ class Contribution extends BackboneModel {
                                "sifi" => "Salaries of Scientific Staff",
                                "mngr" => "Salaries of Managerial and Administrative Staff",
                                "trvl" => "Project-related Travel",
-                               "othe" => "Other");
+                               "othe" => "Other",
+                               "1a"   => "Salaries: Bachelors - Canadian and Permanent Residents",
+                               "1b"   => "Salaries: Bachelors - Foreign",
+                               "1c"   => "Salaries: Masters - Canadian and Permanent Residents",
+                               "1d"   => "Salaries: Masters - Foreign",
+                               "1e"   => "Salaries: Doctorate - Canadian and Permanent Residents",
+                               "1f"   => "Salaries: Doctorate - Foreign",
+                               "2a"   => "Salaries: Post-doctoral Canadian and Permanent residents",
+                               "2b"   => "Salaries: Postdoctoral",
+                               "2c"   => "Salaries: Other",
+                               "3"    => "Salary and benefits of incumbent (Canada Research Chairs only)",
+                               "4"    => "Professional and technical services/contracts",
+                               "5"    => "Equipment (incl. powered vehicles)",
+                               "6"    => "Materials, supplies and other expenditures",
+                               "7"    => "Travel",
+                               "8"    => "Other expenditures");
 
     var $id;
     var $name;
@@ -41,6 +56,8 @@ class Contribution extends BackboneModel {
     var $cash;
     var $kind;
     var $description;
+    var $institution;
+    var $province;
     var $access_id;
     var $start_date;
     var $end_date;
@@ -123,6 +140,8 @@ class Contribution extends BackboneModel {
             $this->kind = array();
             $this->unknown = array();
             $this->description = $data[0]['description'];
+            $this->institution = $data[0]['institution'];
+            $this->province = $data[0]['province'];
             $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
@@ -173,6 +192,8 @@ class Contribution extends BackboneModel {
                      "revId" => $this->getRevId(),
                      "name" => $this->getName(),
                      "description" => $this->getDescription(),
+                     "institution" => $this->getInstitution(),
+                     "province" => $this->getProvince(),
                      "start" => substr($this->getStartDate(), 0, 10),
                      "end" => substr($this->getEndDate(), 0, 10),
                      "authors" => $authors,
@@ -226,6 +247,8 @@ class Contribution extends BackboneModel {
                                   'name' => $this->name,
                                   'users' => serialize($this->people),
                                   'description' => $this->description,
+                                  'institution' => $this->institution,
+                                  'province' => $this->province,
                                   'access_id' => $me->getId(),
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
@@ -307,6 +330,8 @@ class Contribution extends BackboneModel {
                                   'name' => $this->name,
                                   'users' => serialize($this->people),
                                   'description' => $this->description,
+                                  'institution' => $this->institution,
+                                  'province' => $this->province,
                                   'access_id' => $me->getId(),
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
@@ -799,6 +824,14 @@ class Contribution extends BackboneModel {
     // Returns the description of this Contribution
     function getDescription(){
         return $this->description;
+    }
+    
+    function getInstitution(){
+        return $this->institution;
+    }
+    
+    function getProvince(){
+        return $this->province;
     }
     
     /**

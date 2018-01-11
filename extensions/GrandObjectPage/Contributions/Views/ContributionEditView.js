@@ -264,23 +264,41 @@ ContributionEditView = Backbone.View.extend({
     renderPartners: function(){
         this.$("#saveContribution").prop('disabled', false);
         _.each(this.model.get('partners'), $.proxy(function(partner, i){
+            var lastType = this.$("#partner" + i).attr('last-type');
             var type = partner.type;
             var subtype = partner.subtype;
-            if(type == 'In-Kind'){
-                this.$("#partner" + i + " #inkind").show();
-                this.$("#partner" + i + " #cash").hide();
-                this.$("#partner" + i + " #subtype").show();
+            this.$("#partner" + i).attr('last-type', type);
+            if(lastType != type){
+                // Changed UI based on Type
+                if(type == 'In-Kind'){
+                    this.$("#partner" + i + " #cash input").val(0).trigger("change");
+                    this.$("#partner" + i + " #inkind").show();
+                    this.$("#partner" + i + " #cash").hide();
+                    this.$("#partner" + i + " #subtype_inkind").show();
+                    this.$("#partner" + i + " #subtype_cash").hide();
+                }
+                else if(type == 'Cash and In-Kind'){
+                    this.$("#partner" + i + " #inkind").show();
+                    this.$("#partner" + i + " #cash").show();
+                    this.$("#partner" + i + " #subtype_inkind").show();
+                    this.$("#partner" + i + " #subtype_cash").hide();
+                }
+                else if(type == 'Cash'){
+                    this.$("#partner" + i + " #inkind input").val(0).trigger("change");
+                    this.$("#partner" + i + " #inkind").hide();
+                    this.$("#partner" + i + " #cash").show();
+                    this.$("#partner" + i + " #subtype_inkind").hide();
+                    this.$("#partner" + i + " #subtype_cash").show();
+                }
+                else{
+                    this.$("#partner" + i + " #inkind input").val(0).trigger("change");
+                    this.$("#partner" + i + " #inkind").hide();
+                    this.$("#partner" + i + " #cash").show();
+                    this.$("#partner" + i + " #subtype_inkind").hide();
+                    this.$("#partner" + i + " #subtype_cash").hide();
+                }
             }
-            else if(type == 'Cash and In-Kind'){
-                this.$("#partner" + i + " #inkind").show();
-                this.$("#partner" + i + " #cash").show();
-                this.$("#partner" + i + " #subtype").show();
-            }
-            else{
-                this.$("#partner" + i + " #inkind").hide();
-                this.$("#partner" + i + " #cash").show();
-                this.$("#partner" + i + " #subtype").hide();
-            }
+            // Changing UI based on Sub-Type
             if(subtype == "Other"){
                 this.$("#partner" + i + " #other_subtype").show();
             }
@@ -297,7 +315,7 @@ ContributionEditView = Backbone.View.extend({
             if(partner.type.trim() == ''){
                 this.$("#warning" + i).append("Missing contribution type<br />");
             }
-            if(this.$("#partner" + i + " #subtype").is(":visible") && partner.subtype.trim() == ''){
+            if((this.$("#partner" + i + " #subtype_cash").is(":visible") || this.$("#partner" + i + " #subtype_inkind").is(":visible")) && partner.subtype.trim() == ''){
                 this.$("#warning" + i).append("Missing contribution sub-type<br />");
             }
             if(this.$("#partner" + i + " #other_subtype").is(":visible") && partner.other_subtype.trim() == ''){

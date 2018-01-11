@@ -4,6 +4,18 @@
 <h2>Description</h2>
 <p><%= nl2br(description) %></p>
 <table>
+    <% if(institution.trim() != ""){ %>
+        <tr>
+            <td align="right"><b>Instution:</b></td>
+            <td><%= institution %></td>
+        </tr>
+    <% } %>
+    <% if(province.trim() != ""){ %>
+        <tr>
+            <td align="right"><b>Province:</b></td>
+            <td><%= province %></td>
+        </tr>
+    <% } %>
     <tr>
         <td align="right"><b>Start Date:</b></td>
         <td><%= dateTimeHelpers.formatDate(start.substr(0, 10), 'yyyy-MM-dd', 'MMMM d, yyyy') %></td>
