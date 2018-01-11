@@ -298,6 +298,9 @@ class Contribution extends BackboneModel {
     }
     
     function update(){
+        if(!$this->isAllowedToEdit()){
+            return $this;
+        }
         $me = Person::newFromWgUser();
         $people = array();
         $projects = array();
@@ -370,6 +373,9 @@ class Contribution extends BackboneModel {
     }
     
     function delete(){
+        if(!$this->isAllowedToEdit()){
+            return $this;
+        }
         DBFunctions::delete('grand_contributions',
                             array('id' => $this->id));
         DBFunctions::delete('grand_contributions_partners',

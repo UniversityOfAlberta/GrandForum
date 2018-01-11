@@ -9,6 +9,9 @@ class ContributionAPI extends RESTAPI {
             } else {
                 $contribution = Contribution::newFromId($this->getParam('id'));
             }
+            if(!$contribution->isAllowedToEdit()){
+                $this->throwError("This contribution does not exist");
+            }
             return $contribution->toJSON();
         }
         else{
@@ -18,6 +21,10 @@ class ContributionAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in to create a new Contribution");
+        }
         $contribution = new Contribution(array());
         $contribution->name = $this->POST('name');
         $contribution->description = $this->POST('description');
@@ -33,6 +40,9 @@ class ContributionAPI extends RESTAPI {
     }
     
     function doPUT(){
+        if(!$contribution->isAllowedToEdit()){
+            $this->throwError("This contribution does not exist");
+        }
         if($this->getParam('rev_id') != ""){
             $contribution = Contribution::newFromRevId($this->getParam('rev_id'));
         } else {
@@ -52,6 +62,9 @@ class ContributionAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        if(!$contribution->isAllowedToEdit()){
+            $this->throwError("This contribution does not exist");
+        }
         if($this->getParam('rev_id') != ""){
             $contribution = Contribution::newFromRevId($this->getParam('rev_id'));
         } else {
