@@ -168,7 +168,7 @@ EOF;
                         }
                     }
                     $details .= "</tbody></table><br /><br />\n";
-                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddContributionPage\");' value='Add Contribution' />\n";
+                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:Contributions\");' value='Manage Contributions' />\n";
                 }
                 $table .= $this->dashboardRow($type, $details);
             }

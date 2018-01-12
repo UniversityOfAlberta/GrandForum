@@ -783,7 +783,7 @@
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="true" details="true" showButton="false" totalOnly="true">
             <![CDATA[
                 {$item}<br />
-                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:AddContributionPage' target='_blank'>Add/Edit Contributions</a>
+                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:Contributions' target='_blank'>Manage Contributions</a>
             ]]>
         </ReportItem>
         <ReportItem id="eligible" type="Popup" title="What are eligible contributions?" text="
