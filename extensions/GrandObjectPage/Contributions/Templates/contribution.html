@@ -31,8 +31,15 @@
     <table>
         <% if(partner.contact != '' && partner.contact != null){ %>
             <tr>
-                <td align="right"><b>Contact:</b></td>
-                <td><%= partner.contact %></td>
+                <td valign="top" align="right"><b>Contact:</b></td>
+                <td>
+                    <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(partner.contact.email != ''){ %> (<%= partner.contact.email %>) <% } %>
+                    <% if(partner.contact.address != '') { %>
+                        <br /><%= partner.contact.address %>
+                    <% } if (partner.contact.phone != '') { %>
+                        <br /><%= partner.contact.phone %>
+                    <% } %>
+                </td>
             </tr>
         <% } %>
         <% if(partner.industry != '' && partner.industry != null){ %>

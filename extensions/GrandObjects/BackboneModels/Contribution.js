@@ -4,6 +4,7 @@ Contribution = Backbone.Model.extend({
         this.on("change:partners", this.updateTotals);
         this.on("delete:partners", this.updateTotals);
         this.on("add:partners", this.updateTotals);
+        this.on("sync", this.fixContact);
     },
     
     updateTotals: function(){
@@ -25,6 +26,22 @@ Contribution = Backbone.Model.extend({
         this.set('inkind', inkind);
         this.set('total', total);
     },
+    
+    fixContact: function(){
+        // Converts old contact format into the new one
+        var partners = this.get('partners');
+        _.each(partners, function(partner){
+            if(!_.isObject(partner.contact)){
+                partner.contact = {honorific: '', 
+                                   first: partner.contact,
+                                   last: '',
+                                   address: '',
+                                   phone: '',
+                                   email: ''};
+            }
+        });
+        this.trigger("change");
+    },
 
     url: function(){
         if(this.get('revId') != ""){
@@ -39,7 +56,7 @@ Contribution = Backbone.Model.extend({
         var partners = this.get('partners');
         var partner = {
             name:	  "",
-            contact:  "",	
+            contact:  {},	
             industry: "",
             level:	  "",
             type:	  "",

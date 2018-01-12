@@ -253,9 +253,14 @@ class Contribution extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
         $this->rev_id = DBFunctions::insertId();
-        DBFunctions::insert('grand_contribution_edits',
-                            array('id' => $this->id,
-                                  'user_id' => $me->getId()));
+        if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                     array('*'),
+                                     array('id' => $this->id,
+                                           'user_id' => $me->getId()))) == 0){
+            DBFunctions::insert('grand_contribution_edits',
+                                array('id' => $this->id,
+                                      'user_id' => $me->getId()));
+        }
         foreach($this->projects as $project){
             DBFunctions::insert('grand_contributions_projects',
                                 array('contribution_id' => $this->rev_id,
@@ -273,7 +278,7 @@ class Contribution extends BackboneModel {
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
-                                      'contact' => $partner['contact'],
+                                      'contact' => json_encode($partner['contact']),
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
@@ -339,9 +344,14 @@ class Contribution extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
         $this->rev_id = DBFunctions::insertId();
-        DBFunctions::insert('grand_contribution_edits',
-                            array('id' => $this->id,
-                                  'user_id' => $me->getId()));
+        if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                     array('*'),
+                                     array('id' => $this->id,
+                                           'user_id' => $me->getId()))) == 0){
+            DBFunctions::insert('grand_contribution_edits',
+                                array('id' => $this->id,
+                                      'user_id' => $me->getId()));
+        }
         foreach($this->projects as $project){
             DBFunctions::insert('grand_contributions_projects',
                                 array('contribution_id' => $this->rev_id,
@@ -359,7 +369,7 @@ class Contribution extends BackboneModel {
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
-                                      'contact' => $partner['contact'],
+                                      'contact' => json_encode($partner['contact']),
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
@@ -592,7 +602,10 @@ class Contribution extends BackboneModel {
                         $partners[] = $p;
                     }
                     if($p != null && $p->getContact() == null && $row['contact'] != null){
-                        $p->contact = $row['contact'];
+                        $p->contact = json_decode($row['contact']);
+                        if($p->contact == null){
+                            $p->contact = $row['contact'];
+                        }
                     }
                     if($p != null && $p->getIndustry() == null && $row['industry'] != null){
                         $p->industry = $row['industry'];

@@ -35,8 +35,35 @@
                         <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50'}) %></td>
                     </tr>
                     <tr>
-                        <td valign="top" style="padding-top:5px;" align="right"><b>Contact:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.contact', {size: '50'}) %><br /><small>This information is for reporting purposes only. Partners will not be contacted.</small></td>
+                        <td valign="top" style="padding-top:11px;width:100px;" align="right"><b>Contact:</b><br /><small style="line-height: 1em;">This information is for reporting purposes only. Partners will not be contacted.</small></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Honorific:</td>
+                                    <td><%= HTML.Select(this, 'partners.' + i + '.contact.honorific', {options: ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Mme', 'M.']}) %></td>
+                                </tr>
+                                <tr>
+                                    <td>First Name:</td>
+                                    <td><%= HTML.TextBox(this, 'partners.' + i + '.contact.first') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Last Name:</td>
+                                    <td><%= HTML.TextBox(this, 'partners.' + i + '.contact.last') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Mailing Address:</td>
+                                    <td><%= HTML.TextBox(this, 'partners.' + i + '.contact.address') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone Number:</td>
+                                    <td><%= HTML.TextBox(this, 'partners.' + i + '.contact.phone') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Email Address:</td>
+                                    <td><%= HTML.TextBox(this, 'partners.' + i + '.contact.email') %></td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td align="right"><b>Sector:</b></td>

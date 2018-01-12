@@ -40,13 +40,13 @@ class ContributionAPI extends RESTAPI {
     }
     
     function doPUT(){
-        if(!$contribution->isAllowedToEdit()){
-            $this->throwError("This contribution does not exist");
-        }
         if($this->getParam('rev_id') != ""){
             $contribution = Contribution::newFromRevId($this->getParam('rev_id'));
         } else {
             $contribution = Contribution::newFromId($this->getParam('id'));
+        }
+        if(!$contribution->isAllowedToEdit()){
+            $this->throwError("This contribution does not exist");
         }
         $contribution->name = $this->POST('name');
         $contribution->description = $this->POST('description');
@@ -62,13 +62,13 @@ class ContributionAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        if(!$contribution->isAllowedToEdit()){
-            $this->throwError("This contribution does not exist");
-        }
         if($this->getParam('rev_id') != ""){
             $contribution = Contribution::newFromRevId($this->getParam('rev_id'));
         } else {
             $contribution = Contribution::newFromId($this->getParam('id'));
+        }
+        if(!$contribution->isAllowedToEdit()){
+            $this->throwError("This contribution does not exist");
         }
         $contribution->delete();
         return $contribution->toJSON();

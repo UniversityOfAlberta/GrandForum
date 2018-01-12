@@ -119,7 +119,7 @@ HTML.TextBox = function(view, attr, options){
             var elems = attr.split(".");
             var recurse = function(data, depth) {
                 if (depth < elems.length) {
-                    if ((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
                         data = {};
                         data[elems[depth]] = {};
                     }
@@ -265,7 +265,7 @@ HTML.Select = function(view, attr, options){
             var elems = attr.split(".");
             var recurse = function(data, depth) {
                 if (depth < elems.length) {
-                    if ((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
                         data = {};
                         data[elems[depth]] = {};
                     }
