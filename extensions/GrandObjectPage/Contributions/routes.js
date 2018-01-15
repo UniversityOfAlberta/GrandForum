@@ -41,24 +41,42 @@ pageRouter.on('route:showContributions', function(){
 });
 
 pageRouter.on('route:showContribution', function (id) {
-    // Get A single product
-    var contribution = new Contribution({'id': id});
-    this.closeCurrentView();
-    this.currentView = new ContributionView({el: $("#currentView"), model: contribution});
+    // Get A single contribution
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contribution = new Contribution({'id': id});
+        this.closeCurrentView();
+        this.currentView = new ContributionView({el: $("#currentView"), model: contribution});
+    }
 });
 
 pageRouter.on('route:editContribution', function (id) {
-    // Get A single product
-    var contribution = new Contribution({'id': id});
-    this.closeCurrentView();
-    this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
+    // Get A single contribution
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contribution = new Contribution({'id': id});
+        this.closeCurrentView();
+        this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
+    }
 });
 
 pageRouter.on('route:newContribution', function () {
-    // Get A single product
-    var contribution = new Contribution();
-    this.closeCurrentView();
-    this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
+    // Get A single contribution
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contribution = new Contribution();
+        this.closeCurrentView();
+        this.currentView = new ContributionEditView({el: $("#currentView"), model: contribution});
+    }
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

@@ -236,7 +236,7 @@ ContributionEditView = Backbone.View.extend({
                                        name: p.get('name'),
                                        fullname: p.get('fullName')};
         });
-        var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'author',
+        var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'person',
                                                           'left': left,
                                                           'right': right,
                                                           'objs': objs

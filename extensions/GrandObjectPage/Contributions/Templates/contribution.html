@@ -29,14 +29,14 @@
 <% _.each(partners, function(partner){ %>
     <h3><%= partner.name %></h3>
     <table>
-        <% if(partner.contact != '' && partner.contact != null){ %>
+        <% if(partner.contact != '' && partner.contact != null && _.values(partner.contact).join('') != ''){ %>
             <tr>
                 <td valign="top" align="right"><b>Contact:</b></td>
                 <td>
-                    <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(partner.contact.email != ''){ %> (<%= partner.contact.email %>) <% } %>
-                    <% if(partner.contact.address != '') { %>
+                    <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(!_.isEmpty(partner.contact.email)){ %> (<%= partner.contact.email %>) <% } %>
+                    <% if(!_.isEmpty(partner.contact.address)) { %>
                         <br /><%= partner.contact.address %>
-                    <% } if (partner.contact.phone != '') { %>
+                    <% } if (!_.isEmpty(partner.contact.phone)) { %>
                         <br /><%= partner.contact.phone %>
                     <% } %>
                 </td>

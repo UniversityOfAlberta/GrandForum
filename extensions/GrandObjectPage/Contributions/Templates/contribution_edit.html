@@ -97,7 +97,8 @@
                                                                                            'Salaries of Scientific Staff',
                                                                                            'Salaries of Managerial and Administrative Staff',
                                                                                            'Project-related Travel',
-                                                                                           'Other']}) %>
+                                                                                           'Other'],
+                                                                                 id: 'partners_' + i + '_subtype_inkind'}) %>
                             <span id="other_subtype"><%= HTML.TextBox(this, 'partners.' + i + '.other_subtype') %></span>
                         </td>
                     </tr>
@@ -119,7 +120,8 @@
                                                                                            'Equipment (incl. powered vehicles)',
                                                                                            'Materials, supplies and other expenditures',
                                                                                            'Travel',
-                                                                                           'Other expenditures']}) %>
+                                                                                           'Other expenditures'],
+                                                                                 id: 'partners_' + i + '_subtype_cash'}) %>
                         </td>
                     </tr>
                     <tr id="cash">
