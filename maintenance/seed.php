@@ -218,6 +218,7 @@ User::createNew("CHAMP.User2", array('password' => User::crypt("CHAMP.Pass2"), '
 User::createNew("NI.User1", array('password' => User::crypt("NI.Pass1"), 'email' => "ni.user1@behat-test.com"));
 User::createNew("NI.User2", array('password' => User::crypt("NI.Pass2"), 'email' => "ni.user2@behat-test.com"));
 User::createNew("NI.User3", array('password' => User::crypt("NI.Pass3"), 'email' => "ni.user3@behat-test.com"));
+User::createNew("NI.User4", array('password' => User::crypt("NI.Pass4"), 'email' => "ni.user4@behat-test.com"));
 User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat-test.com"));
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat-test.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat-test.com"));
@@ -266,6 +267,7 @@ addUserRole("CHAMP.User2", CHAMP);
 addUserRole("NI.User1", CI);
 addUserRole("NI.User2", CI);
 addUserRole("NI.User3", CI);
+addUserRole("NI.User4", CI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
@@ -279,7 +281,9 @@ addUserProject("NI.User1", "Phase2Project2");
 addUserProject("NI.User1", "Phase2BigBetProject1");
 addUserProject("NI.User2", "Phase2Project1");
 addUserProject("NI.User3", "Phase2Project2");
+addUserProject("NI.User4", "Phase2Project3");
 addUserProject("HQP.User1", "Phase1Project1");
+addUserProject("HQP.User2", "Phase2Project3");
 addUserProject("HQP.User3", "Phase2Project1");
 
 addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");

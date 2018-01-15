@@ -212,9 +212,7 @@ class Contribution extends BackboneModel {
                                     array(),
                                     array('id' => 'DESC'),
                                     array(1));
-        if(count($data) > 0){
-            $id = $data[0]['id'];
-        }
+        $id = (count($data) > 0) ? $data[0]['id'] : 0;
         $this->id = $id + 1;
         $people = array();
         $projects = array();
