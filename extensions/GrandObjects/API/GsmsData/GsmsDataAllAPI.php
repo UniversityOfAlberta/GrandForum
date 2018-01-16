@@ -11,7 +11,15 @@ class GsmsDataAllAPI extends RESTAPI {
    * @return mixed
    */
     function doGET(){
-        $gsms = new Collection(GsmsData::getAllVisibleGsms());
+        $folder = $this->getParam('folder');
+        $gsms = GsmsData::getAllVisibleGsms();
+        $newGsms = array();
+        foreach($gsms as $g){
+            if($g->folder == $folder || $folder == 'all'){
+                $newGsms[] = $g;            
+            }
+        }
+        $gsms = new Collection($newGsms);
         return $gsms->toJSON();
     }
 

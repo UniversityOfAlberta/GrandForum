@@ -31,6 +31,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
+    gsms.folder = 'all';
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });

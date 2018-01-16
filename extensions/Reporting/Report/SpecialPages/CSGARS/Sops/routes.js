@@ -20,6 +20,10 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute",
+        "reviewInProgress": "defaultRoute",
+        "inProgress": "inProgress",
+        "newApplications": "newApplications",
+        "other": "other",
         ":id/edit": "editSop",
     }
 });
@@ -31,6 +35,34 @@ pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
+    gsms.folder = "Review in Progress";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+});
+
+pageRouter.on('route:inProgress', function (actions) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "In Progress";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+});
+
+pageRouter.on('route:newApplications', function (actions) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "New Applications";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+});
+
+pageRouter.on('route:other', function (actions) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
