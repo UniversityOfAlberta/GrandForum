@@ -275,7 +275,7 @@ class GsmsData extends BackboneModel{
         //if(!$wgUser->isLoggedIn()){
           //  return array();
        // }
-	$student = Person::newFromId($this->user_id);
+        $student = Person::newFromId($this->user_id);
         $student_data = array('id' => $student->getId(),
                         'name' => $student->getReversedName(),
                         'url' => $student->getUrl(),
@@ -294,7 +294,7 @@ class GsmsData extends BackboneModel{
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
- 	                'applicant_number' => $this->applicant_number,
+ 	              'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
                   'program_name' => $this->getProgramName(true),
@@ -313,13 +313,13 @@ class GsmsData extends BackboneModel{
                   'additional' => $this->getAdditional(),
                   'gsms_url' => $this->gsms_url);
 
-      // Not sure if specific from here //	
-       //sop information needed in table
+        // Not sure if specific from here //	
+        //sop information needed in table
         $json['sop_id'] = $sop->getId();
         $json['sop_url'] = $sop->getUrl();
         $json['annotations'] = $sop->annotations;
 
-      //adding reviewers array so can have on overview table
+        //adding reviewers array so can have on overview table
         $reviewers = array();
         $reviewer_array = $student->getEvaluators(YEAR,"sop");
         foreach($reviewer_array as $reviewer){

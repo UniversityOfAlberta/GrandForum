@@ -11,13 +11,12 @@ class UserSopPdfAPI extends API{
     function doAction($noEcho=false){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-	$user_id = $_GET["user"];
-	$person = Person::newFromId($user_id);
+	    $user_id = $_GET["user"];
+	    $person = Person::newFromId($user_id);
 	
-	$pdf = $person->getSopPdf();
-	header('Content-type: application/pdf');
-
-	echo $pdf;
+	    $pdf = $person->getSopPdf();
+	    header('Content-type: application/pdf');
+	    echo $pdf;
     }
     
     function isLoginRequired(){

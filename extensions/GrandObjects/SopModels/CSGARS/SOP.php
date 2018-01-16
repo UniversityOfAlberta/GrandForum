@@ -48,7 +48,7 @@ class SOP extends AbstractSop{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-            $this->pdf = $row['pdf_data'];
+            //$this->pdf = $row['pdf_data'];
             $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
@@ -144,26 +144,23 @@ class SOP extends AbstractSop{
     }
 
     function checkGSMS(){
-	$url = $this->getGSMSUrl();
-	if($url != ""){
-	    return true;
-	}
-	return false;
+        $url = $this->getGSMSUrl();
+        if($url != ""){
+            return true;
+        }
+        return false;
     }
 
     function getGSMSUrl(){
-            $data = DBFunctions::select(array('grand_sop'),
-                                    array('pdf_contents', 'pdf_data'),
-                                    array('user_id' => EQ($this->user_id)));
-            if(count($data) > 0){
-                $pdf_data = $data[0]['pdf_data'];
-                if($pdf_data != ""){
-                    global $wgServer, $wgScriptPath;
-                    return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
-                }
-
-            }
-	return "";
+        global $wgServer, $wgScriptPath;
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('id'),
+                                    array('user_id' => EQ($this->user_id),
+                                          'pdf_data' => NEQ('')));
+        if(count($data) > 0){
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
+        }
+	    return "";
     }
 
     function checkSOP(){
@@ -223,15 +220,15 @@ class SOP extends AbstractSop{
                         AND rp_item = 'CS_Review_Supervise'
                         AND proj_id =".$this->id;
         $data = DBFunctions::execSQL($sql);
-            $reviewers = array();
+        $reviewers = array();
         if(count($data)>0){
             foreach($data as $user){
-                        if($user['data'] != ''){
+                if($user['data'] != ''){
                     $reviewers[] = $user['user_id'];
-                        }
+                }
             }
         }
-            return $reviewers;
+        return $reviewers;
     }
 
    /**
@@ -239,35 +236,19 @@ class SOP extends AbstractSop{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
-        $sql = "SELECT data
-                FROM grand_report_blobs
-                WHERE rp_section = 'OT_REVIEW'
-                        AND rp_item = 'CS_Review_Rank'
-                        AND user_id = '$user'
-                        AND proj_id =".$this->id;
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            if($data[0]['data'] != ""){
-                return $data[0]['data'];
-            }
+        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $this->id);
+        if($blob == ''){
+            return '--';
         }
-       return '--';
+        return $blob;
     }
 
     function getReviewRanking($user) {
-        $sql = "SELECT data
-                FROM grand_report_blobs
-                WHERE rp_section = 'CS_REVIEW'
-                        AND rp_item = 'CS_Review_Rank'
-                        AND user_id = '$user'
-                        AND proj_id =".$this->id;
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            if($data[0]['data'] != ""){
-                return $data[0]['data'];
-            }
+        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "CS_REVIEW", "CS_Review_Rank", $user, $this->id);
+        if($blob == ''){
+            return '--';
         }
-       return '--';
+        return $blob;
     }
 
     function getCSEducationalHistory($html_string=false){

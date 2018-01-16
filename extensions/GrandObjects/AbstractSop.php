@@ -73,12 +73,38 @@ abstract class AbstractSop extends BackboneModel{
    */
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_sop'),
-                                    array('*'),
+                                    array('id',
+                                          'user_id',
+                                          'content',
+                                          'date_created',
+                                          'sentiment_val',
+                                          'sentiment_type',
+                                          'readability_score',
+                                          'reading_ease',
+                                          'ari_grade',
+                                          'ari_age',
+                                          'colemanliau_grade',
+                                          'colemanliau_age',
+                                          'dalechall_index',
+                                          'dalechall_grade',
+                                          'dalechall_age',
+                                          'fleschkincaid_grade',
+                                          'fleschkincaid_age',
+                                          'smog_grade',
+                                          'smog_age',
+                                          'errors',
+                                          'sentlen_ave',
+                                          'wordletter_ave',
+                                          'min_age',
+                                          'word_count',
+                                          'emotion_stats',
+                                          'personality_stats',
+                                          'reviewer'),
                                     array('id' => EQ($id)));
         if(count($data)>0){
-        $sop = new SOP($data);
-        return $sop;
-  }
+            $sop = new SOP($data);
+            return $sop;
+        }
         return new SOP(array());
     }
 
@@ -89,13 +115,39 @@ abstract class AbstractSop extends BackboneModel{
    */
     static function newFromUserId($id){
         $data = DBFunctions::select(array('grand_sop'),
-                                    array('id'),
+                                    array('id',
+                                          'user_id',
+                                          'content',
+                                          'date_created',
+                                          'sentiment_val',
+                                          'sentiment_type',
+                                          'readability_score',
+                                          'reading_ease',
+                                          'ari_grade',
+                                          'ari_age',
+                                          'colemanliau_grade',
+                                          'colemanliau_age',
+                                          'dalechall_index',
+                                          'dalechall_grade',
+                                          'dalechall_age',
+                                          'fleschkincaid_grade',
+                                          'fleschkincaid_age',
+                                          'smog_grade',
+                                          'smog_age',
+                                          'errors',
+                                          'sentlen_ave',
+                                          'wordletter_ave',
+                                          'min_age',
+                                          'word_count',
+                                          'emotion_stats',
+                                          'personality_stats',
+                                          'reviewer'),
                                     array('user_id' => EQ($id)));
-  if(count($data)>0){
-      $sop = SOP::newFromId($data[0]['id']);
-      return $sop;
-  }
-  return new SOP(array());
+        if(count($data)>0){
+            $sop = new SOP($data);
+            return $sop;
+        }
+        return new SOP(array());
     }
 
   /**
@@ -157,14 +209,14 @@ abstract class AbstractSop extends BackboneModel{
         }
     }
 
-    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem){
-        $projectId = 0;
-        
-        $blb = new ReportBlob($blobType, $year, $this->user_id, $projectId);
+    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0){
+        if($userId == null){
+            $userId = $this->user_id;
+        }
+        $blb = new ReportBlob($blobType, $year, $userId, $projectId);
         $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
-        
         return $data;
     }
 

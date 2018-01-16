@@ -11,7 +11,7 @@ class GsmsDataAllAPI extends RESTAPI {
    * @return mixed
    */
     function doGET(){
-	$gsms = new Collection(GsmsData::getAllVisibleGsms());
+        $gsms = new Collection(GsmsData::getAllVisibleGsms());
         return $gsms->toJSON();
     }
 
