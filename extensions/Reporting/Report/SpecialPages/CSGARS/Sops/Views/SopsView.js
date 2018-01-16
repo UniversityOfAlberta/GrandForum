@@ -238,7 +238,7 @@ SopsView = Backbone.View.extend({
         return false;
     },
 
-    filterFolder: function(settings,data,dataIndex){
+    /*filterFolder: function(settings,data,dataIndex){
         var input = $('#filterSelectFolder').chosen().val();
         var folder = data[3];
         if (input != null) {
@@ -250,7 +250,7 @@ SopsView = Backbone.View.extend({
             return false;
         }
         return true;
-    },
+    },*/
 
     filterDecision: function(settings,data,dataIndex){
         var input = $('#filterSelectDecision').chosen().val();
@@ -518,7 +518,7 @@ SopsView = Backbone.View.extend({
         me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
             this.filterGPA,
-            this.filterFolder,
+            //this.filterFolder,
             this.filterDecision,
             this.filterMineOnly,
             this.filterByTags,
@@ -548,7 +548,7 @@ SopsView = Backbone.View.extend({
             defaultDate: "-18y"
         });
         this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
-        this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
+        //this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
         this.$('#filterSelectDecision').chosen({ placeholder_text_multiple: 'Select Decision' });
         this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
         this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
