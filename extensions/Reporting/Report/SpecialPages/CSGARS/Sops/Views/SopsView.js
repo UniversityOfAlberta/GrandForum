@@ -6,6 +6,7 @@ SopsView = Backbone.View.extend({
     lastTimeout: null,
     expanded: false,
     expanded2: false,
+    
     initialize: function(){
         this.template = _.template($('#sops_template').html());
         $(this).data('name', 'show');
@@ -508,8 +509,8 @@ SopsView = Backbone.View.extend({
             }
         return false;
         }
-    return true;
-   },
+        return true;
+    },
 
     render: function(){
         this.$el.empty();
@@ -550,7 +551,9 @@ SopsView = Backbone.View.extend({
         this.filterMeOnly = this.$('#filterMeOnly');
         
         this.addRows();
-        me.getRoleString().bind('sync', this.renderRoles, this);
+        var roleString = me.getRoleString();
+        this.listenToOnce(roleString, 'sync', this.renderRoles);
+        $.fn.dataTable.ext.search = new Array();
         $.fn.dataTable.ext.search.push(
             $.proxy(this.filterGPA, this),
             //$.proxy(this.filterFolder, this),
