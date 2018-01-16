@@ -921,6 +921,9 @@ class Contribution extends BackboneModel {
     function isAllowedToEdit($me=null){
         // There might be some inefficiencies in this function.
         // There could probably be some stuff cached to speed it up.
+        if($this->getId() == ""){
+            return false;
+        }
         if($me == null){
             $me = Person::newFromWgUser();
         }

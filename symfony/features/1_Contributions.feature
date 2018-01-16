@@ -82,3 +82,13 @@ Feature: Contributions
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Contributions"
         Then I should see "New Contribution 2"
+        
+    Scenario: NI Trying to delete a contribution
+        Given I am logged in as "NI.User4" using password "NI.Pass4"
+        When I follow "Manage Contributions"
+        And I follow "New Contribution 1"
+        And I accept confirmation dialogs
+        And I press "Delete Contribution"
+        Then I should see "The Contribution New Contribution 1 was deleted sucessfully"
+        And I reload the page
+        Then I should see "This Contribution does not exist"

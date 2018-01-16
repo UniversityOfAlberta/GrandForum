@@ -67,6 +67,7 @@ Feature: Products
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
+        And I accept confirmation dialogs
         And I press "Delete Publication"
         Then I should see "The Publication New Publication was deleted sucessfully"
         And I reload the page
