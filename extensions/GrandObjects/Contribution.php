@@ -53,8 +53,8 @@ class Contribution extends BackboneModel {
     var $partnersWaiting = true;
     var $type;
     var $subtype;
-    var $cash;
-    var $kind;
+    var $cash = array();
+    var $kind = array();
     var $description;
     var $institution;
     var $province;
@@ -187,7 +187,6 @@ class Contribution extends BackboneModel {
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
         }
-
         return array("id" => $this->getId(),
                      "revId" => $this->getRevId(),
                      "name" => $this->getName(),
@@ -284,7 +283,7 @@ class Contribution extends BackboneModel {
                                       'cash' => $partner['cash'],
                                       'kind' => $partner['inkind']));
         }
-        /*foreach($this->people as $author){
+        foreach($this->people as $author){
             if(is_numeric($author)){
                 $person = Person::newFromId($author);
                 if($person != null && $person->getName() != null){
@@ -295,7 +294,7 @@ class Contribution extends BackboneModel {
                     Notification::addNotification($me, $person, "Contribution Created", "A new Contribution entitled <i>{$this->getName()}</i>, has been created with yourself listed as one of the researchers", "{$this->getUrl()}");
                 }
             }
-        }*/
+        }
         $this->projectsWaiting = true;
         return $this;
     }

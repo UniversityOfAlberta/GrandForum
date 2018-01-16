@@ -30,6 +30,20 @@ Feature: Contributions
         And I should see "Google"
         And I should see "Phase2Project3"
         
+    Scenario: NI Trying to create a contribution with no partners (should be allowed)
+        Given I am logged in as "NI.User4" using password "NI.Pass4"
+        When I follow "Manage Contributions"
+        And I follow "Add Contribution"
+        And I fill in "name" with "New Contribution 2"
+        And I select "NI User4" from "rightpeople"
+        And I press "<<"
+        And I select "NI User1" from "rightpeople"
+        And I press "<<"
+        And I click by css "body"
+        And I press "Create Contribution"
+        Then I should see "New Contribution 2"
+        And I should see "Edit Contribution"
+        
     Scenario: NI Trying to edit their own contribution
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Contributions"
