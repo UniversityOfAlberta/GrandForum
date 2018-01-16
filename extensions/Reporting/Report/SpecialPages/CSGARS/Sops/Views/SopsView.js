@@ -21,30 +21,22 @@ SopsView = Backbone.View.extend({
 
     renderRoles: function(){
         var rolestring = me.roleString.get('roleString');
-        //console.log(rolestring);
         if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
-            //console.log("HI");
             $('.assign_button').css('display','inline');
             this.table.draw();
         }
     },
     
     addRows: function(){
-        var sops_row_views = new Array();
         if(this.table != undefined){
             this.table.destroy();
         }
         this.sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
-            sops_row_views.push(row);
             this.$("#sopRows").append(row.$el);
             row.render();
-            //console.log(row.additionalNotesDialog);
         }, this));
         this.createDataTable();
-        // _.each(sops_row_views, function(view) {
-        //     //view.additionalNotesDialog.parent().appendTo(view.$("#notes"));
-        // });
     },
     
     createDataTable: function(){

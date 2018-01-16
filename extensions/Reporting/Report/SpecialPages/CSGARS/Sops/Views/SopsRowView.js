@@ -4,6 +4,7 @@ SopsRowView = Backbone.View.extend({
     parent: null,
     template: _.template($('#sops_row_template').html()),
     additionalNotesDialog: null,
+    renderedOnce: false,
     
     initialize: function(options){
         this.parent = options.parent;
@@ -47,7 +48,6 @@ SopsRowView = Backbone.View.extend({
             });
             this.additionalNotesDialog.parent().appendTo(this.$("#notes"));
         }
-        
 
         //var additionalNotesDialogId = 'additionalNotes_' + this.model.attributes['id'];
 
@@ -57,24 +57,26 @@ SopsRowView = Backbone.View.extend({
     },
 
     render: function(){
-	    var i = this.model.toJSON();
+        var i = this.model.toJSON();
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
         for(m=0;m<i.annotations.length;m++){
             if(i.annotations[m].tags != null){
-            	for(n=0;n<i.annotations[m].tags.length;n++){
+                for(n=0;n<i.annotations[m].tags.length;n++){
                     var comment_column = "#span"+i.sop_id;
-		    if(m == i.annotations.length-1){
-			$(comment_column).append(i.annotations[m].tags[n]);
-			break;
-		    }
+                    if(m == i.annotations.length-1){
+                        $(comment_column).append(i.annotations[m].tags[n]);
+                        break;
+                    }
                     $(comment_column).append(i.annotations[m].tags[n]+", ");
                 }
             }
         }
         this.additionalNotesDialog = null;
-
-        this.parent.renderRoles();
+        if(this.renderedOnce){
+            this.parent.renderRoles();
+        }
+        this.renderedOnce = true;
         return this.$el;
     }
 });
