@@ -199,7 +199,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterCitizenship: function(settings,data,dataIndex){
-        var filtercountry = $("#filterSelectCountry").chosen().val();
+        var filtercountry = this.filterSelectCountry.chosen().val();
         var studentcountry = data[5];
         if (filtercountry != null) {
             if ($.inArray(studentcountry, filtercountry) == -1) {
@@ -210,7 +210,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterProgramName: function(settings,data,dataIndex){
-        var filterprograms = $("#filterSelectProgramName").chosen().val();
+        var filterprograms = this.filterSelectProgramName.chosen().val();
         var studentprogram = data[8];
         if (filterprograms != null) {
             for (var i = 0; i < filterprograms.length; ++i) {
@@ -224,8 +224,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGPA: function(settings,data,dataIndex){
-        var min = parseFloat($('#referenceNameInputMin').val(),0);
-        var max = parseFloat($('#referenceNameInputMax').val(),0);
+        var min = parseFloat(this.referenceNameInputMin.val(),0);
+        var max = parseFloat(this.referenceNameInputMax.val(),0);
         var gpa = parseFloat( data[13] ) || 0; // use column 2
         //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -253,7 +253,7 @@ SopsView = Backbone.View.extend({
     },*/
 
     filterDecision: function(settings,data,dataIndex){
-        var input = $('#filterSelectDecision').chosen().val();
+        var input = this.filterSelectDecision.chosen().val();
         var decision = data[24];
         if (input != null) {
             for (var i = 0; i < input.length; ++i) {
@@ -268,7 +268,7 @@ SopsView = Backbone.View.extend({
 
     filterByTags: function(settings,data,dataIndex){
         var tags = data[21].replace(/<\/?[^>]+(>|$)/g, "").split(",");
-        if($('#filterByTags').is(':checked')){
+        if(this.filterByTagsEl.is(':checked')){
             for(j = 0; j < tags.length; j++){
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
                 if($('#'+tag).is(':checked')){
@@ -281,7 +281,7 @@ SopsView = Backbone.View.extend({
    },
 
    filterByAreasOfInterest: function(settings,data,dataIndex){
-        var filterSelected= $("#filterSelectAoI").chosen().val();
+        var filterSelected= this.filterSelectAoI.chosen().val();
         var aois = data[10].split(", ");
         if (filterSelected != null) {
             for (var i = 0; i < filterSelected.length; ++i) {
@@ -295,7 +295,7 @@ SopsView = Backbone.View.extend({
    },
 
    filterSupervisors: function(settings,data,dataIndex){
-        var filtersupervisors = $("#filterSelectSupervisors").chosen().val();
+        var filtersupervisors = this.filterSelectSupervisors.chosen().val();
         var studentsupervisors = data[11].split(", ");
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
@@ -309,7 +309,7 @@ SopsView = Backbone.View.extend({
    },
 
    filterReviewers: function(settings,data,dataIndex){
-        var filterreviewers = $("#filterSelectReviewers").chosen().val();
+        var filterreviewers = this.filterSelectReviewers.chosen().val();
         var reviewers = data[18];
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
@@ -323,8 +323,8 @@ SopsView = Backbone.View.extend({
    },
 
    filterNumPubs: function(settings,data,dataIndex){
-        var min = parseFloat($('#numPubsInputMin').val(),0);
-        var max = parseFloat($('#numPubsInputMax').val(),0);
+        var min = parseFloat(this.numPubsInputMin.val(),0);
+        var max = parseFloat(this.numPubsInputMax.val(),0);
         var pubs = parseFloat( data[15] ) || 0; // use column 14
         //check if num pubs inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -338,8 +338,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterNumAwards: function(settings,data,dataIndex){
-        var min = parseFloat($('#numAwardsInputMin').val(),0);
-        var max = parseFloat($('#numAwardsInputMax').val(),0);
+        var min = parseFloat(this.numAwardsInputMin.val(),0);
+        var max = parseFloat(this.numAwardsInputMax.val(),0);
         var awards = parseFloat( data[16] ) || 0; // use column 15
         //check if num awards inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -356,9 +356,9 @@ SopsView = Backbone.View.extend({
         var values = data[12].split('/')[0].split(", ");
 
         var options = {};
-        options["NSERC"] = $('#heldNSERC')[0].checked;
-        options["AITF"] = $('#heldAITF')[0].checked;
-        options["Vanier"] = $('#heldVanier')[0].checked;
+        options["NSERC"] = this.heldNSERC[0].checked;
+        options["AITF"] = this.heldAITF[0].checked;
+        options["Vanier"] = this.heldVanier[0].checked;
 
         if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
             return true;
@@ -379,9 +379,9 @@ SopsView = Backbone.View.extend({
         var values = data[12].split('/')[1].split(", ");
 
         var options = {};
-        options["NSERC"] = $('#appliedNSERC')[0].checked;
-        options["AITF"] = $('#appliedAITF')[0].checked;
-        options["Vanier"] = $('#appliedVanier')[0].checked;
+        options["NSERC"] = this.appliedNSERC[0].checked;
+        options["AITF"] = this.appliedAITF[0].checked;
+        options["Vanier"] = this.appliedVanier[0].checked;
 
         if (options["NSERC"] && ($.inArray("NSERC", values) != -1)) {
             return true;
@@ -400,8 +400,8 @@ SopsView = Backbone.View.extend({
 
     filterBirthday: function(settings,data,dataIndex){
         var birthday = new Date(data[4]);
-        var operator = $('#filterDoBSpan').find(":selected").text();
-        var filterdate = $('#filterDoB').datepicker('getDate');
+        var operator = this.filterDoBSpan.find(":selected").text();
+        var filterdate = this.filterDoB.datepicker('getDate');
 
         var operation = {
             '--':     function(a, b) { return true; },
@@ -413,8 +413,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGREVerbal: function(settings,data,dataIndex){
-        var min = parseFloat($('#filterValGreVerbalMin').val(),0);
-        var max = parseFloat($('#filterValGreVerbalMax').val(),0);
+        var min = parseFloat(this.filterValGreVerbalMin.val(),0);
+        var max = parseFloat(this.filterValGreVerbalMax.val(),0);
         var gre = parseFloat( data[14].split(", ")[0] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -428,8 +428,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGREQuantitative: function(settings,data,dataIndex){
-        var min = parseFloat($('#filterValGreQuantMin').val(),0);
-        var max = parseFloat($('#filterValGreQuantMax').val(),0);
+        var min = parseFloat(this.filterValGreQuantMin.val(),0);
+        var max = parseFloat(this.filterValGreQuantMax.val(),0);
         var gre = parseFloat( data[14].split(", ")[1] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -443,8 +443,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGREAnalytical: function(settings,data,dataIndex){
-        var min = parseFloat($('#filterValGreAnalyticalMin').val(),0);
-        var max = parseFloat($('#filterValGreAnalyticalMax').val(),0);
+        var min = parseFloat(this.filterValGreAnalyticalMin.val(),0);
+        var max = parseFloat(this.filterValGreAnalyticalMax.val(),0);
         var gre = parseFloat( data[14].split(", ")[2] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -458,8 +458,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGRECS: function(settings,data,dataIndex){
-        var min = parseFloat($('#filterValGreCSMin').val(),0);
-        var max = parseFloat($('#filterValGreCSMax').val(),0);
+        var min = parseFloat(this.filterValGreCSMin.val(),0);
+        var max = parseFloat(this.filterValGreCSMax.val(),0);
         var gre = parseFloat( data[14].split(", ")[3] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -473,7 +473,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterCourses: function(settings,data,dataIndex){
-        var input = $('#filterCourses').val().toUpperCase();
+        var input = this.filterCoursesEl.val().toUpperCase();
         var courses = data[17];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
@@ -482,7 +482,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterNotes: function(settings,data,dataIndex){
-        var input = $('#filterNotes').val().toUpperCase();
+        var input = this.filterNotesEl.val().toUpperCase();
         var courses = data[20];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
@@ -491,7 +491,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterComments: function(settings,data,dataIndex){
-        var input = $('#filterComments').val().toUpperCase();
+        var input = this.filterCommentsEl.val().toUpperCase();
         var courses = data[21];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
@@ -501,7 +501,7 @@ SopsView = Backbone.View.extend({
 
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
-        if($('#filterMeOnly').is(':checked')){
+        if(this.filterMeOnly.is(':checked')){
             var name = data[18];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
@@ -514,31 +514,66 @@ SopsView = Backbone.View.extend({
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
+        
+        this.filterSelectCountry = this.$('#filterSelectCountry');
+        this.filterSelectProgramName = this.$('#filterSelectProgramName');
+        this.referenceNameInputMin = this.$('#referenceNameInputMin');
+        this.referenceNameInputMax = this.$('#referenceNameInputMax');
+        this.filterSelectDecision = this.$('#filterSelectDecision');
+        this.filterByTagsEl = this.$('#filterByTags');
+        this.filterSelectAoI = this.$('#filterSelectAoI');
+        this.filterSelectSupervisors = this.$('#filterSelectSupervisors');
+        this.filterSelectReviewers = this.$('#filterSelectReviewers');
+        this.numPubsInputMin = this.$('#numPubsInputMin');
+        this.numPubsInputMax = this.$('#numPubsInputMax');
+        this.numAwardsInputMin = this.$('#numAwardsInputMin');
+        this.numAwardsInputMax = this.$('#numAwardsInputMax');
+        this.heldVanier = this.$('#heldVanier');
+        this.heldAITF = this.$('#heldAITF');
+        this.heldNSERC = this.$('#heldNSERC');
+        this.appliedVanier = this.$('#appliedVanier');
+        this.appliedAITF = this.$('#appliedAITF');
+        this.appliedNSERC = this.$('#appliedNSERC');
+        this.filterDoB = this.$('#filterDoB');
+        this.filterDoBSpan = this.$('#filterDoBSpan');
+        this.filterValGreVerbalMin = this.$('#filterValGreVerbalMin');
+        this.filterValGreVerbalMax = this.$('#filterValGreVerbalMax');
+        this.filterValGreQuantMin = this.$('#filterValGreQuantMin');
+        this.filterValGreQuantMax = this.$('#filterValGreQuantMax');
+        this.filterValGreAnalyticalMin = this.$('#filterValGreAnalyticalMin');
+        this.filterValGreAnalyticalMax = this.$('#filterValGreAnalyticalMax');
+        this.filterValGreCSMax = this.$('#filterValGreCSMax');
+        this.filterValGreCSMin = this.$('#filterValGreCSMin');
+        this.filterCoursesEl = this.$('#filterCourses');
+        this.filterNotesEl = this.$('#filterNotes');
+        this.filterCommentsEl = this.$('#filterComments');
+        this.filterMeOnly = this.$('#filterMeOnly');
+        
         this.addRows();
         me.getRoleString().bind('sync', this.renderRoles, this);
         $.fn.dataTable.ext.search.push(
-            this.filterGPA,
-            //this.filterFolder,
-            this.filterDecision,
-            this.filterMineOnly,
-            this.filterByTags,
-            this.filterCitizenship,
-            this.filterProgramName,
-            this.filterNumPubs,
-            this.filterNumAwards,
-            this.filterScholHeld,
-            this.filterScholApplied,
-            this.filterBirthday,
-            this.filterGREVerbal,
-            this.filterGREQuantitative,
-            this.filterGREAnalytical,
-            this.filterGRECS,
-            this.filterCourses,
-            this.filterNotes,
-            this.filterComments,
-            this.filterByAreasOfInterest,
-            this.filterSupervisors,
-            this.filterReviewers,
+            $.proxy(this.filterGPA, this),
+            //$.proxy(this.filterFolder, this),
+            $.proxy(this.filterDecision, this),
+            $.proxy(this.filterMineOnly, this),
+            $.proxy(this.filterByTags, this),
+            $.proxy(this.filterCitizenship, this),
+            $.proxy(this.filterProgramName, this),
+            $.proxy(this.filterNumPubs, this),
+            $.proxy(this.filterNumAwards, this),
+            $.proxy(this.filterScholHeld, this),
+            $.proxy(this.filterScholApplied, this),
+            $.proxy(this.filterBirthday, this),
+            $.proxy(this.filterGREVerbal, this),
+            $.proxy(this.filterGREQuantitative, this),
+            $.proxy(this.filterGREAnalytical, this),
+            $.proxy(this.filterGRECS, this),
+            $.proxy(this.filterCourses, this),
+            $.proxy(this.filterNotes, this),
+            $.proxy(this.filterComments, this),
+            $.proxy(this.filterByAreasOfInterest, this),
+            $.proxy(this.filterSupervisors, this),
+            $.proxy(this.filterReviewers, this)
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',
