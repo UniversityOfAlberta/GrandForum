@@ -69,7 +69,7 @@
                     ]]>
                 </ReportItem>
 	</ReportItemSet>
-        <ReportItemSet id="professors" type="AllSopReviewerReportItemSet" roles="Professor" sort_reversed="true">
+        <ReportItemSet id="professors" type="AllSopReviewerReportItemSet" roles="Faculty" sort_reversed="true">
             <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!=({$my_id}, {$user_id})}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}" sop="true">
                     <ReportItem id="feedback_unedit" type="StaticReportItem">

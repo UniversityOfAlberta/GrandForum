@@ -4491,15 +4491,14 @@ class Person extends BackboneModel {
      */
     function getOtherEvaluators($year = YEAR){
         $subs = array();
-        $sop = $this->getSop();
-        if ($sop != '') {
+        $gsms = $this->getGSMS();
+        if ($gsms != '') {
           $sql = "SELECT DISTINCT b.user_id
                   FROM grand_report_blobs b 
                   WHERE b.user_id NOT IN (SELECT user_id FROM grand_eval WHERE sub_id = '{$this->id}' AND year = '{$year}')
                       AND b.year = '{$year}'
-                      AND b.proj_id = '{$sop->id}'
+                      AND b.proj_id = '{$gsms->id}'
                       AND b.rp_type = 'RP_OTT'
-                      AND b.rp_item = 'CS_Review_Rank'
                       AND b.data <> ''";
 
           $data = DBFunctions::execSQL($sql);
