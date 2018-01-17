@@ -19,6 +19,9 @@ class PersonEducationReportItem extends StaticReportItem {
                 if($endYear == "0000"){
                     $endYear = "Present";
                 }
+                if($startYear == $endYear){
+                    $startYear = "";
+                }
                 
                 $items[$emp['university']][] = "{$emp['position']}, {$emp['department']}<br />
                                                 {$startYear}{$endYear}<br />";

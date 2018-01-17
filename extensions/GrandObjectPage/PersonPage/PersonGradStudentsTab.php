@@ -105,7 +105,7 @@ class PersonGradStudentsTab extends AbstractTab {
             
             if($endDate != "0000-00-00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($endDate, $endDate);
+                $universities = $hqp->getUniversitiesDuring($startDate, $endDate);
             }
             else{
                 // Person is still continuing
@@ -119,7 +119,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 // Still Nothing was found, so skip this person
                 continue;
             }
-            
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), $hqpTypes)){
                     break;
@@ -132,7 +131,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 // Find the best matching relation
                 // Probably slow
                 
-                if($rel->getUser2() == $r->getUser2()){
+                if($rel->getUser2() == $r->getUser2() && $rel->getType() == $r->getType()){
                     $start1 = new DateTime($university['start']);
                     $start2 = new DateTime($rel->getStartDate());
                     $end1   = new DateTime($university['end']);
@@ -155,6 +154,7 @@ class PersonGradStudentsTab extends AbstractTab {
             if(!in_array(strtolower($position), $hqpTypes)){
                 continue;
             }
+            
             if($endDate == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate)){
                 $endDate = substr($university['end'], 0, 10);
             }
@@ -174,6 +174,7 @@ class PersonGradStudentsTab extends AbstractTab {
             else{
                 continue;
             }
+            
             $names = array();
             $awards = $hqp->getPapersAuthored('Award', $startDate, $endDate);
             $awardCitations = array();
@@ -195,7 +196,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 <td style='white-space: nowrap;'>$role</td>
             </tr>";
             if(count($awardCitations) > 0){
-                $rows[$end_date.$startDate] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
+                $rows[$end_date.$startDate.$hqp->getId()] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }
             $hqpsDone[$hqp->getId()] = true;
         }
@@ -218,7 +219,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= $this->supervisesHTML(array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"), $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised)</h3>";
-                $html .= $this->supervisesHTML(array("pdf","post-doctoral fellow"), $this->startRange, $this->endRange);
+                $html .= $this->supervisesHTML(array("pdf","post-doctoral fellow", "research associate"), $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Technicians</h3>";
                 $html .= $this->supervisesHTML(array("technician", "ra", "research/technical assistant", "professional end user"), $this->startRange, $this->endRange);

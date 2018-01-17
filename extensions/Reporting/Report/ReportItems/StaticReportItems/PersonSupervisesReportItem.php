@@ -19,7 +19,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                                       $this->getReport()->year."-06-30");
         
         $item .= "<br /><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$callback->getUserFellowCount()}</h4>";
-        $item .= $tab->supervisesHTML(array("pdf","post-doctoral fellow"), 
+        $item .= $tab->supervisesHTML(array("pdf","post-doctoral fellow", "research associate"), 
                                       $this->getReport()->startYear."-07-01", 
                                       $this->getReport()->year."-06-30");
         

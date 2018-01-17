@@ -1234,7 +1234,7 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow"))){
+                if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow","research associate"))){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;

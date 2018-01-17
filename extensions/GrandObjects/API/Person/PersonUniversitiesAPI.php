@@ -91,7 +91,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}*");
+        Cache::delete("user_university_{$person->id}", true);
         MailingList::subscribeAll($person);
         return $this->doGET();
     }
@@ -163,7 +163,7 @@ class PersonUniversitiesAPI extends RESTAPI {
 
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}*");
+        Cache::delete("user_university_{$person->id}", true);
         MailingList::subscribeAll($person);
         return $this->doGET();
     }
@@ -180,7 +180,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}*");
+        Cache::delete("user_university_{$person->id}", true);
         MailingList::subscribeAll($person);
         return json_encode(array());
     }
