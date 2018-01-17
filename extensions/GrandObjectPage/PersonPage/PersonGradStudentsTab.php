@@ -97,11 +97,6 @@ class PersonGradStudentsTab extends AbstractTab {
         $rows = array();
         foreach($relations as $r){
             $hqp = $r->getUser2();
-            if(isset($hqpsDone[$hqp->getId()])){
-                continue;
-            }
-            //$start_date = substr($r->getStartDate(), 0, 10);
-            //$end_date = substr($r->getEndDate(), 0, 10);
             
             if($endDate != "0000-00-00"){
                 // Normal Date range
@@ -119,10 +114,15 @@ class PersonGradStudentsTab extends AbstractTab {
                 // Still Nothing was found, so skip this person
                 continue;
             }
+            $found = false;
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), $hqpTypes)){
+                if(in_array(strtolower($university['position']), $hqpTypes) && !isset($hqpsDone[$hqp->getId().$university['position']])){
+                    $found = true;
                     break;
                 }
+            }
+            if(!$found){
+                continue;
             }
             
             $minRelation = $r;
@@ -155,6 +155,10 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
+            if(isset($hqpsDone[$hqp->getId().$position])){
+                continue;
+            }
+            
             if($endDate == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate)){
                 $endDate = substr($university['end'], 0, 10);
             }
@@ -174,8 +178,7 @@ class PersonGradStudentsTab extends AbstractTab {
             else{
                 continue;
             }
-            
-            $names = array();
+
             $awards = $hqp->getPapersAuthored('Award', $startDate, $endDate);
             $awardCitations = array();
             foreach($awards as $award){
@@ -185,20 +188,25 @@ class PersonGradStudentsTab extends AbstractTab {
             if(count($awardCitations) > 0){
                 $rowspan = 2;
             }
-            $rows[$end_date.$startDate.$hqp->getId()] = 
-            "<tr>
-                <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
+            if(isset($rows[$hqp->getId()])){
+                $rows[$hqp->getId()] = preg_replace_callback("/rowspan='([0-9]*)'/", function($matches) use ($rowspan){
+                    return str_replace($matches[1], $matches[1] + $rowspan, $matches[0]);
+                }, $rows[$hqp->getId()]);
+            }
+            else{
+                $rows[$hqp->getId()] = "<tr>
+                    <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>";
+            }
+            $rows[$hqp->getId()] .= "
                 <td style='white-space: nowrap;'>$position</td>
                 <td style='white-space: nowrap;'>$startDate</td>
                 <td style='white-space: nowrap;'>$end_date</td>
-                <!--td>$research_area</td-->
-                <!--td></td><td>".implode("; ",$names)."</td-->
                 <td style='white-space: nowrap;'>$role</td>
             </tr>";
             if(count($awardCitations) > 0){
-                $rows[$end_date.$startDate.$hqp->getId()] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
+                $rows[$hqp->getId()] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }
-            $hqpsDone[$hqp->getId()] = true;
+            $hqpsDone[$hqp->getId().$position] = true;
         }
         ksort($rows);
         $html .= implode(array_reverse($rows));
