@@ -287,10 +287,6 @@ class Contribution extends BackboneModel {
             if(is_numeric($author)){
                 $person = Person::newFromId($author);
                 if($person != null && $person->getName() != null){
-                    if($this->getAccessId() != $person->getId() && 
-                       $this->getAccessId() != 0){
-                        continue;
-                    }
                     Notification::addNotification($me, $person, "Contribution Created", "A new Contribution entitled <i>{$this->getName()}</i>, has been created with yourself listed as one of the researchers", "{$this->getUrl()}");
                 }
             }
@@ -375,13 +371,31 @@ class Contribution extends BackboneModel {
                                       'kind' => $partner['inkind']));
         }
         // Notifications
+        foreach($this->people as $author){
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person != null && $person->getName() != null){
+                    Notification::addNotification($me, $person, "Contribution Updated", "The Contribution entitled <i>{$this->getName()}</i>, has been updated", "{$this->getUrl()}");
+                }
+            }
+        }
         $this->projectsWaiting = true;
         return $this;
     }
     
     function delete(){
+        global $wgServer, $wgScriptPath;
         if(!$this->isAllowedToEdit()){
             return $this;
+        }
+        $me = Person::newFromWgUser();
+        foreach($this->getPeople() as $author){
+            if($author instanceof Person){
+                $person = $author;
+                if($person != null && $person->getName() != null){
+                    Notification::addNotification($me, $person, "Contribution Deleted", "The Contribution entitled <i>{$this->getName()}</i>, has been deleted", "$wgServer$wgScriptPath/index.php/Special:Contributions");
+                }
+            }
         }
         DBFunctions::delete('grand_contributions',
                             array('id' => $this->id));
