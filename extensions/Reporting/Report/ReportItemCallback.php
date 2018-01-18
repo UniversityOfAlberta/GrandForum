@@ -1036,8 +1036,22 @@ class ReportItemCallback {
         return count($val);
     }
     
-    function add($val1, $val2){
-        return $val1 + $val2;
+    function concat(){
+        $args = func_get_args();
+        $concat = "";
+        foreach($args as $arg){
+            $concat .= $arg;
+        }
+        return $concat;
+    }
+    
+    function add(){
+        $args = func_get_args();
+        $sum = 0;
+        foreach($args as $arg){
+            $sum += $arg;
+        }
+        return $sum;
     }
     
     function subtract($val1, $val2){
@@ -1170,7 +1184,6 @@ class ReportItemCallback {
         );
         $count = 0;
         $hqpsDone = array();
-        //echo "\n\n";
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
             if(isset($hqpsDone[$hqp->getId()])){
@@ -1198,7 +1211,6 @@ class ReportItemCallback {
                 if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
-                    //echo $hqp->getId().":".$hqp->getName()."<br />\n";
                     break;
                 }
             }
@@ -1300,6 +1312,7 @@ class ReportItemCallback {
         $hqpsDone = array();
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
+            
             if(isset($hqpsDone[$hqp->getId()])){
                 continue;
             }
