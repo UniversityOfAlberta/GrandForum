@@ -38,11 +38,13 @@ GsmsDataAll = Backbone.Collection.extend({
     model: GsmsData,
 
     folder: '',
+    
+    program: '',
 
     search: '',
 
     url: function(){
-        return 'index.php?action=api.gsmsdatas/' + this.folder;
+        return 'index.php?action=api.gsmsdatas/' + this.folder + '/' + this.program;
     }
 
 });
