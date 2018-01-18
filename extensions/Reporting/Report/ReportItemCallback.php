@@ -1169,6 +1169,8 @@ class ReportItemCallback {
             $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
         );
         $count = 0;
+        $hqpsDone = array();
+        //echo "\n\n";
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
             if(isset($hqpsDone[$hqp->getId()])){
@@ -1177,7 +1179,7 @@ class ReportItemCallback {
            
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
             else{
                 // Person is still continuing
@@ -1196,6 +1198,7 @@ class ReportItemCallback {
                 if(in_array(strtolower($university['position']), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
+                    //echo $hqp->getId().":".$hqp->getName()."<br />\n";
                     break;
                 }
             }
@@ -1210,6 +1213,7 @@ class ReportItemCallback {
             $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
         );
         $count = 0;
+        $hqpsDone = array();
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
             if(isset($hqpsDone[$hqp->getId()])){
@@ -1218,7 +1222,7 @@ class ReportItemCallback {
             
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
             else{
                 // Person is still continuing
@@ -1260,7 +1264,7 @@ class ReportItemCallback {
             
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
             else{
                 // Person is still continuing
@@ -1302,7 +1306,7 @@ class ReportItemCallback {
             
             if($relation->getEndDate() != "0000-00-00 00:00:00"){
                 // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), $relation->getEndDate());
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
             else{
                 // Person is still continuing

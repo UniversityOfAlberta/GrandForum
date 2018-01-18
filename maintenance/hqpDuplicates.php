@@ -15,7 +15,7 @@ while(file_exists("hqpDuplicates$i.csv")){
             $dupId = $cells[1];
             $correct = $cells[2];
             $name = $cells[3];
-            $realName = $cells[4];
+            $realName = @$cells[4];
             if($dupId != ""){
                 $person = Person::newFromName($name);
                 $people[$id] = array('id' => $id, 
