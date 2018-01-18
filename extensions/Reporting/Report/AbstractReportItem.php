@@ -424,7 +424,7 @@ abstract class AbstractReportItem {
         
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
+                $v = str_replace('{$', "{\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
                 $v = str_replace(",", "&#44;", $v);
                 $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
             }

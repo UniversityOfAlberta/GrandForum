@@ -862,7 +862,7 @@ class ReportItemCallback {
             return $endYear;
         }
         else if($endYear == "0000"){
-            return $startYear;
+            return "{$startYear} - Present";
         }
         else{
             return "{$startYear} - {$endYear}";
