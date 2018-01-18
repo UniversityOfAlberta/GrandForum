@@ -19,3 +19,13 @@ tbody#productRows td:not(.checkboxCell) {
     float: right;
     margin-right: 250px;
 }
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}

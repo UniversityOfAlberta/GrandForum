@@ -103,7 +103,7 @@
     <tr>
         <% if(!_.isEmpty(this.model.getDateLabel())){ %>
             <td class="label"><%= this.model.getDateLabel() %>:</td>
-            <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
+            <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %> <span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
         <% } else { %>
             <td colspan="2"></td>
         <% } %>

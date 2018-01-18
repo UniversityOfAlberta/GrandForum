@@ -161,7 +161,14 @@ ProductEditView = Backbone.View.extend({
         this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
     },
     
+    // Sets the end date to infinite (0000-00-00)
+    setInfinite: function(){
+        this.$("input[name=date]").val('0000-00-00');
+        this.model.set('date', '0000-00-00');
+    },
+    
     events: {
+        "click #infinity": "setInfinite",
         "click #saveProduct": "saveProduct",
         "click #cancel": "cancel",
         "click div.showOther": "showOther",

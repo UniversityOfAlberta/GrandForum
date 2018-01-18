@@ -1,3 +1,13 @@
 div[name=authors_fullname] li.tagit-choice {
     cursor: move;
 }
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}
