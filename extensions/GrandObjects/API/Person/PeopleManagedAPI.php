@@ -30,6 +30,13 @@ class PeopleManagedAPI extends RESTAPI {
                         $people[$member->getReversedName()] = $member;
                     }
                 }
+                foreach($me->getThemeProjects() as $proj){
+                    // Get list of people on current theme lead projects
+                    $members = $proj->getAllPeopleDuring(null, "0000-00-00 00:00:00", "2100-01-01 00:00:00");
+                    foreach($members as $member){
+                        $people[$member->getReversedName()] = $member;
+                    }
+                }
                 foreach($me->getRequestedMembers() as $person){
                     $people[$person->getReversedName()] = $person;
                 }
