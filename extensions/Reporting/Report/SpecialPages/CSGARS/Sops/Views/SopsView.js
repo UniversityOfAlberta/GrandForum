@@ -413,6 +413,34 @@ SopsView = Backbone.View.extend({
         return operation[operator](birthday, filterdate);
     },
 
+    filterEPLTest: function(settings,data,dataIndex){
+        var selectedTest = this.filterSelectEPLTest.val();
+        if (selectedTest == '') {
+            return true;
+        }
+        var userEPL = data[9].split(" ");
+        if (userEPL[0] == selectedTest) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    filterEPLScore: function(settings,data,dataIndex){
+        var min = parseFloat(this.filterValEPLScoreMin.val(), 0);
+        var max = parseFloat(this.filterValEPLScoreMax.val(), 0);
+        var score = parseFloat(data[9].split(" ")[1]) || 0;
+        //check if score inbetween min-max
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && score <= max ) ||
+             ( min <= score && isNaN( max ) ) ||
+             ( min <= score && score <= max ))
+        {
+            return true;
+        }
+        return false;
+    },
+
     filterGREVerbal: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValGreVerbalMin.val(),0);
         var max = parseFloat(this.filterValGreVerbalMax.val(),0);
@@ -537,6 +565,9 @@ SopsView = Backbone.View.extend({
         this.appliedNSERC = this.$('#appliedNSERC');
         this.filterDoB = this.$('#filterDoB');
         this.filterDoBSpan = this.$('#filterDoBSpan');
+        this.filterSelectEPLTest = this.$('#filterSelectEPLTest');
+        this.filterValEPLScoreMin = this.$('#filterValEPLScoreMin');
+        this.filterValEPLScoreMax = this.$('#filterValEPLScoreMax');
         this.filterValGreVerbalMin = this.$('#filterValGreVerbalMin');
         this.filterValGreVerbalMax = this.$('#filterValGreVerbalMax');
         this.filterValGreQuantMin = this.$('#filterValGreQuantMin');
@@ -576,7 +607,9 @@ SopsView = Backbone.View.extend({
             $.proxy(this.filterComments, this),
             $.proxy(this.filterByAreasOfInterest, this),
             $.proxy(this.filterSupervisors, this),
-            $.proxy(this.filterReviewers, this)
+            $.proxy(this.filterReviewers, this),
+            $.proxy(this.filterEPLTest, this),
+            $.proxy(this.filterEPLScore, this)
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',
