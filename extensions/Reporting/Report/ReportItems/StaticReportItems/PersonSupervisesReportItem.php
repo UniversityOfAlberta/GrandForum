@@ -14,22 +14,22 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $callback = new ReportItemCallback($this);
 
         $item = "<h4>Graduate Students (Supervised or Co-supervised): {$callback->getUserGradCount()}</h4>";
-        $item .= $tab->supervisesHTML(array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"), 
+        $item .= $tab->supervisesHTML(Person::$studentPositions['grad'], 
                                       $this->getReport()->startYear."-07-01", 
                                       $this->getReport()->year."-06-30");
         
         $item .= "<br /><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$callback->getUserFellowCount()}</h4>";
-        $item .= $tab->supervisesHTML(array("pdf","post-doctoral fellow", "research associate"), 
+        $item .= $tab->supervisesHTML(Person::$studentPositions['pdf'], 
                                       $this->getReport()->startYear."-07-01", 
                                       $this->getReport()->year."-06-30");
         
         $item .= "<br /><h4>Technicians: {$callback->getUserTechCount()}</h4>";
-        $item .= $tab->supervisesHTML(array("technician", "ra", "research/technical assistant", "professional end user"), 
+        $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
                                       $this->getReport()->startYear."-07-01", 
                                       $this->getReport()->year."-06-30");
         
         $item .= "<br /><h4>Undergraduates: {$callback->getUserUgradCount()}</h4>";
-        $item .= $tab->supervisesHTML(array("ugrad", "undergraduate", "undergraduate student"), 
+        $item .= $tab->supervisesHTML(Person::$studentPositions['ugrad'], 
                                       $this->getReport()->startYear."-07-01", 
                                       $this->getReport()->year."-06-30");
         

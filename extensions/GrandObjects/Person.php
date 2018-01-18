@@ -19,6 +19,29 @@ class Person extends BackboneModel {
     static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
+    
+    static $studentPositions = array('msc'   => array("msc",
+                                                      "msc student",
+                                                      "graduate student - master's course",
+                                                      "graduate student - master's thesis", 
+                                                      "graduate student - master's", 
+                                                      "graduate student - master&#39;s course",
+                                                      "graduate student - master&#39;s thesis",
+                                                      "graduate student - master&#39;s"),
+                                     'phd'   => array("phd",
+                                                      "phd student",
+                                                      "graduate student - doctoral"),
+                                     'pdf'   => array("pdf",
+                                                      "post-doctoral fellow",
+                                                      "research associate"),
+                                     'tech'  => array("technician",
+                                                      "ra", 
+                                                      "research/technical assistant", 
+                                                      "professional end user"),
+                                     'ugrad' => array("ugrad",
+                                                      "undergraduate",
+                                                      "undergraduate student")
+                                    );
 
     var $user = null;
     var $name;
@@ -4725,4 +4748,7 @@ class Person extends BackboneModel {
         return false;
     }
 }
+
+Person::$studentPositions['grad'] = array_merge(Person::$studentPositions['msc'], Person::$studentPositions['phd']);
+
 ?>

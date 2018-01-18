@@ -1195,7 +1195,7 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     //echo $hqp->getId().":".$hqp->getName()."<br />\n";
@@ -1238,7 +1238,7 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow","research associate"))){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['pdf'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1280,7 +1280,7 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), array("technician", "ra", "research/technical assistant", "professional end user"))){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['tech'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1322,7 +1322,7 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), array("ugrad", "undergraduate", "undergraduate student"))){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;

@@ -38,19 +38,19 @@ class DepartmentTab extends AbstractTab {
             foreach($person->getUniversitiesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
                 if($uni['department'] == $this->department){
                     $hqps[$person->getId()] = $person;
-                    if(in_array(strtolower($uni['position']), array("ugrad", "undergraduate", "undergraduate student"))){
+                    if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad'])){
                         $ugrads[$person->getId()] = $person;
                     }
-                    else if(in_array(strtolower($uni['position']), array("msc", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s"))){
+                    else if(in_array(strtolower($uni['position']), Person::$studentPositions['msc'])){
                         $masters[$person->getId()] = $person;
                     }
-                    else if(in_array(strtolower($uni['position']), array("phd", "phd student", "graduate student - doctoral"))){
+                    else if(in_array(strtolower($uni['position']), Person::$studentPositions['phd'])){
                         $phds[$person->getId()] = $person;
                     }
-                    else if(in_array(strtolower($uni['position']), array("technician", "ra", "research/technical assistant", "professional end user"))){
+                    else if(in_array(strtolower($uni['position']), Person::$studentPositions['tech'])){
                         $techs[$person->getId()] = $person;
                     }
-                    else if(in_array(strtolower($uni['position']), array("pdf","post-doctoral fellow"))){
+                    else if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf'])){
                         $pdfs[$person->getId()] = $person;
                     }
                 }
@@ -184,10 +184,10 @@ class DepartmentTab extends AbstractTab {
                     $yearAgo = date('Y-m-d', $yearAgo);
                     $uni = $hqp->getUniversityDuring($yearAgo, $paper->getDate());
                     $pos = @$uni['position'];
-                    if(in_array(strtolower($pos), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral", "pdf","post-doctoral fellow"))){
+                    if(in_array(strtolower($pos), array_merge(Person::$studentPositions['grad'], Person::$studentPositions['pdf']))){
                         $gradPapers[$paper->getId()] = $paper;
                     }
-                    else if(in_array(strtolower($pos), array("ugrad", "undergraduate", "undergraduate student"))){
+                    else if(in_array(strtolower($pos), Person::$studentPositions['ugrad'])){
                         $ugradPapers[$paper->getId()] = $paper;
                     }
                 }
@@ -236,7 +236,7 @@ class DepartmentTab extends AbstractTab {
         
         $html .= "<p>Total number of MSc students: ".count($masters)."</p>";
         
-        $html .= "<p>Total number of  PhD students: ".count($phds)."</p>";
+        $html .= "<p>Total number of PhD students: ".count($phds)."</p>";
         
         $html .= "<p>Total number of technicians: ".count($techs)."</p>";
         
