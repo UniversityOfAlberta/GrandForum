@@ -104,3 +104,11 @@ Annotator.Plugin.MyTags = (function(_super) {
   }
     return MyTags;
 })(Annotator.Plugin);//main program flow starts here
+
+function alertsize(pixels){
+    //$('#reportMain > div').stop();
+    $('#review_iframe').height(pixels);
+    $('#review_iframe').css('max-height', pixels);
+    //$('#reportMain > div').height(pixels);
+}
+
