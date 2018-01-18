@@ -23,6 +23,7 @@ PageRouter = Backbone.Router.extend({
         "reviewInProgress": "defaultRoute",
         "inProgress": "inProgress",
         "newApplications": "newApplications",
+        "course": "course",
         "other": "other",
         ":id/edit": "editSop",
     }
@@ -36,6 +37,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = "Review in Progress";
+    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
@@ -45,6 +47,7 @@ pageRouter.on('route:inProgress', function (actions) {
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = "In Progress";
+    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
@@ -54,6 +57,17 @@ pageRouter.on('route:newApplications', function (actions) {
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = "New Applications";
+    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+});
+
+pageRouter.on('route:course', function (actions) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "all";
+    gsms.program = "Master of Science (Crse)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });

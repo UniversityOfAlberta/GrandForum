@@ -214,11 +214,13 @@ class SOP extends AbstractSop{
     * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
     */
     function getReviewers(){
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
-                        AND rp_item = 'CS_Review_Supervise'
-                        AND proj_id =".$this->id;
+                        AND data != ''
+                        AND proj_id =".$gsms->id;
         $data = DBFunctions::execSQL($sql);
         $reviewers = array();
         if(count($data)>0){
@@ -236,7 +238,9 @@ class SOP extends AbstractSop{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
-        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $this->id);
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
         if($blob == ''){
             return '--';
         }
@@ -244,7 +248,9 @@ class SOP extends AbstractSop{
     }
 
     function getReviewRanking($user) {
-        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "CS_REVIEW", "CS_Review_Rank", $user, $this->id);
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
         if($blob == ''){
             return '--';
         }

@@ -12,11 +12,17 @@ class GsmsDataAllAPI extends RESTAPI {
    */
     function doGET(){
         $folder = $this->getParam('folder');
+        $programs = explode(",", $this->getParam('program'));
         $gsms = GsmsData::getAllVisibleGsms();
         $newGsms = array();
         foreach($gsms as $g){
             if($g->folder == $folder || $folder == 'all'){
-                $newGsms[] = $g;            
+                foreach($programs as $program){
+                    if($program == '' || strstr($g->getProgramName(true), $program) !== false){
+                        $newGsms[] = $g;
+                        break;
+                    }
+                }
             }
         }
         $gsms = new Collection($newGsms);
