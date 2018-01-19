@@ -1196,7 +1196,7 @@ class ReportItemCallback {
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything
@@ -1238,7 +1238,7 @@ class ReportItemCallback {
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything
@@ -1280,7 +1280,7 @@ class ReportItemCallback {
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything
@@ -1323,7 +1323,7 @@ class ReportItemCallback {
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getEndDate(), "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything

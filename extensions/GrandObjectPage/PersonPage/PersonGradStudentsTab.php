@@ -109,14 +109,13 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            
-            if($endDate != "0000-00-00"){
+            if($r->getEndDate() != "0000-00-00 00:00:00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($r->getStartDate(), $r->getEndDate());
             }
             else{
                 // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($r->getEndDate(), "2100-00-00");
+                $universities = $hqp->getUniversitiesDuring($r->getStartDate(), "2100-00-00");
             }
             if(count($universities) == 0){
                 // Nothing was found, just get everything
