@@ -12,26 +12,39 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $tab = new PersonGradStudentsTab($person, array());
 
         $callback = new ReportItemCallback($this);
-
-        $item = "<h4>Graduate Students (Supervised or Co-supervised): {$callback->getUserGradCount()}</h4>";
-        $item .= $tab->supervisesHTML(Person::$studentPositions['grad'], 
-                                      $this->getReport()->startYear."-07-01", 
-                                      $this->getReport()->year."-06-30");
         
-        $item .= "<br /><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$callback->getUserFellowCount()}</h4>";
-        $item .= $tab->supervisesHTML(Person::$studentPositions['pdf'], 
-                                      $this->getReport()->startYear."-07-01", 
-                                      $this->getReport()->year."-06-30");
+        $gradCount  = $callback->getUserGradCount();
+        $pdfCount   = $callback->getUserFellowCount();
+        $techCount  = $callback->getUserTechCount();
+        $ugradCount = $callback->getUserUgradCount();
         
-        $item .= "<br /><h4>Technicians: {$callback->getUserTechCount()}</h4>";
-        $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
-                                      $this->getReport()->startYear."-07-01", 
-                                      $this->getReport()->year."-06-30");
+        $item = "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
+        if($gradCount > 0){
+            $item .= $tab->supervisesHTML(Person::$studentPositions['grad'], 
+                                          $this->getReport()->startYear."-07-01", 
+                                          $this->getReport()->year."-06-30");
+        }
         
-        $item .= "<br /><h4>Undergraduates: {$callback->getUserUgradCount()}</h4>";
-        $item .= $tab->supervisesHTML(Person::$studentPositions['ugrad'], 
-                                      $this->getReport()->startYear."-07-01", 
-                                      $this->getReport()->year."-06-30");
+        $item .= "<br /><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$pdfCount}</h4>";
+        if($pdfCount > 0){
+            $item .= $tab->supervisesHTML(Person::$studentPositions['pdf'], 
+                                          $this->getReport()->startYear."-07-01", 
+                                          $this->getReport()->year."-06-30");
+        }
+        
+        $item .= "<br /><h4>Technicians: {$techCount}</h4>";
+        if($techCount > 0){
+            $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
+                                          $this->getReport()->startYear."-07-01", 
+                                          $this->getReport()->year."-06-30");
+        }
+        
+        $item .= "<br /><h4>Undergraduates: {$ugradCount}</h4>";
+        if($ugradCount > 0){
+            $item .= $tab->supervisesHTML(Person::$studentPositions['ugrad'], 
+                                          $this->getReport()->startYear."-07-01", 
+                                          $this->getReport()->year."-06-30");
+        }
         
         return $item;
     }

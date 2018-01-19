@@ -115,7 +115,7 @@
             </ReportItem>
             <ReportItem id="students" type="PersonSupervisesReportItem">
                 <![CDATA[
-                    {$item}
+                    {$item}<br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
