@@ -54,10 +54,10 @@ foreach($contents as $line){
                                 array('user_id' => $person->getId()));
         }
         
-        if(!$person->isRole(NI) && !$person->isRole(NI."-Candidate")){
+        if(!$person->isRole(CI) && !$person->isRole(CI."-Candidate")){
             $role = new Role(array());
             $role->user = $person->getId();
-            $role->role = NI;
+            $role->role = CI;
             $role->create();
         }
         
