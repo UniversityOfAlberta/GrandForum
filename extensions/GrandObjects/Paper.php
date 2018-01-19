@@ -676,7 +676,8 @@ class Paper extends BackboneModel{
      * @return string The title of this Paper
      */
     function getTitle(){
-        return $this->title;
+        $titles = explode("\n", $this->title);
+        return @str_replace("\r", "", $titles[0]);
     }
 
     /**
