@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2018ApplicationPDF" year="2018" ajax="true" disabled="true">
+<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2018ApplicationPDF" year="2018" ajax="true" disabled="false">
     <Permissions>
         <Role role="NI" subType="CAT2018Applicant" start="2018-08-01" end="2018-12-31">
             <SectionPermission id="information" permissions="rw" />
@@ -197,6 +197,12 @@
                 </table><br />
             ]]>
         </ReportItem>
+        <ReportItem id="priority" type="Radio" blobItem="PRIORITY" blobType="BLOB_TEXT" options="How can health systems be organized to provide integrated/coordinated care that would better meet the health and social care needs of older adults living with frailty, and their family/caregivers?|How can care, services and treatments be tailored to meet the needs of older adults living with frailty who are isolated and/or without family/caregiver support or advocates?|What is the impact of community- and home-based services, programs and resources in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?|What are the costs and benefits of alternative models of housing, including multigenerational or shared living, for older adults living with frailty?|What would help avoid unnecessary hospitalizations and emergency department visits for older adults living with frailty?|What frailty-related attitudes, skills and knowledge should health and social care providers have? What are effective ways of improving attitudes and providing skills and knowledge about frailty for health and social care providers?|What would help older adults living with frailty and their family/caregivers recognize when living at home is no longer viable?|What are effective ways of supporting family/caregivers of older adults living with frailty to maintain their own health and wellbeing and/or that of older adults living with frailty?|How can frailty measures be used by health care practitioners, older adults and family/caregivers to inform treatment and care decisions?|What is the impact of exercise and physical activity (including type, duration and intensity) in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?">
+            <![CDATA[
+                <p><b>Please select only one frailty priority that your application addresses.  (Select the best fit with your application)</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="objective" type="Radio" blobItem="OBJECTIVE" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <table frame="box" rules="all" style="width: 800px;">
@@ -259,14 +265,6 @@
                     <li>Environmental Assessment: Does any phase or part of the research described in this proposal a) take place outside an office or laboratory, or b) involve an undertaking as described in part 1 of Appendix B of the Natural Sciences and Engineering Research Council of Canada (NSERC) Form 101 (<a href='http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf' target='_blank'>http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf</a>)?.{$item}
                     If you answered yes to this question, and your project is funded, you will need to complete an Environmental Assessment Impact Statement and the Canadian Environmental Assessment Act Pre-Screening Checklist for review and approval by CFN before funds will be released.</li>
                 </ol>
-            ]]>
-        </ReportItem>
-        <ReportItem id="funding" type="Checkbox" blobItem="FUNDING" blobType="BLOB_ARRAY" options="CIHR Collaboration funding medication optimization and deprescription to reduce or eliminate drug-induced cognitive impairment.|NBHRF Collaboration funding to encourage research be conducted in New Brunswick.|CFN Medication Optimization Summit identified research priorities areas for funding.">
-            <![CDATA[
-                <h2>Funding Priority</h2>
-                <p>For this competition there are three specific priority funding initiatives within the overall goal of medication optimization.  Refer to the Catalyst <a href="http://www.cfn-nce.ca/media/589242/cat2018-program-guidelines.pdf">Program Guidelines</a> for more information on these priority funding areas.</p>
-                <p>Please check the appropriate box(es) below to indicate which priority funding area(s) your project is most likely to fall under. Note: This information is only for administrative purposes.</p>
-                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -360,6 +358,15 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="justification" blobItem="JUSTIFICATION" type="Textarea" rich="true" limit="250">
+            <![CDATA[
+                <h3>4.3: Budget Description and Justification</h3>
+                <ul>
+                    <li>In addition to the information provided in the budget excel document please justify your overall budget and the need for the budget items listed, and associated costs.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="relevance" type="EditableReportSection" blobSection="RELEVANCE" name="5 - Project Relevance" title="Section 5 - Project Relevance and Impact">
         <ReportItem id="relevance" blobItem="RELEVANCE" type="Textarea" rich="true" limit="500">
@@ -367,7 +374,6 @@
                 <ul>
                     <li>Describe the relevance and the importance of the proposed project to CFN’s mission and strategic research programme goals, priorities, and potential to assist CFN in achieving a positive impact on policy and practice.</li>
                     <li>Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of Canadians living with frailty.</li>
-                    <li>Describe how sex as a biological variable and/or gender as a social determinant of health have been considered and integrated into the research plan.</li>
                 </ul>
                 {$item}
             ]]>
@@ -411,7 +417,7 @@
         <ReportItem id="translation" blobItem="NETWORKING" type="Textarea" rich="true" limit="350">
             <![CDATA[
                 <h3>8.1: Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h3>
-                <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
+                <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the proposed study along a continuum leading to social or economic impacts or policy and practice change. Because of the relatively short-length of the CAT funding term, proposals must describe future implementation plans to demonstrate future scalability and spread. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -505,16 +511,6 @@
             <![CDATA[
                 <h2>Proof of Study Submission to Research Ethics Board</h2>
                 <p>Submit a <b>single PDF</b> containing proof of ethics submission for each investigator.  Name the PDF document CAT2018-##_Surname_REB.pdf.  (The Surname refers to the Project Leader’s surname).</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
-            <![CDATA[
-                <h2>Proof of Completion of one of CIHR Institute of Gender and Health’s (IGH) online sex- and gender-based analysis training modules</h2>
-                <p>Submit the PDF certificate that you (Project Leader) received after completing one of the IGH’s online sex- and gender-based analysis training modules.  Name the PDF certificate, CAT2018-##_Surname_IGH.pdf, where Surname = investigator’s surname.</p>
-                <ul>
-                    <li>To access IGH’s online sex- and gender-based analysis training modules please visit <a target='_blank' href='http://www.cihr-irsc-igh-isfh.ca/'>http://www.cihr-irsc-igh-isfh.ca/</a>.</li>
-                </ul>
                 {$item}
             ]]>
         </ReportItem>
