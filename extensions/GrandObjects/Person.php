@@ -18,6 +18,7 @@ class Person extends BackboneModel {
     static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
+    static $gsmsIds = array();
 
     var $user = null;
     var $name;
@@ -78,14 +79,19 @@ class Person extends BackboneModel {
         if(count($data) >0){
             return Person::newFromId($data[0]['user_id']);
         }
-        $data = DBFunctions::select(array('grand_report_blobs'),
-                                    array('user_id'),
-                                    array('rp_type' => 'RP_CS',
-                                          'rp_section' => 'CS_Questions_tab0',
-                                          'rp_item' => 'gsmsIDCS',
-                                          'data' => $gsms_id));
-        if(count($data) > 0){
-            return Person::newFromId($data[0]['user_id']);
+        if(count(self::$gsmsIds) == 0){
+            $data = DBFunctions::select(array('grand_report_blobs'),
+                                        array('user_id', 'data'),
+                                        array('rp_type' => 'RP_CS',
+                                              'rp_section' => 'CS_Questions_tab0',
+                                              'rp_item' => 'gsmsIDCS'));
+            foreach($data as $row){
+                self::$gsmsIds[$row['data']] = $row['user_id'];
+            }
+        }
+        
+        if(isset(self::$gsmsIds[$gsms_id])){
+            return Person::newFromId(self::$gsmsIds[$gsms_id]);
         }
         else{
             return null;
