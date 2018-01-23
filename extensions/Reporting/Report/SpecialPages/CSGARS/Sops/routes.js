@@ -37,7 +37,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = "Review in Progress";
-    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
+    //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
@@ -47,7 +47,7 @@ pageRouter.on('route:inProgress', function (actions) {
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = "In Progress";
-    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
+   // gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
@@ -56,8 +56,8 @@ pageRouter.on('route:newApplications', function (actions) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
-    gsms.folder = "New Applications";
-    gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
+    gsms.folder = "New Applications,";
+    //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });

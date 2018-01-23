@@ -17,16 +17,16 @@ class UserGsmsBulkUploadAPI extends API{
     }
 
     function extract_excel_data($contents){
-	$i = 0;
-	$data_array = array();
-	foreach($contents as $row){
-	    if($i == 0){
-		$i++;
-		continue; //fix this to check instead of just skipping
-	    }
-	    elseif($row[2] == ""){
-		break;
-	    }
+        $i = 0;
+        $data_array = array();
+        foreach($contents as $row){
+            if($i == 0){
+                $i++;
+                continue; //fix this to check instead of just skipping
+            }
+            else if($row[2] == ""){
+                break;
+            }
             $application_year_array = explode("/",$row[8]);
             $application_year = $application_year_array[0]; 
             if($application_year != YEAR+1){
@@ -47,21 +47,21 @@ class UserGsmsBulkUploadAPI extends API{
             if($in_data_array){
                 continue;
             }
-		//set student
-	    $array_info = array();
-	    $array_info['name'] = $student_name;
-	    $array_info['department'] = $row[0];
-	    $array_info['gsms_id'] = $row[3];
-	    $array_info['student_id'] = $row[4];
-	    $array_info['cs_app'] = $row[5];
-	    $array_info['date_of_birth'] = $row[6]." 00:00:00";
-	    $array_info['email'] = $row[7];
-	    $array_info['academic_year'] = $row[8];
-	    $array_info['term'] = $row[9];
-	    $array_info['program'] = $row[10];
-	    $array_info['subplan_name'] = $row[11];
-	    $array_info['degree'] = $row[12];
-	    $array_info['program_name'] = $row[13];
+            //set student
+            $array_info = array();
+            $array_info['name'] = $student_name;
+            $array_info['department'] = $row[0];
+            $array_info['gsms_id'] = $row[3];
+            $array_info['student_id'] = $row[4];
+            $array_info['cs_app'] = $row[5];
+            $array_info['date_of_birth'] = $row[6]." 00:00:00";
+            $array_info['email'] = $row[7];
+            $array_info['academic_year'] = $row[8];
+            $array_info['term'] = $row[9];
+            $array_info['program'] = $row[10];
+            $array_info['subplan_name'] = $row[11];
+            $array_info['degree'] = $row[12];
+            $array_info['program_name'] = $row[13];
             $array_info['admission_program_name'] = $row[14];
             $array_info['submitted_date'] = $row[15];
             $array_info['gender'] = $row[16];
@@ -87,9 +87,9 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['fgsr_decision'] = $row[36];
             $array_info['decision_response'] = $row[37];
             $array_info['general_notes'] = $row[38];
-	    $data_array[] = $array_info;
-	}
-	return $data_array;
+            $data_array[] = $array_info;
+        }
+        return $data_array;
     }
 
     function readXLS($file){
@@ -125,86 +125,90 @@ class UserGsmsBulkUploadAPI extends API{
             $success = array();
             $errors = array();
             $xls_cells = $this->readXLS($xls['tmp_name']);
-	    if($xls_cells === false){
-		$errors[] = "Please upload a .xls or .csv file";
-	    }
+            if($xls_cells === false){
+                $errors[] = "Please upload a .xls or .csv file";
+            }
             $data = $this->extract_excel_data($xls_cells);
-	    foreach($data as $student){
-		$student_obj = Person::newFromGSMSId($student['gsms_id']);
-                if($student_obj == null){
+            foreach($data as $student){
+                $student_obj = Person::newFromGSMSId($student['gsms_id']);
+                if($student_obj == null || $student_obj->getId() == 0){
+                    // GSMS ID not found, try email
+                    $student_obj = Person::newFromEmail($student['email']);
+                }
+                if($student_obj == null || $student_obj->getId() == 0){
+                    // GSMS ID and Email not found, skip this student, show error
                     $errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
                     $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                     continue;
-                }	
-		$student_id = $student_obj->getId();
-		$student_name = $student['name'];
-		  //check if student exists
-		if($student_id != 0){
-                  //check to make sure submitted gsms
+                }
+                $student_id = $student_obj->getId();
+                $student_name = $student['name'];
+                //check if student exists
+                if($student_id != 0){
+                    //check to make sure submitted gsms
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
                     if($gsms_sheet->user_id == ""){
                         $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                         continue;
                     }
-                   $found_gsms[] = "'{$student['gsms_id']}'";
-                   $updated_students[] = "{$student['name']} ({$student['email']})";
-                   $update = false;
-                  //check if update or new
+                    $found_gsms[] = "'{$student['gsms_id']}'";
+                    $updated_students[] = "{$student['name']} ({$student['email']})";
+                    $update = false;
+                    //check if update or new
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
-                              $gsms_sheet->gender = @$student['gender'];
-                              $gsms_sheet->gsms_id = @$student['gsms_id'];
-                              $gsms_sheet->date_of_birth = @$student['date_of_birth'];
-                              $gsms_sheet->program_name = @$student['program_name'];
-                              $gsms_sheet->country_of_birth = @$student['country_of_birth'];
-                              $gsms_sheet->country_of_citizenship = @$student['country_of_citizenship'];
-                              $gsms_sheet->applicant_type = @$student['applicant_type'];
-                              $gsms_sheet->education_history = @$student['education_history'];
-                              $gsms_sheet->department = @$student['department'];
-                              $gsms_sheet->epl_test = @$student['epl_test'];
-                              $gsms_sheet->epl_score = @$student['epl_score'];
-                              $gsms_sheet->epl_listen = @$student['epl_listen'];
-                              $gsms_sheet->epl_write = @$student['epl_write'];
-                              $gsms_sheet->epl_read = @$student['epl_read'];
-                              $gsms_sheet->epl_speaking = @$student['epl_speaking'];
-                              $gsms_sheet->cs_app = @$student['cs_app'];
-                              $gsms_sheet->academic_year = @$student['academic_year'];
-                              $gsms_sheet->term = @$student['term'];
-                              $gsms_sheet->subplan_name = @$student['subplan_name'];
-                              $gsms_sheet->program = @$student['program'];
-                              $gsms_sheet->degree_code = @$student['degree_code'];
-                              $gsms_sheet->admission_program_name = @$student['admission_program_name'];
-                              $gsms_sheet->submitted_date = @$student['submitted_date'];
-                              $gsms_sheet->folder = @$student['folder'];
-                              $gsms_sheet->department_gpa = @$student['department_gpa'];
-                              $gsms_sheet->department_gpa_scale = @$student['department_gpa_scale'];
-                              $gsms_sheet->department_normalized_gpa = @$student['department_normalized_gpa'];
-                              $gsms_sheet->fgsr_gpa = @$student['fgsr_gpa'];
-                              $gsms_sheet->fgsr_gpa_scale = @$student['fgsr_gpa_scale'];
-                              $gsms_sheet->fgsr_normalized_gpa = @$student['fgsr_normalized_gpa'];
-                              $gsms_sheet->funding_note = @$student['funding_note'];
-                              $gsms_sheet->department_decision = @$student['department_decision'];
-                              $gsms_sheet->fgsr_decision = @$student['fgsr_decision'];
-                              $gsms_sheet->decision_response = @$student['decision_response'];
-                              $gsms_sheet->general_notes = @$student['general_notes'];
-                              $gsms_sheet->visible = 'true';
+                    $gsms_sheet->gender = @$student['gender'];
+                    $gsms_sheet->gsms_id = @$student['gsms_id'];
+                    $gsms_sheet->date_of_birth = @$student['date_of_birth'];
+                    $gsms_sheet->program_name = @$student['program_name'];
+                    $gsms_sheet->country_of_birth = @$student['country_of_birth'];
+                    $gsms_sheet->country_of_citizenship = @$student['country_of_citizenship'];
+                    $gsms_sheet->applicant_type = @$student['applicant_type'];
+                    $gsms_sheet->education_history = @$student['education_history'];
+                    $gsms_sheet->department = @$student['department'];
+                    $gsms_sheet->epl_test = @$student['epl_test'];
+                    $gsms_sheet->epl_score = @$student['epl_score'];
+                    $gsms_sheet->epl_listen = @$student['epl_listen'];
+                    $gsms_sheet->epl_write = @$student['epl_write'];
+                    $gsms_sheet->epl_read = @$student['epl_read'];
+                    $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                    $gsms_sheet->cs_app = @$student['cs_app'];
+                    $gsms_sheet->academic_year = @$student['academic_year'];
+                    $gsms_sheet->term = @$student['term'];
+                    $gsms_sheet->subplan_name = @$student['subplan_name'];
+                    $gsms_sheet->program = @$student['program'];
+                    $gsms_sheet->degree_code = @$student['degree_code'];
+                    $gsms_sheet->admission_program_name = @$student['admission_program_name'];
+                    $gsms_sheet->submitted_date = @$student['submitted_date'];
+                    $gsms_sheet->folder = @$student['folder'];
+                    $gsms_sheet->department_gpa = @$student['department_gpa'];
+                    $gsms_sheet->department_gpa_scale = @$student['department_gpa_scale'];
+                    $gsms_sheet->department_normalized_gpa = @$student['department_normalized_gpa'];
+                    $gsms_sheet->fgsr_gpa = @$student['fgsr_gpa'];
+                    $gsms_sheet->fgsr_gpa_scale = @$student['fgsr_gpa_scale'];
+                    $gsms_sheet->fgsr_normalized_gpa = @$student['fgsr_normalized_gpa'];
+                    $gsms_sheet->funding_note = @$student['funding_note'];
+                    $gsms_sheet->department_decision = @$student['department_decision'];
+                    $gsms_sheet->fgsr_decision = @$student['fgsr_decision'];
+                    $gsms_sheet->decision_response = @$student['decision_response'];
+                    $gsms_sheet->general_notes = @$student['general_notes'];
+                    $gsms_sheet->visible = 'true';
                     $gsms_sheet->update();
-		    $success[] = $student_name;
-                    DBFunctions::commit();
-		}
-		else{
+                    $success[] = $student_name;
+                }
+                else{
                     $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
                     $error_count= $error_count+1;
-		}
-		
+                }
+            }
         }
-	}
-	else{
-                $errors[] = "Please upload a .xls or .csv file";
-	}
-          //successfully updated students:
+        else{
+            $errors[] = "Please upload a .xls or .csv file";
+        }
+        //successfully updated students:
         $updated_students_string = implode("<br />", $updated_students);
         $success = "<b>The following students were updated properly</b>:<br />".$updated_students_string;
-          //students not found in gsms table:
+        
+        //students not found in gsms table:
         $not_in_gars = array();
         $not_finished = array();
         foreach($notfound as $student_gsms_string){
@@ -220,8 +224,9 @@ class UserGsmsBulkUploadAPI extends API{
         }
         $not_in_gars_string = implode("<br />", $not_in_gars);
         $not_finished_string = implode("<br />", $not_finished);
-          //students found in gsms table but not in csv:
-        $foundgsmsstring = implode(", ", $found_gsms);
+        $in_gars_string = "";
+        //students found in gsms table but not in csv:
+        /*$foundgsmsstring = implode(", ", $found_gsms);
         $in_gars = array();
         $sql = "SELECT DISTINCT(user_id) FROM grand_gsms WHERE gsms_id NOT IN ($foundgsmsstring)";
         $data = DBFunctions::execSQL($sql);
@@ -233,19 +238,19 @@ class UserGsmsBulkUploadAPI extends API{
                 $in_gars[] = "$real_name ($email)";
             }
         }
-        $in_gars_string = implode("<br />", $in_gars);
-          //putting everything together
+        $in_gars_string = implode("<br />", $in_gars);*/
+        //putting everything together
         $errors = "<b>The following students from GSMS do not have a GARS account:</b><br />$not_in_gars_string<br /><br /><b>The following students have a GARS account, but have not submitted an application yet:</b><br />$not_finished_string<br /><br /><b>The following students have a GARS application, but are not in GSMS:</b><br />$in_gars_string";
-	
+
         DBFunctions::commit();
-                echo <<<EOF
-                <html>
-                    <head>
-                        <script type='text/javascript'>
-                            parent.ccvUploaded("$success", "$errors");
-                        </script>
-                    </head>
-                </html>
+        echo <<<EOF
+        <html>
+            <head>
+                <script type='text/javascript'>
+                    parent.ccvUploaded("$success", "$errors");
+                </script>
+            </head>
+        </html>
 EOF;
         exit;
     }
