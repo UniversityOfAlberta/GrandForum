@@ -103,6 +103,11 @@ Feature: Contributions
         Then I should see "New Contribution 1"
         And I should see "New Contribution 2"
         
+    Scenario: NI Trying to edit a contribution that they do not belong to
+        Given I am logged in as "NI.User3" using password "NI.Pass3"
+        When I follow "Manage Contributions"
+        Then I should not see "New Contribution 2"
+        
     Scenario: Anon trying to view contributions
         Given I am on "index.php/Special:Contributions"
         Then I should see "You do not have permissions to view this page"
