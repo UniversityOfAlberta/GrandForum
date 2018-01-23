@@ -103,6 +103,14 @@ Feature: Contributions
         Then I should see "New Contribution 1"
         And I should see "New Contribution 2"
         
+    Scenario: Anon trying to view contributions
+        Given I am on "index.php/Special:Contributions"
+        Then I should see "You do not have permissions to view this page"
+        
+    Scenario: Anon trying to view a specific contribution
+        Given I am on "index.php/Special:Contributions#/1"
+        Then I should see "You do not have permissions to view this page"
+        
     Scenario: NI Trying to delete a contribution
         Given I am logged in as "NI.User4" using password "NI.Pass4"
         When I follow "Manage Contributions"
