@@ -225,8 +225,9 @@ class UserGsmsBulkUploadAPI extends API{
         }
         $not_in_gars_string = implode("<br />", $not_in_gars);
         $not_finished_string = implode("<br />", $not_finished);
+        $in_gars_string = "";
         //students found in gsms table but not in csv:
-        $foundgsmsstring = implode(", ", $found_gsms);
+        /*$foundgsmsstring = implode(", ", $found_gsms);
         $in_gars = array();
         $sql = "SELECT DISTINCT(user_id) FROM grand_gsms WHERE gsms_id NOT IN ($foundgsmsstring)";
         $data = DBFunctions::execSQL($sql);
@@ -238,7 +239,7 @@ class UserGsmsBulkUploadAPI extends API{
                 $in_gars[] = "$real_name ($email)";
             }
         }
-        $in_gars_string = implode("<br />", $in_gars);
+        $in_gars_string = implode("<br />", $in_gars);*/
         //putting everything together
         $errors = "<b>The following students from GSMS do not have a GARS account:</b><br />$not_in_gars_string<br /><br /><b>The following students have a GARS account, but have not submitted an application yet:</b><br />$not_finished_string<br /><br /><b>The following students have a GARS application, but are not in GSMS:</b><br />$in_gars_string";
 
