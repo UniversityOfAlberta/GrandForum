@@ -97,6 +97,12 @@ Feature: Contributions
         When I follow "Manage Contributions"
         Then I should see "New Contribution 2"
         
+    Scenario: Staff Should be able to see all contributions
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Manage Contributions"
+        Then I should see "New Contribution 1"
+        And I should see "New Contribution 2"
+        
     Scenario: NI Trying to delete a contribution
         Given I am logged in as "NI.User4" using password "NI.Pass4"
         When I follow "Manage Contributions"
