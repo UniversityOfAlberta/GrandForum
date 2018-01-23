@@ -194,7 +194,6 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->visible = 'true';
                     $gsms_sheet->update();
                     $success[] = $student_name;
-                    DBFunctions::commit();
                 }
                 else{
                     $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
