@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL SIP Accelerator" reportType="RP_SIP_ACC_2018" pdfType="RPTP_SIP_ACC_2018" allowIdProjects="true" pdfFiles="SIPAccelerator2018PDF" ajax="true" year="2018">
+    <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="AR-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="CI-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="2018 AGE-WELL SIP Accelerator Program Description" name="Program Description" type="ReportSection" title="2018 AGE-WELL SIP Accelerator Program Description">
+        <ReportItem id="description" type="Static">
+            <![CDATA[
+                <p>AGE-WELL’s "SIP Accelerator" supports innovative post-discovery projects focused on the commercialization and/or knowledge mobilization of solutions (e.g. technologies, services or policies) aligned with <a href='http://agewell-nce.ca/about-us' target='_blank'>AGE-WELL’s mission and vision</a>.</p>
+                <p>The program provides:</p>
+                <ul>
+                    <li>financial support; </li>
+                    <li>training opportunities; and</li>
+                    <li>strategic mentorship.</li>
+                </ul>
+                <p>AGE-WELL is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our aim is to help older Canadians maintain their independence, health and quality of life through technologies and services that increase their safety and security, support their independent living, and enhance their social participation.</p>
+                <p>Please refer to the SIP Accelerator webpage on the AGE-WELL website (<a href='http://www.agewell-nce.ca' target='_blank'>www.agewell-nce.ca</a>) for information about investigator eligibility, partnerships, award amount etc. </p>
+                <p>Questions about this funding program can be directed to Jeanie Zabukovec, AGE-WELL Research and Partnerships Administrator (<a href='mailto:jeanie@agewell-nce.ca'>jeanie@agewell-nce.ca</a>).</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="EditableReportSection">
+        <ReportItem id="i" type="TextReportItem" blobItem="PROJECT">
+            <![CDATA[
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
+                <ol id='list' type="i">
+                <li>
+                    <b>Investigator Name: </b>{$user_name}&nbsp;&nbsp;&nbsp;<b>Institution: </b>{$user_uni}<br />
+                    <b>Project Title:&nbsp;</b>{$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ii" type="RadioReportItem" options="Knowledge Mobilization|Commercialization" blobItem="TYPE">
+            <![CDATA[
+                <li>
+                    <b>Project Type</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
+            <![CDATA[
+                <li>
+                    <b>Provide a 300-word plain language summary that includes a problem statement, research purpose and anticipated impact(s) of the project. This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be used for future communications if the proposal is successful.</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="iv" type="TextReportItem" blobItem="PARTNERS">
+            <![CDATA[
+                <li>
+                    <b>Project Partner(s) name(s):</b> {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="v_cash" type="IntegerReportItem" blobItem="CASH" min="0" max="1000000" width="43px" align="left">
+            <![CDATA[
+                <li>
+                    <b>Total partner contributions: </b> Cash ${$item}&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="v_inki" type="IntegerReportItem" blobItem="INKI" min="0" max="1000000" width="43px" align="left">
+            <![CDATA[
+                    In-kind ${$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vi" type="IntegerReportItem" min="0" max="40000" width="43px" align="left" blobItem="INVESTMENT">
+            <![CDATA[
+                <li>
+                    <b>Total value of AGE-WELL investment requested:</b> ${$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vii" type="SelectReportItem" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
+            <![CDATA[
+                <li>
+                    <b>The proposed project is best aligned with AGE-WELL</b>
+                    {$item}
+                    (WP descriptions are available here: <a href='http://www.agewell-nce.ca' target="_blank">www.agewell-nce.ca</a>)
+                    <p>Important note: The application must not exceed 6 pages (excluding this cover page and the additional page for project applying for continued funding).</p>
+                </li>
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
+            <![CDATA[
+                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program?</b><br />
+                    <small>(i.e. are you looking to renew your SIP award, or advance your Catalyst project to a SIP project)?</small>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
+            <![CDATA[
+                <div id="extra" style="display:none;">
+                    <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
+                    <p>If you previously received an AGE-WELL SIP, SIP Accelerator or Catalyst award for this project please complete the following questions related to the work already completed (1 page). If objectives from your previous award have not been met and you wish to apply for a no-cost extension, please contact jeanie@agewell-nce.ca. </p>
+                    <h3>Were the objectives of the previously funded project met?  Please explain.</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2">
+            <![CDATA[
+                    <h3>What is/are the main output(s) from your previous award. Please describe the real or potential impact of this work? Consider the real or potential impact on older adults and caregivers, communities, industry and/or policies.</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3">
+            <![CDATA[
+                    <h3>What new partnerships or collaboarations were created during the previous award? Will these continue? How did these partnerships/collaborations shape your project?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra4" type="Textarea" rich="true" optional="true" blobItem="EXTRA4">
+            <![CDATA[
+                    <h3>Did the project encounter any challenges? What impact did this have on the project?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra5" type="Textarea" rich="true" optional="true" blobItem="EXTRA5">
+            <![CDATA[
+                    <h3>In the narrative application (PART 1), please describe how the new project will build on the activities, findings and partnerships from the previously funded work.</h3>
+                    {$item}
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("input[name=CoverSheet_viii]").change(function(){
+                            var val = $("input[name=CoverSheet_viii]:checked").val();
+                            if(val == "Yes"){
+                                $("div#extra").slideDown();
+                            }
+                            else{
+                                $("div#extra").slideUp();
+                            }
+                        });
+                        $("input[name=CoverSheet_viii]").change();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
+        <ReportItem id="header1" type="Static">
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#reportProgress').hide();
+                </script>
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
+                <h2>1) RATIONALE AND APPROACH (1 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Summarize the rationale for the project</b>
+                    <ul class='small'>
+                        <li>Why this project at this time?</li>
+                        <li>SIP Accelerator funds only post-discovery projects. Please briefly describe the development / discovery work that preceded this application.</li>
+                        <li>What is the benefit/value-added of the proposed impact(s)?</li>
+                        <li>What is the strength of the evidence forming the basis for the planned dissemination and/or commercialization development activity?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="unique" type="TextareaReportItem" rich="true" blobItem="UNIQUE">
+            <![CDATA[
+                <li><b>What is unique or innovative about this project?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="TextareaReportItem" rich="true" blobItem="VALUE">
+            <![CDATA[
+                <li><b>What is the value of the project for older adults and/or caregivers?</b>
+                    <ul class='small'>
+                        <li>What problem does this project solve?</li>
+                        <li>What is the value proposition?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS">
+            <![CDATA[
+                <li><b>State the project goals and objectives</b>
+                    <ul class='small'>
+                        <li>What is the ultimate goal(s) of the proposed initiative?</li>
+                        <li>State the objectives that need to be achieved to realize the ultimate goal(s).</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header2" type="Static">
+            <![CDATA[
+                <h2>2) PROJECT OPPORTUNITY - Commercialization Projects Only (1 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET" optional="true">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>What is the Market Size?</b>
+                    <ul class='small'>
+                        <li>To whom will the evidence/knowledge/information/product be disseminated? Provide a sense of the size/scale of the target audience/market.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="advantages" type="TextareaReportItem" rich="true" blobItem="ADVANTAGES"  optional="true">
+            <![CDATA[
+                <li><b>What are the competitive advantages of your proposed solution?</b>
+                    <ul class='small'>
+                        <li>Please list your top 3-5 competitive advantages (bullet points)</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="competitors" type="TextareaReportItem" rich="true" blobItem="COMPETITORS"  optional="true">
+            <![CDATA[
+                <li><b>Who are your competitors?</b>
+                    <ul class='small'>
+                        <li>Please list your top 3 competitors or existing/substitute solutions (bullet points)</li>
+                        <li>Please explain how your solution is different</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header3" type="Static">
+            <![CDATA[
+                <h2>3) INTELLECTUAL PROPERTY - Commercialization Projects Only (1/2 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY"  optional="true">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="protected" type="TextareaReportItem" rich="true" blobItem="PROTECTED"  optional="true">
+            <![CDATA[
+                <li><b>Is your Intellectual Property currently protected? If yes, please describe how?</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header4" type="Static">
+            <![CDATA[
+                <h2>4) PROJECT OPPORTUNITY - Knowledge Mobilization Projects Only (1.5 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE"  optional="true">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Who are your key audience(s)?</b>
+                    <ul class='small'>
+                        <li>Describe the applicability of the findings to each audience. Who needs to know about your research findings? E.g. Other researchers, policy makers, end-users, the media.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE" optional="true">
+            <![CDATA[
+                <li><b>What are your knowledge mobilization goals?</b>
+                    <ul class='small'>
+                        <li>Describe how knowledge mobilization will move beyond "traditional" academic dissemination activities, i.e. beyond research publications and conferences. Do you want to inform people about a new product or practice? Do you want to change behaviors of end-users or clinicians? Do you want to contribute to policy change?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES"  optional="true">
+            <![CDATA[
+                <li><b>What knowledge mobilization strategies will you use?</b>
+                    <ul class='small'>
+                        <li>Describe your strategy regarding the uptake of the findings by key stakeholders e.g. paper, patent license, policy brief, educational materials, workshop, event, champion, media release, social media, blog, video etc.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="effectiveness" type="TextareaReportItem" rich="true" blobItem="EFFECTIVENESS"  optional="true">
+            <![CDATA[
+                <li><b>How will you evaluate the effectiveness of the knowledge mobilization strategies you are using?</b>
+                    <ul class='small'>
+                        <li>What metrics will you track? E.g. reach indicators (number of views, downloads), usefulness indicators (knowledge gained, perspectives changed) partnership indicators (number of products disseminated with partners), practice change indicators (observed or reported change)etc.</li>
+                        <li>What is your long-term plan to ensure your knowledge mobilization activities help you achieve real-world impact?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="protect" type="TextareaReportItem" rich="true" blobItem="PROTECT"  optional="true">
+            <![CDATA[
+                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header5" type="Static">
+            <![CDATA[
+                <h2>5) PROJECT TEAM (1/2 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Describe how the expertise of your team will contribute to the success of the proposed initiative</b>
+                    <ul class='small'>
+                        <li>Identify additional skills needed to fill expertise gaps on your team, if any, and how you plan to address them (note that team members and their expertise will be listed in an excel table in the appendix)</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header6" type="Static">
+            <![CDATA[
+                <h2>6) PARTNERSHIPS (1/2 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Is your partner committed to the dissemination, uptake and/or commercialization the solution/findings?</b>
+                    <ul class='small'>
+                        <li>Describe the commitment of the partner(s) regarding uptake, dissemination, or commercialization of the solutions/results.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="responsibilities" type="TextareaReportItem" rich="true" blobItem="RESPONSIBILITIES">
+            <![CDATA[
+                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. dissemination, product development, testing and evaluation etc.).</b>
+                    <ul class='small'>
+                        <li>Identify all partners/partnership arrangements (contributions will be itemized and justified in the budget)</li>
+                        <li>Is the partner participating as a contractor, manufacturer, stakeholder, testing facility?</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="header7" type="Static">
+            <![CDATA[
+                <h2>7) POTENTIAL IMPACT (1 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Describe the anticipated impacts and associated benefits and beneficiaries of this project</b>
+                    <ul class='small'>
+                        <li>Describe how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</li>
+                        <li>Identify the anticipated impacts of this project–what will change, how many people will benefit and how?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables" type="TextareaReportItem" rich="true" blobItem="DELIVERABLES">
+            <![CDATA[
+                <li><b>Provide a list of project deliverables (bullet points)</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
+            <![CDATA[
+                <h2>Team Summary</h2>
+                <p class='small'>Use the following code for Role:<br />
+                <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
+                <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
+                <b>&nbsp;&nbsp;AR:</b> Affiliated Researcher<br />
+                <b>&nbsp;&nbsp;Collaborator</b><br />
+                <b>&nbsp;&nbsp;Partner</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP" labels="Name|Institution|Email|Level of Study/Position" types="Text|Text|Text|Text" sizes="150|150|150|" multiple="true">
+            <![CDATA[
+                <h2>Highly Qualified Personnel (HQP)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL Budget.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
+            <![CDATA[
+                <p style="margin-top: -30px;">
+                    <b>Budget Limitations:</b><br />
+                    3) Professional & Tech. Services/contracts - a maximum of $5000 can be used towards payment of consulting fees<br />
+                    6) Materials, supplies & other expenditures - a maximum of $5000 can be used towards patent fees
+                </p>
+                <h3>Budget Justification</h3>
+                <p>Please use the following categories in your budget justification as appropriate. Note that SIP funding includes specific budget caps in some categories.</p>
+                <ol>
+                <li><b>Salaries to students</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST2" height="100px">
+            <![CDATA[
+                <li><b>Salaries to non-students</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
+            <![CDATA[
+                <li><b>Professional & Tech. Services/contracts</b>
+                    <ol type="a">
+                        <li>Consultants and business development services (maximum $5,000)</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST4" height="100px">
+            <![CDATA[
+                <li><b>Equipment</b>
+                    <ol type="a">
+                        <li>Purchase of rental</li>
+                        <li>Maintenance costs</li>
+                        <li>Operating costs</li>
+                        <li>Other equipment costs</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST5" height="100px">
+            <![CDATA[
+                <li><b>Computing and Software</b>
+                    <ol type="a">
+                        <li>Specialized software licenses and e-communications costs</li>
+                        <li>E-business enablement costs, website</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just6" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST6" height="100px">
+            <![CDATA[
+                <li><b>Materials, Supplies & Other expenditures</b>
+                    <ol type="a">
+                        <li>Materials and Supplies</li>
+                        <li>Patent costs (maximum $3,000)</li>
+                        <li>Proof of Principle, product validation for market readiness</li>
+                        <li>Prototype development (specify)</li>
+                        <li>Communications/Marketing/Printing/Production (maximum $5,000)</li>
+                        <li>Evaluation costs</li>
+                        <li>Management and Networking (maximum $3,000)</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just7" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST7" height="100px">
+            <![CDATA[
+                <li><b>Travel</b>
+                    <ol type="a">
+                        <li>Field trips</li>
+                        <li>Conference, technical shows</li>
+                    </ol>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
+        <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
+            <![CDATA[
+                <h3>Investigator(s) Bio</h3>
+                <p>Please submit a brief bio (2 pages maximum) for each named investigator from Part 2, highlighting experience and activities relevant to the application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
+            <![CDATA[
+                <h3>Partner Letter of Support</h3>
+                <p>Investigators will be expected to include partner organizations in their projects, including those participating in any knowledge dissemination or commercialization planning. Such organizations should be described in the application and their support letter(s) should be included in appendix. Partners should describe their commitment toward the project, knowledge dissemination and/or commercialization.</p>
+                <p>For reporting purposes, all partnership activities and contributions (cash and in-kind) should be quantified in the application.</p>
+                <b>The uploaded file must be a Zip Archive</b>.
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>
