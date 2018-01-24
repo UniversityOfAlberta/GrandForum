@@ -28,6 +28,7 @@ class AddHqp extends SpecialPage{
                 $form->getElementById('university_field')->setPOST('university');
                 $form->getElementById('dept_field')->setPOST('department');
                 $form->getElementById('position_field')->setPOST('position');
+                $form->getElementById('employee_field')->setPOST('employeeId');
 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
@@ -42,6 +43,11 @@ class AddHqp extends SpecialPage{
                 if($result){
                     $form->reset();
                 }
+                
+                DBFunctions::update('mw_user',
+                                    array('employee_id' => $_POST['employeeId']),
+                                    array('user_name' => $_POST['wpName']));
+                DBFUnctions::commit();
             }
             AddHqp::generateFormHTML($wgOut);
             return;
@@ -76,9 +82,16 @@ class AddHqp extends SpecialPage{
         $emailField->registerValidation(new UoAEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));        
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
+        
+        $employeeLabel = new Label("employee_label", "Employee Id", "The uid of the ", VALIDATE_NOTHING);
+        $employeeField = new TextField("employee_field", "Employee Id", "", VALIDATE_NOTHING);
+        $employeeRow = new FormTableRow("employee_row");
+        $employeeRow->append($employeeLabel)->append($employeeField->attr('size', 20));
+        
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's Course", "Graduate Student - Master's Thesis", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
+        
         $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
         $universityField = new ComboBox("university_field", "Instutution", $me->getUni(), $universities, VALIDATE_NOTHING);
         $universityField->attr("style", "width: 250px;");
@@ -105,6 +118,7 @@ class AddHqp extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
+                  ->append($employeeRow)
                   ->append($universityRow)
                   ->append($deptRow)
                   ->append($positionRow)
