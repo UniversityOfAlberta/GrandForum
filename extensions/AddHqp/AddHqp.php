@@ -12,7 +12,7 @@ require_once("$dir../AddMember/AddMember.body.php");
 class AddHqp extends SpecialPage{
 
     function AddHqp() {
-            parent::__construct("AddHqp", NI.'+', true);
+        parent::__construct("AddHqp", NI.'+', true);
     }
 
     function execute($par){

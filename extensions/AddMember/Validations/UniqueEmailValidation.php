@@ -11,7 +11,7 @@ class UniqueEmailValidation extends UIValidation {
             return true;
         }
         $person = Person::newFromEmail($value);
-        return ($person == null);
+        return ($person == null || $person->getId() == 0);
     }
     
     function failMessage($name){
