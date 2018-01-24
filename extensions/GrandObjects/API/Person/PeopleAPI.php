@@ -5,23 +5,45 @@ class PeopleAPI extends RESTAPI {
     function doGET(){
         if($this->getParam('role') != ""){
             $university = "";
+            $department = "";
             if($this->getParam('university') != ""){
                 $university = $this->getParam('university');
+            }
+            if($this->getParam('department') != ""){
+                $department = $this->getParam('department');
             }
             $exploded = explode(",", $this->getParam('role'));
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
-                $people = Person::getAllPeople($role);
+                if($role == 'all'){
+                    // Get All people (including candidates)
+                    $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
+                }
+                else{
+                    // Get the specific role
+                    if(strstr($role, "Former-") !== false){
+                        $people = Person::getAllPeopleDuring(str_replace("Former-", "", $role), "0000-00-00", date('Y-m-d'));
+                    }
+                    else{
+                        $people = Person::getAllPeople($role);
+                    }
+                }
                 foreach($people as $person){
-                    if($university == ""){
+                    if(strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
+                        // Person is still the specified role, don't show on the 'former' table
+                        continue;
+                    }
+                    if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
                     }
                     else {
-                        foreach($person->getUniversitiesDuring(date("Y-01-01 00:00:00"), date("Y-12-31 23:59:59")) as $uni){
+                        $unis = $person->getCurrentUniversities();
+                        foreach($unis as $uni){
                             if($uni['university'] == $university){
-                                $finalPeople[$person->getReversedName()] = $person;
-                                break;
+                                if($department == "" || $department == $uni['department']){
+                                    $finalPeople[$person->getReversedName()] = $person;
+                                }
                             }
                         }
                     }

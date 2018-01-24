@@ -1358,15 +1358,22 @@ class Paper extends BackboneModel{
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
                         $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
+                        $found = false;
                         foreach($unis as $uni){
-                            if(strstr($uni['position'], "Graduate Student") !== false ||
-                               strstr($uni['position'], "Post-Doctoral Fellow") !== false){
+                            if(strstr($uni['position'], "Graduate Student") !== false){
                                 $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $found = true;
+                                break;
                             }
                             else if(strstr($uni['position'], "Undergraduate") !== false ||
                                     strstr($uni['position'], "Summer Student") !== false){
                                 $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $found = true;
+                                break;
                             }
+                        }
+                        if(!$found){
+                            $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                         }
                     }
                     else{

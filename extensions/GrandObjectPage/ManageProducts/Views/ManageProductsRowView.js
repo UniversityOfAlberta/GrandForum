@@ -166,12 +166,12 @@ ManageProductsViewRow = Backbone.View.extend({
         
         // $.proxy rebinds this to val to this.model.get('cat') instead of 'type'
         if(productStructure.categories[this.model.get('category')].
-           types[this.model.get('type')].data.length == 0){
+           types[this.model.getType()].data.length == 0){
             incomplete.incomplete = false;
         }
         else{
             _.each(productStructure.categories[this.model.get('category')].
-                   types[this.model.get('type')].data, $.proxy(function(val, key){        
+                   types[this.model.getType()].data, $.proxy(function(val, key){        
                         if(this.model.get('data')[key] != undefined &&  this.model.get('data')[key].trim() != ""){
                             incomplete.incomplete = false;
                         }

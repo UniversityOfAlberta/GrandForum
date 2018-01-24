@@ -578,7 +578,7 @@
         <ReportItemSet id="presentations_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
             <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
                 <![CDATA[
-                    <h2>Presentations <i>(by staff member)</i></h2>
+                    <h2>Invited Presentations <i>(by staff member)</i></h2>
                     <ul>
                 ]]>
             </ReportItem>

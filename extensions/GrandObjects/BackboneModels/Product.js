@@ -13,7 +13,7 @@ Product = Backbone.Model.extend({
         this.duplicates = new ProductDuplicates();
               
         this.on("change:category", function(){
-            var type = this.get('type').split(":")[0];
+            var type = this.getType();
             if(this.get('category') != "" && productStructure.categories[this.get('category')].types[type] == undefined){
                 this.set("type", ""); // Clear type
             }
@@ -22,9 +22,9 @@ Product = Backbone.Model.extend({
         this.on("change:type", function(){
             var status = this.get('status');
             if(productStructure.categories[this.get('category')] !== undefined &&
-               productStructure.categories[this.get('category')].types[this.get('type')] != undefined &&
-               !_.contains(productStructure.categories[this.get('category')].types[this.get('type')].status, status)){
-                this.set('status', _.first(productStructure.categories[this.get('category')].types[this.get('type')].status));
+               productStructure.categories[this.get('category')].types[this.getType()] != undefined &&
+               !_.contains(productStructure.categories[this.get('category')].types[this.getType()].status, status)){
+                this.set('status', _.first(productStructure.categories[this.get('category')].types[this.getType()].status));
             }
         });
         
@@ -37,6 +37,10 @@ Product = Backbone.Model.extend({
                 this.set('access', 'Forum');
             }
         });
+    },
+    
+    getType: function(){
+        return this.get('type').split(":")[0];
     },
 
     getAuthors: function(){
@@ -81,7 +85,7 @@ Product = Backbone.Model.extend({
     },
     
     getPossibleFields: function(){
-        var type = this.get('type').split(":")[0];
+        var type = this.getType();
         if(type == "" || this.get('category') == ""){
             return new Array();
         }
@@ -92,7 +96,7 @@ Product = Backbone.Model.extend({
     },
     
     getPossibleStatus: function(){
-        var type = this.get('type').split(":")[0];
+        var type = this.getType();
         if(type == "" || this.get('category') == ""){
             return new Array();
         }
@@ -103,7 +107,7 @@ Product = Backbone.Model.extend({
     },
     
     getAcceptanceDateLabel: function(){
-        var type = this.get('type').split(":")[0];
+        var type = this.getType();
         if(type == "" || this.get('category') == ""){
             return new Array();
         }
@@ -114,7 +118,7 @@ Product = Backbone.Model.extend({
     },
     
     getDateLabel: function(){
-        var type = this.get('type').split(":")[0];
+        var type = this.getType();
         if(type == "" || this.get('category') == ""){
             return new Array();
         }
@@ -125,7 +129,7 @@ Product = Backbone.Model.extend({
     },
     
     getAuthorsLabel: function(){
-        var type = this.get('type').split(":")[0];
+        var type = this.getType();
         if(this.get('category') == ""){
             return "Author";
         }

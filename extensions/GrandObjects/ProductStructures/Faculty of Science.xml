@@ -312,6 +312,8 @@
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Pages" type="String">ms_pages</field>
+                <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
