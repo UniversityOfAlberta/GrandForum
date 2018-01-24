@@ -1006,7 +1006,7 @@ class CavendishTemplate2 extends QuickTemplate {
                     echo "<span class='pBodyTitle highlightsBackground$i'>{$hr}{$header['text']}</span><ul class='pBody highlightsBackground$i'>";
                     ksort($header['links']);
                     foreach($header['links'] as $lKey => $link){
-                        echo "<li><a href='{$link['href']}'>{$link['text']}</a></li>";
+                        echo "<li><a href='{$link['href']}' target='{$link['target']}'>{$link['text']}</a></li>";
                     }
                     echo "</ul>";
                     $i++;

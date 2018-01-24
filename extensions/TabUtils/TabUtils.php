@@ -64,9 +64,10 @@ class TabUtils {
      * @param string $href $href The url that the go to
      * @return array The array of link information ['text', 'href']
      */
-    static function createToolboxLink($text, $href){
+    static function createToolboxLink($text, $href, $target=""){
         return array('text' => $text,
-                     'href' => $href);
+                     'href' => $href,
+                     'target' => $target);
     }
     
     static function clearSubTabs($id){
