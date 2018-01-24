@@ -982,7 +982,8 @@ class ReportItemCallback {
         if($type != "all"){
             $types = explode("|", $type);
             foreach($products as $key => $product){
-                if(!in_array($product->getType(), $types)){
+                $type = explode(":", $product->getType());
+                if(!in_array($type[0], $types)){
                     // Type doesn't match
                     unset($products[$key]);
                 }

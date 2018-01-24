@@ -158,15 +158,20 @@ class DepartmentTab extends AbstractTab {
                 foreach($award->getAuthors() as $author){
                     $authors[] = $author->getLastName();
                 }
+                $startYear = $award->getAcceptanceYear();
+                $endYear = $award->getYear();
                 $years = "";
-                if($award->getAcceptanceYear() != $award->getYear()){
-                    $years = "{$award->getAcceptanceYear()} - {$award->getYear()}";
+                if($startYear == $endYear){
+                    $years = $endYear;        
                 }
-                else if($award->getAcceptanceYear() != ""){
-                    $years = "{$award->getAcceptanceYear()}";
+                else if($startYear == "0000"){
+                    $years = $endYear;
                 }
-                else if($award->getYear() != ""){
-                    $years = "{$award->getYear()}";
+                else if($endYear == "0000"){
+                    $years = "{$startYear} - Present";
+                }
+                else{
+                    $years = "{$startYear} - {$endYear}";
                 }
                 $html .= "<tr><td>{$award->getTitle()}</td><td>{$award->getData('awarded_by')}</td><td>".implode(", ", $authors)."</td><td>{$years}</td></tr>";
             }
