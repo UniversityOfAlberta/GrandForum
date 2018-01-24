@@ -674,7 +674,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Patent" status="">
+        <Product type="Patent" status="Filed|Awarded">
             <data>
                 <field label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>

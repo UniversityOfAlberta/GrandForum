@@ -208,11 +208,11 @@ class DepartmentTab extends AbstractTab {
         $html .= "<h2>Graduate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($gradPapers)."</p>";
         $html .= "<small>Graduate student name boldfaced</small><br />";
-        $html .= "<ul>";
+        //$html .= "<ul>";
         foreach($gradPapers as $paper){
-            $html .= "<li>{$paper->getCitation(false, false, true, false)}</li>";
+            $html .= "<p style='margin-bottom: 1em;'>{$paper->getCitation(false, false, true, false)}</p>";
         }
-        $html .= "</ul>";
+        //$html .= "</ul>";
         
         $html .= "<div class='pagebreak'></div>";
         $html .= "<script type='text/php'>
@@ -223,11 +223,11 @@ class DepartmentTab extends AbstractTab {
         $html .= "<h2>Undergraduate Student Publications</h2>";
         $html .= "<p>Total # of publications: ".count($ugradPapers)."</p>";
         $html .= "<small>Undergraduate student name underlined</small><br />";
-        $html .= "<ul>";
+        //$html .= "<ul>";
         foreach($ugradPapers as $paper){
-            $html .= "<li>{$paper->getCitation(false, false, true, false)}</li>";
+            $html .= "<p style='margin-bottom: 1em;'>{$paper->getCitation(false, false, true, false)}</p>";
         }
-        $html .= "</ul>";
+        //$html .= "</ul>";
         
         $html .= "<div class='pagebreak'></div>";
         $html .= "<script type='text/php'>

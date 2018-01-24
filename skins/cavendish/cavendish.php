@@ -153,9 +153,11 @@ class CavendishTemplate extends QuickTemplate {
             Backbone.View.prototype.beforeRender = function(){};
             Backbone.View.prototype.afterRender = function(){
                 $.each(this.$el.find('input[type=datepicker]'), function(index, val){
+                    var value = $(val).attr('value').substr(0, 10);
+                    console.log(value);
                     $(val).datepicker({
                         'dateFormat': $(val).attr('format'),
-                        'defaultDate': $(val).attr('value'),
+                        'defaultDate': value,
                         'changeMonth': true,
                         'changeYear': true,
                         'showOn': "both",
