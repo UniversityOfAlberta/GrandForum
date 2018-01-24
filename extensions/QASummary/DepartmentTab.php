@@ -189,15 +189,20 @@ class DepartmentTab extends AbstractTab {
                     $yearAgo = date('Y-m-d', $yearAgo);
                     $uni = $hqp->getUniversityDuring($yearAgo, $paper->getDate());
                     $pos = @$uni['position'];
-                    if(in_array(strtolower($pos), array_merge(Person::$studentPositions['grad'], Person::$studentPositions['pdf']))){
-                        $gradPapers[$paper->getId()] = $paper;
+                    if(in_array(strtolower($pos), Person::$studentPositions['grad'])){
+                        $gradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
                     }
                     else if(in_array(strtolower($pos), Person::$studentPositions['ugrad'])){
-                        $ugradPapers[$paper->getId()] = $paper;
+                        $ugradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
                     }
                 }
             }
         }
+        
+        ksort($gradPapers);
+        ksort($ugradPapers);
+        $gradPapers = array_reverse($gradPapers);
+        $ugradPapers = array_reverse($ugradPapers);
         
         $html .= "<div class='pagebreak'></div>";
         $html .= "<script type='text/php'>
