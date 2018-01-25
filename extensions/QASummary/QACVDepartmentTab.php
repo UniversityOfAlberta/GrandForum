@@ -149,7 +149,8 @@ class QACVDepartmentTab extends AbstractTab {
 	    
         foreach(Person::getAllPeopleDuring(NI, ($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
             foreach($person->getUniversitiesDuring(($year-5).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
-                if($uni['department'] == $this->department){
+                if($uni['department'] == $this->department && 
+                   $uni['university'] == "University of Alberta"){
                     $people[$person->getId()] = $person;
                     $names[] = $person->getNameForForms();
                     break;
