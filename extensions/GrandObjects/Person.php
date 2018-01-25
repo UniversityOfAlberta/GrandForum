@@ -947,7 +947,8 @@ class Person extends BackboneModel {
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
-                      'url' => $this->getUrl());
+                      'url' => $this->getUrl(),
+                      'sop_url' => $this->getSopUrl());
         return $json;
     }
     
@@ -4679,6 +4680,15 @@ class Person extends BackboneModel {
     function getSopPdfUrl(){
       $sop=SOP::newFromUserId($this->id);
         return $sop->getSopUrl();
+    }
+
+    /**
+     * Returns the SoP url
+     * @return String url of SoP
+    **/
+    function getSopUrl() {
+      $sop = $this->getSop();
+      return $sop == "" ? "" : $sop->getUrl();
     }
 
     /**

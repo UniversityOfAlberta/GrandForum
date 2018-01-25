@@ -46,7 +46,7 @@ class SOP extends AbstractSop{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-            $this->pdf = $row['pdf_data'];
+            //$this->pdf = $row['pdf_data'];
             $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);

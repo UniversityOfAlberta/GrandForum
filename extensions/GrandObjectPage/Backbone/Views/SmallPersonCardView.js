@@ -19,7 +19,11 @@ SmallPersonCardView = Backbone.View.extend({
     },
 
     render: function(options){
-        this.$el.html(this.template(this.model.toJSON()));
+        var gotoUrl = this.model.get('url');
+        if((this.model.get('sop_url') != "") && (_.findWhere(me.get('roles'), {role: CI}) == undefined)) { 
+            gotoUrl = this.model.get('sop_url');
+        }
+        this.$el.html(this.template(_.extend({gotoUrl: gotoUrl}, this.model.toJSON())));
         this.renderRoles();
         return this.$el;
     }
