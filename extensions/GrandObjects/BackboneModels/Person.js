@@ -152,7 +152,8 @@ Person = Backbone.Model.extend({
         department: '',
         publicProfile: '',
         privateProfile: '',
-        url: ''
+        url: '',
+        sop_url: ''
     }
 });
 
