@@ -1121,11 +1121,13 @@ EOF;
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this) &&
+             !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this) &&
+             !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)))){
             return false;
         }
