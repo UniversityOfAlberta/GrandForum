@@ -25,7 +25,10 @@ DuplicatesDialogView = Backbone.View.extend({
             }
         });
         setInterval($.proxy(function(){
-            this.$el.css("maxHeight", $(window).height()-300);
+            var innerHeight = parseInt(this.$el.height());
+            var outerHeight = parseInt(this.$el.parent().height());
+            var outerTop = parseInt(this.$el.parent().css('top'));
+            this.$el.css("maxHeight", $(window).height() - (outerTop + (outerHeight - innerHeight)) - 50);
         }, this), 100);
     },
     
