@@ -10,23 +10,23 @@ DuplicatesDialogView = Backbone.View.extend({
         this.products = products;
         this.template = _.template($("#duplicates_dialog_template").html());
         this.$el.dialog({
-	        autoOpen: false,
-	        modal: true,
-	        resizable: false,
-	        draggable: false,
-	        show: 'fade',
-	        width: "800px",
-	        beforeClose: $.proxy(function(){
-	            $("html").css("overflow", "auto");
-	        }, this),
-	        buttons: {
-	            "Not Duplicates": $.proxy(this.notDuplicates, this),
-	            "Delete Selected": $.proxy(this.deleteSelectedProducts, this)
-	        }
-	    });
-	    setInterval($.proxy(function(){
-	        this.$el.dialog("option", "height", $(window).height()-200);
-	    }, this), 100);
+            autoOpen: false,
+            modal: true,
+            resizable: false,
+            draggable: false,
+            show: 'fade',
+            width: "800px",
+            beforeClose: $.proxy(function(){
+                $("html").css("overflow", "auto");
+            }, this),
+            buttons: {
+                "Not Duplicates": $.proxy(this.notDuplicates, this),
+                "Delete Selected": $.proxy(this.deleteSelectedProducts, this)
+            }
+        });
+        setInterval($.proxy(function(){
+            this.$el.css("maxHeight", $(window).height()-300);
+        }, this), 100);
     },
     
     notDuplicates: function(){
@@ -144,7 +144,7 @@ DuplicatesDialogView = Backbone.View.extend({
             firstProduct.save(null, {
                 success: function(){
                     firstProduct.dirty = false;
-	                firstProduct.trigger("dirty");
+                    firstProduct.trigger("dirty");
                 },
                 error: function(){
                 
