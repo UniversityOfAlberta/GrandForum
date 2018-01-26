@@ -134,8 +134,10 @@ SopsView = Backbone.View.extend({
                                                      'aLengthMenu': [[-1], ['All']],
                                                      'drawCallback': $.proxy(function() {
                                                         if (SopsView.filtersSelected.filterMenuOpen == true) {
-                                                            this.showFilter(); // close,
-                                                            this.showFilter(); // open
+                                                            // Move the filter menu back out
+                                                            $('#bodyContent').css('left', 330);
+                                                            $('#filter-pane').css('left', -5);
+                                                            $('#showfilter').attr('value', 'Hide Filter Options');
                                                         }
                                                         // This is for keeping filter options across overview table types
                                                         SopsView.filtersSelected.filterSelectProgramName = this.filterSelectProgramName.chosen().val();
@@ -212,7 +214,6 @@ SopsView = Backbone.View.extend({
             $('#showfilter').attr('value', 'Show Filter Options');
             // The filter menu is hidden now
         }
-        
     },
 
     showCheckboxes: function(){
