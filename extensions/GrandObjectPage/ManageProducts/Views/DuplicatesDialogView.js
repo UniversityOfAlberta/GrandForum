@@ -25,7 +25,7 @@ DuplicatesDialogView = Backbone.View.extend({
 	        }
 	    });
 	    setInterval($.proxy(function(){
-	        this.$el.dialog("option", "height", $(window).height()-200);
+	        this.$el.css("maxHeight", $(window).height()-300);
 	    }, this), 100);
     },
     
