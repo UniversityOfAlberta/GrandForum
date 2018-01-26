@@ -6,6 +6,8 @@ SopsView = Backbone.View.extend({
     lastTimeout: null,
     expanded: false,
     expanded2: false,
+    filtersSelected: null,
+
     
     initialize: function(){
         this.template = _.template($('#sops_template').html());
@@ -18,6 +20,9 @@ SopsView = Backbone.View.extend({
             var pad = $('#bodyContent').css('padding-left');
             $('#filter-pane').css('margin-left', parseInt(pad)-16);
         }, 16);
+
+        
+        
     },
 
     renderRoles: function(){
@@ -126,7 +131,51 @@ SopsView = Backbone.View.extend({
                                                             text: 'PDF'
                                                         }*/
                                                      ], 
-                                                     'aLengthMenu': [[-1], ['All']]});
+                                                     'aLengthMenu': [[-1], ['All']],
+                                                     'drawCallback': $.proxy(function() {
+                                                        if (SopsView.filtersSelected.filterMenuOpen == true) {
+                                                            this.showFilter(); // close,
+                                                            this.showFilter(); // open
+                                                        }
+                                                        // This is for keeping filter options across overview table types
+                                                        SopsView.filtersSelected.filterSelectProgramName = this.filterSelectProgramName.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectCountry = this.filterSelectCountry.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectDecision = this.filterSelectDecision.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectAoI = this.filterSelectAoI.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectSupervisors = this.filterSelectSupervisors.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectReviewers = this.filterSelectReviewers.chosen().val();
+                                                        SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
+                                                        SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
+                                                        SopsView.filtersSelected.filterDoB = this.filterDoB.val();
+                                                        SopsView.filtersSelected.filterValEPLScoreMin = this.filterValEPLScoreMin.val();
+                                                        SopsView.filtersSelected.filterValEPLScoreMax = this.filterValEPLScoreMax.val();
+                                                        SopsView.filtersSelected.filterValGreVerbalMin = this.filterValGreVerbalMin.val();
+                                                        SopsView.filtersSelected.filterValGreVerbalMax = this.filterValGreVerbalMax.val();
+                                                        SopsView.filtersSelected.filterValGreQuantMin = this.filterValGreQuantMin.val();
+                                                        SopsView.filtersSelected.filterValGreQuantMax = this.filterValGreQuantMax.val();
+                                                        SopsView.filtersSelected.filterValGreAnalyticalMin = this.filterValGreAnalyticalMin.val();
+                                                        SopsView.filtersSelected.filterValGreAnalyticalMax = this.filterValGreAnalyticalMax.val();
+                                                        SopsView.filtersSelected.filterValGreCSMax = this.filterValGreCSMax.val();
+                                                        SopsView.filtersSelected.filterValGreCSMin = this.filterValGreCSMin.val();
+                                                        SopsView.filtersSelected.filterCoursesEl = this.filterCoursesEl.val();
+                                                        SopsView.filtersSelected.filterNotesEl = this.filterNotesEl.val();
+                                                        SopsView.filtersSelected.filterCommentsEl = this.filterCommentsEl.val();
+                                                        SopsView.filtersSelected.filterMeOnly = this.filterMeOnly.val();
+                                                        SopsView.filtersSelected.numPubsInputMin = this.numPubsInputMin.val();
+                                                        SopsView.filtersSelected.numPubsInputMax = this.numPubsInputMax.val();
+                                                        SopsView.filtersSelected.numAwardsInputMin = this.numAwardsInputMin.val();
+                                                        SopsView.filtersSelected.numAwardsInputMax = this.numAwardsInputMax.val();
+                                                        SopsView.filtersSelected.heldNSERC = this.heldNSERC.prop("checked");
+                                                        SopsView.filtersSelected.heldVanier = this.heldVanier.prop("checked");
+                                                        SopsView.filtersSelected.heldAITF = this.heldAITF.prop("checked");
+                                                        SopsView.filtersSelected.appliedVanier = this.appliedVanier.prop("checked");
+                                                        SopsView.filtersSelected.appliedAITF = this.appliedAITF.prop("checked");
+                                                        SopsView.filtersSelected.appliedNSERC = this.appliedNSERC.prop("checked");
+                                                        SopsView.filtersSelected.filterDoBSpan = this.filterDoBSpan.val();
+                                                        SopsView.filtersSelected.filterSelectEPLTest = this.filterSelectEPLTest.val();
+                                                        
+                                                     }, this)
+                                                 });
         this.table.draw();
         table = this.table;
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
@@ -150,18 +199,18 @@ SopsView = Backbone.View.extend({
     },
 
     showFilter: function(){
-        if ($(this).data('name') == 'show') {
+        if (!SopsView.filtersSelected.filterMenuOpen) {
+            SopsView.filtersSelected.filterMenuOpen = true;
             $('#filter-pane').stop().animate({left: -5 }, 300, 'swing');
             $('#bodyContent').stop().animate({left: 330 }, 300, 'swing');
-            //$("#filters").animate().hide();
-            $(this).data('name', 'hide');
             $('#showfilter').attr('value', 'Hide Filter Options');
+            // The filter menu is showing now.
         } else {
+            SopsView.filtersSelected.filterMenuOpen = false;
             $('#filter-pane').stop().animate({left: -365 }, 300, 'swing');
             $('#bodyContent').stop().animate({left: 0 }, 300, 'swing');
-            //$("#filters").animate().show();
-            $(this).data('name', 'show')
             $('#showfilter').attr('value', 'Show Filter Options');
+            // The filter menu is hidden now
         }
         
     },
@@ -200,10 +249,11 @@ SopsView = Backbone.View.extend({
     },
 
     filterCitizenship: function(settings,data,dataIndex){
-        var filtercountry = this.filterSelectCountry.chosen().val();
+        var filtercountry = this.filterSelectCountry.chosen();
+        var value = filtercountry.val();
         var studentcountry = data[5];
-        if (filtercountry != null) {
-            if ($.inArray(studentcountry, filtercountry) == -1) {
+        if (value != null) {
+            if ($.inArray(studentcountry, value) == -1) {
                 return false;
             }
         }
@@ -225,8 +275,8 @@ SopsView = Backbone.View.extend({
     },
 
     filterGPA: function(settings,data,dataIndex){
-        var min = parseFloat(this.referenceNameInputMin.val(),0);
-        var max = parseFloat(this.referenceNameInputMax.val(),0);
+        var min = parseFloat(this.referenceGPAInputMin.val(),0);
+        var max = parseFloat(this.referenceGPAInputMax.val(),0);
         var gpa = parseFloat( data[13] ) || 0; // use column 2
         //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
@@ -546,8 +596,8 @@ SopsView = Backbone.View.extend({
         
         this.filterSelectCountry = this.$('#filterSelectCountry');
         this.filterSelectProgramName = this.$('#filterSelectProgramName');
-        this.referenceNameInputMin = this.$('#referenceNameInputMin');
-        this.referenceNameInputMax = this.$('#referenceNameInputMax');
+        this.referenceGPAInputMin = this.$('#referenceGPAInputMin');
+        this.referenceGPAInputMax = this.$('#referenceGPAInputMax');
         this.filterSelectDecision = this.$('#filterSelectDecision');
         this.filterByTagsEl = this.$('#filterByTags');
         this.filterSelectAoI = this.$('#filterSelectAoI');
@@ -581,6 +631,64 @@ SopsView = Backbone.View.extend({
         this.filterCommentsEl = this.$('#filterComments');
         this.filterMeOnly = this.$('#filterMeOnly');
         
+        var fnChosen = $.proxy(function (variable) {
+            if (SopsView.filtersSelected[variable] != null) {
+                var field = this[variable].chosen();
+                field.val(SopsView.filtersSelected[variable]);
+                field.trigger("chosen:updated");
+            }
+        }, this);
+        var fnField = $.proxy(function (variable) {
+            if (SopsView.filtersSelected[variable] != null) {
+                var field = this[variable].val(SopsView.filtersSelected[variable]);
+            }
+        }, this);
+        var fnCheckbox = $.proxy(function (variable) {
+            if (SopsView.filtersSelected[variable]) {
+                this[variable].prop("checked", true);
+            }
+        }, this);
+
+        // This is for keeping filter options across overview table types
+        fnChosen('filterSelectCountry');
+        fnChosen('filterSelectProgramName');
+        fnChosen('filterSelectDecision');
+        fnChosen('filterSelectAoI');
+        fnChosen('filterSelectSupervisors');
+        fnChosen('filterSelectReviewers');
+
+        fnField('referenceGPAInputMin');
+        fnField('referenceGPAInputMax');
+        fnField('filterDoB');
+        fnField('filterValEPLScoreMin');
+        fnField('filterValEPLScoreMax');
+        fnField('filterValGreVerbalMin');
+        fnField('filterValGreVerbalMax');
+        fnField('filterValGreQuantMin');
+        fnField('filterValGreQuantMax');
+        fnField('filterValGreAnalyticalMin');
+        fnField('filterValGreAnalyticalMax');
+        fnField('filterValGreCSMax');
+        fnField('filterValGreCSMin');
+        fnField('filterCoursesEl');
+        fnField('filterNotesEl');
+        fnField('filterCommentsEl');
+        fnField('filterMeOnly');
+        fnField('numPubsInputMin');
+        fnField('numPubsInputMax');
+        fnField('numAwardsInputMin');
+        fnField('numAwardsInputMax');
+
+        fnCheckbox('heldNSERC');
+        fnCheckbox('heldVanier');
+        fnCheckbox('heldAITF');
+        fnCheckbox('appliedVanier');
+        fnCheckbox('appliedAITF');
+        fnCheckbox('appliedNSERC');
+
+        fnField('filterDoBSpan');
+        fnField('filterSelectEPLTest');
+
         this.addRows();
         var roleString = me.getRoleString();
         this.listenToOnce(roleString, 'sync', this.renderRoles);
@@ -591,8 +699,8 @@ SopsView = Backbone.View.extend({
             $.proxy(this.filterDecision, this),
             $.proxy(this.filterMineOnly, this),
             $.proxy(this.filterByTags, this),
-            $.proxy(this.filterCitizenship, this),
             $.proxy(this.filterProgramName, this),
+            $.proxy(this.filterCitizenship, this),
             $.proxy(this.filterNumPubs, this),
             $.proxy(this.filterNumAwards, this),
             $.proxy(this.filterScholHeld, this),
@@ -628,3 +736,43 @@ SopsView = Backbone.View.extend({
         return this.$el;
     }
 });
+
+SopsView.filtersSelected = {
+    filterMenuOpen: false, //
+    filterSelectCountry: null, //
+    filterSelectProgramName: null, //
+    referenceGPAInputMin: null,
+    referenceGPAInputMax: null,
+    filterSelectDecision: null, //
+    filterByTagsEl: null,
+    filterSelectAoI: null, //
+    filterSelectSupervisors: null, //
+    filterSelectReviewers: null, //
+    numPubsInputMin: null,
+    numPubsInputMax: null,
+    numAwardsInputMin: null,
+    numAwardsInputMax: null,
+    heldVanier: null,
+    heldAITF: null,
+    heldNSERC: false,
+    appliedVanier: null,
+    appliedAITF: null,
+    appliedNSERC: null,
+    filterDoB: null,
+    filterDoBSpan: null,
+    filterSelectEPLTest: null,
+    filterValEPLScoreMin: null,
+    filterValEPLScoreMax: null,
+    filterValGreVerbalMin: null,
+    filterValGreVerbalMax: null,
+    filterValGreQuantMin: null,
+    filterValGreQuantMax: null,
+    filterValGreAnalyticalMin: null,
+    filterValGreAnalyticalMax: null,
+    filterValGreCSMax: null,
+    filterValGreCSMin: null,
+    filterCoursesEl: null,
+    filterNotesEl: null,
+    filterCommentsEl: null,
+    filterMeOnly: null
+};
