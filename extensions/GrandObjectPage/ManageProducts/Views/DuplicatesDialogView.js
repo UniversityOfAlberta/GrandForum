@@ -24,6 +24,9 @@ DuplicatesDialogView = Backbone.View.extend({
 	            "Delete Selected": $.proxy(this.deleteSelectedProducts, this)
 	        }
 	    });
+	    setInterval($.proxy(function(){
+	        this.$el.dialog("option", "height", $(window).height()-200);
+	    }, this), 100);
     },
     
     notDuplicates: function(){
