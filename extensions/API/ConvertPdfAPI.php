@@ -174,10 +174,11 @@ class ConvertPdfAPI extends API{
             $num_file++;
             if($userId != 0){
                 $content_parsed = DBFunctions::escape($contents);
+                unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
                 $sdata = serialize($data);
-                
+                unset($data);
 		        if(count(DBFunctions::select(array('grand_sop'),
 		                                     array('user_id'),
 		                                     array('user_id' => EQ($userId)))) > 0){
@@ -189,6 +190,7 @@ class ConvertPdfAPI extends API{
                     $sql = "update grand_sop 
 	                    set pdf_contents = '$content_parsed'
 	                    where user_id = '$userId'";
+	                unset($content_parsed);
                     $data = DBFunctions::execSQL($sql, true);
                     if($data){
 	                    DBFunctions::commit();
