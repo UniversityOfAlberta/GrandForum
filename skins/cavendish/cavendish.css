@@ -1266,6 +1266,10 @@ input.other_option:focus {
 	margin: 2px 0 2px -1px;
 }
 
+.input_error {
+    background-color: #FEB8B8 !important;
+}
+
 .smaller {
     font-size: 94%;
 }

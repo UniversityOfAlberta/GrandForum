@@ -279,9 +279,13 @@ $wgAllRoles = ($config->hasValue('wgAllRoles')) ?
 
 
 function unaccentChars($str){
-    return strtolower(strtr(utf8_decode($str), 
+    $str = strtolower(strtr(utf8_decode($str), 
                       utf8_decode('àáâãäåšçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÅŠÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
                                   'aaaaaasceeeeiiiinooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'));
+    $str = str_replace("ae", "a", $str);
+    $str = str_replace("oe", "o", $str);
+    $str = str_replace("ue", "u", $str);
+    return $str;
 }
 
 // Encodes a large json object (usually arrays)

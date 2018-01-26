@@ -263,11 +263,18 @@ HTML.DatePicker = function(view, attr, options){
     };
     view.delegateEvents(events);
     $(el).wrap('div');
-    _.defer(function(){
-        view.$('input[name=' + HTML.Name(attr) + ']').keydown(function() {
-            return false;
-        });
-    });
+    /*_.defer(function(){
+        var validate = function() {
+            if($(this).val() == ''){
+                $(this).addClass("input_error");
+            }
+            else{
+                $(this).removeClass("input_error");
+            }
+        }
+        view.$('input[name=' + HTML.Name(attr) + ']').keyup(validate);
+        view.$('input[name=' + HTML.Name(attr) + ']').change(validate);
+    });*/
     return $(el).parent().html();
 }
 

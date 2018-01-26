@@ -324,9 +324,13 @@ class CavendishTemplate extends QuickTemplate {
                             'å':'a', 'æ':'a', 'ç':'c', 'è':'e', 'é':'e', 'ê':'e', 'ë':'e', 'ì':'i', 'í':'i', 'î':'i',
                             'ï':'i', 'ð':'o', 'ñ':'n', 'ò':'o', 'ó':'o', 'ô':'o', 'õ':'o', 'ö':'o', 'ø':'o', 'ù':'u',
                             'ú':'u', 'û':'u', 'ý':'y', 'ý':'y', 'þ':'b', 'ÿ':'y', 'ƒ':'f', 'ü':'u'};
-                return str.replace(/[^\w ]/g, function(char) {
+                str = str.replace(/[^\w ]/g, function(char) {
                     return dict[char] || char;
                 }).toLowerCase();
+                str = str.replace(/oe/g, 'o');
+                str = str.replace(/ae/g, 'a');
+                str = str.replace(/ue/g, 'u');
+                return str;
 		    }
 
 		    function setMinWidth(){
