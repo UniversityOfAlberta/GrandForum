@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Start-Up Company Funding 2017-2018 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2018">
+<Report name="Start-Up Company Funding 2017-2018 Company Targeted Development Support" reportType="RP_START_UP_DEV" pdfType="RP_START_UP_DEV" pdfFiles="StartUpDevelopmentPDF" ajax="true" disabled="false" year="2018">
     <Permissions>
-        <Role role="INACTIVE+" subRole="StartUpLegal2018">
+        <Role role="INACTIVE+" subRole="StartUpDev2018">
             <SectionPermission id="proposal" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -45,7 +45,7 @@
         <ReportItem id="rep" type="Text" blobItem="REP" width="250px">
             <![CDATA[
                     <tr>
-                        <td class="label" style="line-height:1.5em;">Company Representative:<br /><small>(name, title and contact information)</small></td>
+                        <td class="label" style="line-height:1.5em;">Company Representative:<br /><small>(name, title and contact information)</small><br /><small>The representative cannot be the Associate<br />for whom funding is being requested</small></td>
                         <td>{$item}</td>
                     </tr>
                 </table>
@@ -177,10 +177,10 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="glyconet@ualberta.ca" />
         </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the Acknowledgment before you can submit your application.</p>
             ]]>
