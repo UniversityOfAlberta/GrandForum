@@ -251,6 +251,10 @@ class SOP extends AbstractSop{
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS();
         $blob = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
+        $uninteresting = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $gsms->id);
+        if (isset($uninteresting['q0'][1])) { 
+            return "-1";
+        }
         if($blob == ''){
             return '--';
         }

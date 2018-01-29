@@ -21,8 +21,6 @@ SopsView = Backbone.View.extend({
             $('#filter-pane').css('margin-left', parseInt(pad)-16);
         }, 16);
 
-        
-        
     },
 
     renderRoles: function(){
@@ -37,7 +35,26 @@ SopsView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
-        this.sops.each($.proxy(function(p, i){
+        var sops = new Sops(this.sops.filter(function(sop) { 
+            var reviewers = sop.attributes.reviewers;
+            var other_reviewers = sop.attributes.other_reviewers;
+
+            for (var i = 0; i < reviewers.length; i++) {
+                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
+                    return false;
+                }
+            }
+
+            for (var i = 0; i < other_reviewers.length; i++) {
+                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
+                    console.log("here");
+                    return false;
+                }
+            }
+            return true;
+        }));
+
+        sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
             this.$("#sopRows").append(row.$el);
             row.render();
