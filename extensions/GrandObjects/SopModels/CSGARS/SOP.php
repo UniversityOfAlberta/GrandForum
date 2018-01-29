@@ -226,7 +226,7 @@ class SOP extends AbstractSop{
         if(count($data)>0){
             foreach($data as $user){
                 if($user['data'] != ''){
-                    $reviewers[] = $user['user_id'];
+                    $reviewers[$user['user_id']] = $user['user_id'];
                 }
             }
         }
