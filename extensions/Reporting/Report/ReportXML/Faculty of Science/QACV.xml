@@ -597,7 +597,7 @@
         </ReportItemSet>
         
         <!-- Grants -->
-        <ReportItemSet id="grants_if" type="If" if="{>({$user_grant_count},0)}">
+        <ReportItemSet id="grants_if" type="If" if="{>({$user_cv_grant_count},0)}">
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
                     <h2>Research Funding</h2>

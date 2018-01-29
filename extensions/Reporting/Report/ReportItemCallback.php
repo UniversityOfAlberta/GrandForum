@@ -94,6 +94,7 @@ class ReportItemCallback {
             "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
             "user_grant_count" => "getUserGrantCount",
+            "user_cv_grant_count" => "getUserCVGrantCount",
             "user_grant_total" => "getUserGrantTotal",
             "user_phd_year" => "getUserPhdYear",
             "user_appointment_year" => "getUserAppointmentYear",
@@ -1377,6 +1378,12 @@ class ReportItemCallback {
     function getUserGrantCount(){
         $person = Person::newFromId($this->reportItem->personId);
         $grants = $person->getGrantsBetween(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        return count($grants);
+    }
+    
+    function getUserCVGrantCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $grants = $person->getGrantsBetween(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30", true);
         return count($grants);
     }
 

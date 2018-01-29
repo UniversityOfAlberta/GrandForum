@@ -35,7 +35,7 @@ class Impersonate extends SpecialPage {
 	        $allPeople = Person::getAllCandidates('all');
 	        $i = 0;
             foreach(Person::getAllStaff() as $person){
-                $allPeople[] = $person;
+                $allPeople[strtolower($person->getName())] = $person;
             }
         }
         else if(count($user->getDelegates()) > 0){
