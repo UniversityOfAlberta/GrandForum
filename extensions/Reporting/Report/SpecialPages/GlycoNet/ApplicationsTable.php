@@ -38,10 +38,14 @@ class ApplicationsTable extends SpecialPage{
         $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         $this->projects = Project::getAllProjects();
         
+        $this->startUpLegal2018Applicants = array();
         $this->stratApplicants = array();
         foreach(Person::getAllCandidates() as $person){
             if($person->isSubRole('StratApplicant')){
                 $this->stratApplicants[] = $person;
+            }
+            if($person->isSubRole('StartUpLegal2018')){
+                $this->startUpLegal2018Applicants[] = $person;
             }
         }
     }
@@ -69,6 +73,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
@@ -102,6 +107,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "strat" && $me->isRoleAtLeast(SD)){
             $this->generateStrat();
+        }
+        else if($program == "startup" && $me->isRoleAtLeast(SD)){
+            $this->generateStartUp();
         }
         else if($program == "exchange" && $me->isRoleAtLeast(SD)){
             $this->generateExchange();
@@ -214,6 +222,13 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
         $tabbedPage->addTab(new ApplicationTab(array('RP_STRAT'), $this->stratApplicants, 2017, "2017", array($reviewers)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateStartUp(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
