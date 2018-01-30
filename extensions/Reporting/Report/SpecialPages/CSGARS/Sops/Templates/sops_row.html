@@ -93,7 +93,11 @@
 <!-- reviewer info -->
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
+        <% if (reviewers[i].rank == "-1") { %>
+            <%= reviewers[i].name %> (<span style="color: red;">-1</span>)
+        <% } else { %>
+            <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
+        <% } %>
   <br />
   <% } %>
   <span class="assign_button" style="display:none"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
@@ -104,7 +108,7 @@
     <% var avg=0; %>
     <% var ignore=0; %>
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <% if(reviewers[i].rank != '--') { %>
+        <% if ((reviewers[i].rank != '--') && (reviewers[i].rank != "-1")) { %>
           <% avg += parseInt(reviewers[i].rank); %>
         <% } else { %>
           <% ignore += 1; %>
@@ -117,18 +121,27 @@
 <!-- faculty info -->
 <td style="white-space: nowrap;">
   <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+        <% if (other_reviewers[i].rank == "-1") { %>
+            <%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)
+        <% } else { %>
+            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+        <% } %>
   <br />
   <% } %>
 </td>
 
 <!-- faculty average -->
 <td style="white-space: nowrap;">
-  <% var avg=0; %>
+    <% var avg=0; %>
+    <% var ignore=0; %>
     <% for(var i=0; i < other_reviewers.length;i++){ %>
-      <% avg += parseInt(other_reviewers[i].rank); %>
+        <% if (other_reviewers[i].rank != "-1") { %>
+          <% avg += parseInt(other_reviewers[i].rank); %>
+        <% } else { %>
+          <% ignore += 1; %>
+        <% } %>
     <% } %>
-    <% avg /= other_reviewers.length; %>
+    <% avg /= other_reviewers.length - ignore; %>
     <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 

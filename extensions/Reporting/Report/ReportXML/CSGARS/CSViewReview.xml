@@ -34,13 +34,19 @@
         </ReportItem>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Faculty)}, {contains({$user_full_roles}, Chair)})}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
+        <ReportItem id="q0" type="CheckboxReportItem" blobItem="CS_Review_Uninteresting" blobType="BLOB_ARRAY" orientation="horizontal" options="Ignore this student" user="{$userId}">
+            <![CDATA[
+                <h3>Not interesting?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="q1" type="RadioReportItem" blobItem="CS_Review_SpecialCons" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No" user="{$userId}">
             <![CDATA[
                 <h3>Special Considerations That Make This Application Compelling?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="Textarea" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
+        <ReportItem id="q2" type="Textarea" height="120px" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
             <![CDATA[
                 <h3>Explain</h3>
                 {$item}
@@ -48,11 +54,11 @@
         </ReportItem>
         <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
             <![CDATA[
-                <h3>Rank  <span style="font-size: 100%;font-weight: normal;">(10 is the best)</span></h3>
+                <h3>Rank <span style="font-size: 100%;font-weight: normal;">(10 is the best)</span></h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="Textarea" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
+        <ReportItem id="q4" type="Textarea" height="120px" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
             <![CDATA[
                 <h3>Justification for Ranking</h3>
                 {$item}
