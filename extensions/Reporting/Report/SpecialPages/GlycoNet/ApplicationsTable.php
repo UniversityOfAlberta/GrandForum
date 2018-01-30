@@ -39,6 +39,7 @@ class ApplicationsTable extends SpecialPage{
         $this->projects = Project::getAllProjects();
         
         $this->startUpLegal2018Applicants = array();
+        $this->startUpDev2018Applicants = array();
         $this->stratApplicants = array();
         foreach(Person::getAllCandidates() as $person){
             if($person->isSubRole('StratApplicant')){
@@ -46,6 +47,9 @@ class ApplicationsTable extends SpecialPage{
             }
             if($person->isSubRole('StartUpLegal2018')){
                 $this->startUpLegal2018Applicants[] = $person;
+            }
+            if($person->isSubRole('StartUpDev2018')){
+                $this->startUpDev2018Applicants[] = $person;
             }
         }
     }
@@ -229,6 +233,7 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

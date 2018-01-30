@@ -22,9 +22,9 @@
         <ReportItem id="name" type="Text" blobItem="NAME">
             <![CDATA[
                 <h3>Company Details</h3>
-                <table>
+                <table width="100%">
                     <tr>
-                        <td class="label" align="right">Legal name of the Company:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Legal name of the Company:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -32,7 +32,7 @@
         <ReportItem id="phone" type="Text" blobItem="PHONE">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Phone number:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Phone number:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -40,7 +40,7 @@
         <ReportItem id="address" type="Text" blobItem="ADDRESS">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Address:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Address:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -48,7 +48,7 @@
         <ReportItem id="number" type="Text" blobItem="NUMBER">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Business number:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Business number:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -56,7 +56,7 @@
         <ReportItem id="rep" type="Text" blobItem="REP">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Company Representative:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Company Representative:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
                 </table><br />
@@ -65,9 +65,9 @@
         <ReportItem id="province" type="Text" blobItem="PROVINCE">
             <![CDATA[
                 <h3>Company Incorporation Details</h3>
-                <table>
+                <table width="100%">
                     <tr>
-                        <td class="label" align="right">Province of incorporation:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Province of incorporation:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -75,7 +75,7 @@
         <ReportItem id="date" type="Calendar" blobItem="DATE">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Date of incorporation:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Date of incorporation:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
                 </table><br />
@@ -84,9 +84,9 @@
         <ReportItem id="funding" type="Text" blobItem="FUNDING">
             <![CDATA[
                 <h3>Applicant Funding History</h3>
-                <table>
+                <table width="100%">
                     <tr>
-                        <td class="label" align="right">Amount of external funding raised:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Amount of external funding raised:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
             ]]>
@@ -94,7 +94,7 @@
         <ReportItem id="history" type="Text" blobItem="HISTORY" optional="true">
             <![CDATA[
                     <tr>
-                        <td class="label" align="right">Funding History:&nbsp;</td>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Funding History:&nbsp;</td>
                         <td>{$item}</td>
                     </tr>
                 </table><br />

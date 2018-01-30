@@ -2,12 +2,17 @@
 <Report name="Start-Up Company Funding 2017-2018 Company Targeted Development Support" reportType="RP_START_UP_DEV" pdfType="RP_START_UP_DEV" pdfFiles="StartUpDevelopmentPDF" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="INACTIVE+" subRole="StartUpDev2018">
-            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="opportunity" permissions="rw" />
+            <SectionPermission id="project" permissions="rw" />
+            <SectionPermission id="associate" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="ack" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="information" name="Applicant Information" title="Applicant Information" tooltip="Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
+    <ReportSection id="information" name="A - Applicant Information" title="A. Applicant Information" tooltip="A. Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
         <ReportItem id="name" type="Text" blobItem="NAME" width="200px">
             <![CDATA[
                 <h3>Company Details</h3>
@@ -125,7 +130,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="opportunity" name="Opportunity" title="Opportunity" tooltip="Opportunity" type="EditableReportSection" blobSection="OPPORTUNITY">
+    <ReportSection id="opportunity" name="B - Opportunity" title="B. Opportunity" tooltip="B. Opportunity" type="EditableReportSection" blobSection="OPPORTUNITY">
         <ReportItem id="opportunity" type="Upload" blobType="BLOB_RAW" blobItem="OPPORTUNITY" fileSize="20" mimeType="application/pdf,.pdf">
             <![CDATA[
                 <ul>
@@ -139,34 +144,77 @@
                             <li>Market</li>
                             <li>Intellectual property and relevant patents, or patentability strategy</li>
                             <li>Competitive advantage over other technologies</li>
-                            <li>Optional PDF Attachments (i.e. Business Plan, Corporate Pitch Deck, etc.)</li>
                         </ul>
                     </li>
+                    <li>Optional PDF Attachments (i.e. Business Plan, Corporate Pitch Deck, etc.)</li>
                 </ul>
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="300px" limit="250" optional="true">
+            <![CDATA[
+                <h3>Project Summary</h3>
+                <p>Only necessary if sections C-F are provided at a later date</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
-    <ReportSection id="project" name="Project" title="Project" tooltip="Project" type="EditableReportSection" blobSection="PROJECT">
+    <ReportSection id="project" name="C - Project" title="C. Project" tooltip="C. Project" type="EditableReportSection" blobSection="PROJECT">
         <ReportItem id="project" type="Textarea" blobItem="PROJECT" rich="true" height="400px" limit="750">
             <![CDATA[
                 <ul>
-                    <li>Describe the Intellectual Property/Agreement for which funding is being requested</li>
-                    <li>Detail the importance of the IP/Agreement to the Company’s Intellectual Property portfolio and/or commercialization plans</li>
-                    <li>Describe the impact of GlycoNet funding on the Applicant’s ability to commercialize its technology</li>
-                    <li>Provide the exact amount requested and detailed budget for its use, as well as a budget justification</li>
+                    <li>Describe the project for which funding is being requested, include the commercialization activities that the proposed Associate will be performing, and the expected outcomes
+                    <ul>
+                        <li>Ensure that the proposed work to be conducted is described in sufficient detail for the reviewers to evaluate the feasibility and overall merit of the project and how the goals of the project will be achieved</li>
+                    </ul></li>
+                    <li>Describe how the role/mandate/objectives of the Associate relates to the technology’s commercialization</li> 
+                    <li>Describe the impact of GlycoNet funding on the Applicant’s ability to commercialize its technology</li> 
                 </ul>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ack" name="Acknowledgment" type="EULA" blobSection="ACK">
-        <ReportItem id="ack" type="EULA" blobItem="EULA" yes="Yes, I agree to the acknowledgment" no="No, I do not agree to the acknowledgment">
+    <ReportSection id="associate" name="D - Associate" title="D. Associate" tooltip="D. Associate" type="EditableReportSection" blobSection="ASSOCIATE">
+        <ReportItem id="associate" type="Textarea" blobItem="ASSOCIATE" rich="true" height="350px" limit="500">
+            <![CDATA[
+                <h3>Description of suitability for proposed project/role</h3>
+                <small>(explain why this particular commercial Associate will achieve the outcomes identified in Section C)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resume" type="Upload" blobType="BLOB_RAW" blobItem="RESUME" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                <h3>Proposed Associate’s Resume (attached as PDF)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter" type="Upload" blobType="BLOB_RAW" blobItem="LETTER" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                <h3>A letter (attached as PDF) addressed to GlycoNet from the proposed associate in which they:</h3>
+                <ul>
+                    <li>Indicate an interest in undertaking the proposed position/role</li>
+                    <li>Provide permission to the Company to submit their personal contact information and resume</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" name="E - Budget" title="E. Budget and Budget Justification" tooltip="E. Budget and Budget Justification" type="EditableReportSection" blobSection="BUDGET">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" height="300px">
             <![CDATA[
                 <ul>
-                    <li>The Applicant Company agrees to repay funds received from GlycoNet upon successful completion of  Series A fund raising, a significant partnership with a pharmaceutical company, or yearly sales of $2M</li>
-                    <li>The Applicant Company agrees to update, on a quarterly basis, GlycoNet Management (face-to-face meetings and/or teleconference) on the status of the Company, the project and the outcomes for three years or until the repayment of funds.</li>
+                    <li>Provide the amount of funding requested, detailed budget for its use, as well as budget justification</li>
+                    <li>Provide full details regarding the Associate’s total compensation</li>
+                    <li>Indicate if matching funds have been/are being secured</li>
                 </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ack" name="F - Acknowledgment" tooltip="F. Acknowledgement" title="F. Acknowledgement" type="EULA" blobSection="ACK">
+        <ReportItem id="ack" type="EULA" blobItem="EULA" yes="Yes, I agree to the acknowledgment" no="No, I do not agree to the acknowledgment">
+            <![CDATA[
+                Applicant Company agrees to update, on a quarterly basis, GlycoNet Management (face-to-face meetings and/or teleconference) on the status of the company, the project, and the outcomes until completion of the project
                 {$item}
             ]]>
         </ReportItem>

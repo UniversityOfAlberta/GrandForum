@@ -2,12 +2,15 @@
 <Report name="Start-Up Company Funding 2017-2018 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="INACTIVE+" subRole="StartUpLegal2018">
-            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="opportunity" permissions="rw" />
+            <SectionPermission id="project" permissions="rw" />
+            <SectionPermission id="ack" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="information" name="Applicant Information" title="Applicant Information" tooltip="Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
+    <ReportSection id="information" name="A - Applicant Information" title="A. Applicant Information" tooltip="A. Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
         <ReportItem id="name" type="Text" blobItem="NAME" width="200px">
             <![CDATA[
                 <h3>Company Details</h3>
@@ -125,7 +128,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="opportunity" name="Opportunity" title="Opportunity" tooltip="Opportunity" type="EditableReportSection" blobSection="OPPORTUNITY">
+    <ReportSection id="opportunity" name="B - Opportunity" title="B. Opportunity" tooltip="B. Opportunity" type="EditableReportSection" blobSection="OPPORTUNITY">
         <ReportItem id="opportunity" type="Upload" blobType="BLOB_RAW" blobItem="OPPORTUNITY" fileSize="20" mimeType="application/pdf,.pdf">
             <![CDATA[
                 <ul>
@@ -147,7 +150,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="project" name="Project" title="Project" tooltip="Project" type="EditableReportSection" blobSection="PROJECT">
+    <ReportSection id="project" name="C - Project" title="C. Project" tooltip="C. Project" type="EditableReportSection" blobSection="PROJECT">
         <ReportItem id="project" type="Textarea" blobItem="PROJECT" rich="true" height="400px" limit="750">
             <![CDATA[
                 <ul>
@@ -160,7 +163,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ack" name="Acknowledgment" type="EULA" blobSection="ACK">
+    <ReportSection id="ack" name="D - Acknowledgment" tooltip="D. Acknowledgment" title="D. Acknowledgment" type="EULA" blobSection="ACK">
         <ReportItem id="ack" type="EULA" blobItem="EULA" yes="Yes, I agree to the acknowledgment" no="No, I do not agree to the acknowledgment">
             <![CDATA[
                 <ul>
