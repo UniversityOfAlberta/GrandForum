@@ -7,6 +7,7 @@ SopsView = Backbone.View.extend({
     expanded: false,
     expanded2: false,
     filtersSelected: null,
+    hidden: true,
 
     
     initialize: function(){
@@ -35,24 +36,24 @@ SopsView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
-        var sops = new Sops(this.sops.filter(function(sop) { 
+        var sops = new Sops(this.sops.filter($.proxy(function(sop) { 
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
 
             for (var i = 0; i < reviewers.length; i++) {
                 if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
-                    return false;
+                    return !this.hidden;
                 }
             }
 
             for (var i = 0; i < other_reviewers.length; i++) {
                 if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                     console.log("here");
-                    return false;
+                    return !this.hidden;
                 }
             }
-            return true;
-        }));
+            return this.hidden;
+        }, this)));
 
         sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});

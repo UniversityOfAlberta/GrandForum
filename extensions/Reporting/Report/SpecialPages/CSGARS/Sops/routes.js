@@ -23,6 +23,7 @@ PageRouter = Backbone.Router.extend({
         "reviewInProgress": "defaultRoute",
         "inProgress": "inProgress",
         "newApplications": "newApplications",
+        "hidden": "hidden",
         "course": "course",
         "other": "other",
         ":id/edit": "editSop",
@@ -60,6 +61,16 @@ pageRouter.on('route:newApplications', function (actions) {
     //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+});
+
+pageRouter.on('route:hidden', function (actions) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "all";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    this.currentView.hidden = false;
 });
 
 pageRouter.on('route:course', function (actions) {
