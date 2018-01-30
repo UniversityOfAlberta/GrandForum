@@ -1816,7 +1816,8 @@ class ReportItemCallback {
     }
 
     function getReviewCount(){
-        $sop = SOP::newFromId($this->getProjectId());
+        $gsms = GsmsData::newFromId($this->getProjectId());
+        $sop = SOP::newFromUserId($gsms->user_id);
         $reviewers = $sop->getReviewers();
         return count($reviewers);
     }
