@@ -121,7 +121,7 @@
             </ReportItem>
             <ReportItem id="extra2a" type="Upload" rich="true" optional="true" blobType="BLOB_RAW" blobItem="EXTRA2A" fileSize="20" mimeType="application/zip,.zip">
                 <![CDATA[
-                        <p>Please attach any outputs from your previously funded project</p>
+                        <p><b>Please attach any outputs from your previously funded project</b></p>
                         {$item}
                 ]]>
             </ReportItem>
