@@ -948,7 +948,8 @@ class Person extends BackboneModel {
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl(),
-                      'sop_url' => $this->getSopUrl());
+                      'sop_url' => $this->getSopUrl(),
+                      'gsms_id' => $this->getGSMS()->gsms_id);
         return $json;
     }
     

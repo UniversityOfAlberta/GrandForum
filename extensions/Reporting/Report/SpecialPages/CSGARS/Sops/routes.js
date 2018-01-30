@@ -20,10 +20,10 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute",
-        "reviewInProgress": "defaultRoute",
-        "inProgress": "inProgress",
-        "newApplications": "newApplications",
-        "hidden": "hidden",
+        "reviewInProgress(/:search)": "defaultRoute",
+        "inProgress(/:search)": "inProgress",
+        "newApplications(/:search)": "newApplications",
+        "hidden(/:search)": "hidden",
         "course": "course",
         "other": "other",
         ":id/edit": "editSop",
@@ -33,7 +33,7 @@ PageRouter = Backbone.Router.extend({
 // Initiate the router
 var pageRouter = new PageRouter;
 
-pageRouter.on('route:defaultRoute', function (actions) {
+pageRouter.on('route:defaultRoute', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
@@ -41,9 +41,11 @@ pageRouter.on('route:defaultRoute', function (actions) {
     //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
 });
 
-pageRouter.on('route:inProgress', function (actions) {
+pageRouter.on('route:inProgress', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
@@ -51,9 +53,11 @@ pageRouter.on('route:inProgress', function (actions) {
    // gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
 });
 
-pageRouter.on('route:newApplications', function (actions) {
+pageRouter.on('route:newApplications', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
@@ -61,9 +65,11 @@ pageRouter.on('route:newApplications', function (actions) {
     //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
 });
 
-pageRouter.on('route:hidden', function (actions) {
+pageRouter.on('route:hidden', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
@@ -71,6 +77,8 @@ pageRouter.on('route:hidden', function (actions) {
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     this.currentView.hidden = false;
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
 });
 
 pageRouter.on('route:course', function (actions) {

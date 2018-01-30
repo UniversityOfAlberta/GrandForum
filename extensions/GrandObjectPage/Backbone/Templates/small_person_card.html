@@ -4,7 +4,12 @@
             <img src="<%= cachedPhoto %>" style="max-width:25px; max-height:33px;" alt="" />
         </div>
         <div class="card_description">
-            <b><%= fullName %></b> <span id="roles" style="display:none;"></span><br />
+            <b><%= fullName %></b>
+            <% console.log(gsms_id); %>
+            <% if ((gsms_id != "") && (gsms_id != null)) { %>
+            	<b>(<%= gsms_id %>)</b> 
+            <% } %>
+            <span id="roles" style="display:none;"></span><br />
             <span id="uni"><%= position %><br /><%= university %></span>
         </div>
     </div>

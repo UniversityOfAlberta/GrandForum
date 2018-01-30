@@ -15,6 +15,12 @@ class GlobalSearchAPI extends RESTAPI {
         $searchNames = array_filter(explode("*", str_replace(".", "*", unaccentChars($search))));
         switch($group){
             case 'people':
+                $person = Person::newFromGSMSId($origSearch);
+                if (($person != null) && ($person->getId() != 0)) {
+                    $array['results'][] = $person->getId();
+                    return json_encode($array);
+                }
+
                 $data = array();
                 $people = DBFunctions::select(array('mw_user'),
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),

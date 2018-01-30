@@ -153,7 +153,8 @@ Person = Backbone.Model.extend({
         publicProfile: '',
         privateProfile: '',
         url: '',
-        sop_url: ''
+        sop_url: '',
+        gsms_id: ''
     }
 });
 

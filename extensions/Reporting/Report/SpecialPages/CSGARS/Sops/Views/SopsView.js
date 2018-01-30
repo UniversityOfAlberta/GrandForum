@@ -8,6 +8,7 @@ SopsView = Backbone.View.extend({
     expanded2: false,
     filtersSelected: null,
     hidden: true,
+    defaultSearch: "",
 
     
     initialize: function(){
@@ -48,7 +49,6 @@ SopsView = Backbone.View.extend({
 
             for (var i = 0; i < other_reviewers.length; i++) {
                 if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
-                    console.log("here");
                     return !this.hidden;
                 }
             }
@@ -91,7 +91,8 @@ SopsView = Backbone.View.extend({
             }
         };
 
-        this.table = this.$('#listTable').DataTable({'bPaginate': false,
+        this.table = this.$('#listTable').DataTable({'oSearch': {'sSearch': this.defaultSearch},
+                                                     'bPaginate': false,
                                                      'bFilter': true,
                                                      'dom': 'Bfrtip',
                                                      'autoWidth': true,
