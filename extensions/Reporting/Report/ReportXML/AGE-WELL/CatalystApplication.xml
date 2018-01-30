@@ -181,7 +181,69 @@
                     <b>If you have selected “Other” and think that the proposed project falls outside of AGE-WELL’s current WP structure, please provide a justification for this:</b>
                     {$item}
                 </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
+            <![CDATA[
+                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program?</b><br />
+                    <small>(i.e. are you looking to renew your SIP award, or advance your Catalyst project to a SIP project)?</small>
+                    {$item}
+                </li>
                 </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
+            <![CDATA[
+                <div id="extra" style="display:none;">
+                    <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
+                    <p>If you previously received an AGE-WELL SIP, SIP Accelerator or Catalyst award for this project please complete the following questions related to the work already completed (1 page). If objectives from your previous award have not been met and you wish to apply for a no-cost extension, please contact jeanie@agewell-nce.ca.</p>
+                    <h3>Were the objectives of the previously funded project met?  Please explain.</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2">
+            <![CDATA[
+                    <h3>What is/are the main output(s) from your previous award. Please describe the real or potential impact of this work? Consider the real or potential impact on older adults and caregivers, communities, industry and/or policies.</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra2a" type="Upload" rich="true" optional="true" blobType="BLOB_RAW" blobItem="EXTRA2A" fileSize="20" mimeType="application/zip,.zip">
+            <![CDATA[
+                    <p>Please attach any outputs from your previously funded project (ex. environmental scan, literature review, market analysis, knowledge mobilization plan, ect).</p>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3">
+            <![CDATA[
+                    <h3>What new partnerships or collaboarations were created during the previous award? Will these continue? How did these partnerships/collaborations shape your project?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra4" type="Textarea" rich="true" optional="true" blobItem="EXTRA4">
+            <![CDATA[
+                    <h3>Did the project encounter any challenges? What impact did this have on the project? </h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra5" type="Textarea" rich="true" optional="true" blobItem="EXTRA5">
+            <![CDATA[
+                    <h3>In the narrative application (PART 1), please describe how the new project will build on the activities, findings and partnerships from the previously funded work.</h3>
+                    {$item}
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("input[name=CoverSheet_viii]").change(function(){
+                            var val = $("input[name=CoverSheet_viii]:checked").val();
+                            if(val == "Yes"){
+                                $("div#extra").slideDown();
+                            }
+                            else{
+                                $("div#extra").slideUp();
+                            }
+                        });
+                        $("input[name=CoverSheet_viii]").change();
+                    });
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -200,7 +262,7 @@
                 </style>
                 <ol id='list' type="i">
                 <li><b>Background, Research Question, and/or Objectives -</b>
-                    <i>description of problem area and rationale. Cleary state the underlying hypothesis (if applicable) and why this proposal is considered to have the potential to improve the lives of Canadian seniors.  This should provide evidence of co-creation with key stakeholders over the term of the project. </i>
+                    <i>description of problem area and rationale. Cleary state the underlying hypothesis (if applicable) and why this proposal is considered to have the potential to improve the lives of Canadian seniors.  This should provide evidence of co-creation with key stakeholders over the term of the project.</i>
                     {$item}
                 </li>
             ]]>
@@ -208,7 +270,7 @@
         <ReportItem id="method" type="TextareaReportItem" rich="true" blobItem="METHOD">
             <![CDATA[
                 <li><b>Methodological Approach - </b>
-                    <i>study design, population, design methodology, data analysis, statistics, etc.</i>
+                    <i>study design, population, design methodology, data analysis, statistics, etc. Please include whether ethics clearance is required?  If yes, has it already be approved?  If not, when do you expect it to be received?</i>
                     {$item}
                 </li>
             ]]>

@@ -95,9 +95,55 @@
                     <b>If you have selected “Other” and think that the proposed project falls outside of AGE-WELL’s current WP structure, please provide a justification for this:</b>
                     {$item}
                 </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
+            <![CDATA[
+                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program?</b>
+                    {$item}
+                </li>
                 </ol>
             ]]>
         </ReportItem>
+        <ReportItemSet type="If" if="{==({getText(RP_CAT, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
+            <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
+                <![CDATA[
+                    <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
+                    <h3>Were the objectives of the previously funded project met?  Please explain.</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2">
+                <![CDATA[
+                    <h3>What is/are the main output(s) from your previous award. Please describe the real or potential impact of this work? Consider the real or potential impact on older adults and caregivers, communities, industry and/or policies.</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="extra2a" type="Upload" rich="true" optional="true" blobType="BLOB_RAW" blobItem="EXTRA2A" fileSize="20" mimeType="application/zip,.zip">
+                <![CDATA[
+                        <p>Please attach any outputs from your previously funded project</p>
+                        {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3">
+                <![CDATA[
+                    <h3>What new partnerships or collaboarations were created during the previous award? Will these continue? How did these partnerships/collaborations shape your project?</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="extra4" type="Textarea" rich="true" optional="true" blobItem="EXTRA4">
+                <![CDATA[
+                    <h3>Did the project encounter any challenges? What impact did this have on the project?</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="extra5" type="Textarea" rich="true" optional="true" blobItem="EXTRA5">
+                <![CDATA[
+                    <h3>In the narrative application (PART 1), please describe how the new project will build on the activities, findings and partnerships from the previously funded work.</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
         <ReportItem id="header1" type="Static">
