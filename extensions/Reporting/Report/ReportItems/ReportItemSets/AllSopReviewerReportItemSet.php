@@ -9,7 +9,7 @@ class AllSopReviewerReportItemSet extends ReportItemSet {
         if(strpos($projectName, 'Sop') !== false ){
             $sopString = explode(":",$projectName);
             $sopId = $sopString[1];
-        } 
+        }
         $gsms = GsmsData::newFromId($sopId);
         $sop = SOP::newFromUserId($gsms->user_id);
         $reviewers = $sop->getReviewers();

@@ -4,7 +4,6 @@
  * @package GrandObjects
  */
 class SOP extends AbstractSop{
-
   /**
    * SOP constructor.
    * @param $data
@@ -64,18 +63,20 @@ class SOP extends AbstractSop{
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
+                        AND data != ''
                         AND rp_item = 'Q13'
-                        AND rp_subitem =".$this->id;
+                        AND proj_id =".$this->id;
+
         $data = DBFunctions::execSQL($sql);
-            $reviewers = array();
+        $reviewers = array();
         if(count($data)>0){
             foreach($data as $user){
-                        if($user['data'] != ''){
+                if($user['data'] != ''){
                     $reviewers[] = $user['user_id'];
-                        }
+                }
             }
         }
-            return $reviewers;
+        return $reviewers;
     }
 
   /**

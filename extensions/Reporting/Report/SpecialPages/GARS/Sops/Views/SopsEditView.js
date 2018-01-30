@@ -1,14 +1,18 @@
 SopsEditView = Backbone.View.extend({
 
     sops: null,
-
+    gsmsdata: null,
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;
-            this.render();
+            this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
+            var xhr = this.gsmsdata.fetch();
+            $.when(xhr).then(this.render);
+            //this.render();
         }, this);
     },
+
     
     events: {
         "click #check_readability" : "check_readability",
@@ -340,16 +344,18 @@ var mycfg = {
                 
              }, 100)
 /**TEST**/
-	console.log(this.model);
-        var mod = _.extend(this.model.toJSON());
-        this.el.innerHTML = this.template(mod);
-		$(document).ready(function () {
-		      $("#accordion > div").accordion({
-			  autoHeight: false,
-      			  collapsible: true,
-			  active:false
-    		      });
-		});
-        return this.$el;
+      console.log(this.model);
+      var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
+      mod.sop_url = this.model.get("sop_url");
+      this.el.innerHTML = this.template(mod);
+      $(document).ready(function () {
+          $("#accordion > div").accordion({
+          autoHeight: false,
+          collapsible: true,
+          active:false
+        });
+      });
+      return this.$el;
     }
 });
+
