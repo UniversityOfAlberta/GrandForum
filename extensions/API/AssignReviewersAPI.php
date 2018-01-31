@@ -36,7 +36,7 @@ class AssignReviewersAPI extends API{
         }
         $ids = array();
         foreach($_POST['users'] as $name){
-            $reviewer = Person::newFromName($name);
+            $reviewer = Person::newFromNameLike($name);
             $ids[] = $reviewer->getId();
         }
         $student = $_POST['student_id'];
