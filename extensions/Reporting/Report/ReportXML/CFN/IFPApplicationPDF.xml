@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2017 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2017">
+<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2018">
     <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <h4 style='font-size:1.20em;'>2017 Interdisciplinary Fellowship Program<br />Application</h4>
+                <h4 style='font-size:1.20em;'>2018 Interdisciplinary Fellowship Program<br />Application</h4>
                 <br />
                 <br />
                 <br />

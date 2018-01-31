@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2017 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2017" ajax="true" disabled="false">
+<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2018" ajax="true" disabled="false">
     <Permissions>
-        <Role role="HQP" subType="IFP2017Applicant" start="2017-05-01" end="2017-05-31">
+        <Role role="HQP" subType="IFP2018Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP-Candidate" subType="IFP2017Applicant" start="2017-05-01" end="2017-05-31">
+        <Role role="HQP-Candidate" subType="IFP2018Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -436,7 +436,7 @@
         </ReportItem>
         <ReportItem id="sources" type="MultiText" blobItem="SOURCES" blobType="BLOB_ARRAY" labels="Funding Source|Amount|Type (cash or in-kind)|Purpose|Status" types="Text|Integer|Select(---,Cash,In-Kind)|Textarea|Select(---,planning to apply for,in process of being applied for,about to be submitted,submitted,pending,other)" sizes="200|50" multiple="true" optional="true">
             <![CDATA[
-                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2017 to August 2018 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
+                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2018 to August 2019 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
                 <u>For each funding source</u>
                 {$item}
             ]]>
@@ -510,7 +510,7 @@
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" sizes="200|||75|50" multiple="true">
             <![CDATA[
                 <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 to 12 hours per week over a 12-month period to complete fellowship activities.</p>
-                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2017 to August 2018).</p>
+                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2018 to August 2019).</p>
                 <u>For each activity</u>
                 {$item}
             ]]>
