@@ -197,6 +197,9 @@ SopsEditView = Backbone.View.extend({
           case "":
             suffix += "/newApplications";
             break;
+          case "New Applications":
+            suffix += "/newApplications";
+            break;
         }
         var reviewers = this.gsmsdata.attributes.reviewers;
         console.log(reviewers);
