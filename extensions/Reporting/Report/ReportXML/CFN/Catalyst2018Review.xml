@@ -1,0 +1,1382 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="CAT Review" reportType="RP_CAT_REVIEW" pdfFiles="Catalyst2018Review" pdfType="RP_CAT_REVIEW" ajax="true" disabled="false" year="2018">
+    <Permissions>
+        <Role role="RMC">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="rw" />
+        </Role>
+        <Role role="SRC">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="rw" />
+            <SectionPermission id="rmc_review" permissions="" />
+        </Role>
+        <Role role="EVALUATOR">
+            <SectionPermission id="eula" permissions="rw" />
+            <SectionPermission id="ex_review" permissions="rw" />
+            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="" />
+        </Role>
+    </Permissions>
+    <ReportSection id="eula" name="Agreement" title="Confidentiality Agreement" tooltip="Confidentiality Agreement" blobSection="CAT_EULA" type="EULA">
+        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to abide by the confidentiality agreement" 
+                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to abide by the confidentiality agreement">
+            <![CDATA[
+                <b>CONFIDENTIALITY AGREEMENT</b>
+                <p>This Confidentiality Agreement is given to the Canadian Frailty Network (CFN) in consideration of my role as a Grant Reviewer to review grant application(s) (Information) for CFN.</p>
+                <p>I acknowledge that as part of my role as a Grant Reviewer for CFN I may be given access to information that is of a personal, confidential and/ or proprietary nature, for example: names, e-mail addresses, financial information, funding applications and their status, trade secrets, research data, and any other information for the purpose of fulfilling my obligations.</p>
+                <p>I, therefore agree:</p>
+                <ul>
+                    <li>To hold all Information in trust and strict confidence and agree that it shall be used only for the purposes required to fulfill my role as a Grant Reviewer, and shall not be used for any other purpose, or disclosed to any third party.</li>
+                    <li>To keep all Information in my control or possession in a secure location to which only I and other persons who are authorized to view this information, and have signed a confidentiality agreement with CFN, have access.</li>
+                    <li>To take all necessary steps to keep all Information secure and to protect such Information from unauthorized use, reproduction or disclosure.</li>
+                    <li>To maintain the absolute confidentiality of all Information in recognition of the privacy and proprietary rights of others at all times.</li>
+                    <li>To comply with all privacy laws and regulations, which apply to the collection, use and disclosure of personal information.</li>
+                    <li>At the conclusion of my role as a Grant Reviewer, or upon demand by CFN, to return all Information, including prototypes, code, written notes, photographs, sketches, models, memoranda or notes taken, to CFN’s possession and the responsible manager/director.</li>
+                    <li>Not to disclose any Information to any employee, consultant or third party unless they agree to execute and be bound by the terms of this agreement and have been approved by CFN in an official, legal capacity.</li>
+                </ul>
+                <p>I understand that a breach of confidentiality or misuse of Information could result legal action.</p>
+                <p>I understand that this Agreement survives the termination of my relationship with CFN.</p>
+                <p>The laws of Ontario, Canada shall govern this Agreement and its validity, construction and effect.</p>
+                <p>I fully understand and accept responsibilities set above relating to personal, confidential and/or proprietary Information:</p>
+                <ul>
+                    <li>Personal Information is any information about an "identifiable individual".</li>
+                    <li>Confidential Information is any information which is designated by CFN as confidential.</li>
+                    <li>Proprietary Information is any information which is designated by CFN as proprietary like trade secrets, and research data.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
+
+        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                                      {contains({$user_full_roles},ISAC)}
+                                                     )},
+                                                  {contains({$user_full_roles},SRC)})}">
+            <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Person">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                    <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                        <![CDATA[
+                            <div id="proj{$user_id}">
+                            <table class='wikitable'>
+                                <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
+                                <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
+                                <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
+                            </table>
+                            {$item}
+                            <div class='info'>
+                                <ol> 
+                                    <li>Please score all sections.  You can use decimals in your scores.</li>
+                                    <li>Please provide comments to justify your scores.</li>
+                                    <li>Overall Competition Goal: To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000.</li>
+                                    <li>Note: Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.  Total budget for this competition is $650,000.</li>
+                                </ol>
+                            </div>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="CAT_EX_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>1. Scientific Excellence - Background, Knowledge Gap(s), and Rationale</h2>
+                            <p>Is the importance and rationale of the study justified?  The applicant was asked to provide a comprehensive review of the relevant background literature and identify knowledge gaps and clearly state the rationale for the project</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The background information is not directly relevant to the study. There does not appear to be important knowledge gaps that should be studied.  A rationale for the project is not provided.</td>
+                                    <td class='small' valign='top'>The background information is directly relevant to the study. There does appear to be knowledge gaps that should be studied. A rationale for the project is not provided.</td>
+                                    <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied. A satisfactory rationale for the project is provided.</td>
+                                    <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied and have been priotitised in terms of urgency. A clear and concise rationale for the project is provided.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_1_comments" type="Textarea" blobItem="CAT_EX_1_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_2" blobType="BLOB_TEXT" blobItem="CAT_EX_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>2. Scientific Excellence - Hypothesis and Research Question(s)</h2>
+                            <p>The applicant was asked to state the proposed hypothesis and research question(s) to be addressed in the study.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>No hypothesis or research questions are explicitly provided.</td>
+                                    <td class='small' valign='top'>No hypothesis is provided.  The research questions provided are somewhat relevant and partly supported by the background information and rationale provided in previous section.</td>
+                                    <td class='small' valign='top'>A hypothesis and research questions are provided and are relevant and supported by the background information and rationale provided in previous section.</td>
+                                    <td class='small' valign='top'>A clear and concise hypothesis is provided. Research questions to be addressed in the study are directly relevant and supported by the background information and rationale provided in previous section.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_2_comments" type="Textarea" blobItem="CAT_EX_2_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_3" blobType="BLOB_TEXT" blobItem="CAT_EX_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>3. Scientific Excellence - Overall Goal and Objective</h2>
+                            <p>The applicant was asked to describe the overall goal and specific objectives of the study.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>No overall goal or specific objectives are provided.</td>
+                                    <td class='small' valign='top'>An overall goal is provided but no specific objectives are provided. Or no overall goal is provided but specific objectives are provided.</td>
+                                    <td class='small' valign='top'>Overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section. </td>
+                                    <td class='small' valign='top'>Clear and concise overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_3_comments" type="Textarea" blobItem="CAT_EX_3_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_4" blobType="BLOB_TEXT" blobItem="CAT_EX_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>4.  Scientific Excellence - Methodological Approach</h2>
+                            <p>How appropriate is the study plan?  The applicant was asked to: a) Describe how this project will be managed overall and who specifically will manage each major aspect of the study, b) Describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s).<br /> 
+Note: For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.<br />
+Note: Study protocols must include frailty assessment of all study participants using a published frailty assessment instrument appropriate for the care setting.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>Based on the approach described it is highly likely that the project will not meet the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does not include frailty assessment of study participants using a published instrument.</td>
+                                    <td class='small' valign='top'>Based on the appraoch described there is concern that the project will not meet some of the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does include frailty assessment of study participants using a published instrument.</td>
+                                    <td class='small' valign='top'>The study design appears appropriate to meet all the goals and objectives of the study.  Information on individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment of study participants for the care setting and provides sufficient detail of the assessment.</td>
+                                    <td class='small' valign='top'>A comprehensive study design is provided and justified to meet all goals and objectives. Information on highly qualified individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment, provides sufficient detail and includes an analysis of differential impact of the study intervention or innovation based on the degree of frailty.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_4_comments" type="Textarea" blobItem="CAT_EX_4_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_5" blobType="BLOB_TEXT" blobItem="CAT_EX_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>5.  Scientific Excellence - Research Outcomes, Deliverables and Milestones</h2>
+                            <p>Is the applicant likely to achieve the expected deliverables/milestones?  The applicant was asked to: a) Describe all milestones and anticipated deliverables, outputs and outcomes for the duration of the project, b) Provide a project schedule with dates for all milestones and anticipated deliverables, outputs and outcomes for the duration of the project, including all knowledge translation activities, and c) Describe how this project will be managed and deliverables tracked.<br />
+Note: The project schedule is mandatory and will be used by CFN to track progress of the study.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>There is a lack of description on the anticipated milestones, deliverable, outputs and/or outcomes and there is no project schedule that maps to these items and thus project management is a major concern.</td>
+                                    <td class='small' valign='top'>A description on the anticipated milestones, deliverable, outputs and/or outcomes are satisfactory, although there is no project schedule that maps to these items and thus project management is a concern.</td>
+                                    <td class='small' valign='top'>A good description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a satisfactory project schedule that maps to these items.  Project management is not a concern.</td>
+                                    <td class='small' valign='top'>An excellent and very detailed description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a very detailed project schedule that maps to these items.  Project management is not a concern.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_5_comments" type="Textarea" blobItem="CAT_EX_5_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_6" blobType="BLOB_TEXT" blobItem="CAT_EX_6" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>6. Project Feasiibility - Barriers, Challenges & Mitigation Strategy</h2>
+                            <p>Did the applicant identify the important feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study and specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay or derail timely completion of the study?  Did the applicant appropriately describe how the investigative team plans on mitigating and overcoming these barriers, challenges and limitations?</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The proposed study is not feasible within the total time requested.  The timeline and accompanying narrative does a very poor job of realistically describing the important barriers, challenges and limitations to complete the study and does not include a mitigation strategy.</td>
+                                    <td class='small' valign='top'>The proposed study is unlikley to be feasible within the total time requested. The applicant does a satisfactory job of describing the important barriers, challenges and limitations to complete the study but does not include a mitigation strategy.</td>
+                                    <td class='small' valign='top'>The proposed study is likley feasible within the total time requested.  The applicant does a good job of describing how the research team will address important barriers, challenges and limitations to complete the study.  A reasonable mitigation strategy is provided.</td>
+                                    <td class='small' valign='top'>The proposed study is feasible within the total time requested.  The applicant does an excellent job of describing how the barriers, challenges and limitations of the study will be addresssed and appropriately mitigated.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_6_comments" type="Textarea" blobItem="CAT_EX_6_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_7" blobType="BLOB_TEXT" blobItem="CAT_EX_7" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>7.  Project Feasibility - Experience, Expertise and Resources</h2>
+                            <p>Is the project team capable of executing the successful completion of the study?  The applicant was asked to: a) Describe expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team members to demonstrate that the team is capable of delivering on the proposed outputs and achieve the goals and objectives of the proposal, b) Provide an estimate on the number of hours per week (contribution) for each Principal Investigator, Co-investigator, Partner and other critical team member that will be working on the study and describe why this is an appropriate level of engagement and/or commitment to deliver the proposed outputs and achieve the goals and objectives of this proposal. (Note: All Individuals participating as project team members will also need to be listed in the Project Team List document) and c) Describe why the environment (academic institution and/or other organization) of each critical team member is appropriate to enable the conduct and success of the project.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The project team has limited experience/expertise with frailty and has not allocated sufficient time for the completion of the project. There is significant concern regarding the environment of critical team members and lack of appropriate partners and collaborators. </td>
+                                    <td class='small' valign='top'>The project team has a few members with experience/expertise in frailty and may have underestimated the amount of time required to complete the project. The environment of critical team members is appropriate for completion of the project.  </td>
+                                    <td class='small' valign='top'>All project team members have some direct experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project. The critical team members are from an environment that will enable the success of the proposed project.</td>
+                                    <td class='small' valign='top'>All project team members have in-depth experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project, with some "buffer" time in case of delays.  All team members are from environments that will enable the success of the proposed project.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_7_comments" type="Textarea" blobItem="CAT_EX_7_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_8" blobType="BLOB_TEXT" blobItem="CAT_EX_8" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>8. Project Networking and Citizen Engagement</h2>
+                            <p>Does the project represent a collaborative effort between various stakeholders of different disciplines/sectors and does it include citizens?  The applicant was asked to: a) Describe the networking and engagement planned for the project across disciplines, research sites (universities, hospitals, institutes) and sectors and b) Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  Note: Meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The project involves investigators from only one discipline and institution. The study has a poorly designed plan to involve knowledge users.</td>
+                                    <td class='small' valign='top'>The project involves investigators from a couple of different disciplines and institutions, and has a plan to involve different types of knowledge users; however, in a less than meaningful way.</td>
+                                    <td class='small' valign='top'>The project involves investigators from a few unique disciplines and institutions. The study has a reasonable plan to involve different types of knowledge users in a meaningful way.</td>
+                                    <td class='small' valign='top'>Project involves investigators from a diverse range of disciplines and many different institutions. The study has a comprehensive plan to involve different types of knowledge users in a meaningful way.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_8_comments" type="Textarea" blobItem="CAT_EX_8_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_9" blobType="BLOB_TEXT" blobItem="CAT_EX_9" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                        <![CDATA[
+                            <h2>9. Knowledge Translation</h2>
+                            <p>Is the end of grant knowledge translation plan well described and appropriate?  The applicant was asked to a) Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. Because of the relatively short-length of the CAT funding term, proposals must describe future implementation plans to demonstrate future scalability and spread.  b) Identify the KT framework that will be used and how it will be implemented.  Note: The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>There is no description of how the study results will be disseminated and translated at the end of the grant.</td>
+                                    <td class='small' valign='top'>There is a brief description of how the study results will be integrated and translated at the end of the grant.</td>
+                                    <td class='small' valign='top'>The description of an end-of-grant knowledge translation plan is satisfactory. The plan includes more than one avenue to disseminate the results of the study.</td>
+                                    <td class='small' valign='top'>There is a clear, specific, and fulsome knowledge translation plan at the end of the grant. This may include: disseminating the results of the study to appropriate audiences; plans to implement study findings into practice and/or policy; intention to spread successful findings to further locations, communities, areas of care; etc.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_9_comments" type="Textarea" blobItem="CAT_EX_9_COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="total1" type="StaticReportItem">
+                        <![CDATA[
+                            <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                                <b id="proj{$user_id}_total">
+                                    {add({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$user_id},{$my_id},0)},
+                                         {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$user_id},{$my_id},0)}
+                                    )}
+                                </b> (Score out of 36)</p>
+                            <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                                <b id="proj{$user_id}_total5">
+                                    {round(
+                                        {multiply(
+                                            {divide(
+                                                {add({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$user_id},{$my_id},0)},
+                                                     {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$user_id},{$my_id},0)}
+                                                )}
+                                            , 36)}
+                                        , 5)}
+                                    ,2 )}
+                                </b> (Score converted out of 5)</p>
+                            <script type="text/javascript">
+                                $("#proj{$user_id} input[type=text]").change(function(){
+                                    var total = 0;
+                                    $("#proj{$user_id} input[type=text]").each(function(i, v){
+                                        if(!_.isNaN(parseFloat($(v).val()))){
+                                            total += parseFloat($(v).val());
+                                        }
+                                    });
+                                    $("#proj{$user_id}_total").html(Math.round(total*100)/100);
+                                    $("#proj{$user_id}_total5").html(Math.round((total/36)*5*100)/100 );
+                                });
+                            </script>
+                            </div>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="ex_comments" type="Textarea" blobItem="CAT_EX_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                                        {!contains({$user_full_roles},ISAC)}
+                                                       )},
+                                                   {!contains({$user_full_roles},SRC)})}">
+            <![CDATA[
+                <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="src_review" name="SRC Review" blobSection="CAT_SRC_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-SRC" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                    <![CDATA[
+                        <div id="proj{$user_id}">
+                        <table class='wikitable'>
+                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
+                        </table>
+                        {$item}
+                        <div class='info'>
+                            <ol>
+                                <li>Please score all sections.  You can use decimals in your scores.</li>
+                                <li>Please provide comments to justify your scores.</li>
+                                <li>Overall Competition Goal: To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000.</li>
+                                <li>Note: Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.  Total budget for this competition is $650,000.</li>
+                            </ol>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_1" blobType="BLOB_TEXT" blobItem="CAT_SRC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>1. Scientific Excellence - Background, Knowledge Gap(s), and Rationale.</h2>
+                        <p>Is the importance and rationale of the study justified?  The applicant was asked to provide a comprehensive review of the relevant background literature and identify knowledge gaps and clearly state the rationale for the project</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The background information is not directly relevant to the study. There does not appear to be important knowledge gaps that should be studied.  A rationale for the project is not provided.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There does appear to be knowledge gaps that should be studied. A rationale for the project is not provided.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied. A satisfactory rationale for the project is provided.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied and have been priotitised in terms of urgency. A clear and concise rationale for the project is provided.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_1_comments" type="Textarea" blobItem="CAT_SRC_1_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_2" blobType="BLOB_TEXT" blobItem="CAT_SRC_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>2. Scientific Excellence - Hypothesis and Research Question(s).</h2>
+                        <p>The applicant was asked to state the proposed hypothesis and research question(s) to be addressed in the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>No hypothesis or research questions are explicitly provided.</td>
+                                <td class='small' valign='top'>No hypothesis is provided.  The research questions provided are somewhat relevant and partly supported by the background information and rationale provided in previous section. </td>
+                                <td class='small' valign='top'>A hypothesis and research questions are provided and are relevant and supported by the background information and rationale provided in previous section.</td>
+                                <td class='small' valign='top'>A clear and concise hypothesis is provided. Research questions to be addressed in the study are directly relevant and supported by the background information and rationale provided in previous section.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_2_comments" type="Textarea" blobItem="CAT_SRC_2_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_3" blobType="BLOB_TEXT" blobItem="CAT_SRC_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>3. Scientific Excellence - Overall Goal and Objectives</h2>
+                        <p>The applicant was asked to describe the overall goal and specific objectives of the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>No overall goal or specific objectives are provided.</td>
+                                <td class='small' valign='top'>An overall goal is provided but no specific objectives are provided. Or no overall goal is provided but specific objectives are provided.</td>
+                                <td class='small' valign='top'>Overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section. </td>
+                                <td class='small' valign='top'>Clear and concise overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_3_comments" type="Textarea" blobItem="CAT_SRC_3_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_4" blobType="BLOB_TEXT" blobItem="CAT_SRC_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>4. Scientific Excellence - Methodological Approach</h2>
+                        <p>How appropriate is the study plan?  The applicant was asked to: a) Describe how this project will be managed overall and who specifically will manage each major aspect of the study, b) Describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s).<br />
+Note: For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.<br />
+Note: Study protocols must include frailty assessment of all study participants using a published frailty assessment instrument appropriate for the care setting.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Based on the approach described it is highly likely that the project will not meet the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does not include frailty assessment of study participants using a published instrument.</td>
+                                <td class='small' valign='top'>Based on the appraoch described there is concern that the project will not meet some of the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does include frailty assessment of study participants using a published instrument.</td>
+                                <td class='small' valign='top'>The study design appears appropriate to meet all the goals and objectives of the study.  Information on individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment of study participants for the care setting and provides sufficient detail of the assessment.</td>
+                                <td class='small' valign='top'>A comprehensive study design is provided and justified to meet all goals and objectives. Information on highly qualified individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment, provides sufficient detail and includes an analysis of differential impact of the study intervention or innovation based on the degree of frailty.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_4_comments" type="Textarea" blobItem="CAT_SRC_4_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_5" blobType="BLOB_TEXT" blobItem="CAT_SRC_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>5. Scientific Excellence - Research Outcomes, Deliverables and Milestones</h2>
+                        <p>Is the applicant likely to achieve the expected deliverables/milestones?  The applicant was asked to: a) Describe all milestones and anticipated deliverables, outputs and outcomes for the duration of the project, b) Provide a project schedule with dates for all milestones and anticipated deliverables, outputs and outcomes for the duration of the project, including all knowledge translation activities, and c) Describe how this project will be managed and deliverables tracked.<br />
+Note: The project schedule is mandatory and will be used by CFN to track progress of the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>There is a lack of description on the anticipated milestones, deliverable, outputs and/or outcomes and there is no project schedule that maps to these items and thus project management is a major concern.</td>
+                                <td class='small' valign='top'>A description on the anticipated milestones, deliverable, outputs and/or outcomes are satisfactory, although there is no project schedule that maps to these items and thus project management is a concern.</td>
+                                <td class='small' valign='top'>A good description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a satisfactory project schedule that maps to these items.  Project management is not a concern.</td>
+                                <td class='small' valign='top'>An excellent and very detailed description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a very detailed project schedule that maps to these items.  Project management is not a concern.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_5_comments" type="Textarea" blobItem="CAT_SRC_5_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_6" blobType="BLOB_TEXT" blobItem="CAT_SRC_6" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>6. Project Feasiibility - Barriers, Challenges & Mitigation Strategy</h2>
+                        <p>Did the applicant identify the important feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study and specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay or derail timely completion of the study?  Did the applicant appropriately describe how the investigative team plans on mitigating and overcoming these barriers, challenges and limitations?</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not feasible within the total time requested.  The timeline and accompanying narrative does a very poor job of realistically describing the important barriers, challenges and limitations to complete the study and does not include a mitigation strategy.</td>
+                                <td class='small' valign='top'>The proposed study is unlikley to be feasible within the total time requested. The applicant does a satisfactory job of describing the important barriers, challenges and limitations to complete the study but does not include a mitigation strategy.</td>
+                                <td class='small' valign='top'>The proposed study is likley feasible within the total time requested.  The applicant does a good job of describing how the research team will address important barriers, challenges and limitations to complete the study.  A reasonable mitigation strategy is provided.</td>
+                                <td class='small' valign='top'>The proposed study is feasible within the total time requested.  The applicant does an excellent job of describing how the barriers, challenges and limitations of the study will be addresssed and appropriately mitigated.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_6_comments" type="Textarea" blobItem="CAT_SRC_6_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_7" blobType="BLOB_TEXT" blobItem="CAT_SRC_7" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>7.  Project Feasibility - Experience, Expertise and Resources</h2>
+                        <p>Is the project team capable of executing the successful completion of the study?  The applicant was asked to: a) Describe expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team members to demonstrate that the team is capable of delivering on the proposed outputs and achieve the goals and objectives of the proposal, b) Provide an estimate on the number of hours per week (contribution) for each Principal Investigator, Co-investigator, Partner and other critical team member that will be working on the study and describe why this is an appropriate level of engagement and/or commitment to deliver the proposed outputs and achieve the goals and objectives of this proposal. (Note: All Individuals participating as project team members will also need to be listed in the Project Team List document) and c) Describe why the environment (academic institution and/or other organization) of each critical team member is appropriate to enable the conduct and success of the project.
+</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The project team has limited experience/expertise with frailty and has not allocated sufficient time for the completion of the project. There is significant concern regarding the environment of critical team members and lack of appropriate partners and collaborators. </td>
+                                <td class='small' valign='top'>The project team has a few members with experience/expertise in frailty and may have underestimated the amount of time required to complete the project. The environment of critical team members is appropriate for completion of the project.  </td>
+                                <td class='small' valign='top'>All project team members have some direct experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project. The critical team members are from an environment that will enable the success of the proposed project.</td>
+                                <td class='small' valign='top'>All project team members have in-depth experience/expertise in frailty.  Team members have dedicated appropriate time for the completion of the project, with some "buffer" time in case of delays.  All team members are from environments that will enable the success of the proposed project.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_7_comments" type="Textarea" blobItem="CAT_SRC_7_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_8" blobType="BLOB_TEXT" blobItem="CAT_SRC_8" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>8. Project Networking and Citizen Engagement</h2>
+                        <p>Does the project represent a collaborative effort between various stakeholders of different disciplines/sectors and does it include citizens?  The applicant was asked to: a) Describe the networking and engagement planned for the project across disciplines, research sites (universities, hospitals, institutes) and sectors and b) Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  Note: Meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The project involves investigators from only one discipline and institution. The study has a poorly designed plan to involve knowledge users.</td>
+                                <td class='small' valign='top'>The project involves investigators from a couple of different disciplines and institutions, and has a plan to involve different types of knowledge users; however, in a less than meaningful way.</td>
+                                <td class='small' valign='top'>The project involves investigators from a few unique disciplines and institutions. The study has a reasonable plan to involve different types of knowledge users in a meaningful way.</td>
+                                <td class='small' valign='top'>Project involves investigators from a diverse range of disciplines and many different institutions. The study has a comprehensive plan to involve different types of knowledge users in a meaningful way.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_8_comments" type="Textarea" blobItem="CAT_SRC_8_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_9" blobType="BLOB_TEXT" blobItem="CAT_SRC_9" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>9. Knowledge Translation</h2>
+                        <p>Is the end of grant knowledge translation plan well described and appropriate?  The applicant was asked to a) Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. Because of the relatively short-length of the CAT funding term, proposals must describe future implementation plans to demonstrate future scalability and spread.  b) Identify the KT framework that will be used and how it will be implemented.  Note: The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>There is no description of how the study results will be disseminated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>There is a brief description of how the study results will be integrated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>The description of an end-of-grant knowledge translation plan is satisfactory. The plan includes more than one avenue to disseminate the results of the study.</td>
+                                <td class='small' valign='top'>There is a clear, specific, and fulsome knowledge translation plan at the end of the grant. This may include: disseminating the results of the study to appropriate audiences; plans to implement study findings into practice and/or policy; intention to spread successful findings to further locations, communities, areas of care; etc.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_9_comments" type="Textarea" blobItem="CAT_SRC_9_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_10" blobType="BLOB_TEXT" blobItem="CAT_SRC_10" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>10. Partnerships</h2>
+                        <p>Do the applicants have the appropriate partners to carry out the study and do the partners appear fully committed to, and meaningfully involved in the project?  Note: Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding.  As an example, if the PI requests $100,000 from CFN then the PI must secure an additional minimum $100,000 in partner contributions.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Applicants have not established partnerships for the proposed study or have listed partners that have not committed to the minimum 1:1 partner contribution (1:1; partner funding:CFN funding).</td>
+                                <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and all partner contributions are in-kind (i.e., no cash).  In addition, many of the partners appear to be appropriate (i.e., lack the expertise, experience etc...) for the planned study and thus are likely to be meaningfully involved in the study. </td>
+                                <td class='small' valign='top'>Applicants have partners that have committed to the minimum 1:1 partner contribution, and a small percentage (<10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
+                                <td class='small' valign='top'>Applicants have partners that have committed more than the minimum 1:1 partner contribution, and a significant percentage (>10%) of the partner contribution is cash, with the remainder being in-kind.  In addition, all partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_10_comments" type="Textarea" blobItem="CAT_SRC_10_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="src_11" blobType="BLOB_TEXT" blobItem="CAT_SRC_11" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>11. Budget Justification</h2>
+                        <p>Does the applicant justify the overall budget and the need for the budget items listed, and are the costs associated with each item reasonable?  Please review section 4.3 and the Budget document (Excel document).</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The budget was not appropriately justified and is unreasonable.</td>
+                                <td class='small' valign='top'>Parts of the budget are appropriately justified.</td>
+                                <td class='small' valign='top'>The entire budget is justified, although some components appear unreasonable.</td>
+                                <td class='small' valign='top'>The entire budget is justified and very reasonable.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_11_comments" type="Textarea" blobItem="CAT_SRC_11_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="total1" type="StaticReportItem">
+                    <![CDATA[
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total">
+                                {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$user_id},{$my_id},0)}
+                                )}
+                            </b> (Score out of 44)</p>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total5">
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$user_id},{$my_id},0)}
+                                            )}
+                                        , 44)}
+                                    , 5)}
+                                ,2 )}
+                            </b> (Score converted out of 5)</p>
+                        <script type="text/javascript">
+                            $("#proj{$user_id} input[type=text]").change(function(){
+                                var total = 0;
+                                $("#proj{$user_id} input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
+                                });
+                                $("#proj{$user_id}_total").html(Math.round(total*100)/100);
+                                $("#proj{$user_id}_total5").html(Math.round((total/44)*5*100)/100 );
+                            });
+                        </script>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="src_comments" type="Textarea" blobItem="CAT_SRC_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="rmc_review" name="RMC Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-RMC" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                    <![CDATA[
+                        <div id="proj{$user_id}">
+                        <table class='wikitable'>
+                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_CATALYST_APPLICATION,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project ID:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Title:</b></td><td>{getText(RP_CATALYST_APPLICATION,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
+                        </table>
+                        {$item}
+                        <div class='info'>
+                            <ol>
+                                <li>Please provide scores and comments for all evaluation criteria.</li>
+                                <li>You can use decimals in your scores.</li>
+                            </ol>
+                            <b>Note: Applicants were provided the following information:</b>
+                            <ol>
+                                <li>Goal of the Competition: To fund studies investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
+                                <li>The Catalyst Program supports novel/innovative pilot and feasibility studies (research or translational studies).</li>
+                                <li>Funding Details:  To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li>
+                                <li>CFN is looking to invest a maximum of $650,000 for this competition. In addition there are separate funds allocated for work to be conducted in the province of New Brunswick.</li>
+                                <li>Projects must fit within CFN’s strategic priorities and patient-oriented themes.  These are:
+                                    <ol>
+                                        <li>CFN’s strategic priorities are: Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes and Improving care across the continuum.</li>
+                                        <li>CFN’s patient-oriented themes are: Improved end-of-life care (EOL) and advance care planning (ACP); Improved acute care and critical care; Optimization of community care/residential care and Optimization of transitions of care.</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                            <b>Note in addition to a full study description the applicants were asked to:</b>
+                            <ol>
+                                <li>Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of Canadians living with frailty.</li>
+                                <li>Develop Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</li>
+                                <li>Demonstrate a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</li>
+                                <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the study in a meaningful manner.</li>
+                                <li>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the proposed study along a continuum leading to social or economic impacts or policy and practice change.</li>
+                                <li>Demonstrate meaningful partnerships and collaborations with other organizations and stakeholders (e.g. health care practices, service providers, care facilities, etc.) to create opportunities for knowledge exchange, translation and mobilization.  </li>
+                            </ol>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_1" blobType="BLOB_TEXT" blobItem="CAT_RMC_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>1. Contribution to Long Term Impact of CFN</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposal will not evaluate, or have the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will satisfactorily evaluate, and has the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do a good job of evaluating, and has good potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do an excellent job of evaluating, and has excellent potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_1_comments" type="Textarea" blobItem="CAT_RMC_1_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_2" blobType="BLOB_TEXT" blobItem="CAT_RMC_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>2. Contribution to Evidence Informed Practice and/or Policy
+</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The outcomes of this project will not have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have an uncertain or minimal effect on practice, policy and/or socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have good potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have excellent potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_2_comments" type="Textarea" blobItem="CAT_RMC_2_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_3" blobType="BLOB_TEXT" blobItem="CAT_RMC_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>3. Alignment with CFN's Mission</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not aligned with CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is marginally focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is somewhat focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td class='small' valign='top'>The proposed study is highly focused on CFN's mission which is, "To improve care for older Canadians living with frailty.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_3_comments" type="Textarea" blobItem="CAT_RMC_3_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_4" blobType="BLOB_TEXT" blobItem="CAT_RMC_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>4. Alignment with CFN's Strategic Priorities</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not aligned with any of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is somewhat aligned with one of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is well aligned with at least one of CFN's strategic priorities (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed study is well aligned with two or more of CFN's priority areas (1. Matching care to values; 2. Empowering, engaging and supporting patients and their families and caregivers; 3. Improving clinical outcomes and 4. Improving care across the continuum).</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_4_comments" type="Textarea" blobItem="CAT_RMC_4_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_5" blobType="BLOB_TEXT" blobItem="CAT_RMC_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>5. Strength of Networking</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposal does not describe how the study team will engage multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary investigators or stakeholders.  The proposal does not include international collaborations.</td>
+                                <td class='small' valign='top'>The proposal poorly describes how the study team will engage multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes some international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in satisfactory detail how the study team will engage a good number (3 to 4) of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes a good number (3 to 4) of international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in extensive detail how the study team will engage a large number (5 or more) of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary investigators and stakeholders.  The proposal includes a substantial number (5 or more) of international collaborations.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_5_comments" type="Textarea" blobItem="CAT_RMC_5_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_6" blobType="BLOB_TEXT" blobItem="CAT_RMC_6" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>6. Strength of Partnerships</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The applicants have a single partner that is providing only the minimum in-kind contribution but no cash.  
+The partner is an academic investigator/institution or a very small regional organization or company.  However, the partner is inappropriate (i.e., lacks the expertise, experience etc...) for the planned study and thus is unlikely to meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a couple of partners that are providing more than the minimum in-kind contribution but no cash.  The partners are academic investigators/institutions, small regional organizations and/or companies. At least one of the partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and thus will meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a few partners that are providing more than the minimum in-kind contribution and have committed a small cash component (<10%).  Most of the partners are large regional organizations and/or national organizations/companies. In addition, most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and thus will meaningfully contribute to the study and/or post-study KT activities.</td>
+                                <td class='small' valign='top'>The applicants have a few partners that are providing substantially more than the minimum in-kind contribution and have committed a substantial cash component (>10%).  Most of the partners are large regional organizations and/or national organizations/companies. In addition, all partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and  thus will meaningfully contribute to both the study and post-study KT activities.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_6_comments" type="Textarea" blobItem="CAT_RMC_6_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_7" blobType="BLOB_TEXT" blobItem="CAT_RMC_7" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>7. HQP Development</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>HQP have not been identified as part of the study team.</td>
+                                <td class='small' valign='top'>Only one HQP has been identified. Their role in the project has been somewhat delineated, but does not appear to be meaningful.<br /> 
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is as expected and their roles in the project have been clearly delineated and are meaningful.<br />
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is higher than average and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.<br />
+                                    <br />
+                                    Meaningful involvement in the study components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).
+</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_7_comments" type="Textarea" blobItem="CAT_RMC_7_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="rmc_8" blobType="BLOB_TEXT" blobItem="CAT_RMC_8" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>8. Citizen Engagement</h2>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Poor<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Patients, family members and knowledge users are not meaningfully involved, nor are they an integral part of the study team.<br /> 
+                                    <br />
+                                    For clarity, meaningful participation includes being involved in the planning and execution of the project and/or in assisting in the interpretation and translation/mobilization of the study findings.</td>
+                                <td class='small' valign='top'>There is some evidence to suggest that patients, family members and knowledge users may have played a minor role in helping to plan the study and/or may play a cursory role in study execution and interpretation of study findings.</td>
+                                <td class='small' valign='top'>There is good evidence to suggest that patients, family members and/or knowledge users have played a major role in helping to plan the study and/or will play a significant role in study execution and interpretation of study findings.</td>
+                                <td class='small' valign='top'>There is strong evidence to suggest that patients, family members and knowledge users have played a major role in helping to plan the study and will play a significant role in study execution and interpretation of study findings. </td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_8_comments" type="Textarea" blobItem="CAT_RMC_8_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="total1" type="StaticReportItem">
+                    <![CDATA[
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total">
+                                {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$user_id},{$my_id},0)},
+                                     {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)}
+                                )}
+                            </b> (Score out of 32)</p>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total5">
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$user_id},{$my_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$user_id},{$my_id},0)}
+                                            )}
+                                        , 32)}
+                                    , 5)}
+                                ,2 )}
+                            </b> (Score converted out of 5)</p>
+                        <script type="text/javascript">
+                            $("#proj{$user_id} input[type=text]").change(function(){
+                                var total = 0;
+                                $("#proj{$user_id} input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
+                                });
+                                $("#proj{$user_id}_total").html(Math.round(total*100)/100);
+                                $("#proj{$user_id}_total5").html(Math.round((total/32)*5*100)/100 );
+                            });
+                        </script>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_suggestions" type="Textarea" blobItem="CAT_RMC_SUGGESTIONS" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>What suggestions do you have that would make this proposal more acceptable for funding?</b> {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rmc_comments" type="Textarea" blobItem="CAT_RMC_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
