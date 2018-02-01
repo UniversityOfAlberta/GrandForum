@@ -383,7 +383,18 @@ tr.odd {
 }
 
 .dt-buttons {
-    padding: 5px 0 0 5px;
+    padding: 6px 0 0 6px;
+    margin-right: 9px;
+}
+
+.dt-button {
+    padding: 5px 10px !important;
+    font-size: 0.88em !important;
+    margin: 2px !important;
+}
+
+.dt-button span {
+    text-decoration: none !important;
 }
 
 /* Meta */
@@ -499,7 +510,7 @@ input.custom-combobox-input {
     background: #fff url("../icons/gray_light/pen_12x12.png") no-repeat scroll right 4px center !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
@@ -542,7 +553,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     user-select: none;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
@@ -565,7 +576,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
 	white-space:nowrap;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
     position:relative;
     top:1px;
     text-decoration:none;
