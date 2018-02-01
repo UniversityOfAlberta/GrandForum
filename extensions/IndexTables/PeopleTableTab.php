@@ -157,6 +157,10 @@ class PeopleTableTab extends AbstractTab {
             'autoWidth':false,
             'columnDefs': [
                 {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))}
+            ],
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
             ]
         });</script>";
         if($count == 0){

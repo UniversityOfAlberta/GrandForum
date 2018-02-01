@@ -9,7 +9,13 @@ ContributionsView = Backbone.View.extend({
     render: function(){
         main.set('title', "Contributions");
         this.$el.html(this.template());
-        this.$("#contributions").dataTable({iDisplayLength: 100});
+        this.$("#contributions").dataTable({
+            'iDisplayLength': 100,
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
+            ]
+        });
         return this.$el;
     }
 

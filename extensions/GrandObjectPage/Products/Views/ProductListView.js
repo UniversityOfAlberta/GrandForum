@@ -89,7 +89,11 @@ ProductListView = Backbone.View.extend({
 	                                    'autoWidth': false,
 	                                    'aaData' : data,
 	                                    'deferRender': true,
-	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+	                                    'dom': 'Blfrtip',
+                                        'buttons': [
+                                            'excel', 'pdf'
+                                        ]});
 	    this.$("#listTable_length").append(showButton);
 	    this.$("#listTable_length").append(throbber);
         this.$el.css('display', 'block');

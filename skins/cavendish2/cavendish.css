@@ -376,6 +376,10 @@ tr.odd {
 	background: #F5F5F5;
 }
 
+.dt-buttons {
+    padding: 5px 0 0 5px;
+}
+
 /* Meta */
 address {
 	color: #666;
