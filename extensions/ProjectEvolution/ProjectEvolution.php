@@ -37,7 +37,7 @@ class ProjectEvolution extends SpecialPage {
     static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
 	    $person = Person::newFromWgUser();
-	    if($person->isRoleAtLeast(MANAGER)){
+	    if($person->isRoleAtLeast(STAFF)){
 	        $selected = @($wgTitle->getText() == "ProjectEvolution") ? "selected" : false;
 	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Project Evolution", "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution", $selected);
 	    }
