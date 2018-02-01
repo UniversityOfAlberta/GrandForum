@@ -180,19 +180,27 @@ class Report extends AbstractReport{
         }
         if(count($person->getEvaluates("CAT-SRC", 2017)) > 0 || count($person->getEvaluates("CAT-EX", 2017)) > 0 || count($person->getEvaluates("CAT-RMC", 2017)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2017Review")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Catalyst Review", "{$url}Catalyst2017Review", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2017)", "{$url}Catalyst2017Review", $selected);
+        }
+        if(count($person->getEvaluates("CAT-SRC", 2018)) > 0 || count($person->getEvaluates("CAT-EX", 2018)) > 0 || count($person->getEvaluates("CAT-RMC", 2018)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Review")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
         }
         if(count($person->getEvaluates("KT-EX", 2017)) > 0 || count($person->getEvaluates("KT-KTC", 2017)) > 0 || count($person->getEvaluates("KT-RMC", 2017)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Review", "{$url}KTReview", $selected);
         }
         if($person->isRoleAtLeast(MANAGER) || $person->getName() == "Denise.Stockley" || $person->getName() == "Amber.Hastings-Truelove"){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2018")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2018", "{$url}ReviewReport2018", $selected);
+        }
+        if($person->isRoleAtLeast(MANAGER) || $person->getName() == "Denise.Stockley" || $person->getName() == "Amber.Hastings-Truelove"){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2017")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report 2017", "{$url}ReviewReport2017", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2017", "{$url}ReviewReport2017", $selected);
         }
         if($person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report 2015", "{$url}ReviewReport", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2015", "{$url}ReviewReport", $selected);
         }
         return true;
     }
