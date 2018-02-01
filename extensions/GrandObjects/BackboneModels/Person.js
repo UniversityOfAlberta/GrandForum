@@ -219,6 +219,16 @@ PersonRelation = RelationModel.extend({
     initialize: function(){
         
     },
+    
+    validate: function(attrs, options) {
+        var regex = /^\d{4}-\d{2}-\d{2}/;
+        if (attrs.startDate != '' && !regex.test(attrs.startDate)){
+            return "Start Date is not valid";
+        }
+        if (attrs.endDate != '' && !regex.test(attrs.endDate)){
+            return "End Date is not valid";
+        }
+    },
 
     urlRoot: function(){
         return 'index.php?action=api.person/' + this.get('user1') + '/relations'
@@ -306,6 +316,16 @@ PersonUniversity = RelationModel.extend({
     
     },
     
+    validate: function(attrs, options) {
+        var regex = /^\d{4}-\d{2}-\d{2}/;
+        if (attrs.startDate != '' && !regex.test(attrs.startDate)){
+            return "Start Date is not valid";
+        }
+        if (attrs.endDate != '' && !regex.test(attrs.endDate)){
+            return "End Date is not valid";
+        }
+    },
+    
     urlRoot: function(){
         return 'index.php?action=api.person/' + this.get('personId') + '/universities'
     },
@@ -326,6 +346,7 @@ PersonUniversity = RelationModel.extend({
         department: "",
         position: "",
         researchArea: "",
+        primary: 0,
         personUniversityId: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: ""

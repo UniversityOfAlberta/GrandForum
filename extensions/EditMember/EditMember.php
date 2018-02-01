@@ -583,17 +583,7 @@ class EditMember extends SpecialPage{
             }
             $names[] = $person->getName();
         }
-        if($me->isRoleAtLeast(STAFF)){
-            foreach(Person::getAllStaff() as $person){
-                $names[] = $person->getName();
-            }
-        }
         
-        if($me->isRoleAtLeast(STAFF)){
-            foreach(Person::getAllStaff() as $person){
-                $allPeople[] = $person;
-            }
-        }
         $wgOut->addHTML("This page can be used to edit the roles and projects of members on the {$config->getValue('siteName')}.<br />
                          Select a user from the list below, and then click the 'Next' button.<table>
                             <tr><td>

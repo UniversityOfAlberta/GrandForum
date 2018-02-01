@@ -57,7 +57,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         _.each(copy, $.proxy(function(university){
             if(university.unsavedAttributes() != false){
                 if(university.get('deleted') != "true"){
-                    requests.push(university.save(null));
+                    var xhr = university.save(null);
+                    if(xhr == false){
+                        addError(university.validationError);
+                    }
+                    else{
+                        requests.push(xhr);
+                    }
                 }
                 else {
                     requests.push(university.destroy(null));

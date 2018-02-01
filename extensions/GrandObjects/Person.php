@@ -518,18 +518,19 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $sql = "SELECT user_id, university_name, department, position, start_date, end_date, research_area
+            $sql = "SELECT user_id, university_name, department, position, start_date, end_date, research_area, `primary`
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
                     ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                if(!isset(self::$universityCache[$row['user_id']])){
+                if(!isset(self::$universityCache[$row['user_id']]) || $row['primary'] == true){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
+                              "primary"    => $row['primary'],
                               "start"      => $row['start_date'],
                               "date"       => $row['end_date'],
                               "research_area" => $row['research_area']);
@@ -2047,6 +2048,7 @@ class Person extends BackboneModel {
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
                                  "researchArea" => $row['research_area'],
+                                 "primary" => $row['primary'],
                                  "start" => $row['start_date'],
                                  "end" => $row['end_date']);
             }
@@ -2573,7 +2575,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                           'grand_universities' => 'u',
                                           'grand_positions' => 'p'),
-                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.research_area', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.research_area', 'uu.primary', 'uu.start_date', 'uu.end_date'),
                                     array('uu.user_id' => EQ($this->id),
                                           'u.university_id' => EQ(COL('uu.university_id')),
                                           'p.position_id' => EQ(COL('uu.position_id'))),
@@ -2586,6 +2588,7 @@ class Person extends BackboneModel {
                 'department' => $row['department'],
                 'position' => $row['position'],
                 'researchArea' => $row['research_area'],
+                'primary' => $row['primary'],
                 'startDate' => substr($row['start_date'], 0, 10),
                 'endDate' => substr($row['end_date'], 0, 10)
             );
