@@ -128,10 +128,13 @@ class CreateUserAPI extends API{
                     if($_POST['wpProvision'] = "Yes"){
                         $provision = true;
                     }
-                    else if($_POST['Language'] == "French"){
+                    if($_POST['wpLanguage'] == "French"){
                         $language = "fr";
                     }
+
                     $person->getUser()->setOption("language", $language);
+                    $person->getUser()->saveSettings();
+                    
                     $provData = DBFunctions::select(array('grand_provinces'),
                                                     array('id'),
                                                     array('province' => EQ($_POST['wpProvince'])));
