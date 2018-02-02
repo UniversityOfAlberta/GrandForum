@@ -823,14 +823,21 @@ if ( isset($pdf) ) {
         global $IP;
         $str = "";
         $attached = array();
-        $name = str_replace("\\", "", str_replace("/", "", $name));
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             $blob = new ReportBlob();
             $blob->loadFromMD5($pdf);
             $data = json_decode($blob->getData());
             if($data != null){
                 file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
-                $attached[] = "\"/tmp/{$pdf}\"";
+                exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+                      -q \\
+                      -dNOPAUSE \\
+                      -dBATCH \\
+                      -sDEVICE=pdfwrite \\
+                      -sOutputFile=\"/tmp/{$pdf}unencrypted\" \\
+                      -c .setpdfwrite \\
+                      -f \"/tmp/{$pdf}\"");
+                $attached[] = "\"/tmp/{$pdf}unencrypted\"";
             }
         }
         $attached = implode(" ", $attached);
@@ -880,6 +887,7 @@ if ( isset($pdf) ) {
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             if(file_exists("/tmp/{$pdf}")){
                 unlink("/tmp/{$pdf}");
+                unlink("/tmp/{$pdf}unencrypted");
             }
         }
         $GLOBALS['chapters'] = array();
