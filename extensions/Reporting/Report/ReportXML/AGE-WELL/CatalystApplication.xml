@@ -58,7 +58,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="2017 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2017 AGE-WELL Catalyst Program">
+    <ReportSection id="description" tooltip="2018 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2018 AGE-WELL Catalyst Program">
         <ReportItem id="description" type="Static">
             <![CDATA[
                 <p>AGE-WELL is excited to launch its 3rd Catalyst Funding competition to support innovative research projects aimed at generating, promoting or accelerating economic and social benefit in the field of technology and aging.</p> 
