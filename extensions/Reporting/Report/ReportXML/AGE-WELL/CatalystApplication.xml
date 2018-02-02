@@ -183,7 +183,7 @@
         <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
             <![CDATA[
                 <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program?</b><br />
-                    <small>(i.e. are you looking to renew your SIP award, or advance your Catalyst project to a SIP project)?</small>
+                    <small>(i.e. are you looking to renew your Catalyst award, or further advance your SIP project to a Catalyst project)?</small>
                     {$item}
                 </li>
                 </ol>
