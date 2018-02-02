@@ -41,11 +41,11 @@ $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI
 $apiRequest->addAction('Hidden','person/:id/products/all', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/:productId', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','personRoleString/:id', 'PersonRoleStringAPI');
-$apiRequest->addAction('Hidden','people', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/managed', 'PeopleManagedAPI');
-$apiRequest->addAction('Hidden','people/:role', 'PeopleAPI');
-$apiRequest->addAction('Hidden','people/:role/:university', 'PeopleAPI');
-$apiRequest->addAction('Hidden','people/:role/:university/:department', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/simple', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/:role/simple', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/:role/:university/simple', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/:role/:university/:department/simple', 'PeopleAPI');
 // Role
 $apiRequest->addAction('Hidden','role', 'RoleAPI');
 $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');

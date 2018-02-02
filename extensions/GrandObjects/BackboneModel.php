@@ -24,6 +24,22 @@ abstract class BackboneModel {
     }
     
     /**
+     * Generates and returns a simple jsonified version of this BackboneModel
+     * @return mixed Returns a simple jsonified version of this BackboneModel
+     */
+    function toSimpleJSON(){
+        return json_encode($this->toSimpleArray());
+    }
+    
+    /**
+     * Generates and returns a simple array version of this BackboneModel
+     * @return array Returns a simple array version of this BackboneModel
+     */
+    function toSimpleArray(){
+        return $this->toArray();
+    }
+    
+    /**
      * Generates and returns an array version of this BackboneModel
      * @return array Returns an array version of this BackboneModel
      */

@@ -83,7 +83,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
             <![CDATA[
                 </div>
                 <h3>Leaves</h3>

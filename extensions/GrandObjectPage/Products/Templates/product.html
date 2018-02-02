@@ -20,7 +20,7 @@
             <tr>
                 <td align="right"><b><%= val.label %>:</b></td>
                 <td>
-                    <% if(val.type == "String" || val.type == "Radio" || val.type == "Pages"){ %>
+                    <% if(val.type == "String"  || val.type == "Integer" || val.type == "Radio" || val.type == "Pages"){ %>
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>

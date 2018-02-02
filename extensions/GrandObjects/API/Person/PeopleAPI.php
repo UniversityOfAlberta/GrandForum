@@ -3,6 +3,7 @@
 class PeopleAPI extends RESTAPI {
     
     function doGET(){
+        $simple = ($this->getParam('simple') != "");
         if($this->getParam('role') != ""){
             $university = "";
             $department = "";
@@ -12,6 +13,7 @@ class PeopleAPI extends RESTAPI {
             if($this->getParam('department') != ""){
                 $department = $this->getParam('department');
             }
+            
             $exploded = explode(",", $this->getParam('role'));
             $finalPeople = array();
             foreach($exploded as $role){
@@ -51,10 +53,16 @@ class PeopleAPI extends RESTAPI {
             }
             ksort($finalPeople);
             $finalPeople = new Collection(array_values($finalPeople));
+            if($simple){
+                return $finalPeople->toSimpleJSON();
+            }
             return $finalPeople->toJSON();
         }
         else{
             $people = new Collection(Person::getAllPeople('all'));
+            if($simple){
+                return $people->toSimpleJSON();
+            }
             return $people->toJSON();
         }
     }

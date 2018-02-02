@@ -286,6 +286,7 @@ ProductEditView = Backbone.View.extend({
         }
         else{
             this.allPeople = new People();
+            this.allPeople.simple = true;
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
@@ -317,7 +318,6 @@ ProductEditView = Backbone.View.extend({
                         response(data);
                     }});
                 }, this),
-                
                 minLength: 2,
                 select: $.proxy(function(event, ui){
                     _.defer($.proxy(function(){
@@ -346,6 +346,10 @@ ProductEditView = Backbone.View.extend({
             (_.size(_.first(_.values(productStructure.categories[this.model.get('category')].types)).titles) > 0)){
             this.$("select[name=title]").combobox();
         }
+        this.$("input[name=data_category_ranking]").prop('disabled', true);
+        this.$("input[name=data_impact_factor]").prop('disabled', true);
+        this.$("input[name=data_eigen_factor]").prop('disabled', true);
+        this.$("input[name=data_eigen_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
         return this.$el;
     }
 

@@ -64,6 +64,7 @@ class APIRequest{
 				                }
 				                else if($match){
 				                    $a->params[$key] = $params[$key];
+				                    $a->params[$params[$key]] = $params[$key];
 				                }
                             }
                             foreach($params as $key => $param){

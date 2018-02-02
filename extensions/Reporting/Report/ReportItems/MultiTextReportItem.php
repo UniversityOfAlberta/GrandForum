@@ -498,20 +498,20 @@ EOF;
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
-                            $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $item .= @"<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){
                             $check = "";
                             if(isset($value[$index]) && $value[$index] == "1"){
                                 $check = "&#10003;";
                             }
-                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
+                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";
+                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";
                         }
                         else{
-                            $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         if($isVertical){
                             $item .= "</tr>";

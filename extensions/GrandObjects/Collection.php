@@ -56,6 +56,30 @@ class Collection {
     function toJSON(){
         return json_encode($this->toArray());
     }
+    
+    function toSimpleArray(){
+        $json = array();
+        if(count($this->objects) > 0){
+            if(array_values($this->objects)[0] instanceof BackboneModel){
+                foreach($this->objects as $object){
+                    $json[] = $object->toSimpleArray();
+                }
+            }
+            else{
+                foreach($this->objects as $object){
+                    $json[] = $object;
+                }
+            }
+        }
+        return $json;
+    }
+    
+    /**
+     * @return mixed Returns a jsonified version of this Collection
+     */
+    function toSimpleJSON(){
+        return json_encode($this->toSimpleArray());
+    }
 
 }
 
