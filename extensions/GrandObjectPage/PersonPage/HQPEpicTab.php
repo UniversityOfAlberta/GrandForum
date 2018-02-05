@@ -35,8 +35,7 @@ class HQPEpicTab extends AbstractEditableTab {
         if(($this->person->isSubRole("WP/CC Funded HQP") || 
             $this->person->isSubRole("Project Funded HQP") ||
             $this->person->isSubRole("Alumni HQP")) &&
-           ($position != "undergraduate student" &&
-            $position != "graduate student - doctoral" &&
+           ($position != "graduate student - doctoral" &&
             $position != "graduate student - master's" &&
             $position != "post-doctoral fellow")){
             $this->generateWPCC();
