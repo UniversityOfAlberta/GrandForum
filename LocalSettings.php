@@ -48,7 +48,7 @@ $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
 require_once( "$IP/includes/DefaultSettings.php" );
-require_once( "$IP/config/Config.php" );
+require_once( "$IP/config/ForumConfig.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
 
 ## Path settings

@@ -6,7 +6,7 @@ if(file_exists("../../test.tmp")){
 else{
     define("TESTING", false);
 }
-require_once("../../config/Config.php");
+require_once("../../config/ForumConfig.php");
 
 $hl = $config->getValue("highlightColor");
 $brighterhl = $config->getValue("brighterHighlightColor");
