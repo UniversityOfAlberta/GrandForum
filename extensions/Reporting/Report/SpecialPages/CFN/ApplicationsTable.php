@@ -91,6 +91,7 @@ class ApplicationsTable extends SpecialPage{
     function generateIFP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
@@ -105,6 +106,7 @@ class ApplicationsTable extends SpecialPage{
     function generateCat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2018Application", $this->nis, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

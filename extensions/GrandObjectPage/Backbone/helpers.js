@@ -8,6 +8,16 @@ dateTimeHelpers = {
     }
 }
 
+function number_format(n, c, t){
+    var c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = ".", 
+    t = t == undefined ? "," : t, 
+    s = n < 0 ? "-" : "", 
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
 function parseUrl(url) {
     var parser = document.createElement('a'),
         searchObject = {},
@@ -72,7 +82,7 @@ HTML.Element = function(html, options){
 
 HTML.Name = function(attr){
     if(attr.indexOf('.') != -1){
-        return attr.replace('.', '_');
+        return attr.split(".").join("_");
     }
     else{
         return attr;
@@ -81,13 +91,17 @@ HTML.Name = function(attr){
 
 HTML.Value = function(view, attr){
     if(attr.indexOf('.') != -1){
-        var index = attr.indexOf('.');
-        var data = view.model.get(attr.substr(0, index));
-        var ret = data[attr.substr(index+1)];
-        if(ret == undefined){
-            ret = "";
+        var elems = attr.split(".");
+        var last = _.last(elems);
+        data = view.model.get(elems[0]);
+        for (var i = 1; i < elems.length; ++i) {
+            if (data[elems[i]] == undefined) {
+                return '';
+            } else {
+                data = data[elems[i]];
+            }
         }
-        return ret;
+        return data;
     }
     else{
         return view.model.get(attr);
@@ -102,10 +116,25 @@ HTML.TextBox = function(view, attr, options){
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
-            var index = attr.indexOf('.');
-            var data = view.model.get(attr.substr(0, index));
-            data[attr.substr(index+1)] = $(e.target).val();
-            view.model.set(attr.substr(0, index), _.clone(data));
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    return $(e.target).val();
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
         }
         else{
             view.model.set(attr, $(e.target).val());
@@ -233,10 +262,25 @@ HTML.Select = function(view, attr, options){
     var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
-            var index = attr.indexOf('.');
-            var data = view.model.get(attr.substr(0, index));
-            data[attr.substr(index+1)] = $(e.target).val();
-            view.model.set(attr.substr(0, index), _.clone(data));
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    return $(e.target).val();
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
         }
         else{
             view.model.set(attr, $(e.target).val());

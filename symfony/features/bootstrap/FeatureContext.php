@@ -18,7 +18,7 @@ use Behat\Gherkin\Node\PyStringNode,
 //
 // Require 3rd-party libraries here:
 //
-   require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Features context.
@@ -139,6 +139,20 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function iTakeAScreenshot(){
         file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".png", $this->getSession()->getDriver()->getScreenshot());
         file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
+    }
+    
+    /**
+     * @When I accept confirmation dialogs
+     */
+    public function acceptConfirmation() {
+      $this->getSession()->getDriver()->executeScript('window.confirm = function(){return true;}');
+    }
+    
+    /**
+     * @When I do not accept confirmation dialogs
+     */
+    public function acceptNotConfirmation() {
+      $this->getSession()->getDriver()->executeScript('window.confirm = function(){return false;}');
     }
 
     /**

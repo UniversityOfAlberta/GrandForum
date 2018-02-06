@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Start-Up Company Funding 2017-2018 Company Targeted Development Support" reportType="RP_START_UP_DEV" pdfType="RP_START_UP_DEV" year="2018">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <span style='font-size: 1.5em;font-weight:bold'>Start-Up Company Funding 2017-2018<br />Company Targeted Development Support</span>
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="information" name="Applicant Information" title="Applicant Information" tooltip="Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
+        <ReportItem id="name" type="Text" blobItem="NAME">
+            <![CDATA[
+                <h3>Company Details</h3>
+                <table width='100%'>
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Legal name of the Company:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Phone number:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="Text" blobItem="ADDRESS">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Address:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="number" type="Text" blobItem="NUMBER">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Business number:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rep" type="Text" blobItem="REP">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Company Representative:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="province" type="Text" blobItem="PROVINCE">
+            <![CDATA[
+                <h3>Company Incorporation Details</h3>
+                <table width='100%'>
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Province of incorporation:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="date" type="Calendar" blobItem="DATE">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Date of incorporation:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Text" blobItem="FUNDING">
+            <![CDATA[
+                <h3>Applicant Funding History</h3>
+                <table width="100%">
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Amount of external funding raised:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="history" type="Text" blobItem="HISTORY" optional="true">
+            <![CDATA[
+                    <tr>
+                        <td class="label" align="right" style="white-space:nowrap;width:1%;">Funding History:&nbsp;</td>
+                        <td>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="employees" type="Text" blobItem="EMPLOYEES">
+            <![CDATA[
+                <h3>Number of Employees</h3>
+                <div class="tinymce">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Summary Description of the Company</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="250">
+            <![CDATA[
+                <h3>Brief Description of How Company Technology is Relevant to Glycomics</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="proof" type="UploadPDF" blobType="BLOB_RAW" blobItem="PROOF" fileSize="20" mimeType="application/pdf,.pdf" />
+        <ReportItem id="statements" type="UploadPDF" blobType="BLOB_RAW" blobItem="STATEMENTS" optional="true" fileSize="20" mimeType="application/pdf,.pdf" />
+    </ReportSection>
+    <ReportSection id="opportunity" name="Opportunity" title="Opportunity" tooltip="Opportunity" type="HeaderReportSection" blobSection="OPPORTUNITY" pagebreak="false">
+        <ReportItemSet type="If" if="{!=({getText(RP_START_UP_DEV, OPPORTUNITY, SUMMARY, 0, {$user_id}, 0)},)}">
+            <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="300px" limit="250" optional="true">
+                <![CDATA[
+                    <center><h1>Opportunity</h1></center>
+                    <h3>Project Summary</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="break" type="PageBreak">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="opportunity" type="UploadPDF" blobType="BLOB_RAW" blobItem="OPPORTUNITY" fileSize="20" mimeType="application/pdf,.pdf" />
+    </ReportSection>
+    <ReportSection id="project" name="Project" title="Project" tooltip="Project" type="EditableReportSection" blobSection="PROJECT">
+        <ReportItem id="project" type="Textarea" blobItem="PROJECT" rich="true" height="400px" limit="750">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="associate" name="Associate" title="Associate" tooltip="Associate" type="EditableReportSection" blobSection="ASSOCIATE">
+        <ReportItem id="associate" type="Textarea" blobItem="ASSOCIATE" rich="true" height="350px" limit="500">
+            <![CDATA[
+                <h3>Description of suitability for proposed project/role</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resume" type="UploadPDF" blobType="BLOB_RAW" blobItem="RESUME" fileSize="20" mimeType="application/pdf,.pdf" />
+        <ReportItem id="letter" type="UploadPDF" blobType="BLOB_RAW" blobItem="LETTER" fileSize="20" mimeType="application/pdf,.pdf" />
+    </ReportSection>
+    <ReportSection id="budget" name="Budget" title="Budget" tooltip="Budget" type="EditableReportSection" blobSection="BUDGET" pagebreak="false">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" height="300px">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -1,0 +1,42 @@
+<p><a href="#/new" class="button">Add Contribution</a></p>
+<table id="contributions" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>People</th>
+            <th>Partners</th>
+            <th>Projects</th>
+            <th>Institution</th>
+            <th>Province</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total ($)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(contribution){ %>
+            <tr>
+                <td><a href="<%= contribution.get('url') %>"><%= contribution.get('name') %></a><br /><%= contribution.get('description') %></td>
+                <td>
+                    <%= _.map(contribution.get('authors'), function(a){
+                        if(a.url != ""){
+                            return "<a href='" + a.url + "'>" + a.fullname + "</a>";
+                        }
+                        else{
+                            return a.fullname.replace(/"/g, '');
+                        }
+                    }).join(', ') %>
+                </td>
+                <td><%= _.pluck(contribution.get('partners'), 'name').join(', ') %></td>
+                <td><%= _.map(contribution.get('projects'), function(p){
+                        return "<a href='" + p.url + "'>" + p.name + "</a>";
+                    }).join(', ') %></td>
+                <td><%= contribution.get('institution') %></td>
+                <td><%= contribution.get('province') %></td>
+                <td><%= contribution.get('start') %></td>
+                <td><%= contribution.get('end') %></td>
+                <td align="right"><%= number_format(contribution.get('total')) %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

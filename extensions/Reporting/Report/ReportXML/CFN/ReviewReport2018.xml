@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Review Report" ajax="true" disabled="false" personId="0" year="2018">
+    <Permissions>
+        <Role role="STAFF">
+            
+        </Role>
+        <Person id="2333" />
+        <Person id="847" />
+    </Permissions>
+    <ReportSection id="cat_ex_review" name="CAT Ext Review" tooltip="Review of CAT Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-EX" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)},)}
+                                                          )}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)})})}
+
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        {$item}
+                        <table class='wikitable' id="{$user_id}_table1ex">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
+                    <ReportItem id="row" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right'>
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)}
+                                            )}
+                                        ,36)}
+                                    ,5)}
+                                ,2)}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q6)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q7)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q8)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q9)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)},
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)}
+                                            )}
+                                        )}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table1ex.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="cat_SRC_review" name="CAT SRC Review" tooltip="Review of CAT Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(q11, 0)}
+                        
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)}
+                                                          )}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)})})}
+                            {set(q11, {add({get(q11)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)})})}
+
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        {$item}
+                        <table class='wikitable' id="{$user_id}_table1SRC">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Q11</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+                    <ReportItem id="row" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right'>
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)}
+                                            )}
+                                        ,44)}
+                                    ,5)}
+                                ,2)}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q6)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q7)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q8)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q9)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q10)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q11)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)},
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                                 {get(q11)}
+                                            )}
+                                        )}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},44)},5)},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table1SRC.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="cat_RMC_review" name="CAT RMC Review" tooltip="Review of RMC Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)},)}
+                                                          )}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)})})}
+
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        {$item}
+                        <table class='wikitable' id="{$user_id}_table1RMC">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Total</th>
+                                    <th width='30%'>Suggestions</th>
+                                    <th width='30%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
+                    <ReportItem id="row" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right'>
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)}
+                                            )}
+                                        ,32)}
+                                    ,5)}
+                                ,2)}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_SUGGESTIONS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q6)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q7)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q8)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)},
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)}
+                                            )}
+                                        )}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},32)},5)},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table1RMC.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="cat_review_summary" name="CAT Ext Summary" tooltip="CAT Ext Summary" type="ReportSection">
+        <ReportItem id="table_head" type="Static">
+            <![CDATA[
+                <table class='wikitable' id="eval_table1ex">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-EX" class="Person">
+            <ReportItem id="script_init" type="StaticReportItem">
+                <![CDATA[
+                    {set(q1, 0)}
+                    {set(q2, 0)}
+                    {set(q3, 0)}
+                    {set(q4, 0)}
+                    {set(q5, 0)}
+                    {set(q6, 0)}
+                    {set(q7, 0)}
+                    {set(q8, 0)}
+                    {set(q9, 0)}
+                    
+                    {set(nReviewers, 0)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
+                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)},)}
+                                                      )}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_EX_REVIEW,CAT_EX_9,{$parent_id},{$user_id},0)})})}
+
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)},
+                             {get(q4)},
+                             {get(q5)},
+                             {get(q6)},
+                             {get(q7)},
+                             {get(q8)},
+                             {get(q9)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="table_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q4)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q5)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q6)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q7)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q8)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q9)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table1ex").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cat_review_summary" name="CAT SRC Summary" tooltip="CAT SRC Summary" type="ReportSection">
+        <ReportItem id="table_head" type="Static">
+            <![CDATA[
+                <table class='wikitable' id="eval_table1ex">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Q11</th>
+                            <th>Avg. Q12</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Person">
+            <ReportItem id="script_init" type="StaticReportItem">
+                <![CDATA[
+                    {set(q1, 0)}
+                    {set(q2, 0)}
+                    {set(q3, 0)}
+                    {set(q4, 0)}
+                    {set(q5, 0)}
+                    {set(q6, 0)}
+                    {set(q7, 0)}
+                    {set(q8, 0)}
+                    {set(q9, 0)}
+                    {set(q10, 0)}
+                    {set(q11, 0)}
+                    {set(q12, 0)}
+                    
+                    {set(nReviewers, 0)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)},)}
+                                                      )}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)})})}
+                        {set(q11, {add({get(q11)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)})})}
+                        {set(q12, {add({get(q12)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)})})}
+
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)},
+                             {get(q4)},
+                             {get(q5)},
+                             {get(q6)},
+                             {get(q7)},
+                             {get(q8)},
+                             {get(q9)},
+                             {get(q10)},
+                             {get(q11)},
+                             {get(q12)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},48)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="table_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q4)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q5)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q6)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q7)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q8)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q9)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q10)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q11)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q12)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table1ex").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cat_review_summary" name="CAT RMC Summary" tooltip="CAT RMC Summary" type="ReportSection">
+        <ReportItem id="table_head" type="Static">
+            <![CDATA[
+                <table class='wikitable' id="eval_table1ex">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Person">
+            <ReportItem id="script_init" type="StaticReportItem">
+                <![CDATA[
+                    {set(q1, 0)}
+                    {set(q2, 0)}
+                    {set(q3, 0)}
+                    {set(q4, 0)}
+                    {set(q5, 0)}
+                    {set(q6, 0)}
+                    {set(q7, 0)}
+                    {set(q8, 0)}
+                    
+                    {set(nReviewers, 0)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
+                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)},)}
+                                                      )}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_8,{$parent_id},{$user_id},0)})})}
+
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)},
+                             {get(q4)},
+                             {get(q5)},
+                             {get(q6)},
+                             {get(q7)},
+                             {get(q8)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},32)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="table_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q4)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q5)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q6)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q7)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q8)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table1ex").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!--ReportSection id="submit" type="ReportSection" name="Submit" tooltip="Submit" title="Submit">
+        <ReportItem id="submit" type="SimpleReviewSubmit">
+            {$item}
+        </ReportItem>
+    </ReportSection-->
+</Report>

@@ -94,7 +94,7 @@ EOF;
         
         $phaseRow = new FormTableRow("{$pre}_phase_row");
         $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
-        $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", "Research", range(PROJECT_PHASE, 1, -1), VALIDATE_NOT_NULL));
+        $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", PROJECT_PHASE, array_combine(range(PROJECT_PHASE, 1, -1), range(PROJECT_PHASE, 1, -1)) + array("Research" => "Research"), VALIDATE_NOT_NULL));
         
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));

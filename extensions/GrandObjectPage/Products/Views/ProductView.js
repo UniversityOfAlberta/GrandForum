@@ -21,26 +21,28 @@ ProductView = Backbone.View.extend({
     
     deleteProduct: function(){
         if(this.model.get('deleted') != true){
-            this.model.destroy({
-                success: function(model, response) {
-                    if(response.deleted == true){
-                        model.set(response);
-                        clearSuccess();
-                        clearError();
-                        addSuccess('The ' + response.category + ' <i>' + response.title + '</i> was deleted sucessfully');
-                    }
-                    else{
+            if(confirm("Are you sure you want to delete this " + this.model.get('category') + "?")){
+                this.model.destroy({
+                    success: function(model, response) {
+                        if(response.deleted == true){
+                            model.set(response);
+                            clearSuccess();
+                            clearError();
+                            addSuccess('The ' + response.category + ' <i>' + response.title + '</i> was deleted sucessfully');
+                        }
+                        else{
+                            clearSuccess();
+                            clearError();
+                            addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
+                        }
+                    },
+                    error: function(model, response) {
                         clearSuccess();
                         clearError();
                         addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
                     }
-                },
-                error: function(model, response) {
-                    clearSuccess();
-                    clearError();
-                    addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
-                }
-            });
+                });
+            }
         }
         else{
             clearAllMessages();

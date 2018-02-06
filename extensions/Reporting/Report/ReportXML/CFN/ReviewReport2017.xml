@@ -850,9 +850,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
@@ -1002,9 +1002,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
@@ -1160,9 +1160,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
@@ -1422,6 +1422,7 @@
                         {set(q9, 0)}
                         {set(q10, 0)}
                         {set(q11, 0)}
+                        {set(q12, 0)}
                         
                         {set(nReviewers, 0)}
                     ]]>
@@ -1437,7 +1438,8 @@
                                                                {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)}
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)},)}
                                                           )}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)})})}
@@ -1451,6 +1453,7 @@
                             {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)})})}
                             {set(q10, {add({get(q10)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)})})}
                             {set(q11, {add({get(q11)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)})})}
+                            {set(q12, {add({get(q12)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)})})}
 
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
@@ -1475,6 +1478,7 @@
                                     <th>Q9</th>
                                     <th>Q10</th>
                                     <th>Q11</th>
+                                    <th>Q12</th>
                                     <th>Total</th>
                                     <th width='60%'>Comments</th>
                                 </tr>
@@ -1498,6 +1502,7 @@
                             <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right'>
                                 {round(
                                     {multiply(
@@ -1512,9 +1517,10 @@
                                                  {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},
                                                  {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},
                                                  {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},
-                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)}
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)}
                                             )}
-                                        ,44)}
+                                        ,48)}
                                     ,5)}
                                 ,2)}
                             </td>
@@ -1567,6 +1573,9 @@
                                         {round({divide({get(q11)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
+                                        {round({divide({get(q12)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
                                         {set(total, 
                                             {add({get(q1)},
                                                  {get(q2)},
@@ -1578,10 +1587,11 @@
                                                  {get(q8)},
                                                  {get(q9)},
                                                  {get(q10)},
-                                                 {get(q11)}
+                                                 {get(q11)},
+                                                 {get(q12)}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},44)},5)},2)}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},48)},5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -1849,9 +1859,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
@@ -2009,9 +2019,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
@@ -2155,9 +2165,9 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
-                    {set(highlight,background:#FFCC00)}
+                    {set(highlight,background:#008800)}
                 ]]>
             </ReportItem>
             <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">

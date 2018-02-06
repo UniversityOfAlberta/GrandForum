@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2018ApplicationPDF" year="2018" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="NI" subType="CAT2018Applicant" start="2018-08-01" end="2018-12-31">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="excellence" permissions="rw" />
+            <SectionPermission id="feasibility" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="translation" permissions="rw" />
+            <SectionPermission id="supporting" permissions="rw" />
+            <SectionPermission id="partnerships" permissions="rw" />
+            <SectionPermission id="funding" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate" subType="CAT2018Applicant" start="2018-08-01" end="2018-12-31">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="excellence" permissions="rw" />
+            <SectionPermission id="feasibility" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="translation" permissions="rw" />
+            <SectionPermission id="supporting" permissions="rw" />
+            <SectionPermission id="partnerships" permissions="rw" />
+            <SectionPermission id="funding" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
+            <![CDATA[
+                <div class="info">Please read all questions within this application form very carefully since some questions may be different from the previous draft application document provided on CFN’s website.</div>
+                <div style="text-align: center; width:100%;border: 1px solid black;">
+                    <p>Please read the <a href="http://www.cfn-nce.ca/media/589242/cat2018-program-guidelines.pdf">Program Guidelines</a> and <a href="http://www.cfn-nce.ca/media/589245/cat2018-application-instructions.pdf">Application Instructions</a> before completing this application form.</p>
+                    <p>Full Application packages must be submitted by <b>Monday, February 26, 2018 at 5 pm ET</b>, using Forum, CFN's online application and reporting system.</p> 
+                    <p>Please provide all information in English.</p>
+                </div><br />
+                <table frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Title of CAT Proposal provided in Intent to Apply:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="16">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Term of CAT Proposal:</b><br />
+                            <small>(Maximum 16 months)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer" min="0" max="100000">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Budget:</b><br />
+                            <small>(i.e., the dollar amount you wish to receive from CFN; $100,000 Maximum)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
+            <![CDATA[
+                <h2>Please provide information on the Principal Investigator who will act as Project Leader for proposal</h2>
+                <table frame="box" rules="all">
+                    <tr>
+                        <td align="right">
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" blobItem="LAST_NAME" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" blobItem="DESIGNATIONS" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Designations:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" blobItem="EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="day_phone" blobItem="DAY_PHONE" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Daytime Phone:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
+            <![CDATA[
+                        <td align="right">
+                            <b>Other Phone (optional):</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" blobItem="INSTITUTION" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td colspan='3' align="right">
+                            <b>Host Institution that will receive and administer funds:</b>
+                        </td>
+                        <td colspan='3'>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Secondary Contact Name:</b>
+                        </td>
+                        <td colspan="2">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
+            <![CDATA[
+                        <td colspan="2" align="right">
+                            <b>Secondary Telephone Number:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="2" align="right">
+                            <b>Secondary Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="priority" type="Radio" blobItem="PRIORITY" blobType="BLOB_TEXT" options="How can health systems be organized to provide integrated/coordinated care that would better meet the health and social care needs of older adults living with frailty, and their family/caregivers?|How can care, services and treatments be tailored to meet the needs of older adults living with frailty who are isolated and/or without family/caregiver support or advocates?|What is the impact of community- and home-based services, programs and resources in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?|What are the costs and benefits of alternative models of housing, including multigenerational or shared living, for older adults living with frailty?|What would help avoid unnecessary hospitalizations and emergency department visits for older adults living with frailty?|What frailty-related attitudes, skills and knowledge should health and social care providers have? What are effective ways of improving attitudes and providing skills and knowledge about frailty for health and social care providers?|What would help older adults living with frailty and their family/caregivers recognize when living at home is no longer viable?|What are effective ways of supporting family/caregivers of older adults living with frailty to maintain their own health and wellbeing and/or that of older adults living with frailty?|How can frailty measures be used by health care practitioners, older adults and family/caregivers to inform treatment and care decisions?|What is the impact of exercise and physical activity (including type, duration and intensity) in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?">
+            <![CDATA[
+                <p><b>Please select only one frailty priority that your application addresses.  (Select the best fit with your application)</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="objective" type="Radio" blobItem="OBJECTIVE" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum">
+            <![CDATA[
+                <table frame="box" rules="all" style="width: 800px;">
+                    <tr>
+                        <td valign="top"><b>CFN Strategic Objective - Highlight the <u>ONE</u> CFN strategic priority this project most aligns with:</b>{$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Radio" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care">
+            <![CDATA[
+                        <td valign="top"><b>Theme - Highlight the <u>ONE</u> theme that this project most closely aligns with:</b>{$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="care" type="Radio" blobItem="CARE" options="Palliative/EOL care|Acute/critical care in hospital|Long-term care facility|Home care">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Setting of Care - Highlight the <u>ONE</u> setting of care that your project will most significantly impact:</b>{$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Radio" blobItem="IMPACT" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system">
+            <![CDATA[
+                        <td valign="top"><b>Focus of Impact - Highlight the <u>ONE</u> primary focus of impact of your project:</b>{$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="100" size="3">
+            <![CDATA[
+                    <tr>
+                        <td colspan="2"><b>Knowledge Activities - Indicate the portion of your project that addresses the following activities on the knowledge continuum:</b><br />
+                            {$item} % Knowledge synthesis<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="100" size="3">
+            <![CDATA[
+                            {$item} % Knowledge creation<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="100" size="3">
+            <![CDATA[
+                            {$item} % Knowledge translation/mobilization
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" type="Radio" options="Yes, I expect that this research will require an ethics review|No, I do not expect that this research will require an ethics review">
+            <![CDATA[
+                <h2>Ethics/Environmental Assessment</h2>
+                <p>Please answer the two questions below.</p>
+                <ol>
+                    <li><b>Research Ethics:</b> If the proposed research involves biohazards, humans, human embryonic stem cells or animals, AND is funded by CFN, certification of approval by your institutional certification committee must be provided to CFN prior to the release of funds{$item}</li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment" blobItem="ASSESSMENT" type="Radio" options="Yes, I expect that this research will require an environmental impact review|No, I do not expect that this research will require an environmental impact review">
+            <![CDATA[
+                    <li>Environmental Assessment: Does any phase or part of the research described in this proposal a) take place outside an office or laboratory, or b) involve an undertaking as described in part 1 of Appendix B of the Natural Sciences and Engineering Research Council of Canada (NSERC) Form 101 (<a href='http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf' target='_blank'>http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf</a>)?.{$item}
+                    If you answered yes to this question, and your project is funded, you will need to complete an Environmental Assessment Impact Statement and the Canadian Environmental Assessment Act Pre-Screening Checklist for review and approval by CFN before funds will be released.</li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.1: Lay Summary</h2>
+                <p>Provide a non-confidential summary in lay terms of the CAT proposal.  A lay summary is an overview of a research project described in a way that can be easily understood by those without prior experience of the subject.  See Appendix A for CFN’s DRAFT - Guidelines for Writing a Lay Summary</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.2: Scientific Summary</h2>
+                <p>Provide a non-confidential scientific summary of the CAT proposal, highlighting the hypothesis, study objectives, milestones and deliverables and potential socioeconomic impact. (For funded CAT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="excellence" type="EditableReportSection" blobSection="EXCELLENCE" name="3 - Scientific Excellence" title="Section 3 - Scientific Excellence">
+        <ReportItem id="background" blobItem="BACKGROUND" type="Textarea" rich="true" limit="750">
+            <![CDATA[
+                <h3>3.1: Background, Knowledge Gap(s) and Rationale</h3>
+                <ul>
+                    <li>Provide a comprehensive review of the relevant background literature and identify the knowledge gaps.</li>
+                    <li>Clearly state the rationale for the project and how the results of this proposal may be used to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hypothesis" blobItem="HYPOTHESIS" type="Textarea" rich="true" limit="150">
+            <![CDATA[
+                <h3>3.2: Hypothesis and Research Question(s)</h3>
+                <ul>
+                    <li>State the proposed hypothesis and research question(s) to be addressed in the study.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="goal" blobItem="GOAL" type="Textarea" rich="true" limit="150">
+            <![CDATA[
+                <h3>3.3: Overall Goal and Objectives</h3>
+                <ul>
+                    <li>Describe the overall goal and specific objectives of the study.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="approach" blobItem="APPROACH" type="Textarea" rich="true" limit="750">
+            <![CDATA[
+                <h3>3.4: Methodological Approach</h3>
+                <ul>
+                    <li>Describe how this project will be managed overall and who specifically will manage each major aspect of the study.</li>
+                    <li>Describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s).</li>
+                    <li>For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.<br />Note: Study protocols <u>must include frailty assessment</u> of all study participants using a published frailty assessment instrument appropriate for the care setting.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" blobItem="OUTCOMES" type="Textarea" rich="true" limit="750">
+            <![CDATA[
+                <h3>3.5: Research Outcomes, Deliverables and Milestones</h3>
+                <ul>
+                    <li>Describe all milestones and anticipated deliverables, outputs and outcomes for the duration of the project.</li>
+                    <li>Provide a project schedule with dates for all milestones and anticipated deliverables, outputs and outcomes for the duration of the project, including all knowledge translation activities.<br />Note: The <u>project schedule is mandatory</u> and will be used to track progress of the study.</li>
+                    <li>Describe how this project will be managed and deliverables tracked.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Feasibility" title="Section 4 - Project Feasibility">
+        <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" rich="true" limit="750">
+            <![CDATA[
+                <h3>4.1: Feasibility</h3>
+                <ul>
+                    <li>Identify all feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study.  Specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay or derail timely completion of the study.</li>
+                    <li>Describe how the investigative team plans on mitigating and overcoming these barriers, challenges and limitations.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" rich="true" limit="500">
+            <![CDATA[
+                <h3>4.2: Expertise and Experience of Research team</h3>
+                <ul>
+                    <li>Please describe the expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team members to demonstrate that the team is capable of delivering on the proposed outputs and achieve the goals and objectives of this proposal.</li>
+                    <li>Please provide an estimate on the number of hours per week (contribution) for each Principal Investigator, Co-investigator, Partner and other critical team member that will be working on the study and describe why this is an appropriate level of engagement and/or commitment to deliver the proposed outputs and achieve the goals and objectives of this proposal. (Note: All Individuals participating as project team members will also need to be listed in the Project Team List document).</li>
+                    <li>For each Principal Investigator, Co-investigator, Partner and other critical team member please describe why the environment (academic institution and/or other organization) is appropriate to enable the conduct and success of the project.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" blobItem="JUSTIFICATION" type="Textarea" rich="true" limit="250">
+            <![CDATA[
+                <h3>4.3: Budget Description and Justification</h3>
+                <ul>
+                    <li>In addition to the information provided in the budget excel document please justify your overall budget and the need for the budget items listed, and associated costs.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="relevance" type="EditableReportSection" blobSection="RELEVANCE" name="5 - Project Relevance" title="Section 5 - Project Relevance and Impact">
+        <ReportItem id="relevance" blobItem="RELEVANCE" type="Textarea" rich="true" limit="500">
+            <![CDATA[
+                <ul>
+                    <li>Describe the relevance and the importance of the proposed project to CFN’s mission and strategic research programme goals, priorities, and potential to assist CFN in achieving a positive impact on policy and practice.</li>
+                    <li>Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of Canadians living with frailty.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="6 - Capacity Building" title="Section 6 - Capacity Building - Highly Qualified Personnel">
+        <ReportItem id="hqp" blobItem="HQP" type="Textarea" rich="true" limit="250">
+            <![CDATA[
+                <p>CFN funded proposals must contribute to the development of Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</p>
+                <ul>
+                    <li>Briefly summarize the number and level of HQP required and the experience/expertise afforded by involvement in Network-funded research.</li>
+                    <li>Specify expected contributions to HQP studies.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="7 - Project Networking" title="Section 7 - Project Networking and Engagement">
+        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" rich="true" limit="250">
+            <![CDATA[
+                <h3>7.1 Project Networking</h3>
+                <p>A funded project must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
+                <ul>
+                    <li>Describe the networking and engagement planned for the project across disciplines, research sites (universities, hospitals, institutes) and sectors.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="engagement" blobItem="ENGAGEMENT" type="Textarea" rich="true" limit="250">
+            <![CDATA[
+                <h3>7.2: Citizen Engagement</h3>
+                <p>CFN is committed to empowering and engaging older adults living with frailty and their families and caregivers and other knowledge users.</p>
+                <ul>
+                    <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="translation" type="EditableReportSection" blobSection="TRANSLATION" name="8 - Knowledge Translation" title="Section 8 - Knowledge Translation">
+        <ReportItem id="translation" blobItem="NETWORKING" type="Textarea" rich="true" limit="350">
+            <![CDATA[
+                <h3>8.1: Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h3>
+                <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the proposed study along a continuum leading to social or economic impacts or policy and practice change. Because of the relatively short-length of the CAT funding term, proposals must describe future implementation plans to demonstrate future scalability and spread. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="framework" blobItem="FRAMEWORK" type="Textarea" rich="true" limit="350">
+            <![CDATA[
+                <h3>8.2: KT Framework/Platform</h3>
+                <p>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a target='_blank' href='http://www.who.int/ageing/publications/knowledge_translation.pdf'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="9 - Supporting Information" title="Section 9 - Supporting Information">
+        <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true" optional="true">
+            <![CDATA[
+                <p>Provide tables and figures and a list of references as necessary to support sections above.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="information_upload" blobItem="INFORMATION_UPLOAD" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf" optional="true">
+            <![CDATA[
+                <p>Or upload the above information as a pdf document that will get appended to the end of the application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="10 - Partnerships" title="Section 10 - Partnerships &amp; Letters of Support">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" labels="Partner Organization/Research Receptor|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
+            <![CDATA[
+                <ul>
+                    <li>Complete the table below.</li>
+                    <li>In a single PDF document please provide letters of support for each partner, collaborator etc. Upload this document below.  Make sure that each letter of support within the PDF is on the organization’s letterhead, detailing the partnership and specifically indicating their cash and/or in-kind contribution. The letter should specifically include reference to CFN, the proposed study, and any conditions placed on funding.  See Application Instructions for guidance on allowable expenses and eligible partners and contributions.</li>
+                    <li>Individuals from the partner organizations that will be participating as project team members must be listed in the submitted Project Team Information document.</li>
+                    <li>All financial information provided in the table below must also appear in the submitted budget document.</li>
+                    <li>Where a researcher has a “financial interest” (as defined by NCE Conflict of Interest Guidelines) in a partner, the potential conflict of interest should be declared in the table.  This does not preclude the partnership in any way, but provides transparency during the review process. Please see CFN Conflict of Interest Policy and Guidelines for additional guidance <a href='http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf' target='_blank'>http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf</a></li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <h2>Letters of Support</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="11 - Other Funding" title="Section 11 - Other Funding">
+        <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" sizes="120|150|100|200|75|75" multiple="true">
+            <![CDATA[
+                <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="Supporting Documents" title="Supporting Documents">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx,.xls,application/vnd.ms-excel">
+            <![CDATA[
+                <h2>Project team Information</h2>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2018 - Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".zip,application/zip">
+            <![CDATA[
+                <h2>Budget</h2>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2018 - Budget.xlsx'>template Excel document</a> and upload a <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing completed excel budget documents for each Principal Investigator.  Name the ZIP file CAT2018-##_Surname_Budget.  (The Surname refers to the Project Leader’s surname).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <h2>Principal Investigator CV(s)</h2>
+                <p>Please upload a <b>single PDF document</b> containing all PI CVs.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <h2>Team Member CVs</h2>
+                <p>Please upload a <b>single PDF document</b> containing all Team Member CVs.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <h2>Required Signatures</h2>
+                <p>Submit a <b>single PDF</b> containing signature documents for each Principal Investigator.  Name the PDF document CAT2018-##_Surname_Signatures.pdf.  (The Surname refers to the Project Leader’s surname).  The template document can be downloaded <a href='{$wgServer}{$wgScriptPath}/data/CAT2018 - Required Signatures.docx'>here</a>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".pdf,application/pdf">
+            <![CDATA[
+                <h2>Proof of Study Submission to Research Ethics Board</h2>
+                <p>Submit a <b>single PDF</b> containing proof of ethics submission for each investigator.  Name the PDF document CAT2018-##_Surname_REB.pdf.  (The Surname refers to the Project Leader’s surname).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

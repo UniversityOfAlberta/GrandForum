@@ -1,0 +1,109 @@
+<h2>People</h2>
+<div id="contributionAuthors">
+</div>
+<h2>Description</h2>
+<p><%= nl2br(description) %></p>
+<table>
+    <% if(institution.trim() != ""){ %>
+        <tr>
+            <td align="right"><b>Instution:</b></td>
+            <td><%= institution %></td>
+        </tr>
+    <% } %>
+    <% if(province.trim() != ""){ %>
+        <tr>
+            <td align="right"><b>Province:</b></td>
+            <td><%= province %></td>
+        </tr>
+    <% } %>
+    <tr>
+        <td align="right"><b>Start Date:</b></td>
+        <td><%= dateTimeHelpers.formatDate(start.substr(0, 10), 'yyyy-MM-dd', 'MMMM d, yyyy') %></td>
+    </tr>
+    <tr>
+        <td align="right"><b>End Date:</b></td>
+        <td><%= dateTimeHelpers.formatDate(end.substr(0, 10), 'yyyy-MM-dd', 'MMMM d, yyyy') %></td>
+    </tr>
+</table>
+<h2>Partners</h2>
+<% _.each(partners, function(partner){ %>
+    <h3><%= partner.name %></h3>
+    <table>
+        <% if(partner.contact != '' && partner.contact != null && _.values(partner.contact).join('') != ''){ %>
+            <tr>
+                <td valign="top" align="right"><b>Contact:</b></td>
+                <td>
+                    <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(!_.isEmpty(partner.contact.email)){ %> (<%= partner.contact.email %>) <% } %>
+                    <% if(!_.isEmpty(partner.contact.address)) { %>
+                        <br /><%= partner.contact.address %>
+                    <% } if (!_.isEmpty(partner.contact.phone)) { %>
+                        <br /><%= partner.contact.phone %>
+                    <% } %>
+                </td>
+            </tr>
+        <% } %>
+        <% if(partner.industry != '' && partner.industry != null){ %>
+            <tr>
+                <td align="right"><b>Sector:</b></td>
+                <td><%= partner.industry %></td>
+            </tr>
+        <% } %>
+        <% if(partner.level != '' && partner.level != null){ %>
+            <tr>
+                <td align="right"><b>Level:</b></td>
+                <td><%= partner.level %></td>
+            </tr>
+        <% } %>
+        <tr>
+            <td align="right"><b>Type:</b></td>
+            <td><%= partner.type %></td>
+        </tr>
+        <% if(partner.subtype != '' && partner.subtype != 'None'){ %>
+            <tr>
+                <td align="right"><b>SubType:</b></td>
+                <td>
+                    <% if(partner.other_subtype != ""){ %>
+                        <%= partner.other_subtype %>
+                    <% } else { %>
+                        <%= partner.subtype %>
+                    <% } %>
+                </td>
+            </tr>
+        <% } %>
+        <% if(partner.type == "Cash" || 
+              partner.type == "Grant" || 
+              partner.type == "Chair" || 
+              partner.type == "Scholarship" || 
+              partner.type == "Fellowship" || 
+              partner.type == "Contract" ||
+              partner.type == "Cash and In-Kind" ||
+              partner.type == "None"){ %>
+            <tr>
+                <td align="right"><b>Cash:</b></td>
+                <td>$<%= number_format(partner.cash) %></td>
+            </tr>
+        <% } %>
+        <% if(partner.type == "In-Kind" || 
+              partner.type == "Cash and In-Kind"){ %>
+            <tr>
+                <td align="right"><b>In-Kind:</b></td>
+                <td>$<%= number_format(partner.inkind) %></td>
+            </tr>
+        <% } %>
+    </table>
+<% }) %>
+<div style="background:#EEE;padding:5px;">
+    <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>
+</div>
+<h2>Projects</h2>
+<div id="contributionProjects">
+    <ul>
+        <% _.each(projects, function(project){ %>
+            <li><a href="<%= project.url %>"><%= project.name %></a></li>
+        <% }) %>
+    </ul>
+</div>
+<% if(parseInt(me.get('id')) > 0) { %>
+    <br />
+    <button id="editContribution">Edit Contribution</button>&nbsp;<button id="deleteContribution">Delete Contribution</button>
+<% } %>

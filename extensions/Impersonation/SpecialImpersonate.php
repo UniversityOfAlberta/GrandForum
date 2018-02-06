@@ -33,10 +33,6 @@ class Impersonate extends SpecialPage {
 	    $allPeople = array();
 	    if($user->isRoleAtLeast(STAFF) || $user->isRole(SD)){
 	        $allPeople = Person::getAllCandidates('all');
-	        $i = 0;
-            foreach(Person::getAllStaff() as $person){
-                $allPeople[] = $person;
-            }
         }
         else if(count($user->getDelegates()) > 0){
             $allPeople = $user->getDelegates();

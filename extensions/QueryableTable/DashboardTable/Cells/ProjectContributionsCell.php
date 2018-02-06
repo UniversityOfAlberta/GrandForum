@@ -150,7 +150,7 @@ EOF;
             $amount = 0;
             foreach($partners as $part){
                 if($type == "All" || $part->getOrganization() == $partner->getOrganization()){
-                    $parts[] = $part->getOrganization()." <small style='vertical-align:middle;'>{$part->getContact()}</small>";
+                    $parts[] = $part->getOrganization();
                     $amt = number_format($contribution->getByType($contribution->getTypeFor($part), $part));
                     $amounts[] = "\$$amt";
                     if($contribution->getHumanReadableSubTypeFor($part) != 'None'){
@@ -191,7 +191,7 @@ EOF;
                         }
                     }
                     $details .= "</tbody></table><br /><br />\n";
-                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddContributionPage\");' value='Add Contribution' />\n";
+                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:Contributions\");' value='Manage Contribution' />\n";
                 }
                 $table .= $this->dashboardRow($type, $details);
             }

@@ -142,7 +142,6 @@ ProductEditView = Backbone.View.extend({
     },
     
     showOther: function(e){
-        console.log(this.model.get('projects'));
         this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         var lastHeight = this.$el.prop("scrollHeight")
         var interval = setInterval($.proxy(function(){

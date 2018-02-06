@@ -77,13 +77,27 @@ class PeopleTableTab extends AbstractTab {
                 // Person is still the specified role, don't show on the 'former' table
                 continue;
             }
+            if($this->table == PL){
+                $skip = true;
+                foreach($person->leadership() as $project){
+                    if($project->getStatus() != "Proposed"){
+                        // Don't skip this person, they belong to atleast one project which is not proposed
+                        $skip = false;
+                        break;
+                    }
+                }
+                if($skip){
+                    // Skip the person if they are only a PL of a proposed project
+                    continue;                
+                }
+            }
             $count++;
             $this->html .= "
 <tr>
 <td align='left' style='white-space: nowrap;'>
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
-";
+";          
             if($subRoleHeader != ""){
                 $subRoles = array();
                 foreach(@$person->getSubRoles() as $sub){
@@ -143,6 +157,10 @@ class PeopleTableTab extends AbstractTab {
             'autoWidth':false,
             'columnDefs': [
                 {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))}
+            ],
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
             ]
         });</script>";
         if($count == 0){

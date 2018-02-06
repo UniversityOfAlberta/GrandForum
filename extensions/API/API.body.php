@@ -129,10 +129,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
 		
 		//POST
-		$this->addAction('Contributions', 'addContribution', 'AddContributionAPI');
-		$this->addAction('Contributions', 'updateContribution', 'AddContributionAPI');
-		
-		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
 		$this->addAction('Projects', 'addProjectMember', 'AddProjectMemberAPI');
 		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');

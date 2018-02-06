@@ -401,7 +401,6 @@ EOF;
             
             $con_year = $c->getStartYear();
             $con_name = $c->getName();
-            $con_name_wiki = $c->getWikiName();
             $con_partners = $c->getPartners();
             $con_partner_arr = array();
             foreach($con_partners as $pr){
@@ -456,7 +455,6 @@ EOF;
             $con_type = $c->getHumanReadableType();
             $con_year = $c->getStartYear();
             $con_name = $c->getName();
-            $con_name_wiki = $c->getWikiName();
             $con_partners = $c->getPartners();
             $con_partner_arr = array();
             foreach($con_partners as $pr){

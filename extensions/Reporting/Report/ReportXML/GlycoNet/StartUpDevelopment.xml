@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Start-Up Company Funding 2017-2018 Company Targeted Development Support" reportType="RP_START_UP_DEV" pdfType="RP_START_UP_DEV" pdfFiles="StartUpDevelopmentPDF" ajax="true" disabled="false" year="2018">
+    <Permissions>
+        <Role role="INACTIVE+" subRole="StartUpDev2018">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="opportunity" permissions="rw" />
+            <SectionPermission id="project" permissions="rw" />
+            <SectionPermission id="associate" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="ack" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="information" name="A - Applicant Information" title="A. Applicant Information" tooltip="A. Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
+        <ReportItem id="name" type="Text" blobItem="NAME" width="200px">
+            <![CDATA[
+                <h3>Company Details</h3>
+                <table>
+                    <tr>
+                        <td class="label">Legal name of the Company:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Phone number:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="Text" blobItem="ADDRESS" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Address:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="number" type="Text" blobItem="NUMBER" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Business number:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rep" type="Text" blobItem="REP" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td class="label" style="line-height:1.5em;">Company Representative:<br /><small>(name, title and contact information)</small><br /><small>The representative cannot be the Associate<br />for whom funding is being requested</small></td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="province" type="Text" blobItem="PROVINCE" width="200px">
+            <![CDATA[
+                <h3>Company Incorporation Details</h3>
+                <table>
+                    <tr>
+                        <td class="label">Province of incorporation:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="date" type="Calendar" blobItem="DATE" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Date of incorporation:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="proof" type="Upload" blobType="BLOB_RAW" blobItem="PROOF" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                    <tr>
+                        <td class="label" style="line-height:1.5em;">Proof of incorporation:<br /><small>(attached as PDF)</small></td>
+                        <td style="width:625px;">{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Text" blobItem="FUNDING" width="200px">
+            <![CDATA[
+                <h3>Applicant Funding History</h3>
+                <table>
+                    <tr>
+                        <td class="label">Amount of external funding raised:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="history" type="Text" blobItem="HISTORY" width="200px" optional="true">
+            <![CDATA[
+                    <tr>
+                        <td class="label" style="line-height:1.5em;">Funding History:<br /><small >History of funds the Applicant has previously<br />received from GlycoNet, if applicable</small></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="statements" type="Upload" blobType="BLOB_RAW" blobItem="STATEMENTS" optional="true" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                    <tr>
+                        <td class="label" style="line-height:1.5em;">Current financial statements, if available:<br /><small>(attached as PDF)</small></td>
+                        <td style="width:625px;">{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="employees" type="Text" blobItem="EMPLOYEES" width="100px">
+            <![CDATA[
+                <h3>Number of Employees</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Summary Description of the Company</h3>
+                <p>Applicant’s history, structure, core business (technology/product in development) and current management team (highlighting management’s capabilities/experience in bringing technology products to market)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="250">
+            <![CDATA[
+                <h3>Brief Description of How Company Technology is Relevant to Glycomics</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="opportunity" name="B - Opportunity" title="B. Opportunity" tooltip="B. Opportunity" type="EditableReportSection" blobSection="OPPORTUNITY">
+        <ReportItem id="opportunity" type="Upload" blobType="BLOB_RAW" blobItem="OPPORTUNITY" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                <ul>
+                    <li>The PDF document should discuss the Company’s technology and commercialization opportunity</li>
+                    <li>Seven pages maximum PDF (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch</li>
+                    <li>Company’s technology and commercialization opportunity (suggested discussion points listed below)
+                        <ul>
+                            <li>Detailed description of the technology/product in development</li>
+                            <li>Development status of the technology</li>
+                            <li>Define potential applications and uses</li>
+                            <li>Market</li>
+                            <li>Intellectual property and relevant patents, or patentability strategy</li>
+                            <li>Competitive advantage over other technologies</li>
+                        </ul>
+                    </li>
+                    <li>Optional PDF Attachments (i.e. Business Plan, Corporate Pitch Deck, etc.)</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="300px" limit="250" optional="true">
+            <![CDATA[
+                <h3>Project Summary</h3>
+                <p>Only necessary if sections C-F are provided at a later date</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="project" name="C - Project" title="C. Project" tooltip="C. Project" type="EditableReportSection" blobSection="PROJECT">
+        <ReportItem id="project" type="Textarea" blobItem="PROJECT" rich="true" height="400px" limit="750">
+            <![CDATA[
+                <ul>
+                    <li>Describe the project for which funding is being requested, include the commercialization activities that the proposed Associate will be performing, and the expected outcomes
+                    <ul>
+                        <li>Ensure that the proposed work to be conducted is described in sufficient detail for the reviewers to evaluate the feasibility and overall merit of the project and how the goals of the project will be achieved</li>
+                    </ul></li>
+                    <li>Describe how the role/mandate/objectives of the Associate relates to the technology’s commercialization</li> 
+                    <li>Describe the impact of GlycoNet funding on the Applicant’s ability to commercialize its technology</li> 
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="associate" name="D - Associate" title="D. Associate" tooltip="D. Associate" type="EditableReportSection" blobSection="ASSOCIATE">
+        <ReportItem id="associate" type="Textarea" blobItem="ASSOCIATE" rich="true" height="350px" limit="500">
+            <![CDATA[
+                <h3>Description of suitability for proposed project/role</h3>
+                <small>(explain why this particular commercial Associate will achieve the outcomes identified in Section C)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resume" type="Upload" blobType="BLOB_RAW" blobItem="RESUME" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                <h3>Proposed Associate’s Resume (attached as PDF)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter" type="Upload" blobType="BLOB_RAW" blobItem="LETTER" fileSize="20" mimeType="application/pdf,.pdf">
+            <![CDATA[
+                <h3>A letter (attached as PDF) addressed to GlycoNet from the proposed associate in which they:</h3>
+                <ul>
+                    <li>Indicate an interest in undertaking the proposed position/role</li>
+                    <li>Provide permission to the Company to submit their personal contact information and resume</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" name="E - Budget" title="E. Budget and Budget Justification" tooltip="E. Budget and Budget Justification" type="EditableReportSection" blobSection="BUDGET">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" height="300px">
+            <![CDATA[
+                <ul>
+                    <li>Provide the amount of funding requested, detailed budget for its use, as well as budget justification</li>
+                    <li>Provide full details regarding the Associate’s total compensation</li>
+                    <li>Indicate if matching funds have been/are being secured</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ack" name="F - Acknowledgment" tooltip="F. Acknowledgement" title="F. Acknowledgement" type="EULA" blobSection="ACK">
+        <ReportItem id="ack" type="EULA" blobItem="EULA" yes="Yes, I agree to the acknowledgment" no="No, I do not agree to the acknowledgment">
+            <![CDATA[
+                Applicant Company agrees to update, on a quarterly basis, GlycoNet Management (face-to-face meetings and/or teleconference) on the status of the company, the project, and the outcomes until completion of the project
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="glyconet@ualberta.ca" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the Acknowledgment before you can submit your application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

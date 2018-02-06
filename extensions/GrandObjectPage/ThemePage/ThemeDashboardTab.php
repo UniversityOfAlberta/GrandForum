@@ -24,7 +24,7 @@ class ThemeDashboardTab extends AbstractTab {
         global $wgOut, $config;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $wgOut->addScript("<script type='text/javascript'>
+            /*$wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#dashboardAccordion').accordion({autoHeight: false,
                                                         collapsible: true});
@@ -33,7 +33,7 @@ class ThemeDashboardTab extends AbstractTab {
             $this->html .= "<h2>Dashboard</h2>";
             $this->html .= "<div id='dashboardAccordion'>";
             $this->html .= "<h3><a href='#'>Overall</a></h3>";
-            $this->html .= "<div style='overflow: auto;'>";
+            $this->html .= "<div style='overflow: auto;'>";*/
             $multiDashboard = new MultiDashboardTable();
             $dashboard = new DashboardTable(THEME_PUBLIC_STRUCTURE, $theme);
             $multiDashboard->add($dashboard, "Overall");
@@ -42,7 +42,7 @@ class ThemeDashboardTab extends AbstractTab {
                 $multiDashboard->add($dashboard, $project->getName());
             }
             $this->html .= $multiDashboard->render(false, false);
-            $this->html .= "</div>";
+            /*$this->html .= "</div>";
             $startYear = YEAR;
             $phaseDates = $config->getValue("projectPhaseDates");
             for($i=$startYear; $i >= substr($phaseDates[1], 0, 4); $i--){
@@ -60,7 +60,7 @@ class ThemeDashboardTab extends AbstractTab {
                 
                 $this->html .= "</div>";
             }
-            $this->html .="</div>";
+            $this->html .="</div>";*/
         }
     }
 

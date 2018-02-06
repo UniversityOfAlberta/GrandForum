@@ -249,8 +249,14 @@ class IndexTable {
             }
         }
         $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
-
+        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'iDisplayLength': 100, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
         return true;
     }
 
@@ -288,8 +294,15 @@ class IndexTable {
                                 <td>{$coordsString}</td>
                             </tr>");
         }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
-
+        $wgOut->addHTML("</tbody></table>");
+        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'iDisplayLength': 100, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
         return true;
     }
 
@@ -356,7 +369,15 @@ class IndexTable {
                 $wgOut->addHTML("</tr>");
             }
         }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
+        $wgOut->addHTML("</tbody></table>");
+        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'iDisplayLength': 100, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
         return true;
     }
 
@@ -405,12 +426,14 @@ class IndexTable {
                             </tr>");
         }
         $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>
-            $(document).ready(function(){
-                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-                $('.indexTable').dataTable().fnSort([[0,'desc']]);
-            });
-        </script>");
+        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'iDisplayLength': 100, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
         return true;
     }
 
@@ -438,12 +461,14 @@ class IndexTable {
             $wgOut->addHTML("</tr>");
         }
         $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>
-            $(document).ready(function(){
-                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-                $('.indexTable').dataTable().fnSort([[0,'desc']]);
-            });
-        </script>");
+        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'iDisplayLength': 100, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
         return true;
     }
 }

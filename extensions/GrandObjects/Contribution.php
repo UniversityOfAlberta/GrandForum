@@ -7,21 +7,57 @@
 class Contribution extends BackboneModel {
 
     static $cache = array();
+    static $typeMap = array("none" => "None",
+                            "cash" => "Cash",
+                            "caki" => "Cash and In-Kind",
+                            "inki" => "In-Kind",
+                            "grnt" => "Grant",
+                            "char" => "Chair",
+                            "scho" => "Scholarship",
+                            "cont" => "Contract",
+                            "fell" => "Fellowship");
+    static $subTypeMap = array("none" => "None",
+                               "equi" => "Equipment, Software",
+                               "mate" => "Materials",
+                               "logi" => "Logistical Support of Field Work",
+                               "srvc" => "Provision of Services",
+                               "faci" => "Use of Company Facilites",
+                               "sifi" => "Salaries of Scientific Staff",
+                               "mngr" => "Salaries of Managerial and Administrative Staff",
+                               "trvl" => "Project-related Travel",
+                               "othe" => "Other",
+                               "1a"   => "Salaries: Bachelors - Canadian and Permanent Residents",
+                               "1b"   => "Salaries: Bachelors - Foreign",
+                               "1c"   => "Salaries: Masters - Canadian and Permanent Residents",
+                               "1d"   => "Salaries: Masters - Foreign",
+                               "1e"   => "Salaries: Doctorate - Canadian and Permanent Residents",
+                               "1f"   => "Salaries: Doctorate - Foreign",
+                               "2a"   => "Salaries: Post-doctoral Canadian and Permanent residents",
+                               "2b"   => "Salaries: Postdoctoral",
+                               "2c"   => "Salaries: Other",
+                               "3"    => "Salary and benefits of incumbent (Canada Research Chairs only)",
+                               "4"    => "Professional and technical services/contracts",
+                               "5"    => "Equipment (incl. powered vehicles)",
+                               "6"    => "Materials, supplies and other expenditures",
+                               "7"    => "Travel",
+                               "8"    => "Other expenditures");
 
     var $id;
     var $name;
     var $rev_id;
     var $people = array();
-    var $peopleWaiting;
+    var $peopleWaiting = true;
     var $projects;
-    var $projectsWaiting;
+    var $projectsWaiting = true;
     var $partners;
-    var $partnersWaiting;
+    var $partnersWaiting = true;
     var $type;
     var $subtype;
-    var $cash;
-    var $kind;
+    var $cash = array();
+    var $kind = array();
     var $description;
+    var $institution;
+    var $province;
     var $access_id;
     var $start_date;
     var $end_date;
@@ -36,11 +72,11 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["id$id"])){
             return self::$cache["id$id"];
         }
-        $sql = "SELECT *
-                FROM grand_contributions
-                WHERE id = '$id'
-                ORDER BY rev_id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('id' => $id),
+                                    array('rev_id' => 'DESC'),
+                                    array(1));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -55,12 +91,13 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["$name"])){
             return self::$cache["$name"];
         }
-        $sql = "SELECT c2.*
-                FROM grand_contributions c1, grand_contributions c2
-                WHERE c1.name = '$name'
-                AND c1.id = c2.id
-                ORDER BY c2.rev_id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('c1' => 'grand_contributions',
+                                          'c2' => 'grand_contributions'),
+                                    array('c2.*'),
+                                    array('c1.name' => EQ($name),
+                                          'c1.id' => EQ(COL('c2.id'))),
+                                    array('c2.rev_id' => 'DESC'),
+                                    array(1));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -75,10 +112,9 @@ class Contribution extends BackboneModel {
         if(isset(self::$cache["rev$id"])){
             return self::$cache["rev$id"];
         }
-        $sql = "SELECT *
-                FROM grand_contributions
-                WHERE rev_id = '$id'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('rev_id' => EQ($id)));
         $contribution = new Contribution($data);
         if(!$contribution->isAllowedToEdit()){
             $contribution = new Contribution(array());
@@ -104,6 +140,8 @@ class Contribution extends BackboneModel {
             $this->kind = array();
             $this->unknown = array();
             $this->description = $data[0]['description'];
+            $this->institution = $data[0]['institution'];
+            $this->province = $data[0]['province'];
             $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
@@ -113,36 +151,263 @@ class Contribution extends BackboneModel {
     
     function toArray(){
         $partners = array();
+        $projects = array();
+        $authors = array();
+        foreach($this->getAuthors() as $author){
+            if($author instanceof Person){
+                $authors[] = array('id' => $author->getId(),
+                                   'name' => $author->getNameForProduct(),
+                                   'fullname' => $author->getNameForForms(),
+                                   'url' => $author->getUrl());
+            }
+            else{
+                $authors[] = array('id' => 0,
+                                   'name' => $author,
+                                   'fullname' => $author,
+                                   'url' => "");
+            }
+        }
+        foreach($this->getProjects() as $project){
+            $projects[] = array('id' => $project->getId(),
+                                'name' => $project->getName(),
+                                'fullname' => $project->getFullName(),
+                                'url' => $project->getUrl());
+        }
         foreach($this->getPartners() as $partner){
+            $other_subtype = (!isset(self::$subTypeMap[$partner->subtype])) ? $partner->subtype : "";
+            $subtype = ($other_subtype != "") ? "Other" : $this->getHumanReadableSubTypeFor($partner);
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
                                 "industry" => $partner->getIndustry(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
+                                "subtype" => $subtype,
+                                "other_subtype" => $other_subtype,
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
         }
         return array("id" => $this->getId(),
+                     "revId" => $this->getRevId(),
                      "name" => $this->getName(),
-                     "start" => $this->getStartDate(),
-                     "end" => $this->getEndDate(),
+                     "description" => $this->getDescription(),
+                     "institution" => $this->getInstitution(),
+                     "province" => $this->getProvince(),
+                     "start" => substr($this->getStartDate(), 0, 10),
+                     "end" => substr($this->getEndDate(), 0, 10),
+                     "authors" => $authors,
+                     "projects" => $projects,
                      "partners" => $partners,
                      "cash" => $this->getCash(),
                      "inkind" => $this->getKind(),
-                     "total" => $this->getTotal());
+                     "total" => $this->getTotal(),
+                     "url" => $this->getUrl());
     }
     
     function create(){
-        return false;
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('id'),
+                                    array(),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        $id = (count($data) > 0) ? $data[0]['id'] : 0;
+        $this->id = $id + 1;
+        $people = array();
+        $projects = array();
+        foreach($this->people as $person){
+            if(is_object($person)){
+                if(isset($person->id)){
+                    $people[] = $person->id;
+                }
+                else{
+                    $people[] = $person->fullname;
+                }
+            }
+            else{
+                $people[] = $person;
+            }
+        }
+        foreach($this->projects as $project){
+            if(is_object($project)){
+                $projects[] = $project->id;
+            }
+            else{
+                $projects[] = $project;
+            }
+        }
+        $this->people = $people;
+        $this->projects = $projects;
+        
+        DBFunctions::insert('grand_contributions',
+                            array('id' => $this->id,
+                                  'name' => $this->name,
+                                  'users' => serialize($this->people),
+                                  'description' => $this->description,
+                                  'institution' => $this->institution,
+                                  'province' => $this->province,
+                                  'access_id' => $me->getId(),
+                                  'start_date' => $this->start_date,
+                                  'end_date' => $this->end_date));
+        $this->rev_id = DBFunctions::insertId();
+        if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                     array('*'),
+                                     array('id' => $this->id,
+                                           'user_id' => $me->getId()))) == 0){
+            DBFunctions::insert('grand_contribution_edits',
+                                array('id' => $this->id,
+                                      'user_id' => $me->getId()));
+        }
+        foreach($this->projects as $project){
+            DBFunctions::insert('grand_contributions_projects',
+                                array('contribution_id' => $this->rev_id,
+                                      'project_id' => $project));
+        }
+        $typeMap = array_flip(self::$typeMap);
+        $subTypeMap = array_flip(self::$subTypeMap);
+        foreach($this->partners as $key => $partner){
+            $partner = (array) $partner;
+            $value = @$partner['id'];
+            if($value == ""){
+                $value = $partner['name'];
+            }
+            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
+            DBFunctions::insert('grand_contributions_partners',
+                                array('contribution_id' => $this->rev_id,
+                                      'partner' => $value,
+                                      'contact' => json_encode($partner['contact']),
+                                      'industry' => $partner['industry'],
+                                      'level' => $partner['level'],
+                                      'type' => @$typeMap[$partner['type']],
+                                      'subtype' => $subType,
+                                      'cash' => $partner['cash'],
+                                      'kind' => $partner['inkind']));
+        }
+        foreach($this->people as $author){
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person != null && $person->getName() != null){
+                    Notification::addNotification($me, $person, "Contribution Created", "A new Contribution entitled <i>{$this->getName()}</i>, has been created with yourself listed as one of the researchers", "{$this->getUrl()}");
+                }
+            }
+        }
+        $this->projectsWaiting = true;
+        return $this;
     }
     
     function update(){
-        return false;
+        if(!$this->isAllowedToEdit()){
+            return $this;
+        }
+        $me = Person::newFromWgUser();
+        $people = array();
+        $projects = array();
+        foreach($this->people as $person){
+            if(is_object($person)){
+                if(isset($person->id)){
+                    $people[] = $person->id;
+                }
+                else{
+                    $people[] = $person->fullname;
+                }
+            }
+            else{
+                $people[] = $person;
+            }
+        }
+        foreach($this->projects as $project){
+            if(is_object($project)){
+                $projects[] = $project->id;
+            }
+            else{
+                $projects[] = $project;
+            }
+        }
+        $this->people = $people;
+        $this->projects = $projects;
+        
+        DBFunctions::insert('grand_contributions',
+                            array('id' => $this->id,
+                                  'name' => $this->name,
+                                  'users' => serialize($this->people),
+                                  'description' => $this->description,
+                                  'institution' => $this->institution,
+                                  'province' => $this->province,
+                                  'access_id' => $me->getId(),
+                                  'start_date' => $this->start_date,
+                                  'end_date' => $this->end_date));
+        $this->rev_id = DBFunctions::insertId();
+        if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                     array('*'),
+                                     array('id' => $this->id,
+                                           'user_id' => $me->getId()))) == 0){
+            DBFunctions::insert('grand_contribution_edits',
+                                array('id' => $this->id,
+                                      'user_id' => $me->getId()));
+        }
+        foreach($this->projects as $project){
+            DBFunctions::insert('grand_contributions_projects',
+                                array('contribution_id' => $this->rev_id,
+                                      'project_id' => $project));
+        }
+        $typeMap = array_flip(self::$typeMap);
+        $subTypeMap = array_flip(self::$subTypeMap);
+        foreach($this->partners as $key => $partner){
+            $partner = (array) $partner;
+            $value = @$partner['id'];
+            if($value == ""){
+                $value = $partner['name'];
+            }
+            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
+            DBFunctions::insert('grand_contributions_partners',
+                                array('contribution_id' => $this->rev_id,
+                                      'partner' => $value,
+                                      'contact' => json_encode($partner['contact']),
+                                      'industry' => $partner['industry'],
+                                      'level' => $partner['level'],
+                                      'type' => @$typeMap[$partner['type']],
+                                      'subtype' => $subType,
+                                      'cash' => $partner['cash'],
+                                      'kind' => $partner['inkind']));
+        }
+        // Notifications
+        foreach($this->people as $author){
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person != null && $person->getName() != null){
+                    Notification::addNotification($me, $person, "Contribution Updated", "The Contribution entitled <i>{$this->getName()}</i>, has been updated", "{$this->getUrl()}");
+                }
+            }
+        }
+        $this->projectsWaiting = true;
+        return $this;
     }
     
     function delete(){
-        return false;
+        global $wgServer, $wgScriptPath;
+        if(!$this->isAllowedToEdit()){
+            return $this;
+        }
+        $me = Person::newFromWgUser();
+        foreach($this->getPeople() as $author){
+            if($author instanceof Person){
+                $person = $author;
+                if($person != null && $person->getName() != null){
+                    Notification::addNotification($me, $person, "Contribution Deleted", "The Contribution entitled <i>{$this->getName()}</i>, has been deleted", "$wgServer$wgScriptPath/index.php/Special:Contributions");
+                }
+            }
+        }
+        DBFunctions::delete('grand_contributions',
+                            array('id' => $this->id));
+        DBFunctions::delete('grand_contributions_partners',
+                            array('contribution_id' => $this->rev_id));
+        DBFunctions::delete('grand_contributions_projects',
+                            array('contribution_id' => $this->rev_id));
+        DBFunctions::delete('grand_contribution_edits',
+                            array('id' => $this->id));
+        $this->id = null;
+        $this->rev_id = null;
+        return true;
     }
     
     function exists(){
@@ -247,16 +512,11 @@ class Contribution extends BackboneModel {
     function getName(){
         return $this->name;
     }
-    
-    // Returns the wiki formatted name of this Contribution
-	function getWikiName(){
-		return str_replace("?", "%3F", $this->name);
-	}
 	
 	// Returns the url of this Contribution
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/Contribution:{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/Special:Contributions#/{$this->getId()}";
 	}
 	
 	// Returns whether or not this Contribution belongs to the specified project
@@ -273,10 +533,9 @@ class Contribution extends BackboneModel {
     function getProjects(){
         if($this->projectsWaiting){
             $projects = array();
-            $sql = "SELECT *
-                    FROM `grand_contributions_projects`
-                    WHERE contribution_id = '{$this->rev_id}'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_contributions_projects'),
+                                        array('project_id'),
+                                        array('contribution_id' => EQ($this->rev_id)));
             if(count($data) > 0){
                 foreach($data as $row){
                     $projects[] = Project::newFromId($row['project_id']);
@@ -305,12 +564,18 @@ class Contribution extends BackboneModel {
                     $people[] = Person::newFromId($pId);
                 }
                 else{
-                    $person = Person::newFromNameLike($pId);
+                    $person = Person::newFromName($pId);
                     if($person != null && $person->getName() != ""){
                         $people[] = $person;
                     }
                     else{
-                        $people[] = $pId;
+                        $person = Person::newFromNameLike($pId);
+                        if($person != null && $person->getName() != ""){
+                            $people[] = $person;
+                        }
+                        else{
+                            $people[] = $pId;
+                        }
                     }
                 }
             }
@@ -322,11 +587,10 @@ class Contribution extends BackboneModel {
     
     // Returns the parent of this Contribution
     function getParent(){
-        $sql = "SELECT rev_id
-                FROM grand_contributions
-                WHERE id = '{$this->id}'
-                AND rev_id < '{$this->rev_id}'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_contributions'),
+                                    array('*'),
+                                    array('id' => EQ($this->id),
+                                          'rev_id' => LT($this->rev_id)));
         $contribution = new Contribution($data);
         return $contribution;
     }
@@ -335,10 +599,9 @@ class Contribution extends BackboneModel {
     function getPartners(){
         if($this->partnersWaiting){
             $partners = array();
-            $sql = "SELECT *
-                    FROM `grand_contributions_partners`
-                    WHERE contribution_id = '{$this->rev_id}'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_contributions_partners'),
+                                        array('*'),
+                                        array('contribution_id' => EQ($this->rev_id)));
             if(count($data) > 0){
                 foreach($data as $row){
                     $p = Partner::newFromId($row['partner']);
@@ -350,7 +613,10 @@ class Contribution extends BackboneModel {
                         $partners[] = $p;
                     }
                     if($p != null && $p->getContact() == null && $row['contact'] != null){
-                        $p->contact = $row['contact'];
+                        $p->contact = json_decode($row['contact']);
+                        if($p->contact == null){
+                            $p->contact = $row['contact'];
+                        }
                     }
                     if($p != null && $p->getIndustry() == null && $row['industry'] != null){
                         $p->industry = $row['industry'];
@@ -359,6 +625,8 @@ class Contribution extends BackboneModel {
                         $p->level = $row['level'];
                     }
                     $id = $p->getOrganization();
+                    $p->subtype = $row['subtype'];
+                    
                     $this->type[$id] = $row['type'];
                     
                     if($row['type'] == 'caki'){
@@ -433,34 +701,7 @@ class Contribution extends BackboneModel {
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->type[$id];
-        $type = "";
-        switch($type0){
-            default:
-            case "none":
-                $type = "None";
-                break;
-            case "cash":
-                $type="Cash";
-                break;
-            case "caki":
-                $type="Cash and In-Kind";
-                break;
-            case "inki":
-                $type="In-Kind";
-                break;
-            case "grnt":
-                $type="Grant";
-                break;
-            case "char":
-                $type="Chair";
-                break;
-            case "scho":
-                $type="Scholarship";
-                break;
-            case "cont":
-                $type="Contract";
-                break;
-        }
+        $type = (isset(self::$typeMap[$type0])) ? self::$typeMap[$type0] : $type0;
         return $type;
     }
     
@@ -501,42 +742,7 @@ class Contribution extends BackboneModel {
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->subtype[$id];
-        $type = "";
-        switch($type0){
-            case "none":
-                $type = "None";
-                break;
-            case "equi":
-                $type="Equipment, Software";
-                break;
-            case "mate":
-                $type="Materials";
-                break;
-            case "logi":
-                $type="Logistical Support of Field Work";
-                break;
-            case "srvc":
-                $type="Provision of Services";
-                break;
-            case "faci":
-                $type="Use of Company Facilites";
-                break;
-            case "sifi":
-                $type="Salaries of Scientific Staff";
-                break;
-            case "mngr":
-                $type="Salaries of Managerial and Administrative Staff";
-                break;
-            case "trvl":
-                $type="Project-related Travel";
-                break;
-            case "othe":
-                $type="Other";
-                break;
-            default:
-                $type = $type0;
-                break;
-        }
+        $type = (isset(self::$subTypeMap[$type0])) ? self::$subTypeMap[$type0] : $type0;
         return $type;
     }
     
@@ -650,6 +856,14 @@ class Contribution extends BackboneModel {
         return $this->description;
     }
     
+    function getInstitution(){
+        return $this->institution;
+    }
+    
+    function getProvince(){
+        return $this->province;
+    }
+    
     /**
      * Returns the access id of this Contribution
      * @return int The user id who has access to this Contribution
@@ -720,8 +934,14 @@ class Contribution extends BackboneModel {
     function isAllowedToEdit($me=null){
         // There might be some inefficiencies in this function.
         // There could probably be some stuff cached to speed it up.
+        if($this->getId() == ""){
+            return false;
+        }
         if($me == null){
             $me = Person::newFromWgUser();
+        }
+        if(!$me->isLoggedIn()){
+            return false;
         }
         if($me->isRoleAtLeast(STAFF)){
             return true;
