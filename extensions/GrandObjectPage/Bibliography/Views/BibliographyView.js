@@ -43,6 +43,7 @@ BibliographyView = Backbone.View.extend({
         "change #filterOperand": "filter",
         "change #filterSelectTags": "filter",
         "change #filterTagOperand": "filter",
+        "keyup #search": "search",
     },
 
     showFilterOptions: function() {
