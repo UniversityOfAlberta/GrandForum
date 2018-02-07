@@ -3145,18 +3145,17 @@ class Person extends BackboneModel {
      * @param string $role The role of this Person
      * @param string $startRange The start date
      * @param string $endRange The end date
-     * @param Project The Project the Person is a role on
      * @return boolean Whether or not the Person is the given role
      */
-    function isRoleAtLeastDuring($role, $startRange, $endRange, $project=null){
+    function isRoleAtLeastDuring($role, $startRange, $endRange){
         global $wgRoleValues;
         if($role == NI){
-            return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange, $project) || 
-                    $this->isRoleAtLeastDuring(CI, $startRange, $endRange, $project));
+            return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
+                    $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
         }
         if($role == NI.'-Candidate'){
-            return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange, $project) || 
-                    $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange, $project));
+            return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange) || 
+                    $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange));
         }
         if($this->isCandidate()){
             return false;
@@ -3165,27 +3164,7 @@ class Person extends BackboneModel {
         if($roles != null){
             foreach($roles as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
-                    if($project != null && count($r->getProjects()) > 0){
-                        // Projects are explicitely specified
-                        $skip = true;
-                        foreach($r->getProjects() as $p){
-                            if($p->getId() == $project->getId()){
-                                return true;
-                            }
-                        }
-                    }
-                    else if($project != null && count($r->getProjects()) == 0){
-                        // Projects are not explicitely specified
-                        $skip = true;
-                        foreach($this->getProjectsDuring($startRange, $endRange) as $p){
-                            if($p->getId() == $project->getId()){
-                                return true;
-                            }
-                        }
-                    }
-                    else if($project == null){
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
