@@ -214,7 +214,7 @@ abstract class PDFGenerator {
      * @param AbstractReport $report The report that this PDF is for (optionally used to add extra information)
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
+    static function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
         if(self::$preview){
@@ -915,7 +915,7 @@ if ( isset($pdf) ) {
      * @param string $title The title of the bookmark
      * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addChapter($title, $pageOffset=0){
+    static function addChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
         if($pageOffset == 0){
@@ -933,7 +933,7 @@ if ( isset($pdf) ) {
      * @param string $title The title of the sub-bookmark
      * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubChapter($title, $pageOffset=0){
+    static function addSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
         if($pageOffset == 0){
@@ -951,7 +951,7 @@ if ( isset($pdf) ) {
      * @param string $title The title of the sub-bookmark
      * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubSubChapter($title, $pageOffset=0){
+    static function addSubSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
         if($pageOffset == 0){
@@ -968,7 +968,7 @@ if ( isset($pdf) ) {
      * Adds a footnote to the PDF
      * @param string $note The text for the footnote
      */
-    function addFootNote($note){
+    static function addFootNote($note){
         global $wgOut;
         $wgOut->addHTML("<script type='text/php'>
                             if(!isset(\$GLOBALS[\"nFootnotes\"])){
@@ -1031,7 +1031,7 @@ if ( isset($pdf) ) {
                         </script>");
     }
     
-    function changeSection(){
+    static function changeSection(){
         global $wgOut;
         // It doesn't look like dompdf supports this yet.  We want to display the page numbers like {section#} - {page#}
         $wgOut->addHTML("<script type='text/php'>

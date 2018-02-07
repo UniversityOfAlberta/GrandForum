@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL National Innovation Hub Report" pdfFiles="IFReportPDF" extends="WPReport">
+    <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PL">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Person id="1567" />
+    </Permissions>
+    <ReportSection id="summary">
+        <ReportItem id="summary" limit="2000">
+            <![CDATA[
+                <h3>Executive Summary (2000 characters / ½ pg)</h3>
+                <p>Describe the top three achievements, contributions and/or success stories from your Innovation Hub as they relate to the realization of your Hub’s overarching goals and to AGE-WELL’s <a href="http://agewell-nce.ca/about-us" target="_blank">mission and vision</a></p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="nce">
+        <ReportItem id="excellence" limit="2000">
+            <![CDATA[
+                <h3>a) Excellence of the Research Program (2000 characters / ½ pg)</h3>
+                <p><i>AGE-WELL’s research program is driven to address Canadian needs and problems, and is therefore expected to be multidisciplinary and multisectoral.  We are evaluated on the excellence, focus and coherence of the research program. For your Innovation Hub, please comment on the follow providing concrete examples where possible.</i></p>
+                <ul>
+                    <li>Describe the balance between discovery and application-based research in this Hub</li>
+                    <li>Describe the ways in which the work of this Hub is addressing (or will address) new and emerging social and ethical challenges</li>
+                    <li>Provide examples from within your Hub of international leadership or activities that have contributed to the visibility of AGE-WELL domestically or abroad</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" limit="2000">
+            <![CDATA[
+                <h3>b) Development of Highly Qualified Personnel (2000 characters ½ pg)</h3>
+                <p><i>The training and retention of HQP is imperative to maximize the effectiveness of the Networks’ contribution to the wealth, wellness and well-being of Canadians. The multidisciplinary and multisectoral nature of a network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</i></p>
+                <ul>
+                    <li>Give examples from your Innovation Hub of HQP being provided with novel, transdisciplinary or innovative experiences, including examples of exposure to the economic, social or ethical implications of AGE-WELL and/or Hub research through training opportunities.</li>
+                    <li>If relevant, please highlight examples of HQP leadership / career development related to the knowledge mobilization of commercialization such as launching a start-up company, filing patents, hosting stakeholder consultations etc.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="networking" limit="2000">
+            <![CDATA[
+                <h3>c) Networking and Partnerships (2000 characters/ ½ pg)</h3>
+                <p><i>AGE-WELL must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex Canadian challenges it is designed to address. Similarly, it is important for Innovation Hubs to demonstrate the ways in which new and existing partnerships are helping them to achieve their goals.</i></p>
+                <ul>
+                    <li>Describe new collaborations developed during the reporting period (e.g. new links between national and international academic institutions, federal and provincial agencies, non-governmental organizations and private sector participants). Who was involved and what activities did the team engage in?</li>
+                    <li>Describe any examples of optimization of resources through the sharing of equipment and research facilities, databases and personnel within this hub.</li>
+                    <li>Describe any cross-network activities (e.g. working with other Hubs or funded projects) that your team engaged in this year.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" limit="2000">
+            <![CDATA[
+                <h3>d) Knowledge Exchange and Exploitation (2000 characters / ½ pg)</h3>
+                <p><i>AGE-WELL is expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to Canadian receptors.  KTEE typically refers to post-discovery activities, including commercialization and knowledge mobilization.</i></p>
+                <ul>
+                    <li>Highlight notable KTEE successes such as:
+                        <ul>
+                            <li>new products, policies or services with commercial potential;</li>
+                            <li>social innovations that may contribute to more effective public policy in Canada.</li>
+                        </ul>
+                    </li>
+                    <li>Describe examples of collaboration with the private, public and not-for-profit sectors in technology, market development, and public policy development.</li>
+                    <li>Describe the extent to which your hub has helped its partners develop strong receptor capacity to exploit current and future research breakthroughs.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="additional" >
+        <ReportItem id="outcomes">
+            <![CDATA[
+                <h3>a) Other Outcomes</h3>
+                <p>While it is important that we demonstrate achievement in the NCE Program areas above, we realize that there are other ways to define success and achievement relevant to AGE-WELL’s mission and vision. In this section, please describe any success or achievements that you would like to highlight that have not been covered in the sections above.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="benefits">
+            <![CDATA[
+                <h3>b) Benefits of Network Involvement</h3>
+                <p>NCEs ideally provide their members with benefits and opportunities that are only realizable through a multisectoral networked approach. Please describe any benefits accrued by your team(s) resulting from your specific involvement in AGE-WELL (e.g. team cohesion, access to new partners, working with other Innovation Hubs etc.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review">
+        
+    </ReportSection>
+    <ReportSection id="submit">
+        
+    </ReportSection>
+</Report>
