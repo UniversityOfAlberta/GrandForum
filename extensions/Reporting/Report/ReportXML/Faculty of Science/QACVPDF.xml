@@ -262,9 +262,9 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-                <ReportItem id="row" type="StaticReportItem">
+                <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                     <![CDATA[
-                        <li>{$product_qa_citation}</li>
+                        <li>{$item}</li>
                     ]]>
                 </ReportItem>
             </ReportItemSet>

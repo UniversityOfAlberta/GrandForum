@@ -2975,9 +2975,11 @@ class Person extends BackboneModel {
         $grants = array();
         foreach($this->getGrants() as $grant){
             if($grant->getStartYear() <= $year && $grant->getEndYear() >= $year){
-                $grants[] = $grant;
+                $grants[$grant->getStartDate().$grant->getEndYear.$grant->getId()] = $grant;
             }
         }
+        ksort($grants);
+        $grants = array_reverse($grants);
         return $grants;
     }
     
@@ -3086,9 +3088,11 @@ class Person extends BackboneModel {
                         continue;
                     }
                 }
-                $grants[] = $grant;
+                $grants[$grantStart.$grantEnd.$grant->getId()] = $grant;
             }
         }
+        ksort($grants);
+        $grants = array_reverse($grants);
         return $grants;
     }
     

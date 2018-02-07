@@ -1169,8 +1169,12 @@ class Paper extends BackboneModel{
     
     function getStructure(){
         $structure = $this->structure();
-        if(isset($structure['categories'][$this->getCategory()]['types'][$this->getType()])){
-            return $structure['categories'][$this->getCategory()]['types'][$this->getType()];
+        $category = $this->getCategory();
+        $type = $this->getType();
+        $types = explode(":", $this->getType());
+        $type = $types[0];
+        if(isset($structure['categories'][$category]['types'][$type])){
+            return $structure['categories'][$category]['types'][$type];
         }
         return array();
     }

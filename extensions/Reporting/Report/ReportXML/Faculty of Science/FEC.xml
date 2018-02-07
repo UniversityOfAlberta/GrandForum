@@ -131,7 +131,7 @@
                             text.prop('disabled', false);
                         }
                         else{
-                            text.prop('disabled', true);
+                           text.prop('disabled', true);
                             text.val('');
                         }
                     }).change();
@@ -143,8 +143,20 @@
         <ReportItem id="courses" type="PersonCoursesReportItem" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 {$item}<br />
+                <script type='text/javascript'>
+                    var mentions = new Array();
+                </script>
             ]]>
         </ReportItem>
+        <ReportItemSet id="coursesSet" type="PersonCoursesReportItemSet">
+            <ReportItem id="course" type="Static">
+                <![CDATA[
+                    <script type='text/javascript'>
+                        mentions.push({name: "{$course_subject} {$course_number}"});
+                    </script>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h2>Teaching Development and Innovation <span class='tooltip' style='cursor:default;' title='Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.<br />
@@ -153,7 +165,46 @@ Add a new teaching development entry to create a new paragraph.'>&#9432;</span><
                 <small>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</small>
                 {$item}
                 <script type='text/javascript'>
-                    
+                    var tinyMCESettings = {
+                        theme: 'modern',
+                        menubar: false,
+                        plugins: 'paste advlist mention',
+                        toolbar: false,
+                        statusbar: false,
+                        width: "100%",
+                        mentions: {
+                            source: _.uniq(mentions, false, function(val, key){
+                                return val.name;
+                            }),
+                            insert: function(item) {
+                                return '<b>' + item.name + '</b>';
+                            },
+                            delay: 100,
+                            delimiter: '@'
+                        }
+                    };
+                    $('table#table_{$post_id} textarea').tinymce(tinyMCESettings);
+                    $("#table_{$post_id} tbody").on( "sortstart", function(event, ui){
+                        var textarea = $(ui.item.context).find('textarea');
+                        textarea.each(function(){
+                            tinyMCE.execCommand('mceRemoveEditor', false, $(this).attr('id') );
+                        });
+                        textarea.after("<div>" + textarea.val() + "</div>");
+                        textarea.next().css("width", textarea.width());
+                        textarea.next().css("height", parseInt($(ui.item.context).height()) - 10);
+                        textarea.hide();
+                    });
+                    $("#table_{$post_id} tbody").on("sortstop", function(event, ui){
+                        var textarea = $(ui.item.context).find('textarea');
+                        textarea.next().remove();
+                        textarea.show();
+                        textarea.each(function(){
+                            $(this).tinymce(tinyMCESettings);
+                        });
+                    });
+                    $("#add_Teaching_development").click(function(){
+                        $("#table_{$post_id} tbody textarea").last().tinymce(tinyMCESettings);
+                    });
                 </script>
             ]]>
         </ReportItem>

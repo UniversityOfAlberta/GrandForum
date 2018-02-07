@@ -163,7 +163,8 @@ abstract class PDFGenerator {
 "/(&#9210;)/",
 "/(&#10003;)/",
 "/(&#10004;)/",
-"/(&diams;)/");
+"/(&diams;)/",
+"/(â)/");
         $str = preg_replace($specials, "<span style='font-family: dejavu sans !important; line-height:50%;'>$1</span>", $str);
         $str = str_replace("&#8209;", "-", $str);
         $str = str_replace("&#61485;", "~", $str);

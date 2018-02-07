@@ -36,6 +36,9 @@ class PersonCoursesTab extends AbstractTab {
             $item .= "<table class='wikitable' frame='box' rules='all' width='100%'>";
             foreach($levels as $subj => $terms){
                 $termStrings = array();
+                $nLec = 0;
+                $nLab = 0;
+                $nSem = 0;
                 foreach($terms as $term => $terms){
                     
                     $courses = new Collection($terms);
@@ -47,16 +50,37 @@ class PersonCoursesTab extends AbstractTab {
                     $counts = array();
                     foreach($components as $key => $component){
                         $counts[$component][] = $totEnrls[$key];
+                        switch($component){
+                            case "LEC":
+                                $nLec++;
+                                break;
+                            case "LAB":
+                                $nLab++;
+                                break;
+                            case "SEM":
+                                $nSem++;
+                                break;
+                        }
                     }
                     foreach($counts as $component => $count){
                         $inner[] = count($count)." $component (".array_sum($count).")";
                     }
                     $inner = implode(", ", $inner);
-                    $termStrings[] = "{$term}: $inner";
+                    $termStrings[] = "<b>{$term}</b>: $inner";
                 }
                 if(!$generatePDF){
                     $item .= @"<tr>
-                                  <td style='white-space:nowrap;width:10%;' rowspan='2'>{$subj}</td>
+                                  <td style='white-space:nowrap;width:10%;' rowspan='2'>{$subj}";
+                    if($nLec > 0){
+                        $item .= "<br />&nbsp;&nbsp;#LEC: {$nLec}";
+                    }
+                    if($nLab > 0){
+                        $item .= "<br />&nbsp;&nbsp;#LAB: {$nLab}";
+                    }
+                    if($nSem > 0){
+                        $item .= "<br />&nbsp;&nbsp;#SEM: {$nSem}";
+                    }
+                    $item .= "</td>
                                   <td>{$terms[0]->descr}</td>
                                   <td style='width:45%;'>".implode("; ", $termStrings)."</td>
                               </tr>
@@ -66,7 +90,18 @@ class PersonCoursesTab extends AbstractTab {
                 }
                 else{
                     $item .= @"<tr>
-                                  <td style='white-space:nowrap;width:10%;'>{$subj}</td>
+                                  <td style='white-space:nowrap;width:10%;'>{$subj}
+                                    ";
+                    if($nLec > 0){
+                        $item .= "<br />&nbsp;&nbsp;#LEC: {$nLec}";
+                    }
+                    if($nLab > 0){
+                        $item .= "<br />&nbsp;&nbsp;#LAB: {$nLab}";
+                    }
+                    if($nSem > 0){
+                        $item .= "<br />&nbsp;&nbsp;#SEM: {$nSem}";
+                    }
+                    $item .= "</td>
                                   <td>{$terms[0]->descr}</td>
                                   <td style='width:45%;'>".implode("; ", $termStrings)."</td>
                               </tr>";
