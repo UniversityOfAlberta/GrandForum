@@ -104,7 +104,11 @@ class Report extends AbstractReport {
                 }
             }
             foreach($projects as $project){
-                if($project->getType() != 'Administrative'){
+                if ($project->getType() == 'Innovation Hub') {
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IHReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$cc->getName()}", "{$url}IHReport&project={$project->getName()}", $selected);
+                }
+                elseif($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-SIP A[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CIP[0-9]+.*/", $project->getName()) != 0 ||

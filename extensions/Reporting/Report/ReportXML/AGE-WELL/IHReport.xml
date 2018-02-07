@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL National Innovation Hub Report" pdfFiles="IFReportPDF" extends="WPReport">
+<Report name="AGE-WELL National Innovation Hub Report" pdfFiles="IHReportPDF" extends="WPReport">
     <Permissions>
-        <Role role="SD+">
-            <SectionPermission id="summary" permissions="rw" />
-            <SectionPermission id="nce" permissions="rw" />
-            <SectionPermission id="additional" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role role="PL">
+        <Role role="NI+">
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="nce" permissions="rw" />
             <SectionPermission id="additional" permissions="rw" />

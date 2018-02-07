@@ -46,6 +46,22 @@ BibliographyView = Backbone.View.extend({
         "keyup #search": "search",
     },
 
+    search: function() {
+        var searchTerm = this.$("#search").val();
+        var lis = this.$("#products li");
+        _.each(this.products, function(prod, index){
+            var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
+            var tags = prod.get("tags").join(", ");
+            pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
+            
+            if (pub.indexOf(searchTerm) != -1) {
+                $(lis.get(index)).show();
+            } else {
+                $(lis.get(index)).hide();
+            }
+        });
+    },
+
     showFilterOptions: function() {
         if(this.$('#filters').css('display') == "none") {
             this.$("#filters").slideDown();
