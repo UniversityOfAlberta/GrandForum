@@ -153,6 +153,8 @@ $egAnnokiExtensions['CAPSRegister'] = array('name' => 'CAPSRegister',
 
 $egAnnokiExtensions['HelpfulResources'] = array('name' => 'HelpfulResources',
                                          'path' => "$IP/extensions/HelpfulResources/HelpfulResources.php");
+$egAnnokiExtensions['AcademicResources'] = array('name' => '    AcademicResources',
+                                         'path' => "$IP/extensions/AcademicResources/AcademicResources.php");
 
 $egAnnokiExtensions['Cite'] = array('name' => 'Cite',
                                          'path' => "$IP/extensions/Cite/Cite.php");

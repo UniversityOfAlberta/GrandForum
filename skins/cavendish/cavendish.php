@@ -1019,6 +1019,12 @@ $(function(){
             $title = "Pour les membres certifiés";
         }
         $GLOBALS['toolbox']['Other2'] = TabUtils::createToolboxHeader($title);
+        
+
+       
+        
+
+
  
 		if($wgUser->isLoggedIn()){
 		    echo "
@@ -1100,10 +1106,20 @@ $(function(){
 
             $latestnews_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:LatestNews"));
 
+            $title = "Academic Resources";
+            if($wgLang->getCode() == "fr"){
+                $title = "Ressources académiques";
+            }
+
+            $academic_resources = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:AcademicResources"));
+
+            
             array_splice($GLOBALS['toolbox']['Other']['links'],2,0,$latestnews_tab);
             array_splice($GLOBALS['toolbox']['Other']['links'],2,0,$whosupplies_tab);
             array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$poll_tab);
             array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$resources_tab);
+             array_splice($GLOBALS['toolbox']['Other2']['links'],0,0,$academic_resources);
+           
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
