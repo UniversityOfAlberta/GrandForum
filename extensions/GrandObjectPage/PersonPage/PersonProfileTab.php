@@ -188,6 +188,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $api->doAction(true);
 
             $this->person->firstName = @$_POST['first_name'];
+            $this->person->middleName = @$_POST['middle_name'];
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
             $this->person->employeeId = @$_POST['employeeId'];
@@ -530,6 +531,10 @@ EOF;
                             <tr>
                                 <td align='right'><b>First Name:</b></td>
                                 <td><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Middle Name:</b></td>
+                                <td><input type='text' name='middle_name' value='".str_replace("'", "&#39;", $person->getMiddleName())."'></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Last Name:</b></td>

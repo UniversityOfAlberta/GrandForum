@@ -1364,13 +1364,12 @@ class Paper extends BackboneModel{
                         $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
                         $found = false;
                         foreach($unis as $uni){
-                            if(strstr($uni['position'], "Graduate Student") !== false){
+                            if(in_array(strtolower($uni['position']), Person::$studentPositions['grad']) !== false){
                                 $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
                                 $found = true;
                                 break;
                             }
-                            else if(strstr($uni['position'], "Undergraduate") !== false ||
-                                    strstr($uni['position'], "Summer Student") !== false){
+                            else if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad']) !== false){
                                 $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}</span>";
                                 $found = true;
                                 break;
