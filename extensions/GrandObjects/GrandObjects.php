@@ -78,6 +78,7 @@ $apiRequest->addAction('Hidden','product/tags', 'ProductTagsAPI');
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/:id/bibtex', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id/citation', 'ProductCitationAPI');
 $apiRequest->addAction('Hidden','product/:id/authors', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductAPI');

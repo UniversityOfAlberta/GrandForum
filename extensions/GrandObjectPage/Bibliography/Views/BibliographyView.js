@@ -50,6 +50,7 @@ BibliographyView = Backbone.View.extend({
         var searchTerm = this.$("#search").val();
         var lis = this.$("#products li");
         _.each(this.products, function(prod, index){
+            console.log(prod);
             var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
             var tags = prod.get("tags").join(", ");
             pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
