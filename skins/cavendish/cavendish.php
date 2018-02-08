@@ -1092,7 +1092,7 @@ $(function(){
 
             $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
             
-            $title = "Who supplies/pays for Mifegymiso?";
+            $title = "What's happening in your province?";
             if($wgLang->getCode() == "fr"){
                 $title = "Qui fournit/paie Mifegymiso?";
             }

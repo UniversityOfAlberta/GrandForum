@@ -18,7 +18,7 @@ class WhoSupplies extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $wgLang;
-        $wgOut->addHTML("<p><i>Click each province and territory to find out more information about who supplies/pays for Mifegymiso in your region</i></p>");
+        $wgOut->addHTML("<p><i>Click each province and territory to find out more information about the shipment/distribution of MIFE, practitioner specific guidelines/regulations and, if MIFE is covered in your region.</i></p>");
         $wgOut->addHTML("<div id='map' width='100%'></div>");
         $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Caps/WhoSupplies/map.js'></script>");
         if($wgLang->getCode() == "en"){
@@ -65,6 +65,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>The approval of Mifegymiso® has exposed both the legal and practical deficiencies of Health Canada's drug review process. Read more on this analysis <a href='http://policyoptions.irpp.org/magazines/april-2017/regulatory-risk-mismanagement-and-the-abortion-pill/' target='_blank'>here</a> (April 25th, 2017)</li>
                 </ul>
+               
             </div>
 
             <h2 id='AB'>Alberta</h2>
@@ -92,11 +93,19 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Calgary</li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='BC'>British Columbia</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
                 </ul>
@@ -116,11 +125,19 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As of January 15, 2018, mifepristone will be distributed by the BC Centre for Disease Control to pharmacies throughout British Columbia, <a href='https://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/newsletters/news18-001.pdf' target='_blank'>read more</a></li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='MB'>Manitoba</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -141,11 +158,19 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Winnipeg</li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='NB'>New Brunswick</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -166,11 +191,19 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media, Mifepristone is not making inroads into New Brunswick; only 14 physicians have registered for the medical abortion training (Feb. 27th, 2017) <a href='http://www.cbc.ca/news/canada/new-brunswick/mifegymiso-canada-health-doctors-1.4000643' target='_blank'>read more</a></li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='NL'>Newfoundland and Labrador</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -188,6 +221,14 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As of April 11th, 2017, Celopharma has shipped mifepristone to St. John’s</li>
+                </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
             </div>
             
@@ -211,6 +252,14 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As of Jan. 28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
             </div>
             
@@ -236,6 +285,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='NU'>Nunavut</h2>
@@ -258,6 +315,14 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As of Jan. 28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
             </div>
             
@@ -288,11 +353,20 @@ class WhoSupplies extends SpecialPage{
                     <li>As of April 11th, 2017, in addition to Toronto and Ottawa, Celopharma has shipped mifepristone to Kingston</li>
                     
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='PE'>Prince Edward Island</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -311,6 +385,14 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
             </div>
             
@@ -337,6 +419,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='SK'>Saskatchewan</h2>
@@ -360,11 +450,19 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, <a href='http://globalnews.ca/news/3291520/abortion-pill-mifegymiso-starts-to-arrive-in-saskatchewan/' target='_blank'>read more</a></li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
             </div>
             
             <h2 id='YT'>Yukon</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -382,6 +480,14 @@ class WhoSupplies extends SpecialPage{
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Whitehorse</li>
+                </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <ul>
+                    <li>See information under 'National Regulations'</li>
                 </ul>
             </div>
         </div>
