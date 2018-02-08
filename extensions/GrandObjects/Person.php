@@ -1649,8 +1649,9 @@ class Person extends BackboneModel {
 
         $regex = "/\{.*?\}/";
         if($format == null){
-            $format = strtolower($config->getValue("nameFormat"));
+            $format = $config->getValue("nameFormat");
         }
+        $format = strtolower($format);
         $format = preg_replace_callback($regex,"self::formatName",$format);
         $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
         return $format;
