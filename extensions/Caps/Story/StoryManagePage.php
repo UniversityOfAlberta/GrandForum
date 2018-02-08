@@ -39,9 +39,9 @@ class StoryManagePage extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser,$wgLang;
         $me = Person::newFromWgUser();
-        $title_add = "Share a Case or Experience";
+        $title_add = "Discussion room";
         if($wgLang->getCode() == "fr"){
-             $title_add = "Partager un Cas ou de L'expérience";
+             $title_add = "Salle de discussion";
         }
         if($me->isLoggedIn()){
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");

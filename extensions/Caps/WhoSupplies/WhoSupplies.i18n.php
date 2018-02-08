@@ -9,5 +9,6 @@ $messages['fr'] = array(
                'whosupplies' => 'Qui fournit/paie Mifegymiso?',
                'WhoSupplies' => 'Qui fournit/paie Mifegymiso?',
                'Whosupplies' => 'Qui fournit/paie Mifegymiso?',
+               'click here'  => 'cliquez ici',
                );
 ?>
