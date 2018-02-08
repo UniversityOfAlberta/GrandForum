@@ -87,6 +87,8 @@ class ReportItemCallback {
             "user_supervisors" => "getUserSupervisors",
             "user_product_count" => "getUserProductCount",
             "user_grad_count" => "getUserGradCount",
+            "user_msc_count" => "getUserMscCount",
+            "user_phd_count" => "getUserPhdCount",
             "user_fellow_count" => "getUserFellowCount",
             "user_tech_count" => "getUserTechCount",
             "user_ugrad_count" => "getUserUgradCount",
@@ -1211,6 +1213,90 @@ class ReportItemCallback {
             
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
+            }
+        }
+        return $count;
+    }
+    
+    function getUserMscCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
+        $count = 0;
+        $hqpsDone = array();
+        foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
+           
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                // Normal Date range
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+            }
+            else{
+                // Person is still continuing
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
+            }
+            
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['msc'])){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
+            }
+        }
+        return $count;
+    }
+    
+    function getUserPhDCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
+        $count = 0;
+        $hqpsDone = array();
+        foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
+           
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                // Normal Date range
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+            }
+            else{
+                // Person is still continuing
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
+            }
+            
+            foreach($universities as $university){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['phd'])){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;

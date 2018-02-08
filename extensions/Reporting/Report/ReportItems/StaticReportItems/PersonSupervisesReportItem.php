@@ -8,19 +8,46 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $person = Person::newFromId($this->personId);
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $splitGrad = strtolower($this->getAttr('splitGrad', 'false'));
         
         $tab = new PersonGradStudentsTab($person, array());
 
         $callback = new ReportItemCallback($this);
         
         $gradCount  = $callback->getUserGradCount();
+        $mscCount  = $callback->getUserMscCount();
+        $phdCount  = $callback->getUserPhdCount();
         $pdfCount   = $callback->getUserFellowCount();
         $techCount  = $callback->getUserTechCount();
         $ugradCount = $callback->getUserUgradCount();
+        $item = "";
+        if($splitGrad != "true"){
+            $item .= "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
+            if($gradCount > 0){
+                $item .= $tab->supervisesHTML(Person::$studentPositions['grad'], 
+                                              $this->getReport()->startYear."-07-01", 
+                                              $this->getReport()->year."-06-30");
+            }
+        }
+        else{
+            $item .= "<h4>Master's Students (Supervised or Co-supervised): {$mscCount}</h4>";
+            if($mscCount > 0){
+                $item .= $tab->supervisesHTML(Person::$studentPositions['msc'], 
+                                              $this->getReport()->startYear."-07-01", 
+                                              $this->getReport()->year."-06-30");
+            }
+            
+            $item .= "<br /><h4>Doctoral Students (Supervised or Co-supervised): {$phdCount}</h4>";
+            if($phdCount > 0){
+                $item .= $tab->supervisesHTML(Person::$studentPositions['phd'], 
+                                              $this->getReport()->startYear."-07-01", 
+                                              $this->getReport()->year."-06-30");
+            }
+        }
         
-        $item = "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
-        if($gradCount > 0){
-            $item .= $tab->supervisesHTML(Person::$studentPositions['grad'], 
+        $item .= "<br /><h4>Undergraduates: {$ugradCount}</h4>";
+        if($ugradCount > 0){
+            $item .= $tab->supervisesHTML(Person::$studentPositions['ugrad'], 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }
@@ -35,13 +62,6 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $item .= "<br /><h4>Technicians: {$techCount}</h4>";
         if($techCount > 0){
             $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
-                                          $this->getReport()->startYear."-07-01", 
-                                          $this->getReport()->year."-06-30");
-        }
-        
-        $item .= "<br /><h4>Undergraduates: {$ugradCount}</h4>";
-        if($ugradCount > 0){
-            $item .= $tab->supervisesHTML(Person::$studentPositions['ugrad'], 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }
