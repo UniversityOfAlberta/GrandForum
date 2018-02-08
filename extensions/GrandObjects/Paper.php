@@ -1158,7 +1158,26 @@ class Paper extends BackboneModel{
      * Returns the domain specific data for this Paper
      * @return array The domain specific data for this Paper
      */
-    function getData(){
+    function getData($field=null){
+        if($this->data === false){
+            $data = DBFunctions::select(array("grand_products"), array("data"), array("id"=>$this->getId()));
+            if(count($data) >0){
+                $this->data = unserialize($data[0]['data']);
+            }
+        }
+        if($field != null){
+            if(is_array($field)){
+                foreach($field as $key){
+                    if(isset($this->data[$key]) && $this->data[$key] != ""){
+                        return $this->data[$key];
+                    }
+                }
+                return "";
+            }
+            else{
+                return @$this->data[$field];
+            }
+        }
         return $this->data;
     }
     
