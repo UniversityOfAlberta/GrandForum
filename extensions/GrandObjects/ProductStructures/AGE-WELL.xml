@@ -79,9 +79,12 @@
             </statuses>
             <data>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
-                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" bibtex="location" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field bibtex="numpages" label="# Pages" type="String">numpages</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="address" label="Publisher Address" type="String">address</field>
+                <field bibtex="series" label="Series" type="String">series</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
