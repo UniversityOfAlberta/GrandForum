@@ -15,47 +15,47 @@ class APIRequest{
     var $actions = array();
 
 	function processRequest(){
-		global $wgServer, $wgScriptPath;
-		$action = @$_GET['action'];
-		$actions = explode(".", $action, 2);
-		if($actions[0] == "api"){
-		    session_write_close();
-			if(isset($actions[1])){
-				self::$action = $actions[1];
-				$params = explode("/", self::$action);
-				$this->createActions();
-				$apiCategories = $this->actions;
-				if($params[0] == "index"){
-					// This is a special action, which lists all the actions and their help pages
-					echo "<h1>API Actions</h1>\n";
-					echo "<ul>\n";
-					foreach($apiCategories as $key => $apiActions){
-					    if($key == "Hidden"){
-					        continue;
-					    }
-						echo "<h2>$key</h2>";
-						foreach($apiActions as $key2 => $apiAction){
-						    echo "\t<li><a href='$wgServer$wgScriptPath/index.php?action=api.$key2&getHelp'>$key2</a></li>\n";
-						}
-					}
-					echo "</ul>\n";
-					echo "<a href='$wgServer$wgScriptPath'>Return to Grand Forum</a>";
-				}
-				else {
-				    $api = null;
-				    foreach($params as $key => $param){
-		                if($param == ""){
-		                    unset($params[$key]);
-		                }
-		            }
-				    foreach($apiCategories as $apiActions){
-				        foreach($apiActions as $route => $a){
-				            $routeParams = explode("/", $route);
-				            $match = true;
-				            foreach($routeParams as $key => $param){
-				                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
-				                                    strstr($param, ":") !== false));
-				                if($match && is_string($a)){
+        global $wgServer, $wgScriptPath;
+        $action = @$_GET['action'];
+        $actions = explode(".", $action, 2);
+        if($actions[0] == "api"){
+            session_write_close();
+            if(isset($actions[1])){
+                self::$action = $actions[1];
+                $params = explode("/", self::$action);
+                $this->createActions();
+                $apiCategories = $this->actions;
+                if($params[0] == "index"){
+                    // This is a special action, which lists all the actions and their help pages
+                    echo "<h1>API Actions</h1>\n";
+                    echo "<ul>\n";
+                    foreach($apiCategories as $key => $apiActions){
+                        if($key == "Hidden"){
+                            continue;
+                        }
+                        echo "<h2>$key</h2>";
+                        foreach($apiActions as $key2 => $apiAction){
+                            echo "\t<li><a href='$wgServer$wgScriptPath/index.php?action=api.$key2&getHelp'>$key2</a></li>\n";
+                        }
+                    }
+                    echo "</ul>\n";
+                    echo "<a href='$wgServer$wgScriptPath'>Return to Grand Forum</a>";
+                }
+                else {
+                    $api = null;
+                    foreach($params as $key => $param){
+                        if($param == ""){
+                            unset($params[$key]);
+                        }
+                    }
+                    foreach($apiCategories as $apiActions){
+                        foreach($apiActions as $route => $a){
+                            $routeParams = explode("/", $route);
+                            $match = true;
+                            foreach($routeParams as $key => $param){
+                                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
+                                                    strstr($param, ":") !== false));
+                                if($match && is_string($a)){
 				                    $a = new $a();
 				                    $api = $a; // Set the API to this for now (params might not match exactly, but will use it as a fallback)
 				                }
@@ -64,39 +64,40 @@ class APIRequest{
 				                }
 				                else if($match){
 				                    $a->params[$key] = $params[$key];
+				                    $a->params[$params[$key]] = $params[$key];
 				                }
-				            }
-				            foreach($params as $key => $param){
-				                $match = $match && (isset($routeParams[$key]) && ($param == $routeParams[$key] || 
-				                                    strstr($routeParams[$key], ":") !== false));
-				            }
-				            if($match){
-				                $api = $a;
-				                break;
-				            }
-				        }
-				        if($api == null){
-					        if(isset($apiActions[$params[0]])){
-						        $api = $apiActions[$params[0]];
-						        break;
-					        }
-					    }
-					}
-					if($api != null){
-					    $api->processRequest($params);
-				    }
-				    else {
-					    echo "There is no such API action\n";
-				    }
-				}
-			}
-			else {
-				echo "No API request was provided.  Exiting!\n";
-			}
-			exit;
-		}
-		return true;
-	}
+                            }
+                            foreach($params as $key => $param){
+                                $match = $match && (isset($routeParams[$key]) && ($param == $routeParams[$key] || 
+                                                    strstr($routeParams[$key], ":") !== false));
+                            }
+                            if($match){
+                                $api = $a;
+                                break;
+                            }
+                        }
+                        if($api == null){
+                            if(isset($apiActions[$params[0]])){
+                                $api = $apiActions[$params[0]];
+                                break;
+                            }
+                        }
+                    }
+                    if($api != null){
+                        $api->processRequest($params);
+                    }
+                    else {
+                        echo "There is no such API action\n";
+                    }
+                }
+            }
+            else {
+                echo "No API request was provided.  Exiting!\n";
+            }
+            exit;
+        }
+        return true;
+    }
 	
 	static function doAction($api, $param=false){
 	    global $apiPaths;

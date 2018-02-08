@@ -13,7 +13,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
-        //$startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $me = Person::newFromWgUser();
         $_POST['user_name'] = $me->getName();
         $_POST['project'] = $this->project->getName();
@@ -119,8 +119,10 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function showYearsHeader(){
+        global $config;
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         for($y=1; $y <= $this->nYears; $y++){
             $year = $startYear+($y-1);
             if($y < $this->nYears){
@@ -148,8 +150,10 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function showQuartersCells($milestone, $activityId){
+        global $config;
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $quarters = $milestone->getQuarters();
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
@@ -278,7 +282,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
-        //$startYear = @substr($config->getValue('projectPhaseDates', $project->getPhase()), 0, 4);
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
 
         if($year === false){
             $milestones = $project->getMilestones(true, true);
