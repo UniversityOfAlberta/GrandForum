@@ -21,7 +21,7 @@
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="018e656a0f824b1f91a6a2cb33ac61dd" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
                 <field label="ISBN" bibtex="isbn" type="String">isbn</field>
                 <field label="ISSN" bibtex="issn" type="String">issn</field>
@@ -51,7 +51,7 @@
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="018e656a0f824b1f91a6a2cb33ac61dd" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
                 <field label="ISBN" bibtex="isbn" type="String">isbn</field>
                 <field label="ISSN" bibtex="issn" type="String">issn</field>
@@ -79,9 +79,12 @@
             </statuses>
             <data>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
-                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" bibtex="location" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field bibtex="numpages" label="# Pages" type="String">numpages</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="address" label="Publisher Address" type="String">address</field>
+                <field bibtex="series" label="Series" type="String">series</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
@@ -111,7 +114,7 @@
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
-                <field label="Publisher" type="String">publisher</field>
+                <field label="Publisher" bibtex="publisher" type="String">publisher</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
@@ -246,7 +249,7 @@
             <data>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
-                <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="dcb27492e1554fc9838992ba7c70f416" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
@@ -275,7 +278,7 @@
                 <field ccv_id="bbb8c897c038404c9e81611eee66f371" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="ac8545aa13254e05b04610c934c2e2b4" ccv_name="Issue" label="Issue" type="String">number</field>
                 <field ccv_id="9a94ba6ddbff45ff8c6c67c80a0c5b32" ccv_name="Page Range" label="Page Range" type="String">pages</field>
-                <field ccv_id="bf0591eee2db4bab8a937de660d40976" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="bf0591eee2db4bab8a937de660d40976" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
@@ -325,7 +328,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
@@ -353,7 +356,7 @@
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" label="Issue" type="String">number</field>
                 <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" label="Page Range" type="String">pages</field>
-                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
@@ -630,7 +633,7 @@
                 <field ccv_id="c54799b5e36a415da615b4b637eb3ec8" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="5e0185b2646f49e18de6c00592774940" ccv_name="Issue" label="Issue" type="String">number</field>
                 <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="String">pages</field>
-                <field ccv_id="e85a3b334765402e900235548862df47" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="e85a3b334765402e900235548862df47" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="String">doi</field>
@@ -947,7 +950,7 @@
             </statuses>
             <data>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
-                <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
+                <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
