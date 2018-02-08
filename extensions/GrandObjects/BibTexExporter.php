@@ -25,11 +25,16 @@ class BibTexExporter {
 		$data = $paper->data;
 		$type = self::getType($paper->type);
 		$bibtex .= $type . "{" . $paper->bibtex_id . ",\n";
-		$bibtex .= "author=";
-		print_r($paper->getAuthors()[0]->name);
-		// foreach($paper->getAuthors() as $person) {
-		// 	print_r($person->getReversedName() . ". and ");
-		// }
+		$bibtex .= "author={";
+		$temp_arr = array();
+		foreach($paper->getAuthors() as $person) {
+			array_push($temp_arr, $person->getNameForProduct("{%Last}, {%F.}{ %M.}"));
+		}
+		$bibtex .= implode(" and ", $temp_arr);
+		$bibtex .= "},\n";
+		$bibtex .= "title={" . $paper->title . "},\n";
+		$bibtex .= "journal={" . $data['event_title'] . "},\n"; # this might need to change depending on type of product
+		$bibtex .= "year={" . $paper->getYear() . "},\n";
 		print_r($bibtex);
 		exit;
 	}
