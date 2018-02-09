@@ -30,16 +30,16 @@ class PersonSupervisesReportItem extends StaticReportItem {
             }
         }
         else{
-            $item .= "<h4>Master's Students (Supervised or Co-supervised): {$mscCount}</h4>";
-            if($mscCount > 0){
-                $item .= $tab->supervisesHTML(Person::$studentPositions['msc'], 
+            $item .= "<h4>Doctoral Students (Supervised or Co-supervised): {$phdCount}</h4>";
+            if($phdCount > 0){
+                $item .= $tab->supervisesHTML(Person::$studentPositions['phd'], 
                                               $this->getReport()->startYear."-07-01", 
                                               $this->getReport()->year."-06-30");
             }
             
-            $item .= "<br /><h4>Doctoral Students (Supervised or Co-supervised): {$phdCount}</h4>";
-            if($phdCount > 0){
-                $item .= $tab->supervisesHTML(Person::$studentPositions['phd'], 
+            $item .= "<br /><h4>Master's Students (Supervised or Co-supervised): {$mscCount}</h4>";
+            if($mscCount > 0){
+                $item .= $tab->supervisesHTML(Person::$studentPositions['msc'], 
                                               $this->getReport()->startYear."-07-01", 
                                               $this->getReport()->year."-06-30");
             }

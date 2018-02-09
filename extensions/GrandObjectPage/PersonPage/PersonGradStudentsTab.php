@@ -248,11 +248,11 @@ class PersonGradStudentsTab extends AbstractTab {
 
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
-                $html .= "<h3>Master's Students (Supervised or Co-supervised)</h3>";
-                $html .= $this->supervisesHTML(Person::$studentPositions['msc'], $this->startRange, $this->endRange);
-                
                 $html .= "<h3>Doctoral Students (Supervised or Co-supervised)</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['phd'], $this->startRange, $this->endRange);
+                
+                $html .= "<h3>Master's Students (Supervised or Co-supervised)</h3>";
+                $html .= $this->supervisesHTML(Person::$studentPositions['msc'], $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Undergraduates</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['ugrad'], $this->startRange, $this->endRange);
@@ -262,8 +262,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 
                 $html .= "<h3>Technicians</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['tech'], $this->startRange, $this->endRange);
-                
-                //$html .= "<script type='text/javascript'>$('.relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'order': [[3, 'desc']]});</script>";
             }
         }
         return $html;
