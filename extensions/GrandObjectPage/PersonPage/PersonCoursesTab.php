@@ -16,7 +16,7 @@ class PersonCoursesTab extends AbstractTab {
         $this->tooltip = "Contains a list of courses (and their corresponding student enrolments) that the faculty member has taught between the specified start and end dates.";
     }
     
-    function getHTML($start=null, $end=null, $generatePDF=false){
+    function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false){
         if($start == null || $end == null){
             $courses = $this->person->getCourses();
         }
@@ -40,16 +40,21 @@ class PersonCoursesTab extends AbstractTab {
                 $nLab = 0;
                 $nSem = 0;
                 foreach($terms as $term => $terms){
-                    
                     $courses = new Collection($terms);
                     $components = $courses->pluck('component');
+                    $ids = $courses->pluck('id');
                     $sects = $courses->pluck('sect');
                     $totEnrls = $courses->pluck('totEnrl');
                     
                     $inner = array();
                     $counts = array();
+                    $percents = array();
                     foreach($components as $key => $component){
                         $counts[$component][] = $totEnrls[$key];
+                        $percent = $this->person->getCoursePercent($ids[$key]);
+                        if($percent != ""){
+                            $percents[$component][] = "{$percent}%";
+                        }
                         switch($component){
                             case "LEC":
                                 $nLec++;
@@ -63,7 +68,13 @@ class PersonCoursesTab extends AbstractTab {
                         }
                     }
                     foreach($counts as $component => $count){
-                        $inner[] = count($count)." $component (".array_sum($count).")";
+                        $percentages = "";
+                        if($showPercentages && isset($percents[$component])){
+                            $percentages .= " [";
+                            $percentages .= @implode(",", $percents[$component]);
+                            $percentages .= "]";
+                        }
+                        $inner[] = count($count)." {$component}{$percentages} (".array_sum($count).")";
                     }
                     $inner = implode(", ", $inner);
                     $termStrings[] = "<b>{$term}</b>: $inner";
@@ -159,7 +170,7 @@ class PersonCoursesTab extends AbstractTab {
                             });
                         </script>
                         </div>";
-        $this->html .= $this->getHTML($this->startRange, $this->endRange);
+        $this->html .= $this->getHTML($this->startRange, $this->endRange, true);
         return;
         $courses = $this->person->getCourses();
         $this->html .= "<table id='courses_table' frame='box' rules='all'>

@@ -15,8 +15,6 @@
 <div id="productAuthors">
     
 </div>
-<h2>Description</h2>
-<%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 <h2>Metadata</h2>
 <table id="productData" width="100%">
     <tr>
@@ -139,6 +137,8 @@
         <% } %>
     <% }, this) %>
 </table>
+<h2>Description <small>(Optional)</small></h2>
+<%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 </form>
 <% if(!this.isDialog){ %>
     <br />

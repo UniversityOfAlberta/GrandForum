@@ -140,7 +140,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
-        <ReportItem id="courses" type="PersonCoursesReportItem" start="CYCLE_START" end="CYCLE_END">
+        <ReportItem id="courses" type="PersonCoursesReportItem" showPercentages="true" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 {$item}<br />
                 <script type='text/javascript'>

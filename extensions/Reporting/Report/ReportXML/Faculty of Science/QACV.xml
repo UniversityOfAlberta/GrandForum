@@ -638,14 +638,14 @@
         </ReportItemSet>
 
         <!-- Patents -->
-        <ReportItemSet id="patents_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Patent/Spin-Off, all,, false)}, 0)}">
+        <ReportItemSet id="patents_if" type="If" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
             <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
                 <![CDATA[
                     <h2>Patents</h2>
                     <ul>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="0000-00-00" end="2100-06-30">
                 <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                     <![CDATA[
                         <li>{$item}</li>

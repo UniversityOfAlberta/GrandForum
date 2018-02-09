@@ -8,9 +8,10 @@ class PersonCoursesReportItem extends StaticReportItem {
         $person = Person::newFromId($this->personId);
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $showPercentages = (strtolower($this->getAttr('showPercentages', 'false')) == "true");
         
         $tab = new PersonCoursesTab($person, array());
-        return $tab->getHTML($start, $end, true);
+        return $tab->getHTML($start, $end, $showPercentages, true);
     }
 
     function render(){

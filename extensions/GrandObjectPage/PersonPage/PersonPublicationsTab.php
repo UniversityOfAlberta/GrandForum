@@ -90,7 +90,7 @@ class PersonPublicationsTab extends AbstractTab {
         }
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='{$this->name}Pubs".md5($type)."' rules='all' frame='box'>
+            $string = "<table id='{$this->id}Pubs".md5($type)."' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>{$config->getValue('productsTerm')}</th>";
@@ -129,7 +129,7 @@ class PersonPublicationsTab extends AbstractTab {
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#{$this->name}Pubs".md5($type)."').dataTable({
+                    $('#{$this->id}Pubs".md5($type)."').dataTable({
                         'order': [[ 1, 'desc' ]],
                         'autoWidth': false,
                         'iDisplayLength': 50
