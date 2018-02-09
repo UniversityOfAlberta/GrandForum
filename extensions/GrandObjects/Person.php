@@ -838,6 +838,19 @@ class Person extends BackboneModel {
         }
     }
     
+    function toSimpleArray(){
+        $json = array('id' => $this->getId(),
+                      'name' => $this->getName(),
+                      'realName' => $this->getRealName(),
+                      'fullName' => $this->getNameForForms(),
+                      'reversedName' => $this->getReversedName());
+        return $json;
+    }
+    
+    function toSimpleJSON(){
+        return json_encode($this->toSimpleArray());
+    }
+    
     function toArray(){
         global $wgUser, $config;
         $privateProfile = "";
