@@ -124,4 +124,5 @@ Feature: Contributions
         And I press "Delete Contribution"
         Then I should see "The Contribution New Contribution 1 was deleted sucessfully"
         And I reload the page
+        And I wait "500"
         Then I should see "This Contribution does not exist"
