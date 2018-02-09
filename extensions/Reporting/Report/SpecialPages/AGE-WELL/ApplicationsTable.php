@@ -19,6 +19,7 @@ class ApplicationsTable extends SpecialPage{
     var $externals;
     var $wps;
     var $ccs;
+    var $ihs;
     var $projects;
 
     function ApplicationsTable() {
@@ -52,10 +53,14 @@ class ApplicationsTable extends SpecialPage{
         $this->wps = Theme::getAllThemes();
         
         $this->ccs = array();
+        $this->ihs = array();
         $this->projects = Project::getAllProjects();
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
                 $this->ccs[] = $project;            
+            }
+            if($project->getType() == "Innovation Hub"){
+                $this->ihs[] = $project;
             }
         }
     }
@@ -85,6 +90,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ih'>IH</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
@@ -122,6 +128,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "cc" && $me->isRoleAtLeast(SD)){
             $this->generateCC();
+        }
+        else if($program == "ih" && $me->isRoleAtLeast(SD)){
+            $this->generateIH();
         }
         else if($program == "project" && $me->isRoleAtLeast(SD)){
             $this->generateProject();
@@ -204,6 +213,7 @@ class ApplicationsTable extends SpecialPage{
     function generateWP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015-16"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -212,7 +222,15 @@ class ApplicationsTable extends SpecialPage{
     function generateCC(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2016, "2016-17"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateIH(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
