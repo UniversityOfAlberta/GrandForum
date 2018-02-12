@@ -29,6 +29,7 @@ ThreadEditView = Backbone.View.extend({
         "click #cancel": "cancel",
         "change [name='visibility']": "checkVisibility",
         "change #prov": "checkProvince",
+        "change [name='public/private']" : "publicOrprivate",
     },
 
     checkVisibility: function(){
@@ -39,10 +40,24 @@ ThreadEditView = Backbone.View.extend({
            	$(".chzn-select").chosen();
 
         }
-        else{
+        else if($("[name='visibility']").val() == "question is only visible to experts"){
             $("#threadPeople").hide();
             $("#provinceSearch").hide();
         }
+        else if($("[name='visibility']").val() == "All Experts" || $("[name='visibility']").val() == "question is visible to CAPS health care professionals" ){
+            $("#threadPeople").hide();
+            $("#provinceSearch").hide();
+        }
+    },
+
+    publicOrprivate: function(){
+        if($("[name='public']").val() == "public"){
+            console.log("it is public");
+        }
+        else{
+            console.log("it is private");
+        }
+
     },
 
     checkProvince: function(){
@@ -59,7 +74,8 @@ ThreadEditView = Backbone.View.extend({
     saveThread: function(){
         var validation = this.validate();
         if(validation != ""){
-            clearAllMessages();
+            clearAllMessage
+            s();
             addError(validation, true);
             return;
         }

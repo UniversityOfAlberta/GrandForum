@@ -11,6 +11,9 @@ class Thread extends BackboneModel{
     var $category;
 	var $posts = array();
 	var $date_created;
+    var $visibility;
+    var $approved;
+    var $public;
 
 //-----Static Functions/Constructor---//
         // Constructor
@@ -23,6 +26,9 @@ class Thread extends BackboneModel{
                 $this->category = $data[0]['category'];
                 $this->date_created = $data[0]['date_created'];
 		        $this->posts = $this->getPosts();
+                $this->visibility = $data[0]['visibility'];
+                $this->public = $data[0]['public'];
+                $this->approved = $data[0]['approved'];
             }
         }
 
@@ -163,6 +169,16 @@ class Thread extends BackboneModel{
 
         function setDateCreated($date){
             $this->date_created = $date;
+        }
+
+        function setVisibility($visibility){
+            $this->visibility = $visibility;
+        }
+        function setApproved($approved){
+            $this->approved = $approved;
+        }
+        function setPublic($public){
+            $this->public = $public;
         }
 
 //-----Db methods----//

@@ -28,6 +28,39 @@
                         <% } %>
                 </td>
             </tr>
+
+          <% } else {%>
+            <tr>
+                <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
+                <td>
+
+                        <% if(wgLang == 'en'){ %>
+                          <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
+                            <% } else if(wgLang == 'fr'){ %>
+                          <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                        <% } %>
+
+                </td>
+            </tr>
+             <% } %>
+  
+
+            <tr>
+              <td> <%= HTML.Radio(this, 'public', {options: ["Public"]}) %>
+                
+              </td>
+              <td> <%= HTML.Radio(this, 'public', {options: ["Private"]}) %>
+                
+              </td>
+
+            </tr>
+
+            <tr>
+              <td>
+                <%= HTML.CheckBox(this, 'approved',{value: "Approved"}) %>
+              </td>
+            </tr>
+
             <tr>
                 <td>
                     <div class="provinceSearch" style='display:none'><b>Expert Province:</b>
@@ -73,7 +106,6 @@
                     </div>
                 </td>
             </tr>
-         <% } %>
     </table>
     <br />
     <div id="threadPeople" style='display:none'>
