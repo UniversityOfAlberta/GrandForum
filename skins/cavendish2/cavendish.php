@@ -781,7 +781,14 @@ class CavendishTemplate2 extends QuickTemplate {
                     $GLOBALS['tabs']['AdminTabs'] = TabUtils::createTab("Admin Tabs","$wgServer$wgScriptPath/index.php/Special:AdminTabs");
             }
                     $GLOBALS['tabs']['Manage Products'] = TabUtils::createTab("Outputs","$wgServer$wgScriptPath/index.php/Special:ManageProducts"); 
-                    $GLOBALS['tabs']['Manage Courses'] = TabUtils::createTab("Courses","$wgServer$wgScriptPath/index.php/Special:Courses");*/
+                    $GLOBALS['tabs']['Manage Courses'] = TabUtil::createTab("Courses","$wgServer$wgScriptPath/index.php/Special:Courses");*/
+
+                // Making tabs to eventually phase out sidebar:
+                /*
+                if($wgUser->isLoggedIn() && $config->getValue('networkName') == "CSGARS"){
+                    $GLOBALS['tabs']['Main'] = TabUtils::createTab("GARS", "$wgServer$wgScriptPath/index.php/Main_Page");
+                }
+                */
                 wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
                 wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>

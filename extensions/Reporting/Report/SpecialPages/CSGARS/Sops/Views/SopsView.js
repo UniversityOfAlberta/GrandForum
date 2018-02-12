@@ -112,19 +112,19 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '140px' }, // Education history
                                                         { 'width': '70px' },  // Program Name
                                                         { 'width': '70px' },  // EPL
-                                                        { 'width': '110px' },  // Areas
+                                                        { 'width': '110px' }, // Areas
                                                         { 'width': '75px' },  // Supervisors
                                                         { 'width': '80px' },  // Scholarships Held/Applied
                                                         { 'width': '75px' },  // GPA Normalized
                                                         { 'width': '70px' },  // GRE
                                                         { 'width': '70px' },  // Number of Publications
                                                         { 'width': '70px' },  // Awards
-                                                        { 'width': '110px' },  // Courses
-                                                        { 'width': '120px' },  // Reviewers
+                                                        { 'width': '110px' }, // Courses
+                                                        { 'width': '120px' }, // Reviewers
                                                         { 'width': '70px' },  // Avg Rev Rank
-                                                        { 'width': '120px' },  // Faculty
+                                                        { 'width': '120px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
-                                                        { 'width': '120px' },  // Notes
+                                                        { 'width': '120px' }, // Notes
                                                         { 'width': '70px' },  // Comments
                                                         { 'width': '70px' }   // Decision
                                                       ],
