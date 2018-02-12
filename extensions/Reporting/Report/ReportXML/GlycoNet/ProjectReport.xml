@@ -13,6 +13,7 @@
             <SectionPermission id="ktee" permissions="r" />
             <SectionPermission id="budget" permissions="-" />
             <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -28,6 +29,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -43,6 +45,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -58,6 +61,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -73,6 +77,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -821,6 +826,60 @@
             <![CDATA[
                 <h3>Explanation</h3>
                 <p><b>Provide a written explanation of any deviation between the actual contributions and anticipated expenditures and those proposed in the original approved proposal.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2015/2016 Collaborative Team Grants">
+        <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" optional="true">
+            <![CDATA[
+                <p>Round I and II Collaborative Team Grants (e.g. projects ending August 2018 or December 2018) may apply for a project extension by completing this section.</p>
+                <h2>Objectives during the renewal period and justification based on progress to date</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h3>Figures & Schemes PDF upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="MILESTONES" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" optional="true">
+            <![CDATA[
+                <h2>Milestones <small>(from time of renewal to March 31, 2020)</small></h2>
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="BUDGET" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" optional="true">
+            <![CDATA[
+                <h2>Budget <small>(from time of renewal to March 31, 2020)</small></h2>
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xls">budget template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contributions" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CONTRIBUTIONS" labels="Contribution Amount ($CAD)|Cash/In-kind|Partner Organization|Contact Name|Contact Email/Phone" types="Integer|Select(Cash,In-kind,Both)|String|String|String" sizes="100||||" multiple="true" optional="true">
+            <![CDATA[
+                <h2>Expected matching</h2>
+                <p>Projects are expected to leverage at minimum a 2:1 matching funds (i.e., for everyone $2 in GlycoNet funding, $1 in matching is expected).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" type="UploadReportItem" blobType="BLOB_RAW" blobItem="LETTERS" mimeType="application/zip,.zip" fileSize="20" optional="true">
+            <![CDATA[
+                <h3>Letter of Support (if available)*</h3>
+                <p>Upload a single <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing all letters of support.</p>
+                {$item}
+                <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="UploadReportItem" blobItem="IP" fileSize="20" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h2>IP development strategy/commercialization plan</h2>
                 {$item}
             ]]>
         </ReportItem>
