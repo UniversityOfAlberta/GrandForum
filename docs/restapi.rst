@@ -207,6 +207,13 @@ people/managed
     **Actions**
         **GET**
             Returns a list of all People that the current user manages (either implicitely or explicitely)
+            
+people/simple
+~~~~~~~~~~~~~~
+
+    **Actions**
+        **GET**
+            Returns a list of all People in a simplified format (just names)
         
 people/:role
 ~~~~~~~~~~~~
@@ -217,6 +224,16 @@ people/:role
     **Actions**
         **GET**
             Returns a list of all People that belong to the specified Role(s)
+            
+people/:role/simple
+~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+    **Actions**
+        **GET**
+            Returns a list of all People in a simplified format (just names) that belong to the specified Role(s)
         
 people/:role/:university
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -230,8 +247,20 @@ people/:role/:university
         **GET**
             Returns a list of all People that belong to the specified Role(s), and are from the specified University
             
+people/:role/:university/simple
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+        **:university**
+            The name of the University to filter by
+    **Actions**
+        **GET**
+            Returns a list of all People in a simplified format (just names) that belong to the specified Role(s), and are from the specified University
+            
 people/:role/:university/:department
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
         **:role**
@@ -243,6 +272,20 @@ people/:role/:university/:department
     **Actions**
         **GET**
             Returns a list of all People that belong to the specified Role(s), and are from the specified University and Department
+            
+people/:role/:university/:department/simple
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+        **:university**
+            The name of the University to filter by
+        **:department**
+            The name of the department to filter by
+    **Actions**
+        **GET**
+            Returns a list of all People in a simplified format (just names) that belong to the specified Role(s), and are from the specified University and Department
 
 -----
 

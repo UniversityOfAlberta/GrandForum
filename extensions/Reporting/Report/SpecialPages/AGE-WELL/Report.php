@@ -90,6 +90,12 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CIPApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CIP Application", "{$url}CIPApplication", $selected);*/
         }
+        foreach($person->getProjects() as $project){
+            if ($project->getType() == 'Innovation Hub') {
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IHReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}IHReport&project={$project->getName()}", $selected);
+            }
+        }
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC) || $person->isRole(PS)){
             $projects = array();
             foreach($person->leadershipDuring(NCE_START, date('Y-m-d')) as $project){
@@ -104,11 +110,7 @@ class Report extends AbstractReport {
                 }
             }
             foreach($projects as $project){
-                if ($project->getType() == 'Innovation Hub') {
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IHReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$cc->getName()}", "{$url}IHReport&project={$project->getName()}", $selected);
-                }
-                elseif($project->getType() != 'Administrative'){
+                if($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-SIP A[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CIP[0-9]+.*/", $project->getName()) != 0 ||

@@ -52,6 +52,31 @@ class Collection {
         }
         return json_encode($json);
     }
+    
+    function toSimpleArray(){
+        $json = array();
+        if(count($this->objects) > 0){
+            $objs = array_values($this->objects);
+            if($objs[0] instanceof BackboneModel){
+                foreach($this->objects as $object){
+                    $json[] = $object->toSimpleArray();
+                }
+            }
+            else{
+                foreach($this->objects as $object){
+                    $json[] = $object;
+                }
+            }
+        }
+        return $json;
+    }
+    
+    /**
+     * @return mixed Returns a jsonified version of this Collection
+     */
+    function toSimpleJSON(){
+        return json_encode($this->toSimpleArray());
+    }
 
 }
 

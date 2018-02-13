@@ -46,7 +46,7 @@ Extension Documentation
 .. _api-docs:
 
 Code Docs
---------
+---------
 
 .. toctree::
    :maxdepth: 2

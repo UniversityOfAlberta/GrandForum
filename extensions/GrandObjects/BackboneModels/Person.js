@@ -167,11 +167,17 @@ People = Backbone.Collection.extend({
     
     roles: undefined,
     
+    simple: false,
+    
     url: function(){
-        if(this.roles == undefined){
-            return 'index.php?action=api.people';
+        var url = 'index.php?action=api.people';
+        if(this.roles != undefined){
+            url += '/' + this.roles.join(',');
         }
-        return 'index.php?action=api.people/' + this.roles.join(',');
+        if(this.simple){
+            url += '/simple';
+        }
+        return url;
     }
 });
 

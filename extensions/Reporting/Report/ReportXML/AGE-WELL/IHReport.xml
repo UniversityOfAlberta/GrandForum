@@ -8,6 +8,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Project />
         <Person id="1567" />
     </Permissions>
     <ReportSection id="summary">

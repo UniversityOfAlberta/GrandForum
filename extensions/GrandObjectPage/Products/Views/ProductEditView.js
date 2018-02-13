@@ -248,6 +248,7 @@ ProductEditView = Backbone.View.extend({
         }
         else{
             this.allPeople = new People();
+            this.allPeople.simple = true;
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
