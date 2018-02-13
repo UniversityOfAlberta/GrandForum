@@ -377,9 +377,12 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->title}</div>
-        <hr />
-        <div id='reportBody'>");
+        $wgOut->addHTML("<div>");
+        if($this->title != ""){
+            $wgOut->addHTML("<div id='reportHeader'>{$number}{$this->title}</div>
+            <hr />");
+        }
+        $wgOut->addHTML("<div id='reportBody'>");
         if(!$this->checkPermission('w')){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){

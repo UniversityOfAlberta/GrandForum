@@ -5,9 +5,18 @@ TagItView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($('#tagit_template').html());
         var that = this;
-        this.model.get('options').afterTagRemoved = function(event, ui){that.renderSuggestions();};
-        this.model.get('options').afterTagAdded = function(event, ui){that.renderSuggestions();};
-        this.model.get('options').beforeTagAdded = function(event, ui){return that.addTag(event, ui);};
+        if(this.model.get('options').afterTagRemoved != undefined){
+            var fn = this.model.get('options').afterTagRemoved;
+            this.model.get('options').afterTagRemoved = function(event, ui){ fn(event, ui); that.renderSuggestions();};
+        }
+        if(this.model.get('options').afterTagAdded != undefined){
+            var fn = this.model.get('options').afterTagAdded;
+            this.model.get('options').afterTagAdded = function(event, ui){ fn(event, ui); that.renderSuggestions();};
+        }
+        if(this.model.get('options').beforeTagAdded != undefined){
+            var fn = this.model.get('options').beforeTagAdded;
+            this.model.get('options').beforeTagAdded = function(event, ui){ fn(event, ui); return that.addTag(event, ui);};
+        }
         if(this.model.get('options').tabIndex == undefined){this.model.get('options').tabIndex = 10; };
         if(this.model.get('options').caseSensitive == undefined){this.model.get('options').caseSensitive = false; };
         if(this.model.get('options').allowSpaces == undefined){this.model.get('options').allowSpaces = true; };

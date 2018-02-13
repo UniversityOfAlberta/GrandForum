@@ -116,6 +116,7 @@ class ReportItemCallback {
             "product_acceptance_year" => "getProductAcceptanceYear",
             "product_year" => "getProductYear",
             "product_year_range" => "getProductYearRange",
+            "product_date_range" => "getProductDateRange",
             //Presentations
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
@@ -869,6 +870,26 @@ class ReportItemCallback {
         }
         else{
             return "{$startYear} - {$endYear}";
+        }
+    }
+    
+    function getProductDateRange(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $startYear = $product->getAcceptanceYear();
+        $endYear = $product->getYear();
+        $startDate = $product->getAcceptanceDate();
+        $endDate = $product->getDate();
+        if($startDate == $endDate){
+            return $endDate;
+        }
+        else if($startYear == "0000"){
+            return $endDate;
+        }
+        else if($endYear == "0000"){
+            return "{$startDate} - Present";
+        }
+        else{
+            return "{$startDate} - {$endDate}";
         }
     }
 

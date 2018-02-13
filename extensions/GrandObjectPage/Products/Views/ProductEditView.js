@@ -253,6 +253,13 @@ ProductEditView = Backbone.View.extend({
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
                 availableTags: this.allPeople.pluck('fullName'),
+                afterTagAdded: $.proxy(function(event, ui){
+                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
+                        ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                    }
+                }, this),
                 tagSource: function(search, showChoices) {
                     if(search.term.length < 2){ showChoices(); return; }
                     var filter = search.term.toLowerCase();

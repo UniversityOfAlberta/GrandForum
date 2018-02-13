@@ -1562,11 +1562,17 @@ select span.noshow {
 }
 
 /*qtip*/
+.qtip {
+    font-size: 12px;
+    line-height: 14px;
+}
+
 .qtip-light .qtip-content {
     -moz-box-shadow: 0 0 3px #E0E0E0;
     -webkit-box-shadow: 0 0 3px #E0E0E0;
     box-shadow: 0 0 3px #E0E0E0;
     font-weight: bold;
+    font-size: 20px;
 }
 
 .qtip-light .qtip-content a {

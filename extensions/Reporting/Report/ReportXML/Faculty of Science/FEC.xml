@@ -140,12 +140,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
-        <ReportItem id="courses" type="PersonCoursesReportItem" showPercentages="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItem id="ugrad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="1,2,3,4" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
-                {$item}<br />
+                <h3>Undergraduate <span class='tooltip' style='cursor:default;font-weight:normal;' title='Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                {$item}
                 <script type='text/javascript'>
                     var mentions = new Array();
                 </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="grad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="5,6,7,8" start="CYCLE_START" end="CYCLE_END">
+            <![CDATA[
+                <h3>Graduate <span class='tooltip' style='cursor:default;font-weight:normal;' title='Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItemSet id="coursesSet" type="PersonCoursesReportItemSet">
@@ -161,8 +168,9 @@
             <![CDATA[
                 <h2>Teaching Development and Innovation <span class='tooltip' style='cursor:default;' title='Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.<br />
 <br />
-Add a new teaching development entry to create a new paragraph.'>&#9432;</span></h2>
-                <small>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</small>
+Add a new teaching development entry to create a new paragraph.<br />
+<br />
+(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)'>&#9432;</span></h2>
                 {$item}
                 <script type='text/javascript'>
                     var tinyMCESettings = {
@@ -212,8 +220,9 @@ Add a new teaching development entry to create a new paragraph.'>&#9432;</span><
             <![CDATA[
                 <h2>Other Teaching <span class='tooltip' style='cursor:default;' title='Enter information related to guest lectures, student projects, graduate instruction, courses taught outside the University, etc.<br />
 <br />
-Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
-                <small>(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)</small>
+Add a new other teaching entry to create a new paragraph.<br />
+<br />
+(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)'>&#9432;</span></h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -221,21 +230,29 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
     <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="ReportSection">
         <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true">
             <![CDATA[
+                <a class="button" style="position:absolute;top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
                 {$item}
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
+                
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="Outputs" blobSection="FEC_PRODUCTS" type="ReportSection">
+    <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="" blobSection="FEC_PRODUCTS" type="ReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Publications</h2>
-                <small>(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)</small><br />
+                
+                <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
                 <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'><tbody>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication|Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
@@ -244,14 +261,15 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
-                </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a> <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a>
+                </tbody></table><br />
             ]]>
         </ReportItem>
         <ReportItem id="presentationheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Presentations <span class='tooltip' style='cursor:default;' title='The Presentations section lists any presentations given by the user during the reporting year. If one of your HQP responsibilities or one of your collaborators has presented your work, you may enter those presentations in the Additional Data section of the report.'>&#9432;</span></h2>
-                <small>(Do not include presentations given by your students or by others)</small>
+                <h2>Presentations <span class='tooltip' style='cursor:default;' title='The Presentations section lists any presentations given by the user during the reporting year. If one of your HQP responsibilities or one of your collaborators has presented your work, you may enter those presentations in the Additional Data section of the report.<br />
+<br />
+(Do not include presentations given by your students or by others)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
                 <table class ='wikitable' style='width:100%'>
                     <thead>
                     <tr>
@@ -283,15 +301,39 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
         </ReportItemSet>
         <ReportItem id="presentationfooter" type="StaticReportItem">
             <![CDATA[
-                </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a>
+                </tbody></table><br />
             ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="awards" tooltip="Awards Received" name="Awards" title="Awards Received" blobSection="FEC_AWARDS" type="ReportSection">
+        <ReportItem id="patentsheader" type="StaticReportItem">
+            <![CDATA[
+                
+                <h2>Patents/Spin-Offs <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
+                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <table class='wikitable' style='width:100%'><tbody>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="patentsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </ReportItem>
         <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
-                <small>(Do not include awards given to students.)</small>
+                <h2>Awards <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -301,6 +343,7 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
                             <th>Year</th>
                         </tr>
                     </thead>
+                    <tbody>
             ]]>
         </ReportItem>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
@@ -316,12 +359,11 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
         </ReportItemSet>
         <ReportItem id="awardfooter" type="StaticReportItem">
             <![CDATA[
-                </table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a>
+                </tbody></table>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="services" name="Services" tooltip="Services/Committees/Outreach" title="Service/Committees/Outreach &lt;span class='tooltip' style='cursor:default;' title='Provide information for any of the subsections below.&lt;br />
+    <ReportSection id="services" name="Service" tooltip="Service/Committees/Outreach" title="Service Activities &lt;span class='tooltip' style='cursor:default;' title='Provide information for any of the subsections below.&lt;br />
 &lt;b>Departmental&lt;/b> (Excluding Graduate Student Committees): Enter any relevant information for this subsection.&lt;br />
 &lt;b>Faculty&lt;/b>: Enter any relevant information for this subsection.&lt;br />
 &lt;b>University&lt;/b>: Enter any relevant information for this subsection.&lt;br />
@@ -330,32 +372,104 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
 &lt;b>Other&lt;/b>: Enter any other relevant information.'>&#9432;&lt;/span>" type="ReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-                <small>(Include faculty recruitment, faculty development, peer mentorship, and related activities.)</small>
-                <table class='wikitable' style='width:100%'>
-                <thead>
-                    <th>Activity</th><th>Type</th>
-                </thead>
-                <tbody>
+                <a class="button" style="position:absolute;top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity"  useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+        
+        <!-- Departmental -->
+        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
+            <![CDATA[
+                <h3>Departmental</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <tr><td>{$product_citation}</td><td>{$product_type}</td></tr>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
+            
+        <!-- Faculty -->
+        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
             <![CDATA[
-                </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
+                <h3>Faculty</h3>
             ]]>
         </ReportItem>
+        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+            
+        <!-- University -->
+        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
+            <![CDATA[
+                <h3>University</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Scientific -->
+        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
+            <![CDATA[
+                <h3>Scientific</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Outreach and Community Engagement -->
+        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
+            <![CDATA[
+                <h3>Outreach and Community Engagement</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Other -->
+        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+            <![CDATA[
+            	<h3>Other</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
-    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts" blobSection="FEC_GRANTS" type="ReportSection">
+    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='tooltip' style='cursor:default;' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="ReportSection">
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
-                <small>(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)</small>
+                <a class="button" style="position:absolute; top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -387,7 +501,6 @@ Add a new other teaching entry to create a new paragraph.'>&#9432;</span></h2>
         <ReportItem id="grantsfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
             ]]>
         </ReportItem>
     </ReportSection>

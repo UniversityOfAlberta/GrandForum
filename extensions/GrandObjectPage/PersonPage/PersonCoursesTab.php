@@ -6,6 +6,7 @@ class PersonCoursesTab extends AbstractTab {
     var $visibility;
     var $startRange;
     var $endRange;
+    var $levels = null; // array(1,2,3,4) to specify course levels
 
     function PersonCoursesTab($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
         parent::AbstractTab("Teaching");
@@ -25,15 +26,23 @@ class PersonCoursesTab extends AbstractTab {
         }
         $coursesArray = array();
         foreach($courses as $course){
-            if($course->totEnrl > 0){
+            if($course->totEnrl > 0 && ($this->levels == null || in_array(substr($course->catalog, 0, 1), $this->levels))){
                 $level = substr($course->catalog, 0, 1)."00";
                 $coursesArray[$level]["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
             }
         }
-        $item = "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses</i></small>";
-        foreach($coursesArray as $level => $levels){
-            $item .= "<h3>{$level} Level</h3>";
+        $item = "";
+        if($this->levels == null){
+            $item .= "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.</i></small>";
+        }
+        if($this->levels != null){
             $item .= "<table class='wikitable' frame='box' rules='all' width='100%'>";
+        }
+        foreach($coursesArray as $level => $levels){
+            if($this->levels == null){
+                $item .= "<h3>{$level} Level</h3>";
+                $item .= "<table class='wikitable' frame='box' rules='all' width='100%'>";
+            }
             foreach($levels as $subj => $terms){
                 $termStrings = array();
                 $nLec = 0;
@@ -118,6 +127,11 @@ class PersonCoursesTab extends AbstractTab {
                               </tr>";
                 }
             }
+            if($this->levels == null){
+                $item .= "</table>";
+            }
+        }
+        if($this->levels != null){
             $item .= "</table>";
         }
         return $item;
