@@ -39,6 +39,7 @@
             <th width="30%">Description</th>
             <th width="20%">Keywords</th>
             <th width="1%">#Publications</th>
+            <th width="1%"></th>
         </tr>
     </thead>
     <tbody>
@@ -58,6 +59,9 @@
                 </td>
                 <td align="right">
                     <%= bib.get('products').length %>
+                </td>
+                <td>
+                    <span id="<%= bib.get('id') %>" class="delete-icon"></span>
                 </td>
             </tr>
         <% }) %>

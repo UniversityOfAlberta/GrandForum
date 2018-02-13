@@ -44,6 +44,7 @@ BibliographyView = Backbone.View.extend({
         "change #filterSelectTags": "filter",
         "change #filterTagOperand": "filter",
         "keyup #search": "search",
+        "click .delete-icon": "delete",
     },
 
     search: function() {
@@ -148,6 +149,11 @@ BibliographyView = Backbone.View.extend({
             }
             
         });
+    },
+
+    delete: function(e) {
+        console.log("deleting");
+        console.log(e);
     },
     
     renderProducts: function(){

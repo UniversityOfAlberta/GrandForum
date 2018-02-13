@@ -8,10 +8,12 @@ BibliographiesView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.renderProductsAndTags);
         this.template = _.template($('#bibliographies_template').html());
         main.set('title', 'Bibliographies');
+        this.listenTo(this.model, "remove", this.render);
     },
        
     events: {
-        "click #add": "addBibliography"
+        "click #add": "addBibliography",
+        "click .delete-icon": "delete",
     },
 
     clearFilter: function() {
@@ -32,6 +34,18 @@ BibliographiesView = Backbone.View.extend({
         }
     },
 
+    delete: function(e) {
+        //if (confirm("Are you sure you want to delete this bibliography?")) {
+            this.model.get(e.target.id).destroy({success: function() {
+                    clearAllMessages();
+                    addSuccess("Bibliography deleted");
+                }, error: function() {
+                    clearAllMessages();
+                    addError("Bibliography failed");
+                }});
+        //}
+    },
+    
     renderProducts: function(){
         var xhrs = new Array();
         var titles = new Array();

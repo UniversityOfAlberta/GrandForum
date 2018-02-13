@@ -49,7 +49,7 @@ class BibliographyAPI extends RESTAPI {
     function doDELETE(){
         $bib = Bibliography::newFromId($this->getParam('id'));
         $bib = $bib->delete();
-        return $bib;
+        return $bib->toJSON();
     }
 	
 }

@@ -215,9 +215,12 @@ class Bibliography extends BackboneModel{
     }
     
     function delete(){
-        DBFunctions::delete('grand_bibliography',
-                            array('id' => EQ($this->getId())));
-        $this->id = null;
+        $me = Person::newFromWgUser();
+        if ((in_array($me, $this->getEditors())) || ($me == $this->person) || ($me->isRoleAtLeast(STAFF))) {
+            DBFunctions::delete('grand_bibliography',
+                                array('id' => EQ($this->getId())));
+            $this->id = null;
+        }
         return $this;
     }
     
