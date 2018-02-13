@@ -57,6 +57,7 @@
 <% if(me.isLoggedIn()){ %>
     </br>
     <button id="editBibliography">Edit Bibliography</button>
+    <button id="deleteBibliography">Delete Bibliography</button>
     <% if(isExtensionEnabled("MyThreads")){ %>
         <h2>Comments</h2>
         <%= subview('listComments') %>

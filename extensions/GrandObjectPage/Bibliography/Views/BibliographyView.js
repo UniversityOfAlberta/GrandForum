@@ -44,7 +44,7 @@ BibliographyView = Backbone.View.extend({
         "change #filterSelectTags": "filter",
         "change #filterTagOperand": "filter",
         "keyup #search": "search",
-        "click .delete-icon": "delete",
+        "click #deleteBibliography": "delete",
     },
 
     search: function() {
@@ -152,8 +152,18 @@ BibliographyView = Backbone.View.extend({
     },
 
     delete: function(e) {
-        console.log("deleting");
-        console.log(e);
+        if (confirm("Are you sure you want to delete this bibliography?")) {
+            this.model.destroy({success: function() {
+                    document.location = wgServer + wgScriptPath + "/index.php/Special:BibliographyPage#";
+                    _.defer(function() {
+                        clearAllMessages();
+                        addSuccess("Bibliography deleted")
+                    });
+                }, error: function() {
+                    clearAllMessages();
+                    addError("Bibliography failed");
+                }});
+        }
     },
     
     renderProducts: function(){

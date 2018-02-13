@@ -35,7 +35,7 @@ BibliographiesView = Backbone.View.extend({
     },
 
     delete: function(e) {
-        //if (confirm("Are you sure you want to delete this bibliography?")) {
+        if (confirm("Are you sure you want to delete this bibliography?")) {
             this.model.get(e.target.id).destroy({success: function() {
                     clearAllMessages();
                     addSuccess("Bibliography deleted");
@@ -43,7 +43,7 @@ BibliographiesView = Backbone.View.extend({
                     clearAllMessages();
                     addError("Bibliography failed");
                 }});
-        //}
+        }
     },
     
     renderProducts: function(){
