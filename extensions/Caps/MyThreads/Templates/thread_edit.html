@@ -55,11 +55,14 @@
 
             </tr>
 
+             <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
+
             <tr>
               <td>
-                <%= HTML.CheckBox(this, 'approved',{value: "Approved"}) %>
+                <%= HTML.CheckBox(this, 'approved',{value:"yes"})%><span>Approved</span>
               </td>
             </tr>
+            <% } %>
 
             <tr>
                 <td>

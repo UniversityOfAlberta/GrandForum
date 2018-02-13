@@ -2,6 +2,13 @@
 /**
  * @package GrandObjects
  */
+
+
+
+// require 'FirePHPCore/fb.php';
+
+
+
 class Thread extends BackboneModel{
 
 	var $id;
@@ -71,7 +78,7 @@ class Thread extends BackboneModel{
                                             array('id'));
             }
             else{
-		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%'
+		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%' OR `approved` = 1
 			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName\"%'";
                 $data = DBFunctions::execSQL($statement);
             }
@@ -142,6 +149,10 @@ class Thread extends BackboneModel{
             return $this->date_created;
         }
 
+        function getApproved(){
+            return $this->approved;
+        }
+
 	    function getCategory(){
 	        return $this->category;
 	    }
@@ -206,7 +217,12 @@ class Thread extends BackboneModel{
                                               array('user_id' => $this->user_id,
 						                            'users' => serialize($users),
                                                     'title' => $this->title,
-                                                    'category' => $this->category), true);
+                                                    'category' => $this->category,
+                                                    'approved' => $this->approved,
+                                                    'public' => $this->public,
+                                                    'visibility'=> $this->visibility
+
+                                                ), true);
                 $this->id = DBFunctions::insertId();
                 DBFunctions::commit();
                 if($status){
@@ -238,9 +254,12 @@ class Thread extends BackboneModel{
                 $status = DBFunctions::update('grand_threads',
                                               array('users'=>serialize($users),
                                                     'user_id' => $this->user_id,
-						    'title' => $this->getTitle(),
+						      'title' => $this->getTitle(),
                                                     'category' => $this->category,
-                                                    'date_created' => $this->getDateCreated()),
+                                                    'date_created' => $this->getDateCreated(),
+                                                'approved' => $this->approved,
+                                                    'public' => $this->public,
+                                                    'visibility'=> $this->visibility),
                                               array('id' => EQ($this->id)));
                 if($status){
 		            DBFunctions::commit();
@@ -274,8 +293,13 @@ class Thread extends BackboneModel{
 	    foreach($threads as $thread){
 		$ids[] = $thread->getId();
 	    }
+
+
             if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getThreadOwner()->getId() 
-				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids))){
+				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids)) || $this->getApproved()){
+
+
+
                 $bool = true;
             }
             return $bool;

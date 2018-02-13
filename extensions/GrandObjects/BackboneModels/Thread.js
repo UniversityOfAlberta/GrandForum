@@ -19,10 +19,11 @@ Thread = Backbone.Model.extend({
             public: "Public",
 	        category: "",
             date_created: "0000-00-00 00:00:00",
-            approved: false,
+            approved: 0,
         };
     },
 });
+
 
 Threads = Backbone.Collection.extend({
 

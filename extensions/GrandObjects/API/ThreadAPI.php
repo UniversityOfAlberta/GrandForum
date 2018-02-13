@@ -25,6 +25,8 @@ class ThreadAPI extends RESTAPI {
         $thread->setPublic($this->POST('public'));
         $thread->setApproved($this->POST('approved'));
 	    $visibility = $this->POST('visibility');
+        
+
 	    if($visibility == "Chosen Experts"){
 	        $authors = $this->POST('authors');
 	        $authors[] = $me;
