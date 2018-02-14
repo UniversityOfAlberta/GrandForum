@@ -187,8 +187,11 @@ BibliographyView = Backbone.View.extend({
             });
             if (outputBib != "") {
                 this.openBibTexDialog(outputBib);
-                this.$('#bibExportThrobber').hide();
             }
+            else {
+                this.showNoBibsErrMsg();
+            }
+            this.$('#bibExportThrobber').hide();
         },this));
        // console.log(this.products);
     },
@@ -218,6 +221,10 @@ BibliographyView = Backbone.View.extend({
         });
         this.$el.append(this.bibtexDialog.parent());
         this.bibtexDialog.dialog("open");
+    },
+
+    showNoBibsErrMsg: function() {
+        confirm("There are no publications to export.");
     },
     
     renderProducts: function(){
