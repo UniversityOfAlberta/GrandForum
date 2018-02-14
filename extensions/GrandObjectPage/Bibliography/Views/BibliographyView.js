@@ -172,7 +172,7 @@ BibliographyView = Backbone.View.extend({
         var prods = new Products(this.products);
         var xhrs = new Array();
         $.each(lis,function(index, value) {
-            var prod = prods.get(value.id);
+            var prod = prods.get($(value).attr('product-id'));
             xhrs.push(prod.getBibTeX());
         });
         var outputBib = "";
