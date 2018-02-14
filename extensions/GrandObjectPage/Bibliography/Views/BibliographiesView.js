@@ -75,6 +75,7 @@ BibliographiesView = Backbone.View.extend({
                         }
                     }
                 });
+
             });
             main.set('tagsFilterHTML', tags.sort().join(" "));
         }, this));
@@ -141,8 +142,8 @@ BibliographiesView = Backbone.View.extend({
             });
             bib.set('tagsHTML', tags.sort().join(", "));
         });
-        this.renderProducts();
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderProducts();
         this.$("table#bibliographies").DataTable({
             "autoWidth": true
         });

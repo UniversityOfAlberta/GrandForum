@@ -174,15 +174,12 @@ BibliographyView = Backbone.View.extend({
         $.each(lis,function(index, value) {
             var prod = prods.get(value.id);
             xhrs.push(prod.getBibTeX());
-            //console.log(prods.get(value.id));
-
-           // console.log(value.id);
         });
         var outputBib = "";
         this.$('#bibExportThrobber').show();
         $.when.apply(null, xhrs).done($.proxy(function() {
             $.each(lis,function(index, value) {
-                var prod = prods.get(value.id);
+                var prod = prods.get($(value).attr('product-id'));
                 outputBib += prod.get('bibtex') + "\n\n";
             });
             if (outputBib != "") {
@@ -193,7 +190,6 @@ BibliographyView = Backbone.View.extend({
             }
             this.$('#bibExportThrobber').hide();
         },this));
-       // console.log(this.products);
     },
 
     openBibTexDialog: function(text) {
@@ -228,6 +224,7 @@ BibliographyView = Backbone.View.extend({
     },
     
     renderProducts: function(){
+        spinner("loadPublicationsSpinner", 40, 75, 12, 10, '#888');
         var xhrs = new Array();
         var products = new Array();
         var citations = new Array();
@@ -258,7 +255,7 @@ BibliographyView = Backbone.View.extend({
 
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
-                    this.$('#products ol').append("<li id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
+                    this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
                     if (product.get('description'))
                     {
                         var id = product.get('id');
@@ -276,7 +273,8 @@ BibliographyView = Backbone.View.extend({
                     }
                 }, this));
                 $(".pdfnodisplay").remove();
-                this.filterAuthors();
+                this.filterAuthors(); 
+                this.$('#loadPublicationsSpinner').remove();
             }, this));
         }, this));
     },
