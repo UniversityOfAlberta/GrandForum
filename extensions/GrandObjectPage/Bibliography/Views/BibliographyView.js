@@ -183,7 +183,7 @@ BibliographyView = Backbone.View.extend({
         $.when.apply(null, xhrs).done($.proxy(function() {
             $.each(lis,function(index, value) {
                 var prod = prods.get(value.id);
-                outputBib += prod.get('bibtex') + "\n";
+                outputBib += prod.get('bibtex') + "\n\n";
             });
             if (outputBib != "") {
                 this.openBibTexDialog(outputBib);
@@ -224,7 +224,7 @@ BibliographyView = Backbone.View.extend({
     },
 
     showNoBibsErrMsg: function() {
-        confirm("There are no publications to export.");
+        alert("There are no publications to export.");
     },
     
     renderProducts: function(){
