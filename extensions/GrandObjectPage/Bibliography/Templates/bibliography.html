@@ -1,3 +1,9 @@
+<div id="bibtexDialog" style="display:none;" title="Import BibTeX">
+    <p>You can quickly select all the text here by clicking the text area and using Ctrl + a (or Cmd + a on Mac).</p>
+    <div style="position:absolute; bottom:6px; top:35px; left:6px; right:6px;">
+    	<textarea readonly style="resize: none; font-size: 11px; font-family: monospace;height:100%;" name="bibtex"></textarea>
+    </div>
+</div>
 <div>
     <%= nl2br(striphtml(description)) %>
 </div>
@@ -10,41 +16,48 @@
     </ul>
 <% } %>
 <h2>Publications
-    <button id="filtersBtn" type="button" style="position: relative;float: right;padding-top: 3px;padding-right: 4px;padding-bottom: 4px;padding-left: 7px;margin-top:-8px;">Filters
-        <!-- <img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>filterIcon.svg" /> -->
-        <svg style="margin-bottom: -3px;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
-            <path id="svgPath" d="M2 2h13v2l-5 5v7l-3-2v-5l-5-5z"></path>
-        </svg>
-    </button>
-    <div id="filters" style="position: absolute;right: 12px;font-size: small; display:none;background: #FFF;border: 1px solid #ccc;padding: 6px;border-radius: 5px; max-width: 328px; z-index: 1;">
-        <table>
-            <tr>
-                <td align="right">Filter Authors:</td>
-                <td><input style="width:200px;" placeholder="Split names with commas" id="filterAuthors" type="text"></td>
-                <td>
-                    <select id="filterOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
-                        <option value="AND">AND</option>
-                        <option value="OR" selected="selected">OR</option>
-                        <option value="NOT">NOT</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">Filter Tags:</td>
-                <td><select id='filterSelectTags' multiple></select></td>
-                <td>
-                    <select id="filterTagOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
-                        <option value="AND">AND</option>
-                        <option value="OR" selected="selected">OR</option>
-                        <option value="NOT">NOT</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">Search:</td>
-                <td colspan="2"><input style="width:95.6%;" placeholder="Search this bibliography" id="search" type="text"></td>
-            </tr>
-        </table>
+	<div id="headerButtonContainer" style="position:relative; float:right; bottom:8px;">
+		<span id="bibExportThrobber" class="throbber" style="display:none;"></span>
+	    <button id="exportBib" style="padding-top: 4px;padding-right: 7px;padding-bottom: 4px;padding-left: 8px;margin-top: -8px;margin-right:6px;">Export BibTeX</button>
+	    
+	    <button id="filtersBtn" type="button" style="padding-top: 3px;padding-right: 4px;padding-bottom: 4px;padding-left: 7px;margin-top:-8px;">Filters
+	        <!-- <img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>filterIcon.svg" /> -->
+	        <svg style="margin-bottom: -3px;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+	            <path id="svgPath" d="M2 2h13v2l-5 5v7l-3-2v-5l-5-5z"></path>
+	        </svg>
+	    </button>
+
+	    <div id="filters" style="position: absolute;right: 2px;font-size: small; display:none;background: #FFF;border: 1px solid #ccc;padding: 6px;border-radius: 5px; max-width: 328px; z-index: 1;">
+	
+	        <table>
+	            <tr>
+	                <td align="right">Filter Authors:</td>
+	                <td><input style="width:200px;" placeholder="Split names with commas" id="filterAuthors" type="text"></td>
+	                <td>
+	                    <select id="filterOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
+	                        <option value="AND">AND</option>
+	                        <option value="OR" selected="selected">OR</option>
+	                        <option value="NOT">NOT</option>
+	                    </select>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td align="right">Filter Tags:</td>
+	                <td><select id='filterSelectTags' multiple></select></td>
+	                <td>
+	                    <select id="filterTagOperand" class="filter_option" style="width: 40px; height:24px;-webkit-appearance: none;-moz-appearance: none;text-indent: -0.05em;padding: 0px;-webkit-padding-start:5px">
+	                        <option value="AND">AND</option>
+	                        <option value="OR" selected="selected">OR</option>
+	                        <option value="NOT">NOT</option>
+	                    </select>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td align="right">Search:</td>
+	                <td colspan="2"><input style="width:95.6%;" placeholder="Search this bibliography" id="search" type="text"></td>
+	            </tr>
+	        </table>
+    	</div>
             
     </div>
     </div>

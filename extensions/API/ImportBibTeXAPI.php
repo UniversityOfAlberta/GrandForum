@@ -2,14 +2,14 @@
 
 class ImportBibTeXAPI extends API{
 
-    static $bibtexHash = array('inproceedings' => 'Proceedings Paper',
-                               'proceedings' => 'Proceedings Paper',
+    static $bibtexHash = array('proceedings' => 'Proceedings Paper',
+                               'inproceedings' => 'Proceedings Paper',
                                'inbook' => 'Proceedings Paper',
                                'conference' => 'Conference Paper',
                                'book' => 'Book',
                                'article' => 'Journal Paper',
-                               'incollection' => 'Collections Paper',
                                'collection' => 'Collections Paper',
+                               'incollection' => 'Collections Paper',
                                'manual' => 'Manual',
                                'mastersthesis' => 'Masters Thesis',
                                'bachelorsthesis' => 'Bachelors Thesis',

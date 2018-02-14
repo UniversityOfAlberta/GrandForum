@@ -34,6 +34,21 @@ BibliographyView = Backbone.View.extend({
     editBibliography: function(){
         document.location = this.model.get('url') + "/edit";
     },
+
+    delete: function(e) {
+        if (confirm("Are you sure you want to delete this bibliography?")) {
+            this.model.destroy({success: function() {
+                document.location = wgServer + wgScriptPath + "/index.php/Special:BibliographyPage#";
+                _.defer(function() {
+                    clearAllMessages();
+                    addSuccess("Bibliography deleted")
+                });
+            }, error: function() {
+                clearAllMessages();
+                addError("Bibliography failed");
+            }});
+        }
+    },
     
     events: {
         "click #editBibliography": "editBibliography",
@@ -45,6 +60,7 @@ BibliographyView = Backbone.View.extend({
         "change #filterTagOperand": "filter",
         "keyup #search": "search",
         "click #deleteBibliography": "delete",
+        "click #exportBib": "exportBibliography",
     },
 
     search: function() {
@@ -151,19 +167,57 @@ BibliographyView = Backbone.View.extend({
         });
     },
 
-    delete: function(e) {
-        if (confirm("Are you sure you want to delete this bibliography?")) {
-            this.model.destroy({success: function() {
-                    document.location = wgServer + wgScriptPath + "/index.php/Special:BibliographyPage#";
-                    _.defer(function() {
-                        clearAllMessages();
-                        addSuccess("Bibliography deleted")
-                    });
-                }, error: function() {
-                    clearAllMessages();
-                    addError("Bibliography failed");
-                }});
-        }
+    exportBibliography: function() {
+        var lis = this.$("#products ol > li:visible");
+        var prods = new Products(this.products);
+        var xhrs = new Array();
+        $.each(lis,function(index, value) {
+            var prod = prods.get(value.id);
+            xhrs.push(prod.getBibTeX());
+            //console.log(prods.get(value.id));
+
+           // console.log(value.id);
+        });
+        var outputBib = "";
+        this.$('#bibExportThrobber').show();
+        $.when.apply(null, xhrs).done($.proxy(function() {
+            $.each(lis,function(index, value) {
+                var prod = prods.get(value.id);
+                outputBib += prod.get('bibtex') + "\n";
+            });
+            if (outputBib != "") {
+                this.openBibTexDialog(outputBib);
+                this.$('#bibExportThrobber').hide();
+            }
+        },this));
+       // console.log(this.products);
+    },
+
+    openBibTexDialog: function(text) {
+        this.$("#bibtexDialog > div > textarea").val(text);
+        var height = $(window).height() * 0.75;
+        this.bibtexDialog = this.$("#bibtexDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            width: "800px",
+            height: height,
+            open: function(){
+                $("html").css("overflow", "hidden");
+            },
+            beforeClose: function(){
+                $("html").css("overflow", "auto");
+            },
+            buttons: {
+                "Close": $.proxy(function(){
+                    this.bibtexDialog.dialog('close');
+                }, this)    
+            }
+        });
+        this.$el.append(this.bibtexDialog.parent());
+        this.bibtexDialog.dialog("open");
     },
     
     renderProducts: function(){
@@ -197,7 +251,7 @@ BibliographyView = Backbone.View.extend({
 
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
-                    this.$('#products ol').append("<li>" + product.get('citation') + "<br />");
+                    this.$('#products ol').append("<li id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
                     if (product.get('description'))
                     {
                         var id = product.get('id');

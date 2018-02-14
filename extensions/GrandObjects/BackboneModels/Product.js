@@ -35,6 +35,12 @@ Product = Backbone.Model.extend({
         }, this));
     },
 
+    getBibTeX: function() {
+        return $.get(this.urlRoot + '/' + this.get('id') + '/bibtex', $.proxy(function(content){
+            this.set('bibtex', content);
+        }, this));
+    },
+
     getAuthors: function(){
         this.authors.fetch();
         return this.authors;
@@ -119,7 +125,8 @@ Product = Backbone.Model.extend({
             deleted: "",
             access_id: 0,
             created_by: 0,
-            access: "Forum"
+            access: "Forum",
+            bibtex: "",
         };
     },
 });
