@@ -67,7 +67,6 @@ BibliographyView = Backbone.View.extend({
         var searchTerm = this.$("#search").val();
         var lis = this.$("#products li");
         _.each(this.products, function(prod, index){
-            console.log(prod);
             var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
             var tags = prod.get("tags").join(", ");
             pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
@@ -117,7 +116,6 @@ BibliographyView = Backbone.View.extend({
             } else if (version == "authors") {
                 var target = unaccentChars(_.pluck(prod.get("authors"), 'fullname').join(", "));
             }
-
             var show = true;
 
             if ($(lis.get(index))[0].style.display == 'none') {
@@ -127,7 +125,7 @@ BibliographyView = Backbone.View.extend({
             if (show) {
 
                 for (i = 0; i < searchTerms.length; ++i) {
-                    term = searchTerms[i];
+                    term = searchTerms[i].toLowerCase();
                     if (operand == "AND") {
                         if (target.indexOf(term) == -1) { // if we didn't find one
                             show = false;
