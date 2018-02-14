@@ -190,7 +190,11 @@ class CavendishTemplate extends QuickTemplate {
 		            },
 		            show: {
 		                delay: 500
-		            }
+		            },
+		            hide: {
+                        fixed: true,
+                        delay: 300
+                    }
 		        });
             };
             
@@ -438,7 +442,11 @@ class CavendishTemplate extends QuickTemplate {
 		            },
 		            show: {
 		                delay: 500
-		            }
+		            },
+		            hide: {
+                        fixed: true,
+                        delay: 300
+                    }
 		        });
 		        $('.menuTooltip').qtip({
 		            position: {

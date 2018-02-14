@@ -16,127 +16,97 @@
     
 </div>
 <h2>Metadata</h2>
-<table id="productData" width="100%">
-    <tr>
-        <td class="label">Category:</td>
-        <td class="field">
-            <% var def = (category == "") ? [{option: "Choose a Category...", value: ""}] : []; %>
-            <%= HTML.Select(this, 'category', {options: def.concat(_.keys(this.model.getPossibleCategories()))}) %>
-        </td>
-    </tr>
-    <% if(category != ""){ %>
+<div style="display:inline-block; margin-right:10px; vertical-align:top;">
+    <table id="productData" width="50%">
         <tr>
-            <td class="label">Type:</td>
+            <td class="label">Category:</td>
             <td class="field">
-                <% var def = (type == "") ? [{option: "Choose a Type...", value: ""}] : []; %>
-                <%= HTML.Select(this, 'type', {options: def.concat(this.model.getPossibleTypes())}) %>
-                <% if(type.split('Misc').length > 1){ %>
-                    <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
-                <% } %>
+                <% var def = (category == "") ? [{option: "Choose a Category...", value: ""}] : []; %>
+                <%= HTML.Select(this, 'category', {options: def.concat(_.keys(this.model.getPossibleCategories()))}) %>
             </td>
         </tr>
-    <% } %>
-    <tr style="display:none;">
-        <td class="label">Visibility:</td>
-        <td class="field" colspan="2">
-            <%= HTML.Select(this, 'access', {options: ['Public','Forum']}) %>
-            <div style="display:inline-block;">
-                <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
-                    <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the <%= siteName %> will be able to view this product.</li>
-                    <li style="margin-top:0;margin-bottom:0;"><b>Forum:</b> Only Forum members will be able to view this product.</li>
-                </ul>
-            </div>
-        </td>
-    </tr>
-    <% if(this.model.getPossibleStatus().length > 0){ %>
-        <tr>
-            <td class="label">Status:</td>
-            <td class="field"><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td>
-        </tr>
-    <% } %>
-    <tr>
-        <% if(!_.isEmpty(this.model.getAcceptanceDateLabel())){ %>
-            <td class="label"><%= this.model.getAcceptanceDateLabel() %>:</td>
-            <td class="field"><%= HTML.DatePicker(this, 'acceptance_date', {format: 'yy-mm-dd'}) %></td>
-        <% } else { %>
-            <td colspan="2"></td>
-        <% } %>
-        <% if(projectsEnabled){ %>
-            <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 3 %>" style="width:100%;">
-                <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
-                <div id='productSpinner'></div>
-                <div id='productProjects'>
-                    <table>
-                        <% _.each(this.projects.models, function(p){ %>
-                            <tr>
-                                <td class="label"><%= p.get('name') %>:</td>
-                                <td class="checkboxCell" style="width:40px;">
-                                    <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                                        <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
-                                        <% if(p.get('subprojects').length > 0){ %>
-                                            <div style="display:none;" class="subprojectPopup popupBox">
-                                                
-                                            </div>
-                                        <% } %>
-                                    </div>
-                                </td>
-                            </tr>
-                        <% }) %>
-                        <tr>
-                            <td class="label">Other:</td>
-                            <td class="checkboxCell" align="center" style="width:40px;">
-                                <div class="checkboxOuter">
-                                    <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
-                                    <div style="display:none;" class="otherPopup popupBox">
-                                        
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        <% } %>
-    </tr>
-    <tr>
-        <% if(!_.isEmpty(this.model.getDateLabel())){ %>
-            <td class="label"><%= this.model.getDateLabel() %>:</td>
-            <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %> <span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
-        <% } else { %>
-            <td colspan="2"></td>
-        <% } %>
-    </tr>
-    <% _.each(this.model.getPossibleFields(), function(val, index){ %>
-        <% if(!val.hidden){ %>
+        <% if(category != ""){ %>
             <tr>
-                <td style="width:1%;white-space:nowrap;" class="label"><%= val.label %>:
-                    <% if(val.type == "File"){ %>
-                        <small style="display:block;line-height:6px;">(Max 5MB)</small>
-                    <% } %>
-                </td>
+                <td class="label">Type:</td>
                 <td class="field">
-                    <% if(val.label == "Journal"){ %>
-                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:400px;"}) %>
-                    <% } else if(val.type == "String"){ %>
-                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
-                    <% } else if(val.type == "Integer"){ %>
-                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:50px;"}) %>
-                    <% } else if(val.type == "Pages"){ %>
-                        <%= HTML.Pages(this, 'data.' + index, {style: "width:87px;"}) %>
-                    <% } else if(val.type == "Radio"){ %>
-                        <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
-                    <% } else if(val.type == "Select"){ %>
-                        <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
-                    <% } else if(val.type == "File"){ %>
-                        <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
-                    <% } else { %>
-                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                    <% var def = (type == "") ? [{option: "Choose a Type...", value: ""}] : []; %>
+                    <%= HTML.Select(this, 'type', {options: def.concat(this.model.getPossibleTypes())}) %>
+                    <% if(type.split('Misc').length > 1){ %>
+                        <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
                     <% } %>
                 </td>
             </tr>
         <% } %>
-    <% }, this) %>
-</table>
+        <tr style="display:none;">
+            <td class="label">Visibility:</td>
+            <td class="field" colspan="2">
+                <%= HTML.Select(this, 'access', {options: ['Public','Forum']}) %>
+                <div style="display:inline-block;">
+                    <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
+                        <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the <%= siteName %> will be able to view this product.</li>
+                        <li style="margin-top:0;margin-bottom:0;"><b>Forum:</b> Only Forum members will be able to view this product.</li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <% if(this.model.getPossibleStatus().length > 0){ %>
+            <tr>
+                <td class="label">Status:</td>
+                <td class="field"><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td>
+            </tr>
+        <% } %>
+        <tr>
+            <% if(!_.isEmpty(this.model.getAcceptanceDateLabel())){ %>
+                <td class="label"><%= this.model.getAcceptanceDateLabel() %>:</td>
+                <td class="field"><%= HTML.DatePicker(this, 'acceptance_date', {format: 'yy-mm-dd'}) %></td>
+            <% } else { %>
+                <td colspan="2"></td>
+            <% } %>
+        </tr>
+        <tr>
+            <% if(!_.isEmpty(this.model.getDateLabel())){ %>
+                <td class="label"><%= this.model.getDateLabel() %>:</td>
+                <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %> <span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
+            <% } else { %>
+                <td colspan="2"></td>
+            <% } %>
+        </tr>
+    </table>
+</div>
+<div style="display:inline-block; vertical-align:top;">
+    <table>
+        <% _.each(this.model.getPossibleFields(), function(val, index){ %>
+            <% if(!val.hidden){ %>
+                <tr>
+                    <td style="width:1%;white-space:nowrap;" class="label"><%= val.label %>:
+                        <% if(val.type == "File"){ %>
+                            <small style="display:block;line-height:6px;">(Max 5MB)</small>
+                        <% } %>
+                    </td>
+                    <td class="field">
+                        <% if(val.label == "Journal"){ %>
+                            <%= HTML.TextBox(this, 'data.' + index, {style: "width:400px;"}) %>
+                        <% } else if(val.type == "String"){ %>
+                            <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                        <% } else if(val.type == "Integer"){ %>
+                            <%= HTML.TextBox(this, 'data.' + index, {style: "width:50px;"}) %>
+                        <% } else if(val.type == "Pages"){ %>
+                            <%= HTML.Pages(this, 'data.' + index, {style: "width:87px;"}) %>
+                        <% } else if(val.type == "Radio"){ %>
+                            <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <% } else if(val.type == "Select"){ %>
+                            <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
+                        <% } else if(val.type == "File"){ %>
+                            <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <% } else { %>
+                            <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                        <% } %>
+                    </td>
+                </tr>
+            <% } %>
+        <% }, this) %>
+    </table>
+</div>
 <h2>Description <small>(Optional)</small></h2>
 <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 </form>

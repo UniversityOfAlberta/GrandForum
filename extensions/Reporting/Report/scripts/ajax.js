@@ -120,7 +120,15 @@ $(document).ready(function(){
                     $(that).children("img").remove();
                     $("#reportMain > div").stop();
                     $("#reportMain > div").html(response);
-                    $("#reportMain > div .tooltip").qtip();
+                    $("#reportMain > div .tooltip").qtip({
+		                show: {
+		                    delay: 500
+		                },
+		                hide: {
+                            fixed: true,
+                            delay: 300
+                        }
+		            });
                     updateProgress();
                     var heightDifference = oldHeight - $("#reportMain > div > div").height();
 					var height = Math.max(parseInt($('#outerReport').css('min-height')), $('#reportMain > div > div').height());
