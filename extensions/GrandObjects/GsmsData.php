@@ -107,9 +107,9 @@ class GsmsData extends BackboneModel{
 
     /**
     * Returns a new GsmsData from the given id
-    * @param integer $id The id of the course
-    * @return Course The Course with the given id. If no
-    * course exists with that id, it will return an empty course.
+    * @param integer $id The id of the GsmsData
+    * @return GsmsData The GsmsData with the given id. If no
+    * gsms exists with that id, it will return an empty gsms.
     */
     static function newFromUserId($id){
         $data = DBFunctions::select(array('grand_gsms'),
@@ -349,6 +349,7 @@ class GsmsData extends BackboneModel{
 
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
+        $json['comments'] = $sop->getFinalComments();
 
         if($config->getValue('networkName') == 'GARS'){
 
