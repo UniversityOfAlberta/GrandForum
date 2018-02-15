@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2018" ajax="true" disabled="false">
+<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2018" ajax="true" disabled="true">
     <Permissions>
         <Role role="HQP" subType="IFP2018Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
