@@ -198,7 +198,7 @@ class ConvertPdfAPI extends API{
                 }
                 else{
                     // SOP Not Found
-                    $errors[] = "<b>{$person->getNameForForms()}</b> failed. User exists, but application not submitted.  Might be a duplicate accout.";
+                    $errors[] = "<b><b>{$data['first_name']} {$data['last_name']}</b> failed. User exists, but application not submitted.  Might be a duplicate accout.";
                 }
             }
             else{
