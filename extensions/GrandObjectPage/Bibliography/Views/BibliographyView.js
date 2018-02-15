@@ -58,25 +58,9 @@ BibliographyView = Backbone.View.extend({
         "change #filterOperand": "filter",
         "change #filterSelectTags": "filter",
         "change #filterTagOperand": "filter",
-        "keyup #search": "search",
+        "keyup #search": "filter",
         "click #deleteBibliography": "delete",
         "click #exportBib": "exportBibliography",
-    },
-
-    search: function() {
-        var searchTerm = this.$("#search").val();
-        var lis = this.$("#products li");
-        _.each(this.products, function(prod, index){
-            var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
-            var tags = prod.get("tags").join(", ");
-            pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
-            
-            if (pub.indexOf(searchTerm) != -1) {
-                $(lis.get(index)).show();
-            } else {
-                $(lis.get(index)).hide();
-            }
-        });
     },
 
     showFilterOptions: function() {
@@ -91,7 +75,7 @@ BibliographyView = Backbone.View.extend({
         this.$("#products li").show();
         this.filterAuthors();
         this.filterTags();
-
+        this.search();
     },
 
     filterAuthors: function() {
@@ -109,6 +93,9 @@ BibliographyView = Backbone.View.extend({
     },
 
     filterOptions: function(searchTerms, version, operand) {
+        if ((searchTerms.length == 0) || (searchTerms == "")){
+            return;
+        }
         var lis = this.$("#products li");
         _.each(this.products, function(prod, index){
             if (version == "tags") {
@@ -163,6 +150,29 @@ BibliographyView = Backbone.View.extend({
             }
             
         });
+    },
+
+    search: function() {
+        var searchTerm = this.$("#search").val();
+        if (searchTerm == "") {
+            return;
+        }
+        var lis = this.$("#products li");
+        _.each(this.products, function(prod, index){
+            var v = $(lis.get(index));
+            if (v.css('display') != "none") {
+                var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
+                var tags = prod.get("tags").join(", ");
+                pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
+
+                if (pub.indexOf(searchTerm.toLowerCase()) != -1) {
+                    $(lis.get(index)).show();
+                } else {
+                    $(lis.get(index)).hide();
+                }   
+            }
+        });
+
     },
 
     exportBibliography: function() {
