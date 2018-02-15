@@ -63,7 +63,7 @@ class ReportBlob {
 			$this->_owner_id = $owner;
 		else
 			// Bad argument, but carry on (callee maybe wants to load from database).
-			$this->_owner_id = false;
+			$this->_owner_id = str_replace("*", "%", $owner);
 
 		if ($proj instanceof Project)
 			$this->_proj_id = $proj->getId();
@@ -318,7 +318,7 @@ class ReportBlob {
 
 		// Load all data from database.
 		$sql = "SELECT * FROM grand_report_blobs WHERE " .
-			"user_id = {$this->_owner_id} AND " .
+			"user_id LIKE '{$this->_owner_id}' AND " .
 			"year = {$this->_year} AND " .
 			"proj_id = {$this->_proj_id} AND {$where};";
 		$res = DBFunctions::execSQL($sql);
@@ -335,7 +335,9 @@ class ReportBlob {
 		default:
 			// Collision.
 			//echo ">>>> Offending SQL:\n{$sql}\n";
-			throw new DomainException('Address leads to ambiguous data.');
+			//throw new DomainException('Address leads to ambiguous data.');
+			$ret = $this->populate($res[0]);
+            break;
 		}
 		if($this->_type != BLOB_RAW){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
