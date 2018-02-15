@@ -100,8 +100,29 @@ class LatestNews extends SpecialPage{
                     $header = "Nouvelles Antérieures";
                 }
                 $wgOut->addHTML("<div><h2>$header</h2><ul>");
+                $olddate = null;
                 foreach($data as $key => $row){
                     if($key > 0){
+                        $date = explode("-",substr($row['date'], 0, 10));
+                        if (!is_null($olddate)){
+                            if ($olddate[1] != $date[1] || $olddate[0] != $date[0]){
+                                $wgOut->addHTML("</ul>");
+                                $monthNumber = explode("-",substr($row['date'], 0, 10))[1];
+                                $dateObj  = DateTime::createFromFormat('!m', $monthNumber);
+                                $monthName = $dateObj->format('F');
+                                $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3>");
+
+                            }
+                        }
+                        else{
+                            $wgOut->addHTML("</ul>");
+                            $monthNumber = explode("-",substr($row['date'], 0, 10))[1];
+                            $dateObj  = DateTime::createFromFormat('!m', $monthNumber);
+                            $monthName = $dateObj->format('F');
+                            $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3><ul>");
+                        }
+
+                        
                         $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em;'>".substr($row['date'], 0, 10)."</a></li>");
                     }
                 }

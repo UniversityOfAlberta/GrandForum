@@ -1014,9 +1014,9 @@ $(function(){
         } 
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader($title);
         
-        $title = "For Certified Members";
+        $title = "For Health Care Professionals";
         if($wgLang->getCode() == "fr"){
-            $title = "Pour les membres certifiés";
+            $title = "Pour les professionnels de la santé";
         }
         $GLOBALS['toolbox']['Other2'] = TabUtils::createToolboxHeader($title);
         
