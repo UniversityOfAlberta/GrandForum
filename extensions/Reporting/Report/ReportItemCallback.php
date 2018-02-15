@@ -990,9 +990,10 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all", $data="", $includeHQP="true"){
+    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all", $data="", $includeHQP="true", $peerReviewed="false"){
         $products = array();
-        $includeHQP = (strtolower($includeHQP) == "true");
+        $includeHQP = (strtolower($includeHQP) == "true" || $includeHQP === true);
+        $peerReviewed = (strtolower($peerReviewed) == "true" || $peerReviewed === true);
         if($this->reportItem->projectId != 0){
             // Project Products
             $project = Project::newFromId($this->reportItem->projectId);
@@ -1019,6 +1020,15 @@ class ReportItemCallback {
                 $datas = explode("=", $data);
                 if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
                     // Data doesn't match
+                    unset($products[$key]);
+                }
+            }
+        }
+        //var_dump($peerReviewed);
+        if($peerReviewed){
+            foreach($products as $key => $product){
+                if($product->getData('peer_reviewed') != "Yes"){
+                    // Not Peer Reviewed
                     unset($products[$key]);
                 }
             }
