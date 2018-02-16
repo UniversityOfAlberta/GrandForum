@@ -39,7 +39,7 @@ class PopupReportItem extends StaticReportItem {
         }
         $html .= <<<EOF
             <a class='pdfnodisplay' style="font-style:italic; font-size:11px; font-weight:bold;" onclick="openDialog{$this->getPostId()}(); return false;" href="#">{$title}</a>
-            <div title="{$title}" id="{$this->getPostId()}">{$text}</div>
+            <div style='display:none;' title="{$title}" id="{$this->getPostId()}">{$text}</div>
             <script type='text/javascript'>
                 $(document).ready(function(){
                     $("#{$this->getPostId()}").dialog({ autoOpen: false, height: '{$height}', width: '{$width}', position: '{$position}', draggable: {$draggable}, modal: {$modal} });

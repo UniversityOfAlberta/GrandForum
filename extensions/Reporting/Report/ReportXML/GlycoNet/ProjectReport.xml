@@ -829,11 +829,24 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="potentials" type="MultiText" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet Cycle II" multiple="true">
+            <![CDATA[
+                <h3>Potential GlycoNet Partners for Cycle II</h3>
+                <p>GlycoNet management is compiling a list of potential partners who may be interested in working with the network in Cycle II. Potential partnerships could be at the network level or with individual projects, and could involve industry, government, foundations, etc. Please fill in the following table with any contacts that you may have.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2015/2016 Collaborative Team Grants">
-        <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" optional="true">
+        <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
             <![CDATA[
                 <p>Round I and II Collaborative Team Grants (e.g. projects ending August 2018 or December 2018) may apply for a project extension by completing this section.</p>
+                <p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" optional="true">
+            <![CDATA[
                 <h2>Objectives during the renewal period and justification based on progress to date</h2>
                 {$item}
             ]]>
@@ -865,7 +878,7 @@
         <ReportItem id="contributions" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CONTRIBUTIONS" labels="Contribution Amount ($CAD)|Cash/In-kind|Partner Organization|Contact Name|Contact Email/Phone" types="Integer|Select(Cash,In-kind,Both)|String|String|String" sizes="100||||" multiple="true" optional="true">
             <![CDATA[
                 <h2>Expected matching</h2>
-                <p>Projects are expected to leverage at minimum a 2:1 matching funds (i.e., for everyone $2 in GlycoNet funding, $1 in matching is expected).</p>
+                <p>Projects are expected to leverage at minimum a 2:1 matching funds (i.e., for every $2 in GlycoNet funding, $1 in matching is expected; at least 50% of the total matching contribution must be cash.).</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -877,10 +890,26 @@
                 <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
             ]]>
         </ReportItem>
-        <ReportItem id="ip" type="UploadReportItem" blobItem="IP" fileSize="20" mimeType="application/pdf" optional="true">
+        <ReportItem id="ip" type="StaticReportItem">
             <![CDATA[
                 <h2>IP development strategy/commercialization plan</h2>
-                {$item}
+                <p>If you wish to be considered for a Translational Grant (options b or c, above), please email a commercialization plan to Elizabeth Nanak (<a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>) no later than June 1, 2018. The commercialization plan should follow these guidelines:</p>
+                <ul>
+                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution;</li>
+                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch;</li>
+                    <li>The plan should address the following items:
+                        <ul>
+                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
+                            <li>Market</li>
+                            <li>Barriers</li>
+                            <li>Commercialization Opportunity</li>
+                            <li>Competitive Advantage over other Technologies</li>
+                            <li>Business Expertise</li>
+                            <li>Commercialization Strategy</li>
+                            <li>Timelines</li>
+                        </ul>
+                    </li>
+                </ul>
             ]]>
         </ReportItem>
     </ReportSection>

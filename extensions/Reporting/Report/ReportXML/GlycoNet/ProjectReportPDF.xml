@@ -313,6 +313,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet Cycle II" multiple="true">
+            <![CDATA[
+                <h3>Potential GlycoNet Partners for Cycle II</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="extension" type="HeaderReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2015/2016 Collaborative Team Grants" pagebreak="false">
         <ReportItemSet id="if" type="If" if="{!=({getText(RP_PROGRESS,EXTENSION,OBJECTIVES,0,0,{$project_id})},)}">
@@ -326,9 +332,15 @@
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
+            <![CDATA[
+                <h1><center>Request for Extension - 2015/2016 Collaborative Team Grants</center></h1>
+                <p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
+                {$item}
+            ]]>
+        </ReportItem>
             <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" optional="true">
                 <![CDATA[
-                    <h1><center>Request for Extension - 2015/2016 Collaborative Team Grants</center></h1>
                     <h2>Objectives during the renewal period and justification based on progress to date</h2>
                     {$item}
                 ]]>
@@ -362,12 +374,6 @@
                     <h3>Letter of Support (if available)*</h3>
                     {$item}
                     <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
-                ]]>
-            </ReportItem>
-            <ReportItem id="ip" type="UploadReportItem" blobItem="IP" fileSize="20" mimeType="application/pdf" optional="true">
-                <![CDATA[
-                    <h2>IP development strategy/commercialization plan</h2>
-                    {$item}
                 ]]>
             </ReportItem>
         </ReportItemSet>
