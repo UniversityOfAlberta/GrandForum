@@ -199,7 +199,6 @@ SopsEditView = Backbone.View.extend({
             suffix = "#/newApplications";
             break;
         }
-        console.log(this.gsmsdata.get('admit'));
         switch(this.gsmsdata.get('admit')){
           case "Admit":
             suffix = "#/admitted";
