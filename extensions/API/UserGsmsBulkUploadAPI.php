@@ -158,6 +158,7 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
                     $gsms_sheet->gender = @$student['gender'];
                     $gsms_sheet->gsms_id = @$student['gsms_id'];
+                    $gsms_sheet->student_id = @$student['student_id'];
                     $gsms_sheet->date_of_birth = @$student['date_of_birth'];
                     $gsms_sheet->program_name = @$student['program_name'];
                     $gsms_sheet->country_of_birth = @$student['country_of_birth'];
