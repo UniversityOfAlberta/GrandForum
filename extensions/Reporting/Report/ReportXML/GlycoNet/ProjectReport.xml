@@ -92,7 +92,7 @@
             <!-- Project Leader View -->
             <ReportItem id="note" type="StaticReportItem">
                 <![CDATA[
-                    <p><b>Deadline: April 3</b></p>
+                    <p><b>Deadline: April 2</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile</li>
@@ -788,6 +788,7 @@
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="true" details="true" showButton="false" totalOnly="true">
             <![CDATA[
                 {$item}<br />
+                <p>**Note: In addition to appearing in the table above, <b>a Statement of Accounts for each non-NCE <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
                 <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:Contributions' target='_blank'>Manage Contributions</a>
             ]]>
         </ReportItem>
