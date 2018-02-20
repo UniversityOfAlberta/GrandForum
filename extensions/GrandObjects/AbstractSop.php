@@ -502,14 +502,16 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getFinalAdmit(){
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
-        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q1', $this->getId());
+        $hqp = Person::newFromId($this->getUser());
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q1', $gsms->getId());
         $blob->load($blob_address);
         $data = $blob->getData();
         if($data == "Waitlist"){
             $number = 1;
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
-            $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q3', $this->getId());
+            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
+            $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q3', $gsms->getId());
             $blob->load($blob_address);
             $number = $blob->getData();
             return $data.' '.$number;
