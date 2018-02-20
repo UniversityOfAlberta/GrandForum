@@ -1,6 +1,5 @@
 <?php
 
-// putenv('PATH='.getenv().'/usr/local/bin/gs');
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['LatestNews'] = 'LatestNews'; # Let MediaWiki know about the special page.
@@ -135,9 +134,9 @@ class LatestNews extends SpecialPage{
             </div><br /><br/>");
         }
         $data = DBFunctions::select(array('grand_latest_news'),
-                                    array('id','en', 'date','enTitle','frTitle','color','type','thumbnail','en'),
+                                    array('id','en', 'date','enTitle','frTitle','color','type','thumbnail','en','fr'),
                                     array(),
-                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC','thumbnail' => 'DESC','en' => 'DESC'));
+                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC','thumbnail' => 'DESC','en' => 'DESC','fr'=>'DESC'));
         
         if(isset($data[0])){
             $pdfId = (isset($_GET['pdf'])) ? $_GET['pdf'] : $data[0]['id'];
@@ -162,12 +161,6 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2><ul>");
                 $olddate = null;
                 foreach($data as $key => $row){
-
-            //         if($row['thumbnail'] == ""){
-                        
-            // // header('Content-Type: image/jpeg');
-            //         }
-
                     if($key > 0){
                         $date = explode("-",substr($row['date'], 0, 10));
                         if (!is_null($olddate)){
@@ -178,7 +171,6 @@ class LatestNews extends SpecialPage{
                                 $monthName = $dateObj->format('F');
                                 $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3>");
                             }
-
                         }
                         else{
                             $wgOut->addHTML("</ul>");
@@ -188,16 +180,19 @@ class LatestNews extends SpecialPage{
                             $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3><ul>");
                         }
                         $olddate = $date;
+                        if($wgLang->getCode() == 'en'){
                         file_put_contents($row["id"]."temp.pdf", $row['en']);
+                        }
+                        else{
+                            file_put_contents($row["id"]."temp.pdf", $row['fr']);
+                        }
+
                         
                         $im = new imagick();
                         $im->readimage($row["id"]."temp.pdf"); 
                         $im->setImageFormat('png');
 
                         $im->writeimage($row["id"]."temp.jpg");
-                        // $im = new imagick($row['en']);
-                        //         $im->setImageFormat('jpg');
-                        // header('Content-Type: image/png');
                         $wgOut->addHTML("<img src='/".$row["id"]."temp.jpg'"."style='width:10%;height:10%;'>");
                         $wgOut->addHTML("<li> (".substr($row['date'], 0, 10).") <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>".$row['type'].": ".$row['enTitle']."</a></li>");
                     }
