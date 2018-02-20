@@ -1,5 +1,7 @@
 <?php
 
+// putenv('PATH='.getenv().'/usr/local/bin/gs');
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['LatestNews'] = 'LatestNews'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['LatestNews'] = $dir . 'LatestNews.i18n.php';
@@ -130,12 +132,13 @@ class LatestNews extends SpecialPage{
                         });
                     </script>
                 </form>
-            </div><br /><br />");
+            </div><br /><br/>");
         }
         $data = DBFunctions::select(array('grand_latest_news'),
-                                    array('id', 'date','enTitle','frTitle','color','type'),
+                                    array('id','en', 'date','enTitle','frTitle','color','type','thumbnail','en'),
                                     array(),
-                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC'));
+                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC','thumbnail' => 'DESC','en' => 'DESC'));
+        
         if(isset($data[0])){
             $pdfId = (isset($_GET['pdf'])) ? $_GET['pdf'] : $data[0]['id'];
             $wgOut->addHTML("<iframe src='https://docs.google.com/viewer?url=$wgServer$wgScriptPath/index.php?action=getPDF%26pdf={$pdfId}%26lang={$wgLang->getCode()}&embedded=true' width='800px' height='610px' frameborder='0'></iframe>");
@@ -147,7 +150,6 @@ class LatestNews extends SpecialPage{
                 <div style='color:#224F77'>Coverage/Access</div>
                 <div style='color:#9DC3E3'>URGENT News</div>
                 <div style='color:#224F77'>Resource</div>
-
                 </fieldset>
                 </div>");
             if(count($data) > 1){
@@ -160,11 +162,16 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2><ul>");
                 $olddate = null;
                 foreach($data as $key => $row){
+
+            //         if($row['thumbnail'] == ""){
+                        
+            // // header('Content-Type: image/jpeg');
+            //         }
+
                     if($key > 0){
                         $date = explode("-",substr($row['date'], 0, 10));
                         if (!is_null($olddate)){
                             if ($olddate[1] != $date[1] || $olddate[0] != $date[0]){
-
                                 $wgOut->addHTML("</ul>");
                                 $monthNumber = explode("-",substr($row['date'], 0, 10))[1];
                                 $dateObj  = DateTime::createFromFormat('!m', $monthNumber);
@@ -181,8 +188,18 @@ class LatestNews extends SpecialPage{
                             $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3><ul>");
                         }
                         $olddate = $date;
-                        $wgOut->addHTML("<li> (".substr($row['date'], 0, 10).") <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>".$row['enTitle']."</a></li>");
+                        file_put_contents($row["id"]."temp.pdf", $row['en']);
+                        
+                        $im = new imagick();
+                        $im->readimage($row["id"]."temp.pdf"); 
+                        $im->setImageFormat('png');
 
+                        $im->writeimage($row["id"]."temp.jpg");
+                        // $im = new imagick($row['en']);
+                        //         $im->setImageFormat('jpg');
+                        // header('Content-Type: image/png');
+                        $wgOut->addHTML("<img src='/".$row["id"]."temp.jpg'"."style='width:10%;height:10%;'>");
+                        $wgOut->addHTML("<li> (".substr($row['date'], 0, 10).") <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>".$row['type'].": ".$row['enTitle']."</a></li>");
                     }
                 }
                 $wgOut->addHTML("</ul></div>");
