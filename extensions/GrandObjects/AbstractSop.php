@@ -524,8 +524,10 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getFinalComments(){
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
-        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q2', $this->getId());
+        $hqp = Person::newFromId($this->getUser());
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q2', $gsms->getId());
         $blob->load($blob_address);
         $data = $blob->getData();
         return $data;
