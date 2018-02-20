@@ -187,18 +187,25 @@ SopsEditView = Backbone.View.extend({
 
     set_link_to_table: function() {
         var suffix = "#";
-        switch(this.gsmsdata.attributes.folder) {
+        switch(this.gsmsdata.get('folder')) {
           case "Review in Progress":
-            suffix += "/reviewInProgress";
+            suffix = "#/reviewInProgress";
             break;
           case "In Progress":
-            suffix += "/inProgress";
+            suffix = "#/inProgress";
             break;
           case "":
-            suffix += "/newApplications";
-            break;
           case "New Applications":
-            suffix += "/newApplications";
+            suffix = "#/newApplications";
+            break;
+        }
+        console.log(this.gsmsdata.get('admit'));
+        switch(this.gsmsdata.get('admit')){
+          case "Admit":
+            suffix = "#/admitted";
+            break;
+          case "Rejected":
+            suffix = "#/rejected";
             break;
         }
         var reviewers = this.gsmsdata.attributes.reviewers;

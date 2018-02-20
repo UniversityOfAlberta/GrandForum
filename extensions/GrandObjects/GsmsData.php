@@ -265,6 +265,10 @@ class GsmsData extends BackboneModel{
        }
        return $this->program_name;
     }
+    
+    function getSOP(){
+        return SOP::newFromUserId($this->user_id);
+    }
 
     /**
      * Returns an array of this object
@@ -280,7 +284,7 @@ class GsmsData extends BackboneModel{
                         'name' => $student->getReversedName(),
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
-        $sop = SOP::newFromUserId($this->user_id);
+        $sop = $this->getSOP();
         $this->gsms_url = $sop->getGSMSUrl();
         if($config->getValue('networkName') == 'CSGARS'){
             $degrees = $sop->getCSEducationalHistory(true);
