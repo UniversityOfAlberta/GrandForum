@@ -161,6 +161,20 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2><ul>");
                 $olddate = null;
                 foreach($data as $key => $row){
+                    if ($row["thumbnail"]==""){
+
+                        file_put_contents($row["id"]."temp.pdf", $row['en']);
+                        
+                        $im = new imagick();
+                        $im->readimage($row["id"]."temp.pdf"); 
+                        $im->setImageFormat('jpg');
+
+                        $im->writeimage($row["id"]."temp.jpg");
+
+                        DBFunctions::update('grand_latest_news',
+                                    array('thumbnail' => $row["id"]."temp.jpg",
+                                      ),array('id' => $row['id']));
+                    }
                     if($key > 0){
                         $date = explode("-",substr($row['date'], 0, 10));
                         if (!is_null($olddate)){
@@ -180,20 +194,10 @@ class LatestNews extends SpecialPage{
                             $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3><ul>");
                         }
                         $olddate = $date;
-                        if($wgLang->getCode() == 'en'){
-                        file_put_contents($row["id"]."temp.pdf", $row['en']);
-                        }
-                        else{
-                            file_put_contents($row["id"]."temp.pdf", $row['fr']);
-                        }
+                        
 
                         
-                        $im = new imagick();
-                        $im->readimage($row["id"]."temp.pdf"); 
-                        $im->setImageFormat('png');
-
-                        $im->writeimage($row["id"]."temp.jpg");
-                        $wgOut->addHTML("<img src='/".$row["id"]."temp.jpg'"."style='width:10%;height:10%;'>");
+                        $wgOut->addHTML("<img src='/".$row["thumbnail"]."'"."style='width:10%;height:10%;'>");
                         $wgOut->addHTML("<li> (".substr($row['date'], 0, 10).") <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>".$row['type'].": ".$row['enTitle']."</a></li>");
                     }
                 }
