@@ -317,10 +317,18 @@ class ReportBlob {
 		$where = implode(' AND ', $where_list);
 
 		// Load all data from database.
-		$sql = "SELECT * FROM grand_report_blobs WHERE " .
-			"user_id LIKE '{$this->_owner_id}' AND " .
-			"year = {$this->_year} AND " .
-			"proj_id = {$this->_proj_id} AND {$where};";
+		if(strstr($this->_owner_id, "%") !== false){
+		    $sql = "SELECT * FROM grand_report_blobs WHERE " .
+			        "user_id LIKE '{$this->_owner_id}' AND " .
+			        "year = {$this->_year} AND " .
+			        "proj_id = {$this->_proj_id} AND {$where};";
+        }
+        else{
+            $sql = "SELECT * FROM grand_report_blobs WHERE " .
+			        "user_id = '{$this->_owner_id}' AND " .
+			        "year = {$this->_year} AND " .
+			        "proj_id = {$this->_proj_id} AND {$where};";
+        }
 		$res = DBFunctions::execSQL($sql);
         $ret = false;
 		switch (count($res)) {
