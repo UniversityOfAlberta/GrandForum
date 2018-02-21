@@ -47,12 +47,11 @@ foreach($people as $person) {
 				$gender = $array['gender'];
 			}
 
-			$name = explode(" ", $person->realname);
 			$output = array(
 				"sid " . $array['student_id'],
 				"term " . $term,
-				"surname " . $name[1],
-				"firstname " . $name[0],
+				"surname " . $person->getLastName(),
+				"firstname " . $person->getFirstName(),
 				"middlename ",
 				"gender " . $gender,
 				"email " . $array['student_data']['email'],
