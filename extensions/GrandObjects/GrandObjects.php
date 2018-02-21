@@ -126,6 +126,7 @@ $apiRequest->addAction('Hidden','gsmsdata/:id', 'GsmsDataAPI');
 $apiRequest->addAction('Hidden','gsmsdatas', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program', 'GsmsDataAllAPI');
+$apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision', 'GsmsDataAllAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;

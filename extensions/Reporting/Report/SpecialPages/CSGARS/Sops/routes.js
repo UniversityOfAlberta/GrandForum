@@ -23,6 +23,8 @@ PageRouter = Backbone.Router.extend({
         "reviewInProgress(/:search)": "defaultRoute",
         "inProgress(/:search)": "inProgress",
         "newApplications(/:search)": "newApplications",
+        "admitted(/:search)": "admitted",
+        "rejected(/:search)": "rejected",
         "hidden(/:search)": "hidden",
         "course": "course",
         "other": "other",
@@ -63,6 +65,32 @@ pageRouter.on('route:newApplications', function (search) {
     var gsms = new GsmsDataAll();
     gsms.folder = "New Applications,";
     //gsms.program = "Doctor of Philosophy,Master of Science (Thes)";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
+});
+
+pageRouter.on('route:admitted', function (search) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "all";
+    gsms.program = "all";
+    gsms.decision = "Admit";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
+});
+
+pageRouter.on('route:rejected', function (search) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "all";
+    gsms.program = "all";
+    gsms.decision = "Reject";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     if (search == null) { search = ""; }

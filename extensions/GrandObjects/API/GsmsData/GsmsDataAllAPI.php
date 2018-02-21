@@ -13,6 +13,7 @@ class GsmsDataAllAPI extends RESTAPI {
     function doGET(){
         $folders = explode(",", $this->getParam('folder'));
         $programs = explode(",", $this->getParam('program'));
+        $decision = $this->getParam('decision');
         $gsms = GsmsData::getAllVisibleGsms();
         $newGsms = array();
         foreach($gsms as $g){
@@ -20,10 +21,12 @@ class GsmsDataAllAPI extends RESTAPI {
             foreach($folders as $folder){
                 if($g->folder == $folder || $folder == 'all'){
                     foreach($programs as $program){
-                        if($program == '' || strstr($g->getProgramName(true), $program) !== false){
-                            $newGsms[] = $g;
-                            $found = true;
-                            break;
+                        if($program == '' || $program == 'all' || strstr($g->getProgramName(true), $program) !== false){
+                            if($decision == 'all' || $g->getSOP()->getFinalAdmit() == $decision){
+                                $newGsms[] = $g;
+                                $found = true;
+                                break;
+                            }
                         }
                     }
                     if($found){

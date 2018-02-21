@@ -187,29 +187,35 @@ SopsEditView = Backbone.View.extend({
 
     set_link_to_table: function() {
         var suffix = "#";
-        switch(this.gsmsdata.attributes.folder) {
+        switch(this.gsmsdata.get('folder')) {
           case "Review in Progress":
-            suffix += "/reviewInProgress";
+            suffix = "#/reviewInProgress";
             break;
           case "In Progress":
-            suffix += "/inProgress";
+            suffix = "#/inProgress";
             break;
           case "":
-            suffix += "/newApplications";
-            break;
           case "New Applications":
-            suffix += "/newApplications";
+            suffix = "#/newApplications";
+            break;
+        }
+        switch(this.gsmsdata.get('admit')){
+          case "Admit":
+            suffix = "#/admitted";
+            break;
+          case "Rejected":
+            suffix = "#/rejected";
             break;
         }
         var reviewers = this.gsmsdata.attributes.reviewers;
-        console.log(reviewers);
+        //console.log(reviewers);
         for (var i = 0; i < reviewers.length; i++) {
             if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
         var other_reviewers = this.gsmsdata.attributes.other_reviewers;
-        console.log(other_reviewers);
+        //console.log(other_reviewers);
         for (var i = 0; i < other_reviewers.length; i++) {
             if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
@@ -359,18 +365,29 @@ SopsEditView = Backbone.View.extend({
           intervalId = null;
         }     
       }, 100)
-      /**TEST**/
-      //console.log(this.model);
+
       var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
       mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
-      $(document).ready(function () {
-          $("#accordion > div").accordion({
+      $("#accordion > div").accordion({
           autoHeight: false,
           collapsible: true,
           active:false
-        });
       });
+      var reviewerInterval = setInterval(function(){
+        if($("#review_iframe").is(":visible")){
+            $("#review_iframe").attr('src', $("#review_iframe").attr("data-src"));
+            clearInterval(reviewerInterval);
+        }
+      }, 33);
+      var gradChairInterval = setInterval(function(){
+        if($("#gradchair_iframe").is(":visible")){
+            $("#gradchair_iframe").attr('src', $("#gradchair_iframe").attr("data-src"));
+            clearInterval(gradChairInterval);
+        }
+      }, 33);
+      spinner("review_spinner", 40, 75, 12, 10, '#888');
+      spinner("gradchair_spinner", 40, 75, 12, 10, '#888');
       this.set_link_to_table();
       return this.$el;
     }

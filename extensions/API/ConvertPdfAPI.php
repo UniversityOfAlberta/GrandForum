@@ -23,10 +23,11 @@ class ConvertPdfAPI extends API{
     }
     
     function get_lines_between($string, $start, $end){
-        $string = preg_replace('/<!--(.|\s)*?-->/', '', $string);
+        $string = preg_replace('/<!--[^>]*-->/', '', $string);
         $lines = explode("\n", $string);
         $startFound = false;
         $between = array();
+        
         foreach($lines as $line){
             if($startFound && strstr($line, $end) !== false){
                 break;
