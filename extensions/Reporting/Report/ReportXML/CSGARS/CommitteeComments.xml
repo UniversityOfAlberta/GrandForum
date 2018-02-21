@@ -111,7 +111,7 @@
             </ReportItem>
         </ReportItemSet>
 
-        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({!contains({$user_full_roles},Manager)},{!contains({$user_full_roles}, Chair)})}">
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({!contains({$user_full_roles},Manager)},{!contains({$user_full_roles}, Chair)},{!contains({$user_full_roles}, Admin)})}">
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
 		Decision:<br />{$finalDecision}<br /><br />
