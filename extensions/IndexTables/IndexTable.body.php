@@ -240,14 +240,14 @@ class IndexTable {
                     }
                 $this->generatePersonTable("Presentations"); 
                     break;
-                case 'Survey Instruments':
+                case 'ALL Surveys':
                 $wgOut->setPageTitle("Survey Instruments");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Fichier de présentations");
                     }
-                $this->generatePersonTable("Survey"); 
+                $this->generatePersonTable("Surveys"); 
                     break;
-                case 'Curricula':
+                case 'ALL Curricula':
                 $wgOut->setPageTitle("Curricula");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Fichier de présentations");
