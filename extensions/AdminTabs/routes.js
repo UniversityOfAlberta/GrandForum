@@ -27,7 +27,7 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:defaultRoute', function (actions) {
     this.closeCurrentView();
     this.currentView = new TabsView({el: $("#currentView"), model: new AdminTabsModel()});
-    this.currentView.render();
+    //this.currentView.render();
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
