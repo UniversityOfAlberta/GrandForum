@@ -84,6 +84,10 @@ class SOP extends AbstractSop{
         $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
         $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
 
+        // Immigration status
+        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "qImmigrationStatus");
+        $moreJson['immigration'] = $blob;
+
         // # of Publications
         $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
         $moreJson['num_publications'] = @count($blob['qResExp2']);

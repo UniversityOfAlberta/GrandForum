@@ -90,7 +90,7 @@ class GsmsData extends BackboneModel{
             $this->admission_program_name = $data[0]['admission_program_name'];
             $sub = explode(" ",$data[0]['submitted_date']);
             $this->submitted_date = $sub[0];
-            $this->folder = $data[0]['folder'];
+            $this->folder = $data[0]['folder']; 
             $this->department_gpa = $data[0]['department_gpa'];
             $this->department_gpa_scale = $data[0]['department_gpa_scale'];
             $this->department_normalized_gpa = $data[0]['department_normalized_gpa'];
@@ -298,7 +298,7 @@ class GsmsData extends BackboneModel{
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
- 	              'applicant_number' => $this->applicant_number,
+ 	                'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
                   'program_name' => $this->getProgramName(true),
@@ -354,6 +354,9 @@ class GsmsData extends BackboneModel{
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
         $json['comments'] = $sop->getFinalComments();
+        $json['area'] = $sop->getArea();
+        $json['degree'] = $sop->getDegree();
+        $json['ftpt'] = $sop->getFullTimePartTime();
 
         if($config->getValue('networkName') == 'GARS'){
 
@@ -376,6 +379,10 @@ class GsmsData extends BackboneModel{
         if($config->getValue('networkName') == 'CSGARS'){
             $json['additional'] = array_merge($json['additional'],$sop->getColumns());
         }
+
+        // Needed by exportAdmittedStudents
+        $json['academic_year'] = $this->academic_year;
+        $json['term'] = $this->term;
 
         return $json;
 
