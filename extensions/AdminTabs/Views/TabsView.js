@@ -11,28 +11,28 @@ TabsView = Backbone.View.extend({
             me.roles.ready().then($.proxy(function(){
                 Backbone.Subviews.add(this);
                 var intervalId = setInterval(function(){ //Intervals are set to check if the tab is visible to render all items
-                    if($('#tabs-1').is(':visible')){
+                    if($('#tabs-1').is(':visible') && self.subviews.studentImport != undefined){
                         self.subviews.studentImport.render();
                         clearInterval(intervalId);
                         intervalId = null;
                     }
                  }, 100);
                 var intervalId1 = setInterval(function(){
-                    if($('#tabs-2').is(':visible')){
+                    if($('#tabs-2').is(':visible') && self.subviews.reviewerImport != undefined){
                         self.subviews.reviewerImport.render();
                         clearInterval(intervalId1);
                         intervalId1 = null;
                     }
                  }, 100);
                 var intervalId2 = setInterval(function(){
-                    if($('#tabs-3').is(':visible')){
+                    if($('#tabs-3').is(':visible') && self.subviews.editBio != undefined){
                         self.subviews.editBio.render();
                         clearInterval(intervalId2);
                         intervalId2 = null;
                     }
                  }, 100);
                 var intervalId3 = setInterval(function(){
-                    if($('#tabs-4').is(':visible')){
+                    if($('#tabs-4').is(':visible') && self.subviews.gsmsOutcomeImport != undefined){
                         self.subviews.gsmsOutcomeImport.render();
                         clearInterval(intervalId3);
                         intervalId3 = null;
@@ -60,12 +60,11 @@ TabsView = Backbone.View.extend({
 
 
     events: {
-    
     },
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        $("#tabs").tabs();
+        $( "#tabs" ).tabs();
         return this.$el;
     }
 
