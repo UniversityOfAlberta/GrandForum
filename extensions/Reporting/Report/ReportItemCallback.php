@@ -103,6 +103,7 @@ class ReportItemCallback {
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
+            "finalDecision" => "finalDecision",
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
@@ -1318,6 +1319,16 @@ class ReportItemCallback {
         $item = $report->getSectionById("report")->getReportItemById("sub_project_champs");
         
         return $item->getHTMLForPDF();
+    }
+
+    function finalDecision() {
+        $gsms = GsmsData::newFromId($this->getProjectId());
+        $dec = $gsms->folder;
+        if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
+            return $gsms->folder;
+        } else {
+            return "Undecided";
+        }
     }
     
     function getUserSubProjectComments(){

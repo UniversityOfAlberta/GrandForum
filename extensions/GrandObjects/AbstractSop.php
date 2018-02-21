@@ -502,6 +502,17 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getFinalAdmit(){
+
+
+        $hqp = Person::newFromId($this->getUser());
+        $gsms = $hqp->getGSMS();
+        $dec = $gsms->folder;
+        if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
+            return $gsms->folder;
+        } else {
+            return "Undecided";
+        }
+        /*
         $hqp = Person::newFromId($this->getUser());
         $gsms = $hqp->getGSMS();
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
@@ -517,6 +528,7 @@ abstract class AbstractSop extends BackboneModel{
             return $data.' '.$number;
         } 
         return $data;
+        */
     }
     
     /**
@@ -533,6 +545,43 @@ abstract class AbstractSop extends BackboneModel{
         return $data;
     }
 
+    /**
+    * @return $string either 'PhD', 'MSc' or 'MsC-C' (course-based) based on answer of PDF report.
+    */
+    function getDegree(){
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q6', $this->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        if ($data == "MSc course based") {
+          return "MsC-C";
+        }
+        return $data;
+    }
+
+    /**
+    * returns string of Full time / Part time
+    * @return $string either 'FT', 'PT' based on answer of PDF report.
+    */
+    function getFullTimePartTime(){
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q7', $this->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        return $data;
+    }
+
+    /**
+    * returns string of optional Area of study
+    * @return $string based on answer of PDF report.
+    */
+    function getArea(){
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q5', $this->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        return $data;
+    }
   /**
    * getUser Gets the the SOP User id
    * @return mixed

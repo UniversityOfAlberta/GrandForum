@@ -39,9 +39,9 @@ GsmsDataAll = Backbone.Collection.extend({
 
     folder: '',
     
-    program: '',
+    program: 'all',
     
-    decision: '',
+    decision: 'all',
 
     search: '',
 
