@@ -143,22 +143,47 @@ class LatestNews extends SpecialPage{
             $wgOut->addHTML("<iframe src='https://docs.google.com/viewer?url=$wgServer$wgScriptPath/index.php?action=getPDF%26pdf={$pdfId}%26lang={$wgLang->getCode()}&embedded=true' width='800px' height='610px' frameborder='0'></iframe>");
             $wgOut->addHTML("<div>
                 <fieldset>
-                <legend>Color Code</legend>
-                <div style='color:black'>CAPS Collaboration</div>
-                <div style='color:#8FABD9'>Regulation/Policy</div>
-                <div style='color:#224F77'>Coverage/Access</div>
-                <div style='color:#9DC3E3'>URGENT News</div>
-                <div style='color:#224F77'>Resource</div>
+                <legend>
+                    <span class='en'>Color Code</span>
+                    <span class='fr'>Code Couleur</span>
+                </legend>
+                <div style='color:black'>
+                    <span class='en'>CAPS Collaboration</span>
+                    <span class='fr'>CPCA Collaboration</span>
+                </div>
+                <div style='color:#8FABD9'>
+                    <span class='en'>Regulation/Policy</span>
+                    <span class='fr'>Réglementation/Politique</span>
+                </div>
+                <div style='color:#224F77'>
+                    <span class='en'>Coverage/Access</span>
+                    <span class='fr'>Couverture/Accès</span>
+                </div>
+                <div style='color:#9DC3E3'>
+                    <span class='en'>URGENT News</span>
+                    <span class='fr'>URGENT Nouvelles</span>
+                </div>
+                <div style='color:#224F77'>
+                    <span class='en'>Resource</span>
+                    <span class='fr'>Ressource</span>
+                </div>
                 </fieldset>
                 </div>");
             if(count($data) > 1){
+                $tableHeader = "<table class='wikitable'>
+                    <tr>
+                        <th>Date</th>
+                        <th><span class='en'>Thumbnail</span><span class='fr'>Vignette</span></th>
+                        <th>Type</th>
+                        <th><span class='en'>Title</span><span class='fr'>Titre</span></th>
+                    </tr>";
                 if($wgLang->getCode() == 'en'){
                     $header = "Previous News";
                 }
                 else{
                     $header = "Nouvelles Antérieures";
                 }
-                $wgOut->addHTML("<div><h2>$header</h2><ul>");
+                $wgOut->addHTML("<div><h2>$header</h2>");
                 $olddate = null;
                 foreach($data as $key => $row){
                     if ($row["thumbnail"]==""){
@@ -174,34 +199,44 @@ class LatestNews extends SpecialPage{
                         DBFunctions::update('grand_latest_news',
                                     array('thumbnail' => $row["id"]."temp.jpg",
                                       ),array('id' => $row['id']));
+                        $row["thumbnail"] = $row["id"]."temp.jpg";
+                        unlink($row["id"]."temp.pdf");
                     }
                     if($key > 0){
                         $date = explode("-",substr($row['date'], 0, 10));
                         if (!is_null($olddate)){
                             if ($olddate[1] != $date[1] || $olddate[0] != $date[0]){
-                                $wgOut->addHTML("</ul>");
-                                $monthNumber = explode("-",substr($row['date'], 0, 10))[1];
+                                $wgOut->addHTML("</table>");
+                                $months = explode("-",substr($row['date'], 0, 10));
+                                $monthNumber = $months[1];
                                 $dateObj  = DateTime::createFromFormat('!m', $monthNumber);
                                 $monthName = $dateObj->format('F');
-                                $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3>");
+                                $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3>$tableHeader");
                             }
                         }
                         else{
-                            $wgOut->addHTML("</ul>");
-                            $monthNumber = explode("-",substr($row['date'], 0, 10))[1];
+                            $wgOut->addHTML("</table>");
+                            $months = explode("-",substr($row['date'], 0, 10));
+                            $monthNumber = $months[1];
                             $dateObj  = DateTime::createFromFormat('!m', $monthNumber);
                             $monthName = $dateObj->format('F');
-                            $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3><ul>");
+                            $wgOut->addHTML("<h3>".$monthName." ".$date[0]."</h3>$tableHeader");
                         }
                         $olddate = $date;
-                        
-
-                        
-                        $wgOut->addHTML("<img src='/".$row["thumbnail"]."'"."style='width:10%;height:10%;'>");
-                        $wgOut->addHTML("<li> (".substr($row['date'], 0, 10).") <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>".$row['type'].": ".$row['enTitle']."</a></li>");
+                        $wgOut->addHTML("<tr>
+                            <td>".substr($row['date'], 0, 10)."</td>
+                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/".$row["thumbnail"]."'"."style='width:150px;height:112.5px;' /></td>
+                            <td>".$row['type']."</td>
+                            <td>
+                                <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>
+                                    <span class='en'>{$row['enTitle']}</span>
+                                    <span class='fr'>{$row['frTitle']}</span>
+                                </a>
+                            </td>
+                        </tr>");
                     }
                 }
-                $wgOut->addHTML("</ul></div>");
+                $wgOut->addHTML("</table></div>");
             }
         }
         
