@@ -53,18 +53,19 @@ TabsView = Backbone.View.extend({
         "editBio" : function(){
              return new EditBioView({parent: this, model: new AdminTabsModel()});
         },
-	"gsmsOutcomeImport" : function(){
+        "gsmsOutcomeImport" : function(){
              return new GsmsOutcomeImportView({parent: this, model: new AdminTabsModel()});
         },
     },
 
 
     events: {
+    
     },
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        $( "#tabs" ).tabs();
+        $("#tabs").tabs();
         return this.$el;
     }
 
