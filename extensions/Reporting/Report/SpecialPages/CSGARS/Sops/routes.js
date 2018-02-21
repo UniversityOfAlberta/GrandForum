@@ -75,9 +75,9 @@ pageRouter.on('route:admitted', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
-    gsms.folder = "all";
-    gsms.program = "all";
-    gsms.decision = "Admit";
+    gsms.folder = "Admit";
+    //gsms.program = "all";
+    //gsms.decision = "Admit";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     if (search == null) { search = ""; }
@@ -88,9 +88,9 @@ pageRouter.on('route:rejected', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
-    gsms.folder = "all";
-    gsms.program = "all";
-    gsms.decision = "Reject";
+    gsms.folder = "Reject";
+    //gsms.program = "all";
+    //gsms.decision = "Reject";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     if (search == null) { search = ""; }
