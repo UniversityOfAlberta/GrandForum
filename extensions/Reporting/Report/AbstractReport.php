@@ -132,6 +132,7 @@ abstract class AbstractReport extends SpecialPage {
 		    $this->project = new Project(array());
 		    $this->project->id = $sopString[1];
 		    $this->project->name = $projectName;
+		    $this->project->type = "SOP";
 		}
 		else{
                     $this->project = Project::newFromName($projectName);
@@ -802,7 +803,7 @@ abstract class AbstractReport extends SpecialPage {
         }*/
         $found = false;
         $roles = $me->getRights();
-        if($this->project != null && $this->project->getId() != 0 && $this->project instanceof Project){
+        if($this->project != null && $this->project instanceof Project && $this->project->getId() != 0 && $this->project->type != "SOP"){
             $roles = array($me->getRoleOn($this->project, null, true));
         }
         else{
