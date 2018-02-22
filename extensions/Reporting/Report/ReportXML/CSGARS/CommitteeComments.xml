@@ -25,29 +25,6 @@
             	$('#reportTabs').hide();
             	$('#reportHeader').hide();
             	$('#reportBody').css('min-height',0);
-
-            	$(document).ready(function () {
-                    $('input[value=\'Admit\']').click(function () {
-                        $('#admit_opt').show();
-                    });
-                    $('input[value=\'Waitlist\']').click(function () {
-                        $('#admit_opt').hide();
-                    });
-                    $('input[value=\'Reject\']').click(function () {
-                        $('#admit_opt').hide();
-                    });
-
-                });
-
-
-
-                var intervalId = setInterval(function(){
-                    if ($('#admit_opt').is(':visible') && $('[value=Admit]').attr('checked') != 'checked'){
-	                $('#admit_opt').hide();
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                }, 100);
             </script>
             ]]>
         </ReportItem>
