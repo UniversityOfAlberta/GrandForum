@@ -354,9 +354,9 @@ class GsmsData extends BackboneModel{
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
         $json['comments'] = $sop->getFinalComments();
-        $json['area'] = $sop->getArea();
-        $json['degree'] = $sop->getDegree();
-        $json['ftpt'] = $sop->getFullTimePartTime();
+        $json['area'] = "";
+        $json['degree'] = $this->getFinalProgram();
+        $json['ftpt'] = $this->getFullTimePartTime();
 
         if($config->getValue('networkName') == 'GARS'){
 
@@ -489,6 +489,34 @@ class GsmsData extends BackboneModel{
     function getCacheId(){
             //TODO:implement function
     }
+
+    function getFinalProgram() {
+        $prog = $this->admission_program_name;
+        if (strpos($prog, "Master of Science (Thes)") !== false) {
+            return "MSc";
+        } else if (strpos($prog, "Master of Science (Crse)") !== false) {
+            return "MSc-C";
+        } else if (strpos($prog, "Doctor of Philosophy") !== false) {
+            return "PhD";
+        }
+        return $prog;
+    }
+
+    function getFullTimePartTime() {
+        $prog = $this->program;
+        $progSplit = explode(" - ", $prog);
+        $time = "";
+        try {
+            $time = $progSplit[1];
+        } catch (Exception $e) {}
+        if (strtolower($time) == "full time") {
+          $time = "FT";
+        } else if (strtolower($time) == "part time") {
+          $time = "PT";
+        }
+        return $time;
+    }
+
 }
 
 ?>

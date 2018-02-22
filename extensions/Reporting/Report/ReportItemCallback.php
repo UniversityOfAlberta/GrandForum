@@ -103,7 +103,10 @@ class ReportItemCallback {
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
-            "finalDecision" => "finalDecision",
+            "finalDecision" => "getFinalDecision",
+            "finalProgram" => "getFinalProgram",
+            "finalFunding" => "getFundingNote",
+            "finalTime" => "getFullTimePartTime",
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
@@ -1321,7 +1324,7 @@ class ReportItemCallback {
         return $item->getHTMLForPDF();
     }
 
-    function finalDecision() {
+    function getFinalDecision() {
         $gsms = GsmsData::newFromId($this->getProjectId());
         $dec = $gsms->folder;
         if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
@@ -1329,6 +1332,41 @@ class ReportItemCallback {
         } else {
             return "Undecided";
         }
+    }
+
+    function getFinalProgram() {
+        $gsms = GsmsData::newFromId($this->getProjectId());
+        $prog = $gsms->admission_program_name;
+        if (strpos($prog, "Master of Science (Thes)") !== false) {
+            return "Master of Science (Thes)";
+        } else if (strpos($prog, "Master of Science (Crse)") !== false) {
+            return "Master of Science (Crse)";
+        } else if (strpos($prog, "Doctor of Philosophy") !== false) {
+            return "Doctor of Philosophy";
+        }
+        return $prog;
+    }
+
+    function getFundingNote() {
+        $gsms = GsmsData::newFromId($this->getProjectId());
+        $fund = $gsms->funding_note;
+        if ($fund == "Y") {
+            return "Yes";
+        } else if ($fund == "N") {
+            return "No";
+        }
+        return $fund;
+    }
+
+    function getFullTimePartTime() {
+        $gsms = GsmsData::newFromId($this->getProjectId());
+        $prog = $gsms->program;
+        $progSplit = explode(" - ", $prog);
+        $time = "";
+        try {
+            $time = $progSplit[1];
+        } catch (Exception $e) {}
+        return $time;
     }
     
     function getUserSubProjectComments(){

@@ -51,75 +51,83 @@
             </script>
             ]]>
         </ReportItem>
+            <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <![CDATA[
+                <div style="height:30px;">
+                    <span title="This decision is made in GSMS" class="tooltip" style="font-size:14px; border-bottom: 1px dotted #555;">
+                        <b>Final Decision</span>:</b>
+                    <span style="font-size:14px; margin-left:6px;">{$finalDecision}</span>
+                </div>
+                ]]>
+            </ReportItem>
+
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
+	        <ReportItem id="program" personId="0" type="Text" blobItem="Q3" blobSubItem="{$project_id}">
+        	    <![CDATA[
+                	<span id='admit_opt'>
+                        <table style="margin-left:16px;">
+                            <tr><td><b>Program:</b></td><td>{$finalProgram}</td></tr>
+
+           	    ]]>
+        	</ReportItem>
+            <ReportItem id="funding" personId="0" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
+                <![CDATA[
+                            <tr><td><b>Funding:</b></td><td>{$finalFunding}</td></tr>
+                ]]>
+            </ReportItem>
+            
+            <ReportItem id="status" personId="0" type="RadioReportItem" blobItem="Q7" blobType="BLOB_TEXT" options="FT|PT" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
+                <![CDATA[
+                            <tr><td><b>Full time/Part time:</b></td><td>{$finalTime}</td></tr>
+                        </table>
+                    </span>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+
+        <!-- if an admin -->
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Chair)}, {contains({$user_full_roles}, Manager)},{contains({$user_full_roles}, Admin)})}">
-            <!--
-                <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+            <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
                     <![CDATA[
-                    <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
-                        {$item}</td></tr><br /><br />
-                    ]]>
-                </ReportItem> 
-            -->
-                <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <div style="height:30px;">
-                        <span title="This decision is made in GSMS" class="tooltip" style="font-size:14px; border-bottom: 1px dotted #555;">
-                            <b>Final Decision</span>:</b>
-                        <span style="font-size:14px; margin-left:6px;">{$finalDecision}</span>
+                    <div style="margin-top:10px;">
+                        <b style="font-size: 14px;">Supervisor:</b><div style="display: inline-block; margin-left:10px;">{$item}</div>
                     </div>
                     ]]>
                 </ReportItem>
 
-            <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
-    	        <ReportItem id="program" personId="0" type="Text" blobItem="Q3" blobSubItem="{$project_id}">
-            	    <![CDATA[
-                    	<span id='admit_opt'><table style="margin-left:16px;"><tr><td><b>Program:</b></td><td>{$item}</td></tr>
-               	    ]]>
-            	</ReportItem>
-                <ReportItem id="funding" personId="0" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
-                    <![CDATA[
-                        <tr><td><b>Funding:</b></td><td> {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="q5" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
-                    <![CDATA[
-                        <tr><td><b>Supervisor:</b></td><td>{$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="area" personId="0" type="Text" blobItem="Q5" blobType="BLOB_TEXT" sopBlob="true" blobSubItem="{$project_id}">
-                    <![CDATA[
-                        <tr><td><b>Area:</b></td><td> {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="degree" personId="0" type="RadioReportItem" blobItem="Q6" blobType="BLOB_TEXT" options="PhD|MSc|MSc course based" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
-                    <![CDATA[
-                        <tr><td><b>Degree:</b></td><td> {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="status" personId="0" type="RadioReportItem" blobItem="Q7" blobType="BLOB_TEXT" options="FT|PT" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
-                    <![CDATA[
-                        <tr><td><b>Full time/Part time:</b></td><td> {$item}</td></tr></table></span>
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-
         	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
                 <![CDATA[
-		<span 'style=font:size 14px;'><h3>Comments:</h3></span>
-            	{$item}
+                    <div style="margin-top:10px;">
+    	                <b style="font-size: 14px;">Comments:</b>
+            	        {$item}
+                    </div>
                 ]]>
             </ReportItem>
         </ReportItemSet>
 
+         <!-- else if not an admin -->
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({!contains({$user_full_roles},Manager)},{!contains({$user_full_roles}, Chair)},{!contains({$user_full_roles}, Admin)})}">
+            <ReportItem id="supervisor_unedit" type="StaticReportItem">
+                <![CDATA[
+                    <div style="margin-top:10px;">
+                        <b style="font-size: 14px;">Supervisor:</b>
+                        {getArray(RP_COM,OT_COM,Q14,0,0,{$project_id},q5,;&nbsp;)}
+                        </br>
+                ]]>
+            </ReportItem>
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
-		Decision:<br />{$finalDecision}<br /><br />
-		Comments:<br />
-                {getText(RP_COM,OT_COM,Q2,{$project_id},0,{$project_id})}
+                        <div style="margin-top: 10px;">
+                            <b style="font-size: 14px;">Comments:</b><br />
+                            <div style="margin-left:12px;">
+                                {getText(RP_COM,OT_COM,Q2,{$project_id},0,{$project_id})}
+                            </div>
+                        </div>
+                    </div>
                 ]]>
             </ReportItem>
         </ReportItemSet>
+
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
