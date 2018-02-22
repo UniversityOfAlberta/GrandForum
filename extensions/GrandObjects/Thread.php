@@ -288,18 +288,14 @@ class Thread extends BackboneModel{
         function canView(){
             $me = Person::newFromWgUser();
             $bool = false;
-	    $threads = Thread::getAllThreads();
-	    $ids = array();
-	    foreach($threads as $thread){
-		$ids[] = $thread->getId();
-	    }
-
-
-            if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getThreadOwner()->getId() 
-				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids)) || $this->getApproved()){
-
-
-
+            $threads = Thread::getAllThreads();
+            $ids = array();
+            foreach($threads as $thread){
+                $ids[] = $thread->getId();
+            }
+            if($me->isLoggedIn() && !$me->isCandidate() && 
+                ($me->getId() === $this->getThreadOwner()->getId() || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids)) || 
+                $this->getApproved()){
                 $bool = true;
             }
             return $bool;
@@ -314,33 +310,33 @@ class Thread extends BackboneModel{
             return $bool;
         }
 
-	    function addUser($person){
-	        $this->users[] = $person;
-	    }
-	
+        function addUser($person){
+            $this->users[] = $person;
+        }
+
         function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){
-		        return array();
+                return array();
             }
-	        $user = Person::newFromId($this->user_id);
-	        $author = array('id'=> $user->getId(),
-			        'name' => $user->getNameForForms(),
-			        'url' => $user->getUrl());
-	        $authors = array();
-	        foreach($this->getUsers() as $user){
-		    $authors[] = array('id'=>$user->getId(),
-				       'name' => $user->getNameForForms(),
-				       'url' => $user->getUrl());
-	        }
+            $user = Person::newFromId($this->user_id);
+            $author = array('id'=> $user->getId(),
+                    'name' => $user->getNameForForms(),
+                    'url' => $user->getUrl());
+            $authors = array();
+            foreach($this->getUsers() as $user){
+            $authors[] = array('id'=>$user->getId(),
+                               'name' => $user->getNameForForms(),
+                               'url' => $user->getUrl());
+            }
             $json = array('id' => $this->getId(),
-			  'author' => $author,
-			  'users' => $authors,
-			  'authors' => $this->getUsers(),
-			  'title' => $this->getTitle(),
-			  'posts' => $this->getPosts(),
+                          'author' => $author,
+                          'users' => $authors,
+                          'authors' => $this->getUsers(),
+                          'title' => $this->getTitle(),
+                          'posts' => $this->getPosts(),
                           'url' => $this->getUrl(),
-			  'category' => $this->getCategory(),
+                          'category' => $this->getCategory(),
                           'date_created' => $this->getDateCreated());
             return $json;
         }

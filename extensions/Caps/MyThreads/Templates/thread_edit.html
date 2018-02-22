@@ -1,127 +1,112 @@
-
-    <table>
+<table>
+    <tr>
+        <td><b><span class='en' style='display:none'>Problem</span><span class='fr' style='display:none'>Problème:</span></b></td>
+        <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
+    </tr>
+    <tr>
+        <td><b><span class='en' style='display:none'>Category</span><span class='fr' style='display:none'>Catégorie:</span></b></td>
+        <td>
+                <% if(wgLang == 'en'){ %>
+                        <%= HTML.Select(this, "category", {options: ["Choose a category...","Clinical", "Administrative", "Regulatory/Health Systems"]}) %>
+                    <% } else if(wgLang == 'fr'){ %>
+                        <%= HTML.Select(this, "category", {options: ["Choisissez une catégorie...","Clinique", "Administratif", "Réglementation/Systèmes de Santé"]}) %>
+                <% } %>
+             </select>
+        </td>
+    </tr>
+    <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null ||
+          _.findWhere(me.get('roles'), {'role': MANAGER}) != null){ %>
         <tr>
-            <td><b><span class='en' style='display:none'>Problem</span><span class='fr' style='display:none'>Problème:</span></b></td>
-            <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
-        </tr>
-        <tr>
-            <td><b><span class='en' style='display:none'>Category</span><span class='fr' style='display:none'>Catégorie:</span></b></td>
+            <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
             <td>
-                    <% if(wgLang == 'en'){ %>
-                            <%= HTML.Select(this, "category", {options: ["Choose a category...","Clinical", "Administrative", "Regulatory/Health Systems"]}) %>
-                        <% } else if(wgLang == 'fr'){ %>
-                            <%= HTML.Select(this, "category", {options: ["Choisissez une catégorie...","Clinique", "Administratif", "Réglementation/Systèmes de Santé"]}) %>
-                    <% } %>
-                 </select>
+                <% if(wgLang == 'en'){ %>
+                    <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
+                    <% } else if(wgLang == 'fr'){ %>
+                    <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                <% } %>
             </td>
         </tr>
-        <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null ||
-              _.findWhere(me.get('roles'), {'role': MANAGER}) != null){ %>
-            <tr>
-                <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
-                <td>
+    <% } else {%>
+        <tr>
+            <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
+            <td>
+                <% if(wgLang == 'en'){ %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
+                    <% } else if(wgLang == 'fr'){ %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                <% } %>
+            </td>
+        </tr>
+    <% } %>
+    <tr>
+      <td colspan="2"> 
+            <%= HTML.Radio(this, 'public', {options: ["Public", "Private"]}) %>
+      </td>
+    </tr>
 
-                        <% if(wgLang == 'en'){ %>
-	                        <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
-                            <% } else if(wgLang == 'fr'){ %>
-                    	    <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
-                        <% } %>
-                </td>
-            </tr>
-
-          <% } else {%>
-            <tr>
-                <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
-                <td>
-
-                        <% if(wgLang == 'en'){ %>
-                          <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
-                            <% } else if(wgLang == 'fr'){ %>
-                          <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
-                        <% } %>
-
-                </td>
-            </tr>
-             <% } %>
-  
-
-            <tr>
-              <td> <%= HTML.Radio(this, 'public', {options: ["Public"]}) %>
-                
-              </td>
-              <td> <%= HTML.Radio(this, 'public', {options: ["Private"]}) %>
-                
-              </td>
-
-            </tr>
-
-             <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
-
-            <tr>
-              <td>
-                <%= HTML.CheckBox(this, 'approved',{value:"yes"})%><span>Approved</span>
-              </td>
-            </tr>
-            <% } %>
-
-            <tr>
-                <td>
-                    <div class="provinceSearch" style='display:none'><b>Expert Province:</b>
-                </td>
-                <td>
-                    <div class="provinceSearch" style='display:none'>
-                                    <% if(wgLang == 'en'){ %>
-                                        <select style="width:415px;" id='prov' class='chzn-select'>
-                                                          <option value="All">All</option>
-                                                          <option value="Alberta">Alberta</option>
-                                                          <option value="British Columbia">British Columbia</option>
-                                                          <option value="Manitoba">Manitoba</option>
-                                                          <option value="New Brunswick">New Brunswick</option>
-                                                          <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                          <option value="Northwest Territories">Northwest Territories</option>
-                                                          <option value="Nova Scotia">Nova Scotia</option>
-                                                          <option value="Nunavut">Nunavut</option>
-                                                          <option value="Ontario">Ontario</option>
-                                                          <option value="Prince Edward Island">Prince Edward Island</option>
-                                                          <option value="Quebec">Quebec</option>
-                                                          <option value="Saskatchewan">Saskatchewan</option>
-                                                          <option value="Yukon">Yukon</option>
-                                        </select>
-                                    <% } else if(wgLang == 'fr'){ %>
-                                        <select style="width:415px;" id='prov' class='chzn-select'>
-                                                          <option value=""></option>
-                                                          <option value="Alberta">Alberta</option>
-                                                          <option value="British Columbia">British Columbia</option>
-                                                          <option value="Manitoba">Manitoba</option>
-                                                          <option value="New Brunswick">New Brunswick</option>
-                                                          <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                          <option value="Northwest Territories">Northwest Territories</option>
-                                                          <option value="Nova Scotia">Nova Scotia</option>
-                                                          <option value="Nunavut">Nunavut</option>
-                                                          <option value="Ontario">Ontario</option>
-                                                          <option value="Prince Edward Island">Prince Edward Island</option>
-                                                          <option value="Quebec">Quebec</option>
-                                                          <option value="Saskatchewan">Saskatchewan</option>
-                                                          <option value="Yukon">Yukon</option>
-                                        </select>
-                                    <% } %>
-
-                    </div>
-                </td>
-            </tr>
-    </table>
-    <br />
-    <div id="threadPeople" style='display:none'>
-    </div>
-    <% if(this.isDialog){ %>
+     <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
+        <tr>
+          <td colspan="2">
+            <%= HTML.CheckBox(this, 'approved',{value:"yes"})%><span>Approved</span>
+          </td>
+        </tr>
+    <% } %>
+    <tr>
+        <td>
+            <div class="provinceSearch" style='display:none'><b>Expert Province:</b>
+        </td>
+        <td>
+            <div class="provinceSearch" style='display:none'>
+                <% if(wgLang == 'en'){ %>
+                    <select style="width:415px;" id='prov' class='chzn-select'>
+                                      <option value="All">All</option>
+                                      <option value="Alberta">Alberta</option>
+                                      <option value="British Columbia">British Columbia</option>
+                                      <option value="Manitoba">Manitoba</option>
+                                      <option value="New Brunswick">New Brunswick</option>
+                                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                      <option value="Northwest Territories">Northwest Territories</option>
+                                      <option value="Nova Scotia">Nova Scotia</option>
+                                      <option value="Nunavut">Nunavut</option>
+                                      <option value="Ontario">Ontario</option>
+                                      <option value="Prince Edward Island">Prince Edward Island</option>
+                                      <option value="Quebec">Quebec</option>
+                                      <option value="Saskatchewan">Saskatchewan</option>
+                                      <option value="Yukon">Yukon</option>
+                    </select>
+                <% } else if(wgLang == 'fr'){ %>
+                    <select style="width:415px;" id='prov' class='chzn-select'>
+                                      <option value=""></option>
+                                      <option value="Alberta">Alberta</option>
+                                      <option value="British Columbia">British Columbia</option>
+                                      <option value="Manitoba">Manitoba</option>
+                                      <option value="New Brunswick">New Brunswick</option>
+                                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                      <option value="Northwest Territories">Northwest Territories</option>
+                                      <option value="Nova Scotia">Nova Scotia</option>
+                                      <option value="Nunavut">Nunavut</option>
+                                      <option value="Ontario">Ontario</option>
+                                      <option value="Prince Edward Island">Prince Edward Island</option>
+                                      <option value="Quebec">Quebec</option>
+                                      <option value="Saskatchewan">Saskatchewan</option>
+                                      <option value="Yukon">Yukon</option>
+                    </select>
+                <% } %>
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+<div id="threadPeople" style='display:none'></div>
+<% if(this.isDialog){ %>
     <h2><span class='en'>Question Details</span><span class='fr' style='display:none'>Les Détails d'Interrogation</span></h2>
-    <% } %>
-    <% if(!this.isDialog){ %>
-        <div style="width:180px;display:inline-block;">
-            <button id="saveThread"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> </button>
-            <span class="throbber" style="display:none;"></span>
-        </div>
-        <div style="width:180px;display:inline-block;">
-            <button id="cancel">Cancel</button>
-        </div>
-    <% } %>
+<% } %>
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id="saveThread"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> </button>
+        <span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
+<% } %>
