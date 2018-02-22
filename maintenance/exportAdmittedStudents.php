@@ -22,7 +22,8 @@ $people = Person::getAllPeople(CI);
 
 $outdir = "outputAdmittedStudents";
 @mkdir($outdir);
-
+$peopleSoFar = 0;
+$nPeople = count($people);
 foreach($people as $person) {
 	$gsms = $person->getGSMS();
 	if ($gsms->id != null) {
@@ -70,4 +71,5 @@ foreach($people as $person) {
 			file_put_contents($loc, implode("\n", $output) . "\n");
 		}
 	}
+	show_status(++$peopleSoFar, $nPeople);
 }
