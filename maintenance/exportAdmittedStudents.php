@@ -21,7 +21,7 @@ $wgUser = User::newFromId(1); // Admin user
 $people = Person::getAllPeople(CI);
 
 $outdir = "outputAdmittedStudents";
-mkdir($outdir);
+@mkdir($outdir);
 
 foreach($people as $person) {
 	$gsms = $person->getGSMS();
@@ -52,7 +52,7 @@ foreach($people as $person) {
 				"term " . $term,
 				"surname " . $person->getLastName(),
 				"firstname " . $person->getFirstName(),
-				"middlename ",
+				"middlename " . $person->getMiddleName(),
 				"gender " . $gender,
 				"email " . $array['student_data']['email'],
 				"citizenship " . $array['additional']['country_of_citizenship_full'],
