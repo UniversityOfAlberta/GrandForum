@@ -87,13 +87,16 @@
 
         <!-- if an admin -->
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Chair)}, {contains({$user_full_roles}, Manager)},{contains({$user_full_roles}, Admin)})}">
-            <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
-                    <![CDATA[
-                    <div style="margin-top:10px;">
-                        <b style="font-size: 14px;">Supervisor:</b><div style="display: inline-block; margin-left:10px;">{$item}</div>
-                    </div>
-                    ]]>
-                </ReportItem>
+
+            <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
+                <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+                        <![CDATA[
+                        <div style="margin-top:10px;">
+                            <b style="font-size: 14px;">Supervisor:</b><div style="display: inline-block; margin-left:10px;">{$item}</div>
+                        </div>
+                        ]]>
+                    </ReportItem>
+            </ReportItemSet>
 
         	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
                 <![CDATA[
@@ -107,21 +110,25 @@
 
          <!-- else if not an admin -->
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({!contains({$user_full_roles},Manager)},{!contains({$user_full_roles}, Chair)},{!contains({$user_full_roles}, Admin)})}">
-            <ReportItem id="supervisor_unedit" type="StaticReportItem">
-                <![CDATA[
+
+            <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
+                <ReportItem id="supervisor_unedit" type="StaticReportItem">
+                    <![CDATA[
                     <div style="margin-top:10px;">
                         <b style="font-size: 14px;">Supervisor:</b>
                         {getArray(RP_COM,OT_COM,Q14,0,0,{$project_id},q5,;&nbsp;)}
                         </br>
-                ]]>
-            </ReportItem>
+                    </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
-                        <div style="margin-top: 10px;">
-                            <b style="font-size: 14px;">Comments:</b><br />
-                            <div style="margin-left:12px;">
-                                {getText(RP_COM,OT_COM,Q2,{$project_id},0,{$project_id})}
-                            </div>
+                    <div style="margin-top: 10px;">
+                        <b style="font-size: 14px;">Comments:</b><br />
+                        <div style="margin-left:12px;">
+                            {getText(RP_COM,OT_COM,Q2,{$project_id},0,{$project_id})}
                         </div>
                     </div>
                 ]]>
