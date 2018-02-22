@@ -505,10 +505,7 @@ class GsmsData extends BackboneModel{
     function getFullTimePartTime() {
         $prog = $this->program;
         $progSplit = explode(" - ", $prog);
-        $time = "";
-        try {
-            $time = $progSplit[1];
-        } catch (Exception $e) {}
+        $time = isset($progSplit[1]) ? $progSplit[1] : "";
         if (strtolower($time) == "full time") {
           $time = "FT";
         } else if (strtolower($time) == "part time") {
