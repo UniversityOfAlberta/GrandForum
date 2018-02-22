@@ -942,6 +942,65 @@ class Person extends BackboneModel {
         ksort($people);
         return $people;
     }
+    
+    /**
+     * Merges two People
+     * @param Person $personToKeep The Person object to keep
+     * @param Person $personToDelete The Person object to delete/merge into $personToKeep
+     */
+    static function merge($personToKeep, $personToDelete){
+        if($personToKeep->getEmail() == ""){
+            DBFunctions::update('mw_user',
+                                array('user_email' => $personToDelete->getEmail()),
+                                array('user_id' => $personToKeep->getId()));
+        }
+        if($personToKeep->getEmployeeId() == ""){
+            DBFunctions::update('mw_user',
+                                array('employee_id' => $personToDelete->getEmployeeId()),
+                                array('user_id' => $personToKeep->getId()));
+        }
+        
+        DBFunctions::update('grand_relations',
+                            array('user2' => $personToKeep->getId()),
+                            array('user2' => $personToDelete->getId()));
+                            
+        DBFunctions::update('grand_roles',
+                            array('user_id' => $personToKeep->getId()),
+                            array('user_id' => $personToDelete->getId()));
+                            
+        DBFunctions::update('grand_user_university',
+                            array('user_id' => $personToKeep->getId()),
+                            array('user_id' => $personToDelete->getId()));
+                            
+        DBFunctions::update('mw_user',
+                            array('deleted' => 1),
+                            array('user_id' => $personToDelete->getId()));
+        $products = $personToDelete->getPapers("all", true, 'both', false, 'Public');
+        foreach($products as $product){
+            $changed = false;
+            $authors = unserialize($product->authors);
+            foreach($authors as $key => $author){
+                if($author == $personToDelete->getId()){
+                    $authors[$key] = $personToKeep->getId();
+                    $changed = true;
+                }
+            }
+            if($changed){
+                DBFunctions::update('grand_products',
+                                    array('authors' => serialize($authors)),
+                                    array('id' => $product->getId()));
+            }
+        }
+        Person::$cache = array();
+        Person::$namesCache = array();
+        Person::$aliasCache = array();
+        Person::$idsCache = array();
+        Cache::delete("allPeopleCache");
+        Cache::delete("nameCache_{$personToKeep->getId()}");
+        Cache::delete("idsCache_{$personToKeep->getId()}");
+        Cache::delete("nameCache_{$personToDelete->getId()}");
+        Cache::delete("idsCache_{$personToDelete->getId()}");
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
@@ -3529,7 +3588,8 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $hqps = array();
             foreach($data as $row){
-                $hqps[] = Person::newFromId($row['user2']);
+                $hqp = Person::newFromId($row['user2']);
+                $hqps[strtolower($hqp->getName())] = $hqp;
             }
             if($history === true){
                 $this->historyHqps = $hqps;
@@ -3549,7 +3609,7 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $hqp = Person::newFromId($row['user2']);
             if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                $hqps[] = $hqp;
+                $hqps[strtolower($hqp->getName())] = $hqp;
             }
         }
         $this->hqps = $hqps;

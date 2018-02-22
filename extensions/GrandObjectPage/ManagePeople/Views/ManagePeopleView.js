@@ -64,8 +64,8 @@ ManagePeopleView = Backbone.View.extend({
     
     // Sanity Check 3: Check for duplicate HQP
     checkHQPDuplicates: function(){
-        deleteHqp = $.proxy (function(button, id){ //global function
-            $(button).parent().append("<img src='$wgServer$wgScriptPath/skins/Throbber.gif' />");
+        deleteHqp = $.proxy(function(button, id){ //global function
+            $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
             var data = 'id=' + id;
             $.ajax({
                 type: 'POST',
@@ -79,13 +79,31 @@ ManagePeopleView = Backbone.View.extend({
                     this.stopListening(this.model, "add");
                     this.stopListening(this.model, "remove");
                     this.allPeople.fetch();
-                    this.model.fetch();
                 }, this)
             });
         }, this);
         
-        ignoreHqp = function(button, id1, id2){
-            $(button).parent().append("<img src='$wgServer$wgScriptPath/skins/Throbber.gif' />");
+        mergeHqp = $.proxy(function(button, id1, id2){ //global function
+            $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
+            var data = 'id1=' + id1 + '&id2=' + id2;
+            $.ajax({
+                type: 'POST',
+                url: 'index.php?action=mergeDuplicates&handler=hqp',
+                data: data,
+                success: $.proxy(function (data) {
+                    $('#hqp' + id1 + '_' + id2).prev().html('MERGED - ' + $('#hqp' + id1 + '_' + id2).prev().html());
+                    $('#hqp' + id1 + '_' + id2).prev().css('color', '#00aa00');
+                    $('#hqp' + id1 + '_' + id2).remove();
+                    // stopListenings were required to not render twice
+                    this.stopListening(this.model, "add");
+                    this.stopListening(this.model, "remove");
+                    this.allPeople.fetch();
+                }, this)
+            });
+        }, this);
+        
+        ignoreHqp = $.proxy(function(button, id1, id2){ //global function
+            $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
             var data = 'id1=' + id1 + '&id2=' + id2;
             $.ajax({
                 type: 'POST',
@@ -97,7 +115,8 @@ ManagePeopleView = Backbone.View.extend({
                     $('#hqp' + id1 + '_' + id2).remove();
                 }
             });
-        }
+        }, this);
+        
         var outputSoFar = '';
         var ajaxRequest;  // The variable that makes Ajax possible!
         

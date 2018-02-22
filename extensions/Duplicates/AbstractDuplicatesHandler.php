@@ -23,6 +23,11 @@ abstract class AbstractDuplicatesHandler {
     
     abstract function handleDelete();
     
+    function handleMerge(){
+        // This one is optional, most probably won't implement this
+        return;
+    }
+    
     function canShortCircuit($obj1, $obj2){
         return false;
     }
@@ -165,6 +170,21 @@ abstract class AbstractDuplicatesHandler {
                 });
             }
             
+            function merge{$this->upperId}(button, id1, id2){
+                $(button).parent().append(\"<img src='$wgServer$wgScriptPath/skins/Throbber.gif' />\");
+                var data = 'id1=' + id1 + '&id2=' + id2;
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=mergeDuplicates&handler={$this->id}',
+                    data: data,
+                    success: function (data) {
+                        $('.{$this->id}' + id).prev().html('MERGED - ' + $('#{$this->id}' + id1 + '_' + id2).prev().html());
+                        $('.{$this->id}' + id).prev().css('color', '#00aa00');
+                        $('.{$this->id}' + id).remove();
+                    }
+                });
+            }
+            
             function ignore{$this->upperId}(button, id1, id2){
                 $(button).parent().append(\"<img src='$wgServer$wgScriptPath/skins/Throbber.gif' />\");
                 var data = 'id1=' + id1 + '&id2=' + id2;
@@ -266,19 +286,19 @@ abstract class AbstractDuplicatesHandler {
                                 rightConfidence *= 100;
                                 
                                 if(leftConfidence >= 100 || rightConfidence >= 100){
-                                    $(val).children().append('<tr><td><b>Recommendation:</b> Delete</td><td><b>Recommendation:</b> Keep</td></tr>');
+                                    $(val).children().append('<tr><td><b>Recommendation:</b> Delete</td><td><b>Recommendation:</b> Keep/Merge</td></tr>');
                                     $(val).parent().append('<b>Confidence:</b> ' + 100.00 + '%');
                                     $(val).parent().prev().html('Identical (100.00%) - ' + $(val).parent().prev().html());
                                     $(val).parent().prev().css('color', '#ff0000');
                                 }
                                 else if(leftConfidence >= 80 && rightConfidence <= leftConfidence){
-                                    $(val).children().append('<tr><td><b>Recommendation:</b> Keep</td><td><b>Recommendation:</b> Delete</td></tr>');
+                                    $(val).children().append('<tr><td><b>Recommendation:</b> Keep/Merge</td><td><b>Recommendation:</b> Delete</td></tr>');
                                     $(val).parent().append('<b>Confidence:</b> ' + leftConfidence.toFixed(2) + '%');
                                     $(val).parent().prev().html('High Prob (' + leftConfidence.toFixed(2) + '%) - ' + $(val).parent().prev().html());
                                     $(val).parent().prev().css('color', '#ff8800');
                                 }
                                 else if(rightConfidence >= 80 && leftConfidence <= rightConfidence){
-                                    $(val).children().append('<tr><td><b>Recommendation:</b> Delete</td><td><b>Recommendation:</b> Keep</td></tr>');
+                                    $(val).children().append('<tr><td><b>Recommendation:</b> Delete</td><td><b>Recommendation:</b> Keep/Merge</td></tr>');
                                     $(val).parent().append('<b>Confidence:</b> ' + rightConfidence.toFixed(2) + '%');
                                     $(val).parent().prev().html('High Prob (' + rightConfidence.toFixed(2) + '%) - ' + $(val).parent().prev().html());
                                     $(val).parent().prev().css('color', '#ff8800');

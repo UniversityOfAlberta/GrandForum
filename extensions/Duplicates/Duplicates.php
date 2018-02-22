@@ -21,6 +21,7 @@ function handleDuplicates($action, $request){
     global $wgServer, $wgScriptPath;
     if($action == 'getDuplicates' ||
        $action == 'deleteDuplicates' ||
+       $action == 'mergeDuplicates' ||
        $action == 'ignoreDuplicates'){
         require_once("Classes/simplediff/simplediff.php");
         ProductHandler::init();
@@ -36,6 +37,11 @@ function handleDuplicates($action, $request){
                 }
                 else if($action == "deleteDuplicates"){
                     $handler->handleDelete();
+                    DBFunctions::commit();
+                    exit;
+                }
+                else if($action == "mergeDuplicates"){
+                    $handler->handleMerge();
                     DBFunctions::commit();
                     exit;
                 }

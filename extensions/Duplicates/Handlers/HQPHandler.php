@@ -15,6 +15,10 @@ class HQPHandler extends PersonHandler {
         $people = $me->getHQP(true);
         return $people;
     }
+    
+    function getArray2(){
+        return Person::getAllPeopleDuring(HQP, "0000-00-00", "2100-00-00");
+    }
 }
 
 ?>
