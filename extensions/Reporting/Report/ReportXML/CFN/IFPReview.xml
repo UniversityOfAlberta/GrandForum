@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP 2017 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2017">
+<Report name="IFP 2018 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="ETC">
             <SectionPermission id="materials" permissions="rw" />
@@ -57,8 +57,8 @@
                     <li>When scoring the candidate please consider the level of funding the candidate is applying for and provide scores appropriate to their stage of development.</li>
                     <li>Candidates should be scored on five main criteria:
                         <ol>
-                            <li>Relevant and alignment between proposed project and CFN’s strategic priorities (Application Form Section 2: Personal Research Project)</li>
-                            <li>Motivation to participate in Interdisciplinary Fellowship Program (Application Form Section 3: Interest and Benefit, CV)</li>
+                            <li>Relevant and alignment between applicant's research and CFN strategic priorities (Application Section 2: Personal Research)</li>
+                            <li>Motivation to participate in Interdisciplinary Fellowship Program (Application Section 3: Interest and Benefit, including CV)</li>
                             <li>Aptitude and capacity to: (Application Form Section 2.3: Scientific Excellence of Project, CV, Capacity Disclosure Form)</li>
                                 <ol>
                                     <li>Develop expertise on frailty and late life issues</li>
