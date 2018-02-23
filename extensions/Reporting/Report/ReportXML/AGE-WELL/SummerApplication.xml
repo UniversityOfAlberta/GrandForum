@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2017 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" disabled="true">
+<Report name="AGE-WELL EPIC Summer Institute, 2018 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2018" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -20,35 +20,34 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2017" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2017&lt;br /&gt;
-Co-Creating Possibilities: Physical Fitness to Avoid Frailty">
+    <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2018" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2018&lt;br /&gt;
+&lt;small>Co-Creating Possibilities: Leisure, Recreation and Wellness - Opportunities for Engaging the Older Adult&lt;/small>">
         <ReportItem id="description" type="Static">
             <![CDATA[
-                <p>AGE-WELL NCE is pleased to offer this exciting and innovative training event to AGE-WELL HQP across Canada.  Our second summer institute’s theme, Physical Fitness to Avoid Frailty, will be the focal point for a week of engaging workshops, lectures, and activities on participatory, user-centred design.</p>
+                <p>AGE-WELL NCE is pleased to offer this exciting and innovative training event to AGE-WELL HQP across Canada.  Our third summer institute’s theme: leisure, recreation and wellness, will be the focal point for a week of engaging workshops, lectures, and activities on participatory, user-centred design.</p>
                 
-                <p>The AGE-WELL EPIC Summer Institute, 2017 will provide HQP with an unparalleled opportunity to work closely with expert mentors and develop a solution that facilitates physical fitness and healthy aging to avoid frailty.  AGE-WELL solutions involve three types of “products”: technologies (e.g. home monitoring networks to encourage fitness), services (e.g. integration of a technology into community services), and policies (e.g. plans to ensure funds saved in one sector flow to another).</p>
-                
+                <p>The AGE-WELL EPIC Summer Institute, 2018 will provide HQP with an unparalleled opportunity to work closely with expert mentors and develop a solution that focuses on fostering opportunities for engaging physically active older adults.  AGE-WELL solutions involve three types of “products”: technologies (e.g. home monitoring networks), services (e.g. integration of a technology into community services), and policies (e.g. plans to ensure funds saved in one sector flow to another).</p>
+
                 <p>Summer Institute participants will be challenged to consider this year’s theme from all perspectives and to develop multi-faceted practical solutions. Throughout the week, HQP teams will work through the design process from problem definition to brainstorming and business models to prototyping, culminating in a “pitch competition” with cash prize.</p>
                 
-                <p>AGE-WELL will book and cover the cost of accommodation (double-occupancy) at Hôtel Shediac for four nights plus breakfast, lunch, and coffee breaks.  Additionally, AGE-WELL will cover the cost of roundtrip economy flights between your home airport and the Greater Moncton International Airport in New Brunswick.  Some exceptions will be made for trainees who, due to geography, will need to travel to Moncton on July 3rd and require an extra hotel night.  We expect to have a mid-afternoon start on 4 July and early afternoon end on 8 July.</p>
+                <p>AGE-WELL will book and cover the cost of accommodation (double-occupancy) at The Banff Centre for four nights plus breakfast, lunch, and coffee breaks.  Additionally, AGE-WELL will cover the cost of roundtrip economy flights between your home airport and the Calgary International Airport. AGE-WELL will organize shuttle service from the Calgary International Airport to The Banff Centre and again from The Banff Centre to the airport on Friday.</p>
 
-                <p>AGE-WELL will organize shuttle service from the Greater Moncton International Airport to Hôtel Shediac and again from Hôtel Shediac to the airport on Saturday.</p>
+                <p>AGE-WELL will not provide HQP dinner, a per diem, or cover the cost of luggage fees. Please see the AGE-WELL Travel Policy for more details and contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> if you have any questions.</p>
 
-                <p>AGE-WELL will not provide HQP dinner, a per diem, or cover the cost of luggage fees. Please see the AGE-WELL Travel Policy for more details and contact krystle@agewell-nce.ca if you have any questions.</p>
-
-                <p>Requests for additional funding (e.g. extra hotel night) will be considered upon request.  Please include details in your application.</p>  
+                <p>Requests for additional funding (e.g. extra hotel night) will be considered upon request.  Please include details in your application.</p>
 
                 <p>
                     <b>Who:</b> AGE-WELL HQP only<br />
-                    <b>What:</b> EPIC Summer Institute – Co-Creating Possibilities: Physical Fitness to Avoid Frailty<br />
-                    <b>Where:</b> Hôtel Shediac, Shediac, New Brunswick<br />
-                    <b>When:</b> July 4-8, 2017<br />
+                    <b>What:</b> EPIC Summer Institute – Co-Creating Possibilities: Leisure, Recreation and Wellness - Opportunities for Engaging the Older Adult <br />
+                    <b>Where:</b> The Banff Centre, Banff, Alberta<br />
+                    <b>When:</b> June 18-22, 2018<br />
                 </p>
 
                 <h3>Eligibility:</h3>
-                <p>Applicants must be current AGE-WELL HQP in good standing (e.g. have completed reporting requirements, returned all signed documents etc.)
-Preference will be given to HQP who have made measurable progress towards completing, or have completed, the EPIC (Early Professionals, Inspired Careers) training program
-If accepted, HQP must attend the entire summer institute and commit to working actively with their teammates</p>
+                <p>
+                    Applicants must be current network HQP in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute<br />
+                    Preference will be given to HQP who have made measurable progress towards completing, or have completed, the EPIC (Early Professionals, Inspired Careers) training program
+                </p>
 
                 <h3>Application Requirements:</h3>
                 <ul>
@@ -57,10 +56,10 @@ If accepted, HQP must attend the entire summer institute and commit to working a
                 </ul>
 
                 <h3>Application Procedure:</h3>
-                <p>Please answer each question thoroughly and enter your typed single-spaced responses into the text boxes provided. Completed applications are due in Forum by 11:59pmET on 24 March, 2017.</p>
+                <p>Please answer each question thoroughly and enter your typed single-spaced responses into the text boxes provided. Completed applications are due in Forum by 11:59pmET on 26 March 2018.</p>
 
                 <h3>Selection Procedure:</h3>
-                <p>All complete applications will be reviewed by members of the Summer Institute Steering committee.  HQP selected to attend will be contacted via email in mid-April, 2017.</p>
+                <p>All complete applications will be reviewed by members of the Summer Institute Steering committee.  HQP selected to attend will be contacted via email in mid-April, 2018.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -115,15 +114,15 @@ If accepted, HQP must attend the entire summer institute and commit to working a
         <ReportItem id="institution" type="StaticReportItem">
             <![CDATA[
                 <tr>
-                    <td><b>Institution:&nbsp;</b></td>
+                    <td><b title="Can ben edited on your profile" class="tooltip">Institution:&nbsp;</b></td>
                     <td>{$user_uni}</td>
                 </tr>
                 <tr>
-                    <td><b>Department:&nbsp;</b></td>
+                    <td><b title="Can ben edited on your profile" class="tooltip">Department:&nbsp;</b></td>
                     <td>{$user_dept}</td>
                 </tr>
                 <tr>
-                    <td><b>Supervisor:&nbsp;</b></td>
+                    <td><b title="Your supervisor would add you as their student in Manage People" class="tooltip">Supervisor:&nbsp;</b></td>
                     <td>{$user_supervisors}</td>
                 </tr>
             ]]>
@@ -149,7 +148,7 @@ If accepted, HQP must attend the entire summer institute and commit to working a
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Physical Fitness to Avoid Frailty.” (1/2 page)</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Leisure, Recreation and Wellness - Opportunities for Engaging the Older Adult” (1/2 page)</b></p>
                 {$item}
             ]]>
         </ReportItem>
