@@ -27,11 +27,10 @@ $nPeople = count($people);
 foreach($people as $person) {
 	$gsms = $person->getGSMS();
 	if ($gsms->id != null) {
-		$array = $gsms->toArray();
-
+	    $sop = $gsms->getSOP();
 		// Only export Admitted students
-		if ($array['admit'] == "Admit") {
-
+		if ($sop->getFinalAdmit() == "Admit") {
+            $array = $gsms->toArray();
 			if ($array['term'] == "Fall Term") {
 				$year = explode("/", $array['academic_year'])[0];
 				$term = "F" . substr($year, 2); // '2018' becomes '18'

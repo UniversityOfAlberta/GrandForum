@@ -19,7 +19,11 @@ class GsmsDataAllAPI extends RESTAPI {
         foreach($gsms as $g){
             $found = false;
             foreach($folders as $folder){
-                if($g->folder == $folder || $folder == 'all'){
+                if($g->folder == $folder || 
+                   ($folder == "Admit" && (strstr($g->folder, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
+                                           strstr($g->folder, "Coder") !== false || 
+                                           strstr($g->folder, "Incoming") !== false)) || 
+                   $folder == 'all'){
                     foreach($programs as $program){
                         if($program == '' || $program == 'all' || strstr($g->getProgramName(true), $program) !== false){
                             if($decision == 'all' || $g->getSOP()->getFinalAdmit() == $decision){
