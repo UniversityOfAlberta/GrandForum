@@ -174,9 +174,9 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
-        if(count($person->getEvaluates("IFP-ETC", 2017)) > 0 || $person->getName() == "Carol.Barrie" || $person->getName() == "Denise.Stockley" || $person->getName() == "Amber.Hastings-Truelove"){
+        if(count($person->getEvaluates("IFP-ETC", 2018)) > 0 || $person->getName() == "Carol.Barrie" || $person->getName() == "Denise.Stockley" || $person->getName() == "Amber.Hastings-Truelove"){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2017 Review", "{$url}IFPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2018 Review", "{$url}IFPReview", $selected);
         }
         if(count($person->getEvaluates("CAT-SRC", 2017)) > 0 || count($person->getEvaluates("CAT-EX", 2017)) > 0 || count($person->getEvaluates("CAT-RMC", 2017)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2017Review")) ? "selected" : false;
