@@ -19,6 +19,7 @@
         </Role>
         <Person id="2333" />
         <Person id="847" />
+        <Person id="2565" />
     </Permissions>
     <ReportSection id="materials" name="PDF Downloads" tooltip="Download of IFP Proposals" type="ReportSection">
         <ReportItem id="header" type="Static">
