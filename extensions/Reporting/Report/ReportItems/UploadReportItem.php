@@ -166,7 +166,10 @@ class UploadReportItem extends AbstractReportItem {
                                   'size' => $size,
                                   'hash' => $hash,
                                   'file' => $contents);
-                    $this->setBlobValue(json_encode($data));
+                    $json = json_encode($data);
+                    unset($contents);
+                    unset($data);
+                    $this->setBlobValue($json);
                     echo "<div class='success'>The file was uploaded successfully.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
