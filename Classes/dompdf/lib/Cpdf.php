@@ -4783,7 +4783,7 @@ EOT;
             $color_channels->writeimage($tempfile_plain);
 
             $imgplain = imagecreatefrompng($tempfile_plain);
-        }
+        /*}
         // Use PECL imagick + ImageMagic to process transparent PNG images
         elseif (extension_loaded("imagick")) {
             // Native cloning was added to pecl-imagick in svn commit 263814
@@ -4816,7 +4816,7 @@ EOT;
             $color_channels->compositeImage($imagick, \Imagick::COMPOSITE_COPYBLUE, 0, 0);
             $color_channels->writeImage($tempfile_plain);
 
-            $imgplain = imagecreatefrompng($tempfile_plain);
+            $imgplain = imagecreatefrompng($tempfile_plain);*/
         } else {
             // allocated colors cache
             $allocated_colors = array();
