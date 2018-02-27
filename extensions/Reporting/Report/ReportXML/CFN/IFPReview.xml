@@ -34,16 +34,18 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
-                        <td>{$item}</td>
-                        <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download</a></td>
-                    </tr>
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="coi" type="If" if="{or({!=({$my_id},1596)},{!=({$user_id},389)})}"> 
+                <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
+                    <![CDATA[
+                        <tr>
+                            <td>{$user_name}</td>
+                            <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
+                            <td>{$item}</td>
+                            <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download</a></td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="footer" type="Static">
             <![CDATA[
