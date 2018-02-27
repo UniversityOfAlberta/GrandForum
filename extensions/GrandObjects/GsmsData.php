@@ -298,7 +298,7 @@ class GsmsData extends BackboneModel{
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
- 	                'applicant_number' => $this->applicant_number,
+                  'applicant_number' => $this->applicant_number,
                   'gender' => $this->gender,
                   'date_of_birth' => $this->date_of_birth,
                   'program_name' => $this->getProgramName(true),

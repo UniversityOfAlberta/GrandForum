@@ -1329,8 +1329,13 @@ class ReportItemCallback {
     function getFinalDecision() {
         $gsms = GsmsData::newFromId($this->getProjectId());
         $dec = $gsms->folder;
+        if(strstr($dec, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
+           strstr($dec, "Coder") !== false || 
+           strstr($dec, "Incoming") !== false){
+            $dec = "Admit";   
+        }
         if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
-            return $gsms->folder;
+            return $dec;
         } else {
             return "Undecided";
         }
