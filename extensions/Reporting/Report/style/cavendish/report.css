@@ -189,7 +189,7 @@ table.small textarea {
 }
 
 #reportProgress {
-    display:inline-block;
+    display:none;
     float:right;
     width: 200px;
     height:16px;
