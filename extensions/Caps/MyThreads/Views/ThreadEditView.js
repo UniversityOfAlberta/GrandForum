@@ -38,8 +38,7 @@ ThreadEditView = Backbone.View.extend({
             $("#threadPeople").show();
             $(".provinceSearch").show();
             $("#specialvisible").hide();
-            // $('[name="visibility"]').val(1);
-            // $("#specialvisible")[0].selectedIndex = 0
+            $("#specialselect").val(0);
            	$(".chzn-select").chosen();
 
         }

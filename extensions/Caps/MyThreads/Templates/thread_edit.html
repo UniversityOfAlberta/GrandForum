@@ -31,9 +31,9 @@
           <td class="en"></td>
           <td>
           <% if(wgLang == 'en'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"],id:"specialselect"}) %>
                     <% } else if(wgLang == 'fr'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"],id:"specialselect"}) %>
                 <% } %>
             </td>
         </tr>
