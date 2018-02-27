@@ -88,6 +88,9 @@ class ThreadAPI extends RESTAPI {
 	    }
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));
+        $thread->setVisibility($this->POST('visibility'));
+        $thread->setApproved($this->POST('approved'));
+
         $status = $thread->update();
         if(!$status){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be updated");

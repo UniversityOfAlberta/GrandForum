@@ -37,12 +37,16 @@ ThreadEditView = Backbone.View.extend({
             this.renderAuthors();
             $("#threadPeople").show();
             $(".provinceSearch").show();
+            $("#specialvisible").hide();
+            // $('[name="visibility"]').val(1);
+            // $("#specialvisible")[0].selectedIndex = 0
            	$(".chzn-select").chosen();
 
         }
-        else if($("[name='visibility']").val() == "question is only visible to experts"){
+        else if($("[name='visibility']").val() == "All Experts"){
             $("#threadPeople").hide();
             $("#provinceSearch").hide();
+            $("#specialvisible").show();
         }
         else if($("[name='visibility']").val() == "All Experts" || $("[name='visibility']").val() == "question is visible to CAPS health care professionals" ){
             $("#threadPeople").hide();

@@ -18,11 +18,22 @@
           _.findWhere(me.get('roles'), {'role': MANAGER}) != null){ %>
         <tr>
             <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
+
             <td>
                 <% if(wgLang == 'en'){ %>
                     <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
                     <% } else if(wgLang == 'fr'){ %>
                     <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                <% } %>
+            </td>
+        </tr>
+        <tr id="specialvisible" style="display:none;">
+          <td class="en"></td>
+          <td>
+          <% if(wgLang == 'en'){ %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
+                    <% } else if(wgLang == 'fr'){ %>
+                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
                 <% } %>
             </td>
         </tr>
@@ -38,16 +49,17 @@
             </td>
         </tr>
     <% } %>
-    <tr>
+
+    <!-- <tr>
       <td colspan="2"> 
             <%= HTML.Radio(this, 'public', {options: ["Public", "Private"]}) %>
       </td>
-    </tr>
+    </tr> -->
 
      <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
         <tr>
           <td colspan="2">
-            <%= HTML.CheckBox(this, 'approved',{value:"yes"})%><span>Approved</span>
+            <%= HTML.CheckBox(this, 'approved',{value:1})%><span>Approved</span>
           </td>
         </tr>
     <% } %>
