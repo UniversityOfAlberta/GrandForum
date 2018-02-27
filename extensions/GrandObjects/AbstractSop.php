@@ -506,8 +506,8 @@ abstract class AbstractSop extends BackboneModel{
 
         $hqp = Person::newFromId($this->getUser());
         $gsms = $hqp->getGSMS();
-        $dec = $gsms->folder;
-        if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
+        $dec = strtolower($gsms->folder);
+        if (($dec == "admit") || ($dec == "reject") || ($dec == "waitlist")) {
             return $gsms->folder;
         } else {
             return "Undecided";
