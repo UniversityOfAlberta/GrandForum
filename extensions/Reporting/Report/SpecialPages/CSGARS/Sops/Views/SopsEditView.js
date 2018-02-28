@@ -198,6 +198,9 @@ SopsEditView = Backbone.View.extend({
           case "New Applications":
             suffix = "#/newApplications";
             break;
+          case "Rejected Apps":
+            suffix = "#/rejected";
+            break;
         }
         switch(this.gsmsdata.get('admit')){
           case "Admit":
