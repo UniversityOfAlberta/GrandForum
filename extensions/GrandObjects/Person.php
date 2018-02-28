@@ -1126,6 +1126,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Person::$employeeIdsCache = array();
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("idsCache_{$this->getId()}");
@@ -1166,6 +1167,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Person::$employeeIdsCache = array();
             Cache::delete("allPeopleCache");
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
