@@ -508,7 +508,10 @@ abstract class AbstractSop extends BackboneModel{
         $gsms = $hqp->getGSMS();
         $dec = $gsms->folder;
         if(strstr($dec, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
-           strstr($dec, "Coder") !== false || 
+           strstr($dec, "Coder") !== false ||
+           strstr($dec, "Offer Accepted") !== false ||
+           strstr($dec, "Waiting for Response") !== false ||
+ 
            strstr($dec, "Incoming") !== false){
             $dec = "Admit";   
         }
