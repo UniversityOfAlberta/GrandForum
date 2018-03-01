@@ -186,7 +186,7 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2>");
                 $olddate = null;
                 foreach($data as $key => $row){
-                    if ($row["thumbnail"]==""){
+                    if(extension_loaded('imagick') && $row["thumbnail"] == ""){
                         @mkdir("thumbnails");
                         file_put_contents("thumbnails/".$row["id"]."temp.pdf", $row['en']);
                         
