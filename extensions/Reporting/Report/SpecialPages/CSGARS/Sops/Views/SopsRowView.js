@@ -57,18 +57,17 @@ SopsRowView = Backbone.View.extend({
     },
 
     render: function(){
-        var i = this.model.toJSON();
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
-        for(m=0;m<i.annotations.length;m++){
-            if(i.annotations[m].tags != null){
-                for(n=0;n<i.annotations[m].tags.length;n++){
-                    var comment_column = "#span"+i.sop_id;
-                    if(m == i.annotations.length-1){
-                        $(comment_column).append(i.annotations[m].tags[n]);
+        for(m=0;m<mod.annotations.length;m++){
+            if(mod.annotations[m].tags != null){
+                for(n=0;n<mod.annotations[m].tags.length;n++){
+                    var comment_column = "#span"+mod.sop_id;
+                    if(m == mod.annotations.length-1){
+                        $(comment_column).append(mod.annotations[m].tags[n]);
                         break;
                     }
-                    $(comment_column).append(i.annotations[m].tags[n]+", ");
+                    $(comment_column).append(mod.annotations[m].tags[n]+", ");
                 }
             }
         }
