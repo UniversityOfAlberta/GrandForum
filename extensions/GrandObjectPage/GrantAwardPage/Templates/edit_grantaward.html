@@ -7,7 +7,7 @@
 <div id="preview" style="display:none;"></div>
 <table>
     <tr>
-        <td class="label">PI:</td>
+        <td width="1%" class="label">PI:</td>
         <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
     <tr>
@@ -15,7 +15,7 @@
     </tr>
     <tr>
         <td class="label">Grant:</td>
-        <td><%= HTML.Select(this, 'grant_id', {'data-placeholder': "Choose a Grant...", options: this.grants.map(function(grant){ return {option: grant.get('title'), value: grant.get('id')}; })}) %></td>
+        <td><%= HTML.Select(this, 'grant_id', {'data-placeholder': "Choose a Grant...", style: 'max-width:500px', options: this.grants.map(function(grant){ return {option: grant.get('title'), value: grant.get('id')}; })}) %></td>
     </tr>
     <tr>
         <td class="label">Partners:</td>

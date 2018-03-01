@@ -17,11 +17,13 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             <tr>
                                 <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
                                 <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
                                 <td><input type='button' value='Update' /></td>
+                                <td id='manage{$this->id}cell'></td>
                             </tr>
                         </table>
                         <script type='text/javascript'>
@@ -50,6 +52,9 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
                                 var endRange = $('div#{$this->id} input[name=endRange]').val();
                                 document.location = '{$this->person->getUrl()}?tab={$this->id}&startRange=' + startRange + '&endRange=' + endRange;
                             });
+                            $(document).ready(function(){
+                                $('#manage{$this->id}').clone().appendTo('#manage{$this->id}cell');
+                            });
                         </script>
                         </div>";
         $structures = Product::structure();
@@ -59,7 +64,7 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
             $this->html .= $this->showTable($this->person, $this->visibility, $type);
         }
         if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
-            $this->html .= "<br /><input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageProducts#/".urlencode($this->category)."\");' value='Manage Outputs' />";
+            $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:ManageProducts#/".urlencode($this->category)."' class='button'>Manage ".Inflect::pluralize($this->category)."</a>";
         }
     }
 
