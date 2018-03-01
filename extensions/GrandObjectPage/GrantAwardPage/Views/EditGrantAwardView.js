@@ -14,11 +14,14 @@ EditGrantAwardView = Backbone.View.extend({
         this.grants = new Grants();
         var xhr1 = this.grants.fetch();
         this.listenTo(this.model, "change:application_title", function(){
-            if(this.model.isNew() && this.model.get('application_title') != ''){
+            if(this.model.get('application_title') != ''){
                 main.set('title', this.model.get('application_title'));
             }
-            else{
+            else if(this.model.isNew()){
                 main.set('title', 'New Awarded NSERC Application');
+            }
+            else if(!this.model.isNew()){
+                main.set('title', 'Editing Awarded NSERC Application');
             }
         });
         this.listenTo(this.model, 'sync', function(){
@@ -71,21 +74,58 @@ EditGrantAwardView = Backbone.View.extend({
     },
     
     renderCoapplicantsWidget: function(){
-        var left = _.pluck(this.model.get('coapplicants'), 'fullname');
-        var right = _.difference(this.allPeople.pluck('fullName'), left);
         var objs = [];
         this.allPeople.each(function(p){
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
                                        fullname: p.get('fullName')};
         });
-        var html = HTML.Switcheroo(this, 'coapplicants.fullname', {name: 'Co-Applicant',
-                                                                   left: left,
-                                                                   right: right,
-                                                                   objs: objs
-                                                                  });
+        
+        var delimiter = ';';
+        var html = HTML.TagIt(this, 'coapplicants.fullname', {
+            values: _.pluck(this.model.get('coapplicants'), 'fullname'),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: 'Enter applicant here...',
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter,
+                availableTags: this.allPeople.pluck('fullName'),
+                afterTagAdded: $.proxy(function(event, ui){
+                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
+                        ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                    }
+                }, this),
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 2){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                }
+            }
+        });
         this.$("#coapplicants").html(html);
-        createSwitcheroos();
+        this.$("#coapplicants").append("<p><i>Drag to re-order each applicant</i></p>");
+        this.$("#coapplicants .tagit").sortable({
+            stop: function(event,ui) {
+                $('input[name=coapplicants_fullname]').val(
+                    $(".tagit-label",$(this))
+                        .clone()
+                        .text(function(index,text){ return (index == 0) ? text : delimiter + text; })
+                        .text()
+                ).change();
+            }
+        });
+        this.$el.on('mouseover', 'div[name=coapplicants_fullname] li.tagit-choice', function(){
+            $(this).css('cursor', 'move');
+        });
     },
     
     renderCoapplicants: function(){
@@ -94,6 +134,7 @@ EditGrantAwardView = Backbone.View.extend({
         }
         else{
             this.allPeople = new People();
+            this.allPeople.simple = true;
             this.allPeople.fetch();
             var spin = spinner("coapplicants", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
@@ -113,12 +154,6 @@ EditGrantAwardView = Backbone.View.extend({
     },
     
     render: function(){
-        if(this.model.isNew() && this.model.get('application_title') != ''){
-            main.set('title', this.model.get('application_title'));
-        }
-        else{
-            main.set('title', 'New Awarded NSERC Application');
-        }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderCoapplicants();
         this.renderPartners();

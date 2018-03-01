@@ -13,11 +13,14 @@ EditGrantView = Backbone.View.extend({
             });
         }
         this.listenTo(this.model, "change:title", function(){
-            if(this.model.isNew() && this.model.get('title') == ""){
+            if(this.model.get('title') != ''){
+                main.set('title', this.model.get('title'));
+            }
+            else if(this.model.isNew()){
                 main.set('title', 'New Revenue Account');
             }
-            else{
-                main.set('title', this.model.get('title'));
+            else if(!this.model.isNew()){
+                main.set('title', 'Editing Revenue Account');
             }
         });
         this.listenTo(this.model, 'sync', function(){
@@ -225,12 +228,6 @@ EditGrantView = Backbone.View.extend({
     },
 
     render: function(){
-        if(this.model.isNew() && this.model.get('title') == ""){
-            main.set('title', 'New Revenue Account');
-        }
-        else{
-            main.set('title', this.model.get('title'));
-        }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
         //this.renderCoapplicants();

@@ -226,6 +226,7 @@ class GrantAward extends BackboneModel {
     
     function create(){
         $coapplicants = array();
+
         if(!is_array($this->coapplicants)){
             $this->getCoApplicants();
         }
@@ -280,6 +281,7 @@ class GrantAward extends BackboneModel {
         }
         DBFunctions::commit();
         self::$partnersCache = array();
+        $this->coapplicantsWaiting = true;
         return $this;
     }
     
@@ -341,6 +343,7 @@ class GrantAward extends BackboneModel {
         }
         DBFunctions::commit();
         self::$partnersCache = array();
+        $this->coapplicantsWaiting = true;
         return $this;
     }
     
