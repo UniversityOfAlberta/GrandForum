@@ -29,20 +29,45 @@ ThreadEditView = Backbone.View.extend({
         "click #cancel": "cancel",
         "change [name='visibility']": "checkVisibility",
         "change #prov": "checkProvince",
+        "change [name='public/private']" : "publicOrprivate",
     },
 
     checkVisibility: function(){
-        if($("[name='visibility']").val() == "Chosen Experts"){
-            this.renderAuthors();
-            $("#threadPeople").show();
-            $(".provinceSearch").show();
-           	$(".chzn-select").chosen();
+        switch($("[name='visibility']").val()){
+            case "Chosen Experts":
+                this.renderAuthors();
+                $("#threadPeople").show();
+                $(".provinceSearch").show();
+               	$(".chzn-select").chosen();
+               	$("#approvedRow").hide();
+                break;
+            case "All Experts":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").hide();
+                break;
+            case "question is visible to CAPS health care professionals":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").show();
+                break;
+            default:
+            case "Choose a visibility...":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").hide();
+                break;
+        }
+    },
 
+    publicOrprivate: function(){
+        if($("[name='public']").val() == "public"){
+            console.log("it is public");
         }
         else{
-            $("#threadPeople").hide();
-            $("#provinceSearch").hide();
+            console.log("it is private");
         }
+
     },
 
     checkProvince: function(){
@@ -59,7 +84,8 @@ ThreadEditView = Backbone.View.extend({
     saveThread: function(){
         var validation = this.validate();
         if(validation != ""){
-            clearAllMessages();
+            clearAllMessage
+            s();
             addError(validation, true);
             return;
         }
@@ -122,6 +148,7 @@ ThreadEditView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.checkVisibility();
         return this.$el;
     }
 

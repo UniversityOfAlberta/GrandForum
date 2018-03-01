@@ -29,9 +29,9 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'Share a Case or Experience');
+    main.set('title', 'Discussion Room');
    if(wgLang == "fr"){
-	main.set('title', "Partager un Cas ou de L'expérience");
+	main.set('title', "Salle de discussion");
    }
     this.closeCurrentView();
     var stories = new Stories();

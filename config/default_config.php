@@ -135,10 +135,11 @@
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
-	'ApprovePage',
-	'ApproveStory',
-	'Caps',
-        //'MyThreads'
+        'ApprovePage',
+        'ApproveStory',
+        'Caps',
+        //'MyThreads',
+        'AcademicResources'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,

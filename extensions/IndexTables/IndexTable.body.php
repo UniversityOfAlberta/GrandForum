@@ -233,6 +233,28 @@ class IndexTable {
 				$this->generatePersonTable("Clinical");	
 			        break;
 
+                case 'ALL Presentations':
+                $wgOut->setPageTitle("Presentations file");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Fichier de présentations");
+                    }
+                $this->generatePersonTable("Presentations"); 
+                    break;
+                case 'ALL Surveys':
+                $wgOut->setPageTitle("Survey Instruments");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Fichier de présentations");
+                    }
+                $this->generatePersonTable("Surveys"); 
+                    break;
+                case 'ALL Curricula':
+                $wgOut->setPageTitle("Curricula");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Fichier de présentations");
+                    }
+                $this->generatePersonTable("Curricula"); 
+                    break;
+
 			   case 'ALL Tools':
 				$wgOut->setPageTitle("Tools & Tips");
                     if($wgLang->getCode() == 'fr'){

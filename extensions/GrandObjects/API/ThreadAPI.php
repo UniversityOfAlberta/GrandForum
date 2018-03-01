@@ -21,7 +21,12 @@ class ThreadAPI extends RESTAPI {
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));
         $thread->setUserId($this->POST('author')->id);
+        $thread->setVisibility($this->POST('visibility'));
+        $thread->setPublic($this->POST('public'));
+        $thread->setApproved($this->POST('approved'));
 	    $visibility = $this->POST('visibility');
+        
+
 	    if($visibility == "Chosen Experts"){
 	        $authors = $this->POST('authors');
 	        $authors[] = $me;
@@ -83,6 +88,9 @@ class ThreadAPI extends RESTAPI {
 	    }
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));
+        $thread->setVisibility($this->POST('visibility'));
+        $thread->setApproved($this->POST('approved'));
+
         $status = $thread->update();
         if(!$status){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be updated");
@@ -111,7 +119,13 @@ class ThreadsAPI extends RESTAPI {
     function doGET(){
         $me = Person::newFromWgUser();
         if($this->getParam('search') == ""){
-            $threads = new Collection(Thread::getAllThreads());
+            $threads = array();
+            foreach(Thread::getAllThreads() as $thread){
+                if($thread->canView()){
+                    $threads[] = $thread;
+                }
+            }
+            $threads = new Collection($threads);
         }
         else{
             $threads = array();

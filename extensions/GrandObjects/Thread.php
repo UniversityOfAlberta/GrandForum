@@ -2,6 +2,13 @@
 /**
  * @package GrandObjects
  */
+
+
+
+// require 'FirePHPCore/fb.php';
+
+
+
 class Thread extends BackboneModel{
 
 	var $id;
@@ -11,6 +18,9 @@ class Thread extends BackboneModel{
     var $category;
 	var $posts = array();
 	var $date_created;
+    var $visibility;
+    var $approved;
+    var $public;
 
 //-----Static Functions/Constructor---//
         // Constructor
@@ -23,6 +33,9 @@ class Thread extends BackboneModel{
                 $this->category = $data[0]['category'];
                 $this->date_created = $data[0]['date_created'];
 		        $this->posts = $this->getPosts();
+                $this->visibility = $data[0]['visibility'];
+                $this->public = $data[0]['public'];
+                $this->approved = $data[0]['approved'];
             }
         }
 
@@ -65,7 +78,7 @@ class Thread extends BackboneModel{
                                             array('id'));
             }
             else{
-		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%'
+		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%' OR (`approved` = 1 AND `visibility` = 'question is visible to CAPS health care professionals')
 			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName\"%'";
                 $data = DBFunctions::execSQL($statement);
             }
@@ -136,6 +149,10 @@ class Thread extends BackboneModel{
             return $this->date_created;
         }
 
+        function getApproved(){
+            return $this->approved;
+        }
+
 	    function getCategory(){
 	        return $this->category;
 	    }
@@ -165,6 +182,16 @@ class Thread extends BackboneModel{
             $this->date_created = $date;
         }
 
+        function setVisibility($visibility){
+            $this->visibility = $visibility;
+        }
+        function setApproved($approved){
+            $this->approved = $approved;
+        }
+        function setPublic($public){
+            $this->public = $public;
+        }
+
 //-----Db methods----//
 	
 	function create(){
@@ -190,7 +217,12 @@ class Thread extends BackboneModel{
                                               array('user_id' => $this->user_id,
 						                            'users' => serialize($users),
                                                     'title' => $this->title,
-                                                    'category' => $this->category), true);
+                                                    'category' => $this->category,
+                                                    'approved' => $this->approved,
+                                                    'public' => $this->public,
+                                                    'visibility'=> $this->visibility
+
+                                                ), true);
                 $this->id = DBFunctions::insertId();
                 DBFunctions::commit();
                 if($status){
@@ -222,9 +254,12 @@ class Thread extends BackboneModel{
                 $status = DBFunctions::update('grand_threads',
                                               array('users'=>serialize($users),
                                                     'user_id' => $this->user_id,
-						    'title' => $this->getTitle(),
+                                                    'title' => $this->getTitle(),
                                                     'category' => $this->category,
-                                                    'date_created' => $this->getDateCreated()),
+                                                    'date_created' => $this->getDateCreated(),
+                                                    'approved' => $this->approved,
+                                                    'public' => $this->public,
+                                                    'visibility'=> $this->visibility),
                                               array('id' => EQ($this->id)));
                 if($status){
 		            DBFunctions::commit();
@@ -253,13 +288,14 @@ class Thread extends BackboneModel{
         function canView(){
             $me = Person::newFromWgUser();
             $bool = false;
-	    $threads = Thread::getAllThreads();
-	    $ids = array();
-	    foreach($threads as $thread){
-		$ids[] = $thread->getId();
-	    }
-            if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getThreadOwner()->getId() 
-				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids))){
+            $threads = Thread::getAllThreads();
+            $ids = array();
+            foreach($threads as $thread){
+                $ids[] = $thread->getId();
+            }
+            if($me->isLoggedIn() && !$me->isCandidate() && 
+                ($me->getId() === $this->getThreadOwner()->getId() || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids)) || 
+                ($this->visibility == "question is visible to CAPS health care professionals" && $this->getApproved())){
                 $bool = true;
             }
             return $bool;
@@ -274,34 +310,36 @@ class Thread extends BackboneModel{
             return $bool;
         }
 
-	    function addUser($person){
-	        $this->users[] = $person;
-	    }
-	
+        function addUser($person){
+            $this->users[] = $person;
+        }
+
         function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){
-		        return array();
+                return array();
             }
-	        $user = Person::newFromId($this->user_id);
-	        $author = array('id'=> $user->getId(),
-			        'name' => $user->getNameForForms(),
-			        'url' => $user->getUrl());
-	        $authors = array();
-	        foreach($this->getUsers() as $user){
-		    $authors[] = array('id'=>$user->getId(),
-				       'name' => $user->getNameForForms(),
-				       'url' => $user->getUrl());
-	        }
+            $user = Person::newFromId($this->user_id);
+            $author = array('id'=> $user->getId(),
+                    'name' => $user->getNameForForms(),
+                    'url' => $user->getUrl());
+            $authors = array();
+            foreach($this->getUsers() as $user){
+            $authors[] = array('id'=>$user->getId(),
+                               'name' => $user->getNameForForms(),
+                               'url' => $user->getUrl());
+            }
             $json = array('id' => $this->getId(),
-			  'author' => $author,
-			  'users' => $authors,
-			  'authors' => $this->getUsers(),
-			  'title' => $this->getTitle(),
-			  'posts' => $this->getPosts(),
+                          'author' => $author,
+                          'users' => $authors,
+                          'authors' => $this->getUsers(),
+                          'title' => $this->getTitle(),
+                          'posts' => $this->getPosts(),
                           'url' => $this->getUrl(),
-			  'category' => $this->getCategory(),
-                          'date_created' => $this->getDateCreated());
+                          'category' => $this->getCategory(),
+                          'date_created' => $this->getDateCreated(),
+                          'approved' => $this->getApproved(),
+                          'visibility' => $this->visibility);
             return $json;
         }
 
