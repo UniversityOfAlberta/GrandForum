@@ -16,8 +16,8 @@ $nPeople = count($supervisors);
 
 
 foreach($supervisors as $supervisor) {
-	$firstRow  = "Last Name, First Name, Middle Name, Employee Id, Email, ";
-	$firstRow .= "Relationship, Start, End, Position\n";
+	$firstRow  = "Id, Last Name, First Name, Middle Name, Employee Id, Email, ";
+	$firstRow .= "Relationship, Start, End, Position, Delete?, Comments\n";
 	$output = $firstRow;
 
 	$rels = $supervisor->getRelations('all', true);
@@ -50,6 +50,7 @@ foreach($supervisors as $supervisor) {
 		}
 		if ($hqpUni != null) {
 			$usedUnis[$hqp->getId().$hqpUni['position']] = true;
+			$output .= $hqp->getId() . ", ";
 			$output .= $hqp->getLastName() . ", ";
 			$output .= $hqp->getFirstName() . ", ";
 			$output .= $hqp->getMiddleName() . ", ";
