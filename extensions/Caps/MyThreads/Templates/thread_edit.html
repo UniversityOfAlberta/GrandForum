@@ -56,7 +56,8 @@
       </td>
     </tr> -->
 
-     <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
+     <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null ||
+           _.findWhere(me.get('roles'), {'role': MANAGER}) != null){ %>
         <tr id="approvedRow">
           <td colspan="2">
             <%= HTML.CheckBox(this, 'approved',{value:1})%><span>Approved</span>
