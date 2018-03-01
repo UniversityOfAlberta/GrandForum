@@ -33,22 +33,33 @@ foreach($supervisors as $supervisor) {
 	if (!isset($relations)) {
 		continue;
 	}
+	
+	$usedUnis = array();
 	foreach($relations as $relation) {
 		$hqp = $relation->getUser2();
-		$output .= $hqp->getLastName() . ", ";
-		$output .= $hqp->getFirstName() . ", ";
-		$output .= $hqp->getMiddleName() . ", ";
-		$output .= $hqp->getEmployeeId() . ", ";
-		$output .= $hqp->getEmail() . ", ";
-		$output .= $relation->getType() . ", ";
-		$output .= substr($relation->getStartDate(), 0, 10) . ", ";
 		$end = $relation->getEndDate();
-		$output .= substr($end, 0, 10) . ", ";
 		if ($end == "0000-00-00 00:00:00") {
 			$end = "2100-01-01 00:00:00";
 		}
-		$uni = $hqp->getUniversityDuring($relation->getStartDate(), $end);
-		$output .= @$uni['position'] . "\n";
+		$unis = $hqp->getUniversitiesDuring($relation->getStartDate(), $end);
+		foreach($unis as $uni) {
+			if (!isset($usedUnis[$hqp->getId().$uni['position']])) {
+				$hqpUni = $uni;
+				break;
+			}
+		}
+		if ($hqpUni != null) {
+			$usedUnis[$hqp->getId().$hqpUni['position']] = true;
+			$output .= $hqp->getLastName() . ", ";
+			$output .= $hqp->getFirstName() . ", ";
+			$output .= $hqp->getMiddleName() . ", ";
+			$output .= $hqp->getEmployeeId() . ", ";
+			$output .= $hqp->getEmail() . ", ";
+			$output .= $relation->getType() . ", ";
+			$output .= substr($relation->getStartDate(), 0, 10) . ", ";
+			$output .= substr($relation->getEndDate(), 0, 10) . ", ";
+			$output .= @$hqpUni['position'] . "\n";
+		}
 	}
 	file_put_contents($outdir . "/" . $supervisor->getLastName() . ".csv", $output);
 
