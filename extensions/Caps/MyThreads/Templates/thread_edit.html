@@ -21,19 +21,15 @@
 
             <td>
                 <% if(wgLang == 'en'){ %>
-                    <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
-                    <% } else if(wgLang == 'fr'){ %>
-                    <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
-                <% } %>
-            </td>
-        </tr>
-        <tr id="specialvisible" style="display:none;">
-          <td class="en"></td>
-          <td>
-          <% if(wgLang == 'en'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"],id:"specialselect"}) %>
-                    <% } else if(wgLang == 'fr'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"],id:"specialselect"}) %>
+                    <%= HTML.Select(this, "visibility", {options: [{option: "Choose a visibility...", value: "Choose a visibility..."}, 
+                                                                   {option: "question is visible to CAPS health care professionals", value: "question is visible to CAPS health care professionals"},
+                                                                   {option: "All Experts", value: "All Experts"}, 
+                                                                   {option: "Chosen Experts", value: "Chosen Experts"}]}) %>
+                <% } else if(wgLang == 'fr'){ %>
+                    <%= HTML.Select(this, "visibility", {options: [{option: "Choisissez une visibilité...", value: "Choose a visibility..."},
+                                                                   {option: "question est visible pour les professionnels de la santé CPCA", value: "question is visible to CAPS health care professionals"},
+                                                                   {option: "Tous les Experts", value: "All Experts"}, 
+                                                                   {option: "Experts Choisis", value: "Chosen Experts"}]}) %>
                 <% } %>
             </td>
         </tr>
@@ -42,9 +38,13 @@
             <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
             <td>
                 <% if(wgLang == 'en'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...","question is visible to CAPS health care professionals", "question is only visible to experts"]}) %>
-                    <% } else if(wgLang == 'fr'){ %>
-                  <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                    <%= HTML.Select(this, "visibility", {options: [{option: "Choose a visibility...", value: "Choose a visibility..."},
+                                                                   {option: "question is visible to CAPS health care professionals", value: "question is visible to CAPS health care professionals"},
+                                                                   {option: "question is only visible to experts", value: "Chosen Experts"}]}) %>
+                <% } else if(wgLang == 'fr'){ %>
+                    <%= HTML.Select(this, "visibility", {options: [{option: "Choisissez une visibilité...", value: "Choose a visibility..."}, 
+                                                                   {option: "question est visible pour les professionnels de la santé CPCA", value: "question is visible to CAPS health care professionals"},
+                                                                   {option: "question est seulement visible pour les experts", value: "Chosen Experts"}]}) %>
                 <% } %>
             </td>
         </tr>
@@ -57,7 +57,7 @@
     </tr> -->
 
      <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null){ %>
-        <tr>
+        <tr id="approvedRow">
           <td colspan="2">
             <%= HTML.CheckBox(this, 'approved',{value:1})%><span>Approved</span>
           </td>

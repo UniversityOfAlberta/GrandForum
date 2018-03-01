@@ -78,7 +78,7 @@ class Thread extends BackboneModel{
                                             array('id'));
             }
             else{
-		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%' OR `approved` = 1
+		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%' OR (`approved` = 1 AND `visibility` = 'question is visible to CAPS health care professionals')
 			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName\"%'";
                 $data = DBFunctions::execSQL($statement);
             }
@@ -254,10 +254,10 @@ class Thread extends BackboneModel{
                 $status = DBFunctions::update('grand_threads',
                                               array('users'=>serialize($users),
                                                     'user_id' => $this->user_id,
-						      'title' => $this->getTitle(),
+                                                    'title' => $this->getTitle(),
                                                     'category' => $this->category,
                                                     'date_created' => $this->getDateCreated(),
-                                                'approved' => $this->approved,
+                                                    'approved' => $this->approved,
                                                     'public' => $this->public,
                                                     'visibility'=> $this->visibility),
                                               array('id' => EQ($this->id)));
@@ -295,7 +295,7 @@ class Thread extends BackboneModel{
             }
             if($me->isLoggedIn() && !$me->isCandidate() && 
                 ($me->getId() === $this->getThreadOwner()->getId() || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids)) || 
-                $this->getApproved()){
+                ($this->visibility == "question is visible to CAPS health care professionals" && $this->getApproved())){
                 $bool = true;
             }
             return $bool;
@@ -337,7 +337,9 @@ class Thread extends BackboneModel{
                           'posts' => $this->getPosts(),
                           'url' => $this->getUrl(),
                           'category' => $this->getCategory(),
-                          'date_created' => $this->getDateCreated());
+                          'date_created' => $this->getDateCreated(),
+                          'approved' => $this->getApproved(),
+                          'visibility' => $this->visibility);
             return $json;
         }
 
