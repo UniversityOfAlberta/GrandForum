@@ -187,20 +187,19 @@ class LatestNews extends SpecialPage{
                 $olddate = null;
                 foreach($data as $key => $row){
                     if ($row["thumbnail"]==""){
-
-                        file_put_contents($row["id"]."temp.pdf", $row['en']);
+                        @mkdir("thumbnails");
+                        file_put_contents("thumbnails/".$row["id"]."temp.pdf", $row['en']);
                         
                         $im = new imagick();
-                        $im->readimage($row["id"]."temp.pdf"); 
+                        $im->readimage("thumbnails/".$row["id"]."temp.pdf"); 
                         $im->setImageFormat('jpg');
-
-                        $im->writeimage($row["id"]."temp.jpg");
+                        $im->writeimage("thumbnails/".$row["id"]."temp.jpg");
 
                         DBFunctions::update('grand_latest_news',
                                     array('thumbnail' => $row["id"]."temp.jpg",
                                       ),array('id' => $row['id']));
                         $row["thumbnail"] = $row["id"]."temp.jpg";
-                        unlink($row["id"]."temp.pdf");
+                        unlink("thumbnails/".$row["id"]."temp.pdf");
                     }
                     if($key > 0){
                         $date = explode("-",substr($row['date'], 0, 10));
