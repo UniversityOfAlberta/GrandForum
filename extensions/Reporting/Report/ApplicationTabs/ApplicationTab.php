@@ -8,12 +8,12 @@ class ApplicationTab extends AbstractTab {
     var $extraCols;
     var $showAllWithPDFs;
 
-    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array()){
+    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
         $this->extraCols = $extraCols;
-        $this->showAllWithPDFs = false;
+        $this->showAllWithPDFs = $showAllWithPDFs;
         $newPeople = array();
         foreach($people as $person){
             $newPeople[$person->getId()] = $person;
