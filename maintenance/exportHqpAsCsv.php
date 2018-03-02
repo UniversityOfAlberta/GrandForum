@@ -16,6 +16,9 @@ $nPeople = count($supervisors);
 
 
 foreach($supervisors as $supervisor) {
+	if ($supervisor->getDepartment() != "Physics") {
+		continue;
+	}
 	$firstRow  = "Id, Last Name, First Name, Middle Name, Employee Id, Email, ";
 	$firstRow .= "Relationship, Start, End, Position, Delete?, Comments\n";
 	$output = $firstRow;
@@ -62,7 +65,7 @@ foreach($supervisors as $supervisor) {
 			$output .= @$hqpUni['position'] . "\n";
 		}
 	}
-	file_put_contents($outdir . "/" . $supervisor->getLastName() . ".csv", $output);
+	file_put_contents($outdir . "/" . $supervisor->getName() . ".csv", $output);
 
 	show_status(++$peopleSoFar, $nPeople);
 }
