@@ -365,7 +365,7 @@
     <ReportSection id="declaration" type="ReportSection" name="Declaration" tooltip="Applicant Declaration" title="Applicant Declaration">
         <ReportItem id="declaration" type="Static">
             <![CDATA[
-                <p>By submitting this Research Exchange Program 2015-2016 Application Form I agree with GlycoNet that:</p>
+                <p>By submitting this Research Exchange Program 2018-2019 Application Form I agree with GlycoNet that:</p>
                 <ol>
                     <li>the information contained in this form is true, complete, and accurate;</li>
                     <li>I will use the funds received by me solely for the purpose set out in this application and as required pursuant to any applicable policies and procedures of GlycoNet;</li>
