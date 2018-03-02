@@ -708,11 +708,14 @@ class ReportItemCallback {
         $products = $person->getPapersAuthored($type, $start_date, $end_date, false);
         $count = 0;
         foreach($products as $product){
-            if($type == "Publication" && $product->getData('peer_reviewed') == "Yes"){
-                $count++;
-            }
-            else{
-                $count++;
+            $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
+            if($reportedYear == "" || $reportedYear == $year){
+                if($type == "Publication" && $product->getData('peer_reviewed') == "Yes"){
+                    $count++;
+                }
+                else{
+                    $count++;
+                }
             }
         }
         return $count;
