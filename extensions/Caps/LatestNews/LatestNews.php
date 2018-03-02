@@ -216,7 +216,7 @@ class LatestNews extends SpecialPage{
                         $olddate = $date;
                         $wgOut->addHTML("<tr>
                             <td>".substr($row['date'], 0, 10)."</td>
-                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/thumbnails/".$row["thumbnail"]."'"."style='width:150px;height:112.5px;' /></td>
+                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/thumbnails/{$row["id"]}temp.jpg'"."style='width:150px;height:112.5px;' /></td>
                             <td>".$row['type']."</td>
                             <td>
                                 <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>
