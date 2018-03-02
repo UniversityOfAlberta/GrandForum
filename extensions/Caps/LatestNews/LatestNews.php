@@ -186,19 +186,11 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2>");
                 $olddate = null;
                 foreach($data as $key => $row){
-                    if(extension_loaded('imagick') && $row["thumbnail"] == ""){
+                    if(!file_exists("thumbnails/{$row["id"]}temp.jpg")){
                         @mkdir("thumbnails");
                         file_put_contents("thumbnails/".$row["id"]."temp.pdf", $row['en']);
                         
-                        $im = new imagick();
-                        $im->readimage("thumbnails/".$row["id"]."temp.pdf"); 
-                        $im->setImageFormat('jpg');
-                        $im->writeimage("thumbnails/".$row["id"]."temp.jpg");
-
-                        DBFunctions::update('grand_latest_news',
-                                    array('thumbnail' => $row["id"]."temp.jpg",
-                                      ),array('id' => $row['id']));
-                        $row["thumbnail"] = $row["id"]."temp.jpg";
+                        exec("convert thumbnails/{$row["id"]}temp.pdf[0] thumbnails/{$row["id"]}temp.jpg"); 
                         unlink("thumbnails/".$row["id"]."temp.pdf");
                     }
                     if($key > 0){
@@ -224,7 +216,7 @@ class LatestNews extends SpecialPage{
                         $olddate = $date;
                         $wgOut->addHTML("<tr>
                             <td>".substr($row['date'], 0, 10)."</td>
-                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/".$row["thumbnail"]."'"."style='width:150px;height:112.5px;' /></td>
+                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/thumbnails/".$row["thumbnail"]."'"."style='width:150px;height:112.5px;' /></td>
                             <td>".$row['type']."</td>
                             <td>
                                 <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>
