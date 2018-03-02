@@ -64,10 +64,7 @@ class TextareaReportItem extends AbstractReportItem {
                             });
                         },
                         'formats' : {
-                            'alignleft' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {align:  'left'}},
-                            'aligncenter' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {align:  'center'}},
-                            'alignright' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {align:  'right'}},
-                            'alignfull' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {align:  'justify'}}
+                            'aligncenter' : {block: 'center'}
                         },
                         setup: function(ed){
                             if('$limit' > 0){
