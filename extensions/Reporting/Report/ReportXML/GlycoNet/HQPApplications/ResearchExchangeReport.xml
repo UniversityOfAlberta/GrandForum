@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Exchange Program Report" reportType="RP_HQP_EXCHANGE_REPORT" pdfType="HQP_EXCHANGE_REPORT" pdfFiles="HQPApplications/ResearchExchangeReportPDF" ajax="true" disabled="false" year="2016">
+<Report name="Research Exchange Program Report" reportType="RP_HQP_EXCHANGE_REPORT" pdfType="HQP_EXCHANGE_REPORT" pdfFiles="HQPApplications/ResearchExchangeReportPDF" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="report" permissions="rw" />

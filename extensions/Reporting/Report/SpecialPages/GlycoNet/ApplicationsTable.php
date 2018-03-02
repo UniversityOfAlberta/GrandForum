@@ -240,6 +240,8 @@ class ApplicationsTable extends SpecialPage{
     function generateExchange(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -248,6 +250,8 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -256,7 +260,9 @@ class ApplicationsTable extends SpecialPage{
     function generateATOP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "ATOP"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -279,6 +285,8 @@ class ApplicationsTable extends SpecialPage{
     function generateSeminar(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
