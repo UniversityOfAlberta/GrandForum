@@ -255,7 +255,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
+                    <tr><td>{$product_type}</td><td> {$product_citation}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
