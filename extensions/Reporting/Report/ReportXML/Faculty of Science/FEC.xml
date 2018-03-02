@@ -382,7 +382,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>Departmental</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
@@ -397,7 +397,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>Faculty</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
@@ -412,7 +412,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>University</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
@@ -427,7 +427,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>Scientific</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
@@ -442,7 +442,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>Outreach and Community Engagement</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
@@ -457,7 +457,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             	<h3>Other</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>

@@ -101,7 +101,6 @@ class ShibAuthPlugin extends AuthPlugin {
 	 */
 	function updateUser( &$user ) {
 		wfRunHooks('ShibUpdateUser', array($this->existingUser, $user));
- 
 		//For security, set password to a non-existant hash.
 		if ($user->mPassword != "nologin"){
 			$user->mPassword = "nologin";
@@ -112,7 +111,6 @@ class ShibAuthPlugin extends AuthPlugin {
 		DBFunctions::commit();
 		return true;
 	}
- 
  
 	/**
 	 * Return true if the wiki should create a new local account automatically
@@ -258,6 +256,7 @@ function SetupShibAuth()
 	global $wgHooks;
 	global $wgAuth;
 	global $wgCookieExpiration;
+	
 	if($shib_UN != null){
 		$wgCookieExpiration = -3600;
 		$wgHooks[ShibGetAuthHook()][] = "Shib".ShibGetAuthHook();

@@ -121,7 +121,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Acceptance Ratio" type="String">acceptance_ratio</field>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" bibtex="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="dcb27492e1554fc9838992ba7c70f416" ccv_name="Editors" label="Editors" type="String">editors</field>
                 <field label="Pages" type="String">ms_pages</field>
@@ -241,7 +241,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Acceptance Ratio" type="String">acceptance_ratio</field>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="86860b08d0c74c079c73a31d91e15da1" ccv_name="Magazine Name" label="Magazine Name" type="String">published_in</field>
                 <field ccv_id="c54799b5e36a415da615b4b637eb3ec8" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="5e0185b2646f49e18de6c00592774940" ccv_name="Issue" label="Issue" type="String">number</field>
@@ -334,7 +334,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Acceptance Ratio" type="String">acceptance_ratio</field>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
                 <field label="Pages" type="String">ms_pages</field>
@@ -409,7 +409,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Acceptance Ratio" type="String">acceptance_ratio</field>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field label="Pages" type="String">ms_pages</field>
@@ -473,7 +473,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Acceptance Ratio" type="String">acceptance_ratio</field>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field label="Pages" type="String">ms_pages</field>
@@ -891,7 +891,7 @@
     </Awards>
 
     <Activities category="Activity" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
-        <Activity type="Scientific Committee">
+        <Activity type="Scientific">
              <data>
                   <field label="Scope" type="Select" options="International|National|Provincial">scope</field>
                   <field label="Organization" type="String">organization</field>
@@ -901,7 +901,7 @@
              <date label="End Date"></date>
          </Activity>
          
-         <Activity type="University Committee">
+         <Activity type="University">
              <data>
              </data>
              <authors label="Individual Involved"></authors>
@@ -909,7 +909,7 @@
              <date label="End Date"></date>
          </Activity>
          
-         <Activity type="Faculty Committee">
+         <Activity type="Faculty">
              <data>
              </data>
              <authors label="Individual Involved"></authors>
@@ -917,7 +917,7 @@
              <date label="End Date"></date>
          </Activity>
          
-         <Activity type="Departmental Committee">
+         <Activity type="Departmental">
              <data>
              </data>
              <authors label="Individual Involved"></authors>
@@ -925,7 +925,7 @@
              <date label="End Date"></date>
          </Activity>
          
-         <Activity type="Community Outreach Committee">
+         <Activity type="Community Outreach">
              <data>
              </data>
              <authors label="Individual Involved"></authors>
@@ -933,7 +933,7 @@
              <date label="End Date"></date>
          </Activity>
          
-         <Activity type="Other Committee">
+         <Activity type="Other">
              <data>
              </data>
              <authors label="Individual Involved"></authors>
