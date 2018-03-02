@@ -1309,6 +1309,7 @@ class Paper extends BackboneModel{
             $ifranking = "";
             $ranking = $this->getData(array('category_ranking'));
             $if = $this->getData(array('impact_factor'));
+            $ratio = $this->getData(array('acceptance_ratio'));
             
             if($this->getCategory() == "Publication"){
                 if($this->getData('peer_reviewed') == "Yes"){
@@ -1337,6 +1338,9 @@ class Paper extends BackboneModel{
                     $jType = " ({$journal['description']})";
                 }
                 $ifranking = "IF: {$if}; Ranking: {$ranking}{$jType}<br />";
+            }
+            else if(str_replace("/", "", $ratio) != ""){
+                $ifranking = "Acceptance Rate: {$ratio}<br />";
             }
             $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}{$reported}</div>";
         }
