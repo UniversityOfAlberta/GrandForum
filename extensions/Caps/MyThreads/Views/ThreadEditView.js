@@ -33,23 +33,30 @@ ThreadEditView = Backbone.View.extend({
     },
 
     checkVisibility: function(){
-        if($("[name='visibility']").val() == "Chosen Experts"){
-            this.renderAuthors();
-            $("#threadPeople").show();
-            $(".provinceSearch").show();
-            $("#specialvisible").hide();
-            $("#specialselect").val(0);
-           	$(".chzn-select").chosen();
-
-        }
-        else if($("[name='visibility']").val() == "All Experts"){
-            $("#threadPeople").hide();
-            $("#provinceSearch").hide();
-            $("#specialvisible").show();
-        }
-        else if($("[name='visibility']").val() == "All Experts" || $("[name='visibility']").val() == "question is visible to CAPS health care professionals" ){
-            $("#threadPeople").hide();
-            $("#provinceSearch").hide();
+        switch($("[name='visibility']").val()){
+            case "Chosen Experts":
+                this.renderAuthors();
+                $("#threadPeople").show();
+                $(".provinceSearch").show();
+               	$(".chzn-select").chosen();
+               	$("#approvedRow").hide();
+                break;
+            case "All Experts":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").hide();
+                break;
+            case "question is visible to CAPS health care professionals":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").show();
+                break;
+            default:
+            case "Choose a visibility...":
+                $("#threadPeople").hide();
+                $(".provinceSearch").hide();
+                $("#approvedRow").hide();
+                break;
         }
     },
 
@@ -141,6 +148,7 @@ ThreadEditView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.checkVisibility();
         return this.$el;
     }
 
