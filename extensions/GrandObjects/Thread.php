@@ -257,7 +257,9 @@ class Thread extends BackboneModel{
                                                     'title' => $this->getTitle(),
                                                     'category' => $this->category,
                                                     'date_created' => $this->getDateCreated(),
+
                                                     'approved' => $this->approved,
+
                                                     'public' => $this->public,
                                                     'visibility'=> $this->visibility),
                                               array('id' => EQ($this->id)));
@@ -284,7 +286,6 @@ class Thread extends BackboneModel{
         return false;
     }
 //--------General Functions-------//
-
         function canView(){
             $me = Person::newFromWgUser();
             $bool = false;
