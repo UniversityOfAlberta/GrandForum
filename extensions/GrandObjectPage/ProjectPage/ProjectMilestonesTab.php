@@ -313,12 +313,14 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
-                            <th colspan='2'></th>";
+                            <th colspan='1'></th>";
         $this->showYearsHeader();
+        if($me->isRoleAtLeast(STAFF)){
+            $statusColspan++;
+        }
         $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
-                            <th>Activity</th>
                             <th class='milestone_header'>Milestone</th>";
         $this->showQuartersHeader();
         $this->html .= "<th class='left_border'>Leader</th>
@@ -333,21 +335,20 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $activity = $activityNames[$activityId];
             if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                 $activityTitle = str_replace("'", "&#39;", $activity);
-                $activity = "<input type='text' name='milestone_activity[$activityId]' value='$activityTitle' />";
+                $activity = "<input type='text' name='milestone_activity[$activityId]' style='font-weight:bold;' value='$activityTitle' />";
             }
             else if($this->visibility['edit'] == 1){
                 $activityTitle = str_replace("'", "&#39;", $activity);
-                $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' />$activity";
+                $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' /><b>$activity</b>";
             }
             $this->html .= "<tr class='top_border'>
-                                <td rowspan='$count'>$activity</td>";
+                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1+($this->nYears*4))."'>$activity</td>
+                            </tr>";
             if(count($milestones) == 0){
-                $this->html .= "<td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
+                $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
             }
             foreach($milestones as $key => $milestone){
-                if($key != 0){
                     $this->html .= "<tr>";
-                }
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
@@ -399,7 +400,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     }
                     $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
-                    $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
+                    $peopleText = "<input type='text' class='milestone_people' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
                 $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
                 $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
@@ -442,6 +443,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             </tr>";
         }
         $this->html .= "</table>";
+        $hqp = new Collection(array_values($this->project->getAllPeople(HQP)));
         if(!$pdf){
             $this->html .= "<script type='text/javascript'>
                 var colors = ".json_encode(Milestone::$statuses).";
@@ -521,6 +523,25 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             Cancel: function(){
                                 $(this).dialog('close');
                             }
+                        }
+                    });
+                });
+                
+                $(document).ready(function(){
+                    var hqp = ".$hqp->toJSON().";
+                    $('.milestone_people').tagit({
+                        allowSpaces: true,
+                        availableTags: _.pluck(hqp, 'fullName'),
+                        tagSource: function(search, showChoices) {
+                            var filter = search.term.toLowerCase();
+                            var choices = $.grep(this.options.availableTags, function(element) {
+                               // Only match autocomplete options that begin with the search term.
+                               // (Case insensitive.)
+                               //return (element.toLowerCase().indexOf(filter) === 0);
+                               console.info(element.toLowerCase().match(filter) + ' : ' + element + ' : ' + filter);
+                               return (element.toLowerCase().match(filter) !== null);
+                            });
+                            showChoices(this._subtractArray(choices, this.assignedTags()));
                         }
                     });
                 });

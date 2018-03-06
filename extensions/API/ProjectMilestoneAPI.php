@@ -15,12 +15,12 @@ class ProjectMilestoneAPI extends API{
 	    $this->addPOST("description",true,"The description for this milestone","Show that MEOW is great");
 	    $this->addPOST("assessment",true,"The assessment for this milestone","Use surveys to determine MEOW\'s greatness");
 	    $this->addPOST("status",true,"The status of this milestone. Can be one of either ('New','Revised','Continuing','Closed','Abandoned')","New");
+	    $this->addPOST("modification",false,"The modification of this milestone","Revised");
 	    $this->addPOST("people",false,"The people involved with this milestone, people separated by commas.", "First1.Last1, First2.Last2");
 	    $this->addPOST("end_date",true,"The projected end date of this milestone, in the form YYYY-MM","2012-10");
 	    $this->addPOST("quarters",false,"The yearly quarters that this milestone is active, in the form YYYY:Q,YYYY:Q", "2012:1,2012:2");
 	    $this->addPOST("comment",false,"The comment for this milestone. Usually this will only be used if the status is Closed or Abandoned","My comment");
 	    $this->addPOST("new_title", false, "The new title for this milestone.  If left blank, the previous title is used", "My Milestone");
-	    $this->addPOST("identifier", false, "Used when creating a new milestone.  If you do not know exactly what you are doing, do not use this parameter as in most cases it is not required", "123456");
 	    $this->addPOST("id", false, "Used to more accurately reference milestones.", "98");
     }
 
@@ -36,6 +36,9 @@ class ProjectMilestoneAPI extends API{
         }
         if(isset($_POST['status']) && $_POST['status'] != ""){
             $_POST['status'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['status'])));
+        }
+        if(isset($_POST['modification']) && $_POST['status'] != ""){
+            $_POST['modification'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['modification'])));
         }
         if(isset($_POST['end_date']) && $_POST['end_date'] != ""){
             $_POST['end_date'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['end_date'])));
@@ -72,9 +75,6 @@ class ProjectMilestoneAPI extends API{
         }
         if(isset($_POST['quarters']) && $_POST['quarters'] != ""){
             $_POST['quarters'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['quarters']))));
-        }
-        if(isset($_POST['identifier']) && $_POST['identifier'] != ""){
-            $_POST['identifier'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['identifier']))));
         }
         if(isset($_POST['id']) && $_POST['id'] != ""){
             $_POST['id'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['id']))));
@@ -171,6 +171,7 @@ class ProjectMilestoneAPI extends API{
 		       $milestone->getPeopleText() == $_POST['people'] &&
 		       $milestone->quarters == $_POST['quarters'] &&
 		       $milestone->getStatus() == $_POST['status'] &&
+		       $milestone->getModification() == $_POST['modification'] &&
 		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
 		       $milestone->getComment() == $_POST['comment'] &&
 		       $milestone->getDescription() == $_POST['description']){
@@ -196,6 +197,7 @@ class ProjectMilestoneAPI extends API{
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['new_title'],
 		                              'status'              => $_POST['status'],
+		                              'modification'        => $_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
@@ -211,36 +213,6 @@ class ProjectMilestoneAPI extends API{
             Milestone::$cache = array();
         }
         else if(!$this->update){
-            if(!isset($_POST['identifier']) || $_POST['identifier'] == ""){
-                $_POST['identifier'] = 0;
-            }
-            else if($_POST['identifier'] != 0){
-                if($this->checkIdentifier($project)){
-                    $sql = sprintf("UPDATE grand_milestones
-                            SET `title` = '%s',
-                                `problem` = '%s',
-                                `description` = '%s',
-                                `assessment` = '%s',
-                                `start_date` = CURRENT_TIMESTAMP,
-                                `projected_end_date` = '{$_POST['end_date']}-00'
-                            WHERE identifier = '{$_POST['identifier']}'
-                            AND (project_id = '{$project->getId()}'
-                                 ".implode("", $projectIds)."
-                                 )",
-                            DBFunctions::escape($_POST['title']),
-                            DBFunctions::escape($_POST['problem']), 
-                            DBFunctions::escape($_POST['description']), 
-                            DBFunctions::escape($_POST['assessment'])
-                            );
-                    
-                    DBFunctions::execSQL($sql, true);
-                    Milestone::$cache = array();
-                    //$this->updatePeople($people);
-                    Milestone::$cache = array();
-                    DBFunctions::commit();
-                    return;
-                }
-            }
             $sql = "SELECT MAX(milestone_id) as max
                     FROM grand_milestones";
             $rows = DBFunctions::execSQL($sql);
@@ -251,13 +223,13 @@ class ProjectMilestoneAPI extends API{
 		        $milestoneId = $rows[0]['max']+1;
 		    }
 		    DBFunctions::insert('grand_milestones',
-		                        array('identifier'          => $_POST['identifier'],
-		                              'activity_id'         => $activityId,
+		                        array('activity_id'         => $activityId,
 		                              'milestone_id'        => $milestoneId,
 		                              'project_id'          => $project->getId(),
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['title'],
 		                              'status'              => $_POST['status'],
+		                              'modification'        => $_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
@@ -356,27 +328,6 @@ class ProjectMilestoneAPI extends API{
                 Notification::addNotification($me, $leader, "Milestone Changed", "{$milestone->getProject()->getName()}'s Milestone entitled <i>{$milestone->getTitle()}</i> has been modified", "{$milestone->getProject()->getUrl()}");
             }
         }*/
-	}
-	
-	function checkIdentifier($project){
-	    $projectIds = array();
-        $preds = $project->getAllPreds();
-        foreach($preds as $pred){
-            $projectIds[] = " OR project_id = '".$pred->getId()."'\n";
-        }
-	    $sql = "SELECT *
-	            FROM grand_milestones
-	            WHERE (project_id = '{$project->getId()}'
-	                   ".implode("", $projectIds)."
-	                  )
-	            AND identifier = '{$_POST['identifier']}'";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        return true;
-	    }
-	    else{
-	        return false;
-	    }
 	}
 	
 	function isLoginRequired(){

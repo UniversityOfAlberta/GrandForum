@@ -7,15 +7,25 @@
 class Milestone {
 
     static $cache = array();
+    
     static $statuses = array("New" => "#BBBBBB",
                              "Completed" => "#3399FF",
                              "On Going" => "#55BB55",
                              "Late" => "#FFDD00",
                              "Problem" => "#FF8800",
                              "Abandoned" => "#FF6666");
+                             
+    static $fesStatuses = array("New" => "#BBBBBB",
+                                "Completed" => "#3399FF",
+                                "Pending" => "#55BB55",
+                                "Abandoned" => "#FF6666");
+                                
+    static $modifications = array("" => "transparent", 
+                                  "Revised" => "#0000FF", 
+                                  "Postponed" => "#FF0000");
+    
 
     var $id;
-    var $identifier;
     var $activity;
     var $milestone_id;
     var $order;
@@ -27,6 +37,7 @@ class Milestone {
     var $peopleWaiting;
     var $title;
     var $status;
+    var $modification;
     var $problem;
     var $description;
     var $assessment;
@@ -96,7 +107,6 @@ class Milestone {
     function Milestone($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
-            $this->identifier = $data['0']['identifier'];
             $this->activity_id = $data['0']['activity_id'];
             $this->milestone_id = $data[0]['milestone_id'];
             $this->order = $data[0]['order'];
@@ -110,6 +120,7 @@ class Milestone {
                 $this->parentWaiting = false;
             }
             $this->status = $data[0]['status'];
+            $this->modification = $data[0]['modification'];
             $this->project = Project::newFromId($data[0]['project_id']);
             $this->leader = $data[0]['leader'];
             $this->people = array();
@@ -133,14 +144,6 @@ class Milestone {
      */
     function getId(){
         return $this->id;
-    }
-    
-    /**
-     * Returns the identifier of this Milestone(used for when it is first created)
-     * @return integer The identifier of this Milestone
-     */
-    function getIdentifier(){
-        return $this->identifier;
     }
     
     /**
@@ -235,6 +238,14 @@ class Milestone {
      */
     function getStatus(){
         return $this->status;
+    }
+    
+    /**
+     * Returns the modification of this Milestone
+     * @return string The modification of this Milestone
+     */
+    function getModification(){
+        return $this->modification;
     }
     
     /**
