@@ -141,7 +141,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function showEditTopProducts($project, $visibility){
         global $config;
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to 10 research outcomes that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in the annual report. ie:
+        $this->html .= "<small>Select up to {$config->getValue('nProjectTopProducts')} research outcomes that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in the annual report. ie:
         <ul>
             <li>Publication in a high-impact journal</li>
             <li>Major partnerships or collaborations</li>
@@ -156,7 +156,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->html .= $this->selectList($project, $product->getId());
             $i++;
         }
-        for($i; $i < 10; $i++){
+        for($i; $i < $config->getValue('nProjectTopProducts'); $i++){
             $this->html .= $this->selectList($project, "");
         }
         $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>

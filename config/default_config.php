@@ -115,6 +115,9 @@
     // Whether or not to allow projectStatus
     $config->setValue("projectStatus", true);
     
+    // Number of Project Top Products
+    $config->setValue("nProjectTopProducts", 10);
+    
     // Which extensions to enable
     $config->setValue("extensions", array(
         //'Shibboleth',
