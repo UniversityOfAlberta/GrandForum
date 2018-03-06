@@ -954,8 +954,12 @@ class Contribution extends BackboneModel {
                 return true;
             }
         }
+        $oldProjects = $this->projects;
+        $this->projectsWaiting = true;
+        $projects = $this->getProjects();
+        $this->projects = $oldProjects;
         if($me->isRoleAtLeast(NI)){
-            foreach($this->getProjects() as $project){
+            foreach($projects as $project){
                 if($me->isMemberOf($project) ||
                    $me->leadershipOf($project) || 
                    $me->isThemeLeaderOf($project) ||
