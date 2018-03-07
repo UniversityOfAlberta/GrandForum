@@ -37,7 +37,7 @@ CollaborationEditView = Backbone.View.extend({
     saveCollaboration: function(){
         if (this.model.get("title").trim() == '') {
             clearWarning();
-            addWarning('Title must not be empty', true);
+            addWarning('Organization name must not be empty', true);
             return;
         }
         this.$(".throbber").show();
