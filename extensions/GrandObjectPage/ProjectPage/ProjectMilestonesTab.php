@@ -531,6 +531,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     var hqp = ".$hqp->toJSON().";
                     $('.milestone_people').tagit({
                         allowSpaces: true,
+                        removeConfirmation: true,
                         availableTags: _.pluck(hqp, 'fullName'),
                         tagSource: function(search, showChoices) {
                             var filter = search.term.toLowerCase();
@@ -538,7 +539,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                                // Only match autocomplete options that begin with the search term.
                                // (Case insensitive.)
                                //return (element.toLowerCase().indexOf(filter) === 0);
-                               console.info(element.toLowerCase().match(filter) + ' : ' + element + ' : ' + filter);
                                return (element.toLowerCase().match(filter) !== null);
                             });
                             showChoices(this._subtractArray(choices, this.assignedTags()));

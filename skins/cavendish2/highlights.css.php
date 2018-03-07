@@ -350,6 +350,10 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     color: $hl;
 }
 
+ul.tagit li.tagit-choice.remove {
+    background: #DDDDDD !important;
+}
+
 #bodyContent a.extiw,#bodyContent a.extiw:active {
     color: $hl;
     background: none;
