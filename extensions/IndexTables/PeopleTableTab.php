@@ -58,6 +58,8 @@ class PeopleTableTab extends AbstractTab {
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
+                                    <th style='display:none;'>First Name</th>
+                                    <th style='display:none;'>Last Name</th>
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     <th style='white-space: nowrap;'>Institution</th>
@@ -93,11 +95,16 @@ class PeopleTableTab extends AbstractTab {
             }
             $count++;
             $this->html .= "
-<tr>
-<td align='left' style='white-space: nowrap;'>
-<a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
-</td>
-";          
+                <tr>
+                    <td align='left' style='white-space: nowrap;'>
+                        <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
+                    </td>
+                    <td align='left' style='white-space: nowrap;display:none;'>
+                        {$person->getFirstName()}
+                    </td>
+                    <td align='left' style='white-space: nowrap;display:none;'>
+                        {$person->getLastName()}
+                    </td>";       
             if($subRoleHeader != ""){
                 $subRoles = array();
                 foreach(@$person->getSubRoles() as $sub){
