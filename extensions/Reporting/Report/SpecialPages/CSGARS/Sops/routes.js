@@ -88,7 +88,7 @@ pageRouter.on('route:rejected', function (search) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
-    gsms.folder = "Reject";
+    gsms.folder = "Rejected Apps";
     //gsms.program = "all";
     //gsms.decision = "Reject";
     gsms.fetch();

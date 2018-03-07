@@ -34,6 +34,7 @@ SopsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        this.$('#listTable').hide();
         if(this.table != undefined){
             this.table.destroy();
         }
@@ -54,12 +55,12 @@ SopsView = Backbone.View.extend({
             }
             return this.hidden;
         }, this)));
-
         sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
             this.$("#sopRows").append(row.$el);
             row.render();
         }, this));
+        this.$('#listTable').show();
         this.createDataTable();
     },
     
@@ -197,8 +198,7 @@ SopsView = Backbone.View.extend({
                                                         
                                                      }, this)
                                                  });
-        this.table.draw();
-        table = this.table;
+        //this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         //this.$('#listTable_length').prepend("<div id='download_btns' style='margin-left:112px; margin-top: 6px; vertical-align:baseline;'>Download: <a class='buttons-csv buttons-html5'>CSV</a>, <a class='buttons-excel buttons-html5'>Excel</a></div>")
     },
