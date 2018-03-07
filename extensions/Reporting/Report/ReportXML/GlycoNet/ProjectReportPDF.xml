@@ -363,6 +363,12 @@
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" rich="true">
+                <![CDATA[
+                    <h3>Budget Justification</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
             <ReportItem id="contributions" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CONTRIBUTIONS" class="wikitable" labels="Contribution Amount ($CAD)|Cash/In-kind|Partner Organization|Contact Name|Contact Email/Phone" types="Integer|Select(Cash,In-kind,Both)|String|String|String" multiple="true" optional="true">
                 <![CDATA[
                     <h2>Expected matching</h2>
