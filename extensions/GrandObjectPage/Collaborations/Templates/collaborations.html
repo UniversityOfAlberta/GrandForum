@@ -1,0 +1,125 @@
+<% if(me.isLoggedIn()){ %>
+    <a href="#/new" class="button" id="add">Add Collaboration</a><br /><br />
+<% } %>
+
+<table id="collaborations" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Organization Name</th>
+            <th>Contact Name</th>
+            <th>Position</th>
+            <th>Sector</th>
+            <th>Country</th>
+            <th width="1%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(collab){ %>
+            <tr>
+                <td>
+                    <a href="<%= collab.get('url') %>"><%= collab.get('title') %></a>
+                    <span style="display:none;">
+                        <%= collab.get('planning') %>
+                        <%= collab.get('designDataCollection') %>
+                        <%= collab.get('analysisOfResults') %>
+                        <%= collab.get('exchangeKnowledge') %>
+                        <%= collab.get('userKnowledge') %>
+                        <%= collab.get('other') %>
+                    </span>
+                </td>
+                <td>
+                    <%= collab.get('personName') %>
+                </td>
+                <td>
+                    <%= collab.get('position') %>
+                </td>
+                <td>
+                    <%= collab.get('sector') %>
+                </td>
+                <td>
+                    <%= collab.get('country') %>
+                </td>
+                <td>
+                    <span id="<%= collab.get('id') %>" class="delete-icon"></span>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New Collaboration"></div>
+<script>
+
+    function filterRows() {
+        filterTitle();
+        filterSector();
+        filterCountry();
+    }
+
+    function filterTitle() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("titleInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        if (filter.trim() == "") 
+        {
+            for (i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+            return;
+        }
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterSector() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("editorInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterCountry() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("descInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

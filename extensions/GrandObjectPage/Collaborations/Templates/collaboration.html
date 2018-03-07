@@ -1,0 +1,112 @@
+<div>
+    
+</div>
+<div>
+	<table style="display:inline-block;">
+		<tr>
+			<td><b>Contact Name:</b></td>
+			<td><%= personName %></td>
+		</tr>
+		<tr>
+			<td><b>Position:</b></td>
+			<td><%= position %></td>
+		</tr>
+	</table>
+
+	<table style="display:inline-block; margin-left:20px;">
+		<tr>
+			<td><b>Sector:</b></td>
+			<td><%= sector %></td>
+		</tr>
+		<tr>
+			<td><b>Country:</b></td>
+			<td><%= country %></td>
+		</tr>
+	</table>
+
+	<div style="display:block; margin-top:15px; margin-bottom:15px;">
+	    <b>Planning of Research:</b>
+	    <br />
+	    <div class="collaboration-text">
+		    <% if (planning == "") { %>
+		    	<span>No 'planning' comments provided</span>
+			<% } else { %>
+		    	<%= planning %>
+		    <% } %>
+		</div>
+	    <br />
+
+	    <b>Design/Data Collection:</b>
+	    <br />
+	    <div class="collaboration-text">
+		    <% if (designDataCollection == "") { %>
+		    	<span>No 'design' comments provided</span>
+			<% } else { %>
+		    	<%= designDataCollection %>
+		    <% } %>
+		</div>
+	    <br />
+
+	    <b>Analysis of Results</b>
+	    <br />
+	    <div class="collaboration-text">
+		    <% if (analysisOfResults == "") { %>
+		    	<span>No 'analysis' comments provided</span>
+			<% } else { %>
+		    	<%= analysisOfResults %>
+		    <% } %>
+		</div>
+	    <br />
+
+	    <b>Exchange/Disseminate Research Knowledge</b>
+	    <br />
+	    <div class="collaboration-text">
+		    <% if (exchangeKnowledge == "") { %>
+		    	<span>No 'exchanging knowledge' comments provided</span>
+			<% } else { %>
+		    	<%= exchangeKnowledge %>
+		    <% } %>
+		</div>
+	    <br />
+
+	    <b>User of Research Knowledge</b>
+	    <br />
+	    <div class="collaboration-text">
+		    <% if (userKnowledge == "") { %>
+		    	<span>No 'user' comments provided</span>
+			<% } else { %>
+		    	<%= userKnowledge %>
+		    <% } %>
+		</div>
+	</div>
+
+    <b>Other:</b>
+    <br />
+    <div class="collaboration-text">
+	    <% if (other == "") { %>
+	    	<span>No 'other' comments provided</span>
+		<% } else { %>
+	    	<%= nl2br(striphtml(other)) %>
+	    <% } %>
+	</div>
+    <br />
+
+</div>
+
+<div id="loadPublicationsSpinner" style="width: 100%;
+text-align: center;"></div>
+<div id="products">
+    <ol>
+    
+    </ol>
+</div>
+<% if(me.isLoggedIn()){ %>
+    </br>
+    <button id="editCollaboration">Edit Collaboration</button>
+    <button id="deleteCollaboration">Delete Collaboration</button>
+<% } %>
+
+
+
+
+

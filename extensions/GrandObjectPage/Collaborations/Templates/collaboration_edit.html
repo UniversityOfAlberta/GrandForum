@@ -1,0 +1,62 @@
+
+<div>
+    <b>Organization Name:</b><br />
+    <%= HTML.TextBox(this, 'title', {size: '50'}) %><br />
+
+    <b>Contact Name</b><br />
+    <%= HTML.TextBox(this, 'personName', {size: '50'}) %><br />
+
+    <b>Position</b><br />
+    <%= HTML.TextBox(this, 'position', {size: '50'}) %><br />
+
+    <b>Sector:</b><br />
+    <%= HTML.Select(this, 'sector', 
+    {options: [
+        "Lead Institution",
+        "Partner Institutions",
+        "Other Canadian Research Organizations (including research hospitals)",
+        "Academic and Research Institutes Abroad (including research hospitals)",
+        "Private Sector in Canada",
+        "Private Sector Abroad",
+        "Public Sector in Canada",
+        "Public Sector Abroad",
+        "Philanthropic/not-for-profit/Other in Canada",
+        "Philanthropic/not-for-profit/Other Abroad"
+    ]}) %> <br />
+
+    <b>Country:</b><br />
+    <%= HTML.Select(this, 'country',
+    {options: [
+        "Canada", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Cabo Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Democratic Republic of the Congo", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territories", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+    ]}) %> <br />
+
+    <b>Planning of Research:</b><br />
+    <%= HTML.TextBox(this, 'planning', {size: '50'}) %><br />
+
+    <b>Design/Data Collection:</b><br />
+    <%= HTML.TextBox(this, 'designDataCollection', {size: '50'}) %><br />
+
+    <b>Analysis of Results</b><br />
+    <%= HTML.TextBox(this, 'analysisOfResults', {size: '50'}) %><br />
+
+    <b>Exchange/Disseminate Research Knowledge</b><br />
+    <%= HTML.TextBox(this, 'exchangeKnowledge', {size: '50'}) %><br />
+
+    <b>User of Research Knowledge</b><br />
+    <%= HTML.TextBox(this, 'userKnowledge', {size: '50'}) %><br />
+
+    <b>Other (specify):</b><br />
+    <%= HTML.TextArea(this, 'other', {style: 'height:175px;width:650px;'}) %><br />
+    
+</div>
+
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id="saveCollaboration">
+            <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Collaboration
+        </button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
+<% } %>

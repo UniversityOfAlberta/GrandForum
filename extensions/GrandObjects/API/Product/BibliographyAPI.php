@@ -39,7 +39,7 @@ class BibliographyAPI extends RESTAPI {
         $bib->description = $this->POST('description');
         $bib->editors = $this->POST('editors');
         $bib->products = $this->POST('products');
-        $status = $bib = $bib->update();
+        $status = $bib->update();
         if(!$status) {
             $this->throwError("Could not create bibliography");
         }
