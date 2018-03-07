@@ -336,6 +336,20 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     text-decoration: none;
 }
 
+ul.tagit li.tagit-choice {
+    background: white !important;
+    color: $hl !important;
+    border-color: $hl !important;
+}
+
+ul.tagit li.tagit-choice .tagit-label:not(a) {
+    color: $hl;
+}
+
+ul.tagit li.tagit-choice .tagit-close .text-icon {
+    color: $hl;
+}
+
 #bodyContent a.extiw,#bodyContent a.extiw:active {
     color: $hl;
     background: none;

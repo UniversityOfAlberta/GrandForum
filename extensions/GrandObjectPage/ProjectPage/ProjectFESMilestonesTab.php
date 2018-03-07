@@ -49,6 +49,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $_POST['description'] = @$_POST['milestone_description'][$activityId][$milestoneId];
                 $_POST['assessment'] = "";
                 $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
+                $_POST['modification'] = @$_POST['milestone_modification'][$activityId][$milestoneId];
                 $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
                 $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
@@ -100,7 +101,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $_POST['problem'] = "";
             $_POST['description'] = "";
             $_POST['assessment'] = "";
-            $_POST['status'] = "New";
+            $_POST['status'] = "Pending";
+            $_POST['modification'] = "";
             $_POST['people'] = "";
             $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
             $_POST['quarters'] = "";
@@ -162,7 +164,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             for($q=1;$q<=$nQuarters;$q++){
                 $class = ($q == 1) ? "class='left_border'" : "";
-                $color = @Milestone::$statuses[$milestone->getStatus()];
+                $colors = array_merge(Milestone::$statuses, Milestone::$fesStatuses);
+                $color = @$colors[$milestone->getStatus()];
+                $color2 = @Milestone::$modifications[$milestone->getModification()];
 
                 $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
                 $checkbox = "";
@@ -178,7 +182,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $checkbox = "<input data-id='{$activityId}_{$milestone->getMilestoneId()}' class='milestone {$single}' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
                 }
                 if(isset($quarters[$y][$q])){
-                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                    $this->html .= "<td style='background:$color;outline-offset: -2px; outline: 2px solid $color2; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
                 }
                 else{
                     $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
@@ -340,15 +344,15 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                                 </div>
                                 <a class='button' id='addFESMilestone'>Add Milestone</a><br /><br />";
             
-                $statusHeader = "<th>Status</th>";
+                $statusHeader = "<th>Status</th><th>Modification</th>";
                 if($me->isRoleAtLeast(STAFF)){
                     $statusHeader .= "<th width='1%'>Delete?</td>";
                 }
             }
             else{
-                $statusHeader = "<th>Status</th>";
+                $statusHeader = "<th>Status</th><th>Modification</th>";
             }
-            $statusColspan++;
+            $statusColspan += 2; // Status & Modification
             if(!$this->canEditMilestone(null)){
                 $this->html .= "<p class='milestone_info1'>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
             }
@@ -364,12 +368,14 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
-                            <th colspan='2'></th>";
+                            <th colspan='1'></th>";
         $this->showYearsHeader();
+        if($me->isRoleAtLeast(STAFF)){
+            $statusColspan++;
+        }
         $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
-                            <th class='milestone_header'>Milestone</th>
                             <th style='min-width:200px;width:25%;'>Description</th>";
         $this->showQuartersHeader();
         $this->html .= "<th class='left_border'>Leader</th>
@@ -381,12 +387,6 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         <tbody>";
         foreach($milestones as $key => $milestone){
             $activityId = 0;
-            if($key == 0){
-                $this->html .= "<tr class='top_border'>";
-            }
-            else{
-                $this->html .= "<tr>";
-            }
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 // Editing
                 $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
@@ -414,8 +414,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             if($pdf){
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
-            $this->html .= "<td style='white-space:nowrap;{$height};'>{$title}</td>";
-            $this->html .= "<td>{$description}</td>";
+            $this->html .= "<tr class='top_border'>
+                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1+($this->nYears*4))."' style='white-space:nowrap;{$height};'>{$title}</td>
+                            </tr>
+                            <tr>
+                                <td>{$description}</td>";
             $this->showQuartersCells($milestone, $activityId);
             
             $comment = str_replace("'", "&#39;", $milestone->getComment());
@@ -445,7 +448,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 }
                 $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                 $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
-                $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
+                $peopleText = "<input type='text' class='milestone_people' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
             }
             $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
             $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
@@ -454,13 +457,21 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $statuses = array();
-                foreach(Milestone::$statuses as $status => $color){
+                foreach(Milestone::$fesStatuses as $status => $color){
                     $statuses[$status] = $status;
+                }
+                
+                $modifications = array();
+                foreach(Milestone::$modifications as $modification => $color){
+                    $modifications[$modification] = $modification;
                 }
                 
                 $selectBox = new SelectBox("milestone_status[$activityId][{$milestone->getMilestoneId()}]", "status", $milestone->getStatus(), $statuses);
                 $statusText = $selectBox->render();
+                $selectBox = new SelectBox("milestone_modification[$activityId][{$milestone->getMilestoneId()}]", "modification", $milestone->getModification(), $modifications);
+                $modificationText = $selectBox->render();
                 $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
+                $this->html .= "<td id='modification' align='center'>$modificationText</td>";
                 if($me->isRoleAtLeast(STAFF)){
                     $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
                 }
@@ -476,20 +487,42 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $this->html .= "<table style='float:right;'>";
         }
         else{
-            $this->html .= "<table>";
+            $this->html .= "<table style='vertical-align:top;'>";
         }
         $this->html .= "<tr>
-                            <th>Legend</th>
+                            <th>Status</th>
                         </tr>";
-        foreach(Milestone::$statuses as $status => $color){
+        foreach(Milestone::$fesStatuses as $status => $color){
             $this->html .= "<tr>
                                 <td class='smallest'><div style='text-align:center;padding:1px 3px;background:{$color};border:1px solid #555555;white-space:nowrap;'>$status</div></td>
                             </tr>";
         }
+        $this->html .= "</table>&nbsp;";
+        if(!$pdf){
+            $this->html .= "<table style='float:right;'>";
+        }
+        else{
+            $this->html .= "<table style='vertical-align:top;'>";
+        }
+        $this->html .= "<tr>
+                            <th>Modification</th>
+                        </tr>";
+        foreach(Milestone::$modifications as $modification => $color){
+            if($color == "transparent"){
+                $color = "#555555";
+                $modification = "N/A";
+            }
+            $this->html .= "<tr>
+                                <td class='smallest'><div style='text-align:center;padding:1px 3px;outline-offset: -2px; outline:2px solid {$color};border:1px solid;white-space:nowrap;'>$modification</div></td>
+                            </tr>";
+        }
         $this->html .= "</table><br style='clear:both;' />";
+        
+        
         if(!$pdf){
             $this->html .= "<script type='text/javascript'>
-                var colors = ".json_encode(Milestone::$statuses).";
+                var colors = ".json_encode(array_merge(Milestone::$statuses, Milestone::$fesStatuses)).";
+                var colors2 = ".json_encode(Milestone::$modifications).";
                 
                 $('#milestones_table td').qtip();
                 $('#milestones_table td.comment img').qtip({
@@ -519,11 +552,17 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     var checked = $(this).is(':checked');
                     if(checked){
                         var status = $('td#status select', $(this).parent().parent()).val();
+                        var modification = $('td#modification select', $(this).parent().parent()).val();
                         var color = colors[status];
-                        $(this).parent().css('background', color);
+                        var color2 = colors2[modification];
+                        $(this).parent().css('background', color)
+                                        .css('outline', '2px solid ' + color2)
+                                        .css('outline-offset', '-1px');
                     }
                     else{
-                        $(this).parent().css('background', '#FFFFFF');
+                        $(this).parent().css('background', '#FFFFFF')
+                                        .css('outline', '0 solid transparent')
+                                        .css('outline-offset', '');
                     }
                 };
                 
@@ -534,6 +573,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     var color = colors[status];
                     $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
                 });
+                $('#milestones_table td#modification select').change(function(){
+                    var modification = $(this).val();
+                    var color = colors2[modification];
+                    $('input.milestone:checked', $(this).parent().parent()).parent().css('outline', '2px solid ' + color)
+                                                                                    .css('outline-offset', '-1px');
+                });
                 
                 $('#addFESMilestone').click(function(){
                     $('input[name=new_milestone_title]').val('New Milestone');
@@ -543,8 +588,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $('input.single').click(function(){
                     var dataId = $(this).attr('data-id');
                     $('input[data-id=' + dataId + ']').not(this).prop('checked', false);
-                    $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
-                    $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
+                    //$('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+                    $('#milestones_table td input.milestone.single[type=checkbox]').each(changeColor);
                 });
                 
             </script>";
