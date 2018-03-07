@@ -102,6 +102,8 @@
                         {getArray(RP_COM,OT_COM,Q14,0,0,{$project_id},q5,;&nbsp;)}
                         </br>
                     </div>
+                    <b style="font-size: 14px;">Funding:</b>
+                    {getText(RP_COM,OT_COM,Q4,{$project_id},0,{$project_id})}
                     ]]>
                 </ReportItem>
             </ReportItemSet>

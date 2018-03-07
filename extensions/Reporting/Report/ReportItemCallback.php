@@ -1361,9 +1361,7 @@ class ReportItemCallback {
         $prog = $gsms->program;
         $progSplit = explode(" - ", $prog);
         $time = "";
-        try {
-            $time = $progSplit[1];
-        } catch (Exception $e) {}
+        $time = @$progSplit[1];
         return $time;
     }
     
