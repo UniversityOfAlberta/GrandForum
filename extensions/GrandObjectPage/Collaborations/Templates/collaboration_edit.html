@@ -1,52 +1,79 @@
 
 <div>
-    <b>Organization Name:</b><br />
-    <%= HTML.TextBox(this, 'title', {size: '50'}) %><br />
+    <h3>Organization:</h3>
+    <%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
 
-    <b>Contact Name</b><br />
-    <%= HTML.TextBox(this, 'personName', {size: '50'}) %><br />
+    <div style="max-width:350px;margin-bottom: 10px;">
+        <h3>Contact</h3>
+        <table style="width:100%;margin-left: 15px;">
+            <tr>
+                <td><b>Name</b></td>
+                <td><%= HTML.TextBox(this, 'personName', {style: 'width:100%;'}) %></td>
+            </tr>
+            <tr>
+                <td><b>Position</b></td>
+                <td><%= HTML.TextBox(this, 'position', {style: 'width:100%;'}) %></td>
+            </tr>
+        </table>
+    </div>
 
-    <b>Position</b><br />
-    <%= HTML.TextBox(this, 'position', {size: '50'}) %><br />
+    <div style="margin-bottom: 10px;">
+        <div style="display:inline-block;">
+            <h3>Sector:</h3>
+            <%= HTML.Select(this, 'sector', 
+            {options: [
+                "Lead Institution",
+                "Partner Institutions",
+                "Other Canadian Research Organizations (including research hospitals)",
+                "Academic and Research Institutes Abroad (including research hospitals)",
+                "Private Sector in Canada",
+                "Private Sector Abroad",
+                "Public Sector in Canada",
+                "Public Sector Abroad",
+                "Philanthropic/not-for-profit/Other in Canada",
+                "Philanthropic/not-for-profit/Other Abroad"
+            ]}) %>
+        </div>
+        <div style="display:inline-block; margin-left:10px;">
+            <h3>Country:</h3>
+            <%= HTML.Select(this, 'country',
+            {options: [
+                "Canada", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Cabo Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Democratic Republic of the Congo", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territories", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+            ]}) %>
+        </div>
+    </div>
 
-    <b>Sector:</b><br />
-    <%= HTML.Select(this, 'sector', 
-    {options: [
-        "Lead Institution",
-        "Partner Institutions",
-        "Other Canadian Research Organizations (including research hospitals)",
-        "Academic and Research Institutes Abroad (including research hospitals)",
-        "Private Sector in Canada",
-        "Private Sector Abroad",
-        "Public Sector in Canada",
-        "Public Sector Abroad",
-        "Philanthropic/not-for-profit/Other in Canada",
-        "Philanthropic/not-for-profit/Other Abroad"
-    ]}) %> <br />
+    
+    <div class="flex-container" style="max-width:820px;">
+        <div class="collab_check" style="max-width: 20%;">
+            <b>Planning of Research</b><br />
+            <%= HTML.CheckBox(this, 'planning', {value: 1}) %>
+        </div>
 
-    <b>Country:</b><br />
-    <%= HTML.Select(this, 'country',
-    {options: [
-        "Canada", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Cabo Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Democratic Republic of the Congo", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territories", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-    ]}) %> <br />
+        <div class="collab_check" style="max-width: 20%;">
+            <b>Design/Data Collection</b><br />
+            <%= HTML.CheckBox(this, 'designDataCollection', {value: 1}) %>
+        </div>
 
-    <b>Planning of Research:</b><br />
-    <%= HTML.TextBox(this, 'planning', {size: '50'}) %><br />
+        <div class="collab_check" style="max-width: 20%">
+            <b>Analysis of Results</b><br />
+            <%= HTML.CheckBox(this, 'analysisOfResults', {value: 1}) %>
+        </div>
 
-    <b>Design/Data Collection:</b><br />
-    <%= HTML.TextBox(this, 'designDataCollection', {size: '50'}) %><br />
+        <div class="collab_check" style="max-width: 20%;">
+            <b>Exchange/Disseminate Research Knowledge</b><br />
+            <%= HTML.CheckBox(this, 'exchangeKnowledge', {value: 1}) %>
+        </div>
 
-    <b>Analysis of Results</b><br />
-    <%= HTML.TextBox(this, 'analysisOfResults', {size: '50'}) %><br />
+        <div class="collab_check" style="max-width: 20%;">
+            <b>User of Research Knowledge</b><br />
+            <%= HTML.CheckBox(this, 'userKnowledge', {value: 1}) %>
+        </div>
+    </div>
 
-    <b>Exchange/Disseminate Research Knowledge</b><br />
-    <%= HTML.TextBox(this, 'exchangeKnowledge', {size: '50'}) %><br />
 
-    <b>User of Research Knowledge</b><br />
-    <%= HTML.TextBox(this, 'userKnowledge', {size: '50'}) %><br />
-
-    <b>Other (specify):</b><br />
-    <%= HTML.TextArea(this, 'other', {style: 'height:175px;width:650px;'}) %><br />
+    <h3>Other (specify):</h3>
+    <%= HTML.TextArea(this, 'other', {style: 'height:175px;width:99%;max-width:820px;'}) %><br />
     
 </div>
 

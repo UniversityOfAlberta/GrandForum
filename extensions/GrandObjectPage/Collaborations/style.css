@@ -137,10 +137,25 @@
     border-radius: 4px 4px 0px 0px;
 }
 
-.collaboration-text {
-    margin-left: 10px;
+.flex-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.collaboration-text > span {
-    color: #AAAAAA;
+.collab_check {
+  background-color: #f5f5f5;
+  width: 20%;
+  margin: 10px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #CCCCCC;
+}
+
+.collab_check:hover {
+    box-shadow:0px 0px 2px grey;
+}
+
+.collab_check > b {
+    cursor: default;
 }

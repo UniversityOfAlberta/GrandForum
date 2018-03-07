@@ -2,93 +2,66 @@
     
 </div>
 <div>
-	<table style="display:inline-block;">
-		<tr>
-			<td><b>Contact Name:</b></td>
-			<td><%= personName %></td>
-		</tr>
-		<tr>
-			<td><b>Position:</b></td>
-			<td><%= position %></td>
-		</tr>
-	</table>
+	<h3>Contact</h3>
+    <table style="margin-left: 15px;">
+        <tr>
+            <td><b>Name</b></td>
+            <td><%= personName %></td>
+        </tr>
+        <tr>
+            <td><b>Position</b></td>
+            <td><%= position %></td>
+        </tr>
+    </table>
 
-	<table style="display:inline-block; margin-left:20px;">
-		<tr>
-			<td><b>Sector:</b></td>
-			<td><%= sector %></td>
-		</tr>
-		<tr>
-			<td><b>Country:</b></td>
-			<td><%= country %></td>
-		</tr>
-	</table>
+	<h3>Sector:</h3>
+	<%= sector %>
+
+	<h3>Country:</h3>
+	<%= country %>
 
 	<div style="display:block; margin-top:15px; margin-bottom:15px;">
-	    <b>Planning of Research:</b>
-	    <br />
-	    <div class="collaboration-text">
-		    <% if (planning == "") { %>
-		    	<span>No 'planning' comments provided</span>
-			<% } else { %>
-		    	<%= planning %>
-		    <% } %>
-		</div>
-	    <br />
+		<h3>Attributes:</h3>
+		<% if ((planning == 1) || (designDataCollection == 1) || (analysisOfResults == 1) || 
+			   (exchangeKnowledge == 1) || (userKnowledge == 1)) { %>
+			<ul>
+		<% } else { %>
+			<span style="color: #AAAAAA">None specified</span>
+		<% } %>
 
-	    <b>Design/Data Collection:</b>
-	    <br />
-	    <div class="collaboration-text">
-		    <% if (designDataCollection == "") { %>
-		    	<span>No 'design' comments provided</span>
-			<% } else { %>
-		    	<%= designDataCollection %>
-		    <% } %>
-		</div>
-	    <br />
+	    <% if (planning == 1) { %>
+	    	<li>Planning of Research</li>
+		<% } %>
 
-	    <b>Analysis of Results</b>
-	    <br />
-	    <div class="collaboration-text">
-		    <% if (analysisOfResults == "") { %>
-		    	<span>No 'analysis' comments provided</span>
-			<% } else { %>
-		    	<%= analysisOfResults %>
-		    <% } %>
-		</div>
-	    <br />
+	    <% if (designDataCollection == 1) { %>
+	    	<li>Design/Data Collection</li>
+		<% } %>
 
-	    <b>Exchange/Disseminate Research Knowledge</b>
-	    <br />
-	    <div class="collaboration-text">
-		    <% if (exchangeKnowledge == "") { %>
-		    	<span>No 'exchanging knowledge' comments provided</span>
-			<% } else { %>
-		    	<%= exchangeKnowledge %>
-		    <% } %>
-		</div>
-	    <br />
+	    <% if (analysisOfResults == 1) { %>
+	    	<li>Analysis of Results</li>
+		<% } %>
 
-	    <b>User of Research Knowledge</b>
-	    <br />
-	    <div class="collaboration-text">
-		    <% if (userKnowledge == "") { %>
-		    	<span>No 'user' comments provided</span>
-			<% } else { %>
-		    	<%= userKnowledge %>
-		    <% } %>
-		</div>
+	    <% if (exchangeKnowledge == 1) { %>
+	    	<li>Exchange/Disseminate Research Knowledge</li>
+		<% } %>
+
+	    <% if (userKnowledge == 1) { %>
+	    	<li>User of Research Knowledge</li>
+		<% } %>
+
+		<% if ((planning == 1) || (designDataCollection == 1) || (analysisOfResults == 1) || 
+			   (exchangeKnowledge == 1) || (userKnowledge == 1)) { %>
+			</ul>
+		<% } %>
 	</div>
 
     <b>Other:</b>
     <br />
-    <div class="collaboration-text">
-	    <% if (other == "") { %>
-	    	<span>No 'other' comments provided</span>
-		<% } else { %>
-	    	<%= nl2br(striphtml(other)) %>
-	    <% } %>
-	</div>
+    <% if (other == "") { %>
+    	<span style="color: #AAAAAA">No 'other' comments provided</span>
+	<% } else { %>
+    	<%= nl2br(striphtml(other)) %>
+    <% } %>
     <br />
 
 </div>

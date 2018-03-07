@@ -70,6 +70,15 @@ CollaborationEditView = Backbone.View.extend({
     events: {
         "click #saveCollaboration": "saveCollaboration",
         "click #cancel": "cancel",
+        "click .collab_check": "checkCollabItem",
+    },
+
+    checkCollabItem: function(data) {
+        if ($(data.target).prop("tagName") != "INPUT") {
+            var checkbox = $('input[type=checkbox]', data.currentTarget);
+            var checked = checkbox.is(':checked');
+            checkbox.prop('checked', !checked).change();
+        }
     },
     
     
@@ -81,8 +90,8 @@ CollaborationEditView = Backbone.View.extend({
             main.set('title', 'Edit Collaboration');
         }
         this.$el.html(this.template(this.model.toJSON()));
-        this.$('[name=sector]').chosen({width: "430px"});
-        this.$('[name=country]').chosen({width: "430px"});
+        this.$('[name=sector]').chosen({width: "400px"});
+        this.$('[name=country]').chosen({width: "400px"});
 
         return this.$el;
     }
