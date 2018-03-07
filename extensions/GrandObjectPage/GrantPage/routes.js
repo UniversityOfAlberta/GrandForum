@@ -47,7 +47,7 @@ pageRouter.on('route:newGrant', function () {
         addError("You do not have permissions to view this page");
     }
     else{
-        var grant = new Grant({user_id: me.get('id')});
+        var grant = new Grant({user_id: me.get('id'), pi: me.toJSON()});
         this.closeCurrentView();
         this.currentView = new EditGrantView({el: $("#currentView"), model: grant});
     }

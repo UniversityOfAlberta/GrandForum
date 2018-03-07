@@ -45,6 +45,7 @@ class GrantAPI extends RESTAPI {
             if($grant == null || $grant->getId() == 0){
                 $this->throwError("This Grant does not exist");
             }
+            $grant->user_id = $this->POST('user_id');
             $grant->project_id = $this->POST('project_id');
             $grant->sponsor = $this->POST('sponsor');
             $grant->total = $this->POST('total');
