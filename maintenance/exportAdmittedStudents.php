@@ -21,16 +21,18 @@ $wgUser = User::newFromId(1); // Admin user
 $people = Person::getAllPeople(CI);
 
 $outdir = "outputAdmittedStudents";
+$filenames = [];
+
 @mkdir($outdir);
 $peopleSoFar = 0;
 $nPeople = count($people);
 foreach($people as $person) {
 	$gsms = $person->getGSMS();
 	if ($gsms->id != null) {
-	    $sop = $gsms->getSOP();
+		$sop = $gsms->getSOP();
 		// Only export Admitted students
 		if ($sop->getFinalAdmit() == "Admit") {
-            $array = $gsms->toArray();
+			$array = $gsms->toArray();
 			if ($array['term'] == "Fall Term") {
 				$year = explode("/", $array['academic_year'])[0];
 				$term = "F" . substr($year, 2); // '2018' becomes '18'
@@ -62,13 +64,28 @@ foreach($people as $person) {
 				"status " . $array['ftpt']
 			);
 			if ($array['student_id'] != 0) {
-				$loc = $outdir . "/" . $array['student_id'] . ".txt";
+				$loc = $outdir . "/" . $array['student_id'];
+				array_push($filenames, $array['student_id']);
 			} else {
-				$loc = $outdir . "/gsms" . $array['gsms_id'] . ".txt";
+				$f = "gsms" . $array['gsms_id'];
+				$loc = $outdir . "/" . $f;
+				array_push($filenames, $f);
 			}
 			
 			file_put_contents($loc, implode("\n", $output) . "\n");
 		}
 	}
 	show_status(++$peopleSoFar, $nPeople);
+}
+
+// Copy the files to the GradDB server
+exec("scp -i graddb.pem" . $outdir . "/* docsdb@csora-app:/local/oracle3/cshome/docsdb/graddb/Data/Applicants/AppFiles/");
+$loadCommand = "/local/oracle3/cshome/docsdb/graddb/Data/Applicants/load_applicant_file";
+$commandToRun = "";
+foreach($filenames as $f) {
+	$commandToRun .= $loadCommand . " " . $f . "; ";
+}
+//var_dump($commandToRun);
+if (count($filenames) != 0){
+	exec("ssh -i graddb.pem docsdb@csora-app '" . $commandToRun . "'");
 }
