@@ -12,7 +12,7 @@
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
     require_once("Contributions/Contributions.php");
-    require_once("Collaborations/Collaboration.php");
+    //require_once("Collaborations/Collaboration.php");
     require_once("Bibliography/Bibliography.php");
     require_once("AddMultimediaPage.php");
     
