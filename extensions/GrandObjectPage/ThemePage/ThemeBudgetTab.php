@@ -48,6 +48,15 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $blb->store($justification, $addr);
             }
         }
+        if(isset($_POST['deviations'])){
+            foreach($_POST['deviations'] as $year => $deviations){
+                $deviations = str_replace(">", "&gt;", 
+                                 str_replace("<", "&lt;", $deviations));
+                $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->theme->getId());
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_DEVIATIONS', 0);
+                $blb->store($deviations, $addr);
+            }
+        }
         if(isset($_POST['carryoveramount'])){
             foreach($_POST['carryoveramount'] as $year => $carryOver){
                 $carryOver = str_replace(">", "&gt;",
