@@ -42,7 +42,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
         if(isset($_POST['justification'])){
             foreach($_POST['justification'] as $year => $justification){
                 $justification = str_replace(">", "&gt;", 
-                              str_replace("<", "&lt;", $justification));
+                                 str_replace("<", "&lt;", $justification));
                 $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->theme->getId());
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_JUSTIFICATION', 0);
                 $blb->store($justification, $addr);
@@ -57,6 +57,15 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->theme->getId());
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_CARRYOVERAMOUNT', 0);
                 $blb->store($carryOver, $addr);
+            }
+        }
+        if(isset($_POST['carryover'])){
+            foreach($_POST['carryover'] as $year => $carryover){
+                $carryover = str_replace(">", "&gt;", 
+                             str_replace("<", "&lt;", $carryover));
+                $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->theme->getId());
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_CARRYOVER', 0);
+                $blb->store($carryover, $addr);
             }
         }
         redirect($this->theme->getUrl()."?tab=budget");
