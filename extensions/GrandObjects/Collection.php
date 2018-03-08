@@ -61,7 +61,8 @@ class Collection {
     function toSimpleArray(){
         $json = array();
         if(count($this->objects) > 0){
-            if(array_values($this->objects)[0] instanceof BackboneModel){
+            $values = array_values($this->objects);
+            if($values[0] instanceof BackboneModel){
                 foreach($this->objects as $object){
                     $json[] = $object->toSimpleArray();
                 }
