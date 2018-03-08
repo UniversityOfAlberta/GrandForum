@@ -1297,8 +1297,9 @@ class Paper extends BackboneModel{
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP) {
-            return $this->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
+        $that = $this;
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $that) {
+            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
         }, $format);
         
         $peerDiv = "";
