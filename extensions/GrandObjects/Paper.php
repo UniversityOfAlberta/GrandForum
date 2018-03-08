@@ -1348,7 +1348,7 @@ class Paper extends BackboneModel{
         return trim("{$format}{$peerDiv}");
     }
     
-    private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
+    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
         $authors = array();
         $me = null;
         //if($highlightOnlyMyHQP !== false){
