@@ -73,7 +73,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $carryover = str_replace(">", "&gt;", 
                              str_replace("<", "&lt;", $carryover));
                 $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->theme->getId());
-                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_CARRYOVER', 0);
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_CARRYOVER', 0);
                 $blb->store($carryover, $addr);
             }
         }
@@ -141,7 +141,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $justification = $blb->getData();
                 // Deviations
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
-                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_DEVIATIONS', 0);
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_DEVIATIONS', 0);
                 $result = $blb->load($addr);
                 $deviations = $blb->getData();
                 // Carry Forward Amount
@@ -151,7 +151,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $carryOverAmount = ($blb->getData() != "") ? $blb->getData() : 0;
                 // Carry Forward
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
-                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'LDR_BUD_CARRYOVER', 0);
+                $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_CARRYOVER', 0);
                 $result = $blb->load($addr);
                 $carryOver = $blb->getData();
                 
