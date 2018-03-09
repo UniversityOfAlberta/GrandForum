@@ -158,6 +158,22 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $startYear = substr($startDate, 0, 4);
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $quarters = $milestone->getQuarters();
+        
+        // First need to check if more than one are selected
+        $lastY = 0;
+        $lastQ = 0;
+        for($y=$startYear; $y < $startYear+$this->nYears; $y++){
+            $nQuarters = 4;
+            if($y == $this->maxNYears+$startYear-1){
+                $nQuarters = 2;
+            }
+            for($q=1;$q<=$nQuarters;$q++){
+                if(isset($quarters[$y][$q])){
+                    $lastY = $y;
+                    $lastQ = $q;
+                }
+            }
+        }
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
             if($y == $this->maxNYears+$startYear-1){
@@ -184,11 +200,16 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 }
                 if(isset($quarters[$y][$q])){
                     $border = "";
-                    if($color2 != "transparent"){
-                        $border = "outline-offset: -2px; outline: 2px solid $color2;";
-                        if(isset($_GET['generatePDF'])){
-                            $border .= "border: 2px solid $color2;";
+                    if($lastY == $y && $lastQ == $q){
+                        if($color2 != "transparent"){
+                            $border = "outline-offset: -2px; outline: 2px solid $color2;";
+                            if(isset($_GET['generatePDF'])){
+                                $border .= "border: 3px solid $color2;";
+                            }
                         }
+                    }
+                    else{
+                        $color = "#BBBBBB";
                     }
                     $this->html .= "<td style='background:$color; $border; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
                 }
@@ -581,19 +602,17 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                                         .css('outline-offset', '');
                     }
                 };
-                
-                $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+
                 $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
                 $('#milestones_table td#status select').change(function(){
-                    var status = $(this).val();
-                    var color = colors[status];
-                    $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
+                    var checked = $('input.milestone:checked', $(this).parent().parent());
+                    var proxyFn = $.proxy(clickFn, checked.last());
+                    proxyFn();
                 });
                 $('#milestones_table td#modification select').change(function(){
-                    var modification = $(this).val();
-                    var color = colors2[modification];
-                    $('input.milestone:checked', $(this).parent().parent()).parent().css('outline', '2px solid ' + color)
-                                                                                    .css('outline-offset', '-1px');
+                    var checked = $('input.milestone:checked', $(this).parent().parent());
+                    var proxyFn = $.proxy(clickFn, checked.last());
+                    proxyFn();
                 });
                 
                 $('#addFESMilestone').click(function(){
@@ -601,19 +620,27 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $('input[value=\"Save Schedule\"]').click();
                 });
                 
-                $('input.single').click(function(){
+                var clickFn = function(){
                     var dataId = $(this).attr('data-id');
                     var checked = $('input[data-id=' + dataId + ']:checked');
+                    var modification = $('td#modification select', $(this).parent().parent()).val();
 
-                    if(checked.first()[0] == this){
-                        checked.not(this).not(checked.last()).prop('checked', false);                   
+                    if(modification != ''){
+                        if(checked.first()[0] == this){
+                            checked.not(this).not(checked.last()).prop('checked', false);
+                        }
+                        else{
+                            checked.not(this).not(checked.first()).prop('checked', false);
+                        }
                     }
                     else{
-                        checked.not(this).not(checked.first()).prop('checked', false);
+                        checked.not(this).prop('checked', false);
                     }
 
                     $('#milestones_table td input.milestone.single[type=checkbox]').each(changeColor);
-                });
+                };
+                
+                $('input.single').click(clickFn);
                 
             </script>";
         }
