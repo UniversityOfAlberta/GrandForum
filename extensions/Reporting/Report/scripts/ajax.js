@@ -3,6 +3,8 @@ var animationTime = 250;
 var animationEasingOut = 'easeInQuad';
 var animationEasingIn = 'easeOutExpo';
 var oldTab;
+var uploadFramesSaving = [];
+var frameInterval = null;
 
 // Make sure that all the editors are actually destroyed 
 // (could be remnants from the past if using the back button)
@@ -61,8 +63,24 @@ $(document).ready(function(){
                 clearTimeout(timeout);
             }
             if(dbWritable){
-                findAutosaves(updateProgress, revertReportAnimation);
-                saveAll(animate, revertReportAnimation);
+                uploadFramesSaving = [];
+                try{
+                    $('iframe.uploadFrame').each(function(i, el){
+                        uploadFramesSaving[el.id] = true;
+                        el.contentWindow.$('input[name=upload]').click();
+                    });
+                }
+                catch(e){
+                    // Iframes may have dissapeared
+                }
+                clearInterval(frameInterval);
+                frameInterval = setInterval(function(){
+                    if(!_.reduce(_.values(uploadFramesSaving), function(memo, f) { return memo || f; }, false)){
+                        clearInterval(frameInterval);
+                        findAutosaves(updateProgress, revertReportAnimation);
+                        saveAll(animate, revertReportAnimation);
+                    }
+                }, 50);
             }
             else{
                 animate();
@@ -198,8 +216,24 @@ $(document).ready(function(){
                 }
                 buttonClicked = true;
                 autosaveDiv = $('.autosaveSpan');
-                findAutosaves(updateProgress);
-                saveAll(updateProgress);
+                uploadFramesSaving = [];
+                try{
+                    $('iframe.uploadFrame').each(function(i, el){
+                        uploadFramesSaving[el.id] = true;
+                        el.contentWindow.$('input[name=upload]').click();
+                    });
+                }
+                catch(e){
+                    // Iframes may have dissapeared
+                }
+                clearInterval(frameInterval);
+                frameInterval = setInterval(function(){
+                    if(!_.reduce(_.values(uploadFramesSaving), function(memo, f) { return memo || f; }, false)){
+                        clearInterval(frameInterval);
+                        findAutosaves(updateProgress);
+                        saveAll(updateProgress);
+                    }
+                }, 50);
                 return false;
             });
         });

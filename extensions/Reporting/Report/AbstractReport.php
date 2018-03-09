@@ -880,6 +880,10 @@ abstract class AbstractReport extends SpecialPage {
     function generatePDF($person=null, $submit=false){
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         session_write_close();
+        if($this->disabled){
+            echo "This Report is disabled until further notice";
+            exit;
+        }
         $me = $person;
         if($person == null || $person->getId() == 0){
             $person = $this->person;
