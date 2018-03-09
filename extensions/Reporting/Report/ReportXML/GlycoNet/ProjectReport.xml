@@ -85,7 +85,13 @@
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
         <ReportItem id="video" type="StaticReportItem">
             <![CDATA[
-                <iframe src="https://drive.google.com/file/d/0B9YiOuwkgk9UZ19IWU1MVlNpUTg/preview" width="480" height="360"></iframe>
+                <iframe src="https://drive.google.com/open?id=1VzcfeY66rI8TDGXeC6-3c8MmcXzcH5g7/preview" width="480" height="360"></iframe>
+                <p>
+                    1:44 Managing People<br />
+                    7:12 Managing Products<br />
+                    11:35 Managing Contributions<br />
+                    13:36 Completing the Report<br />
+                </p>
             ]]>
         </ReportItem>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -127,7 +133,7 @@
             <!-- Network Investigator View -->
             <ReportItem id="info" type="StaticReportItem">
                 <![CDATA[
-                    <p><b>Deadline: March 15</b></p>
+                    <p><b>Deadline: April 2</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile</li>
@@ -160,7 +166,7 @@
             <!-- HQP View -->
             <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>Deadline: March 8</b></p>
+                    <p><b>Deadline: April 2</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>

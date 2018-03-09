@@ -253,7 +253,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
-        $statusColspan = 2;
+        $statusColspan = 1;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
