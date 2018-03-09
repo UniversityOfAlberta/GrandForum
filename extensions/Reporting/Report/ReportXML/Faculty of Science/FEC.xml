@@ -342,12 +342,14 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItemSet>
         <ReportItem id="patentsfooter" type="StaticReportItem">
             <![CDATA[
-                </tbody></table><br />
+                </tbody></table>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="ReportSection">
         <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Awards <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
