@@ -346,7 +346,7 @@
         <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
@@ -361,7 +361,7 @@
         <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
@@ -376,7 +376,7 @@
         <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
@@ -391,7 +391,7 @@
         <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title} (<b>{$product_scope}</b>)</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
@@ -406,7 +406,7 @@
         <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
@@ -421,7 +421,7 @@
         <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
             </ReportItem>
