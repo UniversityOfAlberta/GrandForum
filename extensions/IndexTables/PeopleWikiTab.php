@@ -63,7 +63,7 @@ class PeopleWikiTab extends AbstractTab {
             $wikipage->doEdit('','',0,false,$wgUser);
             $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                         array('*'),
-                                        array("upload_name" => str_replace(" ", "_", ucfirst($_POST['realTitle']))));
+                                        array("upload_name" => "File:".str_replace(" ", "_", ucfirst($_POST['realTitle']))));
             if(count($data) == 0){
                 DBFunctions::insert("mw_an_upload_permissions",
                                     array("upload_name" => "File:".str_replace(" ", "_", ucfirst($_POST['realTitle'])),

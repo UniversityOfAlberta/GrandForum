@@ -20,7 +20,7 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-	"add": "addPharm",
+        "add": "addPharm",
     }
 });
 
