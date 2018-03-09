@@ -162,7 +162,7 @@
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
                 <h2>Publications</h2>
-                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <ul>
             ]]>
         </ReportItem>

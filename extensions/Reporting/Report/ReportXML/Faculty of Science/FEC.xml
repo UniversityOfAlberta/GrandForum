@@ -241,7 +241,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             <![CDATA[
                 
                 <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
-                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'>
                     <thead>
                     <tr>
@@ -322,7 +322,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             <![CDATA[
                 
                 <h2>Patents/Spin-Offs <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
-                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'><tbody>
                     <thead>
                     <tr>

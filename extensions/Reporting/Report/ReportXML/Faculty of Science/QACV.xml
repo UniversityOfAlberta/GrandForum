@@ -509,7 +509,7 @@
                 <![CDATA[
                     <h2>Publications</h2>
                     <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/forum_test/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
-                    <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                    <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 ]]>
             </ReportItem>
             <ReportItemSet id="publications_if1" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Journal Paper|Journal Abstract|Collections Paper,, false, true)}, 0)}">

@@ -67,22 +67,30 @@ class AnnotateProductReportItem extends AbstractReportItem {
                     var type = (obj != undefined) ? obj.type : '';
                     switch(type){
                         case 'Undergraduate Student':
+                            $(el).css('font-style', 'normal');
                             $(el).css('text-decoration', 'underline');
                             $(el).css('font-weight', 'normal');
                             break;
                         case 'Postdoctoral Student':
+                            $(el).css('font-style', 'italic');
+                            $(el).css('font-weight', 'normal');
+                            $(el).css('text-decoration', 'none');
+                            break;
                         case 'Graduate Student':
+                            $(el).css('font-style', 'normal');
                             $(el).css('font-weight', 'bold');
                             $(el).css('text-decoration', 'none');
                             break;
                         case 'Faculty':
                         case 'None of the Above':
+                            $(el).css('font-style', 'normal');
                             $(el).css('text-decoration', 'none');
                             $(el).css('font-weight', 'normal');
                             break;
                         case '':
                             $(el)[0].style.textDecoration = $(el)[0].oldStyle.textDecoration;
                             $(el)[0].style.fontWeight = $(el)[0].oldStyle.fontWeight;
+                            $(el)[0].style.fontStyle = $(el)[0].oldStyle.fontStyle;
                             break;
                     }
                 });
@@ -148,6 +156,8 @@ class AnnotateProductReportItem extends AbstractReportItem {
                             $span->setAttribute('style', 'text-decoration: underline !important;');
                             break;
                         case 'Postdoctoral Student':
+                            $span->setAttribute('style', 'font-style: italic !important;');
+                            break;
                         case 'Graduate Student':
                             $span->setAttribute('style', 'font-weight: bold !important;');
                             break;
