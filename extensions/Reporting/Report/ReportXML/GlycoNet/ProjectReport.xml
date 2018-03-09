@@ -85,7 +85,7 @@
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
         <ReportItem id="video" type="StaticReportItem">
             <![CDATA[
-                <iframe src="https://drive.google.com/open?id=1VzcfeY66rI8TDGXeC6-3c8MmcXzcH5g7/preview" width="480" height="360"></iframe>
+                <iframe src="https://drive.google.com/file/d/1VzcfeY66rI8TDGXeC6-3c8MmcXzcH5g7/preview" width="480" height="360"></iframe>
                 <p>
                     1:44 Managing People<br />
                     7:12 Managing Products<br />
