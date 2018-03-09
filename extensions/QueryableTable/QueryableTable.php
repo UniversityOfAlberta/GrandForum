@@ -480,6 +480,56 @@ abstract class QueryableTable {
         return $this;
     }
     
+    function trim(){
+        return $this->trimRows()->trimCols();
+    }
+    
+    function trimCols(){
+        $xls = array_transpose($this->xls);
+        $structure = array_transpose($this->structure);     
+        $firstNonEmpty = count($structure);
+        $lastNonEmpty = 0;
+        foreach($structure as $rowN => $row){
+            $empty = true;
+            foreach($row as $colN => $cell){
+                if(isset($xls[$rowN][$colN]) && trim($xls[$rowN][$colN]->getValue()) != ""){
+                    // Empty Cell
+                    $empty = false;
+                    break;
+                }
+            }
+            if(!$empty){
+                $firstNonEmpty = min($firstNonEmpty, $rowN);
+                $lastNonEmpty = max($lastNonEmpty, $rowN);
+            }
+        }
+        $this->limitCols($firstNonEmpty, ($lastNonEmpty - $firstNonEmpty)+1);
+        return $this;
+    }
+    
+    function trimRows(){
+        $xls = $this->xls;
+        $structure = $this->structure;
+        $firstNonEmpty = count($structure);
+        $lastNonEmpty = 0;
+        foreach($structure as $rowN => $row){
+            $empty = true;
+            foreach($row as $colN => $cell){
+                if(isset($xls[$rowN][$colN]) && trim($xls[$rowN][$colN]->getValue()) != ""){
+                    // Empty Cell
+                    $empty = false;
+                    break;
+                }
+            }
+            if(!$empty){
+                $firstNonEmpty = min($firstNonEmpty, $rowN);
+                $lastNonEmpty = max($lastNonEmpty, $rowN);
+            }
+        }
+        $this->limit($firstNonEmpty, ($lastNonEmpty - $firstNonEmpty)+1);
+        return $this;
+    }
+    
     // Returns a single cell'd QueryableTable containing the concatenated sheet
     function concat(){
         $str = $this->toString();

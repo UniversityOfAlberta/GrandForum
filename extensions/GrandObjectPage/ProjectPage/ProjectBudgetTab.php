@@ -246,6 +246,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $multiBudget = new MultiBudget(array($structure, $niStructure), $xls);
                     }
                     if($multiBudget->nBudgets() > 0){
+                        foreach($multiBudget->getBudgets() as $budget){
+                            $budget->trim();
+                        }
                         $budget = $multiBudget->getBudget(0);
                         $total = str_replace('$', '', $budget->copy()->select(COL_TOTAL)->where(COL_TOTAL)->toString());
                         if($total > $allocation && $allocation != ""){
