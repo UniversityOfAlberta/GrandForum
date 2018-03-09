@@ -283,7 +283,55 @@
             ]]>
         </ReportItem>
         
+        <!-- Grants -->
+        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
+            <![CDATA[
+                <h2>Research Grants and Contracts</h2>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_description}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </ReportItem>
+        
         <!-- Services -->
+        <ReportItem id="servicespagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
             <![CDATA[
                 <h2>Service Activities</h2>
@@ -379,51 +427,8 @@
             </ReportItem>
         </ReportItemSet>
         
-        <!-- Grants -->
-        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
-            <![CDATA[
-                <h2>Research Grants and Contracts</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Sponsor</th>
-                            <th>Starts</th>
-                            <th>Ends</th>
-                            <th>$Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td align='left'>{$grant_project_id}<br />
-                            {$grant_description}
-                        </td>
-                        <td align='left'>{$grant_sponsor}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                        <td align='right'>${$grant_total}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="grantsfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Committees -->
-        <ReportItem id="committeespagebreak" type="PageBreakReportItem">
+        <!-- Additional Info -->
+        <ReportItem id="additionalpagebreak" type="PageBreakReportItem">
             <![CDATA[
                 {$item}
             ]]>

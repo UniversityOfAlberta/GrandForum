@@ -377,6 +377,44 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='tooltip' style='cursor:default;' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="ReportSection">
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
+            <![CDATA[
+                <a class="button" style="position:absolute; top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_description}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="services" name="Service" tooltip="Service/Committees/Outreach" title="Service Activities &lt;span class='tooltip' style='cursor:default;' title='Provide information for any of the subsections below.&lt;br />
 &lt;b>Departmental&lt;/b> (Excluding Graduate Student Committees): Enter any relevant information for this subsection.&lt;br />
 &lt;b>Faculty&lt;/b>: Enter any relevant information for this subsection.&lt;br />
@@ -479,44 +517,6 @@ Add a new other teaching entry to create a new paragraph.<br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-    </ReportSection>
-    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='tooltip' style='cursor:default;' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="ReportSection">
-        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
-            <![CDATA[
-                <a class="button" style="position:absolute; top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Sponsor</th>
-                            <th>Starts</th>
-                            <th>Ends</th>
-                            <th>$Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td align='left'>{$grant_project_id}<br />
-                            {$grant_description}
-                        </td>
-                        <td align='left'>{$grant_sponsor}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                        <td align='right'>${$grant_total}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="grantsfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table>
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
