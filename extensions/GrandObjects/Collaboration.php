@@ -20,6 +20,9 @@ class Collaboration extends BackboneModel{
     var $other = "";
     var $personName = "";
     var $position = "";
+    var $funding = 0;
+    var $year = YEAR;
+    var $knowledgeUser = false;
 
     var $person = null;
     
@@ -112,6 +115,8 @@ class Collaboration extends BackboneModel{
             $this->personName = $data[0]['person_name'];
             $this->position = $data[0]['position'];
             $this->other = $data[0]['other'];
+            $this->funding = $data[0]['funding'];
+            $this->knowledgeUser = $data[0]['knowledge_user'];
         }
     }
     
@@ -163,6 +168,18 @@ class Collaboration extends BackboneModel{
         return $this->position;
     }
 
+    function getFunding() {
+        return $this->funding;
+    }
+
+    function getKnowledgeUser() {
+        return $this->knowledgeUser;
+    }
+
+    function getYear() {
+        return $this->year;
+    }
+
     function create(){
         if(($this->getTitle() == null) || ($this->getTitle() == "")) {
             return false;
@@ -179,7 +196,10 @@ class Collaboration extends BackboneModel{
                                   'user' => $this->userKnowledge,
                                   'other' => $this->other,
                                   'person_name' => $this->personName,
-                                  'position' => $this->position));
+                                  'position' => $this->position,
+                                  'year' => $this->year,
+                                  'funding' => $this->funding,
+                                  'knowledge_user' => $this->knowledgeUser));
         $this->id = DBFunctions::insertId();
         return $this;
     }
@@ -200,7 +220,10 @@ class Collaboration extends BackboneModel{
                                   'user' => $this->userKnowledge,
                                   'other' => $this->other,
                                   'person_name' => $this->personName,
-                                  'position' => $this->position),
+                                  'position' => $this->position,
+                                  'year' => $this->year,
+                                  'funding' => $this->funding,
+                                  'knowledge_user' => $this->knowledgeUser),
                             array('id' => EQ($this->getId())));
         return $this;
     }
@@ -229,7 +252,10 @@ class Collaboration extends BackboneModel{
             'other' => $this->getOther(),
             'personName' => $this->getPersonName(),
             'position' => $this->getPosition(),
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
+            'funding' => $this->getFunding(),
+            'year' => $this->getYear(),
+            'knowledgeUser' => $this->getKnowledgeUser()
         );
         return $data;
     }
