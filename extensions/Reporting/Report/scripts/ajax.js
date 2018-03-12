@@ -65,7 +65,7 @@ $(document).ready(function(){
             if(dbWritable){
                 uploadFramesSaving = [];
                 try{
-                    $('iframe.uploadFrame').each(function(i, el){
+                    $('iframe.uploadFrame:visible').each(function(i, el){
                         uploadFramesSaving[el.id] = true;
                         el.contentWindow.$('input[name=upload]').click();
                     });
@@ -218,7 +218,7 @@ $(document).ready(function(){
                 autosaveDiv = $('.autosaveSpan');
                 uploadFramesSaving = [];
                 try{
-                    $('iframe.uploadFrame').each(function(i, el){
+                    $('iframe.uploadFrame:visible').each(function(i, el){
                         uploadFramesSaving[el.id] = true;
                         el.contentWindow.$('input[name=upload]').click();
                     });
