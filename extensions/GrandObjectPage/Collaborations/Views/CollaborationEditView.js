@@ -71,6 +71,7 @@ CollaborationEditView = Backbone.View.extend({
         "click #saveCollaboration": "saveCollaboration",
         "click #cancel": "cancel",
         "click .collab_check": "checkCollabItem",
+        "change input[name=fund]": "toggleFunding",
     },
 
     checkCollabItem: function(data) {
@@ -81,6 +82,18 @@ CollaborationEditView = Backbone.View.extend({
         }
     },
     
+    toggleFunding: function(data) {
+        var funded = this.$('input:radio[name=fund]:checked').val();
+        var fundAmtDiv = this.$('#fundingAmount');
+        this.model.attributes['funding'] = $('input[name=funding]').val();
+        //this.model.attributes['funding'] = fundAmtDiv;
+        if (funded == "yes") {
+            fundAmtDiv.slideDown();
+        } else {
+            this.model.attributes['funding'] = 0;
+            fundAmtDiv.slideUp();
+        }
+    },
     
     render: function(){
         if(this.model.isNew()){

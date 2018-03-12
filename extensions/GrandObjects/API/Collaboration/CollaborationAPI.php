@@ -33,6 +33,8 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
+        $collab->funding = $this->POST('funding');
+        $collab->knowledgeUser = $this->POST('knowledgeUser');
         $status = $collab->create();
         if(!$status) {
             $this->throwError("Could not create collaboration");
@@ -53,6 +55,8 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
+        $collab->funding = $this->POST('funding');
+        $collab->knowledgeUser = $this->POST('knowledgeUser');
         $status = $collab->update();
         if(!$status) {
             $this->throwError("Could not create collaboration");
