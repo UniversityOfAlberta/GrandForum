@@ -1,7 +1,7 @@
 ManageProductsView = Backbone.View.extend({
 
     category: null,
-    onlyRecent: false,
+    onlyRecent: true,
     allProjects: null,
     otherProjects: null,
     oldProjects: null,

@@ -79,7 +79,7 @@
         <% } %>
         </span>
     <% } %>
-    <span title="If checked, only shows <%= productsTerm.toLowerCase() %> from after <%= (YEAR - 6) %>-04-01" class="tooltip">
+    <span title="If checked, only shows <%= productsTerm.toLowerCase().pluralize() %> from after <%= (YEAR - 6) %>-04-01" class="tooltip">
         <input style="vertical-align:middle;" id="onlyRecent" type="checkbox" <% if(this.onlyRecent){ %> checked <% } %> /> Only show recent
     </span>
 </p>
