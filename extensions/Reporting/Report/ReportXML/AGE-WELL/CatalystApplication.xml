@@ -412,7 +412,7 @@
         <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
             <![CDATA[
                 <h3>Budget Justification</h3>
-                <p>Please use the following categories in your budget justification as appropriate. Note that SIP funding includes specific budget caps in some categories.</p>
+                <p>Please use the following categories in your budget justification as appropriate.</p>
                 <ol>
                 <li><b>Salaries to students</b>
                     {$item}
@@ -430,7 +430,7 @@
             <![CDATA[
                 <li><b>Professional & Tech. Services/contracts</b>
                     <ol type="a">
-                        <li>Consultants and business development services (maximum $5,000)</li>
+                        <li>Consultants and business development services</li>
                     </ol>
                     {$item}
                 </li>
@@ -465,12 +465,12 @@
                 <li><b>Materials, Supplies & Other expenditures</b>
                     <ol type="a">
                         <li>Materials and Supplies</li>
-                        <li>Patent costs (maximum $3,000)</li>
+                        <li>Patent costs</li>
                         <li>Proof of Principle, product validation for market readiness</li>
                         <li>Prototype development (specify)</li>
-                        <li>Communications/Marketing/Printing/Production (maximum $5,000)</li>
+                        <li>Communications/Marketing/Printing/Production</li>
                         <li>Evaluation costs</li>
-                        <li>Management and Networking (maximum $3,000)</li>
+                        <li>Management and Networking</li>
                     </ol>
                     {$item}
                 </li>
