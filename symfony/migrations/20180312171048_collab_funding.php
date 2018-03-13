@@ -30,7 +30,7 @@ class CollabFunding extends AbstractMigration
     {
         $collabs = $this->table("grand_collaborations");
 
-        $collabs->addColumn('funding', 'decimal', ['scale'=>2, 'precision'=>65])
+        $collabs->addColumn('funding', 'decimal', array('scale'=>2, 'precision'=>65))
             ->update();
     }
 }

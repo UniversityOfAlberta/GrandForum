@@ -30,7 +30,7 @@ class CollabYear extends AbstractMigration
     {
         $collabs = $this->table("grand_collaborations");
 
-        $collabs->addColumn('year', 'integer', ['after'=>'organization_name'])
+        $collabs->addColumn('year', 'integer', array('after'=>'organization_name'))
             ->addColumn('knowledge_user', 'boolean')
             ->addIndex('year')
             ->addIndex('knowledge_user')
