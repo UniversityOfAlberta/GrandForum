@@ -1,4 +1,4 @@
-<h2>Authors</h2>
+<h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
 <div id="productAuthors">
 </div>
 <h2>Description</h2>
@@ -18,7 +18,7 @@
             <tr>
                 <td align="right"><b><%= val.label %>:</b></td>
                 <td>
-                    <% if(val.type == "String" || val.type == "Radio"){ %>
+                    <% if(val.type == "String" || val.type == "Radio" || val.type == "Check" || val.type == "Integer"){ %>
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
