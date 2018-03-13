@@ -1,20 +1,54 @@
 
 <div>
+    <p>This collaboration is the <i>current fiscal year</i></p>
     <h3>Organization:</h3>
     <%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
 
-    <div style="max-width:350px;margin-bottom: 10px;">
-        <h3>Contact</h3>
-        <table style="width:100%;margin-left: 15px;">
-            <tr>
-                <td><b>Name</b></td>
-                <td><%= HTML.TextBox(this, 'personName', {style: 'width:100%;'}) %></td>
-            </tr>
-            <tr>
-                <td><b>Position</b></td>
-                <td><%= HTML.TextBox(this, 'position', {style: 'width:100%;'}) %></td>
-            </tr>
-        </table>
+    <div style="margin-bottom: 10px; display:flex">
+        <div style="max-width:400px;width:50%">
+            <h3>Contact</h3>
+            <table style="margin-left: 15px;width:90%">
+                <tr>
+                    <td><b>Name</b></td>
+                    <td style="width:100%">
+                        <%= HTML.TextBox(this, 'personName', {style: "width:100%"}) %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Position</b></td>
+                    <td style="width:100%">
+                        <%= HTML.TextBox(this, 'position', {style: "width:100%"}) %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="max-width:400px; width:50%; display:inline-block; margin-left:18px;">
+            <h3>Funding</h3>
+            <div style="margin-left:15px;">
+                <% if(funding == 0) { %>
+                    <input style="margin-top: 10px;" type="radio" name="fund" value="yes"> Yes
+                    <input type="radio" name="fund" value="no" checked> No
+                    <br />
+                    <div id="fundingAmount" style="margin-top:7px; display:none;">
+                        <b>Amount</b>
+                        <div style="display:inline-block;">
+                            <%= HTML.TextBox(this, 'funding', {style: 'width:100%;'}) %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <input style="margin-top: 10px;" type="radio" name="fund" value="yes" checked> Yes
+                    <input type="radio" name="fund" value="no" > No
+                    <br />
+                    <div id="fundingAmount" style="margin-top:7px;">
+                        <b>Amount</b>
+                        <div style="display:inline-block;">
+                            <%= HTML.TextBox(this, 'funding', {style: 'width:100%;'}) %>
+                        </div>
+                    </div>
+                <% } %>
+
+            </div>
+        </div>
     </div>
 
     <div style="margin-bottom: 10px;">
