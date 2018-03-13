@@ -345,14 +345,15 @@ class MailingList extends BackboneModel {
         $command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
         exec($command, $output);
         $out = $output;
-        self::$membershipCache = array();
-        if(!self::isSubscribed($project, $person)){
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
-        }
+        /*if(!self::isSubscribed($project, $person)){
+            
+        }*/
         if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
+            self::$membershipCache[$listname][] = $email;
             return 1;
         }
         else{
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
             return 0;
         }
     }
@@ -389,15 +390,13 @@ class MailingList extends BackboneModel {
         }
         $command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
         exec($command, $output);
-        self::$membershipCache = array();
-        if(self::isSubscribed($project, $person)){
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
-        }
         $out = $output;
         if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
+            self::$membershipCache[$listname] = array();
             return 1;
         }
         else{
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
             return 0;
         }
     }
