@@ -233,7 +233,7 @@ ProductEditView = Backbone.View.extend({
                                        name: p.get('name'),
                                        fullname: p.get('fullName')};
         });
-        var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'author',
+        var html = HTML.Switcheroo(this, 'authors.fullname', {name: this.model.getAuthorsLabel().toLowerCase(),
                                                           'left': left,
                                                           'right': right,
                                                           'objs': objs
@@ -275,6 +275,7 @@ ProductEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderTagsWidget();
+        this.$(".integer").forceNumeric({min: 0, max: 99999999999});
         return this.$el;
     }
 

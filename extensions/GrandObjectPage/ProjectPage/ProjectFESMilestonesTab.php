@@ -5,7 +5,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     function ProjectFESMilestonesTab($project, $visibility){
         parent::ProjectMilestonesTab($project, $visibility);
         parent::AbstractTab("Schedule");
-        $this->nYears = 7;
+        $this->maxNYears = 7;
+        $this->nYears = (isset($_GET['generatePDF'])) ? 3 : $this->maxNYears;
     }
     
     function handleEdit(){
@@ -127,7 +128,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         for($y=1; $y <= $this->nYears; $y++){
             $year = $startYear+($y-1);
-            if($y < $this->nYears){
+            if($y < $this->maxNYears){
                 $this->html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
             }
             else {
@@ -138,7 +139,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     
     function showQuartersHeader(){
         for($y=1; $y <= $this->nYears; $y++){
-            if($y < $this->nYears){
+            if($y < $this->maxNYears){
                 $this->html .= "<th class='left_border'>Q1</th>
                                 <th>Q2</th>
                                 <th>Q3</th>
@@ -157,9 +158,25 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $startYear = substr($startDate, 0, 4);
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $quarters = $milestone->getQuarters();
+        
+        // First need to check if more than one are selected
+        $lastY = 0;
+        $lastQ = 0;
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
-            if($y == $this->nYears+$startYear-1){
+            if($y == $this->maxNYears+$startYear-1){
+                $nQuarters = 2;
+            }
+            for($q=1;$q<=$nQuarters;$q++){
+                if(isset($quarters[$y][$q])){
+                    $lastY = $y;
+                    $lastQ = $q;
+                }
+            }
+        }
+        for($y=$startYear; $y < $startYear+$this->nYears; $y++){
+            $nQuarters = 4;
+            if($y == $this->maxNYears+$startYear-1){
                 $nQuarters = 2;
             }
             for($q=1;$q<=$nQuarters;$q++){
@@ -182,7 +199,19 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $checkbox = "<input data-id='{$activityId}_{$milestone->getMilestoneId()}' class='milestone {$single}' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
                 }
                 if(isset($quarters[$y][$q])){
-                    $this->html .= "<td style='background:$color;outline-offset: -2px; outline: 2px solid $color2; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                    $border = "";
+                    if($lastY == $y && $lastQ == $q){
+                        if($color2 != "transparent"){
+                            $border = "outline-offset: -2px; outline: 2px solid $color2;";
+                            if(isset($_GET['generatePDF'])){
+                                $border .= "border: 3px solid $color2;";
+                            }
+                        }
+                    }
+                    else{
+                        $color = "#BBBBBB";
+                    }
+                    $this->html .= "<td style='background:$color; $border; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
                 }
                 else{
                     $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
@@ -330,7 +359,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
-        $statusColspan = 2;
+        $statusColspan = 1;
         if($this->visibility['edit'] == 1){
             if($this->canEditMilestone(null)){
                 $this->html .= "<div title='Add Milestone' id='addFESMilestoneDialog' style='display:none;'>
@@ -550,14 +579,22 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 
                 var changeColor = function(){
                     var checked = $(this).is(':checked');
+                    var allChecks = $('input.milestone.single[type=checkbox]:checked', $(this).parent().parent());
                     if(checked){
                         var status = $('td#status select', $(this).parent().parent()).val();
                         var modification = $('td#modification select', $(this).parent().parent()).val();
                         var color = colors[status];
                         var color2 = colors2[modification];
-                        $(this).parent().css('background', color)
-                                        .css('outline', '2px solid ' + color2)
-                                        .css('outline-offset', '-1px');
+                        if(allChecks.length <= 1 || allChecks.last()[0] == this){
+                            $(this).parent().css('background', color)
+                                            .css('outline', '2px solid ' + color2)
+                                            .css('outline-offset', '-1px');
+                        }
+                        else{
+                            $(this).parent().css('background', '#BBBBBB')
+                                            .css('outline', '0 solid transparent')
+                                            .css('outline-offset', '');
+                        }
                     }
                     else{
                         $(this).parent().css('background', '#FFFFFF')
@@ -565,19 +602,17 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                                         .css('outline-offset', '');
                     }
                 };
-                
-                $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+
                 $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
                 $('#milestones_table td#status select').change(function(){
-                    var status = $(this).val();
-                    var color = colors[status];
-                    $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
+                    var checked = $('input.milestone:checked', $(this).parent().parent());
+                    var proxyFn = $.proxy(clickFn, checked.last());
+                    proxyFn();
                 });
                 $('#milestones_table td#modification select').change(function(){
-                    var modification = $(this).val();
-                    var color = colors2[modification];
-                    $('input.milestone:checked', $(this).parent().parent()).parent().css('outline', '2px solid ' + color)
-                                                                                    .css('outline-offset', '-1px');
+                    var checked = $('input.milestone:checked', $(this).parent().parent());
+                    var proxyFn = $.proxy(clickFn, checked.last());
+                    proxyFn();
                 });
                 
                 $('#addFESMilestone').click(function(){
@@ -585,12 +620,27 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $('input[value=\"Save Schedule\"]').click();
                 });
                 
-                $('input.single').click(function(){
+                var clickFn = function(){
                     var dataId = $(this).attr('data-id');
-                    $('input[data-id=' + dataId + ']').not(this).prop('checked', false);
-                    //$('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+                    var checked = $('input[data-id=' + dataId + ']:checked');
+                    var modification = $('td#modification select', $(this).parent().parent()).val();
+
+                    if(modification != ''){
+                        if(checked.first()[0] == this){
+                            checked.not(this).not(checked.last()).prop('checked', false);
+                        }
+                        else{
+                            checked.not(this).not(checked.first()).prop('checked', false);
+                        }
+                    }
+                    else{
+                        checked.not(this).prop('checked', false);
+                    }
+
                     $('#milestones_table td input.milestone.single[type=checkbox]').each(changeColor);
-                });
+                };
+                
+                $('input.single').click(clickFn);
                 
             </script>";
         }

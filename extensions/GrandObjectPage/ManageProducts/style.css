@@ -1,5 +1,13 @@
 /* Any custom styles should go here */
 
+.checkboxCell {
+    text-align: center;
+}
+
+.popupBlock {
+    text-align: left;
+}
+
 tbody#productRows td:not(.checkboxCell) {
     white-space: nowrap;
     overflow: hidden;

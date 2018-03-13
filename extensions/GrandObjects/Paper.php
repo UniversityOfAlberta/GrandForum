@@ -526,7 +526,8 @@ class Paper extends BackboneModel{
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
-                                                                               'ccv_status' => array());
+                                                                               'ccv_status' => array(),
+                                                                               'authors_label' => "Author");
                     foreach($type->children() as $child){
                         if($child->getName() == "data"){
                             foreach($child->children() as $field){
@@ -556,6 +557,10 @@ class Paper extends BackboneModel{
                                     $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
                                 }
                             }
+                        }
+                        else if($child->getName() == "authors"){
+                            $attrs = $child->attributes();
+                            $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
                         }
                     }
                     if(DBFunctions::isReady()){

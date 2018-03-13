@@ -13,6 +13,7 @@ class MailingList extends BackboneModel {
                                'mailman');
     static $lists = array();
     static $membershipCache = array();
+    static $unsubCache = array();
     static $threadCache = array();
     
     var $id;
@@ -345,14 +346,12 @@ class MailingList extends BackboneModel {
         $command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
         exec($command, $output);
         $out = $output;
-        self::$membershipCache = array();
-        if(!self::isSubscribed($project, $person)){
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
-        }
         if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
+            self::$membershipCache[$listname][] = $email;
             return 1;
         }
         else{
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
             return 0;
         }
     }
@@ -389,15 +388,13 @@ class MailingList extends BackboneModel {
         }
         $command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
         exec($command, $output);
-        self::$membershipCache = array();
-        if(self::isSubscribed($project, $person)){
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
-        }
         $out = $output;
         if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
+            self::$membershipCache[$listname] = array();
             return 1;
         }
         else{
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
             return 0;
         }
     }
@@ -455,6 +452,7 @@ class MailingList extends BackboneModel {
                 }
             }
         }
+        self::$unsubCache = array();
     }
     
     /**
@@ -465,13 +463,15 @@ class MailingList extends BackboneModel {
      */
     static function hasUnsubbed($project, $person){
         $listname = MailingList::listName($project);
-        $data = DBFunctions::select(array('wikidev_unsubs', 'wikidev_projects'),
-                                    array('project_id',
-                                          'user_id'),
-                                    array('project_id' => EQ(COL('projectid')),
-                                          'mailListName' => EQ($listname),
-                                          'user_id' => EQ($person->getId())));
-        return (count($data) > 0);
+        if(count(self::$unsubCache) == 0){
+            self::$unsubCache[-1] = true;
+            $data = DBFunctions::select(array('wikidev_unsubs', 'wikidev_projects'),
+                                        array('mailListName', 'user_id'));
+            foreach($data as $row){
+                self::$unsubCache[$row['mailListName'].$row['user_id']] = true;
+            }
+        }
+        return isset(self::$unsubCache[$listname.$person->getId()]);
     }
     
     /**
