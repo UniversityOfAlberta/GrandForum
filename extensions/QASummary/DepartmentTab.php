@@ -257,6 +257,7 @@ class DepartmentTab extends AbstractTab {
         $report->year = YEAR;
         if(isset($_GET['generatePDF']) && isset($_GET['showTab']) && $_GET['showTab'] == $this->id){
             $report->headerName = " ";
+            $report->pageCount = false;
             $wgOut->clearHTML();
             $wgOut->addHTML($html);
             $wgOut->disable();
