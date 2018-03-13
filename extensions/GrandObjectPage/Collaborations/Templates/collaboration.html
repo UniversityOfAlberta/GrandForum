@@ -14,14 +14,22 @@
         </tr>
     </table>
 
-	<h3>Sector:</h3>
+    <h3>Funding</h3>
+    <% if (funding == 0) { %>
+    	<span>Not funded</span>
+    <% } else { %>
+    	$<%= funding %>
+    <% } %>
+
+	<h3>Sector</h3>
 	<%= sector %>
 
-	<h3>Country:</h3>
+	<h3>Country</h3>
 	<%= country %>
 
+	<% if (!knowledgeUser) { %>
 	<div style="display:block; margin-top:15px; margin-bottom:15px;">
-		<h3>Attributes:</h3>
+		<h3>Attributes</h3>
 		<% if ((planning == 1) || (designDataCollection == 1) || (analysisOfResults == 1) || 
 			   (exchangeKnowledge == 1) || (userKnowledge == 1)) { %>
 			<ul>
@@ -54,9 +62,13 @@
 			</ul>
 		<% } %>
 	</div>
+	<% } %>
 
-    <b>Other:</b>
-    <br />
+	<% if (!knowledgeUser) { %>
+        <h3>Other</h3>
+    <% } else { %>
+        <h3>Brief Description</h3>
+    <% } %>
     <% if (other == "") { %>
     	<span style="color: #AAAAAA">No 'other' comments provided</span>
 	<% } else { %>
@@ -75,8 +87,8 @@ text-align: center;"></div>
 </div>
 <% if(me.isLoggedIn()){ %>
     </br>
-    <button id="editCollaboration">Edit Collaboration</button>
-    <button id="deleteCollaboration">Delete Collaboration</button>
+    <button id="editCollaboration">Edit <%= formType %></button>
+    <button id="deleteCollaboration">Delete <%= formType %></button>
 <% } %>
 
 

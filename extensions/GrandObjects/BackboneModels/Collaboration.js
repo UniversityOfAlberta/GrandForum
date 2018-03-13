@@ -5,6 +5,10 @@ Collaboration = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.collaboration',
 
+    getType: function() {
+        return (this.get('knowledgeUser') == 0) ? "Collaboration" : "Knowledge User";
+    },
+
     defaults: function() {
         return{
             id: null,

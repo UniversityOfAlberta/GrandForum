@@ -145,8 +145,15 @@ CollaborationView = Backbone.View.extend({
     
     render: function(){
         main.set('title', this.model.get('title'));
-        this.$el.empty();
-        this.$el.html(this.template(this.model.toJSON()));
+        
+        var formType = this.model.getType();
+        if(this.model.isNew()){
+            main.set('title', 'New ' + formType);
+        }
+        else {
+            main.set('title', 'Edit ' + formType);
+        }
+        this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         //this.renderProducts();
         this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });   
         return this.$el;

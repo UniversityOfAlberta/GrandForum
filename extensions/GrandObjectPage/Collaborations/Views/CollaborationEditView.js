@@ -86,7 +86,6 @@ CollaborationEditView = Backbone.View.extend({
         var funded = this.$('input:radio[name=fund]:checked').val();
         var fundAmtDiv = this.$('#fundingAmount');
         this.model.attributes['funding'] = $('input[name=funding]').val();
-        //this.model.attributes['funding'] = fundAmtDiv;
         if (funded == "yes") {
             fundAmtDiv.slideDown();
         } else {
@@ -96,13 +95,14 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     render: function(){
+        var formType = this.model.getType();
         if(this.model.isNew()){
-            main.set('title', 'New Collaboration');
+            main.set('title', 'New ' + formType);
         }
         else {
-            main.set('title', 'Edit Collaboration');
+            main.set('title', 'Edit ' + formType);
         }
-        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
 

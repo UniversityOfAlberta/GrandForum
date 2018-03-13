@@ -230,11 +230,11 @@ class Collaboration extends BackboneModel{
     
     function delete(){
         $me = Person::newFromWgUser();
-        if ((in_array($me, $this->getEditors())) || ($me == $this->person) || ($me->isRoleAtLeast(STAFF))) {
+        //if ((in_array($me, $this->getEditors())) || ($me == $this->person) || ($me->isRoleAtLeast(STAFF))) {
             DBFunctions::delete('grand_collaborations',
                                 array('id' => EQ($this->getId())));
             $this->id = null;
-        }
+        //}
         return $this;
     }
     

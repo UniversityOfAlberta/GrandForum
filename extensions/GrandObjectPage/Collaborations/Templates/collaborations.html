@@ -1,11 +1,13 @@
 <% if(me.isLoggedIn()){ %>
-    <a href="#/new" class="button" id="add">Add Collaboration</a><br /><br />
+    <a href="#/new" class="button" id="add">Add Collaboration</a>
+    <a href="#/newKnowledgeUser" class="button" id="addKU">Add Knowledge User</a><br /><br />
 <% } %>
 
 <table id="collaborations" frame="box" rules="all">
     <thead>
         <tr>
             <th>Organization Name</th>
+            <th>Type</th>
             <th>Contact Name</th>
             <th>Position</th>
             <th>Sector</th>
@@ -26,6 +28,9 @@
                         <%= collab.get('userKnowledge') %>
                         <%= collab.get('other') %>
                     </span>
+                </td>
+                <td>
+                    <%= collab.getType() %>
                 </td>
                 <td>
                     <%= collab.get('personName') %>

@@ -19,6 +19,7 @@ PageRouter = Backbone.Router.extend({
     routes: {
         "": "showCollaborations",
         "new": "newCollaboration",
+        "newKnowledgeUser": "newKnowledgeUser",
         ":id": "showCollaboration",
         ":id/edit": "editCollaboration"
     }
@@ -43,6 +44,19 @@ pageRouter.on('route:newCollaboration', function(){
     }
     else{
         var collab = new Collaboration();
+        this.closeCurrentView();
+        this.currentView = new CollaborationEditView({el: $("#currentView"), model: collab});
+    }
+});
+
+pageRouter.on('route:newKnowledgeUser', function(){
+    // Create New Knowledge User
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var collab = new Collaboration({knowledgeUser:1});
         this.closeCurrentView();
         this.currentView = new CollaborationEditView({el: $("#currentView"), model: collab});
     }
