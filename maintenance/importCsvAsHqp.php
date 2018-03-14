@@ -68,7 +68,7 @@ function importCSV($file) {
 		$delete 		 =@trim($elems[10]);
 		$comments		 =@trim($elems[11]);
 
-		if (($delete == "") && (strstr(strtolower($delete), "yes"))) {
+		if (strstr(strtolower($delete), "yes")) {
 			continue;
 		}
 		
