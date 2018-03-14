@@ -74,11 +74,11 @@ function importCSV($file) {
 		
 		if ($hqpId == "") {
 			$username = str_replace(" ", "", preg_replace("/\(.*\)/", "", 
-            	trim(str_replace(".", "", $hqpFirstName), " -\t\n\r\0\x0B").".".
-            	trim(str_replace(".", "", $hqpLastName),  " -\t\n\r\0\x0B")
-	        ));
-	        $username = str_replace("'", "", $username);
-	        $username = preg_replace("/\".*\"/", "", $username);
+				trim(str_replace(".", "", $hqpFirstName), " -\t\n\r\0\x0B").".".
+				trim(str_replace(".", "", $hqpLastName),  " -\t\n\r\0\x0B")
+			));
+			$username = str_replace("'", "", $username);
+			$username = preg_replace("/\".*\"/", "", $username);
 			$hqpUser = User::createNew($username, array('password' => User::crypt(mt_rand())));
 
 			$hqp = null;
@@ -88,18 +88,18 @@ function importCSV($file) {
 					echo($username . " was skipped\n");
 					continue;
 				}
-	        }
-	        if ($hqp == null) {
-		        $hqp = new Person(array());
-		        $hqp->id = $hqpUser->getId();
-		        $hqp->name = $hqpUser->getName();
-		        Person::$namesCache[$hqp->getName()] = $hqp;
-		        Person::$idsCache[$hqp->getId()] = $hqp;
-		        //Person::$employeeIdsCache[$row['uid']] = $hqp;
-		        Person::$cache[strtolower($hqp->getName())] = $hqp;
-		        Person::$cache[$hqp->getId()] = $hqp;
-		        //Person::$cache['eId'.$row['uid']] = $hqp; 
-		    }
+			}
+			if ($hqp == null) {
+				$hqp = new Person(array());
+				$hqp->id = $hqpUser->getId();
+				$hqp->name = $hqpUser->getName();
+				Person::$namesCache[$hqp->getName()] = $hqp;
+				Person::$idsCache[$hqp->getId()] = $hqp;
+				//Person::$employeeIdsCache[$row['uid']] = $hqp;
+				Person::$cache[strtolower($hqp->getName())] = $hqp;
+				Person::$cache[$hqp->getId()] = $hqp;
+				//Person::$cache['eId'.$row['uid']] = $hqp; 
+			}
 
 		} else {
 			$hqp = Person::newFromId($hqpId);
@@ -134,7 +134,7 @@ function importCSV($file) {
 
 		$rel = new Relationship(array());
 		$rel->user1     = $supervisor->getId();
-		$rel->user2     = $hqpId;
+		$rel->user2     = $hqp->getId();
 		$rel->type      = $hqpRelationship;
 		$rel->startDate = $hqpStart;
 		$rel->endDate   = $hqpEnd;
@@ -150,13 +150,13 @@ function importCSV($file) {
 }
 
 function addUserUniversity($person, $university, $department, $title, $startDate="", $endDate="0000-00-00 00:00:00"){
-    $_POST['university'] = $university;
-    $_POST['department'] = $department;
-    $_POST['startDate'] = $startDate;
-    $_POST['endDate'] = $endDate;
-    $_POST['researchArea'] = "";
-    $_POST['position'] = $title;
-    $api = new PersonUniversitiesAPI();
-    $api->params['id'] = $person->getId();
-    $api->doPOST();
+	$_POST['university'] = $university;
+	$_POST['department'] = $department;
+	$_POST['startDate'] = $startDate;
+	$_POST['endDate'] = $endDate;
+	$_POST['researchArea'] = "";
+	$_POST['position'] = $title;
+	$api = new PersonUniversitiesAPI();
+	$api->params['id'] = $person->getId();
+	$api->doPOST();
 }
