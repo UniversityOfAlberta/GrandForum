@@ -74,11 +74,12 @@ SopsView = Backbone.View.extend({
                                                             leftColumns: 2
                                                         },
                                                      'columns': [
-                                                        { 'width': '95px' }, // User email gender
-                                                        { 'width': '95px' }, // User email gender
+                                                        { 'width': '95px' }, // lastname
+                                                        { 'width': '95px' }, // firstname
                                                         { 'width': '200px' }, // email
                                                         { 'width': '95px' },  // GSMS ID
                                                         { 'width': '95px' },  // SID
+                                                        { 'width': '5px' },  // UserID
                                                         { 'width': '55px' },  // Country
                                                         { 'width': '200px' },  // Degree
                                                         { 'width': '75px' },  // Nationality Notes

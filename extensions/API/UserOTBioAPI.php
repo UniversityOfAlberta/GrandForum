@@ -24,11 +24,12 @@ class UserOTBioAPI extends API{
             $array_info['email'] = trim($row[2]);
             $array_info['gsms_id'] = trim($row[3]);
             $array_info['student_id'] = trim($row[4]);
-            $array_info['country'] = trim($row[5]);
+            $array_info['user_id'] = trim($row[5]);
+            $array_info['country'] = trim($row[6]);
 
               //degrees
             $degrees = array();
-            $degree_array = explode(",",trim($row[6]));
+            $degree_array = explode(",",trim($row[7]));
             if(count($degree_array) >0){
                 foreach($degree_array as $degree){
                     $degree = trim($degree);
@@ -48,7 +49,7 @@ class UserOTBioAPI extends API{
             $array_info['degrees'] = $degrees;
 
 	     //setting nationality notes (must fix this in future)
-            $nationality_notes = trim($row[7]);
+            $nationality_notes = trim($row[8]);
 
             $array_info['indigenous'] = "";
             $array_info['canadian'] = "";
@@ -67,7 +68,7 @@ class UserOTBioAPI extends API{
                 $array_info['international'] = "Yes";
             }
 
-            $array_info['gpa60'] = $row[8];
+            $array_info['gpa60'] = $row[9];
 
              //Best GPA / number of credits
                 $array_info['gpafull'] = "";
@@ -75,24 +76,24 @@ class UserOTBioAPI extends API{
                 $array_info['gpafull2'] = "";
                 $array_info['gpafull_credits2'] = "";
 
-            $gpa_array = explode("/",trim($row[9]));
+            $gpa_array = explode("/",trim($row[10]));
             if(count($gpa_array) >0 && $gpa_array[0] != ""){
                 $array_info['gpafull'] = trim($gpa_array[0]);
                 $array_info['gpafull_credits'] = trim($gpa_array[1]);
             }
-            $gpa_array = explode("/",trim($row[10]));
+            $gpa_array = explode("/",trim($row[11]));
 
             if(count($gpa_array) >0 && $gpa_array[0] != ""){
                 $array_info['gpafull2'] = trim($gpa_array[0]);
                 $array_info['gpafull_credits2'] = trim($gpa_array[1]);
             }
-            $array_info['anatomy'] = trim($row[11]);
-            $array_info['stats'] = trim($row[12]);
-            $array_info['casper'] = trim($row[13]);
+            $array_info['anatomy'] = trim($row[12]);
+            $array_info['stats'] = trim($row[13]);
+            $array_info['casper'] = trim($row[14]);
 
             $array_info['withdrawals'] = 0;
             $array_info['failures'] = 0;
-            $array_info['notes'] = trim($row[16]);
+            $array_info['notes'] = trim($row[17]);
 
 
 
@@ -141,12 +142,9 @@ class UserOTBioAPI extends API{
             $data = $this->extract_excel_data($xls_cells);
 	    foreach($data as $student){
                   //get student
-		$student_obj = Person::newFromGSMSId($student['gsms_id']);
-                $student_id = 0;
-                if($student_obj != null){
-		    $student_id = $student_obj->getId();
-                }
-		  //check if student exists
+		$student_obj = Person::newFromId($student['user_id']);
+		$student_id = $student_obj->getId();
+		  //check to make sure student exists
 		if($student_id != 0){
 		   $error_count = 0;
 		   $update = false;
@@ -162,6 +160,7 @@ class UserOTBioAPI extends API{
                    
                    DBFunctions::update('grand_gsms',
                             array('student_id' => $student['student_id'],
+                                  'gsms_id' => $student['gsms_id'],
                                   'country_of_citizenship' => $student['country'],
                                   'additional' => serialize($student)),
                             array('user_id' => EQ($student_id)));
