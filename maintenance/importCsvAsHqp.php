@@ -62,6 +62,10 @@ function importCSV($file) {
 		$hqpPosition 	 = trim($elems[9]); // ignored for now
 		$delete 		 =@trim($elems[10]);
 		$comments		 =@trim($elems[11]);
+
+		if ($delete == "") {
+			continue;
+		}
 		
 		if ($hqpId == "") {
 			$username = str_replace(" ", "", preg_replace("/\(.*\)/", "", 
