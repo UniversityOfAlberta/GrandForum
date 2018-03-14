@@ -132,9 +132,13 @@ class PersonGradStudentsTab extends AbstractTab {
             }
             
             $found = false;
+            $merged = array();
+            foreach(Person::$studentPositions as $array){
+                $merged = array_merge($merged, $array);
+            }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), $hqpTypes) && !isset($hqpsDone[$hqp->getId().$university['position']])){
+                if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && !isset($hqpsDone[$hqp->getId().$university['position']])){
                     $found = true;
                     break;
                 }
@@ -169,7 +173,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $research_area = $university['research_area'];
             $position = $university['position'];
             
-            if(!in_array(strtolower($position), $hqpTypes)){
+            if(!@in_array(strtolower($position), $hqpTypes) && $hqpTypes != "other"){
                 continue;
             }
             
@@ -267,6 +271,9 @@ class PersonGradStudentsTab extends AbstractTab {
                 
                 $html .= "<h3>Technicians</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['tech'], $this->startRange, $this->endRange);
+                
+                $html .= "<h3>Other</h3>";
+                $html .= $this->supervisesHTML('other', $this->startRange, $this->endRange);
             }
         }
         return $html;

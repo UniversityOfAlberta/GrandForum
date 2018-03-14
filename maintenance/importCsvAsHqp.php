@@ -53,10 +53,11 @@ function importCSV($file) {
 			continue;
 		}
 		if ($line == "") {
+		    show_status($lineNum, $nLines);
 			continue;
 		}
 
-		$elems = explode(",", $line);
+		$elems = str_getcsv($line);
 		$hqpId 			 = trim($elems[0]);
 		$hqpLastName 	 = trim($elems[1]);
 		$hqpFirstName    = trim($elems[2]);
@@ -71,6 +72,7 @@ function importCSV($file) {
 		$comments		 =@trim($elems[11]);
 
 		if (strstr(strtolower($delete), "yes")) {
+		    show_status($lineNum, $nLines);
 			continue;
 		}
 		

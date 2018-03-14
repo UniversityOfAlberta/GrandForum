@@ -20,6 +20,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $pdfCount   = $callback->getUserFellowCount();
         $techCount  = $callback->getUserTechCount();
         $ugradCount = $callback->getUserUgradCount();
+        $otherCount = $callback->getUserOtherCount();
         $item = "";
         if($splitGrad != "true"){
             $item .= "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
@@ -62,6 +63,13 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $item .= "<br /><h4>Technicians: {$techCount}</h4>";
         if($techCount > 0){
             $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
+                                          $this->getReport()->startYear."-07-01", 
+                                          $this->getReport()->year."-06-30");
+        }
+        
+        if($otherCount > 0){
+            $item .= "<br /><h4>Other: {$otherCount}</h4>";
+            $item .= $tab->supervisesHTML('other', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }

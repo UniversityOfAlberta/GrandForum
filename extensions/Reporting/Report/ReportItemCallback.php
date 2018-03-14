@@ -92,6 +92,7 @@ class ReportItemCallback {
             "user_fellow_count" => "getUserFellowCount",
             "user_tech_count" => "getUserTechCount",
             "user_ugrad_count" => "getUserUgradCount",
+            "user_other_count" => "getUserOtherCount",
             "user_courses_count" => "getUserCoursesCount",
             "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
@@ -1464,6 +1465,53 @@ class ReportItemCallback {
             
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad'])){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
+            }
+        }
+        return $count;
+    }
+    
+    function getUserOtherCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
+        $count = 0;
+        $hqpsDone = array();
+        $merged = array();
+        foreach(Person::$studentPositions as $array){
+            $merged = array_merge($merged, $array);
+        }
+        foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
+            
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                // Normal Date range
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+            }
+            else{
+                // Person is still continuing
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
+            }
+            
+            foreach($universities as $university){
+                if(!in_array(strtolower($university['position']), $merged)){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
