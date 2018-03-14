@@ -390,16 +390,18 @@ class GsmsData extends BackboneModel{
 
     }
 
-    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem){
-        $projectId = 0;
-
-        $blb = new ReportBlob($blobType, $year, $this->user_id, $projectId);
-        $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, 0);
+    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
+        if ($userId === null) {
+          $userId = $this->user_id;
+        }
+        $blb = new ReportBlob($blobType, $year, $userId, $projectId);
+        $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, $subItem);
         $result = $blb->load($addr);
         $data = $blb->getData();
 
         return $data;
     }
+
     function getOTColumns(){
         $gsms_array = array('gpa60' => "",
                             'gpafull' => "",
@@ -516,6 +518,13 @@ class GsmsData extends BackboneModel{
         return $time;
     }
 
+    function getAssignedSupervisors() {
+        return $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
+    }
+
+    function getFunding() {
+        return $this->getBlobValue(BLOB_TEXT, YEAR, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
+    }
 }
 
 ?>

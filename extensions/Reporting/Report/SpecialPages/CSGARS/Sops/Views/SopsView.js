@@ -160,12 +160,12 @@ SopsView = Backbone.View.extend({
                                                             $('#showfilter').attr('value', 'Hide Filter Options');
                                                         }
                                                         // This is for keeping filter options across overview table types
-                                                        SopsView.filtersSelected.filterSelectProgramName = this.filterSelectProgramName.chosen().val();
-                                                        SopsView.filtersSelected.filterSelectCountry = this.filterSelectCountry.chosen().val();
-                                                        SopsView.filtersSelected.filterSelectDecision = this.filterSelectDecision.chosen().val();
-                                                        SopsView.filtersSelected.filterSelectAoI = this.filterSelectAoI.chosen().val();
-                                                        SopsView.filtersSelected.filterSelectSupervisors = this.filterSelectSupervisors.chosen().val();
-                                                        SopsView.filtersSelected.filterSelectReviewers = this.filterSelectReviewers.chosen().val();
+                                                        SopsView.filtersSelected.filterSelectProgramName = this.filterSelectProgramName.chosen({ placeholder_text_multiple: 'Select Program Name' }).val();
+                                                        SopsView.filtersSelected.filterSelectCountry = this.filterSelectCountry.chosen({ placeholder_text_multiple: 'Select Country'}).val();
+                                                        SopsView.filtersSelected.filterSelectDecision = this.filterSelectDecision.chosen({ placeholder_text_multiple: 'Select Decision' }).val();
+                                                        SopsView.filtersSelected.filterSelectAoI = this.filterSelectAoI.chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' }).val();
+                                                        SopsView.filtersSelected.filterSelectSupervisors = this.filterSelectSupervisors.chosen({ placeholder_text_multiple: 'Select Supervisor(s)' }).val();
+                                                        SopsView.filtersSelected.filterSelectReviewers = this.filterSelectReviewers.chosen({ placeholder_text_multiple: 'Select Reviewers' }).val();
                                                         SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
                                                         SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
                                                         SopsView.filtersSelected.filterDoB = this.filterDoB.val();
@@ -744,13 +744,6 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
-        this.$('#filterSelectCountry').chosen({ placeholder_text_multiple: 'Select Country' });
-        //this.$('#filterSelectFolder').chosen({ placeholder_text_multiple: 'Select Folder' });
-        this.$('#filterSelectDecision').chosen({ placeholder_text_multiple: 'Select Decision' });
-        this.$('#filterSelectProgramName').chosen({ placeholder_text_multiple: 'Select Program Name' });
-        this.$('#filterSelectSupervisors').chosen({ placeholder_text_multiple: 'Select Supervisor(s)' });
-        this.$('#filterSelectAoI').chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' });
-        this.$('#filterSelectReviewers').chosen({ placeholder_text_multiple: 'Select Reviewers' });
         return this.$el;
     }
 });

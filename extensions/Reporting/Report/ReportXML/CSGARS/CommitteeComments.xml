@@ -47,11 +47,6 @@
 
            	    ]]>
         	</ReportItem>
-            <ReportItem id="funding" personId="0" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
-                <![CDATA[
-                            <tr><td><b>Funding:</b></td><td>{$finalFunding}</td></tr>
-                ]]>
-            </ReportItem>
             
             <ReportItem id="status" personId="0" type="RadioReportItem" blobItem="Q7" blobType="BLOB_TEXT" options="FT|PT" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
                 <![CDATA[
@@ -68,11 +63,22 @@
             <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
                 <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
                         <![CDATA[
-                        <div style="margin-top:10px;">
-                            <b style="font-size: 14px;">Supervisor:</b><div style="display: inline-block; margin-left:10px;">{$item}</div>
-                        </div>
+                        <table style="margin-top:10px;">
+                            <tr>
+                                <td><b style="font-size: 14px;">Supervisor:</b></td>
+                                <td>{$item}</td>
+                            </tr>
                         ]]>
-                    </ReportItem>
+                </ReportItem>
+                <ReportItem id="funding" personId="0" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" sopBlob="true" orientation = "horizontal" blobSubItem="{$project_id}">
+                    <![CDATA[
+                            <tr>
+                                <td><b style="font-size: 14px;">Funding:</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
 
         	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
@@ -96,6 +102,8 @@
                         {getArray(RP_COM,OT_COM,Q14,0,0,{$project_id},q5,;&nbsp;)}
                         </br>
                     </div>
+                    <b style="font-size: 14px;">Funding:</b>
+                    {getText(RP_COM,OT_COM,Q4,{$project_id},0,{$project_id})}
                     ]]>
                 </ReportItem>
             </ReportItemSet>
