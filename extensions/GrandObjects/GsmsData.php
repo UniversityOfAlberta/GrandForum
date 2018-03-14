@@ -206,12 +206,12 @@ class GsmsData extends BackboneModel{
     */
     function update(){
         $me = Person::newFromWGUser();
-        $lastname = preg_replace('/[^\wA-zÀ-ÿ]/', '', $me->getLastName());
+        /*$lastname = preg_replace('/[^\wA-zÀ-ÿ]/', '', $me->getLastName());
         $notes = (array) $this->additional["notes"];
         if ($notes[$lastname] == "") {
           unset($notes[$lastname]);
           $this->additional["notes"] = $notes;
-        }
+        }*/
         if($me->isLoggedIn()){
                 $status = DBFunctions::update('grand_gsms',
                                     array('`gender`' => $this->gender,
@@ -281,6 +281,8 @@ class GsmsData extends BackboneModel{
        // }
         $student = Person::newFromId($this->user_id);
         $student_data = array('id' => $student->getId(),
+                        'fname' => $student->getFirstName(),
+                        'lname' => $student->getLastName(),
                         'name' => $student->getReversedName(),
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());

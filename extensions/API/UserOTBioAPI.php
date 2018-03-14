@@ -17,39 +17,80 @@ class UserOTBioAPI extends API{
 		$i++;
 		continue;
 	    }
-		//set student
-	    $student_array = explode(",", $row[0]);
-	    $student_name = $student_array[1]." ".$student_array[0];
+		//set student information
 	    $array_info = array();
-	    $array_info['name'] = $student_name;
-	    $array_info['gpa60'] = $row[1];
-	    $gpa_array = explode("/",$row[2]);
-	    $array_info['gpafull'] = $gpa_array[0];
-	    $array_info['gpafull_credits'] = $gpa_array[1];
-            $gpa_array = explode("/",$row[3]);
-            $array_info['gpafull2'] = $gpa_array[0];
-            $array_info['gpafull_credits2'] = $gpa_array[1];
-	    $array_info['failures'] = $row[4];
-	    $array_info['withdrawals'] = $row[5];
-	    $array_info['notes'] = $row[6];
-	    $array_info['indigenous'] = $row[7];
-	    $array_info['canadian'] = $row[8];
-	    $array_info['saskatchewan'] = $row[9];
-	    $array_info['international'] = $row[10];
-	    $array_info['anatomy'] = $row[11];
-	    $array_info['stats'] = $row[12];
-            $array_info['casper'] = $row[14];
-	    $degrees = array();
-	    $degree_array = explode(",",$row[13]);
-	    foreach($degree_array as $degree){
-		$new_degree = array();
-		$pattern = '/(.*)\((.*)\)/';
-		preg_match($pattern, $degree, $matches);
-		$new_degree['degree'] = $matches[1];
-		$new_degree['institution'] = $matches[2];
-		$degrees[] = $new_degree;
-	    }
-	    $array_info['degrees'] = $degrees;
+	    $array_info['lastname'] = trim($row[0]);
+            $array_info['firstname'] = trim($row[1]);
+            $array_info['email'] = trim($row[2]);
+            $array_info['gsms_id'] = trim($row[3]);
+            $array_info['student_id'] = trim($row[4]);
+            $array_info['country'] = trim($row[5]);
+
+              //degrees
+            $degrees = array();
+            $degree_array = explode(",",trim($row[6]));
+            if(count($degree_array) >0){
+                foreach($degree_array as $degree){
+                    $degree = trim($degree);
+                    if($degree == ""){
+                        continue;
+                    }
+                    $new_degree = array();
+                    $pattern = '/(.*)\((.*)\)/';
+                    preg_match($pattern, $degree, $matches);
+                    if($matches[1] != "" && $matches[2] != ""){
+                        $new_degree['degree'] = trim($matches[1]);
+                        $new_degree['institution'] = trim($matches[2]);
+                        $degrees[] = $new_degree;
+                    }
+                }
+            }
+            $array_info['degrees'] = $degrees;
+
+	     //setting nationality notes (must fix this in future)
+            $nationality_notes = trim($row[7]);
+
+            $array_info['indigenous'] = "";
+            $array_info['canadian'] = "";
+            $array_info['saskatchewan'] = "";
+            $array_info['international'] = "";
+            if(strpos($nationality_notes, 'Indigenous') !== false){
+                $array_info['indigenous'] = "Yes";
+            }
+            if(strpos($nationality_notes, 'Canadian') !== false){
+                $array_info['canadian'] = "Yes";
+            }
+            if(strpos($nationality_notes, 'Saskatchewan') !== false){
+                $array_info['saskatchewan'] = "Yes";
+            }
+            if(strpos($nationality_notes, 'International') !== false){
+                $array_info['international'] = "Yes";
+            }
+
+            $array_info['gpa60'] = $row[8];
+
+             //Best GPA / number of credits
+            $gpa_array = explode("/",trim($row[9]));
+            if(count($gpa_array) >0 && $gpa_array[0] != ""){
+                $array_info['gpafull'] = trim($gpa_array[0]);
+                $array_info['gpafull_credits'] = trim($gpa_array[1]);
+            }
+            $gpa_array = explode("/",trim($row[10]));
+
+            if(count($gpa_array) >0 && $gpa_array[0] != ""){
+                $array_info['gpafull2'] = trim($gpa_array[0]);
+                $array_info['gpafull_credits2'] = trim($gpa_array[1]);
+            }
+            $array_info['anatomy'] = trim($row[11]);
+            $array_info['stats'] = trim($row[12]);
+            $array_info['casper'] = trim($row[13]);
+
+            $array_info['withdrawals'] = 0;
+            $array_info['failures'] = 0;
+            $array_info['notes'] = trim($row[16]);
+
+
+
 	    $data_array[] = $array_info;
 	}
 	return $data_array;
@@ -73,13 +114,16 @@ class UserOTBioAPI extends API{
 
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
+         //check if at least manager
         $user = Person::newFromId($wgUser->getId());
         if(!$user->isRoleAtLeast(MANAGER)){
             return;
         }
+         //get file and make sure correct format
         $xls = $_FILES['students_gsms'];
         if(isset($xls['type']) &&
-            ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream") &&
+            ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream" || $xls['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+             || $xls['type'] == 'text/csv')&&
             $xls['size'] > 0 ){
             $error = "";
             $xls_cells = $this->readXLS($xls['tmp_name']);
@@ -91,8 +135,12 @@ class UserOTBioAPI extends API{
             $errors = array();
             $data = $this->extract_excel_data($xls_cells);
 	    foreach($data as $student){
-		$student_obj = Person::newFromNameLike($student['name']);	
-		$student_id = $student_obj->getId();
+                  //get student
+		$student_obj = Person::newFromGSMSId($student['gsms_id']);
+                $student_id = 0;
+                if($student_obj != null){
+		    $student_id = $student_obj->getId();
+                }
 		  //check if student exists
 		if($student_id != 0){
 		   $error_count = 0;
@@ -108,13 +156,15 @@ class UserOTBioAPI extends API{
                    }
                    
                    DBFunctions::update('grand_gsms',
-                            array('additional' => serialize($student)),
+                            array('student_id' => $student['student_id'],
+                                  'country_of_citizenship' => $student['country'],
+                                  'additional' => serialize($student)),
                             array('user_id' => EQ($student_id)));
                     DBFunctions::commit();
-		    $success[] = "<b>{$student['name']}</b> updated.";
+		    $success[] = "<b>{$student['lastname']},{$student['firstname']}</b> updated.";
 		}
 		else{
-			$errors[] = "<b>{$student['name']}</b> failed.  Student not found.";
+			$errors[] = "<b>{$student['lastname']},{$student['firstname']}</b> failed.  Student not found.";
 		}
 		
         }

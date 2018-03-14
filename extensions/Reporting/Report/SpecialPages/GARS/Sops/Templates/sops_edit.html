@@ -1,15 +1,126 @@
-<div id="profile1">
-<h1><a href='<%=author.url%>'><%= author.name %></a></h1>
-</div>
+<table id="profile1" style="width: 100%">
+    <tr>
+        <td>
+            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %></a></h1>
+        </td>
+        <td>
+            <a id="link_to_table" class="button" style="float:right;">Show in Overview Table</a>
+        </td>
+    </tr>
+<!--  href="#/hidden" -->
+</table>
   <% if(sop_check){ %>
-   <b>SoP PDF : </b><a href="<%= sop_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GARS PDF : </b><a href="<%= sop_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
   <% if(gsms_data){ %>
    <b>GSMS PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
 <div id="accordion" style="width:100%; margin-top:50px">
     <div>
-        <h3><a href="#">Letter of Intent</a></h3>
+        <h3><a href="#">Summary Data</a></h3>
+        <div style="padding-bottom: 30px">
+            <div style="display: inline-block; width: 100%;">
+                <h3 style="float:left;"><%= student_data.name %> <% if(gsms_id != 0){ %>(<%= gsms_id %>)<% } %>
+                    <% if(program_name != ''){ %>applying to <%= program_name %> <% } %>
+                </h3>
+                <h3 style="float:right;">GPA (normalized): <%= additional.gpaNormalized %></h3>
+            </div>
+            <br/>
+            <%=student_data.email %>   <%= gender %>
+            <div class="flex-container" style="display: block;">
+                <div class="flex-item" style="width:44%; min-width: 400px;">
+                    <b>Folder:</b> <%= folder %><br />
+                    <b>Date of Birth:</b> <%= date_of_birth %><br />
+                    <b>Nationality:</b>
+                        <% docDesc = nationality_note.replace(/[<]br[^>]*[>]/gi,' '); %>  <!- replaces breaks in nationality note to space ->
+                        <%= docDesc %><br />
+                    <b>Degrees:</b><br />
+                        <% for(var i=0; i < additional.degrees.length;i++){ %>
+                            <span style='margin-left:15px'><%= additional.degrees[i].degree %> (<%= additional.degrees[i].institution %>)</span><br />
+                        <% } %><br /><br />
+                    <b>Admin Notes:</b><br />
+                        <span id='notes' style='margin-left:15px'>
+                        <% if (additional.notes.length == 0) { %>
+                            No notes to show
+                        <% } else { %>
+                            <%= additional.notes %>
+                        <% } %>
+                        </span><br />
+
+
+                </div>
+                <div class="flex-item" style="width:24%;">
+                    <b>GPA (over last 60 credits):</b> <%= additional.gpa60 %><br /><br />
+                    <div style="display:inline-block;">
+                        <b>Best GPA / credits</b><br/>
+                        <table>
+                            <tr>
+                                <% var gre = (additional.gre1 != null) ? additional.gre1 : "--" %>
+                                <td>GPA1:</td>
+                                <td align="right">
+                                    <% if(additional.gpafull != '' && (additional.gpafull != 0 && additional.gpafull_credits!= 0)){ %>
+                                       <%= additional.gpafull %> / <%= additional.gpafull_credits %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <% var gre = (additional.gre2 != null) ? additional.gre2 : "--" %>
+                                <td>GPA2:</td>
+                                <td align="right">
+                                    <% if(additional.gpafull2 != '' && (additional.gpafull2 != 0 && additional.gpafull_credits2!= 0)){ %>
+                                        <%= additional.gpafull2 %> / <%= additional.gpafull_credits2 %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                    <div>
+                        <table>
+                            <tr>
+                                <% var gre = (additional.gre1 != null) ? additional.gre1 : "--" %>
+                                <td><b>Anatomy:</b></td>
+                                <td align="right"><%= additional.anatomy %></td>
+                            </tr>
+                            <tr>
+                                <% var gre = (additional.gre2 != null) ? additional.gre2 : "--" %>
+                                <td><b>Statistics:</b></td>
+                                <td align="right"><%= additional.stats %></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <b>CASPer:</b> <%= additional.casper %><br />
+                    <b>Number of Withdrawals: </b><%= additional.withdrawals %><br/>
+                    <b>Number of Failures: </b><%= additional.failures %><br/>
+                </div>
+                <div class="flex-item" style="width:24%;">
+                    <% if (reviewers.length == 0) { %>
+                        <b>Reviewers</b><br/>
+                        No assigned reviewers<br/>
+                    <% } else { %>
+                        <table style="width:100%;" class="gsms-mini-table">
+                            <thead>
+                                <tr style="background-color: #F5F5F5;">
+                                    <th><b>Reviewers</b></th>
+                                    <th style="text-align: right;"><b>Decision</b></th>
+                                </tr>
+                            </thead>
+                            <% for(var i=0; i < reviewers.length;i++){ %>
+                                <tr>
+                                    <td><%= reviewers[i].name %></td><td align="right"><%= reviewers[i].decision %></td>
+                                </tr>
+                            <% } %>
+                        </table>
+                    <% } %>
+                    <br/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <% if (_.values(content).join().trim() != '') { %>
+    <div>
+        <h3><a href="#">Statement of Purpose</a></h3>
         <div id="sop_acc" style="padding-top:20px">
             <div style="padding-top:30px">
 		<div style="float: right; padding-right: 150px;">
@@ -241,14 +352,15 @@
             </div>
         </div>
     </div>
+    <% } %>
     <div>
         <h3><a href="#">Review</a></h3>
         <div>
-            <iframe style="width:100%;height:7500px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
+            <iframe id="review_iframe" style="width:100%;height:525px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
         </div>
     </div>
     <div>
-        <h3><a href="#">Committee Comments</a></h3>
+        <h3><a href="#">Grad Chair</a></h3>
         <div>
             <iframe style="width:100%;height:2500px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=CommitteeComments&project=Sop:<%= id %>&embed"></iframe>
         </div>
