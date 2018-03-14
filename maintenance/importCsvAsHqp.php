@@ -34,10 +34,15 @@ function importCSV($file) {
 		return;
 	}
 	echo("  importing " . $file . "\n");
+	DBFunctions::delete('grand_relations', array(
+		'user1'=>$supervisor->getId(),
+		'type'=>'Supervises')
+	);
 
-	$relations = $supervisor->getRelations();
-	$relations['Supervises'] = array();
-	$relations['Co-Supervises'] = array();
+	DBFunctions::delete('grand_relations', array(
+		'user1'=>$supervisor->getId(),
+		'type'=>'Co-Supervises')
+	);
 
 	$lineNum = 0;
 	foreach($lines as $line) {
@@ -63,7 +68,7 @@ function importCSV($file) {
 		$delete 		 =@trim($elems[10]);
 		$comments		 =@trim($elems[11]);
 
-		if ($delete == "") {
+		if (($delete == "") && (strstr(strtolower($delete), "yes"))) {
 			continue;
 		}
 		
