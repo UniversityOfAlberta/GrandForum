@@ -44,7 +44,7 @@ function importCSV($file) {
 		'type'=>'Co-Supervises')
 	);
 
-	$nLines = count($lines);
+	$nLines = count($lines)-1;
 
 	$lineNum = 0;
 	foreach($lines as $line) {
