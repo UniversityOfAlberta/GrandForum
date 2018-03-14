@@ -48,8 +48,8 @@ function importCSV($file) {
 
 	$lineNum = 0;
 	foreach($lines as $line) {
-		if ($lineNum == 0) {
-			$lineNum++;
+		$lineNum++;
+		if ($lineNum == 1) {
 			continue;
 		}
 		if ($line == "") {
@@ -147,7 +147,6 @@ function importCSV($file) {
 		DBFunctions::update('mw_user', 
 			array('user_email' => $hqpEmail), 
 			array('user_id' => $hqp->id));
-		$lineNum++;
 
 		show_status($lineNum, $nLines);
 	}
