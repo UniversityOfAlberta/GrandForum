@@ -44,6 +44,8 @@ function importCSV($file) {
 		'type'=>'Co-Supervises')
 	);
 
+	$nLines = count($lines);
+
 	$lineNum = 0;
 	foreach($lines as $line) {
 		if ($lineNum == 0) {
@@ -146,6 +148,8 @@ function importCSV($file) {
 			array('user_email' => $hqpEmail), 
 			array('user_id' => $hqp->id));
 		$lineNum++;
+
+		show_status($lineNum, $nLines);
 	}
 }
 
