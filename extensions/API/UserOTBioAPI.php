@@ -70,6 +70,11 @@ class UserOTBioAPI extends API{
             $array_info['gpa60'] = $row[8];
 
              //Best GPA / number of credits
+                $array_info['gpafull'] = "";
+                $array_info['gpafull_credits'] = "";
+                $array_info['gpafull2'] = "";
+                $array_info['gpafull_credits2'] = "";
+
             $gpa_array = explode("/",trim($row[9]));
             if(count($gpa_array) >0 && $gpa_array[0] != ""){
                 $array_info['gpafull'] = trim($gpa_array[0]);
