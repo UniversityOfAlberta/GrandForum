@@ -48,6 +48,7 @@ abstract class AbstractReport extends SpecialPage {
     var $project;
     var $readOnly = false;
     var $topProjectOnly;
+    var $pageCount = true;
     var $generatePDF;
     var $pdfType;
     var $pdfFiles;

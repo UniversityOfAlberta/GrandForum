@@ -162,7 +162,7 @@
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
                 <h2>Publications</h2>
-                <small>bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <ul>
             ]]>
         </ReportItem>
@@ -283,102 +283,6 @@
             ]]>
         </ReportItem>
         
-        <!-- Services -->
-        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
-            <![CDATA[
-                <h2>Service Activities</h2>
-            ]]>
-        </ReportItem>
-        <!-- Departmental -->
-        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
-            <![CDATA[
-                <h3>Departmental</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-            
-        <!-- Faculty -->
-        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
-            <![CDATA[
-                <h3>Faculty</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-            
-        <!-- University -->
-        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
-            <![CDATA[
-                <h3>University</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
-        <!-- Scientific -->
-        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
-            <![CDATA[
-                <h3>Scientific</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
-        <!-- Outreach and Community Engagement -->
-        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
-            <![CDATA[
-                <h3>Outreach and Community Engagement</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
-        <!-- Other -->
-        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
-            <![CDATA[
-            	<h3>Other</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}, </p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
         <!-- Grants -->
         <ReportItem id="grantspagebreak" type="PageBreakReportItem">
             <![CDATA[
@@ -422,8 +326,109 @@
             ]]>
         </ReportItem>
         
-        <!-- Committees -->
-        <ReportItem id="committeespagebreak" type="PageBreakReportItem">
+        <!-- Services -->
+        <ReportItem id="servicespagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
+            <![CDATA[
+                <h2>Service Activities</h2>
+            ]]>
+        </ReportItem>
+        <!-- Departmental -->
+        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
+            <![CDATA[
+                <h3>Departmental</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+            
+        <!-- Faculty -->
+        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
+            <![CDATA[
+                <h3>Faculty</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+            
+        <!-- University -->
+        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
+            <![CDATA[
+                <h3>University</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Scientific -->
+        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
+            <![CDATA[
+                <h3>Scientific</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title} (<b>{$product_scope}</b>)</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Outreach and Community Engagement -->
+        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
+            <![CDATA[
+                <h3>Outreach and Community Engagement</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Other -->
+        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+            <![CDATA[
+            	<h3>Other</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Additional Info -->
+        <ReportItem id="additionalpagebreak" type="PageBreakReportItem">
             <![CDATA[
                 {$item}
             ]]>

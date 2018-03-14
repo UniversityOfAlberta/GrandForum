@@ -12,10 +12,16 @@ GrantView = Backbone.View.extend({
         
         this.listenTo(this.model, 'change', $.proxy(function(){
             this.person = new Person({id: this.model.get('user_id')});
-            var xhr = this.person.fetch();
+            
             this.model.getGrantAward();
             this.listenTo(this.model.grantAward, 'sync', this.render);
-            $.when(xhr).then(this.render);
+            if(this.person.get('id') != 0){
+                var xhr = this.person.fetch();
+                $.when(xhr).then(this.render);
+            }
+            else{
+                this.render();
+            }
         }, this));
         
         $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){

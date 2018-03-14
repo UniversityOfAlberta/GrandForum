@@ -23,10 +23,19 @@ EditGrantView = Backbone.View.extend({
                 main.set('title', 'Editing Revenue Account');
             }
         });
+        this.allPeople = new People();
+        this.allPeople.simple = true;
+        this.allPeople.roles = [NI];
+        var xhr1 = this.allPeople.fetch();
         this.listenTo(this.model, 'sync', function(){
             this.person = new Person({id: this.model.get('user_id')});
-            var xhr = this.person.fetch();
-            $.when(xhr).then(this.render);
+            if(this.person.get('id') != 0){
+                var xhr2 = this.person.fetch();
+                $.when.apply(null, [xhr1, xhr2]).then(this.render);
+            }
+            else{
+                $.when(xhr1).then(this.render);
+            }
         });
         
         $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
@@ -102,6 +111,12 @@ EditGrantView = Backbone.View.extend({
             clearTimeout(this.timeout);
         }
         $("#preview").hide();
+    },
+    
+    changePI: function(){
+        _.defer($.proxy(function(){
+            this.model.set('user_id', this.model.get('pi').id);
+        }, this));
     },
     
     events: {
@@ -234,6 +249,7 @@ EditGrantView = Backbone.View.extend({
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
+        this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change($.proxy(this.changePI, this));
         return this.$el;
     }
 

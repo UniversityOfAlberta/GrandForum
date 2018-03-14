@@ -1297,8 +1297,9 @@ class Paper extends BackboneModel{
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP) {
-            return $this->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
+        $that = $this;
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $that) {
+            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
         }, $format);
         
         $peerDiv = "";
@@ -1347,7 +1348,7 @@ class Paper extends BackboneModel{
         return trim("{$format}{$peerDiv}");
     }
     
-    private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
+    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
         $authors = array();
         $me = null;
         //if($highlightOnlyMyHQP !== false){
@@ -1368,7 +1369,12 @@ class Paper extends BackboneModel{
                         $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
                         $found = false;
                         foreach($unis as $uni){
-                            if(in_array(strtolower($uni['position']), Person::$studentPositions['grad']) !== false){
+                            if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
+                                $name = "<span style='font-style: italic !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $found = true;
+                                break;
+                            }
+                            else if(in_array(strtolower($uni['position']), Person::$studentPositions['grad']) !== false){
                                 $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
                                 $found = true;
                                 break;

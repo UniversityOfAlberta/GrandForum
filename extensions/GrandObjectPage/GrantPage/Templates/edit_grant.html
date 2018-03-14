@@ -8,7 +8,7 @@
 <table>
     <tr>
         <td class="label">PI:</td>
-        <td colspan="3"><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+        <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
     </tr>
     <tr>
         <td colspan="4" id="coapplicants"></td>

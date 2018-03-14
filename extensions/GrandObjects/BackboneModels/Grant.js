@@ -15,8 +15,10 @@ Grant = Backbone.Model.extend({
     
     defaults: function(){ return {
             id: null,
-            user_id: '',
-            pi: null,
+            user_id: 0,
+            pi: {
+                fullName: ""
+            },
             copi: new Array(),
             copi_string: '',
             project_id: '',

@@ -117,6 +117,7 @@ class ReportItemCallback {
             "product_year" => "getProductYear",
             "product_year_range" => "getProductYearRange",
             "product_date_range" => "getProductDateRange",
+            "product_scope" => "getProductScope",
             //Presentations
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
@@ -792,6 +793,11 @@ class ReportItemCallback {
     function getProductQACitation(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getCitation(true, false, false);
+    }
+    
+    function getProductScope(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getData('scope');
     }
 
     function getPresentationTitle(){
