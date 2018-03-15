@@ -982,7 +982,7 @@ class Person extends BackboneModel {
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
                                     array('user_twitter' => $this->getTwitter(),
-                                          'user_facebook' => $this->getfacebook(),
+                                          'user_facebook' => $this->getFacebook(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1025,7 +1025,7 @@ class Person extends BackboneModel {
                                           //'honorific' => $this->getHonorific(),
                                           //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
-                                          'user_facebook' => $this->getfacebook(),
+                                          'user_facebook' => $this->getFacebook(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1400,7 +1400,7 @@ class Person extends BackboneModel {
      * Returns the handle of this Person's facebook account
      * @return string The handle of this Person's facebook account
      */
-    function getLinkedin(){
+    function getFacebook(){
         return $this->facebook;
     }
     

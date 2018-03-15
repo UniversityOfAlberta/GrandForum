@@ -14,6 +14,12 @@ class PersonApplicantDataTab extends AbstractEditableTab {
     function handleEdit(){
         // Call APIs here
         $_POST['user_name'] = $this->person->getName();
+        $this->person->firstName = @$_POST['first_name'];
+        $this->person->middleName = @$_POST['middle_name'];
+        $this->person->lastName = @$_POST['last_name'];
+        $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
+
+        $this->person->update();
 
         $api = new UserApplicantDataAPI();
         $api->doAction(true);
@@ -405,7 +411,22 @@ class PersonApplicantDataTab extends AbstractEditableTab {
 
         $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
         $this->html .= "<table id='gsms_bio'>";
-        
+
+        $this->html .= "<tr>";
+        $this->html .= "<td class='label'>First Name: </td>";
+        $this->html .= "<td><input name='first_name' type='text' value='{$this->person->getFirstName()}' /></td>";
+        $this->html .= "</tr>";
+
+        $this->html .= "<tr>";
+        $this->html .= "<td class='label'>Middle Name: </td>";
+        $this->html .= "<td><input name='middle_name' type='text' value='{$this->person->getMiddleName()}' /></td>";
+        $this->html .= "</tr>";
+
+        $this->html .= "<tr>";
+        $this->html .= "<td class='label'>Last Name: </td>";
+        $this->html .= "<td><input name='last_name' type='text' value='{$this->person->getLastName()}' /></td>";
+        $this->html .= "</tr>";
+ 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Email: </td>";
         $this->html .= "<td><input name='email' type='text' value='{$this->person->getEmail()}' /></td>";
