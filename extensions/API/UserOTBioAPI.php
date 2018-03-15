@@ -144,6 +144,10 @@ class UserOTBioAPI extends API{
                   //get student
 		$student_obj = Person::newFromId($student['user_id']);
 		$student_id = $student_obj->getId();
+                $student_obj->firstName = $student['firstname'];
+                $student_obj->lastName = $student['lastname'];
+                $student_obj->realname = "{$student['firstname']} {$student['lastname']}";
+                $student_obj->update();
 		  //check to make sure student exists
 		if($student_id != 0){
 		   $error_count = 0;
