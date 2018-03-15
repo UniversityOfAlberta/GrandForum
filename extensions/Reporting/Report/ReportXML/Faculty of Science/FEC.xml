@@ -228,7 +228,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="ReportSection">
-        <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true">
+        <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true" showCommittees="true">
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
                 {$item}

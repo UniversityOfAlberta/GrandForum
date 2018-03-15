@@ -9,6 +9,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $splitGrad = strtolower($this->getAttr('splitGrad', 'false'));
+        $showCommittees = (strtolower($this->getAttr('showCommittees', 'false')) == "true");
         
         $tab = new PersonGradStudentsTab($person, array());
 
@@ -21,6 +22,8 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $techCount  = $callback->getUserTechCount();
         $ugradCount = $callback->getUserUgradCount();
         $otherCount = $callback->getUserOtherCount();
+        $committeeCount = $callback->getUserCommitteeCount();
+        
         $item = "";
         if($splitGrad != "true"){
             $item .= "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
@@ -72,6 +75,12 @@ class PersonSupervisesReportItem extends StaticReportItem {
             $item .= $tab->supervisesHTML('other', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
+        }
+        
+        if($showCommittees && $committeeCount > 0){
+            $item .= "<br /><h4>Examining Committee Membership: {$committeeCount}</h4>";
+            $item .= $tab->committeeHTML($this->getReport()->startYear."-07-01",
+                                         $this->getReport()->year."-06-30");
         }
         
         return $item;
