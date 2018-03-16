@@ -26,7 +26,7 @@ EditBioView = Backbone.View.extend({
     },
 
     events: {
-        "click #editGsmsUpload": "upload"
+        "click #uploadUserOTBio": "upload"
     },
 
     render: function(){

@@ -119,6 +119,9 @@ class PersonPage {
 		
                 $tabbedPage = new TabbedPage("person");
 		$tabbedPage->addTab(new PersonSopTab($person, $visibility));
+                if($me->isRoleAtLeast(MANAGER) && $config->getValue('networkName') == 'GARS'){
+                    $tabbedPage->addTab(new PersonOTGSMSTab($person, $visibility, 'Gsms Data'));
+                }
                 if($person->getGSMSPdfUrl() != "" && $me->isRoleAtLeast(MANAGER)){
                     $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
                 }

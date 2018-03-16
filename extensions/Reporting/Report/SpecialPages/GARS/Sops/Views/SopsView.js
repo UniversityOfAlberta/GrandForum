@@ -38,6 +38,32 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
+        var buttonDownload = {
+            exportOptions: {
+                format: {
+                    body: function ( data, row, column, node ) {
+                        var ret;
+                        data = $('<div>' + data + '</div>').text();
+                        // add a newline after each education entry
+                        if ((column === 6)) {
+                            ret = data.replace(/(\))([a-zA-Z])/g, '$1\n$2');
+                        // Clean up Reviewers/Faculty columns for downloaded excel/csv
+                        } else if ((column === 17) || (column === 19)) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                        // Clean up Notes column for downloaded excel/csv
+                        } else if (column === 21) {
+                            ret = data.replace(/\s\s+/g, '\n');
+                            ret = ret.replace(/\+/g, "");
+                            ret = ret.replace(/[\n\r].*Additional Notesclose\s*([^\n\r]*)/, "");
+                        } else {
+                            ret = data;
+                        }
+                        return ret;
+                    }
+                }
+            }
+        };
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': true,
                                                      'dom': 'Bfrtip',
@@ -45,30 +71,27 @@ SopsView = Backbone.View.extend({
                                                      'scrollX': true,
                                                      'fixedColumns':   
                                                         {
-                                                            leftColumns: 1
+                                                            leftColumns: 2
                                                         },
                                                      'columns': [
-                                                        { 'width': '200px' }, // User email gender
+                                                        { 'width': '95px' }, // lastname
+                                                        { 'width': '95px' }, // firstname
+                                                        { 'width': '200px' }, // email
                                                         { 'width': '95px' },  // GSMS ID
-                                                        { 'width': '70px' },  // Status
-                                                        { 'width': '55px' },  // DoB
+                                                        { 'width': '95px' },  // SID
+                                                        { 'width': '5px' },  // UserID
                                                         { 'width': '55px' },  // Country
-                                                        { 'width': '70px' },  // Applicant Type
-                                                        { 'width': '180px' }, // Education history
-                                                        { 'width': '140px' },  // Department
-                                                        { 'width': '70px' },  // EPL
-                                                        { 'width': '110px' },  // Degree
+                                                        { 'width': '200px' },  // Degree
                                                         { 'width': '75px' },  // Nationality Notes
-                                                        { 'width': '80px' },  // GPA 60
-                                                        { 'width': '75px' },  // GPA / credits
-                                                        { 'width': '70px' },  // F
-                                                        { 'width': '70px' },  // W
+                                                        { 'width': '30px' },  // GPA 60
+                                                        { 'width': '40px' },  // GPA / credits
+                                                        { 'width': '40px' },  // GPA / credits
                                                         { 'width': '70px' },  // Anatomy
                                                         { 'width': '70px' },  // Stats
                                                         { 'width': '70px' },  // CASPER
-                                                        { 'width': '170px' },  // Reviewers
+                                                        { 'width': '200px' },  // Reviewers
                                                         { 'width': '70px' },  // Reviewer Decision
-                                                        { 'width': '70px' },  // Notes
+                                                        { 'width': '200px' },  // Notes
                                                         { 'width': '120px' },  // Comments
                                                         { 'width': '120px' },  // Decision
                                                       ],
@@ -77,7 +100,17 @@ SopsView = Backbone.View.extend({
                                                             extend: 'colvis',
                                                             className: 'btn btn-primary',
                                                             text: 'Column Visibility'
-                                                        }
+                                                        },
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'csv',
+                                                            text: 'CSV',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } ),
+                                                        $.extend( true, {}, buttonDownload, {
+                                                            extend: 'excel',
+                                                            text: 'Excel',
+                                                            title: 'CSGARS_Overview_Table'
+                                                        } )
                                                      ],
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
