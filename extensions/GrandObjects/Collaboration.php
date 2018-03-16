@@ -25,6 +25,7 @@ class Collaboration extends BackboneModel{
     var $knowledgeUser = false;
 
     var $person = null;
+    var $projects = array();
     
     /**
      * Returns a new Collaboration from the given id
@@ -189,7 +190,14 @@ class Collaboration extends BackboneModel{
             return false;
         }
 
-        DBFunctions::insert('grand_collaborations',
+        foreach($this->projects as $project){
+            if(!isset($project->id) || $project->id == 0){
+                $p = Project::newFromName($project->name);
+                $project->id = $p->getId();
+            }
+        }
+
+        $status = DBFunctions::insert('grand_collaborations',
                             array('organization_name' => $this->title,
                                   'sector' => $this->sector,
                                   'country' => $this->country,
@@ -204,7 +212,24 @@ class Collaboration extends BackboneModel{
                                   'year' => $this->year,
                                   'funding' => $this->funding,
                                   'knowledge_user' => $this->knowledgeUser));
-        $this->id = DBFunctions::insertId();
+        if($status){
+            $this->id = DBFunctions::insertId();
+        }
+        // Update collaboration_projects table
+        if($status){
+            $status = DBFunctions::delete("grand_collaboration_projects", 
+                                          array('collaboration_id' => $this->id),
+                                          true);
+        }
+        foreach($this->projects as $project){
+            if($status){
+                $status = DBFunctions::insert("grand_collaboration_projects", 
+                                              array('collaboration_id' => $this->id,
+                                                    'project_id' => $project->id),
+                                              true);
+            }
+        }
+
         return $this;
     }
     
@@ -213,7 +238,15 @@ class Collaboration extends BackboneModel{
             return false;
         }
         
-        DBFunctions::update('grand_collaborations',
+        foreach($this->projects as $project){
+            if(!isset($project->id) || $project->id == 0){
+                $p = Project::newFromName($project->name);
+                $project->id = $p->getId();
+            }
+        }
+
+
+        $status = DBFunctions::update('grand_collaborations',
                             array('organization_name' => $this->title,
                                   'sector' => $this->sector,
                                   'country' => $this->country,
@@ -229,20 +262,70 @@ class Collaboration extends BackboneModel{
                                   'funding' => $this->funding,
                                   'knowledge_user' => $this->knowledgeUser),
                             array('id' => EQ($this->getId())));
+
+        // Update collaboration_projects table
+        if($status){
+            $status = DBFunctions::delete("grand_collaboration_projects", 
+                                          array('collaboration_id' => $this->id),
+                                          true);
+        }
+        foreach($this->projects as $project){
+            if($status){
+                $status = DBFunctions::insert("grand_collaboration_projects", 
+                                              array('collaboration_id' => $this->id,
+                                                    'project_id' => $project->id),
+                                              true);
+            }
+        }
+        DBFunctions::commit();
         return $this;
+    }
+
+    /**
+     * Returns an array or Projects which this Paper is related to
+     * @return array The Projects which this Paper is related to
+     */
+    function getProjects(){
+        $this->projects = array();
+        $data = DBFunctions::select(array('grand_collaboration_projects'), 
+                            array('project_id'),
+                            array('collaboration_id' => $this->getId()));
+        foreach($data as $row){
+            $project = Project::newFromId($row['project_id']);
+            if($project instanceof Project){
+                $this->projects[] = $project;
+            }
+        }
+        return $this->projects;
     }
     
     function delete(){
         $me = Person::newFromWgUser();
-        //if ((in_array($me, $this->getEditors())) || ($me == $this->person) || ($me->isRoleAtLeast(STAFF))) {
+        if ($me->isLoggedIn()){
             DBFunctions::delete('grand_collaborations',
                                 array('id' => EQ($this->getId())));
+            DBFunctions::delete('grand_collaboration_projects',
+                                array('collaboration_id' => EQ($this->getId())));
             $this->id = null;
-        //}
+        }
         return $this;
     }
     
     function toArray(){
+
+        $projects = array();
+        if(is_array($this->getProjects())){
+            foreach($this->getProjects() as $project){
+                $url = "";
+                if($project->id != -1){
+                    $url = $project->getUrl();
+                }
+                $projects[] = array('id' => $project->getId(),
+                                    'name' => $project->getName(),
+                                    'url' => $url);
+            }
+        }
+
         $data = array(
             'id' => $this->getId(),
             'title' => $this->getTitle(),
@@ -259,7 +342,8 @@ class Collaboration extends BackboneModel{
             'url' => $this->getUrl(),
             'funding' => $this->getFunding(),
             'year' => $this->getYear(),
-            'knowledgeUser' => $this->getKnowledgeUser()
+            'knowledgeUser' => $this->getKnowledgeUser(),
+            'projects' => $projects
         );
         return $data;
     }
