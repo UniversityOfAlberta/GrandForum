@@ -30,10 +30,16 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:showCollaborations', function (id) {
+    // Create New Product
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    } else {
     // Get A single Collaboration
-    var collab = new Collaborations();
-    this.closeCurrentView();
-    this.currentView = new CollaborationsView({el: $("#currentView"), model: collab});
+        var collab = new Collaborations();
+        this.closeCurrentView();
+        this.currentView = new CollaborationsView({el: $("#currentView"), model: collab});
+    }
 });
 
 pageRouter.on('route:newCollaboration', function(){
@@ -42,7 +48,7 @@ pageRouter.on('route:newCollaboration', function(){
         clearAllMessages();
         addError("You do not have permissions to view this page");
     }
-    else{
+    else {
         var collab = new Collaboration();
         this.closeCurrentView();
         this.currentView = new CollaborationEditView({el: $("#currentView"), model: collab});
@@ -64,9 +70,15 @@ pageRouter.on('route:newKnowledgeUser', function(){
 
 pageRouter.on('route:showCollaboration', function (id) {
     // Get A single Collaboration
-    var collab = new Collaboration({'id': id});
-    this.closeCurrentView();
-    this.currentView = new CollaborationView({el: $("#currentView"), model: collab});
+    // Create New Product
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    } else {
+        var collab = new Collaboration({'id': id});
+        this.closeCurrentView();
+        this.currentView = new CollaborationView({el: $("#currentView"), model: collab});
+    }
 });
 
 pageRouter.on('route:editCollaboration', function (id) {

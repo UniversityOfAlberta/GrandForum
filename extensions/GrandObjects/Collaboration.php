@@ -32,6 +32,11 @@ class Collaboration extends BackboneModel{
      * @return Collaboration The Collaboration with the given id
      */
     static function newFromId($id){
+        $me = Person::newFromWgUser();
+        if (!$me->isLoggedIn()) {
+            return new Collaboration(array());
+        }
+
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
@@ -50,6 +55,11 @@ class Collaboration extends BackboneModel{
      * @return array All of the Collaborations
      */
     static function getAllCollaborations(){
+        $me = Person::newFromWgUser();
+        if (!$me->isLoggedIn()) {
+            return array();
+        }
+
         $data = DBFunctions::select(array('grand_collaborations'),
                                     array('id'));
         $collabs = array();
@@ -58,16 +68,7 @@ class Collaboration extends BackboneModel{
         }
         return $collabs;
     }
-    
-    /**
-     * Returns how many Collaborations there are
-     * @return int How many Collaborations there are
-     */
-    static function count(){
-        $data = DBFunctions::select(array('grand_collaborations'),
-                                    array('id'));
-        return count($data);
-    }
+
 
     /**
      * Returns all the Collaborations with the given ids
@@ -75,6 +76,10 @@ class Collaboration extends BackboneModel{
      * @return array The array of Collaborations
      */
     static function getByIds($ids){
+        $me = Person::newFromWgUser();
+        if (!$me->isLoggedIn()) {
+            return array();
+        }
         if(count($ids) == 0){
             return array();
         }
@@ -87,7 +92,6 @@ class Collaboration extends BackboneModel{
             }
         }
         if(count($ids) > 0){
-            $me = Person::newFromWgUser();
             $sql = "SELECT *
                     FROM grand_collaborations
                     WHERE id IN (".implode(",", $ids)."))";
