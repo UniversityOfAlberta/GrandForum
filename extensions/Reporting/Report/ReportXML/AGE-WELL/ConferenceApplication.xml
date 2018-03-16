@@ -50,7 +50,7 @@
                 <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="Core Facility|Crosscutting Theme|Innovation Hub|Project|Workpackage">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Workpackage:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Role:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -491,8 +491,7 @@
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
-                            <td>{$item}</td>
-                        </tr>
+                            <td><div id="5_project{$extraIndex}">{$item}</div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="5_project_other" type="Text" blobItem="5_PROJECT_OTHER" blobSubItem="{$extraIndex}">
@@ -544,7 +543,9 @@
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Additional AV requests:</b></td>
-                            <td>{$item}</td>
+                            <td>{$item}<br />
+                                <small>*Items listed here will be at an extra cost to be covered by project</small>
+                            </td>
                         </tr>
                     ]]>
                 </ReportItem>
