@@ -9,15 +9,12 @@ class PeopleManagedAPI extends RESTAPI {
             if($me->isRoleAtLeast(ADMIN)){
                 $people[$me->getReversedName()] = $me;
             }
-            foreach($me->getRelations(SUPERVISES, true) as $rel){
-                // Get the list of Supervises
-                $hqp = $rel->getUser2();
-                $people[$hqp->getReversedName()] = $hqp;
-            }
-            foreach($me->getRelations(WORKS_WITH, true) as $rel){
-                // Get list of Works With
-                $user = $rel->getUser2();
-                $people[$user->getReversedName()] = $user;
+            foreach($me->getRelations('all', true) as $type){
+                foreach($type as $rel){
+                    // Get the list of Related Users
+                    $user = $rel->getUser2();
+                    $people[$user->getReversedName()] = $user;
+                }
             }
             foreach($me->leadership() as $proj){
                 // Get list of people on current lead projects

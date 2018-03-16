@@ -1,6 +1,7 @@
 ManageProductsView = Backbone.View.extend({
 
     category: null,
+    onlyRecent: true,
     allProjects: null,
     otherProjects: null,
     oldProjects: null,
@@ -156,6 +157,11 @@ ManageProductsView = Backbone.View.extend({
         var products = this.products;
         if(this.category != null){
             products = new Products(products.where({category: this.category}));
+        }
+        if(this.onlyRecent){
+            products = new Products(products.filter(function(p){
+                return ((p.get('date') >= (YEAR - 6) + "-04-01") || (p.get('acceptance_date') >= (YEAR - 6) + "-04-01"));
+            }));
         }
         
         // First remove deleted models
@@ -422,6 +428,13 @@ ManageProductsView = Backbone.View.extend({
         this.addRows();
     },
     
+    changeRecent: function(){
+        if(this.onlyRecent != $("#onlyRecent")){
+            this.onlyRecent = $("#onlyRecent").is(":checked");
+            _.defer($.proxy(this.addRows, this));
+        }
+    },
+    
     events: {
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
@@ -432,7 +445,8 @@ ManageProductsView = Backbone.View.extend({
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX",
         "click #uploadCalendarButton": "uploadCalendar",
-        "change #showOnly select": "showOnly"
+        "change #showOnly select": "showOnly",
+        "change #onlyRecent": "changeRecent"
     },
     
     render: function(){

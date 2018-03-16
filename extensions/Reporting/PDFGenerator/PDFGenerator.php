@@ -731,6 +731,7 @@ EOF;
 		</head>";
 		$headerName = @$report->headerName;
 		$footer = @$report->footer;
+		$pageCount = @$report->pageCount;
 		if($headerName == ""){
             if($project != null){
                 if($project->getName() == ""){
@@ -774,11 +775,13 @@ EOF;
                          '.PDFGenerator::cmToPixels($margins['top']).', 
                          $color, 0.5);
             }
-            $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-                     $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
-                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-                     $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
-                     $color, 0.5);
+            if('.$pageCount.'){
+                $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                         $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
+                         $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                         $h - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', 
+                         $color, 0.5);
+            }
             $pdf->close_object();
             $pdf->add_object($foot, "all");
             $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
@@ -788,7 +791,9 @@ EOF;
             $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
 
             $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', $text, $font, $size2, $color, 0.01);
+            if('.$pageCount.'){
+                $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', $text, $font, $size2, $color, 0.01);
+            }
             
             $pdf->page_text('.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', "'.utf8_encode($footer).'", $font, $size2, $color, 0.01);';
   

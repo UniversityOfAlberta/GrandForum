@@ -28,8 +28,8 @@ class ProductHistories extends AbstractMigration
                   ->addColumn('year','integer')
                   ->addColumn('type','string', array('limit' => 32))
                   ->addColumn('value','string', array('limit' => 32))
-                  ->addColumn('created', 'timestamp')
-                  ->addColumn('updated', 'timestamp')
+                  ->addColumn('created', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
+                  ->addColumn('updated', 'timestamp', array('default' => '0000-00-00 00:00:00'))
                   ->create();
         }
     }

@@ -92,6 +92,8 @@ class ReportItemCallback {
             "user_fellow_count" => "getUserFellowCount",
             "user_tech_count" => "getUserTechCount",
             "user_ugrad_count" => "getUserUgradCount",
+            "user_other_count" => "getUserOtherCount",
+            "user_committee_count" => "getUserCommitteeCount",
             "user_courses_count" => "getUserCoursesCount",
             "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
@@ -117,6 +119,7 @@ class ReportItemCallback {
             "product_year" => "getProductYear",
             "product_year_range" => "getProductYearRange",
             "product_date_range" => "getProductDateRange",
+            "product_scope" => "getProductScope",
             //Presentations
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
@@ -793,6 +796,11 @@ class ReportItemCallback {
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getCitation(true, false, false);
     }
+    
+    function getProductScope(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getData('scope');
+    }
 
     function getPresentationTitle(){
         $product = Paper::newFromId($this->reportItem->productId);
@@ -1463,6 +1471,97 @@ class ReportItemCallback {
                     break;
                 }
             }
+        }
+        return $count;
+    }
+    
+    function getUserOtherCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
+        $count = 0;
+        $hqpsDone = array();
+        $merged = array();
+        foreach(Person::$studentPositions as $array){
+            $merged = array_merge($merged, $array);
+        }
+        foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
+            
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                // Normal Date range
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+            }
+            else{
+                // Person is still continuing
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
+            }
+            
+            foreach($universities as $university){
+                if(!in_array(strtolower($university['position']), $merged)){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
+            }
+        }
+        return $count;
+    }
+    
+    function getUserCommitteeCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = $person->getRelationsDuring('all', ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        $hqpsDone = array();
+        $merged = array();
+        foreach(Person::$studentPositions as $array){
+            $merged = array_merge($merged, $array);
+        }
+        foreach($relations as $relation){
+            $hqp = $relation->getUser2();
+            $role = $relation->getType();
+            
+            if($role == SUPERVISES || $role == CO_SUPERVISES || $role == WORKS_WITH || $role == MENTORS){
+                continue;
+            }
+            
+            if(isset($hqpsDone[$hqp->getId()])){
+                continue;
+            }
+            
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                // Normal Date range
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+            }
+            else{
+                // Person is still continuing
+                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Nothing was found, just get everything
+                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            }
+            if(count($universities) == 0){
+                // Still Nothing was found, so skip this person
+                continue;
+            }
+            
+            $count++;
+            $hqpsDone[$hqp->getId()] = true;
         }
         return $count;
     }

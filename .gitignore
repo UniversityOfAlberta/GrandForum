@@ -38,6 +38,8 @@ maintenance/alloc.csv
 maintenance/csv/
 maintenance/grant_awards/
 maintenance/journal_csv/
+maintenance/exportedHqpCsvs/
+maintenance/importCsvs/
 npm-debug.log
 symfony/bin
 symfony/behat.yml
