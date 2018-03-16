@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2017">
+<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2018">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="applications" permissions="rw" />
@@ -19,14 +19,14 @@
                         });
                     });
                 </script>
-                Below are the available session applications for the 2017 AGE-WELL conference.  Fill in the information for the sessions that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.
+                Below are the available session applications for the 2018 AGE-WELL conference.  Fill in the information for the sessions that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.
             ]]>
         </ReportItem>
-        <ReportItemSet id="3_if" type="If" if="{>(2017-06-22,{$timestamp})}">
+        <ReportItemSet id="3_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
                     <h1>Lunch ‘n’ Learn Sessions</h1>
-                    <p><u>Information:</u> AGE-WELL 2017 will feature Workpackage Lunch ‘n’ Learn sessions. These 1 or 2 hour workshops will be offered on a sign up basis to attendees during the registration process, and offered on both conference days from 12PM – 2PM. To apply for a session, please submit a Lunch ‘n’ Learn Outline by <b>June 21</b>, specifying how you would like to structure the workshop. Final selections will be made by July 1, 2017.</p>
+                    <p><u>Information:</u> AGE-WELL 2018 will feature up to 6 Lunch ‘n’ Learn sessions. These 1-hour workshops will be offered as drop in sessions through the AGE-WELL Conference app to attendees, and offered on both conference days from 1PM – 2PM. To apply for a session, please submit a Lunch ‘n’ Learn Outline by <b>August 17</b>, specifying how you would like to structure the workshop. </p>
 
                     <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="3_accordion">
@@ -40,7 +40,14 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH">
+                <ReportItem id="3_special" type="Checkbox" blobItem="3_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                    <![CDATA[
+                        <tr>
+                            <td colspan="2">{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="Core Facility|Crosscutting Theme|Innovation Hub|Project|Workpackage">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Workpackage:</b></td>
@@ -64,10 +71,22 @@
                         </tr>
                     ]]>
                 </ReportItem>
+                <ReportItem id="3_structure" width="300px" height="100px" type="Textarea" blobItem="3_STRUCTURE" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Structure & Format:</b><br />
+                                Provide a brief outline of the workshop activities
+                            </td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="3_audience" width="300px" height="100px" type="Textarea" blobItem="3_AUDIENCE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Audience:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Audience:</b><br />
+                                Who will benefit from this workshop?
+                            </td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -75,7 +94,9 @@
                 <ReportItem id="3_aims" width="300px" height="100px" type="Textarea" blobItem="3_AIMS" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Aims:<br />What is the goal of this workshop?</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Aims:</b><br />
+                                What is the goal of this workshop?
+                            </td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -83,7 +104,9 @@
                 <ReportItem id="3_requirements" width="300px" height="100px" type="Textarea" blobItem="3_REQUIREMENTS" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:<br />AV requirement, table set-up etc.</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:</b><br />
+                                AV requirement, table set-up etc.
+                            </td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -121,13 +144,14 @@
         </ReportItemSet>
         
         <!-- Application 2 -->
-        <ReportItemSet id="2_if" type="If" if="{>(2017-07-21 17:00:00,{$timestamp})}">
+        <ReportItemSet id="2_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="2_head" type="Static">
                 <![CDATA[
                     <h1>Scientific Talks</h1>
                     <p><u>Information:</u></p>
-                    <p><center><b>Call for Abstracts</b><br />Theme: Benefiting Canadian Seniors</center></p> 
-                    <p>This year within the main conference programming 20 scientific talks will be offered across all project programs & crosscutting activity themes (Core Research Projects, CC’s, Catalyst & SIP). Each talk will consist of a 15 minute presentation and 5 minutes for Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Please submit your abstract for consideration by <b>July 21</b>. Abstracts must not exceed 350 words.</p>
+                    <p><center><b>Call for Abstracts</b><br />Theme: Innovation in Action</center></p> 
+                    <p>This year within the main conference programming 12 scientific talks will be offered across all project programs (Core Research Projects, Catalyst & SIP). Each talk will consist of a 15-minute presentation and 5-minute Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Please submit your abstract for consideration by <b>August 17</b>.</p>
+                    <p>Abstracts must not exceed 250 words.</p>
 
                     <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="2_accordion">
@@ -141,6 +165,13 @@
                         <table>
                     ]]>
                 </ReportItem>
+                <ReportItem id="2_special" type="Checkbox" blobItem="2_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                    <![CDATA[
+                        <tr>
+                            <td colspan="2">{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="2_presenter" type="Text" blobItem="2_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
@@ -149,7 +180,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
+                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|2.10-SIP A1|2.11-SIP A1|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.3a EMOTEC|3.3b NEARS|3.4-SIP A1 NAVIGATE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|3.10-SIP A1|3.11-SIP A1 MapIt|3.12-SIP A2|3.13-SIP A2|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|5.10-SIP A2|5.11-SIP A2|5.12-SIP A2|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.4-S1 SPEECH-ASSESS|6.5-CAT|6.6-CAT|6.7-CAT|6.8-SIP A1|6.9-SIP A2|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|7.5-SIP A1 C-ASAP|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|DATcares|JDQ-CSR|NOVA-SKIN|rTRANSIA|Steadiwear|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
@@ -170,10 +201,18 @@
                             </td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="350" recommended="true">
+                <ReportItem id="2_title" type="Text" blobItem="2_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Talk Abstract:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Talk:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -210,103 +249,16 @@
             </ReportItem>
         </ReportItemSet>
         
-        <!-- Application 5 -->
-        <ReportItemSet id="5_if" type="If" if="{>(2017-09-23,{$timestamp})}">
-            <ReportItem id="5_head" type="Static">
-                <![CDATA[
-                    <h1>Drinks & Demos</h1>
-                    <p><u>Information:</u> This year the Drinks & Demos reception will be held the evening of Tuesday, October 17.  Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be present at this event.  It will be a great opportunity to show off your work!  All AGE-WELL project teams, HQP and/or investigators with a ‘product’ (technology, KM or practice/service 'product') are invited to participate in this event. The only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).  To claim a spot in this showcase, please complete a brief description of your project name + 100 word abstract by <b>September 22</b>.  Be sure to list any equipment, materials, handouts etc. that you will bring and whether you require a table or power etc. We will try our best to accommodate your requests!</p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
-                    <div id="5_accordion">
-                ]]>
-            </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
-                <ReportItem id="5_start" type="Static">
-                    <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
-                        <div>
-                        <table>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_presenter" type="Text" blobItem="5_PRESENTER" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_project" type="Select" blobItem="5_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_title" type="Text" blobItem="5_TITLE" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Demo:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="100" recommended="true">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Demo Abstract:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_requirements" width="300px" height="100px" type="Textarea" blobItem="5_REQUIREMENTS" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:<br />AV requirement, table set-up etc.</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_submit" type="Checkbox" blobItem="5_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
-                    <![CDATA[
-                        <tr>
-                            <td></td>
-                            <td>
-                                <div class="submit">
-                                    {$item}
-                                    <input type="button" value="Save" />
-                                </div>
-                            </td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_end" type="Static">
-                    <![CDATA[
-                        </table>
-                        </div>
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItem id="5_foot" type="Static">
-                <![CDATA[
-                    </div>
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            $("#5_accordion").accordion({heightStyle: "content"});
-                        });
-                    </script>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
         <!-- Application 1 -->
-        <ReportItemSet id="1_if" type="If" if="{>(2017-09-23,{$timestamp})}">
+        <ReportItemSet id="1_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="1_head" type="Static">
                 <![CDATA[
-                    <h1>HQP Project Poster Sessions</h1>
-                    <p><u>Information:</u> HQP Minute Madness will be replaced with two 90 minute poster sessions, to allow our increased HQP contingent more time to showcase their research. One HQP from each funded AGE-WELL research project (25 Core Research Projects, 12 SIP, 12 Catalyst = 49) is expected to participate in one of the poster sessions. Which HQP will present and whether they present their thesis work or larger project findings is up to Project Leads. Please provide name of presenter and a 100 word abstract about the poster by <b>September 22</b>.</p>
+                    <h1>Science Slam</h1>
+                    <p><u>Information:</u> This year AGE-WELL will feature our trainees in a science slam. There will be two sessions offered.</p>
+                    
+                    <p>A science slam is a quick-fire presentation where students will get 5 minutes to present their research in front of conference attendees followed by 5 minutes Q&A. 10 finalists will be chosen (five for each session). The audience will then get to vote on the best innovation/presentation. Presentations should be creative, exciting and innovative.</p>
+                    
+                    <p>Please submit your abstract for consideration by <b>August 17</b>. Abstracts must not exceed 250 words.</p>
 
                     <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="1_accordion">
@@ -320,18 +272,17 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="1_presenter" type="Text" blobItem="1_PRESENTER" blobSubItem="{$extraIndex}">
+                <ReportItem id="1_special" type="Checkbox" blobItem="1_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>HQP Presenter Name:</b></td>
-                            <td>{$item}</td>
+                            <td colspan="2">{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="1_project" type="Select" blobItem="1_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT">
+                <ReportItem id="1_presenter" type="Text" blobItem="1_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>HQP Name:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -339,15 +290,23 @@
                 <ReportItem id="1_title" type="Text" blobItem="1_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Poster:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Talk:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="1_abstract" type="Textarea" blobItem="1_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="100" recommended="true">
+                <ReportItem id="1_abstract" type="Textarea" blobItem="1_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1_final" type="Textarea" blobItem="1_FINAL" blobSubItem="{$extraIndex}" rich="true" limit="50">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Why should you<br />be chosen for<br />the Final Five:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -385,11 +344,11 @@
         </ReportItemSet>
         
         <!-- Application 4 -->
-        <ReportItemSet id="4_if" type="If" if="{>(2017-09-23,{$timestamp})}">
+        <ReportItemSet id="4_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="4_head" type="Static">
                 <![CDATA[
-                    <h1>Expanded Poster Session</h1>
-                    <p><u>Information:</u> AGE-WELL 2017 will feature an open poster session for all HQP, Network Investigators, and Project Leads. The poster session will also feature a CC Alley, which will provide an opportunity for projects and workpackages to network with AGE-WELL’s 4 Crosscutting Activity Theme Teams. Please provide name of presenter, poster title and a 100 word abstract about the poster by September 22.</p>
+                    <h1>Poster Session</h1>
+                    <p><u>Information:</u> AGE-WELL 2018 will feature an open poster session for all HQP, Network Investigators, and Project Leads. The poster session will also feature tabletops for AGE-WELL Crosscutting Themes and Core Facilities, which will provide an opportunity for projects and workpackages to network with AGE-WELL’s 4 Crosscutting Activity Theme Teams and 4 Core Facilities. Please provide name of presenter, poster title and a 150-word abstract about the poster by <b>August 17</b>.</p>
 
                     <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="4_accordion">
@@ -403,6 +362,13 @@
                         <table>
                     ]]>
                 </ReportItem>
+                <ReportItem id="4_special" type="Checkbox" blobItem="4_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                    <![CDATA[
+                        <tr>
+                            <td colspan="2">{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="4_presenter" type="Text" blobItem="4_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
@@ -411,10 +377,10 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Other">
+                <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|2.10-SIP A1|2.11-SIP A1|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.3a EMOTEC|3.3b NEARS|3.4-SIP A1 NAVIGATE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|3.10-SIP A1|3.11-SIP A1 MapIt|3.12-SIP A2|3.13-SIP A2|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|5.10-SIP A2|5.11-SIP A2|5.12-SIP A2|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.4-S1 SPEECH-ASSESS|6.5-CAT|6.6-CAT|6.7-CAT|6.8-SIP A1|6.9-SIP A2|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|7.5-SIP A1 C-ASAP|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|DATcares|JDQ-CSR|NOVA-SKIN|rTRANSIA|Steadiwear|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Other">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC/CF:</b></td>
                             <td><div id="4_project{$extraIndex}">{$item}</div>
                     ]]>
                 </ReportItem>
@@ -447,10 +413,10 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="100" recommended="true">
+                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract/Alley Description:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -481,6 +447,133 @@
                     <script type="text/javascript">
                         $(document).ready(function(){
                             $("#4_accordion").accordion({heightStyle: "content"});
+                        });
+                    </script>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Application 5 -->
+        <ReportItemSet id="5_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+            <ReportItem id="5_head" type="Static">
+                <![CDATA[
+                    <h1>Drinks & Demos</h1>
+                    <p><u>Information:</u> This year the Drinks & Demos reception will be held the evening of Tuesday, October 16.  Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be present at this event.  It will be a great opportunity to show off your work!  All AGE-WELL project teams, HQP and/or investigators with a ‘product’ (technology, KM or practice/service 'product') are invited to participate in this event. The only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).  To claim a spot in this showcase, please complete a brief description of your project name + 150 word abstract by <b>August 17</b>.  Below is a list of AV requirement, requests outside these, will be at the expense of the project. </p>
+
+                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
+                    <div id="5_accordion">
+                ]]>
+            </ReportItem>
+            <ReportItemSet type="For" from="0" to="5">
+                <ReportItem id="5_start" type="Static">
+                    <![CDATA[
+                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <div>
+                        <table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_special" type="Checkbox" blobItem="5_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                    <![CDATA[
+                        <tr>
+                            <td colspan="2">{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_presenter" type="Text" blobItem="5_PRESENTER" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_project" type="Select" blobItem="5_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|2.10-SIP A1|2.11-SIP A1|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.3a EMOTEC|3.3b NEARS|3.4-SIP A1 NAVIGATE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|3.10-SIP A1|3.11-SIP A1 MapIt|3.12-SIP A2|3.13-SIP A2|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|5.10-SIP A2|5.11-SIP A2|5.12-SIP A2|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.4-S1 SPEECH-ASSESS|6.5-CAT|6.6-CAT|6.7-CAT|6.8-SIP A1|6.9-SIP A2|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|7.5-SIP A1 C-ASAP|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|DATcares|JDQ-CSR|NOVA-SKIN|rTRANSIA|Steadiwear|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Other">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_project_other" type="Text" blobItem="5_PROJECT_OTHER" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                            <div id="5_project_other{$extraIndex}" style="display:none;">Other: {$item}</div>
+                            <script type="text/javascript">
+                                var project5_other{$extraIndex}_fn = function(){
+                                    var value = $("#5_project{$extraIndex} option:selected").val();
+                                    if(value == "Other"){
+                                        $("#5_project_other{$extraIndex}").show();
+                                    }
+                                    else{
+                                        $("#5_project_other{$extraIndex}").hide();
+                                    }
+                                ;}
+                                
+                                $("#5_project{$extraIndex}").change(project5_other{$extraIndex}_fn);
+                                project5_other{$extraIndex}_fn();
+                            </script>
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_title" type="Text" blobItem="5_TITLE" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Demo:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Demo Abstract:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="5_REQUIREMENTS" blobSubItem="{$extraIndex}" options="17” monitor|Power Cable|Laptop">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_additional" width="300px" height="100px" type="Textarea" blobItem="5_ADDITIONAL" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Additional AV requests:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_submit" type="Checkbox" blobItem="5_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
+                    <![CDATA[
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="submit">
+                                    {$item}
+                                    <input type="button" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_end" type="Static">
+                    <![CDATA[
+                        </table>
+                        </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="5_foot" type="Static">
+                <![CDATA[
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#5_accordion").accordion({heightStyle: "content"});
                         });
                     </script>
                 ]]>
