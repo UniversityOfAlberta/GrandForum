@@ -31,7 +31,7 @@ ProductEditView = Backbone.View.extend({
         me.getProjects();
         tagsGet.then($.proxy(function(availableTags){
             this.availableTags = availableTags;
-                me.projects.ready().then($.proxy(function(){
+            me.projects.ready().then($.proxy(function(){
                 this.projects = me.projects.getCurrent();
                 this.allProjects.ready().then($.proxy(function(){
                     var other = new Project({id: "-1", name: "Other"});

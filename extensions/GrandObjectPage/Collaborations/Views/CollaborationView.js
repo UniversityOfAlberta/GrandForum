@@ -8,7 +8,6 @@ CollaborationView = Backbone.View.extend({
         this.mention = new Array();
         this.products = new Array();
         this.tags = new Array();
-        Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Collaboration does not exist");
@@ -16,19 +15,6 @@ CollaborationView = Backbone.View.extend({
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#collaboration_template').html());
-        $(document).click(function(e) {
-            if ((!$.contains($("#filters")[0], e.target)) 
-                && (e.target != $("#filtersBtn")[0])
-                && (!$.contains($("#filtersBtn")[0], e.target))) {
-                $("#filters").slideUp();
-            }
-        });
-    },
-
-    subviewCreators: {
-        "listComments": function(){
-            return new ThreadView({model: new Thread({id: this.model.get('thread_id')}), isComment: true, tinyMCEMention: this.mention});
-        }
     },
     
     editCollaboration: function(){
@@ -86,7 +72,6 @@ CollaborationView = Backbone.View.extend({
         }).sort();
     },
 
-
     renderProjects: function(){
         var xhrs = new Array();
         var projects = new Array();
@@ -136,8 +121,6 @@ CollaborationView = Backbone.View.extend({
         var formType = this.model.getType();
         this.renderProjects();
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
-        //this.renderProducts();
-        this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });   
         return this.$el;
     }
 
