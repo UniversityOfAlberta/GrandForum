@@ -79,7 +79,7 @@ foreach($people as $person) {
 }
 
 // Copy the files to the GradDB server
-exec("scp -i graddb.pem" . $outdir . "/* docsdb@csora-app:/local/oracle3/cshome/docsdb/graddb/Data/Applicants/AppFiles/");
+/*exec("scp -i graddb.pem" . $outdir . "/* docsdb@csora-app:/local/oracle3/cshome/docsdb/graddb/Data/Applicants/AppFiles/");
 $loadCommand = "/local/oracle3/cshome/docsdb/graddb/Data/Applicants/load_applicant_file";
 $commandToRun = "";
 foreach($filenames as $f) {
@@ -89,3 +89,4 @@ foreach($filenames as $f) {
 if (count($filenames) != 0){
 	exec("ssh -i graddb.pem docsdb@csora-app '" . $commandToRun . "'");
 }
+*/
