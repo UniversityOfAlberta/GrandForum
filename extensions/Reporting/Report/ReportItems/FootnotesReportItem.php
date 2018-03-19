@@ -48,7 +48,7 @@ EOF;
             $value = $this->getBlobValue();
             $value = str_replace("<", "<&lt;", $value);
             $value = str_replace(">", "<&gt;", $value);
-            nl2br($value);
+            $value = nl2br($value);
             $blob = $this->getMD5();
             $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
             if($isTopAnchor){ 
@@ -56,7 +56,7 @@ EOF;
                 $top_anchor+= 1;
             }
             else{
-                $item = "<a href='#topnote$blob' name='footnote$blob' class='anchor' id='goToTopnote$blob'>[$bottom_anchor]</a> {$value}"; 
+                $item = "<a style='vertical-align:top;' href='#topnote$blob' name='footnote$blob' class='anchor' id='goToTopnote$blob'>[$bottom_anchor]</a> <div style='display:inline-block;vertical-align:top;'>{$value}</div>"; 
                 $bottom_anchor+=1;
             }
 	    $item = $this->processCData($item);
