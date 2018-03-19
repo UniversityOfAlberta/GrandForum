@@ -80,63 +80,6 @@ CollaborationView = Backbone.View.extend({
 
     },
 
-    
-    // renderProducts: function(){
-    //     spinner("loadPublicationsSpinner", 40, 75, 12, 10, '#888');
-    //     var xhrs = new Array();
-    //     var products = new Array();
-    //     var citations = new Array();
-    //     _.each(this.model.get('products'), function(prod){
-    //         var product = new Product({id: prod.id});
-    //         products.push(product);
-    //         xhrs.push(product.fetch());
-    //     });
-    //     this.products = products;
-    //     $.when.apply(null, xhrs).done($.proxy(function(){
-    //         var xhrs2 = new Array();
-    //         var tags = new Array();
-    //         _.each(products, $.proxy(function(product){
-    //             xhrs2.push(product.getCitation());
-    //             this.mention.push({"name": product.get('title')});
-    //             var listTags = product.get('tags');
-    //             for (i = 0; i < listTags.length; i++) {
-    //                 this.mention.push({"name": listTags[i]});
-    //                 this.tags.push(listTags[i]);
-    //             }
-    //         }, this));
-    //         this.tags = this.unique(this.tags);
-    //         _.each(this.tags, $.proxy(function(tag) {
-    //             var option = '<option value="' + tag + '">' + tag + '</option>';
-    //             this.$('#filterSelectTags').append(option);
-    //         }, this));
-    //         this.$('#filterSelectTags').trigger("chosen:updated");
-
-    //         $.when.apply(null, xhrs2).done($.proxy(function(){
-    //             _.each(products, $.proxy(function(product){
-    //                 this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
-    //                 if (product.get('description'))
-    //                 {
-    //                     var id = product.get('id');
-    //                     this.$('#products li').last().append("<p style='text-align:left;'><a id='abstract" + id + 
-    //                                                   "' style='cursor:pointer;'>Show/Hide Abstract</a><span style='float:right;'>" + 
-    //                                                   product.get('tags').join(", ") + "</span></p></li>");
-    //                     this.$('#products li').last().append("<div id='desc" + id + "' style='display:none;'>" + 
-    //                                               product.get('description') + "</div></br>");
-    //                     $("#abstract" + id).click(function() {
-    //                         $("#desc" + id).slideToggle("slow");
-    //                     });
-    //                 } else {
-    //                     this.$('#products li').last().append("<p><span style='float:right;'>" + 
-    //                                                   product.get('tags').join(", ") + "</span></p></li>");
-    //                 }
-    //             }, this));
-    //             $(".pdfnodisplay").remove();
-    //             this.filterAuthors(); 
-    //             this.$('#loadPublicationsSpinner').remove();
-    //         }, this));
-    //     }, this));
-    // },
-
     unique: function (array) {
         return $.grep(array, function(el, index) {
             return index === $.inArray(el, array);
@@ -191,12 +134,6 @@ CollaborationView = Backbone.View.extend({
         main.set('title', this.model.get('title'));
         
         var formType = this.model.getType();
-        if(this.model.isNew()){
-            main.set('title', 'New ' + formType);
-        }
-        else {
-            main.set('title', 'Edit ' + formType);
-        }
         this.renderProjects();
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         //this.renderProducts();

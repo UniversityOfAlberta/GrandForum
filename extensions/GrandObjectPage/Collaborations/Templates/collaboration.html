@@ -1,34 +1,49 @@
-<div>
-    
-</div>
-<div>
-	<h3>Contact</h3>
-    <table style="margin-left: 15px;">
-        <tr>
-            <td><b>Name</b></td>
-            <td><%= personName %></td>
-        </tr>
-        <tr>
-            <td><b>Position</b></td>
-            <td><%= position %></td>
-        </tr>
-    </table>
+<div style="display:flex;padding:5px;">
+	<div class="collab_box" style="flex-grow:3;max-width: 330px;">
+		<div>
+			<fieldset style="width: 240px; background: white; border: 1px solid #E0E0E0; border-radius: 4px;">
+				<legend style="font-size: 1em;">Contact</legend>
+				<table style="border-spacing:10px 0px;">
+					<tr>
+						<td style="vertical-align: baseline;"><b>Name</b></td>
+						<td><%= personName %></td>
+					</tr>
+					<tr>
+						<td><b>Position</b></td>
+						<td><%= position %></td>
+					</tr>
+				</table>
+			</fieldset>
+		</div>
 
-    <h3>Funding</h3>
-    <% if (funding == 0) { %>
-    	<span>Not funded</span>
-    <% } else { %>
-    	$<%= funding %>
-    <% } %>
+		<table style="max-width:100%; margin-top: 5px;">
+			<tr>
+				<td><b>Country</b></td>
+				<td></td>
+				<td><%= country %></td>
+			</tr>
+			<tr>
+				<td style="vertical-align: baseline;"><b>Sector</b></td>
+				<td></td>
+				<td><%= sector %></td>
+			</tr>
+			<tr>
+				<td><b>Funding</b></td>
+				<td></td>
+				<td>
+					<% if (funding == 0) { %>
+						<span>Not funded</span>
+					<% } else { %>
+						$<%= funding %>
+					<% } %>
+				</td>
+			</tr>
+		</table>
+	</div>
 
-	<h3>Sector</h3>
-	<%= sector %>
 
-	<h3>Country</h3>
-	<%= country %>
-
-	<% if (!knowledgeUser) { %>
-	<div style="display:block; margin-top:15px; margin-bottom:15px;">
+	<% if (knowledgeUser != 1) { %>
+	<div class="collab_box" style="max-width: 220px;">
 		<h3>Attributes</h3>
 		<% if ((planning == 1) || (designDataCollection == 1) || (analysisOfResults == 1) || 
 			   (exchangeKnowledge == 1) || (userKnowledge == 1)) { %>
@@ -37,24 +52,24 @@
 			<span style="color: #AAAAAA">None specified</span>
 		<% } %>
 
-	    <% if (planning == 1) { %>
-	    	<li>Planning of Research</li>
+		<% if (planning == 1) { %>
+			<li>Planning of Research</li>
 		<% } %>
 
-	    <% if (designDataCollection == 1) { %>
-	    	<li>Design/Data Collection</li>
+		<% if (designDataCollection == 1) { %>
+			<li>Design/Data Collection</li>
 		<% } %>
 
-	    <% if (analysisOfResults == 1) { %>
-	    	<li>Analysis of Results</li>
+		<% if (analysisOfResults == 1) { %>
+			<li>Analysis of Results</li>
 		<% } %>
 
-	    <% if (exchangeKnowledge == 1) { %>
-	    	<li>Exchange/Disseminate Research Knowledge</li>
+		<% if (exchangeKnowledge == 1) { %>
+			<li>Exchange/Disseminate Research Knowledge</li>
 		<% } %>
 
-	    <% if (userKnowledge == 1) { %>
-	    	<li>User of Research Knowledge</li>
+		<% if (userKnowledge == 1) { %>
+			<li>User of Research Knowledge</li>
 		<% } %>
 
 		<% if ((planning == 1) || (designDataCollection == 1) || (analysisOfResults == 1) || 
@@ -64,34 +79,30 @@
 	</div>
 	<% } %>
 
-	<% if (!knowledgeUser) { %>
-        <h3>Other</h3>
-    <% } else { %>
-        <h3>Brief Description</h3>
-    <% } %>
-    <% if (other == "") { %>
-    	<span style="color: #AAAAAA">No 'other' comments provided</span>
+	<div class="collab_box" style="max-width:150px;">
+		<h3>Related Projects</h3>
+		<div id='collaborationProjects'></div>
+	</div>
+</div>
+
+<div style="margin-left:10px;">
+	<% if (knowledgeUser != 1) { %>
+		<h3>Other</h3>
 	<% } else { %>
-    	<%= nl2br(striphtml(other)) %>
-    <% } %>
-    <br />
-
-    <h3>Related Projects</h3>
-	<div id='collaborationProjects'></div>
-
+		<h3>Brief Description</h3>
+	<% } %>
+	<% if (other == "") { %>
+		<span style="color: #AAAAAA">No 'other' comments provided</span>
+	<% } else { %>
+		<%= nl2br(striphtml(other)) %>
+	<% } %>
 </div>
+<br />
 
-<div id="loadPublicationsSpinner" style="width: 100%;
-text-align: center;"></div>
-<div id="products">
-    <ol>
-    
-    </ol>
-</div>
 <% if(me.isLoggedIn()){ %>
-    </br>
-    <button id="editCollaboration">Edit <%= formType %></button>
-    <button id="deleteCollaboration">Delete <%= formType %></button>
+	</br>
+	<button id="editCollaboration">Edit <%= formType %></button>
+	<button id="deleteCollaboration">Delete <%= formType %></button>
 <% } %>
 
 
