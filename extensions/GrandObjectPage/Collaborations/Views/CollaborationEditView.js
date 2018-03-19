@@ -20,8 +20,6 @@ CollaborationEditView = Backbone.View.extend({
             }
         });
         this.template = _.template($('#collaboration_edit_template').html());
-        
-        $(document).mousedown(this.hidePreview);
 
         this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
         this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
@@ -49,7 +47,6 @@ CollaborationEditView = Backbone.View.extend({
         }, this));
         $(document).click($.proxy(function(e){
             var popup = $("div.popupBox:visible").not(":animated").first();
-            console.log(popup);
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 this.model.trigger("change:projects");
             }
