@@ -88,6 +88,10 @@ class WhoSupplies extends SpecialPage{
                 <li>On November 7th, 2017, Health Canada modified the Mifegymiso® <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>product monograph</a>.
                         <b>Language has been changed to “health professional” rather than “physician”</b>, accounting for the appropriate prescribing and dispensing scope of practice of among pharmacist, nurse practitioner, nursing and midwifery groups.”</li>
                 </ul>
+
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
                
             </div>
 
@@ -133,6 +137,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='BC'>British Columbia</h2>
@@ -173,6 +180,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='MB'>Manitoba</h2>
@@ -211,6 +221,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NB'>New Brunswick</h2>
@@ -245,6 +258,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NL'>Newfoundland and Labrador</h2>
@@ -276,6 +292,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NT'>Northwest Territories</h2>
@@ -308,6 +327,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NS'>Nova Scotia</h2>
@@ -343,6 +365,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NU'>Nunavut</h2>
@@ -375,6 +400,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='ON'>Ontario</h2>
@@ -423,6 +451,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='PE'>Prince Edward Island</h2>
@@ -456,6 +487,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='QC'>Quebec</h2>
@@ -489,6 +523,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='SK'>Saskatchewan</h2>
@@ -521,6 +558,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='YT'>Yukon</h2>
@@ -555,6 +595,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
         </div>
         
