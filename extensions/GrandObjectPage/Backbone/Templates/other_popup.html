@@ -1,8 +1,8 @@
-<% if(this.parent.otherProjects.length > 0) { %>
+<% if(this.otherProjects.length > 0) { %>
     <div class="popupHeader">Current Projects</div>
     <div class="popupBlock">
         <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-        <% this.parent.otherProjects.each(function(p){ %>
+        <% this.otherProjects.each(function(p){ %>
             <div class="popupMainProject">
                 <input data-project="<%= p.id %>"
                        type="checkbox" 
@@ -16,17 +16,17 @@
                                    name="othersubproject" 
                                    <%= this.projectChecked(sub.id) %> />&nbsp;<%= sub.name %>
                         </div>
-                    <% }) %>
+                    <% }, this) %>
                 </div>
             </div>
-        <% }) %>
+        <% }, this) %>
     </div>
 <% } %>
-<% if(this.parent.oldProjects.length > 0) { %>
+<% if(this.oldProjects.length > 0) { %>
     <div class="popupHeader">Ended Projects</div>
     <div class="popupBlock">
         <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-        <% this.parent.oldProjects.each(function(p){ %>
+        <% this.oldProjects.each(function(p){ %>
             <div class="popupMainProject">
                 <input data-project="<%= p.id %>"
                        type="checkbox" 
@@ -40,9 +40,9 @@
                                    name="othersubproject" 
                                    <%= this.projectChecked(sub.id) %> />&nbsp;<%= sub.name %>
                         </div>
-                    <% }) %>
+                    <% }, this) %>
                 </div>
             </div>
-        <% }) %>
+        <% }, this) %>
     </div>
 <% } %>
