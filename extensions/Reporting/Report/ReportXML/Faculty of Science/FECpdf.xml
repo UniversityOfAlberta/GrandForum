@@ -147,7 +147,7 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true">
+        <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true" showCommittees="true">
             <![CDATA[
                 {$item}
             ]]>
