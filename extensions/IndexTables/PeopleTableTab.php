@@ -81,7 +81,7 @@ class PeopleTableTab extends AbstractTab {
 ";
         $count = 0;
         foreach($data as $person){
-            if($this->past && $person->isRole($this->table) ){
+            if($this->past === true && $person->isRole($this->table) ){
                 // Person is still the specified role, don't show on the 'former' table
                 continue;
             }
