@@ -539,9 +539,16 @@ EOF;
         
         $total = array(array(), array());
         foreach ($hqp_table as $pos=>$data){
+            $nRows = 2;
+            foreach($data as $gender => $nations){
+                $nRows++;
+                foreach($nations as $label => $counts){
+                    $nRows++;
+                }
+            }
             $html .=<<<EOF
                 <tr>
-                <th rowspan='14'>{$pos}</th>
+                <th rowspan='$nRows'>{$pos}</th>
 EOF;
             $inner_tbl = "";
             $total_gen = array(array(), array());
