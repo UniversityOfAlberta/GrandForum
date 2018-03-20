@@ -22,16 +22,17 @@ CollaborationView = Backbone.View.extend({
     },
 
     delete: function(e) {
-        if (confirm("Are you sure you want to delete this collaboration?")) {
+        var type = this.model.getType();
+        if (confirm("Are you sure you want to delete this " + type.toLowerCase() + "?")) {
             this.model.destroy({success: function() {
                 document.location = wgServer + wgScriptPath + "/index.php/Special:CollaborationPage#";
                 _.defer(function() {
                     clearAllMessages();
-                    addSuccess("Collaboration deleted")
+                    addSuccess(type + " deleted")
                 });
             }, error: function() {
                 clearAllMessages();
-                addError("Collaboration failed");
+                addError(type + " deletion failed");
             }});
         }
     },
@@ -112,6 +113,10 @@ CollaborationView = Backbone.View.extend({
                     this.$('#collaborationProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
                 }
             });
+            console.log(projects.length);
+            if (projects.length == 0) {
+                this.$("#collaborationProjects").append("<span class='empty_box_content'>No projects</span>");
+            }
         }, this));
     },
     
@@ -119,8 +124,8 @@ CollaborationView = Backbone.View.extend({
         main.set('title', this.model.get('title'));
         
         var formType = this.model.getType();
-        this.renderProjects();
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
+        this.renderProjects();
         return this.$el;
     }
 
