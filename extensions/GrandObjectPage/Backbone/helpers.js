@@ -421,3 +421,10 @@ HTML.Switcheroo = function(view, attr, options){
     view.delegateEvents(events);
     return el;
 }
+
+HTML.ProjectSelector = function(view, attr, options){
+    var projectSelectorView = new ProjectSelectorView({model: view.model});
+    var el = projectSelectorView.$el;
+    var el = HTML.Element("<input type='text' />", options);
+    return el;
+}

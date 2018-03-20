@@ -10,7 +10,7 @@ ProductEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:projects", this.render);
+        //this.listenTo(this.model, "change:projects", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
         this.listenTo(this.model, "change:title", function(){
@@ -22,38 +22,15 @@ ProductEditView = Backbone.View.extend({
             this.isDialog = options.isDialog;
         }
         this.template = _.template($('#product_edit_template').html());
-        this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
-        this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
         
-        this.allProjects = new Projects();
-        this.allProjects.fetch();
         var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
-        me.getProjects();
         tagsGet.then($.proxy(function(availableTags){
             this.availableTags = availableTags;
-            me.projects.ready().then($.proxy(function(){
-                this.projects = me.projects.getCurrent();
-                this.allProjects.ready().then($.proxy(function(){
-                    var other = new Project({id: "-1", name: "Other"});
-                    other.id = "-1";
-                    this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
-                    this.otherProjects.add(other);
-                    this.oldProjects = this.allProjects.getOld();
-                    this.otherProjects.remove(this.projects.models);
-                    this.oldProjects.remove(this.projects.models);
-                    if(!this.model.isNew() && !this.isDialog){
-                        this.model.fetch();
-                    }
-                    else{
-                        _.defer(this.render);
-                    }
-                }, this));
-            }, this));
-        }, this));
-        $(document).click($.proxy(function(e){
-            var popup = $("div.popupBox:visible").not(":animated").first();
-            if(popup.length > 0 && !$.contains(popup[0], e.target)){
-                this.model.trigger("change:projects");
+            if(!this.model.isNew() && !this.isDialog){
+                this.model.fetch();
+            }
+            else{
+                _.defer(this.render);
             }
         }, this));
     },
