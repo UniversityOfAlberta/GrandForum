@@ -423,8 +423,10 @@ HTML.Switcheroo = function(view, attr, options){
 }
 
 HTML.ProjectSelector = function(view, attr, options){
-    var projectSelectorView = new ProjectSelectorView({model: view.model});
-    var el = projectSelectorView.$el;
-    var el = HTML.Element("<input type='text' />", options);
-    return el;
+    var el = HTML.Element("<div id='test'><span class='throbber'></span></div>", options);
+    $(el).wrap('div');
+    _.defer(function(){
+        var projectSelectorView = new ProjectSelectorView({model: view.model, el: "#test"});
+    });
+    return $(el).parent().html();
 }

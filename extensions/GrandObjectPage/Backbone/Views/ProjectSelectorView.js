@@ -1,6 +1,6 @@
 ProjectSelectorView = Backbone.View.extend({
 
-    projects: null,
+    projects: new Projects(),
     allProjects: null,
     otherProjects: null,
     oldProjects: null,
@@ -67,6 +67,7 @@ ProjectSelectorView = Backbone.View.extend({
     },
     
     render: function(){
+        view = this;
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }

@@ -57,7 +57,7 @@
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
             <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
-            <%= HTML.ProjectSelector(this, 'projects') %>
+            <div><%= HTML.ProjectSelector(this, 'projects') %></div>
         </td>
     </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
