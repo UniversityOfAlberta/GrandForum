@@ -30,7 +30,7 @@ class WhoSupplies extends SpecialPage{
                     <li>There is no longer any requirement for a health care professional to witness a person taking either of the drugs in Mifegymiso, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=2'>read more</a></li>
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                     <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso®, <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
-                    <li>On May 18th, Health Canada released a Dear Healthcare Professional Letter to clarify the different requirements associate with Mifegymiso®, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/63330a-eng.php' target='_blank'>read more</a></li>
+                    <li>On May 18th, Health Canada released a Dear Healthcare Professional Letter to clarify the different requirements associated with Mifegymiso®, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/63330a-eng.php' target='_blank'>read more</a></li>
                     <li>On November 7th, 2017, Health Canada announced significant changes to mifepristone distribution, prescribing and dispensing processes. To view Health Canada's communication, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>click here</a>. For a summary developed by the CAPS team, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews'>click here</a></li>
                 </ul>
                 
@@ -44,6 +44,10 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+                <li>
+                The <a href='http://www.mifegymiso.com/interim-federal-health-program'>Interim Federal Health Program (IFHP)</a> provides full coverage for protected persons, including resettled refugees and refugee claimants in those provinces that have universal cost coverage (i.e. AB, BC, NB, NS, ON & QC)
+
+                </li>
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -58,19 +62,42 @@ class WhoSupplies extends SpecialPage{
                     <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
-                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of December 15th, 2017.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
                     <li>The approval of Mifegymiso® has exposed both the legal and practical deficiencies of Health Canada's drug review process. Read more on this analysis <a href='http://policyoptions.irpp.org/magazines/april-2017/regulatory-risk-mismanagement-and-the-abortion-pill/' target='_blank'>here</a> (April 25th, 2017)</li>
                 </ul>
+                <h3>Nurse Practitioner Regulations</h3>
+                <ul>
+                <li>
+                As of February 2018, The College of Nurses of Ontario, Yukon, Alberta,  Nova Scotia, and British Columbia have announced their support of NP prescribing (for more information, please click on each province on the map.)
+
+                </li>
+                <li>In those provinces whose nursing regulatory bodies have announced their support of NP prescribing of Mifegymiso® (AB, BC, ON, NS & YK), NPs should consider completing the <a href='https://sogc.org/online-courses/courses.html/event-info/details/id/229' target='_blank'> Non-Accredited Medical Abortion Training e-learning program</a> developed for health professionals
+                </li>
+                <li>On November 7th, 2017, Health Canada modified the Mifegymiso® <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>product monograph</a>.
+                        <b>Language has been changed to “health professional” rather than “physician”</b>, accounting for the appropriate prescribing and dispensing scope of practice of among pharmacist, nurse practitioner, nursing and midwifery groups.”</li>
+                </ul>
+                <h3>Midwife Regulations</h3>
+                <li>
+                As of February 2018, The College of Nurses of Ontario, Yukon, Alberta,  Nova Scotia, and British Columbia have announced their support of NP prescribing (for more information, please click on each province on the map.)
+
+                </li>
+                <li>On November 7th, 2017, Health Canada modified the Mifegymiso® <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>product monograph</a>.
+                        <b>Language has been changed to “health professional” rather than “physician”</b>, accounting for the appropriate prescribing and dispensing scope of practice of among pharmacist, nurse practitioner, nursing and midwifery groups.”</li>
+                </ul>
+
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
                
             </div>
 
             <h2 id='AB'>Alberta</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -83,6 +110,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>As reported in the media, Mifegymiso®, ~ $300/dose (Oct. 7th, 2016) <a href='http://edmontonjournal.com/news/politics/paula-simons-access-to-abortion-drug-one-step-closer-for-alberta-women' target='_blank'>read more</a></li>
                     <li>As reported in the media on March 6th 2017, Calgary’s Kensington Clinic is providing Mifegymiso® for free, <a href='https://www.thestar.com/opinion/commentary/2017/03/06/abortion-pill-rollout-deeply-flawed-mallick.html' target='_blank'>read more</a></li>
                     <li>Following the positive listing by the Canadian expert review of Mifegymiso, Alberta became the second province (after New Brunswick) to announce that it will be offering universal access to the drug, <a href='https://beta.theglobeandmail.com/news/national/alberta-promises-to-offer-universal-access-to-the-abortion-pill/article34768401/?ref=http://www.theglobeandmail.com&service=mobile' target='_blank'>read more from the media</a> (April 20th, 2017)</li>
@@ -95,18 +123,33 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+
+                    <li>
+                    The <a href='http://www.nurses.ab.ca/content/carna/home/about/what-is-carna/news/07-24-2017.html
+'>College of Registered Nurses of Alberta </a> announced on July 24th, 2017 that they would support NP provision of Mifegymiso® once Health Canada changed national regulations around “physician-only” prescribing and dispensing, <a href='http://www.nurses.ab.ca/content/carna/home/about/what-is-carna/news/07-24-2017.html
+'>read more</a>
+                    </li>
+        
+                    
+                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='BC'>British Columbia</h2>
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
+                <li>
+                As of January 2018, Nurse Practitioners in BC may prescribe Mifegymiso® (read more). The College of Registered Nurses of British Columbia has not yet published supporting documents. 
+
+                </li>
                     <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
                 </ul>
                 
@@ -118,6 +161,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>As of January 15, 2018, the BC Ministry of Health PharmaCare program will provide Mifegymiso® at no charge to BC Residents through BC's community pharmacies, <a href='http://www.vancourier.com/news/free-access-to-abortion-pill-a-game-changer-for-b-c-women-1.23135464' target='_blank'>read more</a></li>
                 </ul>
                 
@@ -127,12 +171,18 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
+                <li>
+                As of January 2018, Nurse Practitioners in BC may prescribe Mifegymiso® <a href='https://archive.news.gov.bc.ca/releases/news_releases_2017-2021/2018HLTH0001-000003.htm' target='_blank'>read more</a>. The <a href='https://www.crnbc.ca/Pages/Default.aspx' target='_blank'>College of Registered Nurses of British Columbia</a>has not yet published supporting documents. 
+                </li>
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='MB'>Manitoba</h2>
@@ -150,6 +200,11 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+                <li>
+                As announced in the <a href='http://www.cbc.ca/news/canada/manitoba/mifegymiso-manitoba-accessibility-1.4473206'>media
+                </a>, as of January 2018, Mifegymiso® will be covered by Manitoba Pharmacare, after annual deductions have been met, <a href='http://www.mifegymiso.com/cost-coverage-statement/
+'>read more</a>
+                </li>
                     <li>As reported in the media on March 9th, 2017, Winnipeg Regional Health Authority has confirmed Mifegymiso® is now available at Health Sciences Centre's Women's Hospital, but patients must pay $350, <a href='http://www.cbc.ca/beta/news/canada/manitoba/abortion-pill-available-at-hsc-in-winnipeg-but-patients-will-pay-1.4016440' target='_blank'>read more</a></li>
                     <li>On July 20th, 2017 government officials from the province of Manitoba announced that mifepristone will be covered at select sites, <a href='http://www.cbc.ca/news/canada/manitoba/manitoba-to-cover-cost-of-abortion-pill-mifegymiso-at-approved-centres-1.4214354' target='_blank'>read more</a></li>
                 </ul>
@@ -166,6 +221,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NB'>New Brunswick</h2>
@@ -182,6 +240,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>As reported in the media, Student Health Plans covering: St Thomas University, $5 co-pay (Feb. 13th, 2017) <a href='https://www.lifesitenews.com/news/for-just-a-5-co-pay-abortion-drug-will-be-available-to-students-at-st.-thom' target='_blank'>read more</a></li>
                     <li>As reported in the media, the New Brunswick provincial government is the first province/territory in Canada to announce universal coverage for mifepristone (April 4th, 2017), <a href='http://www.cbc.ca/news/canada/new-brunswick/abortion-pill-new-brunswick-1.4054517' target='_blank'>read more</a></li>
                     <li>On July 7th, the Health Minister of New Brunswick announced that the provincial program to provide universal access to mifepristone is officially operational and available to 'New Brunswickers', <a href='http://www2.gnb.ca/content/gnb/en/news/news_release.2017.07.0952.html' target='_blank'>read more</a> here.</li>
@@ -199,6 +258,9 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NL'>Newfoundland and Labrador</h2>
@@ -230,11 +292,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NT'>Northwest Territories</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -246,6 +311,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 
@@ -261,11 +327,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NS'>Nova Scotia</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>The College of Physicians and Surgeons of Nova Scotia has become the third province, after British Columbia and Ontario to announce their support of pharmacist dispensing of Mifegymiso®, <a href='https://www.cpsns.ns.ca/DesktopModules/Bring2mind/DMX/Download.aspx?PortalId=0&TabId=129&EntryId=293' target='_blank'>read more</a>.</li>
                 </ul>
@@ -287,17 +356,23 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
+                    <li>
+                    As of December 6th, 2017, the College of Registered Nurses of Nova Scotia has determined that it is within the scope of practice of NPs who have the appropriate knowledge, skills and judgment to prescribe Mifegymiso®, <a target='_blank' href='https://crnns.ca/publication/np-bulletin-prescribing-mifegymiso-in-nova-scotia/'>read more</a>
+                    </li>
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='NU'>Nunavut</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -309,6 +384,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 
@@ -324,11 +400,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='ON'>Ontario</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>The College of Physicians and Surgeons of Ontario has issued guidance for its members, <a href='http://www.cpso.on.ca/Policies-Publications/Positions-Initiatives/Mifegymiso' target='_blank'>click here</a> for details</li>
                 </ul>
@@ -340,6 +419,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
+
                     <li>On April 27th, the Ontario Liberal government announced its provincial budget for 2017 which includes universal coverage of Mifegymiso®, read more from the media <a href='http://news.nationalpost.com/news/canada/free-abortion-pill-cash-for-boobs-and-babies-top-23-takeaways-from-the-ontario-budget' target='_blank'>here</a></li>
                     <li>The Ontario government has announced full coverage of Mifegymiso® to take effect by August 10th, 2017, <a href='http://www.cbc.ca/news/canada/toronto/abortion-pill-mifegymiso-1.4233611' target='_blank'>read more</a></li>
                     <li>Pharmacy billing procedures including reimbursement and claim submissions for Mifegymiso®, <a href='http://www.health.gov.on.ca/en/pro/programs/drugs/opdp_eo/eo_communiq.aspx' target='_blank'>click here</a></li>
@@ -355,12 +435,25 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
+                    <li>
+                    In July 2017, the College of Nurses of Ontario 
+                        <a href='http://www.cno.org/en/news/2017/july-2017/what-nps-should-know-about-mifegymiso/' target='_blank'>announced their support</a> of NP prescribing of Mifegymiso®,<a href='http://www.cno.org/en/news/2017/july-2017/what-nps-should-know-about-mifegymiso/' target='_blank'>read more</a></li>
+
+
+                    </li>
+                    <li>
+                    In December 2017, the College of Nurses of Ontario <a href='http://www.cno.org/en/learn-about-standards-guidelines/magazines-newsletters/the-standard/december-2017/Mifegymiso-update/' target='_blank'>published an update</a> to its members clarifying that Health Canada increased the number of days Mifegymiso can be provided to a client; Mifegymiso® can now be provided up to 63 days from the start of the last menstrual period, <a href='http://www.cno.org/en/learn-about-standards-guidelines/magazines-newsletters/the-standard/december-2017/Mifegymiso-update/' target='_blank'>read more</a></li>
+
+                    </li>
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='PE'>Prince Edward Island</h2>
@@ -394,11 +487,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='QC'>Quebec</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>For information on the jurisdictional requirements of prescribing and dispensing mifepristone in Quebec, <a href='http://www.cmq.org/nouvelle/en/pilule-abortive-directives-cliniques.aspx' target='_blank'>click here</a>.</li>
                 </ul>
@@ -427,11 +523,14 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='SK'>Saskatchewan</h2>
             <div>
-                <h3>Règlement sur les médecins</h3>
+                <h3>Physician Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
@@ -452,12 +551,16 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
+
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
             
             <h2 id='YT'>Yukon</h2>
@@ -483,12 +586,18 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
+                <li>
+                Nurse Practitioners in the Yukon have an extended <a href='http://nperesource.casn.ca/wp-content/uploads/2017/01/NPFoundation.pdf'>scope of practice</a>. In July 2018, the <a href='https://www.canadian-nurse.com/articles/issues/2017/september-october-2017/cna-advocacy-at-the-summer-meeting-of-premiers'>Canadian Nurses Association </a>explicitly stated that NPs in the Yukon are authorized to prescribe Mifegymiso® in their jurisdiction
+                </li>
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
+                <h3>Tips on local initiatives to support your practice</h3>
+
+                <h3>Billing Codes</h3>
             </div>
         </div>
         
@@ -547,7 +656,7 @@ Lire la suite de la CDR <a href='https://www.cadth.ca/mifepristone-and-misoprost
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>
 Lire la suite</a></li>
-                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of December 15th, 2017.</li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of January, 2018.</li>
                 </ul>
                 
                 <h3>Envoi / Distribution des informations</h3>
