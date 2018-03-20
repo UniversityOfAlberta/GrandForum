@@ -159,3 +159,13 @@
 .collab_check > b {
     cursor: default;
 }
+
+.collab_box {
+     background: #F6F6F6;
+     max-width: 400px;
+     border: 1px solid #E0E0E0;
+     border-radius: 4px;
+     flex-grow: 1;
+     padding: 0px 10px 10px 10px;
+     margin:5px;
+}
