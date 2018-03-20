@@ -13,6 +13,7 @@
             <th>Sector</th>
             <th>Country</th>
             <th>Projects</th>
+            <th>Year</th>
             <th width="1%"></th>
         </tr>
     </thead>
@@ -52,6 +53,9 @@
                         }
                         ).join(', ')
                     %>
+                </td>
+                <td>
+                    <%= collab.get('year') %>
                 </td>
                 <td>
                     <span id="<%= collab.get('id') %>" class="delete-icon"></span>
