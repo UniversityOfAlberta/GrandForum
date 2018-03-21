@@ -10,7 +10,6 @@ ProductEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        //this.listenTo(this.model, "change:projects", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
         this.listenTo(this.model, "change:title", function(){
@@ -27,7 +26,7 @@ ProductEditView = Backbone.View.extend({
         tagsGet.then($.proxy(function(availableTags){
             this.availableTags = availableTags;
             if(!this.model.isNew() && !this.isDialog){
-                this.model.fetch();
+                this.model.fetch({silent: true});
             }
             else{
                 _.defer(this.render);
@@ -135,6 +134,7 @@ ProductEditView = Backbone.View.extend({
     },
     
     render: function(){
+        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderTagsWidget();

@@ -89,10 +89,13 @@ ProjectSelectorView = Backbone.View.extend({
                 }
             }, this));
         }
-        projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
-        // Only trigger an event if this is a parent
-        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change:projects");
+        var index = _.indexOf(projects, _.findWhere(projects, {id: projectId}));
+        if(index != -1){
+            projects.splice(index, 1);
+            // Only trigger an event if this is a parent
+            if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+                this.model.trigger("change:projects");
+            }
         }
     },
     
@@ -176,7 +179,7 @@ ProjectSelectorView = Backbone.View.extend({
         "click div.showSubprojects": "showSubprojects",
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch",
-        "change div#productProjects input[type=checkbox]": "toggleSelect"
+        "change input[type=checkbox]": "toggleSelect"
     },
     
     render: function(){

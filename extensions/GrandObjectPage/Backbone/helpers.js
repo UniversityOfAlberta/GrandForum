@@ -426,7 +426,12 @@ HTML.ProjectSelector = function(view, attr, options){
     var el = HTML.Element("<div id='test'><span class='throbber'></span></div>", options);
     $(el).wrap('div');
     _.defer(function(){
-        var projectSelectorView = new ProjectSelectorView({model: view.model, el: "#test"});
+        if(view.projectSelectorView != undefined){
+            // Teardown the old view to prevent double firing of events
+            view.projectSelectorView.stopListening();
+            view.projectSelectorView.undelegateEvents();
+        }
+        view.projectSelectorView = new ProjectSelectorView({model: view.model, el: "#test"});
     });
     return $(el).parent().html();
 }
