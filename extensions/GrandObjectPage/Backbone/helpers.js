@@ -423,7 +423,9 @@ HTML.Switcheroo = function(view, attr, options){
 }
 
 HTML.ProjectSelector = function(view, attr, options){
-    var el = HTML.Element("<div id='test'><span class='throbber'></span></div>", options);
+    if(options == undefined){ options = {} };
+    var id = "project_selector_" + view.model.cid;
+    var el = HTML.Element("<div id='" + id + "'><span class='throbber'></span></div>", options);
     $(el).wrap('div');
     _.defer(function(){
         if(view.projectSelectorView != undefined){
@@ -431,7 +433,7 @@ HTML.ProjectSelector = function(view, attr, options){
             view.projectSelectorView.stopListening();
             view.projectSelectorView.undelegateEvents();
         }
-        view.projectSelectorView = new ProjectSelectorView({model: view.model, el: "#test"});
+        view.projectSelectorView = new ProjectSelectorView(_.extend(options, {model: view.model, el: "#" + id}));
     });
     return $(el).parent().html();
 }

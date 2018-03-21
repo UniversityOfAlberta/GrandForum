@@ -1,10 +1,9 @@
 <td class="checkboxCell" align="center">
-    <div class="checkboxOuter">
-        <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
-        <div style="display:none;" class="otherPopup popupBox">
-            
-        </div>
-    </div>
+    <%= HTML.ProjectSelector(this, 'projects', {otherOnly: true, 
+                                                allProjects: this.allProjects, 
+                                                projects: this.projects,
+                                                otherProjects: this.otherProjects,
+                                                oldProjects: this.oldProjects}) %>
 </td>
 <% _.each(this.parent.projects.models, function(p){ %>
     <td class="checkboxCell">

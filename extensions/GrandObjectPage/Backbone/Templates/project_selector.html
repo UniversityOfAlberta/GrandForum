@@ -1,28 +1,37 @@
-<table>
-    <% _.each(this.projects.models, function(p){ %>
+<% if(!this.otherOnly){ %>
+    <table>
+        <% _.each(this.projects.models, function(p){ %>
+            <tr>
+                <td class="label"><%= p.get('name') %>:</td>
+                <td class="checkboxCell" style="width:40px;">
+                    <div class="checkboxOuter" data-project="<%= p.get('id') %>">
+                        <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= this.projectChecked(p.get('id')) %> /><% if(this.projectChecked(p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+                        <% if(p.get('subprojects').length > 0){ %>
+                            <div style="display:none;" class="subprojectPopup popupBox">
+                                
+                            </div>
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+        <% }, this) %>
         <tr>
-            <td class="label"><%= p.get('name') %>:</td>
-            <td class="checkboxCell" style="width:40px;">
-                <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                    <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= this.projectChecked(p.get('id')) %> /><% if(this.projectChecked(p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
-                    <% if(p.get('subprojects').length > 0){ %>
-                        <div style="display:none;" class="subprojectPopup popupBox">
-                            
-                        </div>
-                    <% } %>
+            <td class="label">Other:</td>
+            <td class="checkboxCell" align="center" style="width:40px;">
+                <div class="checkboxOuter">
+                    <input class="other" name="other"  type="checkbox" <%= this.otherChecked() %> disabled /><div class="showOther">&#9660;</div>
+                    <div style="display:none;" class="otherPopup popupBox">
+                        
+                    </div>
                 </div>
             </td>
         </tr>
-    <% }, this) %>
-    <tr>
-        <td class="label">Other:</td>
-        <td class="checkboxCell" align="center" style="width:40px;">
-            <div class="checkboxOuter">
-                <input class="other" name="other"  type="checkbox" <%= this.otherChecked() %> disabled /><div class="showOther">&#9660;</div>
-                <div style="display:none;" class="otherPopup popupBox">
-                    
-                </div>
-            </div>
-        </td>
-    </tr>
-</table>
+    </table>
+<% } else { %>
+    <div class="checkboxOuter">
+        <input class="other" name="other"  type="checkbox" <%= this.otherChecked() %> disabled /><div class="showOther">&#9660;</div>
+        <div style="display:none;" class="otherPopup popupBox">
+            
+        </div>
+    </div>
+<% } %>

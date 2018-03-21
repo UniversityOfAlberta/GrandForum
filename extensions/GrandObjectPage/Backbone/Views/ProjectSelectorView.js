@@ -4,33 +4,51 @@ ProjectSelectorView = Backbone.View.extend({
     allProjects: null,
     otherProjects: null,
     oldProjects: null,
+    otherOnly: false,
+    template: _.template($('#project_selector_template').html()),
+    otherPopupTemplate: _.template($('#other_popup_template').html()),
+    projectsPopupTemplate: _.template($('#projects_popup_template').html()),
 
     initialize: function(options){
-        this.template = _.template($('#project_selector_template').html());
-        this.otherPopupTemplate = _.template($('#other_popup_template').html());
-        this.projectsPopupTemplate = _.template($('#projects_popup_template').html());
+        this.otherOnly = (options.otherOnly != undefined) ? options.otherOnly : false;
         
-        this.allProjects = new Projects();
-        this.allProjects.fetch();
-        me.getProjects();
+        if(options.allProjects != undefined){
+            this.allProjects = options.allProjects;
+        }
+        else{
+            this.allProjects = new Projects();
+            this.allProjects.fetch();
+            me.getProjects();
+        }
         
         me.projects.ready().then($.proxy(function(){
             this.listenTo(this.model, "change:projects", this.render);
-            this.projects = me.projects.getCurrent();
+            if(options.projects != undefined){
+                this.projects = options.projects;
+            }
+            else{
+                this.projects = me.projects.getCurrent();
+            }
             this.allProjects.ready().then($.proxy(function(){
-                var other = new Project({id: "-1", name: "Other"});
-                other.id = "-1";
-                this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
-                this.otherProjects.add(other);
-                this.oldProjects = this.allProjects.getOld();
-                this.otherProjects.remove(this.projects.models);
-                this.oldProjects.remove(this.projects.models);
+                if(options.otherProjects != undefined && options.oldProjects != undefined){
+                    this.otherProjects = options.otherProjects;
+                    this.oldProjects = options.oldProjects;
+                }
+                else{ 
+                    var other = new Project({id: "-1", name: "Other"});
+                    other.id = "-1";
+                    this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
+                    this.otherProjects.add(other);
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                }
                 this.render();
             }, this));
         }, this));
         
         $(document).click($.proxy(function(e){
-            var popup = $("div.popupBox:visible").not(":animated").first();
+            var popup = this.$("div.popupBox:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 this.model.trigger("change:projects");
             }
@@ -68,9 +86,9 @@ ProjectSelectorView = Backbone.View.extend({
             projects.push({id: projectId});
         }
         // Only trigger an event if this is a parent
-        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+        //if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
             this.model.trigger("change:projects");
-        }
+        //}
     },
     
     unselect: function(projectId){
@@ -93,9 +111,9 @@ ProjectSelectorView = Backbone.View.extend({
         if(index != -1){
             projects.splice(index, 1);
             // Only trigger an event if this is a parent
-            if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+            //if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
                 this.model.trigger("change:projects");
-            }
+           // }
         }
     },
     
@@ -183,7 +201,7 @@ ProjectSelectorView = Backbone.View.extend({
     },
     
     render: function(){
-        view = this;
+        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }
