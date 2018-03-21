@@ -4,8 +4,8 @@ ManageProductsViewRow = Backbone.View.extend({
     parent: null,
     row: null,
     template: _.template($('#manage_products_row_template').html()),
-    otherPopupTemplate: _.template($('#products_other_popup_template').html()),
-    projectsPopupTemplate: _.template($('#products_projects_popup_template').html()),
+    otherPopupTemplate: _.template($('#other_popup_template').html()),
+    projectsPopupTemplate: _.template($('#projects_popup_template').html()),
     
     initialize: function(options){
         this.parent = options.parent;
