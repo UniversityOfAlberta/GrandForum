@@ -28,11 +28,13 @@ ManageProductsViewRow = Backbone.View.extend({
     select: function(projectId){
         this.projectSelectorView.select(projectId);
         this.setDirty(false);
+        this.model.trigger("change:projects");
     },
     
     unselect: function(projectId){
         this.projectSelectorView.unselect(projectId);
         this.setDirty(false);
+        this.model.trigger("change:projects");
     },
     
     toggleSelect: function(e){

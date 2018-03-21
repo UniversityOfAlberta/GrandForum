@@ -86,9 +86,9 @@ ProjectSelectorView = Backbone.View.extend({
             projects.push({id: projectId});
         }
         // Only trigger an event if this is a parent
-        //if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
             this.model.trigger("change:projects");
-        //}
+        }
     },
     
     unselect: function(projectId){
@@ -111,9 +111,9 @@ ProjectSelectorView = Backbone.View.extend({
         if(index != -1){
             projects.splice(index, 1);
             // Only trigger an event if this is a parent
-            //if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+            if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
                 this.model.trigger("change:projects");
-           // }
+            }
         }
     },
     
@@ -201,7 +201,6 @@ ProjectSelectorView = Backbone.View.extend({
     },
     
     render: function(){
-        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }
