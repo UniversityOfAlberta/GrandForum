@@ -1,11 +1,6 @@
 ProductEditView = Backbone.View.extend({
 
     isDialog: false,
-    projects: null,
-    allProjects: null,
-    otherProjects: null,
-    oldProjects: null,
-    parent: null,
 
     initialize: function(options){
         this.parent = this;
