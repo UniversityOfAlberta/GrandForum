@@ -1,9 +1,6 @@
 CollaborationEditView = Backbone.View.extend({
 
     isDialog: false,
-    timeout: null,
-    productView: null,
-    spinner: null,
 
     initialize: function(){
         this.parent = this;
