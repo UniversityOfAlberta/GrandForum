@@ -162,6 +162,10 @@ class CavendishTemplate2 extends QuickTemplate {
                           headers : { "cache-control": "no-cache" } 
                         });
         
+            $(document).on('click', function(e){
+                Backbone.trigger('document-click-event', e);
+            });
+        
             Backbone.emulateHTTP = true;
             Backbone.emulateJSON = true;
             

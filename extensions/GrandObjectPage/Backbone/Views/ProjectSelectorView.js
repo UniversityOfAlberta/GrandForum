@@ -11,6 +11,13 @@ ProjectSelectorView = Backbone.View.extend({
 
     initialize: function(options){
         this.otherOnly = (options.otherOnly != undefined) ? options.otherOnly : false;
+        this.listenTo(Backbone, 'document-click-event', $.proxy(function(e){
+            
+            var popup = this.$("div.popupBox:visible").not(":animated").first();
+            if(popup.length > 0 && !$.contains(popup[0], e.target)){
+                this.model.trigger("change:projects");
+            }
+        }, this));
         
         if(options.allProjects != undefined){
             this.allProjects = options.allProjects;
@@ -45,13 +52,6 @@ ProjectSelectorView = Backbone.View.extend({
                 }
                 this.render();
             }, this));
-        }, this));
-        
-        $(document).click($.proxy(function(e){
-            var popup = this.$("div.popupBox:visible").not(":animated").first();
-            if(popup.length > 0 && !$.contains(popup[0], e.target)){
-                this.model.trigger("change:projects");
-            }
         }, this));
     },
     
