@@ -216,7 +216,6 @@ ProjectSelectorView = Backbone.View.extend({
     },
     
     render: function(){
-        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }
