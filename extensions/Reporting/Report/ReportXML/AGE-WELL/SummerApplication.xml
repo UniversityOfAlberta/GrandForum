@@ -160,7 +160,7 @@
         </ReportItem>
         <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY">
             <![CDATA[
-                <p><b>What would you bring to a transdisciplinary team trying to create a solution that facilitates physical fitness and healthy aging to avoid frailty?  Please include any special skills or experience with participatory research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc. (1/2 page)</b></p>
+                <p><b>What would you bring to a transdisciplinary team trying to create a solution that supports leisure, recreation and wellness?  Please include any special skills or experience with participatory research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc. (1/2 page)</b></p>
                 {$item}
             ]]>
         </ReportItem>

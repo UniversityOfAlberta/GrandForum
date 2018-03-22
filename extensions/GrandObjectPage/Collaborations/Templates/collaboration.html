@@ -1,3 +1,7 @@
+<div style="padding-top:5px;">
+	<span style="margin-left: 10px;font-size: 1.1em;font-weight: bold;margin-right: 5px;">Year</span>
+	<span style="font-size: 1.1em;"><%= year %></span>
+</div>
 <div style="display:flex;padding:5px;">
 	<div class="collab_box" style="flex-grow:3;max-width: 330px;">
 		<div>
@@ -49,7 +53,7 @@
 			   (exchangeKnowledge == 1) || (userKnowledge == 1)) { %>
 			<ul>
 		<% } else { %>
-			<span style="color: #AAAAAA">None specified</span>
+			<span class="empty_box_content">None specified</span>
 		<% } %>
 
 		<% if (planning == 1) { %>
@@ -81,7 +85,8 @@
 
 	<div class="collab_box" style="max-width:150px;">
 		<h3>Related Projects</h3>
-		<div id='collaborationProjects'></div>
+		<div id='collaborationProjects'>
+		</div>
 	</div>
 </div>
 

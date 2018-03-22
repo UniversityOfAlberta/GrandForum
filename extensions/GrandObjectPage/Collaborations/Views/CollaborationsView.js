@@ -37,18 +37,17 @@ CollaborationsView = Backbone.View.extend({
     delete: function(e) {
         if (confirm("Are you sure you want to delete this collaboration?")) {
             this.model.get(e.target.id).destroy({success: $.proxy(function(model, response) {
-                console.log(model);
                 if (response.id != null) {
                     this.model.add(model);
                     clearAllMessages();
-                    addError("Collaboration deletion failed");
+                    addError(model.getType() + " deletion failed");
                 } else {
                     clearAllMessages();
-                    addSuccess("Collaboration deleted");
+                    addSuccess(model.getType() + " deleted");
                 }
             }, this), error: function() {
                 clearAllMessages();
-                addError("Collaboration deletion failed");
+                addError(model.getType() + " deletion failed");
             }, wait: true});
         }
     },

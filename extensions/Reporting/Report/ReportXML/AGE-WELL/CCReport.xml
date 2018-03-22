@@ -15,6 +15,13 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="HQP">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Person id="1567" />
     </Permissions>
     <ReportSection id="summary">

@@ -1181,6 +1181,48 @@ class Person extends BackboneModel {
         return (isset(self::$themeLeaderCache[TC][$this->id]));
     }
     
+    function isThemeLeaderDuring($startRange, $endRange){
+        $sql = "SELECT *
+                FROM grand_theme_leaders l
+                WHERE l.user_id = '{$this->id}'
+                AND l.coordinator != 'True' 
+                AND ( 
+                ( (l.end_date != '0000-00-00 00:00:00') AND
+                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
+                OR
+                ( (l.end_date = '0000-00-00 00:00:00') AND
+                ((l.start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    function isThemeCoordinatorDuring($startRange, $endRange){
+        $sql = "SELECT *
+                FROM grand_theme_leaders l
+                WHERE l.user_id = '{$this->id}'
+                AND (l.coordinator = 'True' OR l.coordinator = '')
+                AND ( 
+                ( (l.end_date != '0000-00-00 00:00:00') AND
+                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
+                OR
+                ( (l.end_date = '0000-00-00 00:00:00') AND
+                ((l.start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
     /**
      * Returns whether or not this Person is a theme leader of the given Project
      * @param Project $project The Project to check
@@ -3105,6 +3147,16 @@ class Person extends BackboneModel {
             $project_objs = $this->leadershipDuring($startRange, $endRange);
             if(count($project_objs) > 0){
                 $roles[] = PL;
+            }
+        }
+        if($role == TL || $role == "TL"){
+            if($this->isThemeLeaderDuring($startRange, $endRange)){
+                $roles[] = TL;
+            }
+        }
+        if($role == TC || $role == "TC"){
+            if($this->isThemeCoordinatorDuring($startRange, $endRange)){
+                $roles[] = TC;
             }
         }
         if(count($role_objs) > 0){
