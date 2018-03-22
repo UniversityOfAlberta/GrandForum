@@ -48,6 +48,8 @@ class WhoSupplies extends SpecialPage{
                 The <a href='http://www.mifegymiso.com/interim-federal-health-program'>Interim Federal Health Program (IFHP)</a> provides full coverage for protected persons, including resettled refugees and refugee claimants in those provinces that have universal cost coverage (i.e. AB, BC, NB, NS, ON & QC)
 
                 </li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
+                    <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -59,10 +61,10 @@ class WhoSupplies extends SpecialPage{
                             <li>Greenshield: in review</li>
                         </ol>
                     </li>
-                    <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
+                    
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
-                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
+                    
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
@@ -81,17 +83,17 @@ class WhoSupplies extends SpecialPage{
                         <b>Language has been changed to “health professional” rather than “physician”</b>, accounting for the appropriate prescribing and dispensing scope of practice of among pharmacist, nurse practitioner, nursing and midwifery groups.”</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
-                <li>
-                As of February 2018, The College of Nurses of Ontario, Yukon, Alberta,  Nova Scotia, and British Columbia have announced their support of NP prescribing (for more information, please click on each province on the map.)
-
-                </li>
+                <ul>
                 <li>On November 7th, 2017, Health Canada modified the Mifegymiso® <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/65030a-eng.php' target='_blank'>product monograph</a>.
                         <b>Language has been changed to “health professional” rather than “physician”</b>, accounting for the appropriate prescribing and dispensing scope of practice of among pharmacist, nurse practitioner, nursing and midwifery groups.”</li>
                 </ul>
 
                 <h3>Tips on local initiatives to support your practice</h3>
+                <h4>Click on your province for!</h4>
 
                 <h3>Billing Codes</h3>
+                Please click on your province to find out more information regarding mifepristone medical abortion billing codes. Have something to add? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
+
                
             </div>
 
@@ -130,8 +132,6 @@ class WhoSupplies extends SpecialPage{
 '>read more</a>
                     </li>
         
-                    
-                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
@@ -145,20 +145,12 @@ class WhoSupplies extends SpecialPage{
                 </ul>
 
                 <h3>Billing Codes</h3>
-                <i> * Medical terminations with methotrexate and mifepristone use the same billing code in SK </i>
                 <ul>
                 <li>
-                50P: Therapeutic abortion (includes incomplete and missed abortion) in the first trimester. Billing Amount: $387.30 
-
-                </li>
-                <li>
-                250P:  Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60  
-                </li>
-                <li>
-                350P: D&C for incomplete or missed abortion. Billing Amount: $387.30 
+                87.0A: Termination of pregnancy between 13 and 20 weeks for medical or genetic reasons using potent prostaglandins by any route. Billing Amount: $149.63
                 </li>
                 </ul>
-                Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a>
+                
             </div>
             
             <h2 id='BC'>British Columbia</h2>
@@ -193,7 +185,6 @@ class WhoSupplies extends SpecialPage{
                 <li>
                 As of January 2018, Nurse Practitioners in BC may prescribe Mifegymiso® <a href='https://archive.news.gov.bc.ca/releases/news_releases_2017-2021/2018HLTH0001-000003.htm' target='_blank'>read more</a>. The <a href='https://www.crnbc.ca/Pages/Default.aspx' target='_blank'>College of Registered Nurses of British Columbia</a>has not yet published supporting documents. 
                 </li>
-                    <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
@@ -436,7 +427,7 @@ class WhoSupplies extends SpecialPage{
                     <li>
                     As of December 6th, 2017, the College of Registered Nurses of Nova Scotia has determined that it is within the scope of practice of NPs who have the appropriate knowledge, skills and judgment to prescribe Mifegymiso®, <a target='_blank' href='https://crnns.ca/publication/np-bulletin-prescribing-mifegymiso-in-nova-scotia/'>read more</a>
                     </li>
-                    <li>See information under 'National Regulations'</li>
+                
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
@@ -532,7 +523,6 @@ class WhoSupplies extends SpecialPage{
                     In December 2017, the College of Nurses of Ontario <a href='http://www.cno.org/en/learn-about-standards-guidelines/magazines-newsletters/the-standard/december-2017/Mifegymiso-update/' target='_blank'>published an update</a> to its members clarifying that Health Canada increased the number of days Mifegymiso can be provided to a client; Mifegymiso® can now be provided up to 63 days from the start of the last menstrual period, <a href='http://www.cno.org/en/learn-about-standards-guidelines/magazines-newsletters/the-standard/december-2017/Mifegymiso-update/' target='_blank'>read more</a></li>
 
                     </li>
-                    <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
@@ -687,6 +677,20 @@ class WhoSupplies extends SpecialPage{
                 <h3>Tips on local initiatives to support your practice</h3>
 
                 <h3>Billing Codes</h3>
+                <i> * Medical terminations with methotrexate and mifepristone use the same billing code in SK </i>
+                <ul>
+                <li>
+                50P: Therapeutic abortion (includes incomplete and missed abortion) in the first trimester. Billing Amount: $387.30 
+
+                </li>
+                <li>
+                250P:  Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60  
+                </li>
+                <li>
+                350P: D&C for incomplete or missed abortion. Billing Amount: $387.30 
+                </li>
+                </ul>
+                Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a>
             </div>
             
             <h2 id='YT'>Yukon</h2>
@@ -715,7 +719,6 @@ class WhoSupplies extends SpecialPage{
                 <li>
                 Nurse Practitioners in the Yukon have an extended <a href='http://nperesource.casn.ca/wp-content/uploads/2017/01/NPFoundation.pdf'>scope of practice</a>. In July 2018, the <a href='https://www.canadian-nurse.com/articles/issues/2017/september-october-2017/cna-advocacy-at-the-summer-meeting-of-premiers'>Canadian Nurses Association </a>explicitly stated that NPs in the Yukon are authorized to prescribe Mifegymiso® in their jurisdiction
                 </li>
-                    <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
