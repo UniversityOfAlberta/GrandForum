@@ -11,13 +11,28 @@ ProjectSelectorView = Backbone.View.extend({
 
     initialize: function(options){
         this.otherOnly = (options.otherOnly != undefined) ? options.otherOnly : false;
+        
         this.listenTo(Backbone, 'document-click-event', $.proxy(function(e){
-            
+            // Clicking somewhere else in the document, close popup
             var popup = this.$("div.popupBox:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 this.model.trigger("change:projects");
             }
         }, this));
+        
+        if(options.allProjects != undefined &&
+           options.projects    != undefined &&
+           options.otherProjects != undefined &&
+           options.oldProjects != undefined){
+            // If everything was already set, just go straight into rendering, no need for callbacks
+            this.allProjects = options.allProjects;
+            this.projects = options.projects;
+            this.otherProjects = options.otherProjects;
+            this.oldProjects = options.oldProjects;
+            this.listenTo(this.model, "change:projects", this.render);
+            this.render();
+            return;
+        }
         
         if(options.allProjects != undefined){
             this.allProjects = options.allProjects;
@@ -201,6 +216,7 @@ ProjectSelectorView = Backbone.View.extend({
     },
     
     render: function(){
+        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }

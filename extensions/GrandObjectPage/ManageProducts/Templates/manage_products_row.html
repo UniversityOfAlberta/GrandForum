@@ -8,7 +8,8 @@
 <% _.each(this.parent.projects.models, function(p){ %>
     <td class="checkboxCell">
         <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-            <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+            <% var projectChecked = this.projectSelectorView.projectChecked(p.get('id')); %>
+            <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked %> /><% if(projectChecked != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
             <% if(p.get('subprojects').length > 0){ %>
                 <div style="display:none;" class="subprojectPopup popupBox">
                     
@@ -16,7 +17,7 @@
             <% } %>
         </div>
     </td>
-<% }) %>
+<% }, this) %>
 <td style="border-left: 2px solid #C8C8C8;" align="center">
     <span class="edit-icon" style="margin-right:3px;"></span><span class="delete-icon" style="margin-left:3px;"></span>
 </td>

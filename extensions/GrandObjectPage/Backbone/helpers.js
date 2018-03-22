@@ -427,13 +427,15 @@ HTML.ProjectSelector = function(view, attr, options){
     var id = "project_selector_" + view.model.cid;
     var el = HTML.Element("<div id='" + id + "'><span class='throbber'></span></div>", options);
     $(el).wrap('div');
+    if(view.projectSelectorView != undefined){
+        // Teardown the old view to prevent double firing of events
+        view.projectSelectorView.stopListening();
+        view.projectSelectorView.undelegateEvents();
+    }
+    view.projectSelectorView = new ProjectSelectorView(_.extend(options, {model: view.model, el: el}));
     _.defer(function(){
-        if(view.projectSelectorView != undefined){
-            // Teardown the old view to prevent double firing of events
-            view.projectSelectorView.stopListening();
-            view.projectSelectorView.undelegateEvents();
-        }
-        view.projectSelectorView = new ProjectSelectorView(_.extend(options, {model: view.model, el: "#" + id}));
+        view.projectSelectorView.$el = $("#" + id);
+        view.projectSelectorView.delegateEvents();
     });
     return $(el).parent().html();
 }
