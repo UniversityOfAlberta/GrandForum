@@ -1206,7 +1206,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_theme_leaders l
                 WHERE l.user_id = '{$this->id}'
-                AND (l.coordinator == 'True' OR l.coordinator == '')
+                AND (l.coordinator = 'True' OR l.coordinator = '')
                 AND ( 
                 ( (l.end_date != '0000-00-00 00:00:00') AND
                 (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
