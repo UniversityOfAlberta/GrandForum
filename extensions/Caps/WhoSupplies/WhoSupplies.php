@@ -138,8 +138,27 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <i> * Medical terminations with methotrexate and mifepristone use the same billing code in SK </i>
+                <ul>
+                <li>
+                50P: Therapeutic abortion (includes incomplete and missed abortion) in the first trimester. Billing Amount: $387.30 
+
+                </li>
+                <li>
+                250P:  Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60  
+                </li>
+                <li>
+                350P: D&C for incomplete or missed abortion. Billing Amount: $387.30 
+                </li>
+                </ul>
+                Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a>
             </div>
             
             <h2 id='BC'>British Columbia</h2>
@@ -222,8 +241,19 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                8428: Medical Management of Early Pregnancy Failure/Elective Pregnancy Termination, including examination, assessment, the taking of cytological smears for cancer screening–cervix, management and monitoring of patients taking cytotoxic and/or prostglandin medications (e.g. Methotrexate/Misoprostol). This service may include administration of the medication, ordering blood tests, interpreting results, inquiring into possible complications and adjusting dosage(s) as necessary. Billing Amount: $167.65
+                </li>
+                </ul>
+                The Manitoba Physicians Manual, see page ‘B-5’, <a href='https://www.gov.mb.ca/health/documents/physmanual.pdf'>click here</a>
             </div>
             
             <h2 id='NB'>New Brunswick</h2>
@@ -259,8 +289,18 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
             </div>
             
             <h2 id='NL'>Newfoundland and Labrador</h2>
@@ -292,9 +332,20 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
-                <h3>Tips on local initiatives to support your practice</h3>
+                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
+         
             </div>
             
             <h2 id='NT'>Northwest Territories</h2>
@@ -327,9 +378,21 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
-                <h3>Tips on local initiatives to support your practice</h3>
+           
+            <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
+         
             </div>
             
             <h2 id='NS'>Nova Scotia</h2>
@@ -366,8 +429,18 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                The Nova Scotia Health Authority has created a toll-free phone line so women can access information, arrange testing, and make an appointment with a community-based physician for a medical or surgical abortion at the QEII Health Sciences Centre in Halifax, <a href='http://nationalpost.com/pmn/news-pmn/canada-news-pmn/nova-scotia-launches-toll-free-phone-line-for-women-considering-an-abortion'>read more</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
             </div>
             
             <h2 id='NU'>Nunavut</h2>
@@ -452,8 +525,25 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                <a href='https://ppottawa.ca/programs/counselling/abortion/'>Planned Parenthood Ottawa</a> is a non-profit organization, well positioned to facilitate a local community of practice in the region. <a href='https://www.caps-cpca.ubc.ca/index.php/Special:StoryManagePage#/3'> Join their discussion!</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                A920: Medical Management of Early Pregnancy- initial service when a physician renders an initial assessment and administration of cytotoxic medication(s) for the termination of early pregnancy or missed abortion. The cost of the drug(s) is not included in the fee for the service. Billing Amount, $161.15
+                </li>
+                <li>
+                A921: Medical Abortion Follow-Up- confirm that abortion is complete, review contraception. Billing Amount, $33.70 
+                </li>
+                <li>
+                Schedule of Benefits, Physician Services Under the Health Insurance Act, see page “K4”, <a href='http://www.health.gov.on.ca/en/pro/programs/ohip/sob/physserv/sob_master20160401.pdf
+'>click here</a>
+                </li>
+                </ul>
             </div>
             
             <h2 id='PE'>Prince Edward Island</h2>
@@ -487,9 +577,20 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
-                <h3>Tips on local initiatives to support your practice</h3>
+                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
+         
             </div>
             
             <h2 id='QC'>Quebec</h2>
@@ -523,9 +624,20 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>See information under 'National Regulations'</li>
                 </ul>
-                <h3>Tips on local initiatives to support your practice</h3>
+                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
+         
             </div>
             
             <h2 id='SK'>Saskatchewan</h2>
@@ -596,9 +708,22 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                Not Available for Mifepristone
+                </li>
+                </ul>
             </div>
+            
+            
+
         </div>
         
         <script type='text/javascript'>
