@@ -1,8 +1,7 @@
 <?php
 
 require_once("InactiveUsers.php");
-require_once('PeopleWikiTab.php');
-require_once('PeopleTableTab.php');
+autoload_register('IndexTables');
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
 $wgHooks['userCan'][] = 'IndexTable::userCanExecute';
