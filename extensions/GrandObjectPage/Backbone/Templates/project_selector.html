@@ -3,7 +3,7 @@
         <% _.each(this.projects.models, function(p){ %>
             <tr>
                 <td class="label"><%= p.get('name') %>:</td>
-                <td class="checkboxCell" style="width:40px;">
+                <td class="checkboxCell" style="width:40px;text-align:left;">
                     <div class="checkboxOuter" data-project="<%= p.get('id') %>">
                         <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= this.projectChecked(p.get('id')) %> /><% if(this.projectChecked(p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
                         <% if(p.get('subprojects').length > 0){ %>

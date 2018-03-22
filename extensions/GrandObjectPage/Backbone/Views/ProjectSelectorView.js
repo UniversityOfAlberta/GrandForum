@@ -1,6 +1,6 @@
 ProjectSelectorView = Backbone.View.extend({
 
-    projects: new Projects(),
+    projects: null,
     allProjects: null,
     otherProjects: null,
     oldProjects: null,

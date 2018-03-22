@@ -424,7 +424,7 @@ HTML.Switcheroo = function(view, attr, options){
 
 HTML.ProjectSelector = function(view, attr, options){
     if(options == undefined){ options = {} };
-    var id = "project_selector_" + view.model.cid;
+    var id = _.uniqueId("project_selector_");
     var el = HTML.Element("<div id='" + id + "'><span class='throbber'></span></div>", options);
     $(el).wrap('div');
     if(view.projectSelectorView != undefined){
