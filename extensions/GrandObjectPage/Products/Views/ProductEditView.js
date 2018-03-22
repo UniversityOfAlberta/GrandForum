@@ -129,7 +129,6 @@ ProductEditView = Backbone.View.extend({
     },
     
     render: function(){
-        console.log("RENDER");
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderTagsWidget();
