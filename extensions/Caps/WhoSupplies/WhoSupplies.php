@@ -200,8 +200,22 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                <li>
+                <a href='https://www.optionsforsexualhealth.org/clinic-services/opt-clinics'>Options for Sexual Health (Opt) is a non-profit sexual health organization with 60 clinics across B.C. Clinics offer pregnancy evaluation including pregnancy testing, options counselling, and diagnosis. Not sure where to refer your patient? Connect with Opt.</a>
+                </li>
+                <li>
+                <a href='http://www.bcwomens.ca/health-professionals/professional-resources/abortion-contraception-resources'>The Pregnancy Options Service (POS)</a> can assist health care professionals across BC to help and support women in their communities who are facing an unintended or unplanned pregnancy. POS can provide up-to-date information about available abortion services throughout BC. Click on POS to view their contact information. 
+-Please hyperlink Pregnancy Options Service (POS)
+                </li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                <li>
+                T14545: Medical Abortion, includes all associated services rendered on the same day as the abortion, including the consultation, required components for Rh factor, associated services including counselling provided on the day of the procedure, and any medically necessary clinical imaging. Billing Amount: $159.77
+                </li>
+                Ministry Of Health Medical Services Commission Payment Schedule, see page “7-15” <a href='https://www2.gov.bc.ca/assets/gov/health/practitioner-pro/medical-services-plan/msc-payment-schedule-december-2016.pdf'>click here</a>
             </div>
             
             <h2 id='MB'>Manitoba</h2>
