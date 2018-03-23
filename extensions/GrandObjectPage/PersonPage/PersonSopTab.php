@@ -24,7 +24,7 @@ class PersonSopTab extends AbstractEditableTab {
 
         if ($admissionStatus == "Admit") {
 
-            $supers = $gsms->getAssignedSupervisors()['q5'];
+            //$supers = $gsms->getAssignedSupervisors()['q5'];
             $this->html .= "<div style='margin: 6px;padding: 0px 12px 15px 12px;'><h3>Assigned Supervisor(s)</h3>";
             if (count($supers) == 0) {
                 $this->html .= "<span style='color:#a5a5a5;'>Supervisors not yet assigned</span>";

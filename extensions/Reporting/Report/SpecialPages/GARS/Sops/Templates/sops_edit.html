@@ -23,10 +23,9 @@
                 <h3 style="float:left;"><%= student_data.name %> <% if(gsms_id != 0){ %>(<%= gsms_id %>)<% } %>
                     <% if(program_name != ''){ %>applying to <%= program_name %> <% } %>
                 </h3>
-                <h3 style="float:right;">GPA (normalized): <%= additional.gpaNormalized %></h3>
             </div>
             <br/>
-            <%=student_data.email %>   <%= gender %>
+            <%=student_data.email %>   <%= gender %> <%console.log(reviewers) %>
             <div class="flex-container" style="display: block;">
                 <div class="flex-item" style="width:44%; min-width: 400px;">
                     <b>Folder:</b> <%= folder %><br />
@@ -90,10 +89,8 @@
                     </div>
                     <br/>
                     <b>CASPer:</b> <%= additional.casper %><br />
-                    <b>Number of Withdrawals: </b><%= additional.withdrawals %><br/>
-                    <b>Number of Failures: </b><%= additional.failures %><br/>
                 </div>
-                <div class="flex-item" style="width:24%;">
+                <div class="flex-item" style="width:20%;">
                     <% if (reviewers.length == 0) { %>
                         <b>Reviewers</b><br/>
                         No assigned reviewers<br/>
@@ -103,17 +100,48 @@
                                 <tr style="background-color: #F5F5F5;">
                                     <th><b>Reviewers</b></th>
                                     <th style="text-align: right;"><b>Decision</b></th>
+
                                 </tr>
                             </thead>
                             <% for(var i=0; i < reviewers.length;i++){ %>
                                 <tr>
-                                    <td><%= reviewers[i].name %></td><td align="right"><%= reviewers[i].decision %></td>
+                                    <td><%= reviewers[i].name %></td>
+                                    <td align="right"><%= reviewers[i].decision %></td>
                                 </tr>
                             <% } %>
                         </table>
                     <% } %>
                     <br/>
                 </div>
+                <div class="flex-item" style="width:50%;">
+                    <% if (reviewers.length == 0) { %>
+                        No assigned reviewer comments<br/>
+                    <% } else { %>
+                        <table style="width:100%;" class="gsms-mini-table">
+                            <% for(var i=0; i < reviewers.length;i++){ %>
+                                <tr>
+                                    <td><b><%= reviewers[i].name %>'s Reviewer Comments</b>:
+                                        <%if (reviewers[i].comments.documents != null){ %>
+                                        <br />&nbsp;&nbsp;<b> Documents</b><%= reviewers[i].comments.documents %>
+                                        <%}if (reviewers[i].comments.special_consideration != null){ %>
+                                        <b>&nbsp;&nbsp;Special Consideration</b><%= reviewers[i].comments.special_consideration %>
+                                        <%}if (reviewers[i].comments.recommendation != null){ %>
+                                        <b>&nbsp;&nbsp;Justification</b><%= reviewers[i].comments.recommendation %><%} %>
+                                        <%if (reviewers[i].comments.documents == null && 
+                                              reviewers[i].comments.special_consideration == null && 
+                                              reviewers[i].comments.recommendation == null){ %>
+                                            <p>No comments</p>
+                                        <% } %>
+
+
+                                     </td>
+                                </tr>
+                            <% } %>
+                        </table>
+                    <% } %>
+                    <br/>
+                </div>
+
             </div>
 
         </div>

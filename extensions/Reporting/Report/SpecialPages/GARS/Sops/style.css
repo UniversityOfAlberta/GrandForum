@@ -415,3 +415,6 @@ table.gsms-mini-table tr:nth-child(odd) {
   background-color: #FFF;
 }
 
+.flex-item p{
+  margin-left: 20px;
+}

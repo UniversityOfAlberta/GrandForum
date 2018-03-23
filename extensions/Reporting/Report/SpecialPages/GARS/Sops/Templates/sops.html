@@ -15,17 +15,6 @@
             <td> <input type="text" class="filter_option" id="referenceNameInputMin" placeholder="Search here..." style="width: 20px"> to <input type="text" class="filter_option" id="referenceNameInputMax" placeholder="Search here..." style="width: 20px"></td>
           </tr>
           <tr>
-            <td align="right"><b>Date of Birth:</b></td>
-            <td>
-              <select id="filterDoBSpan" class="filter_option" style="width: 88px">
-                <option value="" selected="selected">--</option>
-                <option value="before" >before</option>
-                <option value="after">after</option>
-              </select>
-              <input type="text" id="filterDoB" class="filter_option" style="width:109px;" />
-            </td>
-          </tr>
-          <tr>
             <td align="right"><b>Country:</b></td>
             <td> <input type="text" class="filter_option" id="countryOfCitizenshipInput" placeholder="Search here..." style="width: 205px"></td>
           </tr>
@@ -88,6 +77,16 @@
               </select>
             </td>
           </tr>
+	   <tr>
+	      <td align="right"><text><b>Reviewer Status:</b></text></td>
+	      <td>
+	       <select id="reviewerStatus" class="filter_option" style="width: 120px">
+	        <option vaule="" selected="selected">--</option>
+		<option value="reviewed">Reviewed</option>
+		<option value="notreviewed">Not Reviewed</option>
+	       </select>
+	      </td>
+	   </tr>
           <tr>
             <td align="right"><text><b>Final Decision:</b></text></td>
             <td>
@@ -96,6 +95,7 @@
                 <option value="admit">Admit</option>
                 <option value="reject">Reject</option>
                 <option value="waitlist">Waitlist</option>
+		<option value"undecided">Undecided</option>
               </select>
             </td>
           </tr>
