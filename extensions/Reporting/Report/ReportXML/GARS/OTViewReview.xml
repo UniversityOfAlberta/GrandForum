@@ -33,7 +33,7 @@
                 <ReportItem id="table_header" type="StaticReportItem">
                     <![CDATA[
                     <table border="1" style="border-collapse:collapse">
-			<tr><td colspan="2" style="text-align:center"><h3>Statement of Intent & CV</h3></td></tr>
+			<tr style="background-color:#e2dfdf87"><td colspan="2" style="text-align:center"><h3>Statement of Intent & CV</h3></td></tr>
                     ]]>
                 </ReportItem>
                 <ReportItem id="q1" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Accurate understanding|Superficial Understanding" blobSubItem="{$project_id}" user="{$userId}" sopBlob="true" orientation = "horizontal">
@@ -43,21 +43,9 @@
 		    </td></tr></td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q1_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="q2" type="RadioReportItem" blobItem="Q2" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>Writing skills are appropriate eg. no grammatical errors, easy to read, logical:</h3></span><br />
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="q2_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
@@ -67,21 +55,9 @@
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q3_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q3_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="q4" type="RadioReportItem" blobItem="Q4" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>Has relevant volunteer or work experience with children, older adults, persons with disabilities?:</h3></span><br />
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="q4_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
@@ -91,26 +67,14 @@
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q5_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
         	<ReportItem id="header" type="StaticReportItem">
             	    <![CDATA[
-                        <tr><td colspan="2" style="text-align:center"><h3>Reference Letters</h3></td></tr>
+                        <tr style="background-color:#e2dfdf87"><td colspan="2" style="text-align:center"><h3>Reference Letters</h3></td></tr>
                     ]]>
         	</ReportItem>
                 <ReportItem id="q6" type="RadioReportItem" blobItem="Q6" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>Two references required; one academic and the second one appropriate (eg. not a neighbour, friend, relative). IF references missing then Admission is denied.:</h3></span><br />
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="q6_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q6_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
@@ -120,21 +84,9 @@
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q7_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q7_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="q8" type="RadioReportItem" blobItem="Q8" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>Positive statements made about critical thinking and strong communication skills?:</h3></span><br />
-                        {$item}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="q8_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q8_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
-                    <![CDATA[
-                    <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
@@ -156,7 +108,7 @@
                             {$item}</td></tr>
                         ]]>
 		</ReportItem>
-                <ReportItem id="q112_comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q112_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <ReportItem id="q112_comments" type="TextareaReportItem" height="200px" blobType="BLOB_TEXT" blobItem="Q112_comments" rich="true" limit="150" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>Comments:</h3></span>
                         {$item}</td></tr>

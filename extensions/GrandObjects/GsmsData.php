@@ -334,6 +334,7 @@ class GsmsData extends BackboneModel{
                              'name' => $person->getNameForForms(),
                              'url' => $person->getUrl(),
                              'decision' => $sop->getAdmitResult($reviewer->getId()),
+                             'comments' => $sop->getReviewComments($reviewer->getId()),
                              'rank' => $sop->getReviewRanking($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;

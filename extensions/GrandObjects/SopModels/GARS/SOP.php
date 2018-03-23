@@ -60,12 +60,14 @@ class SOP extends AbstractSop{
     * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
     */
     function getReviewers(){
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
                         AND data != ''
                         AND rp_item = 'Q13'
-                        AND proj_id =".$this->id;
+                        AND proj_id =".$gsms->getId();
 
         $data = DBFunctions::execSQL($sql);
         $reviewers = array();
@@ -189,10 +191,12 @@ class SOP extends AbstractSop{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
-            $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
-            $blob->load($blob_address);
-            $data = $blob->getData();
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $gsms->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
         if($data == 'Yes'){
             return "Admit";
         }
@@ -209,6 +213,24 @@ class SOP extends AbstractSop{
             return "--";
         }
     }
+
+
+    function getReviewComments($user){
+        $comments = array();
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q9', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['documents'] = $blob->getData();
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q112_comments', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['special_consideration'] = $blob->getData();
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q12', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['recommendation'] = $blob->getData();
+        return $comments;
+   }
 
 }
 
