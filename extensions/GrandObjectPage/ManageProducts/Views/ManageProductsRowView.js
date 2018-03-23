@@ -59,7 +59,7 @@ ManageProductsViewRow = Backbone.View.extend({
     },
     
     events: {
-        "change input[type=checkbox]": "toggleSelect",
+        "change .checkboxCell input[type=checkbox]": "toggleSelect",
         "click .edit-icon": "editProduct",
         "click .delete-icon": "deleteProduct"
     },
