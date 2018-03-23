@@ -21,10 +21,19 @@ SopsView = Backbone.View.extend({
     },
     
     renderRoles: function(){
-        if(me.roleString.get('roleString').indexOf('Manager') !== -1 || me.roleString.get('roleString').indexOf('Admin') !== -1){
+        if(me.roleString.get('roleString').indexOf('Manager') !== -1 || me.roleString.get('roleString').indexOf('Admin') !== -1 || me.roleString.get('roleString').indexOf('Chair') !== -1){
             $('.assign_button').css('visibility','visible');
         }
+        else{
+            $('#filterMeOnly').prop("checked", true);
+            this.reloadTable();
+            $('#mineOnly').css('visibility', 'hidden');
+            
+
+        }
     },
+
+
     addRows: function(){
         if(this.table != undefined){
             this.table.destroy();
