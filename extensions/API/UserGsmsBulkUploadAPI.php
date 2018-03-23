@@ -52,7 +52,7 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['name'] = $student_name;
             $array_info['department'] = $row[0];
             $array_info['gsms_id'] = $row[3];
-            $array_info['student_id'] = $row[4];
+            $array_info['student_id'] = "{$row[4]}";
             $array_info['cs_app'] = $row[5];
             $array_info['date_of_birth'] = $row[6]." 00:00:00";
             $array_info['email'] = $row[7];
@@ -158,7 +158,7 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
                     $gsms_sheet->gender = @$student['gender'];
                     $gsms_sheet->gsms_id = @$student['gsms_id'];
-                    $gsms_sheet->student_id = @$student['student_id'];
+                    $gsms_sheet->student_id = @"{$student['student_id']}";
                     $gsms_sheet->date_of_birth = @$student['date_of_birth'];
                     $gsms_sheet->program_name = @$student['program_name'];
                     $gsms_sheet->country_of_birth = @$student['country_of_birth'];
