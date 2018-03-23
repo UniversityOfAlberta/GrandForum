@@ -33,6 +33,7 @@ class UserOTBioAPI extends API{
             if(count($degree_array) >0){
                 foreach($degree_array as $degree){
                     $degree = trim($degree);
+                    $degree = trim(preg_replace('/\s+/', ' ', $degree));
                     if($degree == ""){
                         continue;
                     }
@@ -90,6 +91,26 @@ class UserOTBioAPI extends API{
             $array_info['anatomy'] = trim($row[12]);
             $array_info['stats'] = trim($row[13]);
             $array_info['casper'] = trim($row[14]);
+            $reviewers = array();
+            $reviewer_array = explode(",", trim($row[15]));
+            if(count($reviewer_array) >0){
+                foreach($reviewer_array as $reviewer){
+                    $reviewer = trim($reviewer);
+                    $reviewer = trim(preg_replace('/\s+/', ' ', $reviewer));
+                    if($reviewer == ""){
+                        continue;
+                    }
+                    elseif(strpos($reviewer, "(") !== false){
+                        $pattern = '/(.*)\((.*)\)/';
+                        preg_match($pattern, $reviewer, $matches);
+                        $reviewers[] = trim($matches[1]);
+                    }
+                    else{
+                        $reviewers[] = $reviewer;
+                    }
+                }
+            }
+            $array_info['reviewers'] = $reviewers;
 
             $array_info['withdrawals'] = 0;
             $array_info['failures'] = 0;
@@ -140,6 +161,13 @@ class UserOTBioAPI extends API{
             $success = array();
             $errors = array();
             $data = $this->extract_excel_data($xls_cells);
+            if(count($data)>0){
+                $status = DBFunctions::delete('grand_eval',
+                                        array('year' => YEAR));
+                if($status){
+                    DBFunctions::commit();
+                }
+            }
 	    foreach($data as $student){
                   //get student
 		$student_obj = Person::newFromId($student['user_id']);
@@ -168,6 +196,23 @@ class UserOTBioAPI extends API{
                                   'country_of_citizenship' => $student['country'],
                                   'additional' => serialize($student)),
                             array('user_id' => EQ($student_id)));
+                    $reviewers = $student['reviewers'];
+                    foreach($reviewers as $reviewer){
+                        $reviewer_obj = Person::newFromNameLike($reviewer);
+                        $reviewer_id = $reviewer_obj->getId();
+                        if($reviewer_id != 0){
+                            $status = DBFunctions::insert('grand_eval',
+                                                   array('user_id' => $reviewer_id,
+                                                         'sub_id' => $student_id,
+                                                         'type' => "sop", 
+                                                         'year' => YEAR),
+                                                          true);
+                        }
+                        else{
+                            $errors[] = "<b>$reviewer</b> assignment failed. Reviewer not found or duplicated.";
+                            $error_count++;
+                        }
+                    }
                     DBFunctions::commit();
 		    $success[] = "<b>{$student['lastname']},{$student['firstname']}</b> updated.";
 		}
