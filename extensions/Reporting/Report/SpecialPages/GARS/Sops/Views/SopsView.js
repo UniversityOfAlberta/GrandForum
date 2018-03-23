@@ -184,7 +184,7 @@ SopsView = Backbone.View.extend({
 
     filterCitizenship: function(settings,data,dataIndex){
         var input = $('#countryOfCitizenshipInput').val().toUpperCase();
-        var name = data[4];
+        var name = data[6];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -193,7 +193,7 @@ SopsView = Backbone.View.extend({
 
     filterDegreeName: function(settings,data,dataIndex){
         var input = $('#degreeInput').val().toUpperCase();
-        var name = data[8];
+        var name = data[7];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -202,7 +202,7 @@ SopsView = Backbone.View.extend({
 
     filterInstitutionName: function(settings,data,dataIndex){
         var input = $('#InstitutionNameInput').val().toUpperCase();
-        var name = data[8];
+        var name = data[7];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -212,7 +212,7 @@ SopsView = Backbone.View.extend({
     filterGPA: function(settings,data,dataIndex){
         var min = parseFloat($('#referenceNameInputMin').val(),0);
         var max = parseFloat($('#referenceNameInputMax').val(),0);
-        var gpa = parseFloat( data[11] ) || 0; // use column 11
+        var gpa = parseFloat( data[9] ) || 0; // use column 11
     //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
@@ -226,7 +226,7 @@ SopsView = Backbone.View.extend({
 
     filterAnatomyType: function(settings,data,dataIndex){
         var input = $('#anatomyType').val().toUpperCase();
-        var name = data[6];
+        var name = data[12];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -235,7 +235,7 @@ SopsView = Backbone.View.extend({
 
     filterStatsType: function(settings,data,dataIndex){
         var input = $('#statsType').val().toUpperCase();
-        var name = data[7];
+        var name = data[13];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
@@ -244,16 +244,37 @@ SopsView = Backbone.View.extend({
 
     filterAdmitType: function(settings,data,dataIndex){
         var input = $('#admitType').val().toUpperCase();
-        var name = data[12];
+        var name = data[16];
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
                 }
         return false;
     },
 
+    filterReviewerStatus: function(settings,data,dataIndex){
+	var input = $('#reviewerStatus').val().toUpperCase();
+	var reviewer = data[15];
+                if(input == "REVIEWED"){
+		    if(reviewer.toUpperCase().indexOf("DONE") > -1) {
+			return true;
+		    }
+                }
+                else if(input == "NOTREVIEWED"){
+                    if(reviewer.toUpperCase().indexOf("DONE") <= -1) {   
+                        return true;
+                    }
+                }
+                else if(input == "--"){
+                   return true;
+
+                }
+         
+	return false;
+    },
+
     filterFinalAdmitType: function(settings,data,dataIndex){
         var input = $('#finalAdmitType').val().toUpperCase();
-        var name = data[14];
+        var name = data[19];
         if(name != undefined){
                 if(name.toUpperCase().indexOf(input) > -1){
                         return true;
@@ -336,7 +357,7 @@ SopsView = Backbone.View.extend({
             this.filterMineOnly,
             this.filterByTags,
             this.filterByNationality,
-            this.filterBirthday,
+            this.filterReviewerStatus,
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',
