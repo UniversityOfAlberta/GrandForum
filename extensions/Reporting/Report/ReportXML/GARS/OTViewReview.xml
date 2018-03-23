@@ -155,29 +155,21 @@
 				                        <table border="1" style="border-collapse:collapse">
 			<tr><td colspan='2' style="text-align:center">Statement of Intent & CV</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Knowledge of OT (accurate; in own words):</h3></span></td><td>{getText(RP_OTT,OT_REVIEW,Q1,{$project_id},{$user_id},{$project_id})}
-			<tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q1_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Writing skills are appropriate (no grammatical errors, easy to read, logical):</h3></span></td><td width="30%">
                         {getText(RP_OTT,OT_REVIEW,Q2,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q2_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Develops a compelling argument for a match of their experiences/studies to OT:</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q3,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q3_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Has relevant volunteer or work experience with children, older adults, persons with disabilities?:</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q4,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q4_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Student explained extenuating or unusual circumstances regarding academic history?:</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q5,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q5_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td colspan='2' style="text-align:center">Reference Letters</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Two references required; one academic and the second one appropriate (eg.not a neighbour, friend, relative). IF references missing then Admission is denied:</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q6,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q6_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>References were detailed, specific, gave relevant examples, and consistency between the two references:</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q7,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q7_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Positive statements made about critical thinking and strong communication skills?</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q8,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,Q8_comments,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td colspan=2><span 'style=font-size: 14px;'><h3>Please review application documents (CV, Reference Letters, Statement of Intent) and note any inconsistencies or areas of concern:</h3></span><br />
                         {getText(RP_OTT,OT_REVIEW,Q9,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Special considerations that make this application compelling?:</h3></span></td><td>
