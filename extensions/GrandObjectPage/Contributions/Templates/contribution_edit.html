@@ -146,36 +146,7 @@
         </td>
         <td valign="top" width="50%">
             <h2>Projects</h2>
-            <div id="contributionProjects" style="margin-bottom: 150px;">
-                <table>
-                    <% _.each(this.projects.models, function(p){ %>
-                        <tr>
-                            <td class="label"><%= p.get('name') %>:</td>
-                            <td class="checkboxCell" style="width:40px;">
-                                <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                                    <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
-                                    <% if(p.get('subprojects').length > 0){ %>
-                                        <div style="display:none;" class="subprojectPopup popupBox">
-                                            
-                                        </div>
-                                    <% } %>
-                                </div>
-                            </td>
-                        </tr>
-                    <% }) %>
-                    <tr>
-                        <td class="label">Other:</td>
-                        <td class="checkboxCell" align="center" style="width:40px;">
-                            <div class="checkboxOuter">
-                                <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
-                                <div style="display:none;" class="otherPopup popupBox">
-                                    
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <%= HTML.ProjectSelector(this, 'projects') %>
         </td>
     </tr>
 </table>
