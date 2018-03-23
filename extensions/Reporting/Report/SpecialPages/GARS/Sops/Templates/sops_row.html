@@ -60,7 +60,7 @@
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
-	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
+	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete),</font><% }else{%>(Done),
 	<% } %>
 	<br />
     <% } %>
