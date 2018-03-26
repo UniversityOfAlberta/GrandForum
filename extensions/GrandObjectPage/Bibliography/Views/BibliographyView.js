@@ -163,7 +163,8 @@ BibliographyView = Backbone.View.extend({
             if (v.css('display') != "none") {
                 var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
                 var tags = prod.get("tags").join(", ");
-                pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
+                var desc = prod.get("description");
+                pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags + desc;
 
                 if (pub.indexOf(searchTerm.toLowerCase()) != -1) {
                     $(lis.get(index)).show();
