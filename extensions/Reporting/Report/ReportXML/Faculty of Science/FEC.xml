@@ -294,13 +294,14 @@ Add a new other teaching entry to create a new paragraph.<br />
                         <th>Location</th>
                         <th>Date</th>
                         <th>Length (minutes)</th>
+                        <th>Footnote</th>
                     </tr>
                     </thead>
                     <tbody>
             ]]>
         </ReportItem>
         <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
                         <td align='center'>{$presentation_type}</td>
@@ -309,6 +310,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
                         <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -328,15 +330,16 @@ Add a new other teaching entry to create a new paragraph.<br />
                     <tr>
                         <th>Type</th>
                         <th>Title</th>
+                        <th>Footnotes</th>
                     </tr>
                     </thead>
                     <tbody>
             ]]>
         </ReportItem>
         <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td><b>({$product_type})</b> {$product_citation}</td></tr>
+                    <tr><td><b>({$product_type})</b></td><td> {$product_citation}</td> <td align='center'>{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -346,7 +349,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="ReportSection">
+    <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
                 <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='tooltip' style='cursor:default;font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
@@ -357,18 +360,20 @@ Add a new other teaching entry to create a new paragraph.<br />
                             <th>Award Category</th>
                             <th>Scope</th>
                             <th>Year</th>
+                            <th>Footnotes</th>
                         </tr>
                     </thead>
                     <tbody>
             ]]>
         </ReportItem>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
+                        <td align='center'>{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -379,7 +384,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='tooltip' style='cursor:default;' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="ReportSection">
+    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='tooltip' style='cursor:default;' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="EditableReportSection">
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
                 <a class="button" style="position:absolute; top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
@@ -391,13 +396,14 @@ Add a new other teaching entry to create a new paragraph.<br />
                             <th>Starts</th>
                             <th>Ends</th>
                             <th>$Total</th>
+                            <th>Footnotes</th>
                         </tr>
                     </thead>
                     <tbody>
             ]]>
         </ReportItem> 
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr>
                         <td align='left'>{$grant_project_id}<br />
@@ -407,6 +413,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                         <td align='right'>${$grant_total}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>

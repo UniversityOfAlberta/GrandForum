@@ -216,9 +216,9 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                 <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
+                    <tr><td align='center'>{$item} {$presentation_title}</td>
                         <td align='center'>{$presentation_type}</td>
                         <td align='center'>{$presentation_invited}</td>
                         <td>{$presentation_organization}</td>
@@ -271,9 +271,9 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
-                    <tr><td>{$product_title}</td>
+                    <tr><td>{$item} {$product_title}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
@@ -310,10 +310,10 @@
             ]]>
         </ReportItem> 
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="StaticReportItem">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_GRANTS">
                 <![CDATA[
                     <tr>
-                        <td align='left'>{$grant_project_id}<br />
+                        <td align='left'>{$item} {$grant_project_id}<br />
                             {$grant_description}
                         </td>
                         <td align='left'>{$grant_sponsor}</td>
@@ -480,6 +480,33 @@
         </ReportItemSet>
         <ReportItemSet id="products3_2" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item}
