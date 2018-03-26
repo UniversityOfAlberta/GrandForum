@@ -89,7 +89,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '95px' },  // GSMS ID
                                                         { 'width': '95px' },  // SID
                                                         { 'width': '5px' },  // UserID
-                                                        { 'width': '55px' },  // Country
+                                                        { 'width': '100px' },  // Country
                                                         { 'width': '200px' },  // Degree
                                                         { 'width': '75px' },  // Nationality Notes
                                                         { 'width': '30px' },  // GPA 60
@@ -99,7 +99,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '70px' },  // Stats
                                                         { 'width': '70px' },  // CASPER
                                                         { 'width': '200px' },  // Reviewers
-                                                        { 'width': '70px' },  // Reviewer Decision
+                                                        { 'width': '200px' },  // Reviewer Decision
                                                         { 'width': '200px' },  // Notes
                                                         { 'width': '120px' },  // Comments
                                                         { 'width': '120px' },  // Decision
