@@ -231,10 +231,12 @@ BibliographyEditView = Backbone.View.extend({
         }
         
         if(this.allProducts.length == 0){
-            this.spin = spinner("products", 20, 40, 10, 6, '#888');
+            this.spinner = spinner("products", 20, 40, 10, 6, '#888');
             return;
         }
-        this.spin();
+        if(this.spinner != null){
+            this.spinner();
+        }
         this.allProducts = new Products(this.allProducts.where({access: "Public"}));
         var products = this.model.get('products');
         this.$("#products .sortable-widget").show();
@@ -278,7 +280,6 @@ BibliographyEditView = Backbone.View.extend({
 			    group: groupOpts,
 			    animation: 150,
 			    onSort: function (e) {
-                    console.log("sorted!");
                     if($(e.target).attr('id') == 'sortable1'){
                         var ids = new Array();
                         $("li:visible", $(e.target)).each(function(i, el){
