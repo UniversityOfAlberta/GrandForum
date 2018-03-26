@@ -534,8 +534,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Panel Member" status="Invited|Not Invited">
@@ -548,8 +547,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Workshop" status="Invited|Not Invited">
@@ -562,8 +560,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Oral Presentation" status="Invited|Not Invited">
@@ -576,8 +573,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Public Presentation" status="Invited|Not Invited">
@@ -590,8 +586,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Tutorial" status="Invited|Not Invited">
@@ -604,8 +599,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Keynote" status="Invited|Not Invited">
@@ -618,8 +612,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Web Presentation" status="Invited|Not Invited">
@@ -632,8 +625,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Poster Presentation" status="Invited|Not Invited">
@@ -646,8 +638,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
         
         <Presentation type="Misc" status="Invited|Not Invited">
@@ -660,8 +651,7 @@
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <authors label="Presenter"></authors>
-            <acceptance_date label="Start Date"></acceptance_date>
-            <date label="End Date"></date>
+            <date label="Date"></date>
         </Presentation>
 
     </Presentations>
