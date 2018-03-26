@@ -91,7 +91,8 @@ class UserOTBioAPI extends API{
             }
             $array_info['anatomy'] = trim($row[12]);
             $array_info['stats'] = trim($row[13]);
-            $array_info['casper'] = trim($row[14]);
+            $casper = trim($row[14]);
+            $array_info['casper'] = number_format($casper, 2);
             $reviewers = array();
             $reviewer_array = explode(",", trim($row[15]));
             if(count($reviewer_array) >0){
