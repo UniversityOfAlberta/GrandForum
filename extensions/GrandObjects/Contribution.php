@@ -12,7 +12,7 @@ class Contribution extends BackboneModel {
                             "caki" => "Cash and In-Kind",
                             "inki" => "In-Kind",
                             "grnt" => "Grant",
-                            "char" => "Chair",
+                            "char" => "Research Chair",
                             "scho" => "Scholarship",
                             "cont" => "Contract",
                             "fell" => "Fellowship");

@@ -105,17 +105,6 @@ BibliographyEditView = Backbone.View.extend({
         }, this), 50);
     },
     
-    renderEditorsWidget: function(){
-        var left = _.pluck(this.model.get('editors'), 'name');
-        var right = _.difference(this.allPeople.pluck('name'), left);
-        var html = HTML.Switcheroo(this, 'editors.name', {name: 'editor',
-                                                          'left': left,
-                                                          'right': right
-                                                          });
-        this.$("#editors").html(html);
-        createSwitcheroos();
-    },
-    
     renderEditors: function(){
         if(this.allPeople != null && this.allPeople.length > 0){
             this.renderEditorsWidget();
@@ -231,7 +220,6 @@ BibliographyEditView = Backbone.View.extend({
     },
     
     renderProductsWidget: function(){
-        console.log("rendering");
         var model = this.model;
         if(headerColor != "#333333"){
             // Headers were changed, use this color

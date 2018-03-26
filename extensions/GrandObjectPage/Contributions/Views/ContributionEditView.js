@@ -6,7 +6,7 @@ ContributionEditView = Backbone.View.extend({
         this.listenTo(this.model, "change:total", this.render);
         this.listenTo(this.model, "add:partners", this.render);
         this.listenTo(this.model, "delete:partners", this.render);
-        this.listenTo(this.model, "change:partners", this.renderPartners);
+        
         this.listenTo(this.model, "change:name", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('name'));
@@ -15,7 +15,11 @@ ContributionEditView = Backbone.View.extend({
         this.template = _.template($('#contribution_edit_template').html());
         
         if(!this.model.isNew() && !this.isDialog){
-            this.model.fetch({silent: true});
+            this.model.fetch({silent: true, 
+                              success: $.proxy(function(){
+                                this.listenTo(this.model, "change:partners", this.renderPartners);
+                              }, this)
+                             });
         }
         else{
             _.defer(this.render);
@@ -161,7 +165,7 @@ ContributionEditView = Backbone.View.extend({
             else{
                 this.$("#partner" + i + " #other_subtype").hide();
             }
-            
+
             // Warnings
             this.$("#warning" + i).empty();
             var reg = /^\d*$/;
@@ -183,13 +187,13 @@ ContributionEditView = Backbone.View.extend({
             if(this.$("#partner" + i + " #inkind").is(":visible") && !reg.test(partner.inkind)){
                 this.$("#warning" + i).append("In-Kind is not an integer<br />");
             }
-            
-            if(this.$("#warning" + i).text() != ""){
+            if(this.$("#warning" + i).text().trim() != ""){
                 this.$("#warning" + i).show();
                 this.$("#saveContribution").prop('disabled', true);
             }
             else{
                 this.$("#warning" + i).hide();
+                this.$("#saveContribution").prop('disabled', false);
             }
         }, this));
     },
