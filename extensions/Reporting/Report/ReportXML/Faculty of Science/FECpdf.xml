@@ -218,7 +218,7 @@
         <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                 <![CDATA[
-                    <tr><td align='center'>{$item} {$presentation_title}</td>
+                    <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
                         <td align='center'>{$presentation_type}</td>
                         <td align='center'>{$presentation_invited}</td>
                         <td>{$presentation_organization}</td>
@@ -273,7 +273,7 @@
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
-                    <tr><td>{$item} {$product_title}</td>
+                    <tr><td>{$product_title} <sup>{$item}</sup></td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
@@ -313,7 +313,7 @@
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_GRANTS">
                 <![CDATA[
                     <tr>
-                        <td align='left'>{$item} {$grant_project_id}<br />
+                        <td align='left'>{$grant_project_id} <sup>{$item}</sup><br />
                             {$grant_description}
                         </td>
                         <td align='left'>{$grant_sponsor}</td>
@@ -488,6 +488,15 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
