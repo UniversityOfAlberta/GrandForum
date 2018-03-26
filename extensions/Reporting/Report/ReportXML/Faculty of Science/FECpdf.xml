@@ -215,7 +215,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
@@ -234,6 +234,48 @@
                 </table>
             ]]>
         </ReportItem>
+        
+        <!-- HQP Presentations -->
+        <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="HQP Presentations">
+            <![CDATA[
+                <h2>HQP Presentations</h2>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Invited</th>
+                            <th>Organization</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Length (minutes)</th>
+                        </tr>
+                    </thead>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqppresentationfooter" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <!-- Just here to submit the product years -->
+        <ReportItemSet id="allpresentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" start="CYCLE_START" end="CYCLE_END">
+        </ReportItemSet>
         
         <!-- Patents/Spin-Offs -->
         <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">

@@ -51,9 +51,11 @@ EOF;
         $value = str_replace("<", "<&lt;", $value);
         $value = str_replace(">", "<&gt;", $value);
         $value = nl2br($value);
+        $blob = $this->getMD5();
+        $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
+        $item = "";
         if(trim($value) != ""){
-            $blob = $this->getMD5();
-            $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
+            
             if($isTopAnchor){ 
                 $item = "<a href='#footnote$blob' name='topnote$blob' class='anchor' id='goToFootnote$blob'>[".self::$top_anchor."]</a>";
                 self::$top_anchor += 1;
@@ -62,6 +64,8 @@ EOF;
                 $item = "<a style='vertical-align:top;' href='#topnote$blob' name='footnote$blob' class='anchor' id='goToTopnote$blob'>[".self::$bottom_anchor."]</a> <div style='display:inline-block;vertical-align:top;'>{$value}</div>"; 
                 self::$bottom_anchor += 1;
             }
+        }
+        if(trim($value) != "" || $isTopAnchor){
             $item = $this->processCData($item);
             $wgOut->addHTML("$item");
         }

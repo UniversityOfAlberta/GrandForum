@@ -13,6 +13,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
+        $onlyHQP = (strtolower($this->getAttr("onlyHQP", "false")) == "true");
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->personId);
         $categories = explode("|", $category);
@@ -27,6 +28,21 @@ class PersonProductsReportItemSet extends ReportItemSet {
                                       AND year = '{$year}'", true);
             }
             $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP));
+            if($onlyHQP){
+                $hqps = $person->getHQPDuring($start_date, $end_date);
+                foreach($products as $key => $product){
+                    $found = false;
+                    foreach($hqps as $hqp){
+                        if($hqp->isAuthorOf($product)){
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if(!$found){
+                        unset($products[$key]);
+                    }
+                }
+            }
         }
         
         usort($products, function($a, $b){
