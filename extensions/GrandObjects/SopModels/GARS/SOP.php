@@ -87,12 +87,11 @@ class SOP extends AbstractSop{
    */
     function getContent($asString=false){
         if($this->questions == null){
-            $qs = array('Q1','Q2','Q3','Q4','Q5');
-          $qstrings = array('(Describe how your personal background and experiences would make you a good occupational therapist)',
-                              '(Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy)',
-                              '(Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta)',
-                              '(Outline the key way Canada\'s health care system can meet the challenges of tomorrow)',
-                              '(Is there anything else you would like to tell us to help the Admissions Committee in making their decision?)');
+            $qs = array('Q1','Q2','Q3','Q4');
+          $qstrings = array('(Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.)',
+                              '(Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.)',
+                              '(Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?)',
+                              '(Is there anything else in terms of extenuating circumstances that you would like inform the Admissions Committee in making their decision?  An example of an extenuating circumstance would be (e.g. gaps in program, leave of absences from previous program). Note: if there are no extenuating circumstances to speak of, please leave this answer blank.)');
 
             $questions = array();
             $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
