@@ -312,7 +312,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <tr><td>{$product_title} <sup>{$item}</sup></td>
