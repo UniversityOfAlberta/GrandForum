@@ -200,13 +200,13 @@ class PersonOTGSMSTab extends AbstractEditableTab {
         $viewYes = ($visible == "true") ? "checked" : "";
 
  
-        $anatomyYes = ($gsms['anatomy'] == "Yes") ? "checked" : "";
-        $anatomyNo  = ($gsms['anatomy'] == "No")  ? "checked" : "";
+        $anatomyYes = ($gsms['anatomy'] == "Y") ? "checked" : "";
+        $anatomyNo  = ($gsms['anatomy'] == "N")  ? "checked" : "";
         $anatomyInProgress  = ($gsms['anatomy'] == "In-Progress")  ? "checked" : "";
 
         
-        $statsYes = ($gsms['stats'] == "Yes") ? "checked" : "";
-        $statsNo  = ($gsms['stats'] == "No")  ? "checked" : "";
+        $statsYes = ($gsms['stats'] == "Y") ? "checked" : "";
+        $statsNo  = ($gsms['stats'] == "N")  ? "checked" : "";
         $statsInProgress  = ($gsms['stats'] == "In-Progress")  ? "checked" : "";
 
         $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
@@ -263,15 +263,15 @@ class PersonOTGSMSTab extends AbstractEditableTab {
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Anatomy:</td>";
-        $this->html .= "<td> <input name='anatomy' type='radio' value='Yes' $anatomyYes /> Yes &nbsp;
-                            <input name='anatomy' type='radio' value='No'  $anatomyNo  /> No  &nbsp;
+        $this->html .= "<td> <input name='anatomy' type='radio' value='Y' $anatomyYes /> Yes &nbsp;
+                            <input name='anatomy' type='radio' value='N'  $anatomyNo  /> No  &nbsp;
                             <input name='anatomy' type='radio' value='In-Progress'  $anatomyInProgress  /> In-Progress</td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Stats:</td>";
-        $this->html .= "<td><input name='stats' type='radio' value='Yes' $statsYes /> Yes  &nbsp;
-                            <input name='stats' type='radio' value='No'  $statsNo  /> No  &nbsp;
+        $this->html .= "<td><input name='stats' type='radio' value='Y' $statsYes /> Yes  &nbsp;
+                            <input name='stats' type='radio' value='N'  $statsNo  /> No  &nbsp;
                             <input name='stats' type='radio' value='In-Progress'  $statsInProgress  /> In-Progress</td>";
         $this->html .= "</tr>";
         
