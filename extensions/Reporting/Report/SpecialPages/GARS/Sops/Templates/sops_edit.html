@@ -34,9 +34,10 @@
                         <% docDesc = nationality_note.replace(/[<]br[^>]*[>]/gi,' '); %>  <!- replaces breaks in nationality note to space ->
                         <%= docDesc %><br />
                     <b>Degrees:</b><br />
-                        <% for(var i=0; i < additional.degrees.length;i++){ %>
-                            <span style='margin-left:15px'><%= additional.degrees[i].degree %> (<%= additional.degrees[i].institution %>)</span><br />
-                        <% } %><br /><br />
+                        <% if(additional.degree_text != ''){%>
+                            <%= additional.degree_text %>
+                        <% }%>
+                        <br /><br />
                     <b>Admin Notes:</b><br />
                         <span id='notes' style='margin-left:15px'>
                         <% if (additional.notes.length == 0) { %>

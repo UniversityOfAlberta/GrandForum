@@ -28,7 +28,7 @@ class UserOTBioAPI extends API{
             $array_info['country'] = trim($row[6]);
 
               //degrees
-            $degrees = array();
+            /*$degrees = array();
             $degree_array = explode(",",trim($row[7]));
             if(count($degree_array) >0){
                 foreach($degree_array as $degree){
@@ -46,8 +46,9 @@ class UserOTBioAPI extends API{
                         $degrees[] = $new_degree;
                     }
                 }
-            }
-            $array_info['degrees'] = $degrees;
+            }*/
+            $array_info['degrees'] = array();
+            $array_info['degree_text'] = trim($row[7]);
 
 	     //setting nationality notes (must fix this in future)
             $nationality_notes = trim($row[8]);
