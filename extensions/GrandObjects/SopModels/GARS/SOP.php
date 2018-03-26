@@ -87,7 +87,7 @@ class SOP extends AbstractSop{
    */
     function getContent($asString=false){
         if($this->questions == null){
-            $qs = array('q1','q2','q3','q4');
+            $qs = array('Q1','Q2','Q4','Q5');
           $qstrings = array('(Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.)',
                               '(Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.)',
                               '(Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?)',
@@ -96,13 +96,14 @@ class SOP extends AbstractSop{
             $questions = array();
             $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
             $qnumber = 0;
+            $qnum = 1; #In report XML The numbers skip and this causes an issue so this is an added variable...fix this in future.
             foreach($qs as $q){
                 $blob_address = ReportBlob::create_address('RP_OT', 'OT_QUESTIONS', $q, 0);
-
                     $blob->load($blob_address);
                     $data = $blob->getData();
-                    $questions[$q.' '.$qstrings[$qnumber]] = $data;
+                    $questions["Q$qnum".' '.$qstrings[$qnumber]] = $data;
                     $qnumber++;
+                    $qnum++;
             }
             $this->questions = $questions;
         }
