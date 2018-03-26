@@ -87,7 +87,7 @@ class SOP extends AbstractSop{
    */
     function getContent($asString=false){
         if($this->questions == null){
-            $qs = array('Q1','Q2','Q3','Q4');
+            $qs = array('q1','q2','q3','q4');
           $qstrings = array('(Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.)',
                               '(Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.)',
                               '(Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?)',

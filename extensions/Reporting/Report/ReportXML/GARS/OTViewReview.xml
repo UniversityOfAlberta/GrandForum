@@ -102,7 +102,7 @@
                             {$item}</td></tr>
                         ]]>
                 </ReportItem>
-		<ReportItem id="q11_comments" type="SelectReportItem" blobItem="Q11_comments" options="Holds a graduate degree| Has publications from undergrad or grad work|Undergrad thesis|Athlete in training/competition|Artist/musician in training/competition|Student in a co-op/work term program who maintained a strong GPA|Other" width="500px" blobSubItem="{$project_id}" sopBlob="true" orientation="horizontal">
+		<ReportItem id="q11_comments" type="SelectReportItem" blobItem="Q11_comments" options="N/A| Holds a graduate degree| Has publications from undergrad or grad work|Undergrad thesis|Athlete in training/competition|Artist/musician in training/competition|Student in a co-op/work term program who maintained a strong GPA|Other" width="500px" blobSubItem="{$project_id}" sopBlob="true" orientation="horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span 'style=font:size 14px;'><h3>If yes, choose one:</h3></span><br />
                             {$item}</td></tr>
