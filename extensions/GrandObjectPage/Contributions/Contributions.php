@@ -17,9 +17,7 @@ class Contributions extends BackbonePage {
         return array('Backbone/*',
                      'contributions',
                      'contribution',
-                     'contribution_edit',
-                     'ManageProducts/manage_products_other_popup',
-                     'ManageProducts/manage_products_projects_popup');
+                     'contribution_edit');
     }
     
     function getViews(){

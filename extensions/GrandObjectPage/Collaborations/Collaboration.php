@@ -18,9 +18,7 @@ class CollaborationPage extends BackbonePage {
                      'Products/product',
                      'collaborations',
                      'collaboration',
-                     'collaboration_edit',
-                     'ManageProducts/manage_products_other_popup',
-                     'ManageProducts/manage_products_projects_popup');
+                     'collaboration_edit');
     }
     
     function getViews(){

@@ -105,17 +105,6 @@ BibliographyEditView = Backbone.View.extend({
         }, this), 50);
     },
     
-    renderEditorsWidget: function(){
-        var left = _.pluck(this.model.get('editors'), 'name');
-        var right = _.difference(this.allPeople.pluck('name'), left);
-        var html = HTML.Switcheroo(this, 'editors.name', {name: 'editor',
-                                                          'left': left,
-                                                          'right': right
-                                                          });
-        this.$("#editors").html(html);
-        createSwitcheroos();
-    },
-    
     renderEditors: function(){
         if(this.allPeople != null && this.allPeople.length > 0){
             this.renderEditorsWidget();
@@ -231,7 +220,6 @@ BibliographyEditView = Backbone.View.extend({
     },
     
     renderProductsWidget: function(){
-        console.log("rendering");
         var model = this.model;
         if(headerColor != "#333333"){
             // Headers were changed, use this color
@@ -243,10 +231,12 @@ BibliographyEditView = Backbone.View.extend({
         }
         
         if(this.allProducts.length == 0){
-            this.spin = spinner("products", 20, 40, 10, 6, '#888');
+            this.spinner = spinner("products", 20, 40, 10, 6, '#888');
             return;
         }
-        this.spin();
+        if(this.spinner != null){
+            this.spinner();
+        }
         this.allProducts = new Products(this.allProducts.where({access: "Public"}));
         var products = this.model.get('products');
         this.$("#products .sortable-widget").show();
@@ -290,7 +280,6 @@ BibliographyEditView = Backbone.View.extend({
 			    group: groupOpts,
 			    animation: 150,
 			    onSort: function (e) {
-                    console.log("sorted!");
                     if($(e.target).attr('id') == 'sortable1'){
                         var ids = new Array();
                         $("li:visible", $(e.target)).each(function(i, el){

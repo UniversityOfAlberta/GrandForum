@@ -1,8 +1,7 @@
 <?php
 
 require_once("InactiveUsers.php");
-require_once('PeopleWikiTab.php');
-require_once('PeopleTableTab.php');
+autoload_register('IndexTables');
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
 $wgHooks['userCan'][] = 'IndexTable::userCanExecute';
@@ -394,6 +393,9 @@ class IndexTable {
         $visibility = true;
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
+        if($me->isRoleAtLeast(STAFF)){
+            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, YEAR));
+        }
         if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
             $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
         }

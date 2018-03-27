@@ -1,13 +1,6 @@
 CollaborationView = Backbone.View.extend({
-    mention: null,
-    searchTerm: null,
-    products: null,
-    tags: null,
 
     initialize: function(){
-        this.mention = new Array();
-        this.products = new Array();
-        this.tags = new Array();
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Collaboration does not exist");
@@ -41,30 +34,6 @@ CollaborationView = Backbone.View.extend({
         "click #editCollaboration": "editCollaboration",
         "click #deleteCollaboration": "delete",
         "click #exportBib": "exportCollaboration",
-    },
-
-
-    search: function() {
-        var searchTerm = this.$("#search").val();
-        if (searchTerm == "") {
-            return;
-        }
-        var lis = this.$("#products li");
-        _.each(this.products, function(prod, index){
-            var v = $(lis.get(index));
-            if (v.css('display') != "none") {
-                var pub = prod.get("citation").replace(/<\/?(.|\n)*?>/g, "");
-                var tags = prod.get("tags").join(", ");
-                pub = pub.replace(/&nbsp;/g, " ").toLowerCase() + tags;
-
-                if (pub.indexOf(searchTerm.toLowerCase()) != -1) {
-                    $(lis.get(index)).show();
-                } else {
-                    $(lis.get(index)).hide();
-                }   
-            }
-        });
-
     },
 
     unique: function (array) {
@@ -122,7 +91,6 @@ CollaborationView = Backbone.View.extend({
     
     render: function(){
         main.set('title', this.model.get('title'));
-        
         var formType = this.model.getType();
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         this.renderProjects();

@@ -32,7 +32,10 @@ ManageProductsView = Backbone.View.extend({
                 }, this)).then($.proxy(function(){
                     return this.allProjects.ready();
                 }. this)).then($.proxy(function(){
+                    var other = new Project({id: "-1", name: "Other"});
+                    other.id = "-1";
                     this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
+                    this.otherProjects.add(other);
                     this.oldProjects = this.allProjects.getOld();
                     this.otherProjects.remove(this.projects.models);
                     this.oldProjects.remove(this.projects.models);

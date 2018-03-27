@@ -10,6 +10,9 @@ class PeopleTableTab extends AbstractTab {
         if(!$past){
             parent::AbstractTab("Current");
         } 
+        else if(is_numeric($past)){
+            parent::AbstractTab("$past-".($past+1));
+        }
         else {
             parent::AbstractTab("Former");
         }
@@ -23,6 +26,9 @@ class PeopleTableTab extends AbstractTab {
         $me = Person::newFromId($wgUser->getId());
         if(!$this->past){
             $data = Person::getAllPeople($this->table);
+        }
+        else if(is_numeric($this->past)){
+            $data = Person::getAllPeopleDuring($this->table, $this->past."-04-01", ($this->past+1)."-03-31");
         }
         else{
             $data = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
@@ -75,7 +81,7 @@ class PeopleTableTab extends AbstractTab {
 ";
         $count = 0;
         foreach($data as $person){
-            if($this->past && $person->isRole($this->table) ){
+            if($this->past === true && $person->isRole($this->table) ){
                 // Person is still the specified role, don't show on the 'former' table
                 continue;
             }

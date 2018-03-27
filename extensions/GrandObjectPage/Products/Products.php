@@ -12,9 +12,7 @@ class Products extends BackbonePage {
         return array('Backbone/*',
                      'product_list', 
                      'product',
-                     'product_edit',
-                     'ManageProducts/manage_products_other_popup',
-                     'ManageProducts/manage_products_projects_popup');
+                     'product_edit');
     }
     
     function getViews(){

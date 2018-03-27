@@ -14,15 +14,15 @@ BibliographyView = Backbone.View.extend({
                 this.$el.html("This Bibliography does not exist");
             }, this)
         });
-        this.model.bind('change', this.render, this);
-        this.template = _.template($('#bibliography_template').html());
-        $(document).click(function(e) {
+        this.listenTo(this.model, 'change', this.render);
+        this.listenTo(Backbone, 'document-click-event', function(e){
             if ((!$.contains($("#filters")[0], e.target)) 
                 && (e.target != $("#filtersBtn")[0])
                 && (!$.contains($("#filtersBtn")[0], e.target))) {
                 $("#filters").slideUp();
             }
         });
+        this.template = _.template($('#bibliography_template').html());
     },
 
     subviewCreators: {

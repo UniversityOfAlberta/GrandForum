@@ -421,3 +421,21 @@ HTML.Switcheroo = function(view, attr, options){
     view.delegateEvents(events);
     return el;
 }
+
+HTML.ProjectSelector = function(view, attr, options){
+    if(options == undefined){ options = {} };
+    var id = _.uniqueId("project_selector_");
+    var el = HTML.Element("<div id='" + id + "'><span class='throbber'></span></div>", options);
+    $(el).wrap('div');
+    if(view.projectSelectorView != undefined){
+        // Teardown the old view to prevent double firing of events
+        view.projectSelectorView.stopListening();
+        view.projectSelectorView.undelegateEvents();
+    }
+    view.projectSelectorView = new ProjectSelectorView(_.extend(options, {model: view.model, el: el}));
+    _.defer(function(){
+        view.projectSelectorView.$el = $("#" + id);
+        view.projectSelectorView.delegateEvents();
+    });
+    return $(el).parent().html();
+}
