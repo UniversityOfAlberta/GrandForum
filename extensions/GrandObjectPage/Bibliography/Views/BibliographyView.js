@@ -61,6 +61,7 @@ BibliographyView = Backbone.View.extend({
         "keyup #search": "filter",
         "click #deleteBibliography": "delete",
         "click #exportBib": "exportBibliography",
+        "click .productUrl": "setProduct"
     },
 
     showFilterOptions: function() {
@@ -201,6 +202,11 @@ BibliographyView = Backbone.View.extend({
         },this));
     },
 
+    setProduct: function(e) {
+        var prodId = $(e.target).closest('li').attr('product-id');
+        localStorage.setItem("PRODUCT", prodId);
+    },
+
     openBibTexDialog: function(text) {
         this.$("#bibtexDialog > div > textarea").val(text);
         var height = $(window).height() * 0.75;
@@ -299,7 +305,9 @@ BibliographyView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProducts();
-        this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });   
+        this.$('#filterSelectTags').chosen({ placeholder_text_multiple: 'Select tags', width: "98%" });
+        localStorage.setItem("UNLOADING", false);
+        localStorage.setItem("BIB", this.model.get('id'));
         return this.$el;
     }
 

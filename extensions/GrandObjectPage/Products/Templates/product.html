@@ -48,4 +48,8 @@
 <% if(parseInt(me.get('id')) > 0) { %>
     <br />
     <button id='editProduct'>Edit <%= category %></button>&nbsp;<button id='deleteProduct'>Delete <%= category %></button>
+    <% if ((localStorage.getItem("BIB") != "null") && (localStorage.getItem("PRODUCT") == id)) { %>
+        <% var destination = wgServer + wgScriptPath + "/index.php/Special:BibliographyPage#/" + localStorage.getItem("BIB") %>
+        <a class="button" id='backToBib' style="float:right;" href="<%= destination %>" >Back to Bibliography</a>
+    <% } %>
 <% } %>

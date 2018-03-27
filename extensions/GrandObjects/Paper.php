@@ -1319,7 +1319,7 @@ class Paper extends BackboneModel{
         }
 
         if($hyperlink){
-            $text = "<a href='{$this->getUrl()}'>{$title}</a>";
+            $text = "<a class='productUrl' href='{$this->getUrl()}'>{$title}</a>";
         }
         else{
             $text = $title;
