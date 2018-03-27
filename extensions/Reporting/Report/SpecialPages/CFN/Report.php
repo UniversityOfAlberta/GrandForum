@@ -180,10 +180,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2018 Review", "{$url}IFPReview", $selected);
         }
-        if(count($person->getEvaluates("CAT-SRC", 2017)) > 0 || count($person->getEvaluates("CAT-EX", 2017)) > 0 || count($person->getEvaluates("CAT-RMC", 2017)) > 0){
+        /*if(count($person->getEvaluates("CAT-SRC", 2017)) > 0 || count($person->getEvaluates("CAT-EX", 2017)) > 0 || count($person->getEvaluates("CAT-RMC", 2017)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2017Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2017)", "{$url}Catalyst2017Review", $selected);
-        }
+        }*/
         if(count($person->getEvaluates("CAT-SRC", 2018)) > 0 || count($person->getEvaluates("CAT-EX", 2018)) > 0 || count($person->getEvaluates("CAT-RMC", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
