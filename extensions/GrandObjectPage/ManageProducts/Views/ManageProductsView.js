@@ -507,11 +507,15 @@ ManageProductsView = Backbone.View.extend({
                             addError(validation, true, "#dialogMessages");
                             return "";
                         }
+                        $("button", this.editDialog.view.$el.parent()).prop("disabled", true);
+                        $("button", this.editDialog.view.$el.parent()).before("<span id='saveThrobber' class='throbber'></span>&nbsp;");
                         this.editDialog.view.model.save(null, {
                             success: $.proxy(function(){
                                 var product = this.editDialog.view.model;
                                 var duplicates = product.getDuplicates();
                                 $.when(duplicates.ready()).done($.proxy(function(){
+                                    $("button", this.editDialog.view.$el.parent()).prop("disabled", false);
+                                    $("#saveThrobber", this.editDialog.view.$el.parent()).remove();
                                     product.dirty = false;
                                     this.editDialog.dialog("close");
                                     var duplicateProducts = new Array();
@@ -548,6 +552,8 @@ ManageProductsView = Backbone.View.extend({
                                 }, this));
                             }, this),
                             error: $.proxy(function(o, e){
+                                $("#saveThrobber", this.editDialog.view.$el.parent()).remove();
+                                $("button", this.editDialog.view.$el.parent()).prop("disabled", false);
                                 clearAllMessages("#dialogMessages");
                                 if(e.responseText != ""){
                                     addError(e.responseText, true, "#dialogMessages");
