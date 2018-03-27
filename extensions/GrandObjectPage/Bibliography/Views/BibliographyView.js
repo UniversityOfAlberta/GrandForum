@@ -271,21 +271,31 @@ BibliographyView = Backbone.View.extend({
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
                     this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
-                    if (product.get('description'))
-                    {
+
                         var id = product.get('id');
-                        this.$('#products li').last().append("<p style='text-align:left;'><a id='abstract" + id + 
-                                                      "' style='cursor:pointer;'>Show/Hide Abstract</a><span style='float:right;'>" + 
-                                                      product.get('tags').join(", ") + "</span></p></li>");
-                        this.$('#products li').last().append("<div id='desc" + id + "' style='display:none;'>" + 
-                                                  product.get('description') + "</div></br>");
+                        this.$('#products li').last().append(
+                            "<p style='text-align:left;'>" +
+                                "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>" +
+                            "</p></li>");
+                        this.$('#products li').last().append(
+                            "<div id='abstactAndTags" + id +"' style='display:none;'>" +
+                                "<table><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
+                                "<td style='width:67%'><div class='publication-extra' id='desc" + id + "'>" +
+
+                                   product.get('description') +
+                                "</div></td>" + 
+                                "<td class='pub-extra-td' style='width:30%'><div class='publication-extra' id='tagsDiv" + id + "'>" + 
+                                    product.get('tags').join(", ") +
+                                "</div></td></tr></table>" +
+                            "</div><br />" );
                         $("#abstract" + id).click(function() {
-                            $("#desc" + id).slideToggle("slow");
+                            $("#abstactAndTags" + id).slideToggle("slow", 
+                                function() {
+                                    if ($(this).is(':visible'))
+                                        $(this).css('display','inline-block');
+                                }
+                            );
                         });
-                    } else {
-                        this.$('#products li').last().append("<p><span style='float:right;'>" + 
-                                                      product.get('tags').join(", ") + "</span></p></li>");
-                    }
                 }, this));
                 $(".pdfnodisplay").remove();
                 this.filterAuthors(); 
