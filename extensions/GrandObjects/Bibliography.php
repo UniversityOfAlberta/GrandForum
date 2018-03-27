@@ -235,9 +235,11 @@ class Bibliography extends BackboneModel{
         }
         $products = array();
         foreach($this->getProducts() as $product){
-            $products[] = array('id' => $product->getId(),
-                               'title' => $product->getTitle(),
-                               'description' => $product->getDescription());
+            if (($product->getId() != null) && (!$product->isDeleted())) {
+                $products[] = array('id' => $product->getId(),
+                                   'title' => $product->getTitle(),
+                                   'description' => $product->getDescription());
+            }
         }
         $data = array(
             'id' => $this->getId(),
