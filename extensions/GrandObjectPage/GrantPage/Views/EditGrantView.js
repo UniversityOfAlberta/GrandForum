@@ -122,7 +122,31 @@ EditGrantView = Backbone.View.extend({
     events: {
         "click #save": "save",
         "mouseover #contributions .sortable-list li": "previewContribution",
-        "mouseout #contributions .sortable-list li": "hidePreview"
+        "mouseout #contributions .sortable-list li": "hidePreview",
+        "change #start_date": "changeStart",
+        "change #end_date": "changeEnd"
+    },
+    
+    changeStart: function(){
+        var start_date = this.$("#start_date").val();
+        var end_date = this.$("#end_date").val();
+        if(start_date != "" && start_date != "0000-00-00"){
+            if(end_date != "" && end_date != "0000-00-00"){
+                this.$("#end_date").datepicker("option", "minDate", start_date);
+            }
+            else{
+                this.$("#end_date").datepicker("option", "minDate", "");
+                this.$("#end_date").val(end_date).change();
+            }
+        }
+    },
+    
+    changeEnd: function(){
+        var start_date = this.$("#start_date").val();
+        var end_date = this.$("#end_date").val();
+        if(end_date != "" && end_date != "0000-00-00"){
+            this.$("#start_date").datepicker("option", "maxDate", end_date);
+        }
     },
     
     renderContributionsWidget: function(){
@@ -244,12 +268,17 @@ EditGrantView = Backbone.View.extend({
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributionsWidget();
+        //this.renderContributionsWidget();
         //this.renderCoapplicants();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change($.proxy(this.changePI, this));
+        
+        _.defer($.proxy(function(){
+            this.$("#start_date").change();
+            this.$("#end_date").change();
+        }, this));
         return this.$el;
     }
 
