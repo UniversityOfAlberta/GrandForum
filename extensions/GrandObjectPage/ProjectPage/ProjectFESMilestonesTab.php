@@ -605,6 +605,14 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
 
                 $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
                 $('#milestones_table td#status select').change(function(){
+                    if($(this).val() == 'Pending'){
+                        $('#milestones_table td#modification select', $(this).parent()).prop('disabled', false);
+                    }
+                    else{
+                        $('#milestones_table td#modification select', $(this).parent()).val('').change();
+                        $('#milestones_table td#modification select', $(this).parent()).prop('disabled', true);
+                        $('#milestones_table td#modification select', $(this).parent()).change();
+                    }
                     var checked = $('input.milestone:checked', $(this).parent().parent());
                     var proxyFn = $.proxy(clickFn, checked.last());
                     proxyFn();
