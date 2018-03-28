@@ -90,19 +90,13 @@ BibliographyView = Backbone.View.extend({
     filterTags: function() {
         var operand = this.$("#filterTagOperand").val();
         var searchTerms = this.$("#filterSelectTags").val();
-        console.log(searchTerms);
         var version = 'tags';
         this.filterOptions(searchTerms, version, operand);
     },
 
     filterOptions: function(searchTerms, version, operand) {
         if ((searchTerms.length == 0) || (searchTerms == "")){
-            if (version == "tags") {
-                console.log("search is empty");
-            }
             return;
-        } else {
-            console.log("search isn't empty");
         }
         var lis = this.$("#products li");
         _.each(this.products, function(prod, index){
