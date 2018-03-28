@@ -79,6 +79,7 @@ Feature: Products
     Scenario: Adding a new Publication with Tags
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Add Product"
         And I fill in "title" with "Publication with Tags"
         And I select "NI User2" from "rightauthors"
@@ -93,6 +94,7 @@ Feature: Products
     Scenario: Uploading a valid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -121,6 +123,7 @@ Feature: Products
     Scenario: Uploading a duplicate BibTeX (with overwrite not checked)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -150,6 +153,7 @@ Feature: Products
     Scenario: Uploading a duplicate BibTeX (with overwrite checked)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -184,6 +188,7 @@ Feature: Products
     Scenario: Uploading an invalid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -210,6 +215,7 @@ Feature: Products
     Scenario: Uploading a BibTeX with capital letters 
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -238,6 +244,7 @@ Feature: Products
     Scenario: Uploading an empty BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Import BibTeX"
         And I fill in "bibtex" with ""
         And I click "Import"
@@ -247,6 +254,7 @@ Feature: Products
     Scenario: Adding a new Publication (testing events leak bug)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait "100"
         And I press "Add Product"
         And I fill in "title" with "Test1"
         And I select "NI User1" from "rightauthors"
