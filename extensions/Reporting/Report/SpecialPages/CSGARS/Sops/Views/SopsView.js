@@ -9,6 +9,7 @@ SopsView = Backbone.View.extend({
     filtersSelected: null,
     hidden: true,
     defaultSearch: "",
+    scrollValue: 0,
 
     
     initialize: function(){
@@ -23,6 +24,22 @@ SopsView = Backbone.View.extend({
             $('#filter-pane').css('margin-left', parseInt(pad)-16);
         }, 16);
 
+        setInterval(function () {
+            var outerWidth = $('#listTable_wrapper').width();
+            $('#scrollOuter').css('width', outerWidth);
+            var innerWidth = $('#listTable').width();
+            $('#customScroll').css('width', innerWidth);
+            
+            var scrollA = $('.dataTables_scrollBody')[0].scrollLeft;
+            var scrollB = $('#scrollOuter')[0].scrollLeft;
+            if (scrollA != this.scrollValue) {
+                this.scrollValue = scrollA;
+                $('#scrollOuter')[0].scrollLeft = scrollA;
+            } else if (scrollB != this.scrollValue) {
+                this.scrollValue = scrollB;
+                $('.dataTables_scrollBody')[0].scrollLeft = scrollB;
+            }
+        }, 15);
     },
 
     renderRoles: function(){

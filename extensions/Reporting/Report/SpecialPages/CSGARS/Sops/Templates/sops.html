@@ -4,7 +4,7 @@
     <a href="#/newApplications" class="button" <% if(this.model.folder == "New Applications,"){ %> style="text-decoration:underline;" <% } %>>New Applications</a>&nbsp;
     <a href="#/admitted" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
     <a href="#/rejected" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
-    <div style="position: fixed; right: 30px; display: inline-block;">
+    <div style="position: absolute; right: 30px; display: inline-block;">
         <a href="#/hidden" class="button"  <% if(this.hidden == false){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
     <!--a href="#/course" class="button" <% if(this.model.program == "Master of Science (Crse)"){ %> style="text-decoration:underline;" <% } %>>Course Based</a>&nbsp;-->
@@ -561,4 +561,8 @@
   </thead>
   <tbody id="sopRows"></tbody>
 </table>
+
+<div id='scrollOuter'>
+    <div id='customScroll'></div>
+</div>
 
