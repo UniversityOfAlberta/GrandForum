@@ -279,8 +279,11 @@ class SOP extends AbstractSop{
            return "";
         }
         return $degrees;
-
     }
+    
+    function getReviewComments($user){
+        return "";
+   }
 }
 
 ?>

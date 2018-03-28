@@ -260,10 +260,19 @@ class GsmsData extends BackboneModel{
     }
 
     function getProgramName($br = true){
-       if($br){
-           return implode("<br />", explode(", ", $this->program_name));
-       }
-       return $this->program_name;
+        if($this->program_name != ""){
+            // Try Program Name First
+            if($br){
+                return implode("<br />", explode(", ", $this->program_name));
+            }
+            return $this->program_name;
+        }
+        else {
+            // Fallback to program
+            $program = explode(" in", $this->program);
+            $program = @$program[0];
+            return $program;
+        }
     }
     
     function getSOP(){
@@ -334,6 +343,7 @@ class GsmsData extends BackboneModel{
                              'name' => $person->getNameForForms(),
                              'url' => $person->getUrl(),
                              'decision' => $sop->getAdmitResult($reviewer->getId()),
+                             'comments' => $sop->getReviewComments($reviewer->getId()),
                              'rank' => $sop->getReviewRanking($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;

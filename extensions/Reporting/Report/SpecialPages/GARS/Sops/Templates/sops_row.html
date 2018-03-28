@@ -22,10 +22,9 @@
     <%= country_of_citizenship %>
 </td>
 <td id='degree' style="width:30px">
-  <% for(var i=0; i < additional.degrees.length;i++){ %>
-
-    <b><%= additional.degrees[i].degree %></b> (<%= additional.degrees[i].institution %>),<br />
-  <% } %>
+    <% if(additional.degree_text != ''){%>
+        <%= additional.degree_text %>
+    <% }%>
 </td>
 <td style="white-space: nowrap;" id='nationality_notes'>
     <%= nationality_note %>
@@ -60,7 +59,7 @@
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
-	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete)</font><% }else{%>(Done)
+	<% if(reviewers[i].decision == "--"){ %><font color="red">(Incomplete),</font><% }else{%>(Done),
 	<% } %>
 	<br />
     <% } %>

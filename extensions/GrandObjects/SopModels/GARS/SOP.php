@@ -60,12 +60,14 @@ class SOP extends AbstractSop{
     * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
     */
     function getReviewers(){
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
                         AND data != ''
                         AND rp_item = 'Q13'
-                        AND proj_id =".$this->id;
+                        AND proj_id =".$gsms->getId();
 
         $data = DBFunctions::execSQL($sql);
         $reviewers = array();
@@ -85,28 +87,40 @@ class SOP extends AbstractSop{
    */
     function getContent($asString=false){
         if($this->questions == null){
-            $qs = array('Q1','Q2','Q3','Q4','Q5');
-          $qstrings = array('(Describe how your personal background and experiences would make you a good occupational therapist)',
-                              '(Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy)',
-                              '(Tell us your academic experiences and how that has prepared you for being successful in the MScOT program at the University of Alberta)',
-                              '(Outline the key way Canada\'s health care system can meet the challenges of tomorrow)',
-                              '(Is there anything else you would like to tell us to help the Admissions Committee in making their decision?)');
+            $qs = array('Q1','Q2','Q4','Q5');
+            $qstrings = array('(Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.)',
+                              '(Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.)',
+                              '(Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?)',
+                              '(Is there anything else in terms of extenuating circumstances that you would like inform the Admissions Committee in making their decision?  An example of an extenuating circumstance would be (e.g. gaps in program, leave of absences from previous program). Note: if there are no extenuating circumstances to speak of, please leave this answer blank.)');
 
             $questions = array();
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
             $qnumber = 0;
+            $qnum = 1; #In report XML The numbers skip and this causes an issue so this is an added variable...fix this in future.
             foreach($qs as $q){
-                $blob_address = ReportBlob::create_address('RP_OT', 'OT_QUESTIONS', $q, 0);
+                $sql = "SELECT data
+                    FROM grand_report_blobs
+                    WHERE rp_section = 'OT_QUESTIONS'
+                        AND rp_item = '$q'
+                        AND proj_id =0
+                        AND user_id = {$this->getUser()}";
 
-                    $blob->load($blob_address);
-                    $data = $blob->getData();
-                    $questions[$q.' '.$qstrings[$qnumber]] = $data;
-                    $qnumber++;
+                $data = DBFunctions::execSQL($sql);
+                if(count($data)>0){
+                    $questions["Q$qnum".' '.$qstrings[$qnumber]] = $data[0]['data'];
+                }
+                else{
+                    $questions["Q$qnum".' '.$qstrings[$qnumber]] = "";
+                }
+                $qnumber++;
+                $qnum++;
+
             }
             $this->questions = $questions;
         }
             $this->content = $this->questions;
-            if($asString){
+
+
+            if($asString){ //if want to return for html purposes
              $string = "";
              foreach($this->content as $question => $answer){
                 $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
@@ -189,10 +203,12 @@ class SOP extends AbstractSop{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
-            $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
-            $blob->load($blob_address);
-            $data = $blob->getData();
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $gsms->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
         if($data == 'Yes'){
             return "Admit";
         }
@@ -209,6 +225,24 @@ class SOP extends AbstractSop{
             return "--";
         }
     }
+
+
+    function getReviewComments($user){
+        $comments = array();
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS();
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q9', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['documents'] = $blob->getData();
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q112_comments', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['special_consideration'] = $blob->getData();
+        $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q12', $gsms->getId());
+        $blob->load($blob_address);
+        $comments['recommendation'] = $blob->getData();
+        return $comments;
+   }
 
 }
 

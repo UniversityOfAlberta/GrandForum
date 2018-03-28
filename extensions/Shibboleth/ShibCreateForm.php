@@ -89,7 +89,9 @@
                     
                     // Don't make the user a candidate
                     DBFunctions::update('mw_user',
-                                        array('candidate' => 0),
+                                        array('candidate' => 0,
+                                              'first_name' => $_POST['wpFirstName'],
+                                              'last_name' => $_POST['wpLastName']),
                                         array('user_name' => $_POST['wpName']));
                                         
                     $person = Person::newFromName($_POST['wpName']);
