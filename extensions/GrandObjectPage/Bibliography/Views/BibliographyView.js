@@ -62,7 +62,7 @@ BibliographyView = Backbone.View.extend({
         "click #deleteBibliography": "delete",
         "click #exportBib": "exportBibliography",
         "click .productUrl": "setProduct",
-        "click .tag": "addFilterTag"
+        "click .tag": "clickTag"
     },
 
     showFilterOptions: function() {
@@ -208,7 +208,7 @@ BibliographyView = Backbone.View.extend({
         localStorage.setItem("PRODUCT", prodId);
     },
 
-    addFilterTag: function(e) {
+    clickTag: function(e) {
         var newTag = e.target.id;
         var tags = $("#filterSelectTags").val();
         var i = tags.indexOf(newTag);
@@ -219,7 +219,7 @@ BibliographyView = Backbone.View.extend({
         }
         $("#filterSelectTags").val(tags);
         $("#filterSelectTags").trigger("chosen:updated");
-        this.filterTags();
+        this.filter();
 
     },
 
@@ -289,10 +289,15 @@ BibliographyView = Backbone.View.extend({
                     this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
 
                         var id = product.get('id');
-                        this.$('#products li').last().append(
-                            "<p style='text-align:left;'>" +
-                                "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>" +
-                            "</p></li>");
+                        var descLink = "<p style='text-align:left;'>";
+                        this.$('#products li').last().append();
+                        if ((product.get('description') == "") && (product.get('tags').length == 0)) {
+                            descLink += "<span style='color:#a0a0a0;'>No abstract or tags</span>";
+                        } else {
+                            descLink += "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>";
+                        }
+                        descLink += "</p>";
+                        this.$('#products li').last().append(descLink);
                         this.$('#products li').last().append(
                             "<div id='abstactAndTags" + id +"' style='display:none;width:100%;'>" +
                                 "<table style='width:100%;'><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
@@ -304,8 +309,8 @@ BibliographyView = Backbone.View.extend({
                             "</div><br />" );
                     
                     _.each(product.get('tags'), $.proxy(function(tag) {
-                        var id = "#tagsDiv" + product.get('id');
-                        this.$(id).append(
+                        var tagId = "#tagsDiv" + product.get('id');
+                        this.$(tagId).append(
                             "<a class='tag' id='" + tag + "'>" + tag +"</a>, "
                         );
                     }, this));

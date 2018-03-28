@@ -55,7 +55,9 @@
                     <div style="max-height:75px; overflow-y: auto;"><%= bib.get('description') %></div>
                 </td>
                 <td>
-                    <%= bib.get('tagsHTML') %>
+                    <div style="max-height:110px; overflow-y: auto;">
+                        <%= bib.get('tagsHTML') %>
+                    </div>
                 </td>
                 <td align="right">
                     <%= bib.get('products').length %>
