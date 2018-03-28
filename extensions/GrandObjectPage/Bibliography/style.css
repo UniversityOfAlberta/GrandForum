@@ -138,7 +138,7 @@
 }
 
 .publication-extra {
-    overflow-y: scroll;
+    overflow-y: auto;
     border: 1px solid #E0E0E0;
     display: inline-block;
     vertical-align:top;
