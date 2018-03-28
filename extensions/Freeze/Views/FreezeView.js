@@ -65,10 +65,12 @@ FreezeView = Backbone.View.extend({
             }
         });
         _.defer($.proxy(function(){
-            $.when.apply(null, xhrs).then($.proxy(function(){
-                this.$(".throbber").hide();
-                this.$("#save").prop("disabled", false);
-            }, this));
+            $.when.apply(null, xhrs).then(
+                _.delay($.proxy(function(){
+                    this.$(".throbber").hide();
+                    this.$("#save").prop("disabled", false);
+                }, this), 500)
+            );
         }, this));
     },
     
