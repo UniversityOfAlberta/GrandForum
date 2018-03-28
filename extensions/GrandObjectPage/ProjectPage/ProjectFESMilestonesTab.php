@@ -606,12 +606,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
                 $('#milestones_table td#status select').change(function(){
                     if($(this).val() == 'Pending'){
-                        $('#milestones_table td#modification select', $(this).parent()).prop('disabled', false);
+                        $('#modification select', $(this).parent().parent()).prop('disabled', false);
                     }
                     else{
-                        $('#milestones_table td#modification select', $(this).parent()).val('').change();
-                        $('#milestones_table td#modification select', $(this).parent()).prop('disabled', true);
-                        $('#milestones_table td#modification select', $(this).parent()).change();
+                        $('#modification select', $(this).parent().parent()).val('').change();
+                        $('#modification select', $(this).parent().parent()).prop('disabled', true);
+                        $('#modification select', $(this).parent().parent()).change();
                     }
                     var checked = $('input.milestone:checked', $(this).parent().parent());
                     var proxyFn = $.proxy(clickFn, checked.last());
@@ -649,6 +649,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 };
                 
                 $('input.single').click(clickFn);
+                $('#milestones_table td#status select').change();
                 
             </script>";
         }
