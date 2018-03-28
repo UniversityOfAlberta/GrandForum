@@ -62,7 +62,7 @@ BibliographyView = Backbone.View.extend({
         "click #deleteBibliography": "delete",
         "click #exportBib": "exportBibliography",
         "click .productUrl": "setProduct",
-        "click .tag": "addFilterTag"
+        "click .tag": "clickTag"
     },
 
     showFilterOptions: function() {
@@ -90,13 +90,19 @@ BibliographyView = Backbone.View.extend({
     filterTags: function() {
         var operand = this.$("#filterTagOperand").val();
         var searchTerms = this.$("#filterSelectTags").val();
+        console.log(searchTerms);
         var version = 'tags';
         this.filterOptions(searchTerms, version, operand);
     },
 
     filterOptions: function(searchTerms, version, operand) {
         if ((searchTerms.length == 0) || (searchTerms == "")){
+            if (version == "tags") {
+                console.log("search is empty");
+            }
             return;
+        } else {
+            console.log("search isn't empty");
         }
         var lis = this.$("#products li");
         _.each(this.products, function(prod, index){
@@ -208,7 +214,7 @@ BibliographyView = Backbone.View.extend({
         localStorage.setItem("PRODUCT", prodId);
     },
 
-    addFilterTag: function(e) {
+    clickTag: function(e) {
         var newTag = e.target.id;
         var tags = $("#filterSelectTags").val();
         var i = tags.indexOf(newTag);
@@ -219,7 +225,7 @@ BibliographyView = Backbone.View.extend({
         }
         $("#filterSelectTags").val(tags);
         $("#filterSelectTags").trigger("chosen:updated");
-        this.filterTags();
+        this.filter();
 
     },
 
