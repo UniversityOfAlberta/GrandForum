@@ -136,3 +136,18 @@
 .chosen-with-drop > ul {
     border-radius: 4px 4px 0px 0px;
 }
+
+.publication-extra {
+    overflow-y: scroll;
+    border: 1px solid #E0E0E0;
+    display: inline-block;
+    vertical-align:top;
+    padding: 3px;
+    border-radius: 3px;
+    height: 100px;
+    width: 97%;
+}
+
+.pub-extra-td {
+    vertical-align: top;
+}
