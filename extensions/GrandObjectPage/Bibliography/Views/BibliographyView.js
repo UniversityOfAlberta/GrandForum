@@ -61,7 +61,8 @@ BibliographyView = Backbone.View.extend({
         "keyup #search": "filter",
         "click #deleteBibliography": "delete",
         "click #exportBib": "exportBibliography",
-        "click .productUrl": "setProduct"
+        "click .productUrl": "setProduct",
+        "click .tag": "addFilterTag"
     },
 
     showFilterOptions: function() {
@@ -207,6 +208,21 @@ BibliographyView = Backbone.View.extend({
         localStorage.setItem("PRODUCT", prodId);
     },
 
+    addFilterTag: function(e) {
+        var newTag = e.target.id;
+        var tags = $("#filterSelectTags").val();
+        var i = tags.indexOf(newTag);
+        if (i == -1) {
+            tags.push(newTag);
+        } else {
+            tags.splice(i, 1);
+        }
+        $("#filterSelectTags").val(tags);
+        $("#filterSelectTags").trigger("chosen:updated");
+        this.filterTags();
+
+    },
+
     openBibTexDialog: function(text) {
         this.$("#bibtexDialog > div > textarea").val(text);
         var height = $(window).height() * 0.75;
@@ -278,16 +294,22 @@ BibliographyView = Backbone.View.extend({
                                 "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>" +
                             "</p></li>");
                         this.$('#products li').last().append(
-                            "<div id='abstactAndTags" + id +"' style='display:none;'>" +
-                                "<table><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
+                            "<div id='abstactAndTags" + id +"' style='display:none;width:100%;'>" +
+                                "<table style='width:100%;'><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
                                 "<td style='width:67%'><div class='publication-extra' id='desc" + id + "'>" +
-
                                    product.get('description') +
                                 "</div></td>" + 
                                 "<td class='pub-extra-td' style='width:30%'><div class='publication-extra' id='tagsDiv" + id + "'>" + 
-                                    product.get('tags').join(", ") +
                                 "</div></td></tr></table>" +
                             "</div><br />" );
+                    
+                    _.each(product.get('tags'), $.proxy(function(tag) {
+                        var id = "#tagsDiv" + product.get('id');
+                        this.$(id).append(
+                            "<a class='tag' id='" + tag + "'>" + tag +"</a>, "
+                        );
+                    }, this));
+                                
                         $("#abstract" + id).click(function() {
                             $("#abstactAndTags" + id).slideToggle("slow", 
                                 function() {
