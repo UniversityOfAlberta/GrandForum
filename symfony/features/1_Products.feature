@@ -71,6 +71,7 @@ Feature: Products
         And I press "Delete Publication"
         Then I should see "The Publication New Publication was deleted sucessfully"
         And I reload the page
+        And I wait "100"
         Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
         When I go to "index.php/Special:Products#/Publication"
         Then I should not see "New Publication"

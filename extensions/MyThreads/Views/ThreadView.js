@@ -15,7 +15,7 @@ ThreadView = Backbone.View.extend({
                 this.$el.html("This Thread does not exist.");
             }, this)
         });
-        this.model.bind('sync', this.render);
+        this.listenTo(this.model, 'sync', this.render);
     },
 
     events: {
@@ -36,7 +36,6 @@ ThreadView = Backbone.View.extend({
         _.each(models, $.proxy(function(p){
             var mod = new Post({'id':p});
             ajax.push(mod.fetch());
-            console.log(this);
             var row = new PostView({model: mod, parent: this, isComment: this.isComment, tinyMCEMention: this.tinyMCEMention});
             this.$("#postRows").append(row.$el);
         }, this));
@@ -54,6 +53,10 @@ ThreadView = Backbone.View.extend({
     },
 
     render: function(){
+        if(this.isComment && this.model.get('title') == ''){
+            // This is a comment, dont do an extra render
+            return this.$el;
+        }
         if (!this.isComment){
             main.set('title', "<a href='" + wgServer + wgScriptPath + "/index.php/Special:MyThreads'>Message Boards</a> &gt; " + 
                           "<a href='" + this.model.get('board').url + "'>" + this.model.get('board').title + "</a> &gt; " + 
