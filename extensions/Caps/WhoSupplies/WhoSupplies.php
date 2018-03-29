@@ -44,12 +44,19 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                <li>
-                The <a href='http://www.mifegymiso.com/interim-federal-health-program'>Interim Federal Health Program (IFHP)</a> provides full coverage for protected persons, including resettled refugees and refugee claimants in those provinces that have universal cost coverage (i.e. AB, BC, NB, NS, ON & QC)
+                    <li>
+                    <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/4c/Canadian_MifeFederalPatientsInfoSheet_March2018.pdf'>Correctional Services of Canada</a> have announced they will also be listing Mifegymiso® to their formulary as of April 1st, 2018!
 
-                </li>
+                    </li>
+                    <li>
+                    In March 2018, The National Defense and Canadian Armed Forces added Mifegymiso to their <a href='http://www.cmp-cpm.forces.gc.ca/hs/en/drug-benefit-list/index.asp'>Drug Benefit </a>List for people covered by Canadian Forces Health Services.
+                    </li>
+
                     <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
+                    <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
+
                     <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
+
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -62,8 +69,13 @@ class WhoSupplies extends SpecialPage{
                         </ol>
                     </li>
                     
-                    <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
-                    <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
+                    
+                    <li>As of May 2017,the NIHB will provide full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
+                    <li>
+                The <a href='http://www.mifegymiso.com/interim-federal-health-program'>Interim Federal Health Program (IFHP)</a> provides full coverage for protected persons, including resettled refugees and refugee claimants in those provinces that have added Mifegymiso® to their formulary (i.e. AB, BC, MB, NB, NS, QC & SK, not ON, NFLD or PEI or the Territories)
+
+
+                </li>
                     
                 </ul>
                 
