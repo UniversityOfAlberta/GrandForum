@@ -12,7 +12,8 @@
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
     require_once("Contributions/Contributions.php");
-    if($config->getValue('networkName') == "FES"){
+    if($config->getValue('networkName') == "FES" ||
+       $config->getValue('networkName') == "NETWORK"){
         // Only show this for FES (for now)
         require_once("Collaborations/Collaboration.php");
     }
