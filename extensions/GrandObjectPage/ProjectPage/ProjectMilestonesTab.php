@@ -253,7 +253,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
-        $statusColspan = 1;
+        $statusColspan = 2;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -301,6 +301,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             else {
                 $this->html .= "<p class='milestone_info2'>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
             }
+            if($me->isRoleAtLeast(STAFF)){
+                $statusColspan++;
+            }
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
@@ -315,9 +318,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         <tr>
                             <th colspan='1'></th>";
         $this->showYearsHeader();
-        if($me->isRoleAtLeast(STAFF)){
-            $statusColspan++;
-        }
         $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
