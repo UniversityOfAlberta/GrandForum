@@ -4,7 +4,7 @@
     <a href="#/newApplications" class="button" <% if(this.model.folder == "New Applications,"){ %> style="text-decoration:underline;" <% } %>>New Applications</a>&nbsp;
     <a href="#/admitted" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
     <a href="#/rejected" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
-    <div style="position: fixed; right: 30px; display: inline-block;">
+    <div style="position: absolute; right: 30px; display: inline-block;">
         <a href="#/hidden" class="button"  <% if(this.hidden == false){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
     <!--a href="#/course" class="button" <% if(this.model.program == "Master of Science (Crse)"){ %> style="text-decoration:underline;" <% } %>>Course Based</a>&nbsp;-->
@@ -452,7 +452,7 @@
             <b style="display:inline-block; vertical-align: middle;">EPL Test:</b>
             <div style="display:inline-block; vertical-align: top; ">
               <input type='hidden' name='filterEPLTest' />
-              <select class='filter_option' style='width: 90px;' id='filterSelectEPLTest'>
+              <select class='filter_option' style='width: 85px;' id='filterSelectEPLTest'>
                 <option value="" selected="selected">--</option>
                 <option>IELTS</option>
                 <option>TOEFL</option>
@@ -561,4 +561,8 @@
   </thead>
   <tbody id="sopRows"></tbody>
 </table>
+
+<div id='scrollOuter'>
+    <div id='customScroll'></div>
+</div>
 
