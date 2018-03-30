@@ -12,13 +12,13 @@ SopsView = Backbone.View.extend({
     scrollValue: 0,
 
     
-    initialize: function(){
+    initialize: function() {
         this.template = _.template($('#sops_template').html());
         $(this).data('name', 'show');
         this.listenToOnce(this.model, "sync", function(){
             this.sops = this.model;
             this.render();
-        }, this);
+        }, this);  
         setInterval(function () {
             var pad = $('#bodyContent').css('padding-left');
             $('#filter-pane').css('margin-left', parseInt(pad)-16);
@@ -29,9 +29,15 @@ SopsView = Backbone.View.extend({
             $('#scrollOuter').css('width', outerWidth);
             var innerWidth = $('#listTable').width();
             $('#customScroll').css('width', innerWidth);
-            
-            var scrollA = $('.dataTables_scrollBody')[0].scrollLeft;
-            var scrollB = $('#scrollOuter')[0].scrollLeft;
+
+            var scrollA = 0;
+            var scrollB = 0;
+            try {
+                scrollA = $('.dataTables_scrollBody')[0].scrollLeft;
+                scrollB = $('#scrollOuter')[0].scrollLeft;
+            } catch(err) {
+                // we are just suppressing the warnings that .scrollLeft can't be accessed on this element until it's rendered
+            }
             if (scrollA != this.scrollValue) {
                 this.scrollValue = scrollA;
                 $('#scrollOuter')[0].scrollLeft = scrollA;
@@ -40,6 +46,19 @@ SopsView = Backbone.View.extend({
                 $('.dataTables_scrollBody')[0].scrollLeft = scrollB;
             }
         }, 15);
+
+        if (JSON.parse(localStorage.getItem("USERPREFS")) == null) {
+            localStorage.setItem("USERPREFS", JSON.stringify(SopsView.filtersSelected));
+        }
+        this.getUserPrefs();
+    },
+
+    updateUserPrefs: function() {
+        localStorage.setItem("USERPREFS", JSON.stringify(SopsView.filtersSelected));
+    },
+
+    getUserPrefs: function() {
+        SopsView.filtersSelected = JSON.parse(localStorage.getItem("USERPREFS"));
     },
 
     renderRoles: function(){
@@ -199,7 +218,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.filterCoursesEl = this.filterCoursesEl.val();
                                                         SopsView.filtersSelected.filterNotesEl = this.filterNotesEl.val();
                                                         SopsView.filtersSelected.filterCommentsEl = this.filterCommentsEl.val();
-                                                        SopsView.filtersSelected.filterMeOnly = this.filterMeOnly.val();
+                                                        SopsView.filtersSelected.filterMeOnly = this.filterMeOnly.prop("checked");
                                                         SopsView.filtersSelected.numPubsInputMin = this.numPubsInputMin.val();
                                                         SopsView.filtersSelected.numPubsInputMax = this.numPubsInputMax.val();
                                                         SopsView.filtersSelected.numAwardsInputMin = this.numAwardsInputMin.val();
@@ -232,6 +251,7 @@ SopsView = Backbone.View.extend({
 
     reloadTable: function(){
         this.table.draw();
+        this.updateUserPrefs();
     },
 
     showFilter: function(){
@@ -248,6 +268,7 @@ SopsView = Backbone.View.extend({
             $('#showfilter').attr('value', 'Show Filter Options');
             // The filter menu is hidden now
         }
+        this.updateUserPrefs();
     },
 
     showCheckboxes: function(){
@@ -708,7 +729,7 @@ SopsView = Backbone.View.extend({
         fnField('filterCoursesEl');
         fnField('filterNotesEl');
         fnField('filterCommentsEl');
-        fnField('filterMeOnly');
+        //fnField('filterMeOnly');
         fnField('numPubsInputMin');
         fnField('numPubsInputMax');
         fnField('numAwardsInputMin');
@@ -720,6 +741,7 @@ SopsView = Backbone.View.extend({
         fnCheckbox('appliedVanier');
         fnCheckbox('appliedAITF');
         fnCheckbox('appliedNSERC');
+        fnCheckbox('filterMeOnly');
 
         fnField('filterDoBSpan');
         fnField('filterSelectEPLTest');
