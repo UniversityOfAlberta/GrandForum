@@ -174,7 +174,7 @@ class ConvertPdfAPI extends API{
             }
             $num_file++;
             if($userId != 0){
-                $content_parsed = DBFunctions::escape($contents);
+                $content_parsed = DBFunctions::escape(gzdeflate($contents));
                 unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
