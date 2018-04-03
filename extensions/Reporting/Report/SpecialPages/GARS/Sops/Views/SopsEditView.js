@@ -173,9 +173,9 @@ SopsEditView = Backbone.View.extend({
 
     hide_stats: function(){
         $('#sop_statistics').animate({width:'0%'});
-  $("#sop_statistics").hide();
-  $("#sop_statistics2").show();
-  $('#sop_div').animate({width:'95%'});
+        $("#sop_statistics").hide();
+        $("#sop_statistics2").show();
+        $('#sop_div').animate({width:'95%'});
     },
 
     show_stats: function(){
@@ -326,10 +326,7 @@ SopsEditView = Backbone.View.extend({
         $("#style_errors").html($(".hiddenSuggestion").size());
           }
       });
-      /** ----------------------------------------------------------------------------------------------  **/
-      /**TEST**/
       var w = 80,h = 80;
-      //Data
       var d = [
             [
               {axis:"Conscientiousness",value:self.model.get('conscientiousness')},
@@ -359,19 +356,17 @@ SopsEditView = Backbone.View.extend({
           intervalId = null;
         }     
       }, 100)
-      /**TEST**/
-      //console.log(this.model);
       var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
       mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
-      $(document).ready(function () {
+      this.set_link_to_table();
+      $('#review_iframe').on('load', function () {
           $("#accordion > div").accordion({
           autoHeight: false,
           collapsible: true,
           active:false
         });
       });
-      this.set_link_to_table();
       return this.$el;
     }
 });
