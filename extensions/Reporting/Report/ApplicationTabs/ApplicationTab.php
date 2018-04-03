@@ -200,6 +200,10 @@ class ApplicationTab extends AbstractTab {
                 autoWidth: false,
                 'columnDefs': [
                     {'type': 'string', 'targets': 0 }
+                ],
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
                 ]
             });
         </script>";
