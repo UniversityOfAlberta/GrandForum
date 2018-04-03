@@ -47,8 +47,13 @@ SopsView = Backbone.View.extend({
             }
         }, 15);
 
-        if (JSON.parse(localStorage.getItem("USERPREFS")) == null) {
-            localStorage.setItem("USERPREFS", JSON.stringify(SopsView.filtersSelected));
+        var storedPrefs = JSON.parse(localStorage.getItem("USERPREFS"));
+        var globalPrefs = SopsView.filtersSelected;
+        if (storedPrefs == null) {
+            localStorage.setItem("USERPREFS", JSON.stringify(globalPrefs));
+        } else if (Object.keys(storedPrefs).length < Object.keys(globalPrefs).length) {
+            var newPrefs = _.defaults(storedPrefs, globalPrefs);
+            localStorage.setItem("USERPREFS", JSON.stringify(newPrefs));
         }
         this.getUserPrefs();
     },
@@ -59,6 +64,7 @@ SopsView = Backbone.View.extend({
 
     getUserPrefs: function() {
         SopsView.filtersSelected = JSON.parse(localStorage.getItem("USERPREFS"));
+        return SopsView.filtersSelected;
     },
 
     renderRoles: function(){
@@ -127,7 +133,13 @@ SopsView = Backbone.View.extend({
                 }
             }
         };
-
+        var invisibleColumns = [];
+        var colvis = SopsView.filtersSelected['colvis']
+        for (i = 0; i < colvis.length; i++) {
+            if (colvis[i] == false) {
+                invisibleColumns.push(i);
+            }
+        }
         this.table = this.$('#listTable').DataTable({'oSearch': {'sSearch': this.defaultSearch},
                                                      'bPaginate': false,
                                                      'bFilter': true,
@@ -138,6 +150,9 @@ SopsView = Backbone.View.extend({
                                                         {
                                                             leftColumns: 1
                                                         },
+                                                     'columnDefs': [
+                                                        { 'visible': false, 'targets': invisibleColumns }
+                                                      ],
                                                      'columns': [
                                                         { 'width': '225px' }, // User email gender
                                                         { 'width': '95px' },  // GSMS ID
@@ -247,6 +262,7 @@ SopsView = Backbone.View.extend({
         "click #showfilter" : "showFilter",
         "click #hidefilter" : "showFilter",
         "click #selectAreasBox" : "showAreasCheckboxes",
+        "click .buttons-colvis" : "recordColVis", 
     },
 
     reloadTable: function(){
@@ -646,6 +662,21 @@ SopsView = Backbone.View.extend({
         return true;
     },
 
+    recordColVis: function() {
+        var that = this;
+        $('.buttons-columnVisibility').click(function () {
+            // Get the index of the column button just clicked
+            var i = 0;
+            var elem = this;
+            while (elem.previousSibling != null) {
+                elem = elem.previousSibling;
+                ++i;
+            }
+            SopsView.filtersSelected['colvis'][i] = this.classList.contains("active");
+            that.updateUserPrefs();
+        });
+    },
+
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
@@ -783,6 +814,7 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
+       
         return this.$el;
     }
 });
@@ -824,5 +856,12 @@ SopsView.filtersSelected = {
     filterCoursesEl: null,
     filterNotesEl: null,
     filterCommentsEl: null,
-    filterMeOnly: null
+    filterMeOnly: null,
+    colvis: [
+        true,true,true,true,true,
+        true,true,true,true,true,
+        true,true,true,true,true,
+        true,true,true,true,true,
+        true,true,true,true,true,
+    ]
 };
