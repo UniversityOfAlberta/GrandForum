@@ -102,6 +102,7 @@ class SOP extends AbstractSop{
                     WHERE rp_section = 'OT_QUESTIONS'
                         AND rp_item = '$q'
                         AND proj_id =0
+                        AND year =".YEAR."
                         AND user_id = {$this->getUser()}";
 
                 $data = DBFunctions::execSQL($sql);
