@@ -2,9 +2,12 @@
 
 class PersonSupervisesReportItem extends StaticReportItem {
 
-    function getHTML(){
+    var $footnotes;
+
+    function getHTML($pdf=false){
         global $wgServer, $wgScriptPath;
-        
+        $dir = dirname(__FILE__);
+        require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $person = Person::newFromId($this->personId);
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
@@ -83,7 +86,65 @@ class PersonSupervisesReportItem extends StaticReportItem {
                                          $this->getReport()->year."-06-30");
         }
         
-        return $item;
+        $this->footnotes = array();
+        $dom = new SmartDomDocument();
+        $dom->loadHTML($item);
+        $trs = $dom->getElementsByTagName("tr");
+        if(strtolower($this->getAttr("footnotes", "false")) == "true"){
+            for($i=0; $i<$trs->length; $i++){
+                $tr = $trs->item($i);
+                if($tr->getAttribute('hqp-id') != ""){
+                    $hqpId = $tr->getAttribute('hqp-id');
+                    $section = $this->getSection();
+                    $sec = $this->getAttr('blobSection', '0'); //added for FEC report -rd
+                    if($sec != '0'){
+                        $section->sec = $sec;
+                    }
+                    $footnote = new FootnotesReportItem();
+                    $footnote->setId($this->id."_".$hqpId);
+                    $footnote->setAttr("blobSection", $sec);
+                    $footnote->setBlobItem($this->getAttr("blobItem", "HQP"));
+                    $footnote->setBlobSubItem($hqpId);
+                    $footnote->setParent($this);
+                    $footnote->setAttr("isTopAnchor", $this->getAttr("isTopAnchor", "false"));
+                    $this->footnotes[] = $footnote;
+                    if(!$pdf){
+                        // EDIT
+                        $td = $dom->createDocumentFragment();
+                        $td->appendXML("<td align='center'>{$footnote->getHTML()}</td>");
+                        $tr->appendChild($td);
+                    }
+                    else{
+                        // PDF
+                        if(strtolower($this->getAttr("isTopAnchor", "false")) == "true"){
+                            $linkHTML = $footnote->getPDFHTML();
+                            if($linkHTML != ""){
+                                $td = $tr->getElementsByTagName("td")->item(0);
+                                $link = $dom->createDocumentFragment();
+                                $link->appendXML(" <sup>$linkHTML</sup>");
+                                $td->appendChild($link);
+                            }
+                        }
+                    }
+                }
+                else if(!$pdf){
+                    // Header & Edit
+                    $th = $dom->createDocumentFragment();
+                    $th->appendXML("<th>Footnotes</th>");
+                    $tr->appendChild($th);
+                }
+            }
+        }
+        return $dom;
+    }
+    
+    function save(){
+        $this->getHTML();
+        $errors = array();
+        foreach($this->footnotes as $footnote){
+            $errors = array_merge($errors, $footnote->save());
+        }
+        return $errors;
     }
 
     function render(){
@@ -95,9 +156,24 @@ class PersonSupervisesReportItem extends StaticReportItem {
     
     function renderForPDF(){
         global $wgOut;
-        $item = $this->getHTML();
-        $item = $this->processCData($item);
-        $wgOut->addHTML($item);
+        $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'false')) == 'true');
+        $item = $this->getHTML(true);
+        if($isTopAnchor){
+            // Top Anchor
+            $item = $this->processCData($item);
+            $wgOut->addHTML($item);
+        }
+        else{
+            // Bottom Anchor
+            $item = "";
+            foreach($this->footnotes as $footnote){
+                $html = $footnote->getPDFHTML();
+                if($html != ""){
+                    $item .= "<li>$html</li>";
+                }
+            }
+            $wgOut->addHTML($item);
+        }
     }
 }
 

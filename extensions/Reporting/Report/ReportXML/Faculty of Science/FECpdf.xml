@@ -147,7 +147,7 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="students" type="PersonSupervisesReportItem" splitGrad="true" showCommittees="true">
+        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" footnotes="true" isTopAnchor="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -500,6 +500,11 @@
             <![CDATA[
                 <h2>Footnotes</h2>
                 <ul>
+            ]]>
+        </ReportItem>
+        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" footnotes="true" isTopAnchor="false">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
         <ReportItemSet id="products1_2" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">

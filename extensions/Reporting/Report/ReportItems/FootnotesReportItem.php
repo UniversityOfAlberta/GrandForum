@@ -5,8 +5,8 @@ class FootnotesReportItem extends AbstractReportItem {
     static $top_anchor = 1;
     static $bottom_anchor = 1;
 
-    function render(){
-        global $wgOut, $wgServer, $wgScriptPath, $config;
+    function getHTML(){
+        global $wgServer, $wgScriptPath, $config;
         $value = $this->getBlobValue();
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "100%";
         $height = (isset($this->attributes['height'])) ? $this->attributes['height'] : "100%";
@@ -41,12 +41,10 @@ class FootnotesReportItem extends AbstractReportItem {
             </script>
 EOF;
         $item .= $jscript;
-        $item = $this->processCData($item);
-        $wgOut->addHTML("$item");
+        return $item;
     }
-
-    function renderForPDF(){
-        global $wgOut;
+    
+    function getPDFHTML(){
         $value = $this->getBlobValue();
         $value = str_replace("<", "<&lt;", $value);
         $value = str_replace(">", "<&gt;", $value);
@@ -55,7 +53,6 @@ EOF;
         $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
         $item = "";
         if(trim($value) != ""){
-            
             if($isTopAnchor){ 
                 $item = "<a href='#footnote$blob' name='topnote$blob' class='anchor' id='goToFootnote$blob'>[".self::$top_anchor."]</a>";
                 self::$top_anchor += 1;
@@ -66,6 +63,22 @@ EOF;
             }
         }
         if(trim($value) != "" || $isTopAnchor){
+            return $item;
+        }
+        return "";
+    }
+
+    function render(){
+        global $wgOut;
+        $item = $this->processCData($this->getHTML());
+        $wgOut->addHTML($item);
+    }
+
+    function renderForPDF(){
+        global $wgOut;
+        $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
+        $item = $this->getPDFHTML();
+        if(trim($item) != "" || $isTopAnchor){
             $item = $this->processCData($item);
             $wgOut->addHTML("$item");
         }

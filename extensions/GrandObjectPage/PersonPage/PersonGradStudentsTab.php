@@ -234,7 +234,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $rowspan = count($row);
             $i = 0;
             foreach($row as $r){
-                $html .= "<tr>";
+                $html .= "<tr hqp-id='{$hqp->getId()}_".md5($position)."'>";
                 if($i == 0){
                     $html .= "<td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>";
                 }
@@ -362,7 +362,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $rowspan = count($row);
             $i = 0;
             foreach($row as $r){
-                $html .= "<tr>";
+                $html .= "<tr hqp-id='{$hqp->getId()}_".md5($position)."'>";
                 if($i == 0){
                     $html .= "<td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>";
                 }
