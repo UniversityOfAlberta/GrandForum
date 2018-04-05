@@ -3917,7 +3917,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -3925,7 +3925,7 @@ class Person extends BackboneModel {
         $papers = array();
         if($includeHQP){
             foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
-                $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false);
+                $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false, $networkRelated, $useReported, $onlyUseStartDate);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         $processed[$p->getId()] = true;
@@ -3961,7 +3961,7 @@ class Person extends BackboneModel {
         $structure = Product::structure();
         foreach($papers as $paper){
             $acceptanceDate = $paper->getAcceptanceDate();
-            $date = $paper->getDate();
+            $date = ($onlyUseStartDate) ? $acceptanceDate : $paper->getDate();
             if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
                 $acceptanceDate = $date;
             }

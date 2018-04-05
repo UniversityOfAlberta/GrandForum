@@ -10,6 +10,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $status = $this->getAttr("status", "");
         $submitProductYear = (strtolower($this->getAttr("submitProductYear", "false")) == "true");
         $useProductYear = (strtolower($this->getAttr("useProductYear", "false")) == "true");
+        $onlyUseStartDate = (strtolower($this->getAttr("onlyUseStartDate", "false")) == "true");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
@@ -27,7 +28,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                                       AND user_id = '{$person->getId()}'
                                       AND year = '{$year}'", true);
             }
-            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP));
+            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate));
             if($onlyHQP){
                 $hqps = $person->getHQPDuring($start_date, $end_date);
                 foreach($products as $key => $product){
