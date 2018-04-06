@@ -216,7 +216,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $milestones = $project->getMilestones(true);
         }
         else{
-            $milestones = $project->getMilestonesDuring(substr($year, 0, 4));
+            $milestones = $project->getMilestonesCreated(substr($year, 0, 4).'-03-31');
         }
         
         foreach($project->getActivities() as $activity){
@@ -331,6 +331,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         </thead>
                         <tbody>";
         foreach($activities as $activityId => $milestones){
+            if($year !== false && count($milestones) == 0){
+                continue;
+            }
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
             if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){

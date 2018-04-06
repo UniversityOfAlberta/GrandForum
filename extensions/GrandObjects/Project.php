@@ -1637,6 +1637,50 @@ EOF;
         return $milestones;
     }
     
+    // Returns an array of milestones where all the milestones which were created at any time during the given year
+    function getMilestonesCreated($date='0000-00-00', $fesMilestones=false){
+        $milestones = array();
+        $milestoneIds = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getMilestonesCreated($date) as $milestone){
+                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                        continue;
+                    }
+                    $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
+                    $milestones[] = $milestone;
+                }
+            }
+        }
+        
+        $sql = "SELECT MAX(id) as max_id, milestone_id
+                FROM grand_milestones
+                WHERE project_id ='{$this->id}'
+                AND milestone_id NOT IN ('".implode("','", $milestoneIds)."')
+                AND created <= $date";
+        if(!$fesMilestones){
+            $sql .= "\nAND activity_id != '0'";
+        }
+        else{
+            $sql .= "\nAND activity_id = '0'";
+        }
+        $sql .= "\nGROUP BY milestone_id
+                ORDER BY `order`, milestone_id";
+        $data = DBFunctions::execSQL($sql);
+        foreach ($data as $row){
+            $id = $row['max_id'];
+            $milestone_id = $row['milestone_id'];
+
+            $milestone = Milestone::newFromId($milestone_id, $id);
+            if($milestone->getStatus() == 'Deleted'){
+                continue;
+            }
+            $milestones[] = $milestone;
+        }
+        return $milestones;
+    }
+    
     /**
      * Returns the allocated amount that this Project received for the specified $year
      * If the data is not in the DB then it falls back to checking the uploaded revised budgets
