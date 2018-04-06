@@ -397,7 +397,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= "<h3>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised)</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['pdf'], $this->startRange, $this->endRange);
                 
-                $html .= "<h3>Technicians</h3>";
+                $html .= "<h3>Research/Technical Assistants</h3>";
                 $html .= $this->supervisesHTML(Person::$studentPositions['tech'], $this->startRange, $this->endRange);
                 
                 $html .= "<h3>Other</h3>";

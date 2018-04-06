@@ -89,7 +89,7 @@ class AddHqp extends SpecialPage{
         $employeeRow->append($employeeLabel)->append($employeeField->attr('size', 20));
         
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's Course", "Graduate Student - Master's Thesis", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's Course", "Graduate Student - Master's Thesis", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
         $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);

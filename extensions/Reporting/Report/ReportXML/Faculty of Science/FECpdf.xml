@@ -14,7 +14,7 @@
                                 <tr><td>Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
                                 <tr><td>Graduate Students(Supervised or Co-supervised):&nbsp;<b>{$user_grad_count}</td></b></tr>
                                 <tr><td>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):&nbsp;<b>{$user_fellow_count}</b></tr></td>
-                                <tr><td>Technicians:&nbsp;<b>{$user_tech_count}</b></tr></td>
+                                <tr><td>Research/Technical Assistants:&nbsp;<b>{$user_tech_count}</b></tr></td>
                                 <tr><td>Undergraduates (Supervised or Co-supervised):&nbsp;<b>{$user_ugrad_count}</b></tr></td>
                             </table>
                         </td>

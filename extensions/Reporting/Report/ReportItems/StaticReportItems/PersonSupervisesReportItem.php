@@ -66,7 +66,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                                           $this->getReport()->year."-06-30");
         }
         
-        $item .= "<br /><h4>Technicians: {$techCount}</h4>";
+        $item .= "<br /><h4>Research/Technical Assistants: {$techCount}</h4>";
         if($techCount > 0){
             $item .= $tab->supervisesHTML(Person::$studentPositions['tech'], 
                                           $this->getReport()->startYear."-07-01", 

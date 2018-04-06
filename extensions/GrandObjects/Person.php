@@ -34,7 +34,7 @@ class Person extends BackboneModel {
                                      'pdf'   => array("pdf",
                                                       "post-doctoral fellow",
                                                       "research associate"),
-                                     'tech'  => array("technician",
+                                     'tech'  => array("technical assistant",
                                                       "ra",
                                                       "research assistant",
                                                       "research/technical assistant", 
