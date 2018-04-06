@@ -1658,7 +1658,7 @@ EOF;
                 FROM grand_milestones
                 WHERE project_id ='{$this->id}'
                 AND milestone_id NOT IN ('".implode("','", $milestoneIds)."')
-                AND created <= $date";
+                AND created <= '$date'";
         if(!$fesMilestones){
             $sql .= "\nAND activity_id != '0'";
         }
