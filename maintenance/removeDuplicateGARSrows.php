@@ -22,8 +22,19 @@
         $saved_row = false;
         for($i = 0; $i < $count; $i++){
             $id = $data2[$i]['id'];
-              //save non-empty PDF blob
-            if($data2[$i]['pdf_contents'] != "" && $saved_row == false){
+              //check for sop annotation too
+            $sql4 = "SELECT `sop_id`
+                    FROM `grand_sop_annotation`
+                    WHERE `sop_id` = '{$id}'";
+            $data4 = DBFunctions::execSQL($sql4);
+
+              //first check if there are any annotations on sop .. if so skip
+            if(count($data4) > 0){
+                $saved_row = true;
+                continue;
+            }
+              //save one with a non-empty PDF blob if there is not one saved yet
+            elseif($data2[$i]['pdf_contents'] != "" && $saved_row == false){
                 $saved_row = true;
                 continue;
             }
@@ -53,9 +64,18 @@
                  WHERE `user_id` = $user_id";
         $data2 = DBFunctions::execSQL($sql2);
 
-          //delete duplicate rows keeping only the first row
+          //delete duplicate rows keeping only the first row or if it has a comment
         for($i = 1; $i < $count; $i++){
             $id = $data2[$i]['id'];
+              //check for comment here
+            $sql4 = "SELECT `blob_id`
+                     FROM `grand_report_blobs`
+                     WHERE (`rp_type` LIKE 'RP_OTT' OR `rp_type` LIKE 'RP_COM')
+                     AND `proj_id` = {$id}";
+            $data4 = DBFunctions::execSQL($sql4);
+            if(count($data4) > 0){
+                continue;
+            }
             $sql3 = "DELETE FROM `grand_gsms`
                      WHERE `id` = $id";
             $data3 = DBFunctions::execSQL($sql3, true);
@@ -81,7 +101,8 @@
                  ORDER BY `timestamp` DESC";
         $data2 = DBFunctions::execSQL($sql2);
 
-          //delete duplicate rows keeping only the first row which has most recent pdf generated based on timestamp
+          //delete duplicate rows keeping only the first row (this is the one that is updated during cv upload so it has most current updates keep for now).
+          //or keep if it has a faculty comment in blobs table
         for($i = 1; $i < $count; $i++){
             $id = $data2[$i]['report_id'];
             $sql3 = "DELETE FROM `grand_pdf_report`
