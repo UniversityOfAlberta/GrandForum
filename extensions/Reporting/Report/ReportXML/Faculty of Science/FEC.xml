@@ -406,7 +406,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" onlyUseStartDate="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
@@ -567,16 +567,16 @@ Add a new other teaching entry to create a new paragraph.<br />
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities&lt;span class='tooltip' style='cursor:default;' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations.&lt;br />
+&lt;br />
+(Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=\'_blank\' href=\'http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf\'>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=\'_blank\' href=\'http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf\'>FSO Agreement&lt;/a>.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
             <![CDATA[
-                <h2>Supplementary Professional Activities <span class='tooltip' style='cursor:default;' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations.<br />
-<br />
-(Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a target="_blank" href="http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf">Faculty Agreement</a> or to Article 8 of the <a target="_blank" href="http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf">FSO Agreement</a>.)'>&#9432;</span></h2>
                 {$item}
             ]]>
         </ReportItem>
-        
+    </ReportSection>
+    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
             <![CDATA[
                 <h2>Additional Data <span class='tooltip' style='cursor:default;' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.<br />

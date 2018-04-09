@@ -39,7 +39,9 @@ ProductEditView = Backbone.View.extend({
         "click #saveProduct": "saveProduct",
         "click #cancel": "cancel",
         "change #acceptance_date": "changeStart",
-        "change #date": "changeEnd"
+        "change #date": "changeEnd",
+        "change [name=data_start_date]": "changeDataStart",
+        "change [name=data_end_date]": "changeDataEnd"
     },
     
     changeStart: function(){
@@ -61,6 +63,24 @@ ProductEditView = Backbone.View.extend({
         var end_date = this.$("#date").val();
         if(end_date != "" && end_date != "0000-00-00"){
             this.$("#acceptance_date").datepicker("option", "maxDate", end_date);
+        }
+    },
+    
+    changeDataStart: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=data_start_date]").val();
+        var end_date = this.$("[name=data_end_date]").val();
+        if(start_date != "" && start_date != "0000-00-00"){
+            this.$("[name=data_end_date]").datepicker("option", "minDate", start_date);
+        }
+    },
+    
+    changeDataEnd: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=data_start_date]").val();
+        var end_date = this.$("[name=data_end_date]").val();
+        if(end_date != "" && end_date != "0000-00-00"){
+            this.$("[name=data_start_date]").datepicker("option", "maxDate", end_date);
         }
     },
     

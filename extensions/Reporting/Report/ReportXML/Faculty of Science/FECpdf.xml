@@ -312,7 +312,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" onlyUseStartDate="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <tr><td>{$product_title} <sup>{$item}</sup></td>
@@ -479,20 +479,24 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="spabookmark" type="BookmarkReportItem" title="Supplementary Professional Activities">
+            <![CDATA[
+                <h2>Supplementary Professional Activities</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
-            <![CDATA[
-                <h3>Supplementary Professional Activities</h3>{$item}
-            ]]>
-        </ReportItem>
         
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" showHeader="false" optional="true">
             <![CDATA[
-                <h3>Additional Data</h3>
                 {$item}
             ]]>
         </ReportItem>
