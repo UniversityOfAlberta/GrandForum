@@ -414,7 +414,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
                 }
                 else{
-                    $this->html .= "<td class='comment' style='width:25%;'>".nl2br($comment)."</td>";
+                    $this->html .= "<td class='comment'>".nl2br($comment)."</td>";
                 }
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();
