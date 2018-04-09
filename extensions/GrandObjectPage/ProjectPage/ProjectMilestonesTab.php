@@ -307,8 +307,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
-            $statusColspan++;
         }
+        else{
+            $commentsHeader = "<th>Comments</th>";
+        }
+        $statusColspan++;
         $this->html .= "<p>
                             <span class='milestones_note'><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br /></span>
                             <span class='new_milestones_message'>New Milestones have titles in bold.</span>
@@ -409,6 +412,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
                 if(!$pdf){
                     $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+                }
+                else{
+                    $this->html .= "<td class='comment' style='width:25%;'>".nl2br($comment)."</td>";
                 }
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();

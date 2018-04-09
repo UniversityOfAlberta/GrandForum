@@ -391,8 +391,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
-            $statusColspan++;
         }
+        else{
+            $commentsHeader = "<th>Comments</th>";
+        }
+        $statusColspan++;
         $this->html .= "<input type='hidden' name='milestone_activity[0]' value='' />
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
@@ -483,6 +486,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
             if(!$pdf){
                 $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+            }
+            else{
+                $this->html .= "<td class='comment' style='width:25%;'>".nl2br($comment)."</td>";
             }
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $statuses = array();
