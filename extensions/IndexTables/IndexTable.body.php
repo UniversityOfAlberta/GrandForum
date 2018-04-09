@@ -312,7 +312,6 @@ class IndexTable {
 			    $wgOut->setPageTitle($config->getValue('roleDefs', $role));
 				            $this->generatePersonTable($role);
                                 TabUtils::clearActions();
-
 			    }
                         }
                     }
