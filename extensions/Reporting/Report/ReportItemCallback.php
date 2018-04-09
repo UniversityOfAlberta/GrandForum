@@ -859,8 +859,8 @@ class ReportItemCallback {
     
     function getAwardYearRange(){
         $product = Paper::newFromId($this->reportItem->productId);
-        $startYear = $product->getData('start_date');
-        $endYear = $product->getData('end_date');
+        $startYear = substr($product->getData('start_date'), 0, 4);
+        $endYear = substr($product->getData('end_date'), 0, 4);
         if($startYear == $endYear){
             return $endYear;        
         }
