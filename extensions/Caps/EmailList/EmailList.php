@@ -27,12 +27,14 @@ class EmailList extends SpecialPage{
                     <th>Province</th>
                     <th>Language</th>
                     <th>Role</th>
+                    <th>Sub-Roles</th>
                     <th>Certified</th>
                 </tr>
             </thead>
             <tbody>");
         foreach($people as $person){
             $certified = (!$person->isCandidate()) ? "Yes" : "No";
+            $subRoles = $person->getSubRoles();
             $wgOut->addHTML("<tr>
                     <td>".time2date($person->getRegistration(), "Y-m-d H:i:s")."</td>
                     <td>{$person->getNameForForms()}</td>
@@ -41,6 +43,7 @@ class EmailList extends SpecialPage{
                     <td>{$person->getProvinceFromPostalCode()}</td>
                     <td>{$person->getUser()->getOption('language')}</td>
                     <td>{$person->getType()}</td>
+                    <td>".implode(", ", $subRoles)."</td>
                     <td>{$certified}</td>
                 </tr>");
         }
