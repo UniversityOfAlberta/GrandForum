@@ -17,7 +17,7 @@ class AcademicResources extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isLoggedIn();
+        return ($person->isRoleAtLeast(MANAGER) || $person->isSubRole('Academic Faculty'));
     }
 
     function execute($par){

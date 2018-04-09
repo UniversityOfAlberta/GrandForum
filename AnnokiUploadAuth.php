@@ -37,10 +37,18 @@ wfDebugLog( 'AnnokiUploadAuth', "\$filename is {$filename}" );
 
 $exploded = explode("/", $path);
 $file = $exploded[count($exploded)-1];
+$me = Person::newFromWgUser();
 
 $data = DBFunctions::select(array('mw_page'),
                             array('*'),
                             array('page_title' => EQ("{$file}")));
+if((strpos($file, "Presentations_") === 0 ||
+    strpos($file, "Surveys_") === 0 ||
+    strpos($file, "Curricula_") === 0) &&
+   (!$me->isRoleAtLeast(MANAGER) && !$me->isSubRole('Academic Faculty'))){
+   wfForbidden();
+}
+   
 $wikipage = @WikiPage::newFromRow((object)$data[0]);
 if(!wfLocalFile($file)->exists()){
     $data = DBFunctions::select(array('mw_an_upload_permissions'),
@@ -100,7 +108,6 @@ $title = $title->getPrefixedText();
 
 // Check the whitelist if needed
 if( !$wgUser->getId() && ( !is_array( $wgWhitelistRead ) || !in_array( $title, $wgWhitelistRead ) ) ) {
-	echo $title;
 	$title_tmp = str_replace("File:", "", str_replace(" ", "_", $title));
 	wfDebugLog( 'AnnokiUploadAuth', "Not logged in and `{$title}` not in whitelist." );
 	$upTable = getTableName("an_upload_permissions");

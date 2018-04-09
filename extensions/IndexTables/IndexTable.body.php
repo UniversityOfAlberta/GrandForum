@@ -14,8 +14,8 @@ $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 
 class IndexTable {
 
-	var $text = "";
-	
+    var $text = "";
+
     static function externalRedirect($out, $parseroutput){
         global $wgTitle;
         if($wgTitle->getNsText() == "File"){
@@ -23,8 +23,8 @@ class IndexTable {
         }
         return true;
     }
-	
-	static function createSubTabs(&$tabs){
+
+    static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgLang, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         $aliases = $config->getValue('roleAliases');
@@ -55,27 +55,26 @@ class IndexTable {
                 }
             }
         }
-	if($me->isLoggedIn()){
-	    if($wgLang->getCode() == 'en'){
+    if($me->isLoggedIn()){
+        if($wgLang->getCode() == 'en'){
                 $peopleSubTab = TabUtils::createSubTab("People");
-	    }
-            else if($wgLang->getCode() == 'fr'){
-                $peopleSubTab = TabUtils::createSubTab("Gens");
+        }
+        else if($wgLang->getCode() == 'fr'){
+            $peopleSubTab = TabUtils::createSubTab("Gens");
+        }
+        $roles = array_values($wgAllRoles);
+        sort($roles);
+        foreach($roles as $role){
+            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
+                if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
+                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                }
             }
-            $roles = array_values($wgAllRoles);
-            sort($roles);
-            foreach($roles as $role){
-            	if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
-		    if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
-                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                     $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
-		}
-            	}
-
-	    }
-                $tabs['Main']['subtabs'][] = $peopleSubTab;
-	}
-	if(isExtensionEnabled('Products')){
+        }
+        $tabs['Main']['subtabs'][] = $peopleSubTab;
+    }
+    if(isExtensionEnabled('Products')){
             $selected = ($wgTitle->getText() == "Products" || 
                          $wgTitle->getText() == "Multimedia" ||
                          $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
@@ -93,16 +92,16 @@ class IndexTable {
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
 
-      $selected = ($wgTitle->getText() == "ALL Stories" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
-	if($wgLang->getCode() == "en"){
-            $storiesSubTab = TabUtils::createSubTab("All Cases", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
-	}
+        $selected = ($wgTitle->getText() == "ALL Stories" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
+        if($wgLang->getCode() == "en"){
+                $storiesSubTab = TabUtils::createSubTab("All Cases", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
+        }
         else if($wgLang->getCode() == "fr"){
             $storiesSubTab = TabUtils::createSubTab("Tous Les Cas", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
         }
         if($wgUser->isLoggedIn() && $me->isRoleAtLeast(NI)){
-	    $tabs['Main']['subtabs'][] = $storiesSubTab;
-	}
+            $tabs['Main']['subtabs'][] = $storiesSubTab;
+        }
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -137,38 +136,38 @@ class IndexTable {
 
         return true;
     }
-	
-	function userCanExecute(&$title, &$user, $action, &$result){
-	    global $wgOut, $wgServer, $wgScriptPath, $config;
-	    if($title->getNSText() == "{$config->getValue('networkName')}"){
-	        $me = Person::newFromUser($user);
-	        $text = $title->getText();
-	        switch ($title->getText()) {
-	            case 'ALL '.HQP:
-				case 'Multimedia':
-				    $result = $me->isLoggedIn();
-	                break;
-				case 'Forms':
-				    $result = $me->isRoleAtLeast(MANAGER);
-				    break;
-	        }
-	    }
-	    return true;
-	}
 
-	function generateTable($out, $parseroutput){
-		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles, $wgLang;
-		$me = Person::newFromWgUser();
-		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
-		    $result = true;
-		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
-		    if(!$result || !$wgUser->isLoggedIn()){
-	            $wgOut->loginToUse();
-		        $wgOut->output();
-		        $wgOut->disable();
-			    return true;
-	        }
-		    $wgOut->addScript("<script type='text/javascript'>
+    function userCanExecute(&$title, &$user, $action, &$result){
+        global $wgOut, $wgServer, $wgScriptPath, $config;
+        if($title->getNSText() == "{$config->getValue('networkName')}"){
+            $me = Person::newFromUser($user);
+            $text = $title->getText();
+            switch ($title->getText()) {
+                case 'ALL '.HQP:
+                case 'Multimedia':
+                    $result = $me->isLoggedIn();
+                    break;
+                case 'Forms':
+                    $result = $me->isRoleAtLeast(MANAGER);
+                    break;
+            }
+        }
+        return true;
+    }
+
+    function generateTable($out, $parseroutput){
+        global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles, $wgLang;
+        $me = Person::newFromWgUser();
+        if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
+            $result = true;
+            $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+            if(!$result || !$wgUser->isLoggedIn()){
+                $wgOut->loginToUse();
+                $wgOut->output();
+                $wgOut->disable();
+                return true;
+            }
+            $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('.indexTable').css('display', 'table');
                     $('.dataTables_filter').css('float', 'none');
@@ -176,161 +175,159 @@ class IndexTable {
                     $('.dataTables_filter input').css('width', 250);
                 });
             </script>");
-			switch ($wgTitle->getText()) {
-				case 'Multimedia':
-				    $wgOut->setPageTitle("Multimedia");
-				    $this->generateMaterialsTable();
+            switch ($wgTitle->getText()) {
+                case 'Multimedia':
+                    $wgOut->setPageTitle("Multimedia");
+                    $this->generateMaterialsTable();
+                    TabUtils::clearActions();
+                    break;
+                case 'Forms':
+                    if($me->isRoleAtLeast(MANAGER)){
+                        $wgOut->setPageTitle("Forms");
+                        $this->generateFormsTable();
+                                TabUtils::clearActions();
+                    }
+                    break;
+                case 'Projects':
+                    $wgOut->setPageTitle("Current Projects");
+                    $this->generateProjectsTable('Active', 'Research');
                                 TabUtils::clearActions();
 
-				    break;
-				case 'Forms':
-				    if($me->isRoleAtLeast(MANAGER)){
-				        $wgOut->setPageTitle("Forms");
-				        $this->generateFormsTable();
+                    break;
+                case 'CompletedProjects':
+                    $wgOut->setPageTitle("Completed Projects");
+                    $this->generateProjectsTable('Ended', 'Research');
                                 TabUtils::clearActions();
 
-				    }
-				    break;
-			    case 'Projects':
-			        $wgOut->setPageTitle("Current Projects");
-				    $this->generateProjectsTable('Active', 'Research');
+                    break;
+                case 'AdminProjects':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    $this->generateAdminTable();
                                 TabUtils::clearActions();
 
-				    break;
-				case 'CompletedProjects':
-			        $wgOut->setPageTitle("Completed Projects");
-				    $this->generateProjectsTable('Ended', 'Research');
+                    break;
+                case Inflect::pluralize($config->getValue('projectThemes')):
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    $this->generateThemesTable();
                                 TabUtils::clearActions();
 
-				    break;
-				case 'AdminProjects':
-			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
-				    $this->generateAdminTable();
-                                TabUtils::clearActions();
-
-				    break;
-			    case Inflect::pluralize($config->getValue('projectThemes')):
-			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
-				    $this->generateThemesTable();
-                                TabUtils::clearActions();
-
-				    break;
+                    break;
                 case 'ALL Stories':
-                                $wgOut->setPageTitle("All Cases or Experiences");
+                    $wgOut->setPageTitle("All Cases or Experiences");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Tous Les Cas");
                     }
-		    if($me->isRoleAtLeast(NI)){
-                                $this->generateUserStoriesTable();
-                                TabUtils::clearActions();
-			}
-                                break;
-			   case 'ALL Clinical':
-				$wgOut->setPageTitle("Clinical Guidelines");
+                    if($me->isRoleAtLeast(NI)){
+                        $this->generateUserStoriesTable();
+                        TabUtils::clearActions();
+                    }
+                    break;
+               case 'ALL Clinical':
+                    $wgOut->setPageTitle("Clinical Guidelines");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Lignes directrices cliniques");
                     }
-				$this->generatePersonTable("Clinical");	
-			        break;
+                    $this->generatePersonTable("Clinical");
+                    break;
 
                 case 'ALL Presentations':
-                $wgOut->setPageTitle("Presentations file");
+                    $wgOut->setPageTitle("Presentations file");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Fichier de présentations");
                     }
-                $this->generatePersonTable("Presentations"); 
+                    $this->generatePersonTable("Presentations"); 
                     break;
                 case 'ALL Surveys':
-                $wgOut->setPageTitle("Survey Instruments");
+                    $wgOut->setPageTitle("Survey Instruments");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Fichier de présentations");
                     }
-                $this->generatePersonTable("Surveys"); 
+                    $this->generatePersonTable("Surveys"); 
                     break;
                 case 'ALL Curricula':
-                $wgOut->setPageTitle("Curricula");
+                    $wgOut->setPageTitle("Curricula");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Fichier de présentations");
                     }
-                $this->generatePersonTable("Curricula"); 
+                    $this->generatePersonTable("Curricula"); 
                     break;
 
-			   case 'ALL Tools':
-				$wgOut->setPageTitle("Tools & Tips");
+                case 'ALL Tools':
+                    $wgOut->setPageTitle("Tools & Tips");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Outils et conseils");
                     }
-				$this->generatePersonTable("Tools");	
-			        break;
+                    $this->generatePersonTable("Tools");
+                    break;
 
                case 'ALL Canadian':
-                $wgOut->setPageTitle("Canadian Resources");
+                    $wgOut->setPageTitle("Canadian Resources");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Ressources Canadiennes");
                     }
-				$this->generatePersonTable("Canadian");	
-			        break;
+                    $this->generatePersonTable("Canadian");
+                    break;
 
                 case 'ALL French Form':
                     $wgOut->setPageTitle("Formulaires en français");
                     $this->generatePersonTable("French Form");
                     break;
 
-			   case 'ALL Organizations':
-				$wgOut->setPageTitle("Organizations");
+                case 'ALL Organizations':
+                    $wgOut->setPageTitle("Organizations");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Organizations");
                     }
-				$this->generatePersonTable("Organizations");	
-			        break;
+                    $this->generatePersonTable("Organizations");
+                    break;
 
-			   case 'ALL Articles':
-				$wgOut->setPageTitle("Articles");
+                case 'ALL Articles':
+                    $wgOut->setPageTitle("Articles");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Des Articles");
                     }
-				$this->generatePersonTable("Articles");	
-			        break;
-			   case 'ALL Patients':
-				$wgOut->setPageTitle("Patient Resources");
+                    $this->generatePersonTable("Articles");
+                    break;
+                case 'ALL Patients':
+                    $wgOut->setPageTitle("Patient Resources");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Les Ressources des Patients");
                     }
-				    $this->generatePersonTable("Patients");	
-			        break;                    
+                    $this->generatePersonTable("Patients");
+                    break;                    
                            case 'ALL Resources':
                                 $wgOut->setPageTitle("Resources");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Ressources");
                     }
-                                $this->generatePersonTable("Resources");
-                                break;
-			    default:
-			        foreach($wgAllRoles as $role){
+                    $this->generatePersonTable("Resources");
+                    break;
+                default:
+                    foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
-			    if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
-			    $wgOut->setPageTitle($config->getValue('roleDefs', $role));
-				            $this->generatePersonTable($role);
-                                TabUtils::clearActions();
-			    }
+                            if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
+                            $wgOut->setPageTitle($config->getValue('roleDefs', $role));
+                                        $this->generatePersonTable($role);
+                                            TabUtils::clearActions();
+                            }
                         }
                     }
-				    break;
-			}
-			$wgOut->addHTML($this->text);
-			$wgOut->output();
-			$wgOut->disable();
-		}
-		return true;
-	}
-	
-	/**
-	 * Generates the Table for the projects
-	 * Consists of the following columns
-	 * Acronym | Name 
-	 */
-	private function generateProjectsTable($status, $type="Research"){
-		global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
+                    break;
+            }
+            $wgOut->addHTML($this->text);
+            $wgOut->output();
+            $wgOut->disable();
+        }
+        return true;
+    }
+
+    /**
+     * Generates the Table for the projects
+     * Consists of the following columns
+     * Acronym | Name 
+     */
+    private function generateProjectsTable($status, $type="Research"){
+        global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $themesHeader = "";
         $idHeader = "";
@@ -341,13 +338,13 @@ class IndexTable {
             $idHeader = "<th>Project Id</th>";
         }
         $data = Project::getAllProjectsEver();
-	    $this->text .= "
+        $this->text .= "
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
             <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>";
-	    foreach($data as $proj){
-	        if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
-	            $this->text .= "
+        foreach($data as $proj){
+            if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
+                $this->text .= "
                     <tr>
                     <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>";
@@ -359,39 +356,36 @@ class IndexTable {
                 }
                 $this->text .= "</tr>\n";
             }
-	    }
-	    $this->text .= "</tbody></table>";
-		$this->text .= "<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+        }
+        $this->text .= "</tbody></table>";
+        $this->text .= "<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+        return true;
+    }
 
-		return true;
-	}
-	
-	/**
-	 * Generates the Table for the themes
-	 * Consists of the following columns
-	 * Theme | Name 
-	 */
-	private function generateThemesTable(){
-		global $wgScriptPath, $wgServer, $config;
-		$this->text .=
-"<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
-";
+    /**
+     * Generates the Table for the themes
+     * Consists of the following columns
+     * Theme | Name 
+     */
+    private function generateThemesTable(){
+        global $wgScriptPath, $wgServer, $config;
+        $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                        <thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>";
         $themes = Theme::getAllThemes(PROJECT_PHASE);
-		foreach($themes as $theme){
-		    $leaders = array();
-		    $coordinators = array();
-		    $leads = $theme->getLeaders();
-		    $coords = $theme->getCoordinators();
+        foreach($themes as $theme){
+            $leaders = array();
+            $coordinators = array();
+            $leads = $theme->getLeaders();
+            $coords = $theme->getCoordinators();
             foreach($leads as $lead){
                 $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
             foreach($coords as $coord){
                 $coordinators[] = "<a href='{$coord->getUrl()}'>{$coord->getNameForForms()}</a>";
             }
-		    $leadersString = implode(", ", $leaders);
-		    $coordsString = implode(", ", $coordinators);
-			$this->text .= <<<EOF
+            $leadersString = implode(", ", $leaders);
+            $coordsString = implode(", ", $coordinators);
+            $this->text .= <<<EOF
 <tr>
 <td align='left'>
 <a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
@@ -399,26 +393,24 @@ class IndexTable {
 {$theme->getName()}
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
-		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+        }
+        $this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
-		return true;
-	}
-	
-	/**
-	 * Generates the Table of Admin Projects
-	 */
-	private function generateAdminTable(){
-	    global $wgScriptPath, $wgServer, $config;
-	    $me = Person::newFromWgUser();
-	    $activityPlans = "";
-	    if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
-	        $activityPlans = "<th>Activity Plans</th>";
-	    }
-		$this->text .=
-"<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>
-";
+        return true;
+    }
+
+    /**
+     * Generates the Table of Admin Projects
+     */
+    private function generateAdminTable(){
+        global $wgScriptPath, $wgServer, $config;
+        $me = Person::newFromWgUser();
+        $activityPlans = "";
+        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
+            $activityPlans = "<th>Activity Plans</th>";
+        }
+        $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                        <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>";
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
             if($project->getType() == 'Administrative'){
@@ -470,40 +462,44 @@ EOF;
                 $this->text .= "</tr>";
             }
         }
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+        $this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
-		return true;
-	}
-	
-	/**
-	 * Generates the Table for the Network Investigators, Collaborating
-	 * Researchers, or Highly-Qualified People, depending on parameter
-	 * #table.
-	 * Consists of the following columns
-	 * User Page | Projects | Twitter
-	 */
-	private function generatePersonTable($table){
-	    global $wgAllRoles;
-	    $me = Person::newFromWgUser();
-	    $tabbedPage = new TabbedPage("people");
-	    $visibility = true;
-	    if(in_array($table,$wgAllRoles)){
-	        $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
-	        if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
-            	    $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
-	        }
-	    }
-	    else{
+        return true;
+    }
+
+    /**
+     * Generates the Table for the Network Investigators, Collaborating
+     * Researchers, or Highly-Qualified People, depending on parameter
+     * #table.
+     * Consists of the following columns
+     * User Page | Projects | Twitter
+     */
+    private function generatePersonTable($table){
+        global $wgAllRoles;
+        $me = Person::newFromWgUser();
+        if(($table == "Presentations" || $table == "Surveys" || $table == "Curricula") && 
+           (!$me->isRoleAtLeast(STAFF) && !$me->isSubRole('Academic Faculty'))){
+            permissionError();
+        }
+        $tabbedPage = new TabbedPage("people");
+        $visibility = true;
+        if(in_array($table,$wgAllRoles)){
+            $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
+            if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
                 $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
-	    }
-            $tabbedPage->showPage();
-		return true;
-	}
-	
-	function generateMaterialsTable(){
-	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>";
+            }
+        }
+        else{
+            $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+        }
+        $tabbedPage->showPage();
+        return true;
+    }
+
+    function generateMaterialsTable(){
+        global $wgServer, $wgScriptPath;
+        $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                       <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>";
         $materials = Material::getAllMaterials();
         foreach($materials as $material){
             $this->text .= "<tr><td>{$material->getDate()}</td><td><a href='{$material->getUrl()}'>{$material->getTitle()}</a></td><td>{$material->getHumanReadableType()}</td>";
@@ -526,17 +522,17 @@ EOF;
         }
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
-	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
-	        });
-	    </script>";
-	    return true;
-	}
-	
-	function generateFormsTable(){
-	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+            $(document).ready(function(){
+                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+                $('.indexTable').dataTable().fnSort([[0,'desc']]);
+            });
+        </script>";
+        return true;
+    }
+
+    function generateFormsTable(){
+        global $wgServer, $wgScriptPath;
+        $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>";
         $forms = Form::getAllForms();
         foreach($forms as $form){
@@ -559,21 +555,21 @@ EOF;
         }
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
-	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
-	        });
-	    </script>";
-	    return true;
-	}
+            $(document).ready(function(){
+                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+                $('.indexTable').dataTable().fnSort([[0,'desc']]);
+            });
+        </script>";
+        return true;
+    }
 
     private function generateUserStoriesTable(){
-	    global $wgUser,$wgOut, $config;
-	    if(!$wgUser->isLoggedIn()){
-		    permissionError();
-	    }
+        global $wgUser,$wgOut, $config;
+        if(!$wgUser->isLoggedIn()){
+            permissionError();
+        }
         $me = Person::newFromWgUser();
-	    $this->text .= "Below are all the current cases in {$config->getValue('networkName')}.  To search for a case in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
+        $this->text .= "Below are all the current cases in {$config->getValue('networkName')}.  To search for a case in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
 
         $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>";
@@ -585,13 +581,13 @@ EOF;
 
         $stories = Story::getAllUserStories();
         foreach($stories as $story){
-		    if($story->getApproved()){
+            if($story->getApproved()){
                 $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".str_replace(">","&gt",str_replace("<","&lt;",$story->getTitle()))."</a></td>";
                 if($me->isRoleAtLeast(MANAGER)){
                      $this->text .= "<td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>";
                 }
                 $this->text .= "<td style='white-space: nowrap;'>".$story->getDateSubmitted()."</td></tr>";
-		    }
+            }
         }
         $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
         return true;
