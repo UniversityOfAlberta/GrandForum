@@ -131,6 +131,7 @@ class ReportItemCallback {
             //Awards
             "award_scope" => "getAwardScope",
             "award_by" => "getAwardedBy",
+            "award_year_range" => "getAwardYearRange",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -854,6 +855,24 @@ class ReportItemCallback {
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
         return @$product['awarded_by'];
+    }
+    
+    function getAwardedYearRange(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $startYear = $product->getData('start_date');
+        $endYear = $product->getData('end_date');
+        if($startYear == $endYear){
+            return $endYear;        
+        }
+        else if($startYear == "0000"){
+            return $endYear;
+        }
+        else if($endYear == "0000"){
+            return "{$startYear} - Present";
+        }
+        else{
+            return "{$startYear} - {$endYear}";
+        }
     }
     
     function getProductAcceptanceYear(){

@@ -463,7 +463,7 @@
                             <td align='left'>{$product_type}</td>
                             <td align='left'>{$award_by}</td>
                             <td align='left'>{$award_scope}</td>
-                            <td align='center'>{$product_year_range}</td>
+                            <td align='center'>{$award_year_range}</td>
                         </tr>
                     ]]>
                 </ReportItem>

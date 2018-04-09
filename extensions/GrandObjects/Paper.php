@@ -1453,6 +1453,9 @@ class Paper extends BackboneModel{
         $amonth = date('F', strtotime($acceptance_date));
         $amon = date('M', strtotime($acceptance_date));
         
+        $data_syyyy = substr($this->getData('start_date'), 0, 4);
+        $data_eyyyy = substr($this->getData('end_date'), 0, 4);
+        
         foreach($matches as $key => $match){
             $match1 = $match;
             $match2 = $match;
@@ -1480,6 +1483,8 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%volume",    $volume,    $match1);
             $match1 = str_ireplace("%ranking",   $ranking,   $match1);
             $match1 = str_ireplace("%if",        $if,        $match1);
+            $match1 = str_ireplace("%data_syyyy",$data_syyyy,$match1);
+            $match1 = str_ireplace("%data_eyyyy",$data_eyyyy,$match1);
 
             $match2 = str_ireplace("%yyyy",      "", $match2);
             $match2 = str_ireplace("%yy",        "", $match2);
@@ -1504,6 +1509,8 @@ class Paper extends BackboneModel{
             $match2 = str_ireplace("%volume",    "", $match2);
             $match2 = str_ireplace("%ranking",   "", $match2);
             $match2 = str_ireplace("%if",        "", $match2);
+            $match2 = str_ireplace("%data_syyyy","", $match2);
+            $match2 = str_ireplace("%data_eyyyy","", $match2);
             
             if($match1 == $match2){
                  $matches[$key] = "";
