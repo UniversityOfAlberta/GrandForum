@@ -30,6 +30,12 @@ Feature: Contributions
         And I should see "Google"
         And I should see "Phase2Project3"
         
+    Scenario: PL Trying to view the Contributions of an NI project member
+        Given I am logged in as "PL.User2" using password "PL.Pass2"
+        When I follow "Manage Contributions"
+        And I follow "New Contribution 1"
+        Then I should see "Phase2Project3"
+        
     Scenario: NI Trying to create a contribution with no partners (should be allowed)
         Given I am logged in as "NI.User4" using password "NI.Pass4"
         When I follow "Manage Contributions"

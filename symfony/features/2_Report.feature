@@ -21,6 +21,14 @@ Feature: Reporting
         And I go to "index.php/Special:Report?report=Report"
         Then I should see "Filled in Text"
         
+    Scenario: Word Count with hyphens
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report"
+        And I fill in TinyMCE "Section1_textarea" with "Hello-World"
+        Then I should see "1 words"
+        When I fill in TinyMCE "Section1_textarea" with "Hello-World two three four five six seven eight nine ten"
+        Then I should see "10 words"
+        
     Scenario: NI generates and submits the report
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Report?report=Report"

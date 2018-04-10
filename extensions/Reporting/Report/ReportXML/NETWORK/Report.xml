@@ -10,7 +10,12 @@
         <ReportItem id="text1" type="Text" blobItem="TEXT1">
             <![CDATA[
                 {$item}<br />
-                Value: {getText(RP_TEST,SEC1,TEXT1,0,{$user_id},0}
+                Value: {getText(RP_TEST,SEC1,TEXT1,0,{$user_id},0}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="textarea" type="Textarea" blobItem="TEXT2" rich="true" limit="10">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>

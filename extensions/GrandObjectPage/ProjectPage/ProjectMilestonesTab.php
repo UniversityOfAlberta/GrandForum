@@ -216,7 +216,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $milestones = $project->getMilestones(true);
         }
         else{
-            $milestones = $project->getMilestonesDuring(substr($year, 0, 4));
+            $milestones = $project->getMilestonesCreated(substr($year, 0, 4).'-03-31');
         }
         
         foreach($project->getActivities() as $activity){
@@ -253,7 +253,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
-        $statusColspan = 1;
+        $statusColspan = 2;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -301,11 +301,17 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             else {
                 $this->html .= "<p class='milestone_info2'>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
             }
+            if($me->isRoleAtLeast(STAFF)){
+                $statusColspan++;
+            }
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
-            $statusColspan++;
         }
+        else{
+            $commentsHeader = "<th>Comments</th>";
+        }
+        $statusColspan++;
         $this->html .= "<p>
                             <span class='milestones_note'><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br /></span>
                             <span class='new_milestones_message'>New Milestones have titles in bold.</span>
@@ -315,9 +321,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         <tr>
                             <th colspan='1'></th>";
         $this->showYearsHeader();
-        if($me->isRoleAtLeast(STAFF)){
-            $statusColspan++;
-        }
         $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
@@ -331,6 +334,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         </thead>
                         <tbody>";
         foreach($activities as $activityId => $milestones){
+            if($year !== false && count($milestones) == 0){
+                continue;
+            }
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
             if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
@@ -406,6 +412,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
                 if(!$pdf){
                     $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+                }
+                else{
+                    $this->html .= "<td class='comment'>".nl2br($comment)."</td>";
                 }
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();

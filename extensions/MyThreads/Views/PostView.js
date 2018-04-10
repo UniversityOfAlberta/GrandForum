@@ -89,7 +89,6 @@ PostView = Backbone.View.extend({
                     source: this.tinyMCEMention
                 },
                 file_browser_callback: function(field_name, url, type, win) {
-                    // console.log($('#tinyMCEUploadForm input'));
                     if(type=='image') $('#tinyMCEUploadForm input').click();
                 },
                 paste_data_images: true,

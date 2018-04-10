@@ -339,7 +339,7 @@
                 {$item}
             ]]>
         </ReportItem>
-            <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" optional="true">
+            <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" recommended="true" optional="true">
                 <![CDATA[
                     <h2>Objectives during the renewal period and justification based on progress to date</h2>
                     {$item}

@@ -1686,3 +1686,9 @@ input.popupBlockSearch {
 table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
     border-color: #555555;
 }
+
+/* TinyMCE */
+
+.mce-notification-error {
+    display: none;
+}

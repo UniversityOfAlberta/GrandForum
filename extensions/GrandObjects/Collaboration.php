@@ -23,9 +23,9 @@ class Collaboration extends BackboneModel{
     var $funding = 0;
     var $year = YEAR;
     var $knowledgeUser = false;
-
-    var $person = null;
+    var $accessId = 0;
     var $projects = array();
+    var $projectsWaiting = true;
     
     /**
      * Returns a new Collaboration from the given id
@@ -34,7 +34,7 @@ class Collaboration extends BackboneModel{
      */
     static function newFromId($id){
         $me = Person::newFromWgUser();
-        if (!$me->isLoggedIn()) {
+        if(!$me->isLoggedIn()) {
             return new Collaboration(array());
         }
 
@@ -47,6 +47,9 @@ class Collaboration extends BackboneModel{
                                     array('*'),
                                     array('id' => EQ($id)));
         $collab = new Collaboration($data);
+        if(!$collab->isAllowedToEdit()){
+            $collab = new Contribution(array());
+        }
         self::$cache[$collab->id] = &$collab;
         return $collab;
     }
@@ -65,7 +68,10 @@ class Collaboration extends BackboneModel{
                                     array('id'));
         $collabs = array();
         foreach($data as $row){
-            $collabs[] = Collaboration::newFromId($row['id']);
+            $collab = Collaboration::newFromId($row['id']);
+            if($collab->getId() != 0){
+                $collabs[] = $collab;
+            }
         }
         return $collabs;
     }
@@ -99,8 +105,10 @@ class Collaboration extends BackboneModel{
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $collab = new Collaboration(array($row));
-                self::$cache[$collab->getId()] = $collab;
-                $collabs[$collab->getId()] = $collab;
+                if($collab->isAllowedToEdit()){
+                    self::$cache[$collab->getId()] = $collab;
+                    $collabs[$collab->getId()] = $collab;
+                }
             }
         }
         return $collabs;
@@ -122,6 +130,8 @@ class Collaboration extends BackboneModel{
             $this->other = $data[0]['other'];
             $this->funding = $data[0]['funding'];
             $this->knowledgeUser = $data[0]['knowledge_user'];
+            $this->projectsWaiting = true;
+            $this->accessId = $data[0]['access_id'];
         }
     }
     
@@ -184,8 +194,58 @@ class Collaboration extends BackboneModel{
     function getYear() {
         return $this->year;
     }
+    
+    function getAccessId(){
+        return $this->accessId;
+    }
+    
+    /**
+     * Returns whether or not this logged in user can edit this Collaboration
+     */
+    function isAllowedToEdit($me=null){
+        // There might be some inefficiencies in this function.
+        // There could probably be some stuff cached to speed it up.
+        if($this->getId() == ""){
+            return false;
+        }
+        if($me == null){
+            $me = Person::newFromWgUser();
+        }
+        if(!$me->isLoggedIn()){
+            return false;
+        }
+        if($me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        if($this->getAccessId() == $me->getId()){
+            return true;
+        }
+
+        $oldProjectsWaiting = $this->projectsWaiting;
+        $oldProjects = $this->projects;
+        $this->projectsWaiting = true;
+        $projects = $this->getProjects();
+        $this->projects = $oldProjects;
+        $this->projectsWaiting = $oldProjectsWaiting;
+        foreach($projects as $project){
+            if($me->leadershipOf($project) || 
+               $me->isThemeLeaderOf($project) ||
+               $me->isThemeCoordinatorOf($project)){
+                return true;
+            }
+        }
+        
+        $hqps = $me->getHQP(true);
+        foreach($hqps as $hqp){
+            if($this->isAllowedToEdit($hqp)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     function create(){
+        $me = Person::newFromWgUser();
         if(($this->getTitle() == null) || ($this->getTitle() == "")) {
             return false;
         }
@@ -211,7 +271,8 @@ class Collaboration extends BackboneModel{
                                   'position' => $this->position,
                                   'year' => $this->year,
                                   'funding' => $this->funding,
-                                  'knowledge_user' => $this->knowledgeUser));
+                                  'knowledge_user' => $this->knowledgeUser,
+                                  'access_id' => $me->getId()));
         if($status){
             $this->id = DBFunctions::insertId();
         }
@@ -229,11 +290,15 @@ class Collaboration extends BackboneModel{
                                               true);
             }
         }
-
+        $this->projectsWaiting = true;
+        DBFunctions::commit();
         return $this;
     }
     
     function update(){
+        if(!$this->isAllowedToEdit()){
+            return $this;
+        }
         if(($this->getTitle() == null) || ($this->getTitle() == "")) {
             return false;
         }
@@ -244,7 +309,6 @@ class Collaboration extends BackboneModel{
                 $project->id = $p->getId();
             }
         }
-
 
         $status = DBFunctions::update('grand_collaborations',
                             array('organization_name' => $this->title,
@@ -277,6 +341,7 @@ class Collaboration extends BackboneModel{
                                               true);
             }
         }
+        $this->projectsWaiting = true;
         DBFunctions::commit();
         return $this;
     }
@@ -286,22 +351,25 @@ class Collaboration extends BackboneModel{
      * @return array The Projects which this Paper is related to
      */
     function getProjects(){
-        $this->projects = array();
-        $data = DBFunctions::select(array('grand_collaboration_projects'), 
-                            array('project_id'),
-                            array('collaboration_id' => $this->getId()));
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if($project instanceof Project){
-                $this->projects[] = $project;
+        if($this->projectsWaiting){
+            $this->projects = array();
+            $data = DBFunctions::select(array('grand_collaboration_projects'), 
+                                        array('project_id'),
+                                        array('collaboration_id' => $this->getId()));
+            foreach($data as $row){
+                $project = Project::newFromId($row['project_id']);
+                if($project instanceof Project){
+                    $this->projects[] = $project;
+                }
             }
+            $this->projectsWaiting = false;
         }
         return $this->projects;
     }
     
     function delete(){
         $me = Person::newFromWgUser();
-        if ($me->isLoggedIn()){
+        if($this->isAllowedToEdit()){
             DBFunctions::delete('grand_collaborations',
                                 array('id' => EQ($this->getId())));
             DBFunctions::delete('grand_collaboration_projects',
@@ -312,7 +380,6 @@ class Collaboration extends BackboneModel{
     }
     
     function toArray(){
-
         $projects = array();
         if(is_array($this->getProjects())){
             foreach($this->getProjects() as $project){
