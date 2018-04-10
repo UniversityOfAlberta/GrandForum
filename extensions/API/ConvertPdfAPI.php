@@ -157,7 +157,9 @@ class ConvertPdfAPI extends API{
         $errors = array();
         $num_file = 0;
         foreach($tmpfiles as $tmpfile){
-            $contents = file_get_contents($tmpfile);
+            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /home/dwt/output.txt", $output);
+            $contents = file_get_contents("{$tmpfile}.out");
+            unlink("{$tmpfile}.out");
             $data = $this->extract_pdf_data($contents);
             if(isset($_POST['id'])){
                 $userId = $_POST['id'];
