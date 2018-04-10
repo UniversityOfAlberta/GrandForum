@@ -286,7 +286,9 @@ BibliographyView = Backbone.View.extend({
 
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
-                    this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
+                    var citation = product.get('citation');
+                    citation = citation.replace(/ [a-zA-Z]{3}[)][.]/, ").");
+                    this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + citation + "<br />");
 
                     var id = product.get('id');
                     var descLink = "<p style='text-align:left;'>";
