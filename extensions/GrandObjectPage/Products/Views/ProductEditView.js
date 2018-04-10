@@ -31,7 +31,8 @@ ProductEditView = Backbone.View.extend({
     
     events: {
         "click #saveProduct": "saveProduct",
-        "click #cancel": "cancel"
+        "click #cancel": "cancel",
+        "click #btnViewAvailableTags": "toggleTagsList"
     },
     
     validate: function(){
@@ -79,6 +80,17 @@ ProductEditView = Backbone.View.extend({
     
     cancel: function(){
         document.location = this.model.get('url');
+    },
+
+    toggleTagsList: function() {
+        var tagsDiv = $('#availableTagsDiv');
+        if (tagsDiv.css('display') == 'none') {
+            tagsDiv.slideDown(300);
+            $('#btnViewAvailableTags').text('Hide Tags');
+        } else {
+            tagsDiv.slideUp(300);
+            $('#btnViewAvailableTags').text('View Tags');
+        }
     },
     
     renderAuthorsWidget: function(){

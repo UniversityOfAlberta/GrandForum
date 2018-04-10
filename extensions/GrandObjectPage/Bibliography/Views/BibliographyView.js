@@ -288,25 +288,25 @@ BibliographyView = Backbone.View.extend({
                 _.each(products, $.proxy(function(product){
                     this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + product.get('citation') + "<br />");
 
-                        var id = product.get('id');
-                        var descLink = "<p style='text-align:left;'>";
-                        this.$('#products li').last().append();
-                        if ((product.get('description') == "") && (product.get('tags').length == 0)) {
-                            descLink += "<span style='color:#a0a0a0;'>No abstract or tags</span>";
-                        } else {
-                            descLink += "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>";
-                        }
-                        descLink += "</p>";
-                        this.$('#products li').last().append(descLink);
-                        this.$('#products li').last().append(
-                            "<div id='abstactAndTags" + id +"' style='display:none;width:100%;'>" +
-                                "<table style='width:100%;'><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
-                                "<td style='width:67%'><div class='publication-extra' id='desc" + id + "'>" +
-                                   product.get('description') +
-                                "</div></td>" + 
-                                "<td class='pub-extra-td' style='width:30%'><div class='publication-extra' id='tagsDiv" + id + "'>" + 
-                                "</div></td></tr></table>" +
-                            "</div><br />" );
+                    var id = product.get('id');
+                    var descLink = "<p style='text-align:left;'>";
+                    this.$('#products li').last().append();
+                    if ((product.get('description') == "") && (product.get('tags').length == 0)) {
+                        descLink += "<span style='color:#a0a0a0;'>No abstract or tags</span>";
+                    } else {
+                        descLink += "<a id='abstract" + id + "' style='cursor:pointer;'>Show/Hide Abstract and Tags</a>";
+                    }
+                    descLink += "</p>";
+                    this.$('#products li').last().append(descLink);
+                    this.$('#products li').last().append(
+                        "<div id='abstactAndTags" + id +"' style='display:none;width:100%;'>" +
+                            "<table style='width:100%;'><tr><td class='pub-extra-td' style='width:67%'>Abstract</td><td style='width:30%'>Tags</td></tr><tr>" +
+                            "<td style='width:67%'><div class='publication-extra' id='desc" + id + "'>" +
+                               product.get('description') +
+                            "</div></td>" + 
+                            "<td class='pub-extra-td' style='width:30%'><div class='publication-extra' id='tagsDiv" + id + "'>" + 
+                            "</div></td></tr></table>" +
+                        "</div><br />" );
                     
                     _.each(product.get('tags'), $.proxy(function(tag) {
                         var tagId = "#tagsDiv" + product.get('id');
