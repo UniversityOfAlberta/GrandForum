@@ -22,6 +22,7 @@ ProductListView = Backbone.View.extend({
             }
             var authors = Array();
             var projects = Array();
+            var topProjects = Array();
             _.each(model.authors, function(author, aId){
                 if(author.url != ''){
                     authors.push("<a href='" + author.url + "'>" + author.name + "</a>");
@@ -38,11 +39,23 @@ ProductListView = Backbone.View.extend({
                     projects.push(project.name);
                 }
             });
+            _.each(model.topProjects, function(project, aId){
+                if(project.url != ''){
+                    topProjects.push("<a href='" + project.url + "'>" + project.name + "</a>");
+                }
+                else{
+                    topProjects.push(project.name);
+                }
+            });
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
                                 "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '));
             if(projectsEnabled){
                 row.push(projects.join(', '));
+                if(_.contains(allowedRoles, STAFF)){
+                    // Show top Projects if they are at least STAFF
+                    row.push(topProjects.join(', '));
+                }
             }
             data.push(row);
         }, this);

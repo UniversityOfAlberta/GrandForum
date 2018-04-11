@@ -139,6 +139,7 @@ Product = Backbone.Model.extend({
             data: {},
             authors: new Array(),
             projects: new Array(),
+            topProjects: new Array(),
             lastModified: "",
             deleted: "",
             access_id: 0,

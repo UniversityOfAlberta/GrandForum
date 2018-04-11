@@ -13,6 +13,7 @@ class Paper extends BackboneModel{
     static $dataCache = array();
     static $productProjectsCache = array();
     static $productTagsCache = array();
+    static $topProductsCache = array();
 
     var $id;
     var $category;
@@ -487,6 +488,21 @@ class Paper extends BackboneModel{
             $tags[] = $row['tag'];
         }
         return $tags;
+    }
+    
+    static function generateTopProductsCache(){
+        if(count(self::$topProductsCache) == 0){
+            $data = DBFunctions::select(array('grand_top_products'),
+                                        array('obj_id', 'product_id'),
+                                        array('type' => EQ('PROJECT'),
+                                              'product_type' => EQ('PRODUCT')));
+            foreach($data as $row){
+                $project = Project::newFromId($row['obj_id']);
+                if($project != null && $project->getId() != 0){
+                    self::$topProductsCache[$row['product_id']][] = $project;
+                }
+            }
+        }
     }
     
     /**
@@ -1015,7 +1031,7 @@ class Paper extends BackboneModel{
     }
     
     /**
-     * Returns an array or Projects which this Paper is related to
+     * Returns an array of Projects which this Paper is related to
      * @return array The Projects which this Paper is related to
      */
     function getProjects(){
@@ -1035,6 +1051,15 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = false;
         }
         return $this->projects;
+    }
+    
+    /**
+     * Returns an array of Projects that have selected this Product as a top Product
+     * @return array The Projects that have selected this Product as a top Product
+     */
+    function getTopProjects(){
+        self::generateTopProductsCache();
+        return (isset(self::$topProductsCache[$this->getId()])) ? self::$topProductsCache[$this->getId()] : array();
     }
     
     // Returns an array of Projects which this Paper is related to
@@ -1676,7 +1701,7 @@ class Paper extends BackboneModel{
         else{
             $authors = array();
             $projects = array();
-            
+            $topProjects = array();
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
@@ -1692,6 +1717,17 @@ class Paper extends BackboneModel{
                     $projects[] = array('id' => $project->getId(),
                                         'name' => $project->getName(),
                                         'url' => $url);
+                }
+            }
+            if(is_array($this->getTopProjects())){
+                foreach($this->getTopProjects() as $project){
+                    $url = "";
+                    if($project->getId() != -1){
+                        $url = $project->getUrl();
+                    }
+                    $topProjects[] = array('id' => $project->getId(),
+                                           'name' => $project->getName(),
+                                           'url' => $url);
                 }
             }
             $data = $this->getData();
@@ -1714,7 +1750,8 @@ class Paper extends BackboneModel{
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
-                          'access' => $this->getAccess());
+                          'access' => $this->getAccess(),
+                          'topProjects' => $topProjects);
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }

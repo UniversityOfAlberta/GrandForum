@@ -11,6 +11,9 @@
             <th width='48%'>Authors</th>
             <% if(projectsEnabled){ %>
                 <th>Projects</th>
+                <% if(_.contains(allowedRoles, STAFF)){ %>
+                    <th>Top Projects</th>
+                <% } %>
             <% } %>
         </tr>
     </thead>
