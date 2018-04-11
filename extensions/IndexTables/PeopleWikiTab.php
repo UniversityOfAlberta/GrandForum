@@ -90,7 +90,7 @@ class PeopleWikiTab extends AbstractTab {
     }
     function generateBody(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;
-        $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources", "Canadian");
+        $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources", "Canadian","French_Form");
         if(isset($_FILES['wpUploadFile'])){
             $this->uploadFile();
         }
