@@ -40,6 +40,10 @@ ManageProductsViewRow = Backbone.View.extend({
     toggleSelect: function(e){
         this.projectSelectorView.toggleSelect(e);
         this.setDirty(true);
+        
+        if($(e.target).closest(".otherPopup").length == 0){
+            this.render();
+        }
     },
     
     editProduct: function(){
@@ -61,7 +65,7 @@ ManageProductsViewRow = Backbone.View.extend({
     events: {
         "change .checkboxCell input[type=checkbox]": "toggleSelect",
         "click .edit-icon": "editProduct",
-        "click .delete-icon": "deleteProduct"
+        "click .delete-icon": "deleteProduct",
     },
     
     render: function(){
