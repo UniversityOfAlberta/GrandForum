@@ -1,6 +1,6 @@
 <?php
 
-require_once( 'commandLine.inc' );
+require_once('commandLine.inc');
 
 /* Example:
 sid 1549275
@@ -20,7 +20,9 @@ status FT
 $wgUser = User::newFromId(1); // Admin user
 $people = Person::getAllPeople(CI);
 
-$outdir = "outputAdmittedStudents";
+$dir = dirname(__FILE__);
+
+$outdir = "{$dir}/outputAdmittedStudents";
 $filenames = [];
 
 @mkdir($outdir);
@@ -49,6 +51,8 @@ foreach($people as $person) {
 				$gender = $array['gender'];
 			}
 
+            $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);
+
 			$output = array(
 				"sid " . $array['student_id'],
 				"term " . $term,
@@ -71,12 +75,22 @@ foreach($people as $person) {
 				$loc = $outdir . "/" . $f;
 				array_push($filenames, $f);
 			}
-			
+			$found = false;
+			if(!file_exists($loc)){
+			    $found = true;
+			}
 			file_put_contents($loc, implode("\n", $output) . "\n");
+			if($found){
+			    $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$outdir}/{$array['student_id']}";
+			    echo "{$command}\n";
+			    system("{$command}");
+			}
 		}
 	}
-	show_status(++$peopleSoFar, $nPeople);
+	//show_status(++$peopleSoFar, $nPeople);
 }
+
+
 
 // Copy the files to the GradDB server
 /*exec("scp -i graddb.pem" . $outdir . "/* docsdb@csora-app:/local/oracle3/cshome/docsdb/graddb/Data/Applicants/AppFiles/");
