@@ -495,7 +495,7 @@ class Paper extends BackboneModel{
             $data = DBFunctions::select(array('grand_top_products'),
                                         array('obj_id', 'product_id'),
                                         array('type' => EQ('PROJECT'),
-                                              'product_type' => EQ('PRODUCT')));
+                                              'product_type' => NEQ('CONTRIBUTION')));
             foreach($data as $row){
                 $project = Project::newFromId($row['obj_id']);
                 if($project != null && $project->getId() != 0){
