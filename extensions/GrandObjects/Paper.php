@@ -533,7 +533,8 @@ class Paper extends BackboneModel{
                                                                                'titles' => $titles,
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
-                                                                               'authors_label' => "Author");
+                                                                               'authors_label' => "Author",
+                                                                               'authors_text' => "");
                     foreach($type->children() as $child){
                         if($child->getName() == "data"){
                             foreach($child->children() as $field){
@@ -574,7 +575,9 @@ class Paper extends BackboneModel{
                         }
                         else if($child->getName() == "authors"){
                             $attrs = $child->attributes();
+                            $text = "$child";
                             $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
+                            $categories['categories'][$cname]['types'][$tname]["authors_text"] = $text;
                         }
                     }
                     if(DBFunctions::isReady()){
