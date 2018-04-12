@@ -214,7 +214,7 @@ abstract class PDFGenerator {
      * @param AbstractReport $report The report that this PDF is for (optionally used to add extra information)
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    static function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
+    static function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false, $orientation='portrait'){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
         if(self::$preview){
@@ -320,6 +320,7 @@ abstract class PDFGenerator {
             require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
             global $dompdfOptions;
             $dompdf = new Dompdf\Dompdf($dompdfOptions);
+            $dompdf->setPaper('A4', $orientation);
         }
         
         $header = <<<EOF
