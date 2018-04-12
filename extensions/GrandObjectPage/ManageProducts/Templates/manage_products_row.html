@@ -1,4 +1,4 @@
-<td class="checkboxCell" align="center">
+<td class="checkboxCell" style="<% if(!hasProjects){ %> background: #ffd118; background-clip: padding-box; <% } %>" align="center">
     <%= HTML.ProjectSelector(this, 'projects', {otherOnly: true, 
                                                 allProjects: this.allProjects, 
                                                 projects: this.projects,
@@ -6,7 +6,7 @@
                                                 oldProjects: this.oldProjects}) %>
 </td>
 <% _.each(this.parent.projects.models, function(p){ %>
-    <td class="checkboxCell">
+    <td class="checkboxCell" style="<% if(!hasProjects){ %> background: #ffd118; background-clip: padding-box; <% } %>">
         <div class="checkboxOuter" data-project="<%= p.get('id') %>">
             <% var projectChecked = this.projectSelectorView.projectChecked(p.get('id')); %>
             <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked %> /><% if(projectChecked != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
@@ -33,7 +33,7 @@
 <td>
     <%= type %>
 </td>
-<td style="<% if(projectsEnabled && projects.length == 0){ %> background: #FFAA11; <% } %>">
+<td>
     <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
 <td style="<% if(!isMine){ %>background: #ffd118; <% } %>">

@@ -73,16 +73,16 @@ ManageProductsViewRow = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-        var isMine = {isMine: false};
-        if(_.contains(_.pluck(this.model.get('authors'), 'id'), me.get('id')) ||
-           _.contains(_.pluck(this.model.get('authors'), 'name'), me.get('name')) ||
-           _.contains(_.pluck(this.model.get('authors'), 'fullname'), me.get('fullName')) ||
-           _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0 ||
-           _.intersection(_.pluck(this.model.get('authors'), 'name'), studentNames).length > 0 ||
-           _.intersection(_.pluck(this.model.get('authors'), 'fullname'), studentFullNames).length > 0){
-            isMine.isMine = true;
-        }
-        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
+        var extra = {
+            isMine: (_.contains(_.pluck(this.model.get('authors'), 'id'), me.get('id')) ||
+                     _.contains(_.pluck(this.model.get('authors'), 'name'), me.get('name')) ||
+                     _.contains(_.pluck(this.model.get('authors'), 'fullname'), me.get('fullName')) ||
+                     _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0 ||
+                     _.intersection(_.pluck(this.model.get('authors'), 'name'), studentNames).length > 0 ||
+                     _.intersection(_.pluck(this.model.get('authors'), 'fullname'), studentFullNames).length > 0), 
+            hasProjects: !(projectsEnabled && this.model.get('projects').length == 0)
+        };
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), extra));
         if(this.parent.table != null){
             // Need this so that the search functionality is updated
             var data = new Array();
