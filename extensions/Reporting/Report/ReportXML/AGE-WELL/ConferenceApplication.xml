@@ -5,34 +5,48 @@
             <SectionPermission id="applications" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="applications" tooltip="Applications" name="Applications" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="description" tooltip="Research Program at AGE-WELL 2018" name="Description" title="Research Program at AGE-WELL 2018" type="ReportSection">
+        <ReportItem id="description" type="Static">
+            <![CDATA[
+                <p>Join us in October in Vancouver, BC for Innovation in Action, our fourth Annual Conference!  AGE-WELL2018 will be held as a pre-conference event to the Canadian Association on Gerontology Annual Scientific and Educational Meeting. Conference Highlights including a brief program are now available on the conference intranet page with registration opening in Spring 2018.</p>
+
+                <p>With an eye towards renewal, the AGE-WELL 2018 conference theme is Innovation in Action. Sessions are designed to maximize networking, knowledge exchange and collaboration among AGE-WELL stakeholders. We would like to invite you and your teams to present your latest research findings this October in Vancouver.</p>
+
+                <p>We are delighted to announce a partnership with the SAGE peer-reviewed, open access, interdisciplinary journal, <a href='http://journals.sagepub.com/home/jrt' target='_blank'>Journal of Rehabilitation and Assistive Technologies Engineering (RATE)</a>. Authors of abstracts accepted by the AGE-WELL Conference are encouraged to submit a full paper to form part of a <a href='http://journals.sagepub.com/page/jrt/call-for-papers/age-well-annual-conference' target='_blank'>Special Collection in RATE</a>. For full details on the scope of the Special Collection and how to submit your paper please read the Special Collection Call for Papers. Each session has a checkbox that advises you would like this submission to be considered for the Call for Papers.</p>
+
+                <p>Each of the 5 subsections are the available session applications for the 2018 AGE-WELL conference. Within each subsection contains 6 Application dropdowns for those who would like to submit more than one submission in each session. Fill in the information for the session(s) that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.</p>
+
+                <p>Questions about this conference application can be directed to Krystle Wiltshire, AGE-WELL Administrative Coordinator (<a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a>).</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application3" tooltip="Lunch ‘n’ Learn Sessions" name="Lunch 'n' Learn" title="Lunch ‘n’ Learn Sessions" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 3 -->
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <script type="text/javascript">
-                    $("#reportProgress").hide();
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
-                                $("#Applications").click();
+                                $(".selectedReportTab").click();
                             });
                         });
                     });
                 </script>
-                Below are the available session applications for the 2018 AGE-WELL conference.  Fill in the information for the sessions that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.
+                <p>AGE-WELL 2018 will feature up to 6 Lunch ‘n’ Learn workshops. These 1-hour sessions will be accessible as a sign-up session through the AGE-WELL Conference app to attendees, and offered on both conference days from 1PM – 2PM. Network Members can submit up to 6 proposals for this session. Lunch ‘n’ Learns are open to Core Facilities, Crosscutting Activity Teams, Innovation Hubs, Projects and Workpackages.</p>
+
+                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+
+                <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
         <ReportItemSet id="3_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
-                    <h1>Lunch ‘n’ Learn Sessions</h1>
-                    <p><u>Information:</u> AGE-WELL 2018 will feature up to 6 Lunch ‘n’ Learn sessions. These 1-hour workshops will be offered as drop in sessions through the AGE-WELL Conference app to attendees, and offered on both conference days from 1PM – 2PM. To apply for a session, please submit a Lunch ‘n’ Learn Outline by <b>August 17</b>, specifying how you would like to structure the workshop. </p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="3_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
+            <ReportItemSet id="3_for" type="For" from="0" to="5">
                 <ReportItem id="3_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -104,7 +118,7 @@
                 <ReportItem id="3_requirements" width="300px" height="100px" type="Textarea" blobItem="3_REQUIREMENTS" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:</b><br />
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Room Set-up Requirements:</b><br />
                                 AV requirement, table set-up etc.
                             </td>
                             <td>{$item}</td>
@@ -142,22 +156,34 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        
+    </ReportSection>
+    <ReportSection id="application2" tooltip="Scientific Talks" name="Scientific Talks" title="Scientific Talks" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 2 -->
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("div.submit").each(function(i, div){
+                            $("input[type=button]", div).click(function(){
+                                $(".selectedReportTab").click();
+                            });
+                        });
+                    });
+                </script>
+                <p>AGE-WELL 2018 will feature 12 scientific talks will be offered. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Each talk will consist of a 15-minute presentation and 5-minute Q&A. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Scientific Talks are open to all project programs (Core Research Projects, Catalyst & SIP).</p>
+
+                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+
+                <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
+            ]]>
+        </ReportItem>
         <ReportItemSet id="2_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="2_head" type="Static">
                 <![CDATA[
-                    <h1>Scientific Talks</h1>
-                    <p><u>Information:</u></p>
-                    <p><center><b>Call for Abstracts</b><br />Theme: Innovation in Action</center></p> 
-                    <p>This year within the main conference programming 12 scientific talks will be offered across all project programs (Core Research Projects, Catalyst & SIP). Each talk will consist of a 15-minute presentation and 5-minute Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Please submit your abstract for consideration by <b>August 17</b>.</p>
-                    <p>Abstracts must not exceed 250 words.</p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="2_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
+            <ReportItemSet id="2_for" type="For" from="0" to="5">
                 <ReportItem id="2_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -180,10 +206,10 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|2.10-SIP A1|2.11-SIP A1|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.3a EMOTEC|3.3b NEARS|3.4-SIP A1 NAVIGATE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|3.10-SIP A1|3.11-SIP A1 MapIt|3.12-SIP A2|3.13-SIP A2|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|5.10-SIP A2|5.11-SIP A2|5.12-SIP A2|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.4-S1 SPEECH-ASSESS|6.5-CAT|6.6-CAT|6.7-CAT|6.8-SIP A1|6.9-SIP A2|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|7.5-SIP A1 C-ASAP|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|DATcares|JDQ-CSR|NOVA-SKIN|rTRANSIA|Steadiwear|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
+                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|2.10-SIP A1|2.11-SIP A1|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.3a EMOTEC|3.3b NEARS|3.4-SIP A1 NAVIGATE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|3.10-SIP A1|3.11-SIP A1 MapIt|3.12-SIP A2|3.13-SIP A2|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|5.10-SIP A2|5.11-SIP A2|5.12-SIP A2|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.4-S1 SPEECH-ASSESS|6.5-CAT|6.6-CAT|6.7-CAT|6.8-SIP A1|6.9-SIP A2|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|7.5-SIP A1 C-ASAP|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|DATcares|JDQ-CSR|NOVA-SKIN|rTRANSIA|Steadiwear">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -199,6 +225,7 @@
                     <![CDATA[
                                 Other: {$item}
                             </td>
+                        </tr>
                     ]]>
                 </ReportItem>
                 <ReportItem id="2_title" type="Text" blobItem="2_TITLE" blobSubItem="{$extraIndex}">
@@ -248,23 +275,34 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        
+    </ReportSection>
+    <ReportSection id="application1" tooltip="Science Slam" name="Science Slam" title="Science Slam" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 1 -->
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("div.submit").each(function(i, div){
+                            $("input[type=button]", div).click(function(){
+                                $(".selectedReportTab").click();
+                            });
+                        });
+                    });
+                </script>
+                <p>AGE-WELL 2018 will feature 10 Science Slams. A science slam is a quick-fire presentation where students will get 5 minutes to present their research in front of conference attendees followed by 5 minutes Q&A. 10 finalists will be chosen (five for each session). The audience will then get to vote on the best innovation/presentation. Presentations should be creative, exciting and innovative. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Science Slams are open to AGE-WELL HQP only.</p>
+
+                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+
+                <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
+            ]]>
+        </ReportItem>
         <ReportItemSet id="1_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="1_head" type="Static">
                 <![CDATA[
-                    <h1>Science Slam</h1>
-                    <p><u>Information:</u> This year AGE-WELL will feature our trainees in a science slam. There will be two sessions offered.</p>
-                    
-                    <p>A science slam is a quick-fire presentation where students will get 5 minutes to present their research in front of conference attendees followed by 5 minutes Q&A. 10 finalists will be chosen (five for each session). The audience will then get to vote on the best innovation/presentation. Presentations should be creative, exciting and innovative.</p>
-                    
-                    <p>Please submit your abstract for consideration by <b>August 17</b>. Abstracts must not exceed 250 words.</p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="1_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
+            <ReportItemSet id="1_for" type="For" from="0" to="5">
                 <ReportItem id="1_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -342,19 +380,34 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        
+    </ReportSection>
+    <ReportSection id="application4" tooltip="Poster Session" name="Poster Session" title="Poster Session" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 4 -->
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("div.submit").each(function(i, div){
+                            $("input[type=button]", div).click(function(){
+                                $(".selectedReportTab").click();
+                            });
+                        });
+                    });
+                </script>
+                <p>AGE-WELL 2018 will feature an open poster session and tabletops for AGE-WELL Crosscutting Themes and Core Facilities. Network Members can submit up to 6 posters for this session, and abstracts must not exceed 150 words. The Poster session is open to all AGE-WELL Network Members.</p>
+
+                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+
+                <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
+            ]]>
+        </ReportItem>
         <ReportItemSet id="4_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="4_head" type="Static">
                 <![CDATA[
-                    <h1>Poster Session</h1>
-                    <p><u>Information:</u> AGE-WELL 2018 will feature an open poster session for all HQP, Network Investigators, and Project Leads. The poster session will also feature tabletops for AGE-WELL Crosscutting Themes and Core Facilities, which will provide an opportunity for projects and workpackages to network with AGE-WELL’s 4 Crosscutting Activity Theme Teams and 4 Core Facilities. Please provide name of presenter, poster title and a 150-word abstract about the poster by <b>August 17</b>.</p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="4_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
+            <ReportItemSet id="4_for" type="For" from="0" to="5">
                 <ReportItem id="4_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -408,7 +461,7 @@
                 <ReportItem id="4_title" type="Text" blobItem="4_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Poster:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Poster/Tabletop:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -452,19 +505,34 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        
+    </ReportSection>
+    <ReportSection id="application5" tooltip="Drinks &amp; Demos" name="Drinks &amp; Demos" title="Drinks &amp; Demos" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 5 -->
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("div.submit").each(function(i, div){
+                            $("input[type=button]", div).click(function(){
+                                $(".selectedReportTab").click();
+                            });
+                        });
+                    });
+                </script>
+                <p>AGE-WELL 2018 will feature our Drinks & Demos reception held the evening of Tuesday, October 16.  Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be present at this event. up to 6 Lunch ‘n’ Learn workshops. Network Members can submit up to 6 demos for this session, and abstracts must not exceed 150 words. This session is open to all AGE-WELL Network Members, the only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).</p>
+
+                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+
+                <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
+            ]]>
+        </ReportItem>
         <ReportItemSet id="5_if" type="If" if="{>(2018-08-17,{$timestamp})}">
             <ReportItem id="5_head" type="Static">
                 <![CDATA[
-                    <h1>Drinks & Demos</h1>
-                    <p><u>Information:</u> This year the Drinks & Demos reception will be held the evening of Tuesday, October 16.  Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be present at this event.  It will be a great opportunity to show off your work!  All AGE-WELL project teams, HQP and/or investigators with a ‘product’ (technology, KM or practice/service 'product') are invited to participate in this event. The only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).  To claim a spot in this showcase, please complete a brief description of your project name + 150 word abstract by <b>August 17</b>.  Below is a list of AV requirement, requests outside these, will be at the expense of the project. </p>
-
-                    <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
                     <div id="5_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet type="For" from="0" to="5">
+            <ReportItemSet id="5_for" type="For" from="0" to="5">
                 <ReportItem id="5_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -534,7 +602,7 @@
                 <ReportItem id="5_requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="5_REQUIREMENTS" blobSubItem="{$extraIndex}" options="17” monitor|Power Cable|Laptop">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Facility Requirements:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AV Requirements:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -542,7 +610,7 @@
                 <ReportItem id="5_additional" width="300px" height="100px" type="Textarea" blobItem="5_ADDITIONAL" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Additional AV requests:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Additional AV requests*:</b></td>
                             <td>{$item}<br />
                                 <small>*Items listed here will be at an extra cost to be covered by project</small>
                             </td>
