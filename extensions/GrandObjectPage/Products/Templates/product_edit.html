@@ -1,5 +1,4 @@
 <div id="dialogMessages"></div>
-<form>
 <span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'title', {size: '50'}) %>
 <h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
 <div id="productAuthors">
@@ -99,7 +98,7 @@
         <% } %>
     <% }, this) %>
 </table>
-</form>
+<div id="projectsWarning" class="warning" style="display:none; margin-bottom: 0;">This <%= productsTerm.toLowerCase() %> has not been associated with any projects yet</div>
 <% if(!this.isDialog){ %>
     <br />
 <% } %>

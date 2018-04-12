@@ -1,12 +1,14 @@
 ProductEditView = Backbone.View.extend({
 
     isDialog: false,
+    projectWarning: null,
 
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
+        this.listenTo(this.model, "change:projects", this.updateProjectWarning);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -140,10 +142,32 @@ ProductEditView = Backbone.View.extend({
         this.$("#productTags").html(html);
     },
     
+    updateProjectWarning: function(){
+        if(projectsEnabled && this.model.get('projects').length == 0){
+            this.projectsWarning.show();
+        } else {
+            this.projectsWarning.hide();
+        }
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.projectsWarning = this.$("#projectsWarning");
+        if(this.isDialog){
+            console.log($("#projectsWarning", this.$el.parent()));
+            $(".ui-dialog-buttonset #projectsWarning", this.$el.parent()).remove();
+            this.projectsWarning.css('display', 'inline-block')
+                                .css('margin', 0)
+                                .css('margin-top', '2px')
+                                .css('font-size', '1em')
+                                .css('float', 'left')
+                                .css('padding-right', '15px');
+            this.projectsWarning.detach();
+            $(".ui-dialog-buttonset", this.$el.parent()).prepend(this.projectsWarning);
+        }
         this.renderAuthors();
         this.renderTagsWidget();
+        this.updateProjectWarning();
         this.$(".integer").forceNumeric({min: 0, max: 99999999999});
         return this.$el;
     }
