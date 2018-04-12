@@ -73,7 +73,9 @@ class EULAReportSection extends EditableReportSection {
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             $('input[name=submit]').click(function(){
-                $('a.reportTab.selectedReportTab').next().click();
+                _.defer(function(){
+                    $('a.reportTab.selectedReportTab').next().click();
+                });
             });
         </script>");
     }
