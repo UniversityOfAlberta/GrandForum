@@ -255,7 +255,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                             $budget->errors[0][] = "Your total '$".number_format($total)."' is greater than the allocated amount of '$".number_format($allocation)."'.";
                         }
                         if($renderForPDF){
-                            $this->html .= "<div style='font-size:0.5em;'>{$multiBudget->renderForPDF()}</div>";
+                            $this->html .= "<div style='font-size:0.75em;'>{$multiBudget->renderForPDF()}</div>";
                         }
                         else{
                             $this->html .= $multiBudget->render();
