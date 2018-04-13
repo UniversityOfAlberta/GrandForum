@@ -3,6 +3,7 @@ function initResizeEvent(){
         var paddingHeight = parseInt($('#reportMain > div > div').css('padding-top')) + parseInt($('#reportMain > div > div').css('padding-bottom'));
         $('#reportMain > div').height($('#reportMain > div > div').height() + paddingHeight);
         $('#reportInstructions > div').css('max-height', $('#reportMain > div').height());
+        console.log("HELLO");
     }
     $('#reportMain > div > div').resize(fn);
     fn();

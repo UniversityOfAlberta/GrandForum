@@ -149,8 +149,9 @@
                 <![CDATA[
                     </div>
                     <script type="text/javascript">
+                        $("#3_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
-                            $("#3_accordion").accordion({heightStyle: "content"});
+                            $("#3_accordion").accordion("resize");
                         });
                     </script>
                 ]]>
@@ -268,8 +269,9 @@
                 <![CDATA[
                     </div>
                     <script type="text/javascript">
+                        $("#2_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
-                            $("#2_accordion").accordion({heightStyle: "content"});
+                            $("#2_accordion").accordion("resize");
                         });
                     </script>
                 ]]>
@@ -373,8 +375,9 @@
                 <![CDATA[
                     </div>
                     <script type="text/javascript">
+                        $("#1_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
-                            $("#1_accordion").accordion({heightStyle: "content"});
+                            $("#1_accordion").accordion("resize");
                         });
                     </script>
                 ]]>
@@ -498,8 +501,9 @@
                 <![CDATA[
                     </div>
                     <script type="text/javascript">
+                        $("#4_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
-                            $("#4_accordion").accordion({heightStyle: "content"});
+                            $("#4_accordion").accordion("resize");
                         });
                     </script>
                 ]]>
@@ -641,8 +645,9 @@
                 <![CDATA[
                     </div>
                     <script type="text/javascript">
+                        $("#5_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
-                            $("#5_accordion").accordion({heightStyle: "content"});
+                            $("#5_accordion").accordion("resize");
                         });
                     </script>
                 ]]>
