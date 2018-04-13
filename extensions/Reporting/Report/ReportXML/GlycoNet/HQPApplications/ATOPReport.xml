@@ -63,7 +63,7 @@
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Project Summary - <small>750 words, including references</small></h3>
-                <p>Address the overall project goals, your role in the project during the exchange, successes and challenges you encountered, and the benefits this exchange provided to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                <p>Describe the impact that this research experience has had on you, and what you took away from it. Also address the overall project goals, your role in the project during the exchange, successes and challenges you encountered, and the benefits this exchange provided to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
                 {$item}
             ]]>
         </ReportItem>
