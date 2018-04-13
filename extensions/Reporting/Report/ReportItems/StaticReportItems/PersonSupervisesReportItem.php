@@ -81,7 +81,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
         }
         
         if($showCommittees && $committeeCount > 0){
-            $item .= "<br /><h4>Examining Committee Membership: {$committeeCount}</h4>";
+            $item .= "<br /><h4>Student Committee Responsibilities: {$committeeCount}</h4>";
             $item .= $tab->committeeHTML($this->getReport()->startYear."-07-01",
                                          $this->getReport()->year."-06-30");
         }

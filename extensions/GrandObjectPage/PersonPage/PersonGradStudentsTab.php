@@ -69,7 +69,7 @@ class PersonGradStudentsTab extends AbstractTab {
              </div>
         </div>
                 <div class='supervisorAccordion'>
-             <h3><a href='#'>Examining Commitee Membership</a></h3>
+             <h3><a href='#'>Student Committee Responsibilities</a></h3>
              <div>
                 {$this->showCommiteeRelations($this->person, $this->visibility)}   
              </div>
