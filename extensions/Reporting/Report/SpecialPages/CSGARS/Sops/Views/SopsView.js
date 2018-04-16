@@ -10,7 +10,6 @@ SopsView = Backbone.View.extend({
     hidden: true,
     defaultSearch: "",
     scrollValue: 0,
-
     
     initialize: function() {
         this.template = _.template($('#sops_template').html());
@@ -40,10 +39,14 @@ SopsView = Backbone.View.extend({
             }
             if (scrollA != this.scrollValue) {
                 this.scrollValue = scrollA;
-                $('#scrollOuter')[0].scrollLeft = scrollA;
+                if($('#scrollOuter').length > 0){
+                    $('#scrollOuter')[0].scrollLeft = scrollA;
+                }
             } else if (scrollB != this.scrollValue) {
                 this.scrollValue = scrollB;
-                $('.dataTables_scrollBody')[0].scrollLeft = scrollB;
+                if($('.dataTables_scrollBody').length > 0){
+                    $('.dataTables_scrollBody')[0].scrollLeft = scrollB;
+                }
             }
         }, 15);
 
@@ -107,6 +110,7 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
+        var start = new Date().getTime();
         var buttonDownload = {
             exportOptions: {
                 format: {
@@ -250,6 +254,8 @@ SopsView = Backbone.View.extend({
                                                      }, this)
                                                  });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        var end = new Date().getTime();
+        console.log(end - start);
     },
 
     events: {

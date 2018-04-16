@@ -1,0 +1,7 @@
+div#reportIssue {
+    position: absolute;
+    top: 7px;
+    right: 45px;
+    text-align: center;
+    z-index: 90;
+}
