@@ -13,6 +13,7 @@ Collaboration = Backbone.Model.extend({
         return{
             id: null,
             title: "",
+            creator: {},
             projects: new Array(),
             url: "",
             sector: "",

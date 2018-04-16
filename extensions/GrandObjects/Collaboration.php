@@ -199,6 +199,10 @@ class Collaboration extends BackboneModel{
         return $this->accessId;
     }
     
+    function getCreator(){
+        return Person::newFromId($this->accessId);
+    }
+    
     /**
      * Returns whether or not this logged in user can edit this Collaboration
      */
@@ -392,10 +396,16 @@ class Collaboration extends BackboneModel{
                                     'url' => $url);
             }
         }
+        
+        $creator = $this->getCreator();
 
         $data = array(
             'id' => $this->getId(),
             'title' => $this->getTitle(),
+            'creator' => array('id' => $creator->getId(),
+                               'name' => $creator->getName(),
+                               'fullname' => $creator->getNameForForms(),
+                               'url' => $creator->getUrl()),
             'sector' => $this->getSector(),
             'country' => $this->getCountry(),
             'planning' => $this->getPlanning(),
