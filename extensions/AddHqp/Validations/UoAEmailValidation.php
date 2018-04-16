@@ -11,7 +11,7 @@ class UoAEmailValidation extends UIValidation {
     }
     
     function failMessage($name){
-        return "This email address '<i>{$this->value}</i>' must be a ualberta.ca address";
+        return "This email address '<i>{$this->value}</i>' must be a ualberta.ca address.  If a non ualberta.ca address is used, the HQP will most likely not be able to login.";
     }
     
     function failNegMessage($name){
@@ -19,7 +19,7 @@ class UoAEmailValidation extends UIValidation {
     }
     
     function warningMessage($name){
-        return "This email address '<i>{$this->value}</i>' should be a ualberta.ca address";
+        return "This email address '<i>{$this->value}</i>' should be a ualberta.ca address.  If a non ualberta.ca address is used, the HQP will most likely not be able to login.";
     }
     
     function warningNegMessage($name){
