@@ -136,9 +136,11 @@
 		</div>
 	</div>
 	<br/>
-
 </div>
-
+<div id="contactWarning" class="warning" style="display:none; margin-bottom: 0;">This <%= formType.toLowerCase() %> does not have a contact name and position specified</div>
+<% if(!this.isDialog){ %>
+    <br />
+<% } %>
 <% if(!this.isDialog){ %>
 	<div style="display:inline-block;">
 		<button id="saveCollaboration">

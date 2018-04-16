@@ -5,6 +5,8 @@ CollaborationEditView = Backbone.View.extend({
     initialize: function(){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:personName", this.updateContactWarning);
+        this.listenTo(this.model, "change:position", this.updateContactWarning);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -80,6 +82,14 @@ CollaborationEditView = Backbone.View.extend({
             fundAmtDiv.slideUp();
         }
     },
+    
+    updateContactWarning: function(){
+        if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
+            this.contactWarning.show();
+        } else {
+            this.contactWarning.hide();
+        }
+    },
 
     render: function(){
         var formType = this.model.getType();
@@ -90,9 +100,10 @@ CollaborationEditView = Backbone.View.extend({
             main.set('title', 'Edit ' + formType);
         }
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
+        this.contactWarning = this.$("#contactWarning");
         this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
-
+        this.updateContactWarning();
         return this.$el;
     },
 });

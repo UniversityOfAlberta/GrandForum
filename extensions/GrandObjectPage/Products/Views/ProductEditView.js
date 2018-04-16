@@ -154,7 +154,6 @@ ProductEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.projectsWarning = this.$("#projectsWarning");
         if(this.isDialog){
-            console.log($("#projectsWarning", this.$el.parent()));
             $(".ui-dialog-buttonset #projectsWarning", this.$el.parent()).remove();
             this.projectsWarning.css('display', 'inline-block')
                                 .css('margin', 0)
