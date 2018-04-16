@@ -45,7 +45,12 @@ CollaborationsView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.$("table#collaborations").DataTable({
-            "autoWidth": true
+            "autoWidth": true,
+            'iDisplayLength': 100,
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
+            ]
         });
         return this.$el;
     }
