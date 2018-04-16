@@ -136,6 +136,9 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
+                                         
+$egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue', 
+                                           'path' => "$IP/extensions/ReportIssue/ReportIssue.php");
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");

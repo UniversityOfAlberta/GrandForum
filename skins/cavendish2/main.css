@@ -989,7 +989,6 @@ special external link styling */
  ** general portlet styles (elements in the quickbar)
  */
 .portlet {
-    background: #FFFFFF;
     border: none;
     margin: 0 0 0.5em 0em;
     float: none;

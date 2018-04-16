@@ -41,21 +41,7 @@ img.ui-datepicker-trigger{
     font-size: 11px;
     padding: 0 2px 0 2px;
     margin: 0 2px 0 2px;
-    background: #FFFFFF;
 }
-
-#header ul li:hover {
-    background: #FFFFFF;
-}
-
-#header li.selected {
-    background: #FFFFFF;
-}
-
-#header ul li:hover.selected{
-    background: #FFFFFF;
-}
-
 
 /* SUB MENU */
 
@@ -967,7 +953,6 @@ special external link styling */
  ** general portlet styles (elements in the quickbar)
  */
 .portlet {
-    background: #FFFFFF;
     border: none;
     margin: 0 0 0.5em 0em;
     float: none;
@@ -1009,7 +994,6 @@ special external link styling */
 
 .pBody {
     font-size: 95%;
-    background: White;
     border-collapse: collapse;
     border: 1px solid #aaaaaa;
     padding: 0 0.8em 0.3em 0.5em;

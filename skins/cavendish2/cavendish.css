@@ -39,10 +39,15 @@
    Meta
 
    Body */
+html {
+    height: 100%;
+}
+   
 body {
 	background: #FFFFFF;
 	color: #000;
 	font-size: 90%;
+	height: 100%;
 }
 
 .displayTable {

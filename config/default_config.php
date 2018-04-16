@@ -154,6 +154,7 @@
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
+        'ReportIssue',
         'MyThreads',
         'Freeze'
     ));
