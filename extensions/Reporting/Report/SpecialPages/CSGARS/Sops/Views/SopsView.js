@@ -110,7 +110,6 @@ SopsView = Backbone.View.extend({
     },
     
     createDataTable: function(){
-        var start = new Date().getTime();
         var buttonDownload = {
             exportOptions: {
                 format: {
@@ -254,8 +253,6 @@ SopsView = Backbone.View.extend({
                                                      }, this)
                                                  });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
-        var end = new Date().getTime();
-        console.log(end - start);
     },
 
     events: {
