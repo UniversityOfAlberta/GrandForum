@@ -7,6 +7,7 @@
     <thead>
         <tr>
             <th>Organization Name</th>
+            <th style="display:none;">Other</th>
             <th>Type</th>
             <th>Contact Name</th>
             <th>Position</th>
@@ -22,10 +23,9 @@
             <tr>
                 <td>
                     <a href="<%= collab.get('url') %>"><%= collab.get('title') %></a>
-                    <span style="display:none;">
-                        <br />
-                        <%= collab.get('other') %>
-                    </span>
+                </td>
+                <td style="display:none;">
+                    <%= collab.get('other') %>
                 </td>
                 <td>
                     <%= collab.getType() %>
