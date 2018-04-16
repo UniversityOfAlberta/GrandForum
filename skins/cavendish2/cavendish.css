@@ -876,6 +876,20 @@ button.mce-close {
     border: 0px solid #888 !important;
 }
 
+.ui-dialog-content {
+    border-width: 0 1px 1px 1px !important;
+    border-style: solid !important;
+    border-color: #aaaaaa !important;
+}
+
+.ui-dialog-buttonpane {
+    border-width: 0 1px 1px 1px !important;
+    border-style: solid !important;
+    border-color: #aaaaaa !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 .ui-datepicker-calendar a.ui-state-default {
     background: #cccccc !important;
 }
