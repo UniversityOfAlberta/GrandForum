@@ -11,7 +11,9 @@
     require_once("ManageProducts/ManageProducts.php");
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
-    require_once("Contributions/Contributions.php");
+    if($config->getValue("contributionsEnabled")){
+        require_once("Contributions/Contributions.php");
+    }
     if($config->getValue('networkName') == "FES" ||
        $config->getValue('networkName') == "NETWORK"){
         // Only show this for FES (for now)

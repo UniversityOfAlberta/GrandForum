@@ -99,6 +99,9 @@
 
     // Whether or not projects have 'long descriptions'
     $config->setValue("projectLongDescription", true);
+    
+    // Whether or not to enable contributions
+    $config->setValue("contributionsEnabled", true);
 
     // Whether or not HQPs are public
     $config->setValue("hqpIsPublic", false);

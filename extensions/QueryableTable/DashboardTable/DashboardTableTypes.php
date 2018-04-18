@@ -115,16 +115,24 @@ $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] = function(){
 };
     
 $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] = function(){
-    global $head, $persRow, $projRow;
+    global $head, $persRow, $projRow, $config;
     initDashboardGlobals();
+    if($config->getValue('contributionsEnabled')){
+        $otherHead = array(HEAD."(Multimedia)", HEAD."(Contributions)");
+        $otherRow = array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS);
+    }
+    else{
+        $otherHead = array(HEAD."(Multimedia)");
+        $otherRow = array(PERSON_MULTIMEDIA);
+    }
     return 
-    array(array_merge(array(HEAD."(Projects)", HEAD."(HQP)"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
-          array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
+    array(array_merge(array(HEAD."(Projects)", HEAD."(HQP)"), $head, $otherHead),
+          array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, $otherRow),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
                                                                        PERSON_HQP),
                                                                  $persRow, 
-                                                                 array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
-          array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
+                                                                 $otherRow),
+          array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, $otherRow),
     );
 };
     
@@ -157,22 +165,30 @@ $dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] = function(){
 };
     
 $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function(){
-    global $head, $persRow, $projRow;
+    global $head, $persRow, $projRow, $config;
     initDashboardGlobals();
+    if($config->getValue('contributionsEnabled')){
+        $otherHead = array(HEAD."(Multimedia)", HEAD."(Contributions)");
+        $otherRow = array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS);
+    }
+    else{
+        $otherHead = array(HEAD."(Multimedia)");
+        $otherRow = array(PROJECT_MULTIMEDIA);
+    }
     return 
-    array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+    array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, $otherHead),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, $otherRow),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
                                                                       PROJECT_ROLES,
                                                                       PROJECT_HQP),
                                                                 $projRow,
-                                                                array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+                                                                $otherRow),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
                                                                       PROJECT_ROLES,
                                                                       PROJECT_HQP),
                                                                 $projRow,
-                                                                array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+                                                                $otherRow),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, $otherRow),
     );
 };
     
