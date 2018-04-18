@@ -193,20 +193,28 @@ $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function(){
 };
     
 $dashboardStructures[THEME_PUBLIC_STRUCTURE] = function(){
-    global $head, $persRow, $projRow;
+    global $head, $persRow, $projRow, $config;
     initDashboardGlobals();
+    if($config->getValue('contributionsEnabled')){
+        $otherHead = array(HEAD."(Multimedia)", HEAD."(Contributions)");
+        $otherRow = array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS);
+    }
+    else{
+        $otherHead = array(HEAD."(Multimedia)");
+        $otherRow = array(PROJECT_MULTIMEDIA);
+    }
     return 
-    array(array_merge(array(HEAD."(People)", HEAD."(Roles)"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+    array(array_merge(array(HEAD."(People)", HEAD."(Roles)"), $head, $otherHead),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, $otherRow),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array_merge(array(PROJECT_PEOPLE,
                                                                       PROJECT_ROLES),
                                                                 $projRow,
-                                                                array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+                                                                $otherRow),
           STRUCT(GROUP_BY, PROJECT_HQP_ARRAY) => array_merge(array(PROJECT_PEOPLE,
                                                                    PROJECT_ROLES),
                                                              $projRow,
-                                                             array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+                                                             $otherRow),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, $otherRow),
     );
 }
 
