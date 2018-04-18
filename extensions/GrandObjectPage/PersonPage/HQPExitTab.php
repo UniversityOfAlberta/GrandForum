@@ -101,12 +101,12 @@ class HQPExitTab extends AbstractEditableTab {
     
     function addEditHTML($id, $row, $hidden=false){
         $person = $this->person;
-        $theses = $person->getPapers();
+        $theses = $person->getPapers("all", false, "grand", true, "Public");
         $thesisHTML = "";
         foreach($theses as $thesis){
-            $title = $thesis->getTitle();
+            $title = trim($thesis->getTitle());
             if(strlen($thesis->getTitle()) > 50){
-                $title = substr(trim($title), 0, 50)."...";
+                $title = substr($title, 0, 50)."...";
             }
             $title = str_replace("'", "&#39;", $title);
             $thesisHTML .= "<option value='{$thesis->getId()}'>{$title}</option>\n";
@@ -220,7 +220,7 @@ EOF;
                     var theses = Array();\n");
                 $theses = $person->getPapers("all", false, "grand", true, "Public");
                 foreach($theses as $thesis){
-                    $title = $thesis->getTitle();
+                    $title = trim($thesis->getTitle());
                     if(strlen($thesis->getTitle()) > 50){
                         $title = substr($title, 0, 50)."...";
                     }
