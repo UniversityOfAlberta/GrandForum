@@ -218,7 +218,7 @@ EOF;
             if($edit){
                 $wgOut->addScript("<script type='text/javascript'>
                     var theses = Array();\n");
-                $theses = $person->getPapers();
+                $theses = $person->getPapers("all", false, "grand", true, "Public");
                 foreach($theses as $thesis){
                     $title = $thesis->getTitle();
                     if(strlen($thesis->getTitle()) > 50){
