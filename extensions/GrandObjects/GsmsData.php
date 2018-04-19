@@ -5,7 +5,7 @@
 
 class GsmsData extends BackboneModel{
 
-    //static $cache = array();
+    static $cache = array();
     var $id;
     var $user_id;
     var $gsms_id;
@@ -112,13 +112,15 @@ class GsmsData extends BackboneModel{
     * gsms exists with that id, it will return an empty gsms.
     */
     static function newFromUserId($id){
-        $data = DBFunctions::select(array('grand_gsms'),
-                                    array('*'),
-                                    array('user_id' => EQ($id)),
-                                    array('submitted_date' => 'DESC'),
-                                    array(1));
-        $info_sheet = new GsmsData($data, $id);
-        return $info_sheet;
+        if(!isset(self::$cache[$id])){
+            $data = DBFunctions::select(array('grand_gsms'),
+                                        array('*'),
+                                        array('user_id' => EQ($id)),
+                                        array('submitted_date' => 'DESC'),
+                                        array(1));
+            self::$cache[$id] = new GsmsData($data, $id);
+        }
+        return self::$cache[$id];
     }
 
     static function getAllVisibleGsms(){
