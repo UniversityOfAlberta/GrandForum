@@ -21,6 +21,7 @@ class Person extends BackboneModel {
     static $allPeopleCache = array();
     
     static $studentPositions = array('msc'   => array("msc",
+                                                      "m.sc.",
                                                       "msc student",
                                                       "graduate student - master's course",
                                                       "graduate student - master's thesis", 
@@ -29,6 +30,7 @@ class Person extends BackboneModel {
                                                       "graduate student - master&#39;s thesis",
                                                       "graduate student - master&#39;s"),
                                      'phd'   => array("phd",
+                                                      "ph.d.",
                                                       "phd student",
                                                       "graduate student - doctoral"),
                                      'pdf'   => array("pdf",
@@ -39,7 +41,9 @@ class Person extends BackboneModel {
                                                       "research assistant",
                                                       "research/technical assistant", 
                                                       "professional end user"),
-                                     'ugrad' => array("ugrad",
+                                     'ugrad' => array("bsc",
+                                                      "b.sc.",
+                                                      "ugrad",
                                                       "undergraduate",
                                                       "undergraduate student",
                                                       "honors thesis",

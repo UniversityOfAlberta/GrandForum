@@ -44,7 +44,9 @@ class PersonEmploymentTab extends AbstractEditableTab {
             if($endYear == "0000"){
                 $endYear = "Present";
             }
-            if(in_array($university['position'], array("Undergraduate", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow"))){
+            if(in_array(strtolower($university['position']), array_merge(Person::$studentPositions['ugrad'],
+                                                                         Person::$studentPositions['msc'], 
+                                                                         Person::$studentPositions['phd']))){
                 $education[$university['university']][] = "{$university['position']}, {$university['department']}<br />
                                                            {$startYear}{$endYear}<br />";
             }
