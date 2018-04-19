@@ -319,7 +319,7 @@ table.dataTable th:active {
 div.dataTables_scrollHead {
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: -16px;
+  top: 0;
   /* background: #DEDEDE; */
   /* border-bottom: 1px solid #AAAAAA !important; */
   z-index: 1;

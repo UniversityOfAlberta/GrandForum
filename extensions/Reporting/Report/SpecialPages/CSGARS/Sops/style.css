@@ -1,5 +1,10 @@
 /* Any custom styles should go here */
 /* Tooltip container */
+
+#bodyContent {
+    overflow-y: hidden !important;
+}
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -439,15 +444,28 @@ table.gsms-mini-table tr:nth-child(odd) {
   margin: 0 auto;
 }
 
-::-webkit-scrollbar {
-    -webkit-appearance: block;
-    width: 8px;
-    background-color: white;
+#notes .assign_button a, #notes .assign_button a:hover {
+    margin: 0 0 3px 10px;
 }
 
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #a0a0a0;
-    
+.dataTables_scrollHead {
+    width: auto !important;
+    margin-right: 15px;
+    border-right: 1px solid #c8c8c8 !important;
+}
+
+.dataTables_scroll {
+    background: #e3e3e3;
+}
+
+td.scrollableCell {
+    padding: 0 !important;
+}
+
+td.scrollableCell > div.scrollableCell {
+    padding: 3px 10px;
+    overflow-y: auto;
+    height: 150px;
+    max-height: 150px;
 }
 

@@ -1,0 +1,2 @@
+<% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+<%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>

@@ -22,7 +22,6 @@
 <% } %>
 </td>
 
-
 <td style="white-space: wrap;" id='folder'>
     <%= folder %>
 </td>
@@ -31,7 +30,7 @@
     <%= date_of_birth %>
 </td>
 
-<td style="white-space: nowrap;" id='citizenship'>
+<td id='citizenship'>
     <%= additional.country_of_citizenship_full %>
 </td>
 
@@ -39,8 +38,8 @@
     <%= applicant_type %>
 </td>
 
-<td id='education_history'>
-    <%= education_history %>
+<td id='education_history' class="scrollableCell">
+    <div class="scrollableCell"><%= education_history %></div>
 </td>
 
 <td style="white-space: nowrap;" id='program_name'>
@@ -54,12 +53,12 @@
 </td>
 
 <!--  department specific -->
-<td id='aos'>
-    <%= additional.areas_of_study %>
+<td id='aos' class="scrollableCell">
+    <div class="scrollableCell"><%= additional.areas_of_study %></div>
 </td>
 
-<td id='supervisors'>
-    <%= additional.supervisors %>
+<td id='supervisors' class="scrollableCell">
+    <div class="scrollableCell"><%= additional.supervisors %></div>
 </td>
 
 <td id='scholarships'>
@@ -82,12 +81,10 @@
     <%= additional.num_awards %>
 </td>
 
-<td align="right" id='courses'>
-    <div class="ellipsis tooltip" title="<%= additional.courses %>" style="border-bottom: none">
-      <div>
-        <%= additional.courses %>
-      </div>
-    </div>
+<td align="right" id='courses' class="scrollableCell">
+  <div class="scrollableCell">
+    <%= additional.courses %>
+  </div>
 </td>
 
 <!-- reviewer info -->
@@ -145,29 +142,28 @@
     <% if(avg) { %> <%= avg.toFixed(2) %> <% } %>
 </td>
 
-<td id='notes'>
-  <% _.each(additional.notes, function(note, key) { %>
-    <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
-    <% if (key == lastname) { %>
-      <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
-    <% } else { %>
-      <font style="font-weight:bold"><%= key %></font>: <%= note %>
-    <% } %>
-    <br />
-  <% }); %>
+<td id='notes' class="scrollableCell">
+  <div class="scrollableCell" style="height:124px; max-height:124px;">
+      <% _.each(additional.notes, function(note, key) { %>
+        <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+        <% if (key == lastname) { %>
+          <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
+        <% } else { %>
+          <font style="font-weight:bold"><%= key %></font>: <%= note %>
+        <% } %>
+        <br />
+      <% }); %>
+  </div>
     <span class="assign_button" style="display:none" id="additionalNotes">
       <a class="button">+</a>
       <span class="throbber" style="display:none"></span>
     </span>
     <% var additionalNotesDialogId = 'additionalNotes_' + id; %>
-    <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;">
-      <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
-      <%= HTML.TextArea(this, 'additional.notes.' + lastname, {}) %>
-    </div>
+    <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;"></div>
 </td>
 
-<td style="width:200px">
-    <span id="span<%= sop_id %>"><%= comments %></span>
+<td style="width:200px" class="scrollableCell">
+    <div class="scrollableCell"><span id="span<%= sop_id %>"><%= comments %></span></div>
 </td>
 
 <td>

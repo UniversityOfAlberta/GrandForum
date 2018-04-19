@@ -21,7 +21,8 @@ SopsRowView = Backbone.View.extend({
             var model = this.model;
             var view = this;
             var previousAdditional;
-            this.additionalNotesDialog = $("#" + additionalNotesDialogId);
+            var notesView = new NotesView({model: this.model, el: this.$("#" + additionalNotesDialogId)});
+            this.additionalNotesDialog = notesView.render();
             this.additionalNotesDialog.dialog({
                 autoOpen: false,
                 resizable: false,
@@ -48,12 +49,7 @@ SopsRowView = Backbone.View.extend({
             });
             this.additionalNotesDialog.parent().appendTo(this.$("#notes"));
         }
-
-        //var additionalNotesDialogId = 'additionalNotes_' + this.model.attributes['id'];
-
-        //$('#my-dialog').parent().css({position:"fixed"}).end().dialog('open');
         this.additionalNotesDialog.parent().css({position:"fixed"}).end().dialog('open');
-        //$("#additionalNotes_" + this.model.attributes['id']).dialog('open');
     },
 
     render: function(){

@@ -23,33 +23,6 @@ SopsView = Backbone.View.extend({
             $('#filter-pane').css('margin-left', parseInt(pad)-16);
         }, 16);
 
-        setInterval(function () {
-            var outerWidth = $('#listTable_wrapper').width();
-            $('#scrollOuter').css('width', outerWidth);
-            var innerWidth = $('#listTable').width();
-            $('#customScroll').css('width', innerWidth);
-
-            var scrollA = 0;
-            var scrollB = 0;
-            try {
-                scrollA = $('.dataTables_scrollBody')[0].scrollLeft;
-                scrollB = $('#scrollOuter')[0].scrollLeft;
-            } catch(err) {
-                // we are just suppressing the warnings that .scrollLeft can't be accessed on this element until it's rendered
-            }
-            if (scrollA != this.scrollValue) {
-                this.scrollValue = scrollA;
-                if($('#scrollOuter').length > 0){
-                    $('#scrollOuter')[0].scrollLeft = scrollA;
-                }
-            } else if (scrollB != this.scrollValue) {
-                this.scrollValue = scrollB;
-                if($('.dataTables_scrollBody').length > 0){
-                    $('.dataTables_scrollBody')[0].scrollLeft = scrollB;
-                }
-            }
-        }, 15);
-
         var storedPrefs = JSON.parse(localStorage.getItem("USERPREFS"));
         var globalPrefs = SopsView.filtersSelected;
         if (storedPrefs == null) {
@@ -59,6 +32,16 @@ SopsView = Backbone.View.extend({
             localStorage.setItem("USERPREFS", JSON.stringify(newPrefs));
         }
         this.getUserPrefs();
+        
+        $(window).resize($.proxy(function(){
+            this.$('div.dataTables_scrollBody').css('max-height', $(window).height() - 
+                                                       this.$('#tableContainer').offset().top - 
+                                                       this.$('#listTable_length').outerHeight() - 
+                                                       this.$('.dataTables_scrollHead').outerHeight() - 
+                                                       this.$('#listTable_info').outerHeight() -
+                                                       $('#footer').outerHeight());
+            this.table.draw();
+        }, this));
     },
 
     updateUserPrefs: function() {
@@ -73,8 +56,7 @@ SopsView = Backbone.View.extend({
     renderRoles: function(){
         var rolestring = me.roleString.get('roleString');
         if(rolestring.indexOf('Manager') !== -1 || rolestring.indexOf('Admin') !== -1){
-            $('.assign_button').css('display','inline');
-            this.table.draw();
+            this.$('.assign_button').css('display','inline');
         }
     },
     
@@ -83,6 +65,8 @@ SopsView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
+        
+        // Filter the Sops
         var sops = new Sops(this.sops.filter($.proxy(function(sop) { 
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
@@ -100,13 +84,23 @@ SopsView = Backbone.View.extend({
             }
             return this.hidden;
         }, this)));
+        
+        // Render the SopsRows
+        var fragment = document.createDocumentFragment();
         sops.each($.proxy(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
-            this.$("#sopRows").append(row.$el);
             row.render();
+            fragment.appendChild(row.el);
         }, this));
-        this.$('#listTable').show();
+        this.$("#sopRows").html(fragment);
+        
+        // Create the DataTable
         this.createDataTable();
+        
+        // Show the DataTable
+        this.$('#listTable').show();
+        this.$('.dataTables_scrollHead table').show();
+        this.$('.DTFC_LeftHeadWrapper table').show();
     },
     
     createDataTable: function(){
@@ -143,16 +137,24 @@ SopsView = Backbone.View.extend({
                 invisibleColumns.push(i);
             }
         }
+        // Create the DataTable
         this.table = this.$('#listTable').DataTable({'oSearch': {'sSearch': this.defaultSearch},
-                                                     'bPaginate': false,
                                                      'bFilter': true,
                                                      'dom': 'Bfrtip',
                                                      'autoWidth': true,
+                                                     'deferRender': true,
                                                      'scrollX': true,
+                                                     'scrollY': screen.height, // Essentially the max height of the table
+                                                     'scrollCollapse': true,
+                                                     'scroller': {
+                                                        loadingIndicator: true,
+                                                        rowHeight: 158,
+                                                        displayBuffer: 2
+                                                     },
                                                      'fixedColumns':   
-                                                        {
-                                                            leftColumns: 1
-                                                        },
+                                                     {
+                                                        leftColumns: 1
+                                                     },
                                                      'columnDefs': [
                                                         { 'visible': false, 'targets': invisibleColumns }
                                                       ],
@@ -168,7 +170,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '70px' },  // Program Name
                                                         { 'width': '70px' },  // EPL
                                                         { 'width': '110px' }, // Areas
-                                                        { 'width': '75px' },  // Supervisors
+                                                        { 'width': '85px' },  // Supervisors
                                                         { 'width': '80px' },  // Scholarships Held/Applied
                                                         { 'width': '75px' },  // GPA Normalized
                                                         { 'width': '70px' },  // GRE
@@ -177,7 +179,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '110px' }, // Courses
                                                         { 'width': '120px' }, // Reviewers
                                                         { 'width': '70px' },  // Avg Rev Rank
-                                                        { 'width': '120px' }, // Faculty
+                                                        { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
                                                         { 'width': '120px' }, // Notes
                                                         { 'width': '70px' },  // Comments
@@ -198,15 +200,10 @@ SopsView = Backbone.View.extend({
                                                             extend: 'excel',
                                                             text: 'Excel',
                                                             title: 'CSGARS_Overview_Table'
-                                                        } )/*,
-                                                        {
-                                                            extend: 'pdf',
-                                                            className: 'btn btn-primary',
-                                                            text: 'PDF'
-                                                        }*/
+                                                        } )
                                                      ], 
-                                                     'aLengthMenu': [[-1], ['All']],
                                                      'drawCallback': $.proxy(function() {
+                                                        this.renderRoles();
                                                         if (SopsView.filtersSelected.filterMenuOpen == true) {
                                                             // Move the filter menu back out
                                                             $('#bodyContent').css('left', 330);
@@ -249,10 +246,10 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.appliedNSERC = this.appliedNSERC.prop("checked");
                                                         SopsView.filtersSelected.filterDoBSpan = this.filterDoBSpan.val();
                                                         SopsView.filtersSelected.filterSelectEPLTest = this.filterSelectEPLTest.val();
-                                                        
                                                      }, this)
                                                  });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        table = this.table;
     },
 
     events: {
@@ -269,7 +266,7 @@ SopsView = Backbone.View.extend({
     },
 
     reloadTable: function(){
-        this.table.draw();
+        $(window).trigger('resize'); // Ends up calling table.draw()
         this.updateUserPrefs();
     },
 
@@ -681,7 +678,6 @@ SopsView = Backbone.View.extend({
     },
 
     render: function(){
-        this.$el.empty();
         this.$el.html(this.template());
         
         this.filterSelectCountry = this.$('#filterSelectCountry');
@@ -782,7 +778,9 @@ SopsView = Backbone.View.extend({
 
         this.addRows();
         var roleString = me.getRoleString();
-        this.listenToOnce(roleString, 'sync', this.renderRoles);
+        this.listenToOnce(roleString, 'sync', function(){
+            $(window).trigger('resize'); // Ends up calling table.draw()
+        });
         $.fn.dataTable.ext.search = new Array();
         $.fn.dataTable.ext.search.push(
             $.proxy(this.filterGPA, this),
@@ -817,7 +815,6 @@ SopsView = Backbone.View.extend({
             yearRange: "-100:-18",
             defaultDate: "-18y"
         });
-       
         return this.$el;
     }
 });

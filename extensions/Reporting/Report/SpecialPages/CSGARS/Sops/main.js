@@ -8,9 +8,6 @@ $("head").append('<script type="text/javascript" src="'+wgServer+wgScriptPath+'/
 $("head").append('<script type="text/javascript" src="'+wgServer+wgScriptPath+'/scripts/jquery.deserialize.js></script>');
 $("head").append('<script type="text/javascript" src="'+wgServer+wgScriptPath+'/scripts/select2/js/select2.js"></script>');
 
-$("head").append('<link rel="stylesheet" href="'+wgServer+wgScriptPath+'/extensions/Sops/style.css" type="text/css" />');
-
-
 // Adapted from a category plugin for annotatorjs written in coffee-script by Michael Widner
 // https://github.com/PoeticMediaLab/Annotator-Categories
 
