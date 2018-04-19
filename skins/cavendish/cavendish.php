@@ -808,9 +808,7 @@ class CavendishTemplate extends QuickTemplate {
 			    foreach($tabs as $key => $tab){
 			        if($tab['href'] != "" && $tab['text'] != ""){
 			            echo "<li class='top-nav-element {$tab['selected']}'>\n";
-                        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-                        echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
-                        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+                        echo "<a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
                         echo "</li>";
                     }
 			    }

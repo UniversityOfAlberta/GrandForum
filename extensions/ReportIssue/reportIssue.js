@@ -25,19 +25,18 @@ $(document).ready(function(){
    
     $("div#reportIssue button").click(function(){
         $("div#reportIssue .throbber").show();
-        html2canvas(document.body, {
-            onrendered: function(canvas) {
-                dataToSend = {
-                    img: canvas.toDataURL(),
-                    url: document.location.toLocaleString(),
-                    browser: navigator.userAgent,
-                    comments: '',
-                    email: ''
-                };
-                //$("div#reportIssueDialog").append('<img src="' + canvas.toDataURL() + '" />');
-                $("div#reportIssueDialog").dialog('open');
-                $("div#reportIssue .throbber").hide();
-            }
+        html2canvas(document.body).then(function(canvas) {
+            dataToSend = {
+                img: canvas.toDataURL(),
+                url: document.location.toLocaleString(),
+                browser: navigator.userAgent,
+                comments: '',
+                email: ''
+            };
+            //$("div#reportIssueDialog img").remove();
+            //$("div#reportIssueDialog").append('<img src="' + canvas.toDataURL() + '" />');
+            $("div#reportIssueDialog").dialog('open');
+            $("div#reportIssue .throbber").hide();
         });
     });
     
