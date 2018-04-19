@@ -3581,13 +3581,21 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type LIKE '%Supervises%'";
+                        AND (type LIKE '%Supervises%' OR 
+                             type LIKE '%Co-Supervises%' OR
+                             type LIKE '%Supervisory Committee%' OR
+                             type LIKE '%Examiner%' OR
+                             type LIKE '%Committee Chair%')";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type LIKE '%Supervises%'
+                        AND (type LIKE '%Supervises%' OR 
+                             type LIKE '%Co-Supervises%' OR
+                             type LIKE '%Supervisory Committee%' OR
+                             type LIKE '%Examiner%' OR
+                             type LIKE '%Committee Chair%')
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -3608,7 +3616,11 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type LIKE '%Supervises%'
+                AND (type LIKE '%Supervises%' OR 
+                             type LIKE '%Co-Supervises%' OR
+                             type LIKE '%Supervisory Committee%' OR
+                             type LIKE '%Examiner%' OR
+                             type LIKE '%Committee Chair%')
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         $hqps = array();
