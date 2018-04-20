@@ -84,10 +84,12 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     updateContactWarning: function(){
-        if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
-            this.contactWarning.show();
-        } else {
-            this.contactWarning.hide();
+        if(this.contactWarning != null){
+            if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
+                this.contactWarning.show();
+            } else {
+                this.contactWarning.hide();
+            }
         }
     },
 
