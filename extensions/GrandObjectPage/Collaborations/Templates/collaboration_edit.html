@@ -1,5 +1,5 @@
 <div>
-	<p>This <%= formType.toLowerCase() %> is for the <i>current fiscal year</i></p>
+	<p>This <%= formType.toLowerCase() %> is for the <i><%= YEAR - 1 %>/<%= YEAR.toString().substr(2, 2) %> fiscal year</i></p>
 	<h3>Organization:</h3>
 	<%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
 
