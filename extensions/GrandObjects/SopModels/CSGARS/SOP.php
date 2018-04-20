@@ -6,6 +6,7 @@ mb_internal_encoding("UTF-8");
  */
 class SOP extends AbstractSop{
 
+    static $hasGsmsCache = array();
 
   /**
    * SOP constructor.
@@ -146,6 +147,17 @@ class SOP extends AbstractSop{
 	    }
         return $this->content;
     }
+    
+    static function generateHasGSMSCache(){
+        if(count(self::$hasGsmsCache) == 0){
+            $data = DBFunctions::execSQL("SELECT DISTINCT user_id
+                                          FROM grand_sop
+                                          WHERE pdf_data != ''");
+            foreach($data as $row){
+                self::$hasGsmsCache[$row['user_id']] = true;
+            }
+        }
+    }
 
     function checkGSMS(){
         $url = $this->getGSMSUrl();
@@ -157,11 +169,8 @@ class SOP extends AbstractSop{
 
     function getGSMSUrl(){
         global $wgServer, $wgScriptPath;
-        $data = DBFunctions::select(array('grand_sop'),
-                                    array('id'),
-                                    array('user_id' => EQ($this->user_id),
-                                          'pdf_data' => NEQ('')));
-        if(count($data) > 0){
+        self::generateHasGSMSCache();
+        if(isset($hasGsmsCache[$this->user_id])){
             return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
         }
 	    return "";
