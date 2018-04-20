@@ -19,6 +19,7 @@ class Person extends BackboneModel {
     static $disciplineMap = array();
     static $allPeopleCache = array();
     static $gsmsIds = array();
+    static $evalCache = array();
 
     var $user = null;
     var $name;
@@ -321,6 +322,19 @@ class Person extends BackboneModel {
         $name = str_replace("and ", "", $name);
         $name = trim($name);
         return $name;
+    }
+    
+    /**
+     * Generates a cache containing evaluator, type user_id pairs
+     */
+    static function generateEvalCache(){
+        if(count(self::$evalCache) == 0){
+            $data = DBFunctions::select(array('grand_eval'),
+                                        array('*'));
+            foreach($data as $row){
+                self::$evalCache[$row['sub_id']][$row['year']][$row['type']][] = $row['user_id'];
+            }
+        }
     }
     
     /**
@@ -4479,15 +4493,11 @@ class Person extends BackboneModel {
      * @return array The list of People who are evaluating this Person
      */
     function getEvaluators($year = YEAR, $type='Researcher'){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE sub_id = '{$this->id}'
-                AND type = '{$type}'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
+        self::generateEvalCache();
+        $data = (isset(self::$evalCache[$this->id][$year][$type])) ? self::$evalCache[$this->id][$year][$type] : array();
         $subs = array();
         foreach($data as $row){
-            $subs[] = Person::newFromId($row['user_id']);
+            $subs[] = Person::newFromId($row);
         }
         return $subs;
     }
