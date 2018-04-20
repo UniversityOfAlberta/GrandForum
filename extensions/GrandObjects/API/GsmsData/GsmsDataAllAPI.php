@@ -25,6 +25,7 @@ class GsmsDataAllAPI extends RESTAPI {
                                            strstr($g->folder, "Offer Accepted") !== false ||
                                            strstr($g->folder, "Waiting for Response") !== false ||
                                            strstr($g->folder, "Incoming") !== false)) || 
+                   ($folder == "Reject" && (strstr($g->folder, "Ready for Decision") !== false)) || 
                    $folder == 'all'){
                     foreach($programs as $program){
                         if($program == '' || $program == 'all' || strstr($g->getProgramName(true), $program) !== false){

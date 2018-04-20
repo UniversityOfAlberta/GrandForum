@@ -502,8 +502,6 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getFinalAdmit(){
-
-
         $hqp = Person::newFromId($this->getUser());
         $gsms = $hqp->getGSMS();
         $dec = $gsms->folder;
@@ -514,6 +512,9 @@ abstract class AbstractSop extends BackboneModel{
  
            strstr($dec, "Incoming") !== false){
             $dec = "Admit";   
+        }
+        if(strstr($dec, "Ready for Decision") !== false){ // Need to handle some extra folders from FGSR (gross!)
+            $dec = "Reject";   
         }
         if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
             return $dec;
