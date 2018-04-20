@@ -516,7 +516,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     text-shadow:1px 1px 0px #FFFFFF;
     box-shadow:inset 0 0 1px 0 #f8f8f8;
     white-space:nowrap;
-	margin:2px;
+	margin:2px !important;
 	text-align:center;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;

@@ -8,17 +8,29 @@ $(document).ready(function(){
         autoOpen: false,
         width: 400,
         buttons: {
-            "Submit": function(){
-                dataToSend.comments = $("div#reportIssueDialog textarea").val();
-                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, $.proxy(function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('The issue has been reported.');
-                }, this));
+            "Submit": {
+                html: "Submit",
+                id: "reportIssueSubmit",
+                click: function(){
+                    $('#reportIssueSubmit').prop('disabled', true);
+                    $('#reportIssueCancel').prop('disabled', true);
+                    dataToSend.comments = $("div#reportIssueDialog textarea").val();
+                    dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, $.proxy(function(response){
+                        $('#reportIssueSubmit').prop('disabled', false);
+                        $('#reportIssueCancel').prop('disabled', false);
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('The issue has been reported.');
+                    }, this));
+                }
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: "Cancel",
+                id: "reportIssueCancel",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
