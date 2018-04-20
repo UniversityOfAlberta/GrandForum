@@ -206,7 +206,7 @@ SopsEditView = Backbone.View.extend({
           case "Admit":
             suffix = "#/admitted";
             break;
-          case "Rejected":
+          case "Reject":
             suffix = "#/rejected";
             break;
         }
