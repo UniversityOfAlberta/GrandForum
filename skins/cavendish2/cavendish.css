@@ -530,7 +530,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     text-decoration:none;
     font-weight: bold !important;
     white-space:nowrap;
-	margin:2px;
+	margin:2px !important;
 	text-align:center;
     border-width: 0 !important;
 }

@@ -5,7 +5,6 @@
 
 class GsmsData extends BackboneModel{
 
-    static $cache = array();
     var $id;
     var $user_id;
     var $gsms_id;
@@ -112,15 +111,19 @@ class GsmsData extends BackboneModel{
     * gsms exists with that id, it will return an empty gsms.
     */
     static function newFromUserId($id){
-        if(!isset(self::$cache[$id])){
+        if(Cache::exists("gsms_user_$id")){
+            $data = Cache::fetch("gsms_user_$id");
+        }
+        else{
             $data = DBFunctions::select(array('grand_gsms'),
                                         array('*'),
                                         array('user_id' => EQ($id)),
                                         array('submitted_date' => 'DESC'),
                                         array(1));
-            self::$cache[$id] = new GsmsData($data, $id);
+            Cache::store("gsms_user_$id", $data);
         }
-        return self::$cache[$id];
+        $gsms = new GsmsData($data, $id);
+        return $gsms;
     }
 
     static function getAllVisibleGsms(){
@@ -145,9 +148,15 @@ class GsmsData extends BackboneModel{
    * @return $gsms Gsms object
    */
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_gsms'),
-                                    array('*'),
-                                    array('id' => EQ($id)));
+        if(Cache::exists("gsms_$id")){
+            $data = Cache::fetch("gsms_$id");
+        }
+        else{
+            $data = DBFunctions::select(array('grand_gsms'),
+                                        array('*'),
+                                        array('id' => EQ($id)));
+            Cache::store("gsms_$id", $data);
+        }
         $gsms = new GsmsData($data);
         return $gsms;
     }
@@ -199,6 +208,7 @@ class GsmsData extends BackboneModel{
                                           '`decision_response`' => $this->decision_response,
                                           '`general_notes`' => $this->general_notes,
                                           '`visible`' => $this->visible));
+            Cache::delete("gsms_user_{$this->user_id}", $data);
         }
     }
 
@@ -215,50 +225,51 @@ class GsmsData extends BackboneModel{
           $this->additional["notes"] = $notes;
         }*/
         if($me->isLoggedIn()){
-                $status = DBFunctions::update('grand_gsms',
-                                    array('`gender`' => $this->gender,
-                                          '`student_id`' => $this->student_id,
-                                          '`gsms_id`' => $this->gsms_id,
-                                          '`applicant_number`' => $this->applicant_number,
-                                          '`date_of_birth`' => $this->date_of_birth." 00:00:00",
-                                          '`program_name`' => $this->program_name,
-                                          '`country_of_birth`' => $this->country_of_birth,
-                                          '`country_of_citizenship`' => $this->country_of_citizenship,
-                                          '`applicant_type`' => $this->applicant_type,
-                                          '`education_history`' => $this->education_history,
-                                          '`department`' => $this->department,
-                                          '`epl_test`' => $this->epl_test,
-                                          '`epl_score`' => $this->epl_score,
-                                          '`epl_listen`' => $this->epl_listen,
-                                          '`epl_write`' => $this->epl_write,
-                                          '`epl_read`' => $this->epl_read,
-                                          '`epl_speaking`' => $this->epl_speaking,
-                                          '`additional`' => serialize($this->additional),
-                                          '`cs_app`' => $this->cs_app,
-                                          '`academic_year`' => $this->academic_year,
-                                          '`term`' => $this->term,
-                                          '`subplan_name`' => $this->subplan_name,
-                                          '`program`' => $this->program,
-                                          '`degree_code`' => $this->degree_code,
-                                          '`admission_program_name`' => $this->admission_program_name,
-                                          '`submitted_date`' => $this->submitted_date." 00:00:00",
-                                          '`folder`' => $this->folder,
-                                          '`department_gpa`' => $this->department_gpa,
-                                          '`department_gpa_scale`' => $this->department_gpa_scale,
-                                          '`department_normalized_gpa`' => $this->department_normalized_gpa,
-                                          '`fgsr_gpa`' => $this->fgsr_gpa,
-                                          '`fgsr_gpa_scale`' => $this->fgsr_gpa_scale,
-                                          '`fgsr_normalized_gpa`' => $this->fgsr_normalized_gpa,
-                                          '`funding_note`' => $this->funding_note,
-                                          '`department_decision`' => $this->department_decision,
-                                          '`fgsr_decision`' => $this->fgsr_decision,
-                                          '`decision_response`' => $this->decision_response,
-                                          '`general_notes`' => $this->general_notes,
-                                          '`visible`' => $this->visible),
-				     array('user_id' => EQ($this->user_id)));
-                //DBFunctions::commit();
+            $status = DBFunctions::update('grand_gsms',
+                                array('`gender`' => $this->gender,
+                                      '`student_id`' => $this->student_id,
+                                      '`gsms_id`' => $this->gsms_id,
+                                      '`applicant_number`' => $this->applicant_number,
+                                      '`date_of_birth`' => $this->date_of_birth." 00:00:00",
+                                      '`program_name`' => $this->program_name,
+                                      '`country_of_birth`' => $this->country_of_birth,
+                                      '`country_of_citizenship`' => $this->country_of_citizenship,
+                                      '`applicant_type`' => $this->applicant_type,
+                                      '`education_history`' => $this->education_history,
+                                      '`department`' => $this->department,
+                                      '`epl_test`' => $this->epl_test,
+                                      '`epl_score`' => $this->epl_score,
+                                      '`epl_listen`' => $this->epl_listen,
+                                      '`epl_write`' => $this->epl_write,
+                                      '`epl_read`' => $this->epl_read,
+                                      '`epl_speaking`' => $this->epl_speaking,
+                                      '`additional`' => serialize($this->additional),
+                                      '`cs_app`' => $this->cs_app,
+                                      '`academic_year`' => $this->academic_year,
+                                      '`term`' => $this->term,
+                                      '`subplan_name`' => $this->subplan_name,
+                                      '`program`' => $this->program,
+                                      '`degree_code`' => $this->degree_code,
+                                      '`admission_program_name`' => $this->admission_program_name,
+                                      '`submitted_date`' => $this->submitted_date." 00:00:00",
+                                      '`folder`' => $this->folder,
+                                      '`department_gpa`' => $this->department_gpa,
+                                      '`department_gpa_scale`' => $this->department_gpa_scale,
+                                      '`department_normalized_gpa`' => $this->department_normalized_gpa,
+                                      '`fgsr_gpa`' => $this->fgsr_gpa,
+                                      '`fgsr_gpa_scale`' => $this->fgsr_gpa_scale,
+                                      '`fgsr_normalized_gpa`' => $this->fgsr_normalized_gpa,
+                                      '`funding_note`' => $this->funding_note,
+                                      '`department_decision`' => $this->department_decision,
+                                      '`fgsr_decision`' => $this->fgsr_decision,
+                                      '`decision_response`' => $this->decision_response,
+                                      '`general_notes`' => $this->general_notes,
+                                      '`visible`' => $this->visible),
+			     array('user_id' => EQ($this->user_id)));
+                Cache::delete("gsms_$id");
+                Cache::delete("gsms_user_{$this->user_id}", $data);
         }
-	return true;
+        return true;
     }
 
     function getProgramName($br = true){
