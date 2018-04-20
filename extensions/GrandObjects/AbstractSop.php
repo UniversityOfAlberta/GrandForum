@@ -509,7 +509,6 @@ abstract class AbstractSop extends BackboneModel{
            strstr($dec, "Coder") !== false ||
            strstr($dec, "Offer Accepted") !== false ||
            strstr($dec, "Waiting for Response") !== false ||
- 
            strstr($dec, "Incoming") !== false){
             $dec = "Admit";   
         }
