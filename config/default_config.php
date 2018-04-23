@@ -49,6 +49,9 @@
     // Network Website
     $config->setValue("networkSite", "");
     
+    // Shibboleth AutoCreate
+    $config->setValue("shibAutoCreate", true);
+    
     // Shibboleth Logout URL
     $config->setValue("shibLogoutUrl", "");
     

@@ -128,7 +128,8 @@ class ShibAuthPlugin extends AuthPlugin {
 	 * @access public
 	 */
 	function autoCreate() {
-		return true;
+	    global $config;
+	    return $config->getValue("shibAutoCreate");
 	}
  
 	/**
@@ -288,19 +289,26 @@ function SetupShibPopup(){
                     <td width='225px' align='center'>
                         <span style='font-size:1.3em;'>Applicants</span><br />
                         Login with your GARS credentials
-                        <div id='loginDiv'></div>
-                        If you don't have a GARS account?<br />
-                        <a class='button' id='createAccount'>Create Account</a>
-                    </td>
+                        <div id='loginDiv'></div>";
+                        if(ShibAuthPlugin::autoCreate()){
+                            echo "If you don't have a GARS account?<br />
+                                  <a class='button' id='createAccount'>Create Account</a>";
+                        }
+                        else{
+                            echo "New accounts are disabled until next year.";
+                        }
+                    echo "</td>
                 </tr>
             </table>
         </div>
         <div id='loginView2' style='display:none;'>";
-            if(!isset($_POST['submit'])){
-                generateFormHTML();
-            }
-            else{
-                handleSubmit();
+            if(ShibAuthPlugin::autoCreate()){
+                if(!isset($_POST['submit'])){
+                    generateFormHTML();
+                }
+                else{
+                    handleSubmit();
+                }
             }
     echo"
             <a class='button' id='back' style='float:right;'>Back</a>
@@ -435,6 +443,8 @@ function ShibUserLoadFromSession($user, &$result)
 	global $shib_email;
 	global $config;
 	global $wgUser;
+	global $wgMessage;
+	global $wgOut;
 
 	ShibKillAA();
  
@@ -478,6 +488,17 @@ function ShibUserLoadFromSession($user, &$result)
 		$wgUser = $user;
 		wfRunHooks('AuthPluginSetup', array());
 		return true;
+	}
+	if(!ShibAuthPlugin::autoCreate()){
+	    if($shib_email != ""){
+	        $wgMessage->addError("There is no user with the email $shib_email");
+	        $wgOut->addScript("<script type='text/javascript'>
+	            $(document).ready(function(){
+	                logoutFn(false);
+	            });
+	        </script>");
+	    }
+	    return false;
 	}
  
     $wgUser = $user;

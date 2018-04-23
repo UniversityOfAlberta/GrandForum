@@ -116,6 +116,10 @@ class Person extends BackboneModel {
             $data[] = self::$idsCache[$id];
         }
         $person = new Person($data);
+        if(count($data) == 0){
+            // User doesn't exist, get out of here
+            return $person;
+        }
         if($wgUser->getId() == $person->id){
             // User should be able to see themselves
         }
@@ -2167,8 +2171,10 @@ class Person extends BackboneModel {
         }
         $roles = $this->getRoles();
         $roleNames = array();
-        foreach($roles as $role){
-            $roleNames[] = $role->getRole();
+        if(count($roles) > 0){
+            foreach($roles as $role){
+                $roleNames[] = $role->getRole();
+            }
         }
         if($this->isProjectLeader()){
             $roleNames[] = "PL";

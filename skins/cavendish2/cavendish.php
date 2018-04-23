@@ -531,18 +531,22 @@ class CavendishTemplate2 extends QuickTemplate {
         </script>
         <?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
             <script type="text/javascript">
-                $(document).ready(function(){
-
-                    $('#status_logout').removeAttr('href');
-                    $('#status_logout').click(function(){
-                        $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
-                            $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                            $("#logoutFrame").load(function(){
-                                $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                var logoutFn = function(redirect){
+                    $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                        $("#logoutFrame").load(function(){
+                            $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                                if(redirect){
                                     document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
-                                });
+                                }
                             });
                         });
+                    });
+                }
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').click(function(){
+                        logoutFn(true);
                     });
                 });
             </script>
