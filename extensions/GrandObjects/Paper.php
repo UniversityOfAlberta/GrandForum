@@ -1731,6 +1731,7 @@ class Paper extends BackboneModel{
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
+                                                'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
                                                 'access' => $this->access),
                                           array('id' => EQ($this->id)),

@@ -32,9 +32,9 @@ class ImportBibTeXAPI extends API{
     }
     
     function getMonth($month){
-	if(is_numeric($month)){
-	    return $month;
-	}
+        if(is_numeric($month)){
+            return $month;
+        }
         else if(strlen($month) != 3){
             return "01";
         }
@@ -55,19 +55,22 @@ class ImportBibTeXAPI extends API{
         return $month;
     }
     
-    function createProduct($paper, $category, $type, $bibtex_id){
+    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false){
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
         }
         $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
         $checkProduct = Product::newFromTitle($paper['title']);
+        if(!$overwrite && ($checkBibProduct->exists() || $checkProduct->exists())){
+            return null;
+        }
         if($bibtex_id != "" && $checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
         }
         else if($checkProduct->getId() != 0 && 
-           $checkProduct->getCategory() == $category &&
+           ($checkProduct->getCategory() == $category || $category == null) &&
            $checkProduct->getType() == $type){
             // Make sure that a product with the same title/category/type does not already exist
             $product = $checkProduct;
@@ -155,6 +158,7 @@ class ImportBibTeXAPI extends API{
             $status = $product->create();
         }
         else{
+            $product->deleted = 0;
             $status = $product->update();
         }
         if($status){
@@ -166,71 +170,72 @@ class ImportBibTeXAPI extends API{
         }
     }
 
-	function doAction($noEcho=false){
-	    global $wgMessage;
-	    $me = Person::newFromWgUser();
-            if(isset($_POST['bibtex'])){
-                $this->structure = Product::structure();
-                if(isset($_POST['fec'])){
-                    $bib = new stdClass();
-                    $bib->m_entries = $_POST['fec'];
-                }
-                else{
-            	    $dir = dirname(__FILE__);
-            	    $error = "";
-            	    require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
-            	    $md5 = md5($_POST['bibtex']);
-            	    $fileName = "/tmp/".$md5;
-            	    $_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
-            	    file_put_contents($fileName, $_POST['bibtex']);
-            	    $bib = new Bibliography($fileName);
-            	    unlink($fileName);
-	        }
-                $createdProducts = array();
-                $errorProducts = array();
-                if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
-                    foreach($bib->m_entries as $bibtex_id => $paper){
-                        $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-		        if(isset($_POST['fec'])){
-			    $bibtex_id = "";
-  	                }
-                        $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
-                        if($product != null){
-                            $createdProducts[] = $product;
-                        }
-                        else{
-                            $errorProducts[] = $paper;
-                        }
+    function doAction($noEcho=false){
+        global $wgMessage;
+        $me = Person::newFromWgUser();
+        if(isset($_POST['bibtex'])){
+            $this->structure = Product::structure();
+            if(isset($_POST['fec'])){
+                $bib = new stdClass();
+                $bib->m_entries = $_POST['fec'];
+            }
+            else{
+                $dir = dirname(__FILE__);
+                $error = "";
+                require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
+                $md5 = md5($_POST['bibtex']);
+                $fileName = "/tmp/".$md5;
+                $_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
+                file_put_contents($fileName, $_POST['bibtex']);
+                $bib = new Bibliography($fileName);
+                unlink($fileName);
+            }
+            $createdProducts = array();
+            $errorProducts = array();
+            $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
+            if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
+                foreach($bib->m_entries as $bibtex_id => $paper){
+                    $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
+                    if(isset($_POST['fec'])){
+                        $bibtex_id = "";
                     }
-                }
-                else{
-                // Error
-                    $this->addError("No BibTeX references were found");
-                    return false;
-                }
-                $json = array('created' => array(),
-                              'errors' => array());
-                foreach($createdProducts as $product){
-                    $json['created'][] = $product->toArray();
-                }
-                foreach($errorProducts as $product){
-                    if(!isset($product['title'])){
-                        $this->addError("A publication was missing a title");
-                    }
-                    else if(!isset($product['author'])){
-                        $this->addError("A publication was missing an authors list");
+                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id, $overwrite);
+                    if($product != null){
+                        $createdProducts[] = $product;
                     }
                     else{
-                        $this->addMessage("Duplicate");
+                        $errorProducts[] = $paper;
                     }
                 }
-                $this->data = $json;
-                return $json;
             }
+            else{
+                // Error
+                $this->addError("No BibTeX references were found");
+                return false;
+            }
+            $json = array('created' => array(),
+                          'errors' => array());
+            foreach($createdProducts as $product){
+                $json['created'][] = $product->toArray();
+            }
+            foreach($errorProducts as $product){
+                if(!isset($product['title'])){
+                    $this->addError("A publication was missing a title");
+                }
+                else if(!isset($product['author'])){
+                    $this->addError("A publication was missing an authors list");
+                }
+                else{
+                    $this->addMessage("Duplicate");
+                }
+            }
+            $this->data = $json;
+            return $json;
         }
-	
-	function isLoginRequired(){
-		return true;
-	}
+    }
+
+    function isLoginRequired(){
+        return true;
+    }
 }
 ?>
