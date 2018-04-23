@@ -170,7 +170,7 @@ class SOP extends AbstractSop{
     function getGSMSUrl(){
         global $wgServer, $wgScriptPath;
         self::generateHasGSMSCache();
-        if(isset($hasGsmsCache[$this->user_id])){
+        if(isset(self::$hasGsmsCache[$this->user_id])){
             return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
         }
 	    return "";
