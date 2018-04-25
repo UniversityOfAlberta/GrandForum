@@ -453,9 +453,11 @@ class Person extends BackboneModel {
                             array('user_id' => $this->getId()));
         $keys = array_unique($keys);
         foreach($keys as $key){
-            DBFunctions::insert('grand_names_cache',
-                                array('name' => $key,
-                                      'user_id' => $this->getId()));
+            if(trim($key) != ""){
+                DBFunctions::insert('grand_names_cache',
+                                    array('name' => $key,
+                                          'user_id' => $this->getId()));
+            }
         }
     }
     
