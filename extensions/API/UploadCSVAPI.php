@@ -18,30 +18,30 @@ class UploadCSVAPI extends API{
     function setCsvData($data){
         $lines = str_replace("\r\n","__", $data);
         $regex = "/(.+?)__(,){25}__/";
-	preg_match_all($regex, $lines, $array);
-	$sectioned = $array[1];
-	$sections = array();
+        preg_match_all($regex, $lines, $array);
+        $sectioned = $array[1];
+        $sections = array();
      	foreach($sectioned as $section){
-	    $p = explode("__", $section);
-	    $sections[] = $p;
-	}
-	$Endarray = array();
+            $p = explode("__", $section);
+            $sections[] = $p;
+        }
+        $Endarray = array();
     	foreach($sections as $section){
-	    $array = array();
-	    $header = "";
-	    for($i=0;$i<count($section);$i++){
-	        if($section[$i] == ""){
-		    continue;
-		}
-		else{
-		    $row = $this->deleteCsvTrailingCommas($section[$i]);
-		}
-		$array[] = $row;
-	    }
-	    $Endarray[] = $array;
-	}
-	$formattedArray = array();
-	foreach($Endarray as $info){
+            $array = array();
+            $header = "";
+            for($i=0;$i<count($section);$i++){
+                if($section[$i] == ""){
+	            continue;
+	        }
+	        else{
+	            $row = $this->deleteCsvTrailingCommas($section[$i]);
+	        }
+	        $array[] = $row;
+            }
+            $Endarray[] = $array;
+        }
+        $formattedArray = array();
+        foreach($Endarray as $info){
 	    $header = "";
 	    $key = "";
 	    $array = array();
@@ -218,8 +218,6 @@ class UploadCSVAPI extends API{
 					 ));
 	         //resetting cache?
         Person::$cache = array();
-        Person::$namesCache = array();
-        Person::$idsCache = array();
         Person::$rolesCache = array();
 	  //adding user info     
 	$this->addUserUniversity($username, $university, $department, $title);

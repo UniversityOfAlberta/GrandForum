@@ -92,12 +92,6 @@ class PersonProfileTab extends AbstractEditableTab {
     
     function handleEdit(){
         $this->handleContactEdit();
-        $tab = new PersonDashboardTab($this->person, $this->visibility);
-        $tab->handleEdit();
-        
-        $this->person->publicProfile = $_POST['public_profile'];
-        $this->person->privateProfile = $_POST['private_profile'];
-        $this->person->update();
         
         if(isset($_POST['role_title'])){
             foreach($this->person->getRoles() as $role){
@@ -111,8 +105,6 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         Person::$rolesCache = array();
         Person::$cache = array();
-        Person::$namesCache = array();
-        Person::$idsCache = array();
         
         $this->person = Person::newFromId($this->person->getId());
     }
@@ -200,6 +192,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->sciverseId = @$_POST['sciverseId'];
             $this->person->orcId = @$_POST['orcId'];
             $this->person->nationality = @$_POST['nationality'];
+            $this->person->publicProfile = @$_POST['public_profile'];
+            $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
             
             $api = new UserEmailAPI();
@@ -209,8 +203,6 @@ class PersonProfileTab extends AbstractEditableTab {
         //Reset the cache to use the changed data
         unset(Person::$cache[$this->person->id]);
         unset(Person::$cache[$this->person->getName()]);
-        Person::$idsCache = array();
-        Person::$namesCache = array();
         $this->person = Person::newFromId($this->person->id);
         return $error;
     }

@@ -283,7 +283,7 @@ class EditMember extends SpecialPage{
                     DBFunctions::update('mw_user',
                                         array('candidate' => '1'),
                                         array('user_id' => EQ($person->getId())));
-                    Cache::delete("idsCache_{$person->getId()}");
+                    Cache::delete("mw_user_{$person->getId()}");
                     Cache::delete("allPeopleCache");
                     $person->candidate = true;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
@@ -292,7 +292,7 @@ class EditMember extends SpecialPage{
                     DBFunctions::update('mw_user',
                                         array('candidate' => '0'),
                                         array('user_id' => EQ($person->getId())));
-                    Cache::delete("idsCache_{$person->getId()}");
+                    Cache::delete("mw_user_{$person->getId()}");
                     Cache::delete("allPeopleCache");
                     $person->candidate = false;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");

@@ -61,11 +61,11 @@ class GlobalSearchAPI extends RESTAPI {
                     if(!$person->isActive()){
                         $percent -= 10;
                     }
-                    foreach($person->getProjects() as $project){
+                    /*foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
                         }
-                    }
+                    }*/
                     if(count($myRelations) > 0){
                         $relFound = false;
                         foreach($myRelations as $type){
@@ -137,13 +137,14 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'products':
                 $data = array();
+                $start = microtime(true);
                 $products = DBFunctions::select(array('grand_products'),
                                                 array('title', 'category', 'type', 'id'),
                                                 array('deleted' => '0'));
                 foreach($products as $product){
                     $pTitle = unaccentChars($product['title']);
-                    $pCategory = unaccentChars($product['category']);
-                    $pType = unaccentChars($product['type']);
+                    $pCategory = $product['category'];
+                    $pType = $product['type'];
                     $names = array_merge(explode(" ", $pTitle),
                                          explode(" ", $pCategory),
                                          explode(" ", $pType));
@@ -156,20 +157,20 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('product_id' => $product['id'],
-                                        'product_title' => $product['title']);
+                        $data[] = $product['id'];
                     }
                 }
-                $dataCollection = new Collection($data);
+                $end = microtime(true);
                 $results = array();
                 $myProducts = new Collection($me->getPapers('all', false, 'both'));
                 $productIds = $myProducts->pluck('id');
                 $flippedProductIds = @array_flip($productIds);
                 
-                $products = Product::getByIds($dataCollection->pluck('product_id'));
+                $products = Product::getByIds($data);
+                $origSearch2 = unaccentChars($origSearch);
                 foreach($products as $product){
                     $percent = 0;
-                    similar_text(unaccentChars($product->getTitle()), unaccentChars($origSearch), $percent);
+                    similar_text(unaccentChars($product->getTitle()), $origSearch2, $percent);
                     if(isset($flippedProductIds[$product->getId()])){
                         $percent += 50;
                     }

@@ -96,10 +96,10 @@ class CreateUserAPI extends API{
             if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
                 $wgEnableEmail = $oldWgEnableEmail;
                 Person::$cache = array();
-                Person::$namesCache = array();
                 Person::$aliasCache = array();
-                Person::$idsCache = array();
-                $person = Person::newFromName($_POST['wpName']);
+                $newUser = User::newFromName($_POST['wpName']);
+                $person = Person::newFromId($newUser->getId());
+                $person->updateNamesCache();
                 if($person != null && $person->getName() != null){
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
                         $api = new PersonUniversitiesAPI();

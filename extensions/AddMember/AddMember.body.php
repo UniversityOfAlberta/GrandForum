@@ -68,13 +68,10 @@ class UserCreate {
 	                        array('candidate' => $_POST['candidate']),
 	                        array('user_id' => EQ($wgUser->getId())));
 	    Cache::delete("allPeopleCache");
-	    Cache::delete("nameCache_{$wgUser->getId()}");
-        Cache::delete("idsCache_{$wgUser->getId()}");
+        Cache::delete("mw_user_{$wgUser->getId()}");
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();
         Person::$cache = array();
-        Person::$idsCache = array();
-        Person::$namesCache = array();
         Person::$rolesCache = array();
         $person = Person::newFromId($wgUser->getId());
         MailingList::subscribeAll($person);

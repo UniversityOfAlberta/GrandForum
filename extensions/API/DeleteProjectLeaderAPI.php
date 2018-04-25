@@ -88,8 +88,6 @@ class DeleteProjectLeaderAPI extends API{
             }
             Cache::delete("project{$project->getId()}_people", true);
             Person::$cache = array();
-            Person::$idsCache = array();
-            Person::$namesCache = array();
             Person::$leaderCache = array();
             $person = Person::newFromId($person->getId());
             MailingList::subscribeAll($person);

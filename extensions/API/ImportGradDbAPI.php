@@ -36,12 +36,10 @@ class ImportGradDbAPI extends API{
                                          'email' => ""
                                          ));
         Person::$cache = array();
-        Person::$namesCache = array();
-        Person::$idsCache = array();
         Person::$rolesCache = array();
         $this->addUserUniversity($username, $university_info['university'], $university_info['department'], $info['program']);
-	$student = Person::newFromNameLike("$firstname $lastname");
-	$this->addUserRole($student->id, $role);
+        $student = Person::newFromNameLike("$firstname $lastname");
+        $this->addUserRole($student->id, $role);
         $student->setUniversityId($info['id']);
         DBFunctions::commit();
         return $student;

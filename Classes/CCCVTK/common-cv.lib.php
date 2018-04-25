@@ -97,7 +97,7 @@ class CommonCV // {{{
       $record["published_in"] = $this->get_xpath("field[@id='1a1b39e861054ee59d270e66271a4ead']/value", $elements->item($i));
       $record["city"] = $this->get_xpath("field[@id='c2efd9725588489b8df73467c5597c32']/value", $elements->item($i));
       $date = $this->get_xpath("field[@id='0318d139f3e0479083188ff8319a97b2']/value", $elements->item($i));
-      list($date_year, $date_month) = explode("/", $date);
+      @list($date_year, $date_month) = explode("/", $date);
       $record["date_year"] = $date_year;
       $record["date_month"] = $date_month;
       $records[$id] = $record;
