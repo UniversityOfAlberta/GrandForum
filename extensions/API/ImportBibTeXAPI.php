@@ -2,14 +2,14 @@
 
 class ImportBibTeXAPI extends API{
 
-    static $bibtexHash = array('proceedings' => 'Proceedings Paper',
-                               'inproceedings' => 'Proceedings Paper',
-                               'inbook' => 'Proceedings Paper',
-                               'conference' => 'Conference Paper',
+    static $bibtexHash = array('proceedings' => array('Proceedings Paper', 'Conference Proceedings'),
+                               'inproceedings' => array('Proceedings Paper', 'Conference Proceedings'),
+                               'inbook' => array('Proceedings Paper', 'Conference Proceedings'),
+                               'conference' => array('Conference Paper', 'Conference Proceedings'),
                                'book' => 'Book',
-                               'article' => 'Journal Paper',
-                               'collection' => 'Collections Paper',
-                               'incollection' => 'Collections Paper',
+                               'article' => array('Journal Paper', 'Scholarly Refereed Journal'),
+                               'collection' => array('Collections Paper', 'Journal Paper', 'Scholarly Refereed Journal'),
+                               'incollection' => array('Collections Paper', 'Journal Paper', 'Scholarly Refereed Journal'),
                                'manual' => 'Manual',
                                'mastersthesis' => 'Masters Thesis',
                                'bachelorsthesis' => 'Bachelors Thesis',
@@ -95,7 +95,7 @@ class ImportBibTeXAPI extends API{
                 }
             }
             if(!$found){
-                return null;
+                return false;
             }
         }
         $me = Person::newFromWgUser();
@@ -185,8 +185,19 @@ class ImportBibTeXAPI extends API{
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite, $private);
-                    if($product != null){
+                    if(is_array($type)){
+                        // Could map to different types
+                        foreach($type as $t){
+                            $product = $this->createProduct($paper, null, $t, $bibtex_id, $overwrite, $private);
+                            if($product !== false){
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite, $private);
+                    }
+                    if($product != null && $product !== false){
                         $createdProducts[] = $product;
                     }
                     else{
