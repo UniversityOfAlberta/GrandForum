@@ -266,7 +266,7 @@ class GsmsData extends BackboneModel{
                                       '`general_notes`' => $this->general_notes,
                                       '`visible`' => $this->visible),
 			     array('user_id' => EQ($this->user_id)));
-                Cache::delete("gsms_$id");
+                Cache::delete("gsms_{$this->id}");
                 Cache::delete("gsms_user_{$this->user_id}");
         }
         return true;
