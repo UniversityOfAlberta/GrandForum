@@ -351,7 +351,7 @@ class MailingList extends BackboneModel {
             return 1;
         }
         else{
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
+            //$wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
             return 0;
         }
     }
@@ -394,7 +394,7 @@ class MailingList extends BackboneModel {
             return 1;
         }
         else{
-            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
+            //$wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
             return 0;
         }
     }
