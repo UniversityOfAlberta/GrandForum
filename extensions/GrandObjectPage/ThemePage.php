@@ -65,7 +65,9 @@ class ThemePage {
                 
                 $tabbedPage = new TabbedPage("theme");
                 $tabbedPage->addTab(new ThemeMainTab($theme, $visibility));
-                $tabbedPage->addTab(new ThemeBudgetTab($theme, $visibility));
+                if(!$me->isSubRole('NOBUDGET')){
+                    $tabbedPage->addTab(new ThemeBudgetTab($theme, $visibility));
+                }
                 if($isLead){
                     $tabbedPage->addTab(new ThemeDashboardTab($theme, $visibility));
                 }

@@ -111,7 +111,7 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                if($project->getType() != 'Administrative'){
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET')){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
