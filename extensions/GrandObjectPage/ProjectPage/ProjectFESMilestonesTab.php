@@ -270,7 +270,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $('.new_milestones_message').remove();
             $('#addMilestone').text('Add Task');
             $('#addMilestoneDialog').attr('title', 'Add Task');
-            $('.milestone_info1').text('If there any new tasks or activities, please contact the project leader.  If there are any changes to the tasks, leave comments by clicking the <img src=\'$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png\' /> icon.');
+            $('.milestone_info1').html('If there any new tasks or activities, please contact the project leader.  If there are any changes to the tasks, leave comments by clicking the <img src=\'$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png\' /> icon.');
             $('.milestone_info2').text('If a task was mistakenly added, then contact someone on staff to delete it.  If a task was planned, but was abandoned, then select the \'Abandoned\' status.');
             
             $('#addActivity').off('click');
@@ -399,7 +399,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         else{
             $commentsHeader = "<th>Comments</th>";
         }
-        $statusColspan++;
+        $statusColspan+=2;
         if($me->isRoleAtLeast(STAFF)){
             $statusColspan++;
         }
