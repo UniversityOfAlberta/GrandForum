@@ -474,11 +474,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         $('tr.top_border', table).each(function(i, el){
                             var activityId = $(el).attr('data-id');
                             if(!found && (($(el).offset().top - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
-                                toShow.push($('tr[data-activity=' + activityId + ']'));
+                                toShow.push($('tr[data-activity=' + activityId + ']', table));
                                 found = true;
                             }
                             else{
-                                toHide.push($('tr[data-activity=' + activityId + ']'));
+                                toHide.push($('tr[data-activity=' + activityId + ']', table));
                             }
                         });
                         $(toShow).each(function(){ $(this).show(); });
