@@ -123,33 +123,37 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     
     function showYearsHeader(){
         global $config;
+        $html = "";
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         for($y=1; $y <= $this->nYears; $y++){
             $year = $startYear+($y-1);
             if($y < $this->maxNYears){
-                $this->html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
+                $html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
             }
             else {
-                $this->html .= "<th colspan='2' class='left_border'>FY".($y+1)."<br />Apr{$year} – Sep".($year)."</th>";
+                $html .= "<th colspan='2' class='left_border'>FY".($y+1)."<br />Apr{$year} – Sep".($year)."</th>";
             }
         }
+        return $html;
     }
     
     function showQuartersHeader(){
+        $html = "";
         for($y=1; $y <= $this->nYears; $y++){
             if($y < $this->maxNYears){
-                $this->html .= "<th class='left_border'>Q1</th>
-                                <th>Q2</th>
-                                <th>Q3</th>
-                                <th>Q4</th>";
+                $html .= "<th class='left_border'>Q1</th>
+                          <th>Q2</th>
+                          <th>Q3</th>
+                          <th>Q4</th>";
             }
             else {
-                $this->html .= "<th class='left_border'>Q1</th>
-                                <th>Q2</th>";
+                $html .= "<th class='left_border'>Q1</th>
+                          <th>Q2</th>";
             }
         }
+        return $html;
     }
     
     function showQuartersCells($milestone, $activityId){
@@ -396,27 +400,29 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $commentsHeader = "<th>Comments</th>";
         }
         $statusColspan++;
-        $this->html .= "<input type='hidden' name='milestone_activity[0]' value='' />
-                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
-        $this->html .= "<thead>
-                        <tr>
-                            <th colspan='1'></th>";
-        $this->showYearsHeader();
         if($me->isRoleAtLeast(STAFF)){
             $statusColspan++;
         }
-        $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
-                        </tr>
-                        <tr>
-                            <th style='min-width:200px;width:25%;'>Description</th>";
-        $this->showQuartersHeader();
-        $this->html .= "<th class='left_border'>Leader</th>
-                            <th>Personnel</th>
-                            {$commentsHeader}
-                            {$statusHeader}
-                        </tr>
-                        </thead>
+        
+        $header = "<tr>
+                       <th colspan='1'></th>
+                       {$this->showYearsHeader()}
+                       <th colspan='{$statusColspan}' class='left_border'></th>
+                   </tr>
+                   <tr>
+                       <th style='min-width:200px;width:25%;'>Description</th>
+                       {$this->showQuartersHeader()}
+                       <th class='left_border'>Leader</th>
+                       <th>Personnel</th>
+                       {$commentsHeader}
+                       {$statusHeader}
+                   </tr>";
+                   
+        $this->html .= "<input type='hidden' name='milestone_activity[0]' value='' />
+                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
+                        <thead>{$header}</thead>
                         <tbody>";
+        
         foreach($milestones as $key => $milestone){
             $activityId = 0;
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
@@ -446,10 +452,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             if($pdf){
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
-            $this->html .= "<tr class='top_border'>
+            $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
                                 <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1+($this->nYears*4))."' style='white-space:nowrap;{$height};'>{$title}</td>
-                            </tr>
-                            <tr>
+                            </tr>";
+            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            $this->html .= "<tr>
                                 <td>{$description}</td>";
             $this->showQuartersCells($milestone, $activityId);
             

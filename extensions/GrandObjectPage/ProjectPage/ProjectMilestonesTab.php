@@ -159,18 +159,22 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     }
     
     function showYearsHeader(){
+        $html = "";
         for($y=1; $y <= $this->nYears; $y++){
-            $this->html .= "<th colspan='4' class='left_border'>Year {$y}</th>";
+            $html .= "<th colspan='4' class='left_border'>Year {$y}</th>";
         }
+        return $html;
     }
     
     function showQuartersHeader(){
+        $html = "";
         for($y=1; $y <= $this->nYears; $y++){
-            $this->html .= "<th class='left_border'>Q1</th>
-                            <th>Q2</th>
-                            <th>Q3</th>
-                            <th>Q4</th>";
+            $html .= "<th class='left_border'>Q1</th>
+                        <th>Q2</th>
+                        <th>Q3</th>
+                        <th>Q4</th>";
         }
+        return $html;
     }
     
     function showQuartersCells($milestone, $activityId){
@@ -312,27 +316,29 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $commentsHeader = "<th>Comments</th>";
         }
         $statusColspan++;
+        
+        $header = " <tr>
+                        <th colspan='1'></th>
+                        {$this->showYearsHeader()}
+                        <th colspan='{$statusColspan}' class='left_border'></th>
+                    </tr>
+                    <tr>
+                        <th class='milestone_header'>Milestone</th>
+                        {$this->showQuartersHeader()}
+                        <th class='left_border'>Leader</th>
+                        <th>Personnel</th>
+                        {$commentsHeader}
+                        {$statusHeader}
+                    </tr>";
+        
         $this->html .= "<p>
                             <span class='milestones_note'><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br /></span>
                             <span class='new_milestones_message'>New Milestones have titles in bold.</span>
                         </p>
-                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
-        $this->html .= "<thead>
-                        <tr>
-                            <th colspan='1'></th>";
-        $this->showYearsHeader();
-        $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
-                        </tr>
-                        <tr>
-                            <th class='milestone_header'>Milestone</th>";
-        $this->showQuartersHeader();
-        $this->html .= "<th class='left_border'>Leader</th>
-                            <th>Personnel</th>
-                            {$commentsHeader}
-                            {$statusHeader}
-                        </tr>
-                        </thead>
+                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
+                        <thead>{$header}</thead>
                         <tbody>";
+
         foreach($activities as $activityId => $milestones){
             if($year !== false && count($milestones) == 0){
                 continue;
@@ -347,9 +353,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' /><b>$activity</b>";
             }
-            $this->html .= "<tr class='top_border'>
+            $this->html .= "<tr class='top_border' data-id='$activityId'>
                                 <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1+($this->nYears*4))."'>$activity</td>
                             </tr>";
+            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             if(count($milestones) == 0){
                 $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
             }
@@ -456,6 +463,28 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if(!$pdf){
             $this->html .= "<script type='text/javascript'>
                 var colors = ".json_encode(Milestone::$statuses).";
+                
+                setInterval(function(){
+                    $('table.milestones thead').hide();
+                    $('table.milestones').css('overflow-anchor', 'none');
+                    $('table.milestones').each(function(i, table){
+                        var found = false;
+                        var toHide = [];
+                        var toShow = [];
+                        $('tr.top_border', table).each(function(i, el){
+                            var activityId = $(el).attr('data-id');
+                            if(!found && (($(el).offset().top - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
+                                toShow.push($('tr[data-activity=' + activityId + ']'));
+                                found = true;
+                            }
+                            else{
+                                toHide.push($('tr[data-activity=' + activityId + ']'));
+                            }
+                        });
+                        $(toShow).each(function(){ $(this).show(); });
+                        $(toHide).each(function(){ $(this).hide(); });
+                    });
+                }, 50);
                 
                 $('#milestones_table td').qtip();
                 $('#milestones_table td.comment img').qtip({
