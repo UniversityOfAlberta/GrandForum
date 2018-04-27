@@ -392,6 +392,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             else {
                 $this->html .= "<p class='milestone_info2'>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
             }
+            if($me->isRoleAtLeast(STAFF)){
+                $statusColspan++;
+            }
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
@@ -400,10 +403,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $commentsHeader = "<th>Comments</th>";
         }
         $statusColspan+=2;
-        if($me->isRoleAtLeast(STAFF)){
-            $statusColspan++;
-        }
-        
+
         $header = "<tr>
                        <th colspan='1'></th>
                        {$this->showYearsHeader()}
