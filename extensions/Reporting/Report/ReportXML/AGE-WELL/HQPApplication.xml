@@ -199,9 +199,23 @@ Funding Commences: September 2018 or January 2018<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;width:200px;'><b>AGE-WELL Awards - <br />Funding Category</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
+        
         <ReportItem id="MICHAEL" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MICHAEL" orientation="vertical" options="Postdoctoral ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Michael F. Harcourt Policy Fellowship</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Michael F. Harcourt Policy Fellowship</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td id='micheal' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="MICHAEL_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_MICHAEL_DESC" rich="true" limit="750" optional="true">
+            <![CDATA[
+                <tr id='michael_desc'>
+                    <td></td>
+                    <td align='left' valign='top'>
+                        <div style='display:none;'>
+                            The purpose of this fellowship is to encourage candidates from any disciplinary background to explore the policy dimensions of their work in the field of technology and aging. To be considered for the Michael F. Harcourt Policy Fellowship, please submit a policy engagement plan related to the work described in your award application (750 words maximum). The policy engagement plan must include at a minimum: the policy relevant question(s) that you think your work could answer, the potential impact of your work on stakeholders, and key audiences who would benefit from hearing about your work.{$item}
+                        </div>
+                    </td>
+                </tr>
             ]]>
         </ReportItem>
         
@@ -252,6 +266,19 @@ Funding Commences: September 2018 or January 2018<br />
         <ReportItem id="tableFoot" type="StaticReportItem">
             <![CDATA[
                 </table>
+                <script type='text/javascript'>
+                    $('#micheal input').change(function(){
+                        var value = $('#micheal input').is(":checked");
+                        console.log(value);
+                        if(value){
+                            $('#michael_desc td > div').slideDown();
+                        }
+                        else{
+                            $('#michael_desc td > div').slideUp();
+                        }
+                    });
+                    $('#micheal input').change();
+                </script>
                 <p>N.B.: If successful, funding will be disbursed to the named primary supervisor at the institution listed.</p>
                 <h3>SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
             ]]>

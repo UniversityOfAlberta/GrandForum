@@ -1613,7 +1613,7 @@ class ReportItemCallback {
             }
             $value = $array;
             if(is_array($value) && $delim != ""){
-                return @implode($delim, $value);
+                return str_replace(")", "&#41;", str_replace("(", "&#40;", @implode($delim, $value)));
             }
             return $value;
         }

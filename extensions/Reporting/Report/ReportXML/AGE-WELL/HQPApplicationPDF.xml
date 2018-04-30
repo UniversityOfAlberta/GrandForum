@@ -48,12 +48,25 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
+        
         <ReportItem id="MICHAEL" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MICHAEL" orientation="vertical" options="Postdoctoral ($20,000)" optional="true">
             <![CDATA[
                 <h4>Michael F. Harcourt Policy Fellowship</h4>
                 <p>{$item}</p><br />
+                
             ]]>
         </ReportItem>
+        
+        <ReportItemSet id="if_michael" type="If" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_MICHAEL, 0, {$user_id}, 0, MICHAEL)},)}">
+            <ReportItem id="MICHAEL_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_MICHAEL_DESC" optional="true" rich="true" limit="750">
+                <![CDATA[
+                    <div style='margin-left:4em;'>
+                        <b>Description</b>
+                        <p>{$item}</p><br />
+                    </div>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         
         <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
             <![CDATA[
