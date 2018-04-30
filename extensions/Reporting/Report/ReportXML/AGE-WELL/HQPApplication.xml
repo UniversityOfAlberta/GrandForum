@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Award 2017" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2017">
+<Report name="Award 2018" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
@@ -54,12 +54,12 @@
     <li>Applicants for doctoral awards are restricted to those entering the first or second year of their program.</li>
 </ol>
 
-<p><b>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs during 2017-2018 would be ineligible.</b></p>
+<p><b>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs during 2018-2019 would be ineligible.</b></p>
 
 <h3>1. AGE-WELL Awards</h3>
 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees <u>must</u> demonstrate that they receive funding from a source other than AGE-WELL.</p>
 
-<p>We expect to offer the following awards in this 2017 call:</p>
+<p>We expect to offer the following awards in this 2018 call:</p>
 <ul>
     <li><b>3</b> Master’s level awards at $10,000 (1 year award)</li>
     <li><b>4</b> PhD level awards at $15,000 per year (2 year award)</li>
@@ -96,44 +96,66 @@
     <li>Online Application Form;</li>
     <li>Two Confidential Letters of Support (one must be from your proposed supervisor)</li>
     <li>Formal evidence of enrolment in a Master’s or Doctoral program or Post‐Doctoral position;</li> 
-    <li>Formal evidence of awarded funding for 2017-18;</li>
+    <li>Formal evidence of awarded funding for 2018-17;</li>
     <li>Curriculum Vitae.</li>
 </ol>
 <h3>Important Dates</h3>
-Applications Open: 1 May, 2017<br />
-Completed Applications Due: June 7, 2017 at 5pm ET<br />
-Results Available: 21 July, 2017<br />
-Funding Commences: September 2017 or January 2018<br />
-<h3>2. AGE-WELL Co-funded Awards</h3>
+Applications Open: 1 May, 2018<br />
+Completed Applications Due: June 7, 2018 at 5pm ET<br />
+Results Available: 21 July, 2018<br />
+Funding Commences: September 2018 or January 2018<br />
+<h3>2. Michael F. Harcourt Policy Fellowship</h3>
+<p>Michael F. Harcourt O.C., LL.B. is the Founding Chair of the Board for the AGE-WELL Network of Centres of Excellence (NCE). Previously he served as the 30 th Premier of British Columbia from 1991-96 and Mayor of Vancouver 1980-1986. He is a passionate believer in the power of communities to improve the human condition and has played a significant role in promoting quality of life for those in Canada and abroad. A devastating spinal cord injury in 2002 only strengthened his resolve to contribute to the transformation of communities, particularly in relation to social inclusion. Since 2011, he has demonstrated his commitment to capacity building in the public sector as the lead faculty of the United Way's Public Policy Institute. As Chair of AGE-WELL, Mr. Harcourt has championed the next generation of leaders in the field of technology and aging and believes passionately in their ability to create real-world impact. The Michael F. Harcourt Policy Fellowship recognizes his long service and dedication to public policy as a means to effect social change, and his commitment to supporting emerging leaders across disciplines.</p>
+
+<p>AGE-WELL NCE is dedicated to the creation of technologies, services, policies, and practices that benefit older adults and caregivers. We are committed to engaging and nurturing outstanding emerging scientific, industry and community leaders from across disciplines. We aim to provide a unique training environment based on scientific excellence and real-world applicability that exposes trainees to multidisciplinary research environments within a truly collaborative setting in the field of technology and aging. The successful recipient of the Michael F. Harcourt Policy Fellowship will be supported by AGE-WELL’s knowledge mobilization, policy and governmental relations team, to develop and enact a policy engagement plan during the tenure of the award. The successful recipient will report on the outcome of a policy engagement plan at the end of the award period as well as profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. The $20,000 fellowship will be awarded to one postdoctoral fellow annually and is renewable for one year.</p>
+
+<p><i>Note that applicants to the Michael F Harcourt Policy Fellowship do not need to have completed a policy-focused degree program or be employed in a policy-focused role. The fellowship is meant to encourage trainees from any discipline and training program to explore the policy dimensions of their work in the field of technology and aging.</i></p>
+
+<h4>APPLICATION AND SUBMISSION INFORMATION</h4>
+<p>Complete an application to the AGE-WELL Graduate Student and Postdoctoral Awards program as per established requirements. Applicants wishing to be considered for the Michael F. Harcourt Policy Fellowship will be required to submit a maximum 1 page policy engagement plan with their application.</p>
+
+<h3>3. AGE-WELL Co-funded Awards</h3>
 <p>AGE-WELL has partnered with a number of community, industry, and post-secondary groups to further expand our collective impact and to build capacity among Canada’s young researchers.</p>
 
 <p>Applicants are asked to review eligibility and program information for each of the co-funded awards below and to indicate their interest in having their application also considered for a specific co-funded award. Unless otherwise indicated, eligibility, admission criteria, required documents, and funding commencement for AGE-WELL Co-funded Awards align with that of the AGE-WELL Awards.</p>
 
+<h3>AGE-WELL-UC BME Grad Awards</h3>
+<p>AGE-WELL and the University of Calgary’s Biomedical Engineering (BME) Graduate Program aim to support a greater number of salary awards to outstanding graduate students enrolled in the University of Calgary’s BME Graduate Program who wish to commence, pursue or sustain their research training or program in the technology and aging field.</p>
+<p>We expect to offer the following awards in this 2018 call:</p>
+<ul>
+    <li>1 Master’s level award at $10,000 (1 year award)</li>
+    <li>1 PhD level award at $15,000 per year (2 year award)</li>
+</ul>
+<p>Funding will commence on 1 September 2018 or 1 January 2019 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+
+<h3>AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging</h3>
+<p>AGE-WELL NCE and Women’s Brain Health Initiative (WBHI) are pleased to open the call for the 2018 AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging.  The award is intended to enhance existing funding to a promising new scholar pursuing research in the field of women’s brain health.</p>
+<p>We expect to offer the following awards in this 2018 call:</p>
+<ul>
+    <li>1 Postdoctoral level award (PhD) at $20,000 (1 year award)</li>
+</ul>
+<p>Funding will commence on 1 September 2018 or 1 January 2019 and is non-renewable. Funds will flow from AGE-WELL to the trainee’s primary supervisor at their institution. This award is subject to the training and reporting requirements of the AGE-WELL Awards.  In addition, the successful applicant will also be required to complete a brief, 1 page report, detailing research findings and outputs from the award term.  Furthermore, the successful candidate will communicate their research findings through a lecture hosted by WBHI.</p>
+
+<h3>AGE-WELL-MIRA Awards</h3>
+<p>AGE-WELL and the McMaster Institute for Research on Aging aim to support a greater number of salary awards to outstanding graduate students enrolled at McMaster University who wish to commence, pursue or sustain their research training in technology and aging. We expect to offer the following awards in this 2018 call:</p>
+<p>We expect to offer the following awards in this 2018 call:</p>
+<ul>
+    <li>Master’s level award at $15,000 (1 year award)</li>
+    <li>PhD level award at $36,000 (2 year award)</li>
+    <li>Postdoctoral award at $100,000 (2 year award)</li>
+</ul>
+<p>Funding will commence on 1 September 2018 or 1 January 2019 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+
 <h3>AGE-WELL-NBHRF Awards</h3>
-<p>AGE-WELL NCE and the New Brunswick Health Research Foundation (NBHRF) are pleased to open the call for the 2017 AGE-WELL-NBHRF Funding Program.  Applicants must be based at a New Brunswick institution.</p>
-<p>We expect to offer the following awards in this 2017 call:</p>
+<p>AGE-WELL NCE and the New Brunswick Health Research Foundation (NBHRF) are pleased to open the call for the 2018 AGE-WELL-NBHRF Funding Program.  Applicants must be based at a New Brunswick institution.</p>
+<p>We expect to offer the following awards in this 2018 call:</p>
 <ul>
     <li>1 Master’s level award at $17,500 (1 year award)</li>
     <li>1 PhD level award at $25,000 per year (2 year award)</li>
     <li>1 Postdoctoral level award (PhD) at $40,000 (1 year award)</li>
     <li>1 Postdoctoral level award (MD or Pharm. D) at $56,500 (2 year award)</li>
 </ul>
-<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
-<h3>AGE-WELL-UC BME Grad Awards</h3>
-<p>AGE-WELL and the University of Calgary’s Biomedical Engineering (BME) Graduate Program aim to support a greater number of salary awards to outstanding graduate students enrolled in the University of Calgary’s BME Graduate Program who wish to commence, pursue or sustain their research training or program in the technology and aging field.</p>
-<p>We expect to offer the following awards in this 2017 call:</p>
-<ul>
-    <li>1 Master’s level award at $10,000 (1 year award)</li>
-    <li>1 PhD level award at $15,000 per year (2 year award)</li>
-</ul>
-<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
-<h3>AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging</h3>
-<p>AGE-WELL NCE and Women’s Brain Health Initiative (WBHI) are pleased to open the call for the 2017 AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging.  The award is intended to enhance existing funding to a promising new scholar pursuing research in the field of women’s brain health.</p>
-<p>We expect to offer the following awards in this 2017 call:</p>
-<ul>
-    <li>1 Postdoctoral level award (PhD) at $20,000 (1 year award)</p>
-</ul>
-<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. Funds will flow from AGE-WELL to the trainee’s primary supervisor at their institution. This award is subject to the training and reporting requirements of the AGE-WELL Awards.  In addition, the successful applicant will also be required to complete a brief, 1 page report, detailing research findings and outputs from the award term.  Furthermore, the successful candidate will communicate their research findings through a lecture hosted by WBHI.</p>
+<p>Funding will commence on 1 September 2018 or 1 January 2019 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
         ]]>
         </ReportItem>
     </ReportSection>
@@ -177,21 +199,36 @@ Funding Commences: September 2017 or January 2018<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;width:200px;'><b>AGE-WELL Awards - <br />Funding Category</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000 per year for 2 years)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500 for 2 years)" optional="true">
+        <ReportItem id="MICHAEL" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MICHAEL" orientation="vertical" options="Postdoctoral ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Michael F. Harcourt Policy Fellowship</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
+        
         <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UC BME Grad Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
+        
         <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-WBHI Post-Doctoral Award</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($36,000 for 2 years)|Postdoctoral ($100,000 for 2 years)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-MIRA Awards</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000 per year for 2 years)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500 for 2 years)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="project" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROJ" width="180px">
             <![CDATA[
                 <tr><td align='right'><b>Project Title:</b></td><td>{$item}</td></tr>
@@ -202,9 +239,14 @@ Funding Commences: September 2017 or January 2018<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September 2017|January 2018">
+        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September|January|Other">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Start Date:</b></td><td style='padding-top:5px;padding-bottom:5px;'><div style='position:relative;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTHER">
+            <![CDATA[
+                <tr><td></td><td><div style='position:relative;top:-37px;left:100px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="tableFoot" type="StaticReportItem">
@@ -415,7 +457,7 @@ Funding Commences: September 2017 or January 2018<br />
         </ReportItem>
         <ReportItem id="evidence" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <h2>Formal evidence of application or awarded funding for 2017-2018</h2>
+                <h2>Formal evidence of application or awarded funding for 2018-2019</h2>
                 <p>AGE-WELL Awards are intended to enhance existing funding support to promising new scholars. Applicants must receive financial support from additional sources.</p>
 
                 <p>You can use any of the following as formal evidence of application or awarded funding</p>
