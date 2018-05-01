@@ -528,7 +528,7 @@ EOF;
 
         $details_div_id = "hqp_details";
         $html =<<<EOF
-         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+         <table id='table_hqp1' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
                 <td width='25%'></td>
                 <th width='25%'>HQP</th>
@@ -789,7 +789,7 @@ EOF;
 
         $details_div_id = "hqp_uni_details";
         $html =<<<EOF
-         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+         <table id='table_hqp2' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
          <tr>
          <th>University</th>
          <th>Ugrad</th>

@@ -59,6 +59,12 @@ class PeopleTableTab extends AbstractTab {
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
+        $statusHeader = "";
+        if($me->isRoleAtLeast(STAFF)){
+            $statusHeader .= "<th>Gender</th>
+                              <th>Nationality</th>
+                              <th>Status</th>";
+        }
         $this->html .= "Below are all of the ".strtolower($this->id)." {$this->table} members in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
@@ -71,6 +77,7 @@ class PeopleTableTab extends AbstractTab {
                                     <th style='white-space: nowrap;'>Institution</th>
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
+                                    {$statusHeader}
                                     {$epicHeader}
                                     {$contactHeader}
                                     {$emailHeader}
@@ -146,6 +153,17 @@ class PeopleTableTab extends AbstractTab {
             $this->html .= "<td align='left'>{$university['university']}</td>";
             $this->html .= "<td align='left'>{$university['department']}</td>";
             $this->html .= "<td align='left'>{$university['position']}</td>";
+            if($statusHeader != ''){
+                if($person->isRole($this->table)){
+                    $status = "Active";
+                }
+                else{
+                    $status = "Inactive";                
+                }
+                $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                $this->html .= "<td align='left'>{$status}</td>";
+            }
             if($epicHeader != ''){
                 $hqpTab = new HQPEpicTab($person, array());
                 $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');

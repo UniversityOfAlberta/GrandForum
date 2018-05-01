@@ -184,6 +184,7 @@ class ApplicationsTable extends SpecialPage{
     function generateAward(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2015, "2015"));
