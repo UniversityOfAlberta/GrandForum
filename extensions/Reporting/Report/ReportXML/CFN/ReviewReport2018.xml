@@ -1188,6 +1188,216 @@
         </ReportItem>
     </ReportSection>
     
+    <ReportSection id="cat_ex_review" name="SHOW Ext Review" tooltip="Review of SHOW Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SHOW-EX" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SHOW_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="SHOW-EX" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({==({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SCREENING,{$parent_id},{$user_id},0)},Yes)}
+                                                               {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)},)}
+                                                          )}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)})})}
+
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table" type="PDFReportItem" reportType="SHOWApplication" buttonName="Download Application">
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        {$item}
+                        <table class='wikitable' id="{$user_id}_table1ex">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Screening</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="SHOW-EX" includeSelf="true">
+                    <ReportItem id="row" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='middle'>{getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SCREENING,{$parent_id},{$user_id},0)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right'>
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)},
+                                                 {getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)}
+                                            )}
+                                        ,15)}
+                                    ,5)}
+                                ,2)}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan='2' style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)},
+                                                 {get(q2)},
+                                                 {get(q3)}
+                                            )}
+                                        )}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},15)},5)},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table1ex.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    
+    <ReportSection id="show_review_summary" name="SHOW Ext Summary" tooltip="SHOW Ext Summary" type="ReportSection">
+        <ReportItem id="table_head" type="Static">
+            <![CDATA[
+                <table class='wikitable' id="eval_table1ex">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SHOW-EX" class="Person">
+            <ReportItem id="script_init" type="StaticReportItem">
+                <![CDATA[
+                    {set(q1, 0)}
+                    {set(q2, 0)}
+                    {set(q3, 0)}
+                    
+                    {set(nReviewers, 0)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="SHOW-EX" includeSelf="true">
+                <ReportItem id="script" type="If" if="{and({==({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SCREENING,{$parent_id},{$user_id},0)},Yes)}
+                                                           {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)},)}
+                                                      )}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_3,{$parent_id},{$user_id},0)})})}
+
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},15)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="table_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_SHOW_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_last_name}</b></td>
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table1ex").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
     <!--ReportSection id="submit" type="ReportSection" name="Submit" tooltip="Submit" title="Submit">
         <ReportItem id="submit" type="SimpleReviewSubmit">
             {$item}
