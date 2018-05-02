@@ -65,7 +65,9 @@ abstract class AbstractSop extends BackboneModel{
     abstract function getAdmitResult($user);
     abstract function getColumns();
     
-    function getReviewRanking() {return '--';}
+    function getReviewRanking() {
+        return '--';
+    }
 
   /**
    * newFromId Returns an SOP object from a given id
@@ -237,10 +239,8 @@ abstract class AbstractSop extends BackboneModel{
         global $wgRoleValues;
         $sops = array();
         $me = Person::newFromWgUser();
-        //if($me->isRoleAtLeast(MANAGER)){
-            $data = DBFunctions::select(array('grand_sop'),
+        $data = DBFunctions::select(array('grand_sop'),
                                         array('id'));
-        //}
         if(count($data) >0){
             foreach($data as $sopId){
                 $sop = SOP::newFromId($sopId['id']);
@@ -279,27 +279,18 @@ abstract class AbstractSop extends BackboneModel{
     }
 
 
-  /**
-   *
-   */
     function create(){
         $status = DBFunctions::insert('grand_sop',
              array('user_id' => $this->user_id),
              true);
     }
 
-  /**
-   *
-   */
     function update(){
-        //TODO
+        return false;
     }
 
-  /**
-   *
-   */
     function delete(){
-        //TODO
+        return false;
     }
 
   /**
@@ -334,9 +325,7 @@ abstract class AbstractSop extends BackboneModel{
         $reviewers = array();
         $student = Person::newFromId($this->user_id);
         $reviewer_array = $student->getEvaluators(YEAR,"sop"); 
-        //foreach($this->getReviewers() as $id){
         foreach($reviewer_array as $reviewer){
-            //$person = Person::newFromId($id);
             $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
                                  'name' => $person->getNameForForms(),
@@ -525,23 +514,6 @@ abstract class AbstractSop extends BackboneModel{
         } else {
             return "Undecided";
         }
-        /*
-        $hqp = Person::newFromId($this->getUser());
-        $gsms = $hqp->getGSMS();
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
-        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q1', $gsms->getId());
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data == "Waitlist"){
-            $number = 1;
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
-            $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q3', $gsms->getId());
-            $blob->load($blob_address);
-            $number = $blob->getData();
-            return $data.' '.$number;
-        } 
-        return $data;
-        */
     }
     
     /**
@@ -594,72 +566,21 @@ abstract class AbstractSop extends BackboneModel{
    */
     function getReadabilityScore(){
       $content = $this->getContentToSend();
-        $curl_url = "http://162.246.157.115/tasha/readability_score";
-        $curl_post_fields_array = array('content'=>$content);
-      $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER =>true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-      $result = json_decode($result, true);
-
-      $ari_grade = $result["ari"]["us_grade"];
-      $ari_age = $result["ari"]["min_age"];
-      $colemanliau_grade = $result["colemanliau"]["us_grade"];
-      $colemanliau_age = $result["colemanliau"]["min_age"];
-      $dalechall_index = $result["dalechall"]["readingindex"];
-      $dalechall_grade = $result["dalechall"]["us_grade"];
-      $dalechall_age = $result["dalechall"]["min_age"];
-      $fleschkincaid_grade = $result["fleschkincaid"]["us_grade"];
-      $fleschkincaid_age = $result["fleschkincaid"]["min_age"];
-      $smog_grade = $result["smog"]["us_grade"];
-      $smog_age = $result["smog"]["min_age"];
-
-        $readability_score
-            = ($ari_grade + $colemanliau_grade + $dalechall_grade +
-               $fleschkincaid_grade + $smog_grade)
-              / 5;
-        $min_age
-            = ($ari_age + $colemanliau_age + $dalechall_age +
-               $fleschkincaid_age + $smog_age)
-              / 5;
-
-      $reading_ease = $result["flesch"]["reading_ease"];
- 
-        $word_count = $result["flesch"]["scores"]["word_count"];
-      $sentlen_ave = $result["dalechall"]["scores"]["sentlen_average"];
-      $wordletter_ave = $result["dalechall"]["scores"]["wordlen_average"];
-
+      $tasha = new TASHA();
+      $tasha->content = $content;
+      $result = $tasha->getReadabilityScore();
       $sql = "UPDATE grand_sop
-        SET readability_score=$readability_score, min_age=$min_age, 
-                        reading_ease=$reading_ease, ari_grade=$ari_grade,
-                        ari_age=$ari_age, colemanliau_grade=$colemanliau_grade,
-                        colemanliau_age=$colemanliau_age, dalechall_index=$dalechall_index,
-                        dalechall_grade=$dalechall_grade, dalechall_age=$dalechall_age,
-                        fleschkincaid_grade=$fleschkincaid_grade,
-                        fleschkincaid_age=$fleschkincaid_grade,
-                        smog_grade=$smog_grade, smog_age=$smog_age,
-                        word_count=$word_count, sentlen_ave=$sentlen_ave,
-                        wordletter_ave=$wordletter_ave
+              SET readability_score={$result['readability_score']}, min_age={$result['min_age']}, 
+                        reading_ease={$result['reading_ease']}, ari_grade={$result['ari_grade']},
+                        ari_age={$result['ari_age']}, colemanliau_grade={$result['colemanliau_grade']},
+                        colemanliau_age={$result['colemanliau_age']}, dalechall_index={$result['dalechall_index']},
+                        dalechall_grade={$result['dalechall_grade']}, dalechall_age={$result['dalechall_age']},
+                        fleschkincaid_grade={$result['fleschkincaid_grade']},
+                        fleschkincaid_age={$result['fleschkincaid_grade']},
+                        smog_grade={$result['smog_grade']}, smog_age={$result['smog_age']},
+                        word_count={$result['word_count']}, sentlen_ave={$result['sentlen_ave']},
+                        wordletter_ave={$result['wordletter_ave']}
               WHERE id={$this->id};";
-      //$status = DBFunctions::execSQL($sql,true);
         $status = false;
         if($status){
             DBFunctions::commit();
@@ -673,40 +594,14 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed|string
    */
     function getSentimentScore(){
-      $content = $this->getContentToSend();
-      $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        $curl_url = "http://162.246.157.115/tasha/sentiment";
-        $curl_post_fields_array = array('content'=> $content);
-        $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        $result = json_decode($result, true);
-        $sentiment_val = $result['docSentiment']['score'];
-        $sentiment_type = $result['docSentiment']['type'];
+        $content = $this->getContentToSend();
+        $tasha = new TASHA();
+        $tasha->content = $content;
+        $result = $tasha->getSentimentScore();
         $sql = "UPDATE grand_sop
-                SET sentiment_type='$sentiment_type', sentiment_val='$sentiment_val'
+                SET sentiment_type='{$result['sentiment_type']}', sentiment_val='{$result['sentiment_val']}'
                 WHERE id={$this->id};";
 
-        //$status = DBFunctions::execSQL($sql,true);
         $status = false;
         if($status){
             DBFunctions::commit();
@@ -720,44 +615,14 @@ abstract class AbstractSop extends BackboneModel{
    * @return mixed|string
    */
     function getEmotionsScore(){
-      $content = $this->getContentToSend();
-        $curl_url = "http://162.246.157.115/tasha/emotions";
-        $curl_post_fields_array = array('content'=> $content);
-        $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        $result = json_decode($result, true);
-      $emotions_array = array();
-        $emotions_array['anger'] = $result['docEmotions']['anger'];
-        $emotions_array['disgust'] = $result['docEmotions']['disgust'];
-        $emotions_array['fear'] = $result['docEmotions']['fear'];
-        $emotions_array['joy'] = $result['docEmotions']['joy'];
-        $emotions_array['sadness'] = $result['docEmotions']['sadness'];
-
+        $content = $this->getContentToSend();
+        $tasha = new TASHA();
+        $tasha->content = $content;
+        $result = $tasha->getEmotionsScore();
         $sql = "UPDATE grand_sop
-                SET emotion_stats='".serialize($emotions_array)."'
+                SET emotion_stats='".serialize($result)."'
                 WHERE id={$this->id};";
 
-//        $status = DBFunctions::execSQL($sql,true);
         $status = false;
 
         if($status){
@@ -773,39 +638,13 @@ abstract class AbstractSop extends BackboneModel{
    */
     function getPersonalityScore(){
         $content = $this->getContentToSend();
-        $curl_url = "http://162.246.157.115/tasha/personality";
-        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
-        $curl_post_fields_array = array('content'=> $content);
-        $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        $result = json_decode($result, true);
-
+        $tasha = new TASHA();
+        $tasha->content = $content;
+        $result = $tasha->getPersonalityScore();
         $sql = "UPDATE grand_sop
                 SET personality_stats='".serialize($result)."'
                 WHERE id={$this->id};";
 
-//        $status = DBFunctions::execSQL($sql,true);
         $status = false;
 
         if($status){
@@ -822,36 +661,12 @@ abstract class AbstractSop extends BackboneModel{
    */
     function getSyntaxErrorCount(){
         $content = $this->getContentToSend();
-        $curl_url = "http://162.246.157.115/tasha/syntac_error";
-        $curl_post_fields_array = array('content'=> $content, 'ftype'=>'html');
-        $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        $result = json_decode($result, true);
-      $errors = $result['errors'];  
+        $tasha = new TASHA();
+        $tasha->content = $content;
+        $result = $tasha->getSyntaxErrorCount();
         $sql = "UPDATE grand_sop
-                SET errors=$errors
+                SET errors=$result
                 WHERE id={$this->id};";
-        //$status = DBFunctions::execSQL($sql,true);
         $status = false;
 
         if($status){
@@ -865,7 +680,6 @@ abstract class AbstractSop extends BackboneModel{
    * @return SOP
    */
     function updateStatistics(){
-    //  $this->getSyntaxErrorCount();
       $this->getReadabilityScore();
       $this->getSentimentScore();
       $this->getEmotionsScore();
