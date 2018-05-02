@@ -111,6 +111,12 @@
                         ]]>
                     </ReportItem>
                     
+                    <ReportItem id="ex_1_comments" type="Textarea" blobItem="SHOW_EX_1_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
                     <ReportItem id="ex_2" blobType="BLOB_TEXT" blobItem="SHOW_EX_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="5" min="0" decimals="2">
                         <![CDATA[
                             <h2>Potential For Scale/Spread</h2>
@@ -148,6 +154,12 @@
                         ]]>
                     </ReportItem>
                     
+                    <ReportItem id="ex_2_comments" type="Textarea" blobItem="SHOW_EX_2_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
+                        ]]>
+                    </ReportItem>
+                    
                     <ReportItem id="ex_3" blobType="BLOB_TEXT" blobItem="SHOW_EX_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="5" min="0" decimals="2">
                         <![CDATA[
                             <h2>Potential For Practice/Policy Change</h2>
@@ -182,6 +194,12 @@
                                     <td>{$item}</td>
                                 </tr>
                             </table>
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="ex_3_comments" type="Textarea" blobItem="SHOW_EX_3_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
                     </ReportItem>
                     
