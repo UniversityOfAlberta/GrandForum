@@ -39,13 +39,26 @@
     <ReportSection id="ex_review" name="External Review" blobSection="SHOW_EX_REVIEW" tooltip="Review of SHOW Grants" type="EditableReportSection">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="All Applications">
+                <ReportItem type="Static">
+                    <![CDATA[
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
                 <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SHOW-EX" class="Person">
-                    <ReportItem id="table" type="PDFReportItem" reportType="SHOWApplication" buttonName="{getText(RP_SHOW_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                    <ReportItem id="table" type="PDFReportItem" reportType="SHOWApplication" buttonName="Download Application">
                         <![CDATA[
-                            {$item}</br />
+                            <tr>
+                                <td><b>{getText(RP_SHOW_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                                <td>{$item}</td>
+                            </tr>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem type="Static">
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SHOW-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SHOW_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
