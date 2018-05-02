@@ -184,6 +184,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2017Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2017)", "{$url}Catalyst2017Review", $selected);
         }*/
+        if(count($person->getEvaluates("SHOW-EX", 2018)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SHOW2018Review")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("SHOW Review (2018)", "{$url}SHOWReview", $selected);
+        }
         if(count($person->getEvaluates("CAT-SRC", 2018)) > 0 || count($person->getEvaluates("CAT-EX", 2018)) > 0 || count($person->getEvaluates("CAT-RMC", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
