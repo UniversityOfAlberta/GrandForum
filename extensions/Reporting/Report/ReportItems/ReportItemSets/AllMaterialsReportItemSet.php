@@ -13,7 +13,7 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             $subs = Person::getAllEvaluates($type, $year, $class);
             $sorted = array();
             foreach ($subs as $s){
-                $rev_name = $s->getReversedName();
+                $rev_name = $s->getReversedName()."_".$s->getId();
                 $sorted["{$rev_name}"] = $s;
             }
             ksort($sorted);
@@ -23,7 +23,7 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             $subs = Person::getAllEvaluates($type, $year, $class);
             $sorted = array();
             foreach ($subs as $s){
-                $name = $s->getName();
+                $name = $s->getName()."_".$s->getId();
                 $sorted["{$name}"] = $s;
             }
             ksort($sorted);
