@@ -16,7 +16,8 @@ $nPeople = count($supervisors);
 
 
 foreach($supervisors as $supervisor) {
-	if ($supervisor->getDepartment() != "Physics") {
+	if ($supervisor->getDepartment() != "Computing Science") {
+	    show_status(++$peopleSoFar, $nPeople);
 		continue;
 	}
 	$firstRow  = "Id, Last Name, First Name, Middle Name, Employee Id, Email, ";
