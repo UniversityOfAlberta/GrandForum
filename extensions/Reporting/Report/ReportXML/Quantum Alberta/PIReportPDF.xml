@@ -30,18 +30,77 @@
 	            ]]>
 	        </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
+        
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <b>Journal Papers</b><br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <p>{$product_citation}</p><br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-            <ReportItem id="presentationheader" type="StaticReportItem">
-                <![CDATA[<br /><br />
-                <b>Presentations (excluding external colloquia) (reverse chronological)</b><br /><br />
+        
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <b>Conference Papers<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <p>{$product_citation}</p><br />
                 ]]>
             </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <b>Book Chapters<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" productType="Book Chapter" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <b>Books<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" productType="Book" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <b>Other<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" productType="Bachelors Thesis|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Manual|" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+               
+        <ReportItem id="presentationheader" type="StaticReportItem">
+            <![CDATA[<br /><br />
+                <b>Presentations (excluding external colloquia) (reverse chronological)</b><br /><br />
+            ]]>
+        </ReportItem>
         <ReportItemSet id="presentations" type="AllProductReportItemSet" category="Presentation" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" order="date_reversed" coll="false" institution="{getText(400,QUANTUM_REVIEW,PI_REPORT_UNI,0,{$user_id},0)}">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[                    
