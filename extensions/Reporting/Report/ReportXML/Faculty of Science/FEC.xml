@@ -576,12 +576,11 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='tooltip' style='cursor:default;' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
+&lt;br />
+(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
             <![CDATA[
-                <h2>Additional Data <span class='tooltip' style='cursor:default;' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.<br />
-<br />
-(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;</span></h2>
                 {$item}
             ]]>
         </ReportItem>
