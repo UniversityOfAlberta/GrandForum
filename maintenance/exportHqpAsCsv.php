@@ -45,6 +45,7 @@ foreach($supervisors as $supervisor) {
 		if ($end == "0000-00-00 00:00:00") {
 			$end = "2100-01-01 00:00:00";
 		}
+	    $hqpUni = $hqp->getUniversity(); // Just get this incase one isn't found withing the date range
 		$unis = $hqp->getUniversitiesDuring($relation->getStartDate(), $end);
 		foreach($unis as $uni) {
 			if (!isset($usedUnis[$hqp->getId().$uni['position']])) {
@@ -52,7 +53,7 @@ foreach($supervisors as $supervisor) {
 				break;
 			}
 		}
-		if ($hqpUni != null) {
+		//if ($hqpUni != null) {
 			$usedUnis[$hqp->getId().$hqpUni['position']] = true;
 			$output .= $hqp->getId() . ", ";
 			$output .= $hqp->getLastName() . ", ";
@@ -64,7 +65,7 @@ foreach($supervisors as $supervisor) {
 			$output .= substr($relation->getStartDate(), 0, 10) . ", ";
 			$output .= substr($relation->getEndDate(), 0, 10) . ", ";
 			$output .= @$hqpUni['position'] . "\n";
-		}
+		//}
 	}
 	file_put_contents($outdir . "/" . $supervisor->getName() . ".csv", $output);
 
