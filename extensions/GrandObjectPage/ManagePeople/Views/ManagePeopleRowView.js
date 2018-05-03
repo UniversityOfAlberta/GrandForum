@@ -108,7 +108,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: 800,
+	        width: 'auto',
 	        position: {
                 my: "center bottom",
                 at: "center center"
@@ -149,7 +149,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: 800,
+	        width: 'auto',
 	        position: {
                 my: "center bottom",
                 at: "center center"
@@ -186,7 +186,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: 800,
+	        width: 'auto',
 	        position: {
                 my: "center bottom",
                 at: "center center"
@@ -222,7 +222,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: 800,
+	        width: 'auto',
 	        position: {
                 my: "center bottom",
                 at: "center center"

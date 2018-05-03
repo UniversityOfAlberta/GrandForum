@@ -65,11 +65,12 @@ function importCSV($file) {
 		$hqpEmployeeId   = trim($elems[4]);
 		$hqpEmail 		 = trim($elems[5]);
 		$hqpRelationship = trim($elems[6]);
-		$hqpStart 		 = trim($elems[7]);
-		$hqpEnd 		 = trim($elems[8]);
-		$hqpPosition 	 = trim($elems[9]); // ignored for now
-		$delete 		 =@trim($elems[10]);
-		$comments		 =@trim($elems[11]);
+		$hqpStatus       = trim($elems[7]);
+		$hqpStart 		 = trim($elems[8]);
+		$hqpEnd 		 = trim($elems[9]);
+		$hqpPosition 	 = trim($elems[10]); // ignored for now
+		$delete 		 =@trim($elems[11]);
+		$comments		 =@trim($elems[12]);
 
 		if (strstr(strtolower($delete), "yes")) {
 		    show_status($lineNum, $nLines);
@@ -140,6 +141,7 @@ function importCSV($file) {
 		$rel->user1     = $supervisor->getId();
 		$rel->user2     = $hqp->getId();
 		$rel->type      = $hqpRelationship;
+		$rel->status    = $hqpStatus;
 		$rel->startDate = $hqpStart;
 		$rel->endDate   = $hqpEnd;
 		$rel->comments  = $comments;

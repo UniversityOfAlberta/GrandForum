@@ -56,6 +56,7 @@ class Relationship extends BackboneModel {
             $this->user1 = $data[0]['user1'];
             $this->user2 = $data[0]['user2'];
             $this->type = $data[0]['type'];
+            $this->status = $data[0]['status'];
             $this->projects = $data[0]['projects'];
             $this->projectsWaiting = true;
             $this->startDate = $data[0]['start_date'];
@@ -87,6 +88,11 @@ class Relationship extends BackboneModel {
     // Returns the type of this Relationship
     function getType(){
         return $this->type;
+    }
+    
+    // Returns the status of this Relationship
+    function getStatus(){
+        return $this->status;
     }
     
     // Returns an array of Project objects for this Relationship
@@ -129,6 +135,7 @@ class Relationship extends BackboneModel {
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
+                                                'status' => $this->getStatus(),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),true);
@@ -171,6 +178,7 @@ class Relationship extends BackboneModel {
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
+                                                'status' => $this->getStatus(),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),
@@ -208,6 +216,7 @@ class Relationship extends BackboneModel {
             'user1' => $this->user1,
             'user2' => $this->user2,
             'type' => $this->getType(),
+            'status' => $this->getStatus(),
             'startDate' => $this->getStartDate(),
             'endDate' => $this->getEndDate(),
             'comment' => $this->getComment()

@@ -21,7 +21,7 @@ foreach($supervisors as $supervisor) {
 		continue;
 	}
 	$firstRow  = "Id, Last Name, First Name, Middle Name, Employee Id, Email, ";
-	$firstRow .= "Relationship, Start, End, Position, Delete?, Comments\n";
+	$firstRow .= "Relationship, Status, Start, End, Position, Delete?, Comments\n";
 	$output = $firstRow;
 
 	$rels = $supervisor->getRelations('all', true);
@@ -62,6 +62,7 @@ foreach($supervisors as $supervisor) {
 			$output .= $hqp->getEmployeeId() . ", ";
 			$output .= $hqp->getEmail() . ", ";
 			$output .= $relation->getType() . ", ";
+			$output .= $relation->getStatus() . ", ";
 			$output .= substr($relation->getStartDate(), 0, 10) . ", ";
 			$output .= substr($relation->getEndDate(), 0, 10) . ", ";
 			$output .= @$hqpUni['position'] . "\n";

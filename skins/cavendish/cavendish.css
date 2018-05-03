@@ -452,7 +452,6 @@ input[type=radio][disabled]:hover {
 }
 
 .custom-combobox-toggle, .custom-combobox-toggle:active, .custom-combobox-toggle:hover, .custom-combobox-toggle.ui-state-hover {
-    margin-left: -1px !important;
     top: 0 !important;
     -moz-border-radius-topleft: 0 !important;
 	-webkit-border-top-left-radius: 0 !important;
@@ -667,6 +666,10 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 
 button.mce-close {
     padding: 0 5px !important;
+}
+
+.custom-combobox-toggle {
+    margin-left: -1px !important;
 }
 
 #product-desc h2 {

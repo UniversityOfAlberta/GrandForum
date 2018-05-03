@@ -256,9 +256,10 @@ PersonRelation = RelationModel.extend({
         id: null,
         user1: "",
         user2: "",
+        type: "",
+        status: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
-        name: "",
         comment: "",
         deleted: false
     }
