@@ -1396,8 +1396,8 @@ class Person extends BackboneModel {
             }
             $firstname = $names[0];
         }
-        return array("first" => utf8_encode(str_replace("&nbsp;", " ", ucfirst($firstname))),
-                     "last" => utf8_encode(str_replace("&nbsp;", " ", ucfirst($lastname))));
+        return array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)),
+                     "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));
     }
     
     /**

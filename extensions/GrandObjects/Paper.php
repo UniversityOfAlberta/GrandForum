@@ -1711,9 +1711,9 @@ class Paper extends BackboneModel{
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
-                                   'name' => utf8_encode($author->getNameForProduct()),
-                                   'fullname' => utf8_encode($author->getNameForForms()),
-                                   'url' => utf8_encode($author->getUrl()));
+                                   'name' => $author->getNameForProduct(),
+                                   'fullname' => $author->getNameForForms(),
+                                   'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){
                 foreach($this->getProjects() as $project){
