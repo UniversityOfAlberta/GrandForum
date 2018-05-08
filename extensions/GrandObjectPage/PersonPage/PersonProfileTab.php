@@ -107,6 +107,8 @@ class PersonProfileTab extends AbstractEditableTab {
         Person::$cache = array();
         
         $this->person = Person::newFromId($this->person->getId());
+        DBFunctions::commit();
+        redirect($this->person->getUrl());
     }
     
     function handleContactEdit(){
@@ -508,6 +510,7 @@ EOF;
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
             $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
+            $otherSelected = ($person->getGender() == "Other") ? "selected='selected'" : "";
             $gender = "<tr>
                 <td align='right'><b>Gender:</b></td>
                 <td>
@@ -515,6 +518,7 @@ EOF;
                         <option value='' $blankSelected>----</option>
                         <option value='Male' $maleSelected>Male</option>
                         <option value='Female' $femaleSelected>Female</option>
+                        <option value='Other' $otherSelected>Other</option>
                     </select>
                 </td>
             </tr>";
