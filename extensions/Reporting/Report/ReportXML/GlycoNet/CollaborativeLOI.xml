@@ -194,7 +194,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="ReportSection">
+    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
                 <p>Letters from partners indicating the nature of their involvement in the project and their anticipated contribution (cash and/or in-kind) are recommended for the LOI, but not required. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the LOI standing for the GlycoNet renewal application.</p>
