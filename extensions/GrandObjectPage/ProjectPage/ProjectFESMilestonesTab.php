@@ -157,7 +157,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function showQuartersCells($milestone, $activityId){
-        global $config;
+        global $config, $wgServer, $wgScriptPath;
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
@@ -206,9 +206,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $border = "";
                     if($lastY == $y && $lastQ == $q){
                         if($color2 != "transparent"){
-                            $border = "outline-offset: -2px; outline: 2px solid $color2;";
+                            $img = (isset($_GET['generatePDF'])) ? "$wgServer$wgScriptPath/skins/".str_replace("#", "", $color2)."_diag_large.png" : 
+                                                                   "$wgServer$wgScriptPath/skins/".str_replace("#", "", $color2)."_diag.png";
+                            $border = "outline-offset: -2px; outline: 2px solid $color2; background-image: url($img);";
                             if(isset($_GET['generatePDF'])){
-                                $border .= "border: 3px solid $color2;";
+                                $border .= "border: 3px solid $color2";
                             }
                         }
                     }
@@ -550,12 +552,16 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             <th>Modification</th>
                         </tr>";
         foreach(Milestone::$modifications as $modification => $color){
+            $status = "Pending";
             if($color == "transparent"){
                 $color = "#555555";
                 $modification = "N/A";
+                $status = "New";
             }
+            $img = (isset($_GET['generatePDF'])) ? "$wgServer$wgScriptPath/skins/".str_replace("#", "", $color)."_diag_large.png" : 
+                                                   "$wgServer$wgScriptPath/skins/".str_replace("#", "", $color)."_diag.png";
             $this->html .= "<tr>
-                                <td class='smallest'><div style='text-align:center;padding:1px 3px;outline-offset: -2px; outline:2px solid {$color};border:1px solid;white-space:nowrap;'>$modification</div></td>
+                                <td class='smallest'><div style='text-align:center;padding:1px 3px;outline-offset: -2px; outline:2px solid {$color}; background: ".Milestone::$fesStatuses[$status]."; background-image: url($img); border:1px solid;white-space:nowrap;'><span style='background: ".Milestone::$fesStatuses[$status].";'>$modification</span></div></td>
                             </tr>";
         }
         $this->html .= "</table><br style='clear:both;' />";
@@ -602,15 +608,20 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             $(this).parent().css('background', color)
                                             .css('outline', '2px solid ' + color2)
                                             .css('outline-offset', '-1px');
+                            if(color2 != undefined){
+                                $(this).parent().css('background-image', 'url($wgServer$wgScriptPath/skins/' + color2.replace('#', '') + '_diag.png)');
+                            }
                         }
                         else{
                             $(this).parent().css('background', '#BBBBBB')
+                                            .css('background-image', '')
                                             .css('outline', '0 solid transparent')
                                             .css('outline-offset', '');
                         }
                     }
                     else{
                         $(this).parent().css('background', '#FFFFFF')
+                                        .css('background-image', '')
                                         .css('outline', '0 solid transparent')
                                         .css('outline-offset', '');
                     }
