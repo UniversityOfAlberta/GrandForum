@@ -72,7 +72,7 @@ class DepartmentTab extends AbstractTab {
         
         ksort($courses);
         $html = "<h1 style='color:#1155cc !important;'>Department of {$this->department}. Reporting Period July 1, ".($year-5)." - June 30, $year</h1>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 1: Course Descriptions and Instructors</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Course Descriptions and Instructors</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Course Descriptions and Instructors\", 
                                                       'page' => \$pdf->get_page_number(),
@@ -93,7 +93,7 @@ class DepartmentTab extends AbstractTab {
         }
         
         $html .= "<div class='pagebreak'></div>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 2: Distribution of Courses across Instructors</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Distribution of Courses across Instructors</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Distribution of Courses across Instructors\", 
                                                       'page' => \$pdf->get_page_number(),
@@ -134,7 +134,7 @@ class DepartmentTab extends AbstractTab {
         });
         
         $html .= "<div class='pagebreak'></div>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 3: Faculty Awards</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Faculty Awards</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Faculty Awards\", 
                                                       'page' => \$pdf->get_page_number(),
@@ -204,7 +204,7 @@ class DepartmentTab extends AbstractTab {
         $ugradPapers = array_reverse($ugradPapers);
         
         $html .= "<div class='pagebreak'></div>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 4: Example Graduate Student Publications</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Example Graduate Student Publications</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Example Graduate Student Publications\", 
                                                       'page' => \$pdf->get_page_number(),
@@ -219,7 +219,7 @@ class DepartmentTab extends AbstractTab {
         //$html .= "</ul>";
         
         $html .= "<div class='pagebreak'></div>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 5: Example Undergraduate Student Publications</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Example Undergraduate Student Publications</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Example Undergraduate Student Publications\", 
                                                       'page' => \$pdf->get_page_number(),
@@ -234,7 +234,7 @@ class DepartmentTab extends AbstractTab {
         //$html .= "</ul>";
         
         $html .= "<div class='pagebreak'></div>";
-        $html .= "<h2 style='color:#1155cc !important;'>Appendix 6: HQP Supervision Summary Document</h2>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: HQP Supervision Summary Document</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"HQP Supervision Summary Document\", 
                                                       'page' => \$pdf->get_page_number(),
