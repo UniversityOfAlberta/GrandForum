@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF" year="YEAR">
+    <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection" pagebreak="false">
+        <ReportItem type="Static">
+            <![CDATA[
+                <style>
+                    .tdLabel {
+                        width:10em;
+                        background:#f2f2f2 !important;
+                        text-align: right;
+                        font-weight: bold;
+                    }
+                </style>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text"  blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
+            <![CDATA[
+                <h3>Title</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobType="BLOB_TEXT" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Summary</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="primary_themes" type="Radio" blobType="BLOB_TEXT" blobItem="PRIMARY_THEMES" options="Data Science and Computational Platforms (DS-CP)|Ethical Sustainable Technologies (EST)|Economy, Employment, Policy, and Training (EEPT)|Data-Driven Knowledge Mobilization and Evaluation (DDKM)|Sector-Accelerator Research - Advanced Manufacturing (S-AM)|Sector-Accelerator Research - Smart Buildings (S-SB)|Sector-Accelerator Research - CleanTech (S-CT)|Sector-Accelerator Research - FinTech (S-FT)">
+            <![CDATA[
+                <h3>ADA Themes</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <tr>
+                        <th>Primary</th>
+                        <th>Secondary</small></th>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="secondary_themes" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SECONDARY_THEMES" options="Data Science and Computational Platforms (DS-CP)|Ethical Sustainable Technologies (EST)|Economy, Employment, Policy, and Training (EEPT)|Data-Driven Knowledge Mobilization and Evaluation (DDKM)|Sector-Accelerator Research - Advanced Manufacturing (S-AM)|Sector-Accelerator Research - Smart Buildings (S-SB)|Sector-Accelerator Research - CleanTech (S-CT)|Sector-Accelerator Research - FinTech (S-FT)" delimiter="&lt;br />">
+            <![CDATA[
+                        <td valign="top">
+                            {$item}
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Principal Investigator(s) -->
+        <ReportItem type="Static">
+            <![CDATA[
+                <h3>Principal Investigator(s)</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis,)}">
+            <ReportItem type="Static">
+                <![CDATA[
+                    <table class="wikitable" class="wikitable" width="100%" rules="all" frame="box">
+                        <tr>
+                            <td class='tdLabel'>Name:</td>
+                            <td>{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis|{$extraIndex}|name)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Department:</td>
+                            <td>{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis|{$extraIndex}|department)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Institution:</td>
+                            <td>{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis|{$extraIndex}|institution)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>E-mail:</td>
+                            <td>{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis|{$extraIndex}|email)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Website:</td>
+                            <td>{getArray(RP_EOI,EOI,PIS,0,{$user_id},{$project_id},pis|{$extraIndex}|website)}</td>
+                        </tr>
+                    </table><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Principal Investigator(s) -->
+        <ReportItem type="Static">
+            <![CDATA[
+                <h3>Co-Principal Investigator(s)</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
+            <ReportItem type="Static">
+                <![CDATA[
+                    <table class="wikitable" class="wikitable" width="100%" rules="all" frame="box">
+                        <tr>
+                            <td class='tdLabel'>Name:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|name)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Department:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|department)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Institution:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|institution)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>E-mail:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|email)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Website:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|website)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Role/Contribution:</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|rolecontribution)}</td>
+                        </tr>
+                    </table><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <!-- Partners -->
+        <ReportItem type="Static">
+            <![CDATA[
+                <h3>Project Partner(s)</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners,)}">
+            <ReportItem type="Static">
+                <![CDATA[
+                    <table class="wikitable" class="wikitable" width="100%" rules="all" frame="box">
+                        <tr>
+                            <td class='tdLabel'>Organization Name:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|organizationname)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Sector:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|sector)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Contact Name:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|contactname)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Contact Title:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|contacttitle)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>E-mail:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|email)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Website:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|website)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Role/Contribution:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|role/contribution)}</td>
+                        </tr>
+                        <tr>
+                            <td class='tdLabel'>Confirmed:</td>
+                            <td>{getArray(RP_EOI,EOI,PARTNERS,0,{$user_id},{$project_id},partners|{$extraIndex}|confirmed)}</td>
+                        </tr>
+                    </table><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="problem" type="Textarea" blobType="BLOB_TEXT" blobItem="PROBLEM" rich="true">
+            <![CDATA[
+                <h3>Idea/Problem/Issue that will be addressed</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Funding -->
+        <ReportItem id="time" type="Select" blobType="BLOB_TEXT" blobItem="TIME" options="1 year|2 years|3 years|4 years|5 years">
+            <![CDATA[
+                <h3>Funding Requested From ADA</h3>
+                <table>
+                    <tr>
+                        <td align="right"><b>Time period:<b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="SELECT" blobType="BLOB_TEXT" blobItem="FUNDING" options="0 - 50,000|50,000 - 100,000|100,000 - 150,000|150,000 - 200,000">
+            <![CDATA[
+                    <tr>
+                        <td align="right"><b>Total funding request:</b></td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="solution" type="Textarea" blobType="BLOB_TEXT" blobItem="SOLUTION" rich="true">
+            <![CDATA[
+                <h3>Proposed Solution/Technologies to address the problem/issue</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="benefits" type="Textarea" blobType="BLOB_TEXT" blobItem="BENEFITS" rich="true">
+            <![CDATA[
+                <h3>Collaboration and Benefits</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="training" type="Textarea" blobType="BLOB_TEXT" blobItem="TRAINING" rich="true">
+            <![CDATA[
+                <h3>Training and skills</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="importance" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPORTANCE" rich="true">
+            <![CDATA[
+                <h3>Importance to the ADA NCE and Canada</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
