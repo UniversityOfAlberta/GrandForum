@@ -101,6 +101,7 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#ssa'>SSA2015</a></li>
                                 <li><a href='#ssa2016'>SSA2016</a></li>
                                 <li><a href='#ssa2017'>SSA2017</a></li>
+                                <li><a href='#ssa2018'>SSA2018</a></li>
                             </ul>");
         $this->addProjectTable(RP_FINAL_PROJECT,    'final',              2015);
         $this->addProjectTable(RP_PROGRESS,         'progress',           2015);
