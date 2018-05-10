@@ -44,14 +44,6 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    
-                    
-
-                    
-                    
-
-                    
-
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -107,12 +99,14 @@ class WhoSupplies extends SpecialPage{
                 </ul>
 
                 <h3>Tips on local initiatives to support your practice</h3>
-                <h4>Click on your province for!</h4>
+                <ul>
+                    <li>Click on your province!</li>
+                </ul>
 
                 <h3>Billing Codes</h3>
-                Please click on your province to find out more information regarding mifepristone medical abortion billing codes. Have something to add? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
-
-               
+                <ul>
+                    <li>Please click on your province to find out more information regarding mifepristone medical abortion billing codes. Have something to add? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a></li>
+                </ul>
             </div>
 
             <h2 id='AB'>Alberta</h2>
@@ -158,15 +152,16 @@ class WhoSupplies extends SpecialPage{
                 <h3>Tips on local initiatives to support your practice</h3>
                 <ul>
                 <li>
-                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
+                    What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'>Email cart.grac@ubc.ca</a>
                 </li>
                 </ul>
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                87.0A: Termination of pregnancy between 13 and 20 weeks for medical or genetic reasons using potent prostaglandins by any route. Billing Amount: $149.63
-                </li>
+                    <li>
+                        87.0A: Termination of pregnancy between 13 and 20 weeks for medical or genetic reasons using potent prostaglandins by any route. Billing Amount: $149.63
+                    </li>
+                    <li>Alberta Health Care Insurance Plan, Schedule of Medical Benefits, Part B, Procedural List, see <a href='https://open.alberta.ca/dataset/376dc12c-5bbb-494e-810b-ad3a6e13874a/resource/af9138e1-bb69-4ca8-a135-cbeffbae3f42/download/somb-medical-procedures-2017-04.pdf' target='_blank'>Page 195</a></li>
                 </ul>
                 
             </div>
@@ -211,7 +206,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Tips on local initiatives to support your practice</h3>
                 <ul>
                 <li>
-                <a href='https://www.optionsforsexualhealth.org/clinic-services/opt-clinics'>Options for Sexual Health (Opt) is a non-profit sexual health organization with 60 clinics across B.C. Clinics offer pregnancy evaluation including pregnancy testing, options counselling, and diagnosis. Not sure where to refer your patient? Connect with Opt.</a>
+                <a href='https://www.optionsforsexualhealth.org/clinic-services/opt-clinics'>Options for Sexual Health (Opt)</a> is a non-profit sexual health organization with 60 clinics across B.C. Clinics offer pregnancy evaluation including pregnancy testing, options counselling, and diagnosis. Not sure where to refer your patient? Connect with Opt.
                 </li>
                 <li>
                 <a href='http://www.bcwomens.ca/health-professionals/professional-resources/abortion-contraception-resources'>The Pregnancy Options Service (POS)</a> can assist health care professionals across BC to help and support women in their communities who are facing an unintended or unplanned pregnancy. POS can provide up-to-date information about available abortion services throughout BC. Click on POS to view their contact information. 
@@ -221,10 +216,11 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                T14545: Medical Abortion, includes all associated services rendered on the same day as the abortion, including the consultation, required components for Rh factor, associated services including counselling provided on the day of the procedure, and any medically necessary clinical imaging. Billing Amount: $159.77
-                </li>
-                Ministry Of Health Medical Services Commission Payment Schedule, see page “7-15” <a href='https://www2.gov.bc.ca/assets/gov/health/practitioner-pro/medical-services-plan/msc-payment-schedule-december-2016.pdf'>click here</a>
+                    <li>
+                    T14545: Medical Abortion, includes all associated services rendered on the same day as the abortion, including the consultation, required components for Rh factor, associated services including counselling provided on the day of the procedure, and any medically necessary clinical imaging. Billing Amount: $159.77
+                    </li>
+                    <li>Ministry Of Health Medical Services Commission Payment Schedule, see page “7-15” <a href='https://www2.gov.bc.ca/assets/gov/health/practitioner-pro/medical-services-plan/msc-payment-schedule-december-2016.pdf'>click here</a></li>
+                </ul>
             </div>
             
             <h2 id='MB'>Manitoba</h2>
@@ -272,11 +268,11 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                8428: Medical Management of Early Pregnancy Failure/Elective Pregnancy Termination, including examination, assessment, the taking of cytological smears for cancer screening–cervix, management and monitoring of patients taking cytotoxic and/or prostglandin medications (e.g. Methotrexate/Misoprostol). This service may include administration of the medication, ordering blood tests, interpreting results, inquiring into possible complications and adjusting dosage(s) as necessary. Billing Amount: $167.65
-                </li>
+                    <li>
+                    8428: Medical Management of Early Pregnancy Failure/Elective Pregnancy Termination, including examination, assessment, the taking of cytological smears for cancer screening–cervix, management and monitoring of patients taking cytotoxic and/or prostglandin medications (e.g. Methotrexate/Misoprostol). This service may include administration of the medication, ordering blood tests, interpreting results, inquiring into possible complications and adjusting dosage(s) as necessary. Billing Amount: $167.65
+                    </li>
+                    <li>The Manitoba Physicians Manual, see page ‘B-5’, <a href='https://www.gov.mb.ca/health/documents/physmanual.pdf'>click here</a></li>
                 </ul>
-                The Manitoba Physicians Manual, see page ‘B-5’, <a href='https://www.gov.mb.ca/health/documents/physmanual.pdf'>click here</a>
             </div>
             
             <h2 id='NB'>New Brunswick</h2>
@@ -497,8 +493,14 @@ class WhoSupplies extends SpecialPage{
                     <li>See information under 'National Regulations'</li>
                 </ul>
                 <h3>Tips on local initiatives to support your practice</h3>
+                <ul>
+                    <li>What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a></li>
+                </ul>
 
                 <h3>Billing Codes</h3>
+                <ul>
+                    <li>Not currently available for mifepristone.</li>
+                </ul>
             </div>
             
             <h2 id='ON'>Ontario</h2>
@@ -708,8 +710,9 @@ class WhoSupplies extends SpecialPage{
                 <li>
                 350P: D&C for incomplete or missed abortion. Billing Amount: $387.30 
                 </li>
+                <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a></li>
                 </ul>
-                Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a>
+                
             </div>
             
             <h2 id='YT'>Yukon</h2>
