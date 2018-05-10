@@ -283,6 +283,17 @@ HTML.Select = function(view, attr, options){
     $(el).attr('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
+    
+    if(typeof options.sorted == 'undefined' || options.sorted != false){
+        if(typeof options.options[0] == 'object'){
+            options.options = _.sortBy(options.options, 'option');
+        }
+        else{
+            options.options = _.sortBy(options.options);
+        }
+        console.log(options.options);
+    }
+    
     _.each(options.options, function(opt){
         var selected = "";
         if(val.split(":")[0] == opt || (typeof opt == 'object' && val.split(":")[0] == opt.value)){
