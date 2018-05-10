@@ -519,6 +519,7 @@ class WhoSupplies extends SpecialPage{
                     <li>On April 27th, the Ontario Liberal government announced its provincial budget for 2017 which includes universal coverage of Mifegymiso®, read more from the media <a href='http://news.nationalpost.com/news/canada/free-abortion-pill-cash-for-boobs-and-babies-top-23-takeaways-from-the-ontario-budget' target='_blank'>here</a></li>
                     <li>The Ontario government has announced full coverage of Mifegymiso® to take effect by August 10th, 2017, <a href='http://www.cbc.ca/news/canada/toronto/abortion-pill-mifegymiso-1.4233611' target='_blank'>read more</a></li>
                     <li>Pharmacy billing procedures including reimbursement and claim submissions for Mifegymiso®, <a href='http://www.health.gov.on.ca/en/pro/programs/drugs/opdp_eo/eo_communiq.aspx' target='_blank'>click here</a></li>
+                    <li>There is no out of province allowance or reciprocal billing arrangement for any drug covered under the Ontario Drug Benefit or Ontario Public Drug Programs therefore, mifepristone prescriptions have to be filled by a pharmacy in Ontario to be covered.</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
