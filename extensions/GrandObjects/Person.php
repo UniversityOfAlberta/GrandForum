@@ -32,7 +32,7 @@ class Person extends BackboneModel {
                                      'phd'   => array("phd",
                                                       "ph.d.",
                                                       "phd student",
-                                                      "ph.d. student"
+                                                      "ph.d. student",
                                                       "graduate student - doctoral"),
                                      'pdf'   => array("pdf",
                                                       "post-doctoral fellow",
