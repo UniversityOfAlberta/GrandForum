@@ -156,6 +156,7 @@ class CavendishTemplate extends QuickTemplate {
                     var value = $(val).attr('value').substr(0, 10);
                     $(val).datepicker({
                         'dateFormat': $(val).attr('format'),
+                        'yearRange': "c-50:c+10",
                         'defaultDate': value,
                         'changeMonth': true,
                         'changeYear': true,
