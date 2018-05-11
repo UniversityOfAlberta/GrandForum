@@ -190,10 +190,31 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funding" type="SELECT" blobType="BLOB_TEXT" blobItem="FUNDING" options="0 - 50,000|50,000 - 100,000|100,000 - 150,000|150,000 - 200,000">
+        <ReportItemSet id="if_not_above" type="If" if="{!=({getText(RP_EOI,EOI,FUNDING,0,{$user_id},{$project_id})},Above 300k)}">
+            <ReportItem id="funding" type="Select" blobType="BLOB_TEXT" blobItem="FUNDING" options="0 - 50k|51k - 100k|101k - 200k|201k - 300k|Above 300k">
+                <![CDATA[
+                        <tr>
+                            <td align="right"><b>Total funding request:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="if_above" type="If" if="{==({getText(RP_EOI,EOI,FUNDING,0,{$user_id},{$project_id})},Above 300k)}">
+            <ReportItem id="other_funding" type="Text" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING">
+                <![CDATA[
+                        <tr>
+                            <td align="right"><b>Total funding request:</b></td>
+                            <td>{$item}k</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="avg_funding" type="Text" blobType="BLOB_TEXT" blobItem="AVG_FUNDING">
             <![CDATA[
                     <tr>
-                        <td align="right"><b>Total funding request:</b></td>
+                        <td align="right"><b>Average Funding/Year:</b></td>
                         <td>{$item}</td>
                     </tr>
                 </table>
@@ -210,6 +231,21 @@
         <ReportItem id="benefits" type="Textarea" blobType="BLOB_TEXT" blobItem="BENEFITS" rich="true">
             <![CDATA[
                 <h3>Collaboration and Benefits</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="infrastructure" type="Radio" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE" options="Yes|No">
+            <![CDATA[
+                <h3>Do you have the computational infrastructure you need for the project?</h3>
+                Do you have the computational infrastructure you need for the project?
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="infrastructure_explain" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE_EXPLAIN" rich="true">
+            <![CDATA[
+                <p><b>Explain:</b></p>
                 {$item}
             ]]>
         </ReportItem>

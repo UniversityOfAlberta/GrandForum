@@ -6,13 +6,13 @@
     <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection">
         <ReportItem id="title" type="Text"  blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
             <![CDATA[
-                <h3>Title</h3>
+                <h2>Title</h2>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="summary" type="Textarea" blobType="BLOB_TEXT" blobItem="SUMMARY" rich="true" limit="250">
             <![CDATA[
-                <h3>Summary</h3>
+                <h2>Summary</h2>
                 <small>Provide a brief (250 word) description of the project</small>
                 {$item}
             ]]>
@@ -20,7 +20,7 @@
         
         <ReportItem id="primary_themes" type="Radio" blobType="BLOB_TEXT" blobItem="PRIMARY_THEMES" options="Data Science and Computational Platforms (DS-CP)|Ethical Sustainable Technologies (EST)|Economy, Employment, Policy, and Training (EEPT)|Data-Driven Knowledge Mobilization and Evaluation (DDKM)|Sector-Accelerator Research - Advanced Manufacturing (S-AM)|Sector-Accelerator Research - Smart Buildings (S-SB)|Sector-Accelerator Research - CleanTech (S-CT)|Sector-Accelerator Research - FinTech (S-FT)">
             <![CDATA[
-                <h3>ADA Themes</h3>
+                <h2>ADA Themes</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <tr>
                         <th>Primary<br /><small>(Choose One)</small></th>
@@ -46,7 +46,7 @@
         <!-- Principal Investigator -->
         <ReportItem id="pis" type="MultiText" blobType="BLOB_ARRAY" blobItem="PIS" labels="Name|Department|Institution|E-mail|Website" types="Text|Text|Text|Text|Text" sizes="250|250|250|250|250" orientation="vertical" multiple="true">
             <![CDATA[
-                <h3>Principal Investigator(s)</h3>
+                <h2>Principal Investigator(s)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -55,7 +55,7 @@
         <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|
 Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true">
             <![CDATA[
-                <h3>Co-Principal Investigator(s)</h3>
+                <h2>Co-Principal Investigator(s)</h2>
                 <small>(Cross-institutional and cross-disciplinary collaborations are strongly encouraged)</small>
                 {$item}
             ]]>
@@ -64,7 +64,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         <!-- Partners -->
         <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Organization Name|Sector|Contact Name|Contact Title|E-mail|Website|Role/Contribution|Confirmed" types="Text|Text|Text|Text|Text|Text|Text|Select(Yes,No)" sizes="250|250|250|250|250|250|250" orientation="vertical" multiple="true">
             <![CDATA[
-                <h3>Project Partner(s)</h3>
+                <h2>Project Partner(s)</h2>
                 <small>(Cross-institutional and cross-disciplinary collaborations are strongly encouraged)</small>
                 {$item}
             ]]>
@@ -72,7 +72,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         
         <ReportItem id="problem" type="Textarea" blobType="BLOB_TEXT" blobItem="PROBLEM" rich="true">
             <![CDATA[
-                <h3>Idea/Problem/Issue that will be addressed</h3>
+                <h2>Idea/Problem/Issue that will be addressed</h2>
                 <small>
                     What is the overarching challenge that this proposed project will address?<br />
                     What are the key specific research problems, or technical complexities, that this project will address?<br />
@@ -85,7 +85,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         
         <ReportItem id="solution" type="Textarea" blobType="BLOB_TEXT" blobItem="SOLUTION" rich="true">
             <![CDATA[
-                <h3>Proposed Solution/Technologies to address the problem/issue</h3>
+                <h2>Proposed Solution/Technologies to address the problem/issue</h2>
                 <small>
                     What is the research and development methodology that you will adopt to develop the solution? How will it resolve the problem? How is it novel?<br />
                     What will the key contributions of the envisioned solution?<br />
@@ -97,9 +97,19 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         </ReportItem>
         
         <!-- Funding -->
+        <ReportItem id="other_funding" type="Integer" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING" min="300" max="9999" size="4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="avg_funding" type="Hidden" blobType="BLOB_TEXT" blobItem="AVG_FUNDING">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="time" type="Select" blobType="BLOB_TEXT" blobItem="TIME" options="1 year|2 years|3 years|4 years|5 years">
             <![CDATA[
-                <h3>Funding Requested From ADA</h3>
+                <h2>Funding Requested From ADA</h2>
                 <table>
                     <tr>
                         <td align="right"><b>Time period:<b></td>
@@ -107,30 +117,69 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
                     </tr>
             ]]>
         </ReportItem>
-        
-        <ReportItem id="funding" type="SELECT" blobType="BLOB_TEXT" blobItem="FUNDING" options="0 - 50,000|50,000 - 100,000|100,000 - 150,000|150,000 - 200,000">
+        <ReportItem id="funding" type="Select" blobType="BLOB_TEXT" blobItem="FUNDING" options="0 - 50k|51k - 100k|101k - 200k|201k - 300k|Above 300k">
             <![CDATA[
                     <tr>
                         <td align="right"><b>Total funding request:</b></td>
                         <td>{$item}</td>
+                        <td id='other_funding_cell'>&nbsp;<b>Specify:</b> <span id='other_funding'></span>k</td>
                     </tr>
-                    <!--tr>
+                    <tr>
                         <td align="right"><b>Average Funding/Year:</b></td>
                         <td><div id="avg_funding"></div></td>
-                    </tr-->
+                    </tr>
                 </table>
                 <script type='text/javascript'>
+                    
+                    var otherFunding = $('[name=ExpressionofInterest_other_funding]').detach();
+                    
                     var avg_funding = function(){
+                        otherFunding.detach();
                         var time = parseInt($('[name=ExpressionofInterest_time]').val());
-                        var funding = $('[name=ExpressionofInterest_time]').val();
+                        var funding = $('[name=ExpressionofInterest_funding]').val();
+                        var other = otherFunding.val();
+                        if(funding == "Above 300k"){
+                            $('#other_funding').html(otherFunding);
+                            $('#other_funding_cell').show();
+                            $("#avg_funding").text((other/time) + "k");
+                            $('[name=ExpressionofInterest_avg_funding]').val((other/time) + "k");
+                        }
+                        else{
+                            var range = funding.split(' - ');
+                            $('#other_funding_cell').hide();
+                            $("#avg_funding").text((parseInt(range[0])/time) + "k - " + (parseInt(range[1])/time) + "k");
+                            $('[name=ExpressionofInterest_avg_funding]').val((parseInt(range[0])/time) + "k - " + (parseInt(range[1])/time) + "k");
+                        }
                     }
+                    
+                    $('[name=ExpressionofInterest_time]').change(avg_funding);
+                    $('[name=ExpressionofInterest_funding]').change(avg_funding);
+                    otherFunding.change(avg_funding);
+                    
+                    avg_funding();
+                
                 </script>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="infrastructure" type="Radio" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE" options="Yes|No">
+            <![CDATA[
+                <h2>Do you have the computational infrastructure you need for the project?</h2>
+                Do you have the computational infrastructure you need for the project?
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="infrastructure_explain" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE_EXPLAIN" rich="true">
+            <![CDATA[
+                <p><b>Explain:</b></p>
+                {$item}
             ]]>
         </ReportItem>
         
         <ReportItem id="benefits" type="Textarea" blobType="BLOB_TEXT" blobItem="BENEFITS" rich="true">
             <![CDATA[
-                <h3>Collaboration and Benefits</h3>
+                <h2>Collaboration and Benefits</h2>
                 <small>
                     Describe the nature of the collaboration among the project members, researchers and partners. 
                 </small>
@@ -140,7 +189,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         
         <ReportItem id="training" type="Textarea" blobType="BLOB_TEXT" blobItem="TRAINING" rich="true">
             <![CDATA[
-                <h3>Training and skills</h3>
+                <h2>Training and skills</h2>
                 <small>
                     Describe the training opportunity provided to HQP working on the project, including opportunities to gain industry experience.
                 </small>
@@ -150,7 +199,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         
         <ReportItem id="importance" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPORTANCE" rich="true">
             <![CDATA[
-                <h3>Importance to the ADA NCE and Canada</h3>
+                <h2>Importance to the ADA NCE and Canada</h2>
                 <small>
                     What will the economic, social and/or environmental benefits that could be realized by the project?<br />
                     How will the results be communicated to and taken up by receptor organizations?<br />
