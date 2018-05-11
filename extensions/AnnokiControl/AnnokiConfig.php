@@ -9,6 +9,8 @@ $egAnnokiCommonPath = "$IP/extensions/AnnokiControl/common";
 
 /** Set up Wiki state **/
 $wgWhitelistRead = array ("Special:Userlogin", "Special:InvalidateEmail", "Special:AllMessages", "SITENAME");
+$wgWhitelistRead[] = "File:Canadian Resource 1 - Medical Abortion Pharmacist Checklist 2018-02-02.pdf";
+$wgWhitelistRead[] = "File:Canadian Medical Abortion Prescribers Checklist.pdf";
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
 $wgGroupPermissions['*']['createaccount']   = false;

@@ -96,10 +96,12 @@ if ($egAnProtectUploads){
   }
   str_replace("File:", "", $unarchivedTitle);
   if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
-    wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
-    $errorFile = 'extensions/AccessControls/images/errorFile.gif';
-    StreamFile::stream($errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ));
-    exit();
+    if((!is_array( $wgWhitelistRead ) || !in_array($title, $wgWhitelistRead))){
+        wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
+        $errorFile = 'extensions/AccessControls/images/errorFile.gif';
+        StreamFile::stream($errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ));
+        exit();
+    }
   }
  }
 /** End BT Edit */
