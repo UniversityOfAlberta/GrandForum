@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FECReview" reportType="RP_FEC" pdfFiles="FECReview" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="ISAC">
+        <Role role="ISAC">
             <SectionPermission id="reviews" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-                    <SectionPermission id="reviews" permissions="rw" />
-                    <SectionPermission id="review" permissions="" />
-                    <SectionPermission id="submit" permissions="" />
+        <Role role="RMC">
+            <SectionPermission id="reviews" permissions="rw" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="Reviews" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
@@ -35,7 +35,7 @@
 	</ReportItem>
 	<ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({==({GET(dept)}, {$user_dept})},
 								         {contains({$user_full_roles}, Chair)})}">
-	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Faculty" sort_reversed="true" department="{GET(dept)}">
+	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Faculty" sort_reversed="false" department="{GET(dept)}">
 	    <ReportItemSet id="not_first" type="NotFirstReportItemSet">
 		    <ReportItem id="pagebreak" type="PageBreakReportItem">
 		        <![CDATA[

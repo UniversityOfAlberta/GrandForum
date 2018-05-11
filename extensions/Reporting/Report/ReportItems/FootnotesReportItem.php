@@ -23,18 +23,18 @@ class FootnotesReportItem extends AbstractReportItem {
 
          $jscript =<<<EOF
              <script type='text/javascript'>
-                $('.footnote_dialog').dialog( "destroy" );
-                $('.footnote_dialog').dialog({
+                $("body > #topnote{$this->getPostId()}").remove(); // Sometimes dialog remains as a child of body for some reason
+                $('#topnote{$this->getPostId()}').dialog({
                     autoOpen: false, 
                     width: 400, 
                     height: 200,
                     buttons: {
                         "Done": function() {
-                            $( this ).dialog( "close" );
+                            $(this).dialog( "close" );
                         }
                     }
                 });
-                $('.footnote_dialog').parent().appendTo($('#reportBody'));
+                $('#topnote{$this->getPostId()}').parent().detach().appendTo($('#reportBody'));
                 function openDialog(num){
                     $('#topnote'+num).dialog("open");
                 }

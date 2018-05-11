@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FECReview" reportType="RP_FEC" pdfFiles="FECReview" ajax="true">
+    <Permissions>
+        <Role role="ISAC">
+            <SectionPermission id="reviews" permissions="rw" />
+        </Role>
+        <Role role="RMC">
+            <SectionPermission id="reviews" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="{$user_dept} Reviews" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="thead" type="Static">
+            <![CDATA[
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Faculty Member</th>
+                            <th>Annual Report</th>
+                            <th>Recommendations</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet type="DepartmentPeopleReportItemSet" department="{$user_dept}">
+            <ReportItem id="name" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
+	    	     <![CDATA[
+	    	            <td align='center'>{$item}</td>
+	    	     ]]>
+	    	 </ReportItem>
+	    	 <ReportItem id="recommendation" type="Textarea" blobItem="RECOMMENDATION" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td></td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="tfoot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chairTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
