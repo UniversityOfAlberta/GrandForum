@@ -52,7 +52,12 @@ ProductListView = Backbone.View.extend({
                                 "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '),
                                 model.status);
             if(networkName == "FES"){
-                row.push(model.data.collaboration);
+                if(typeof model.data.collaboration != 'undefined'){
+                    row.push(model.data.collaboration);
+                }
+                else{
+                    row.push("");
+                }
             }
             if(projectsEnabled){
                 row.push(projects.join(', '));
