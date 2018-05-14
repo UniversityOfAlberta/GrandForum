@@ -1288,7 +1288,6 @@
                                         )}
                                         {round({multiply({divide({divide({get(total)},{get(nReviewers)})},15)},5)},2)}
                                     </th>
-                                    <th></th>
                                 </tr>
                             </tfoot>
                         </table>
