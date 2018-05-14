@@ -303,7 +303,7 @@ ManagePeopleView = Backbone.View.extend({
 	        draggable: false,
 	        width: "550px",
 	        position: {
-                my: "center bottom",
+                my: "center center",
                 at: "center center"
             },
 	        open: function(){
@@ -316,6 +316,7 @@ ManagePeopleView = Backbone.View.extend({
 	            "Add": $.proxy(function(e){
 	                closeAddHQP = $.proxy(function(){
 	                    this.addNewMemberDialog.dialog('close');
+	                    clearSuccess();
 	                    addSuccess("User created successfully");
 	                    this.model.fetch();
 	                }, this);
@@ -365,6 +366,7 @@ ManagePeopleView = Backbone.View.extend({
 	            }, this)
 	        }
 	    });
+	    this.$el.append(this.addNewMemberDialog.parent());
 	    this.$el.append(this.addExistingMemberDialog.parent());
         return this.$el;
     }

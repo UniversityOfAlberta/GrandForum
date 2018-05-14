@@ -25,10 +25,13 @@ class AddHqp extends SpecialPage{
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
+                $form->getElementById('rel_field')->setPOST('relationship');
                 $form->getElementById('university_field')->setPOST('university');
                 $form->getElementById('dept_field')->setPOST('department');
                 $form->getElementById('position_field')->setPOST('position');
                 $form->getElementById('employee_field')->setPOST('employeeId');
+                $form->getElementById('start_field')->setPOST('startDate');
+                $form->getElementById('end_field')->setPOST('endDate');
 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
@@ -61,6 +64,10 @@ class AddHqp extends SpecialPage{
                 if($('#wgMessages div.success').text() != ''){
                     parent.closeAddHQP();
                 }
+                $('input[name=end_field]').parent().append('<span id=\"infinity\" style=\"font-weight:bold;font-size:18px;cursor:pointer;\" class=\"highlights-text\" title=\"Continuing\">&#8734;</span>');
+                $('#infinity').click(function(){
+                    $('input[name=end_field]').val('0000-00-00').change();
+                });
             </script>");
         }
     }
@@ -95,6 +102,11 @@ class AddHqp extends SpecialPage{
         $employeeRow = new FormTableRow("employee_row");
         $employeeRow->append($employeeLabel)->append($employeeField->attr('size', 20));
         
+        $relLabel = new Label("rel_label", "Relationship", "The relationship with this user", VALIDATE_NOTHING);
+        $relField = new SelectBox("rel_field", "Relationship", "", array("", "Co-Supervises","Committee Chair","Examiner","Supervises","Supervisory Committee","Works With"), VALIDATE_NOTHING);
+        $relRow = new FormTableRow("rel_row");
+        $relRow->append($relLabel)->append($relField);
+        
         $universities = Person::getAllUniversities();
         $positions = array("Other", "Graduate Student - Master's Course", "Graduate Student - Master's Thesis", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
@@ -117,6 +129,16 @@ class AddHqp extends SpecialPage{
         $positionRow = new FormTableRow("university_row");
         $positionRow->append($positionLabel)->append($positionField);
         
+        $startLabel = new Label("start_label", "HQP Start Date", "The HQP's start date", VALIDATE_NOTHING);
+        $startField = new CalendarField("start_field", "Start Date", "", VALIDATE_NOTHING);
+        $startRow = new FormTableRow("start_row");
+        $startRow->append($startLabel)->append($startField);
+        
+        $endLabel = new Label("end_label", "HQP End Date", "The HQP's end date", VALIDATE_NOTHING);
+        $endField = new CalendarField("end_field", "End Date", "", VALIDATE_NOTHING);
+        $endRow = new FormTableRow("end_row");
+        $endRow->append($endLabel)->append($endField);
+        
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
         $submitRow = new FormTableRow("submit_row");
@@ -126,9 +148,12 @@ class AddHqp extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($employeeRow)
+                  ->append($relRow)
                   ->append($universityRow)
                   ->append($deptRow)
                   ->append($positionRow)
+                  ->append($startRow)
+                  ->append($endRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);

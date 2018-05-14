@@ -291,7 +291,6 @@ HTML.Select = function(view, attr, options){
         else{
             options.options = _.sortBy(options.options);
         }
-        console.log(options.options);
     }
     
     _.each(options.options, function(opt){

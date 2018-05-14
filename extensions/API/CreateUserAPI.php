@@ -104,6 +104,7 @@ class CreateUserAPI extends API{
                 $person = Person::newFromId($newUser->getId());
                 $person->updateNamesCache();
                 if($person != null && $person->getName() != null){
+                    // Adding University
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
                         $api = new PersonUniversitiesAPI();
                         $api->params['id'] = $person->getId();
@@ -117,8 +118,23 @@ class CreateUserAPI extends API{
                         DBFunctions::insert('grand_user_university',
                                             array('user_id' => $person->getId(),
                                                   'university_id' => $unis[$defaultUni],
-                                                  'position_id' => $poss[$defaultPos]));
+                                                  'position_id' => $poss[$defaultPos],
+                                                  'start_date' => @$_POST['startDate'],
+                                                  'end_date' => @$_POST['endDate']));
                     }
+                    
+                    // Adding Relationship
+                    if(isset($_POST['relationship']) && $_POST['relationship'] != ""){
+                        $relation = new Relationship(array());
+                        $relation->user1 = $creator->getId();
+                        $relation->user2 = $person->getId();
+                        $relation->type = $_POST['relationship'];
+                        $relation->startDate = $this->POST('startDate');
+                        $relation->endDate = $this->POST('endDate');
+                        $relation->create();
+                    }
+                    
+                    // Adding Role
                     if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
                         // Adds the role subtype if it is set
                         foreach($_POST['subtype'] as $subtype){
