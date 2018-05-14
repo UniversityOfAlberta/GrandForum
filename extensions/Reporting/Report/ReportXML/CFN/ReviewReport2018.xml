@@ -1228,7 +1228,7 @@
                                     <th>Q2</th>
                                     <th>Q3</th>
                                     <th>Total</th>
-                                    <th width='60%'>Comments</th>
+                                    <!--th width='60%'>Comments</th-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -1255,11 +1255,11 @@
                                     ,5)}
                                 ,2)}
                             </td>
-                            <td>
+                            <!--td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
                                     {getText(RP_SHOW_REVIEW,SHOW_EX_REVIEW,SHOW_EX_COMMENTS,{$parent_id},{$user_id},0)}
                                 </div>
-                            </td>
+                            </td-->
                             </tr>
                         ]]>
                     </ReportItem>
