@@ -50,11 +50,18 @@ class AddHqp extends SpecialPage{
                 DBFUnctions::commit();
             }
             AddHqp::generateFormHTML($wgOut);
-            return;
         }
         else{
             // Form not entered yet
             AddHqp::generateFormHTML($wgOut);
+        }
+        if(isset($_GET['embed'])){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $('#bodyContent h1').hide();
+                if($('#wgMessages div.success').text() != ''){
+                    parent.closeAddHQP();
+                }
+            </script>");
         }
     }
     
@@ -131,7 +138,8 @@ class AddHqp extends SpecialPage{
     function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
         $user = Person::newFromId($wgUser->getId());
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddHqp' method='post'>\n");
+        $embed = isset($_GET['embed']) ? "?embed" : "";
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddHqp$embed' method='post'>\n");
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());

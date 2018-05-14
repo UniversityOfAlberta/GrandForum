@@ -63,7 +63,7 @@ class CreateUserAPI extends API{
                     $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
                     $wgEmailAuthentication = false;
                     $wgEnableEmail = false;
-		    $wgRequest->setVal('wpCreateaccount', true);
+                    $wgRequest->setVal('wpCreateaccount', true);
                     $_POST['wpPassword'] = User::randomPassword();
                     $_POST['wpRetype'] = $_POST['wpPassword'];
                 }
@@ -93,7 +93,10 @@ class CreateUserAPI extends API{
             $tmpUser = User::newFromName($_POST['wpName']);
             $oldWgEnableEmail = $wgEnableEmail;
             $wgEnableEmail = true;
+            $lastHTML = $wgOut->getHTML();
             if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
+                $wgOut->clearHTML();
+                $wgOut->addHTML($lastHTML);
                 $wgEnableEmail = $oldWgEnableEmail;
                 Person::$cache = array();
                 Person::$aliasCache = array();
@@ -132,6 +135,10 @@ class CreateUserAPI extends API{
                                                       'url' => EQ(''),
                                                       'creator' => EQ(''),
                                                       'active' => EQ(1)));
+                    // Add as a managed user
+                    DBFunctions::insert('grand_managed_people',
+                                        array('user_id' => $creator->getId(),
+                                              'managed_id' => $person->getId()));
                     if(count($data) > 0){
                         // Remove the Notification that the user was sent after the request
                         Notification::deactivateNotification($data[0]['id']);

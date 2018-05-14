@@ -12,9 +12,13 @@
     <br />
 </p>
 <p>
-    <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add HQP</a>
+    <!--a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add HQP</a-->
+    <button id="addNewMember" title="Creates a new member">Add New HQP</button>
     <button id="addExistingMember" title="Adds an existing member to the list below">Find Existing HQP</button>
 </p>
+<div id="addNewMemberDialog" style="display:none; overflow-y:auto;" title="Add New HQP">
+    <iframe id="addNewMemberFrame" style="width:100%; height:350px;" frameborder="0" onload="this.contentWindow.$('form input[name=submit]').hide()" src="<%= wgServer + wgScriptPath %>/index.php/Special:AddHqp?embed"></iframe>
+</div>
 <div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Find Existing HQP">
     <p>Select the person you would like to show up in your table and then press "Save".</p>
     <select id="selectExistingMember" name="select"></select>

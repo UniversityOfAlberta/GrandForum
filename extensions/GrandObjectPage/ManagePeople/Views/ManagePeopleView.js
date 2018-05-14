@@ -4,6 +4,7 @@ ManagePeopleView = Backbone.View.extend({
     subViews: new Array(),
     allPeople: null,
     people: null,
+    addNewMemberDialog: null,
     addExistingMemberDialog: null,
 
     initialize: function(){
@@ -265,6 +266,10 @@ ManagePeopleView = Backbone.View.extend({
         }
     },
     
+    addNewMember: function(){
+        this.addNewMemberDialog.dialog('open');
+    },
+    
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
@@ -277,6 +282,7 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     events: {
+        "click #addNewMember": "addNewMember",
         "click #addExistingMember": "addExistingMember",
         "click #hqpDuplicatesButton": "checkHQPDuplicates"
     },
@@ -289,6 +295,42 @@ ManagePeopleView = Backbone.View.extend({
         this.$("#hqpDuplicatesProgress").progressbar({
             value: 0
         });
+        this.addNewMemberDialog = this.$("#addNewMemberDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "550px",
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Add": $.proxy(function(e){
+	                closeAddHQP = $.proxy(function(){
+	                    this.addNewMemberDialog.dialog('close');
+	                    addSuccess("User created successfully");
+	                    this.model.fetch();
+	                }, this);
+	                if(document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').length > 0){
+	                    document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').click();
+	                }
+                    else{ 
+                        document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=submit]').click();
+                    }
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.addNewMemberDialog.dialog('close');
+	            }, this)
+	        }
+	    });
         this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
