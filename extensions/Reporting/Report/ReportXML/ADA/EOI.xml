@@ -20,7 +20,7 @@
         
         <ReportItem id="primary_themes" type="Radio" blobType="BLOB_TEXT" blobItem="PRIMARY_THEMES" options="Data Science and Computational Platforms (DS-CP)|Ethical Sustainable Technologies (EST)|Economy, Employment, Policy, and Training (EEPT)|Data-Driven Knowledge Mobilization and Evaluation (DDKM)|Sector-Accelerator Research - Advanced Manufacturing (S-AM)|Sector-Accelerator Research - Smart Buildings (S-SB)|Sector-Accelerator Research - CleanTech (S-CT)|Sector-Accelerator Research - FinTech (S-FT)">
             <![CDATA[
-                <h2>ADA Themes</h2>
+                <h2>Relevant ADA Research Themes</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <tr>
                         <th>Primary<br /><small>(Choose One)</small></th>
@@ -44,28 +44,28 @@
         </ReportItem>
         
         <!-- Principal Investigator -->
-        <ReportItem id="pis" type="MultiText" blobType="BLOB_ARRAY" blobItem="PIS" labels="Name|Department|Institution|E-mail|Website" types="Text|Text|Text|Text|Text" sizes="250|250|250|250|250" orientation="vertical" multiple="true">
+        <ReportItem id="pis" type="MultiText" blobType="BLOB_ARRAY" blobItem="PIS" labels="Name|Department|Institution|E-mail|Website" types="Text|Text|Text|Text|Text" sizes="250|250|250|250|250" orientation="vertical">
             <![CDATA[
-                <h2>Principal Investigator(s)</h2>
+                <h2>Principal Investigator</h2>
                 {$item}
             ]]>
         </ReportItem>
         
         <!-- Co-Principal Investigator -->
         <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|
-Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true">
+Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Co-PI">
             <![CDATA[
                 <h2>Co-Principal Investigator(s)</h2>
-                <small>(Cross-institutional and cross-disciplinary collaborations are strongly encouraged)</small>
+                <small>Co-PIs are individuals who will contribute to the formulation of the project activities, and deliverables. Multi-institutional and multi-disciplinary collaborations are strongly encouraged, and will be given priority.</small>
                 {$item}
             ]]>
         </ReportItem>
         
         <!-- Partners -->
-        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Organization Name|Sector|Contact Name|Contact Title|E-mail|Website|Role/Contribution|Confirmed" types="Text|Text|Text|Text|Text|Text|Text|Select(Yes,No)" sizes="250|250|250|250|250|250|250" orientation="vertical" multiple="true">
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Organization Name|Sector|Contact Name|Contact Title|E-mail|Website|Role/Contribution|Confirmed" types="Text|Text|Text|Text|Text|Text|Text|Select(Yes,No)" sizes="250|250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Partner">
             <![CDATA[
                 <h2>Project Partner(s)</h2>
-                <small>(Cross-institutional and cross-disciplinary collaborations are strongly encouraged)</small>
+                <small>ADA projects require the involvement of technology receptors, whether industrial partners or non-for-profit community organizations. During the EoI phase, it may not be possible to have a confirmed partner but please indicate organization name and website of most appropriate or desirable partner(s).</small>
                 {$item}
             ]]>
         </ReportItem>
@@ -76,7 +76,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
                 <small>
                     What is the overarching challenge that this proposed project will address?<br />
                     What are the key specific research problems, or technical complexities, that this project will address?<br />
-                    What are the barriers that need to be overcome?<br />
+                    What are the barriers that need to be overcome in order for the project to be successful? How can ADA help overcome them?<br />
                     What is the research question/hypotheses to be addressed?
                 </small>
                 {$item}
@@ -107,7 +107,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="time" type="Select" blobType="BLOB_TEXT" blobItem="TIME" options="1 year|2 years|3 years|4 years|5 years">
+        <ReportItem id="time" type="Select" blobType="BLOB_TEXT" blobItem="TIME" options="1 year|2 years|3 years">
             <![CDATA[
                 <h2>Funding Requested From ADA</h2>
                 <table>
@@ -136,19 +136,25 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
                     var avg_funding = function(){
                         otherFunding.detach();
                         var time = parseInt($('[name=ExpressionofInterest_time]').val());
+                        if(time == 0 || time == undefined || _.isNaN(time)){
+                            time = 1;
+                        }
                         var funding = $('[name=ExpressionofInterest_funding]').val();
+                        if(funding == undefined){
+                            funding = "0k - 0k";
+                        }
                         var other = otherFunding.val();
                         if(funding == "Above 300k"){
                             $('#other_funding').html(otherFunding);
                             $('#other_funding_cell').show();
-                            $("#avg_funding").text((other/time) + "k");
-                            $('[name=ExpressionofInterest_avg_funding]').val((other/time) + "k");
+                            $("#avg_funding").text(Math.ceil(other/time) + "k");
+                            $('[name=ExpressionofInterest_avg_funding]').val(Math.ceil(other/time) + "k");
                         }
                         else{
                             var range = funding.split(' - ');
                             $('#other_funding_cell').hide();
-                            $("#avg_funding").text((parseInt(range[0])/time) + "k - " + (parseInt(range[1])/time) + "k");
-                            $('[name=ExpressionofInterest_avg_funding]').val((parseInt(range[0])/time) + "k - " + (parseInt(range[1])/time) + "k");
+                            $("#avg_funding").text(Math.ceil(parseInt(range[0])/time) + "k - " + Math.ceil(parseInt(range[1])/time) + "k");
+                            $('[name=ExpressionofInterest_avg_funding]').val(Math.ceil(parseInt(range[0])/time) + "k - " + Math.ceil(parseInt(range[1])/time) + "k");
                         }
                     }
                     
@@ -162,17 +168,21 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
             ]]>
         </ReportItem>
         
-        <ReportItem id="infrastructure" type="Radio" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE" options="Yes|No">
+        <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" limit="250" rich="true">
             <![CDATA[
-                <h2>Do you have the computational infrastructure you need for the project?</h2>
-                Do you have the computational infrastructure you need for the project?
+                <h3>Please explain contributions expected from external partners towards this amount</h3>
+                <small>What is the expected cash and in-kind contributions you may be able to obtain from your partners?</small>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="infrastructure_explain" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE_EXPLAIN" rich="true">
+        <ReportItem id="infrastructure" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE">
             <![CDATA[
-                <p><b>Explain:</b></p>
+                <h2>Computational-Infrastructure Needs</h2>
+                <small>Please describe the computational infrastructure needed for this project, i.e., CPUs, GPUs, other special hardware architectures, storage, etc.<br />
+                       Do you currently have access to what is needed?<br />
+                       Would this infrastructure be available by an existing provider, and who might that provider be?
+                </small>
                 {$item}
             ]]>
         </ReportItem>
@@ -181,7 +191,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
             <![CDATA[
                 <h2>Collaboration and Benefits</h2>
                 <small>
-                    Describe the nature of the collaboration among the project members, researchers and partners. 
+                    Describe the nature of the collaboration among the project members (researchers, students, and partners) and their contributions to the development of project conception, completion and uptake of results.
                 </small>
                 {$item}
             ]]>

@@ -78,7 +78,7 @@ EOF;
                     foreach($indices as $j => $index){
                         $align = "";
                         if($isVertical){
-                            $item .= "\"<tr id='\" + i + \"'><td align='right'><b>{$labels[$j]}:</b></td>\" + \n";
+                            $item .= "\"<tr id='obj\" + i + \"'><td align='right'><b>{$labels[$j]}:</b></td>\" + \n";
                             $align = "left";
                         }
                         if(@$types[$j] == "NI"){

@@ -28,7 +28,7 @@
         
         <ReportItem id="primary_themes" type="Radio" blobType="BLOB_TEXT" blobItem="PRIMARY_THEMES" options="Data Science and Computational Platforms (DS-CP)|Ethical Sustainable Technologies (EST)|Economy, Employment, Policy, and Training (EEPT)|Data-Driven Knowledge Mobilization and Evaluation (DDKM)|Sector-Accelerator Research - Advanced Manufacturing (S-AM)|Sector-Accelerator Research - Smart Buildings (S-SB)|Sector-Accelerator Research - CleanTech (S-CT)|Sector-Accelerator Research - FinTech (S-FT)">
             <![CDATA[
-                <h3>ADA Themes</h3>
+                <h3>Relevant ADA Research Themes</h3>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <tr>
                         <th>Primary</th>
@@ -89,7 +89,7 @@
         <!-- Principal Investigator(s) -->
         <ReportItem type="Static">
             <![CDATA[
-                <h3>Co-Principal Investigator(s)</h3>
+                <h3>Co-Principal Investigator</h3>
             ]]>
         </ReportItem>
         <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
@@ -179,6 +179,13 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="solution" type="Textarea" blobType="BLOB_TEXT" blobItem="SOLUTION" rich="true">
+            <![CDATA[
+                <h3>Proposed Solution/Technologies to address the problem/issue</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <!-- Funding -->
         <ReportItem id="time" type="Select" blobType="BLOB_TEXT" blobItem="TIME" options="1 year|2 years|3 years|4 years|5 years">
             <![CDATA[
@@ -221,9 +228,21 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="solution" type="Textarea" blobType="BLOB_TEXT" blobItem="SOLUTION" rich="true">
+        <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" limit="250" rich="true">
             <![CDATA[
-                <h3>Proposed Solution/Technologies to address the problem/issue</h3>
+                <h4>Please explain contributions expected from external partners towards this amount</h4>
+                <small>What is the expected cash and in-kind contributions you may be able to obtain from your partners?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="infrastructure" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE">
+            <![CDATA[
+                <h2>Computational-Infrastructure Needs</h2>
+                <small>Please describe the computational infrastructure needed for this project, i.e., CPUs, GPUs, other special hardware architectures, storage, etc.<br />
+                       Do you currently have access to what is needed?<br />
+                       Would this infrastructure be available by an existing provider, and who might that provider be?
+                </small>
                 {$item}
             ]]>
         </ReportItem>
@@ -231,21 +250,6 @@
         <ReportItem id="benefits" type="Textarea" blobType="BLOB_TEXT" blobItem="BENEFITS" rich="true">
             <![CDATA[
                 <h3>Collaboration and Benefits</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="infrastructure" type="Radio" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE" options="Yes|No">
-            <![CDATA[
-                <h3>Do you have the computational infrastructure you need for the project?</h3>
-                Do you have the computational infrastructure you need for the project?
-                {$item}<br /><br />
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="infrastructure_explain" type="Textarea" blobType="BLOB_TEXT" blobItem="INFRASTRUCTRE_EXPLAIN" rich="true">
-            <![CDATA[
-                <p><b>Explain:</b></p>
                 {$item}
             ]]>
         </ReportItem>
