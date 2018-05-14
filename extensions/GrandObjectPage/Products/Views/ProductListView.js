@@ -51,7 +51,7 @@ ProductListView = Backbone.View.extend({
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
                                 "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '),
                                 model.status);
-            if(networkName == "FES" && typeof model.data.collaboration != undefined){
+            if(networkName == "FES"){
                 row.push(model.data.collaboration);
             }
             if(projectsEnabled){
