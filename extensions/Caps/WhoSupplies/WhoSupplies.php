@@ -161,7 +161,7 @@ class WhoSupplies extends SpecialPage{
                     <li>As of May 10th, 2018, the province of AB does not have a Mife billing code. Physicians may use the following to support their practice:</li>
                     <li>04A: Initial Visit</li>
                     <li>03A: Follow-up Visit</li>
-                    <li>Alberta Health Care Insurance Plan, Schedule of Medical Benefits, <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cHM6Ly9vcGVuLmFsYmVydGEuY2EvZGF0YXNldC8zNzZkYzEyYy01YmJiLTQ5NGUtODEwYi1hZDNhNmUxMzg3NGEvcmVzb3VyY2UvYWY5MTM4ZTEtYmI2OS00Y2E4LWExMzUtY2JlZmZiYWUzZjQyL2Rvd25sb2FkL3NvbWItbWVkaWNhbC1wcm9jZWR1cmVzLTIwMTctMDQucGRm/1'>click here</a></li>
+                    <li>Alberta Health Care Insurance Plan, Schedule of Medical Benefits, <a target='_blank' href='https://open.alberta.ca/dataset/376dc12c-5bbb-494e-810b-ad3a6e13874a/resource/af9138e1-bb69-4ca8-a135-cbeffbae3f42/download/somb-medical-procedures-2017-04.pdf'>click here</a></li>
                 </ul>
                 
             </div>
@@ -709,7 +709,7 @@ class WhoSupplies extends SpecialPage{
                     <li>50P: Therapeutic abortion (includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
                     <li>250P: Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60</li>
                     <li>350P: D&C for incomplete or missed abortion. Billing Amount: $387.30</li>
-                    <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cDovL3d3dy5zbWEuc2suY2Eva2FpemVuL2NvbnRlbnQvZmlsZXMvcCg3KS5wZGY'>click here</a></li>
+                    <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a></li>
                 </ul>
                 
             </div>
