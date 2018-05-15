@@ -129,10 +129,21 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         else{
             this.$el.removeClass('deleted');
         }
+        if((this.model.get('status') == "Completed" ||
+            this.model.get('status') == "Withdrew" ||
+            this.model.get('status') == "Changed Supervisor") &&
+           (this.model.get('endDate') == "" ||
+            this.model.get('endDate').substr(0, 10) == "0000-00-00")){
+            this.$(".endDateCell").css("background", "#FF8800");
+        }
+        else{
+            this.$(".endDateCell").css("background", "");
+        }
     },
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.update();
         return this.$el;
     }, 
     
