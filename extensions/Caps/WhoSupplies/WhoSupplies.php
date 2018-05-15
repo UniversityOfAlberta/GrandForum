@@ -705,6 +705,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Tips on local initiatives to support your practice</h3>
 
                 <h3>Billing Codes</h3>
+                <ul>
                     <li>50P: Therapeutic abortion (includes incomplete and missed abortion includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
                     <li>250P: Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60</li>
                     <li>350P: D&C for incomplete or missed abortion. Billing Amount: $387.30</li>
