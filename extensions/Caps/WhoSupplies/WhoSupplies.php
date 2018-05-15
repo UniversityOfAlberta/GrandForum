@@ -706,7 +706,7 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                    <li>50P: Therapeutic abortion (includes incomplete and missed abortion includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
+                    <li>50P: Therapeutic abortion (includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
                     <li>250P: Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60</li>
                     <li>350P: D&C for incomplete or missed abortion. Billing Amount: $387.30</li>
                     <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cDovL3d3dy5zbWEuc2suY2Eva2FpemVuL2NvbnRlbnQvZmlsZXMvcCg3KS5wZGY'>click here</a></li>
