@@ -905,7 +905,6 @@
                             <th>Avg. Q9</th>
                             <th>Avg. Q10</th>
                             <th>Avg. Q11</th>
-                            <th>Avg. Q12</th>
                             <th>Avg. Total</th>
                         </tr>
                     </thead>
@@ -926,7 +925,6 @@
                     {set(q9, 0)}
                     {set(q10, 0)}
                     {set(q11, 0)}
-                    {set(q12, 0)}
                     
                     {set(nReviewers, 0)}
                 ]]>
@@ -942,8 +940,7 @@
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_8,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)},)}
+                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)},)}
                                                       )}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_1,{$parent_id},{$user_id},0)})})}
@@ -957,7 +954,6 @@
                         {set(q9, {add({get(q9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_9,{$parent_id},{$user_id},0)})})}
                         {set(q10, {add({get(q10)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_10,{$parent_id},{$user_id},0)})})}
                         {set(q11, {add({get(q11)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_11,{$parent_id},{$user_id},0)})})}
-                        {set(q12, {add({get(q12)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_12,{$parent_id},{$user_id},0)})})}
 
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
@@ -976,11 +972,10 @@
                              {get(q8)},
                              {get(q9)},
                              {get(q10)},
-                             {get(q11)},
-                             {get(q12)}
+                             {get(q11)}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},48)},5)},2)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},44)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1030,9 +1025,6 @@
                         </td>
                         <td align='right'>
                             {round({divide({get(q11)},{get(nReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(q12)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}

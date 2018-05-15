@@ -49,7 +49,16 @@ ProductListView = Backbone.View.extend({
             });
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '));
+                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '),
+                                model.status);
+            if(networkName == "FES"){
+                if(typeof model.data.collaboration != 'undefined'){
+                    row.push(model.data.collaboration);
+                }
+                else{
+                    row.push("");
+                }
+            }
             if(projectsEnabled){
                 row.push(projects.join(', '));
                 if(_.contains(allowedRoles, STAFF)){
@@ -97,6 +106,10 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
+        var targets = [ 4 ];
+        if(networkName == "FES"){
+            targets = [4, 5];
+        }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
@@ -104,6 +117,13 @@ ProductListView = Backbone.View.extend({
 	                                    'deferRender': true,
 	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
 	                                    'dom': 'Blfrtip',
+	                                    "columnDefs": [
+                                            {
+                                                "targets": targets,
+                                                "visible": false,
+                                                "searchable": true
+                                            }
+                                        ],
                                         'buttons': [
                                             'excel', 'pdf'
                                         ]});
