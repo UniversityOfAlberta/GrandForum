@@ -400,7 +400,7 @@ class Person extends BackboneModel {
                 self::$userRows[$row['user_id']] = $row;
             }
         }
-        return self::$userRows[$id];
+        return (isset(self::$userRows[$id])) ? self::$userRows[$id] : array();
     }
 
     /**
@@ -4900,8 +4900,8 @@ class Person extends BackboneModel {
             $relations[] = Relationship::newFromId($row['id']);
         }
         usort($relations, function($a, $b){ 
-            return str_replace("0000-00-00 00:00:00", "9999-12-31 00:00:00", $a->getEndDate()) < 
-                   str_replace("0000-00-00 00:00:00", "9999-12-31 00:00:00", $b->getEndDate());
+            return str_replace("0000-00-00", "9999-12-31", $a->getEndDate()) < 
+                   str_replace("0000-00-00", "9999-12-31", $b->getEndDate());
         });
         return $relations;
     }

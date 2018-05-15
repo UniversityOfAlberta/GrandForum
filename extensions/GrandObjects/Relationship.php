@@ -114,12 +114,12 @@ class Relationship extends BackboneModel {
     
     // Returns the startDate for this Relationship
     function getStartDate(){
-        return $this->startDate;
+        return substr($this->startDate, 0, 10);
     }
     
     // Returns the endDate for this Relationship
     function getEndDate(){
-        return $this->endDate;
+        return substr($this->endDate, 0, 10);
     }
     
     // Returns the comment for this Relationship

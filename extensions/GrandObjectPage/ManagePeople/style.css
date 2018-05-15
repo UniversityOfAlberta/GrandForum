@@ -36,3 +36,11 @@ table.wikitable tr.odd {
 table.wikitable tr.deleted {
     background: #FEB8B8;
 }
+
+.relError {
+    margin-left: 2px;
+    width: 140px;
+    font-size: 0.75em; 
+    font-weight: bold;
+    white-space: initial;
+}

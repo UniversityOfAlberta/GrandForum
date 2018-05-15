@@ -10,14 +10,15 @@ class PersonRelationsAPI extends RESTAPI {
             foreach($relations as $type){
                 foreach($type as $id => $relation){
                     if($id == $this->getParam('relId')){
-                        return json_encode($relation);
+                        return $relation->toJSON();
                     }
                 }
             }
         }
         else{
             // All Relations
-            return json_encode(flatten($relations));
+            $relations = new Collection(flatten($relations));
+            return $relations->toJSON();
         }
     }
     

@@ -128,12 +128,32 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('0000-00-00');
-        this.model.set('endDate', '0000-00-00');
+        this.$("input[name=endDate]").val('');
+        this.model.set('endDate', '');
     },
     
     events: {
-        "click #infinity": "setInfinite"
+        "click #infinity": "setInfinite",
+        "change [name=startDate]": "changeStart",
+        "change [name=endDate]": "changeEnd"
+    },
+    
+    changeStart: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=startDate]").val();
+        var end_date = this.$("[name=endDate]").val();
+        if(start_date != "" && start_date != "0000-00-00"){
+            this.$("[name=endDate]").datepicker("option", "minDate", start_date);
+        }
+    },
+    
+    changeEnd: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=startDate]").val();
+        var end_date = this.$("[name=endDate]").val()
+        if(end_date != "" && end_date != "0000-00-00"){
+            this.$("[name=startDate]").datepicker("option", "maxDate", end_date);
+        }
     },
     
     update: function(){
@@ -160,6 +180,10 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
             this.$("[name=position]").combobox();
         }
         this.update();
+        _.defer($.proxy(function(){
+            this.$("[name=startDate]").change();
+            this.$("[name=endDate]").change();
+        }, this));
         return this.$el;
     }, 
     

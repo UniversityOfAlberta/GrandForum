@@ -114,12 +114,33 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('0000-00-00');
-        this.model.set('endDate', '0000-00-00');
+        this.$("input[name=endDate]").val('');
+        this.model.set('endDate', '');
+        this.changeEnd();
     },
     
     events: {
-        "click #infinity": "setInfinite"
+        "click #infinity": "setInfinite",
+        "change [name=startDate]": "changeStart",
+        "change [name=endDate]": "changeEnd"
+    },
+    
+    changeStart: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=startDate]").val();
+        var end_date = this.$("[name=endDate]").val();
+        if(start_date != "" && start_date != "0000-00-00"){
+            this.$("[name=endDate]").datepicker("option", "minDate", start_date);
+        }
+    },
+    
+    changeEnd: function(){
+        // These probably won't exist in most cases, but if they do, then yay
+        var start_date = this.$("[name=startDate]").val();
+        var end_date = this.$("[name=endDate]").val()
+        if(end_date != "" && end_date != "0000-00-00"){
+            this.$("[name=startDate]").datepicker("option", "maxDate", end_date);
+        }
     },
     
     update: function(){
@@ -133,17 +154,29 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.model.get('status') == "Withdrew" ||
             this.model.get('status') == "Changed Supervisor") &&
            (this.model.get('endDate') == "" ||
-            this.model.get('endDate').substr(0, 10) == "0000-00-00")){
+            this.model.get('endDate') == "0000-00-00")){
             this.$(".endDateCell").css("background", "#FF8800");
+            this.$(".relError").text("There should be an end date when status is '" + this.model.get('status') + "'").show();
+        }
+        else if((this.model.get('status') == "Continuing") &&
+           (this.model.get('endDate') != "" &
+            this.model.get('endDate') != "0000-00-00")){
+            this.$(".endDateCell").css("background", "#FF8800");
+            this.$(".relError").text("There should be no end date when status is '" + this.model.get('status') + "'").show();
         }
         else{
             this.$(".endDateCell").css("background", "");
+            this.$(".relError").text("").hide();
         }
     },
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.update();
+        _.defer($.proxy(function(){
+            this.$("[name=startDate]").change();
+            this.$("[name=endDate]").change();
+        }, this));
         return this.$el;
     }, 
     
