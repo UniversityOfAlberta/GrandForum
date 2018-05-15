@@ -158,10 +158,10 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                    <li>
-                        87.0A: Termination of pregnancy between 13 and 20 weeks for medical or genetic reasons using potent prostaglandins by any route. Billing Amount: $149.63
-                    </li>
-                    <li>Alberta Health Care Insurance Plan, Schedule of Medical Benefits, Part B, Procedural List, see <a href='https://open.alberta.ca/dataset/376dc12c-5bbb-494e-810b-ad3a6e13874a/resource/af9138e1-bb69-4ca8-a135-cbeffbae3f42/download/somb-medical-procedures-2017-04.pdf' target='_blank'>Page 195</a></li>
+                    <li>As of May 10th, 2018, the province of AB does not have a Mife billing code. Physicians may use the following to support their practice:</li>
+                    <li>04A: Initial Visit</li>
+                    <li>03A: Follow-up Visit</li>
+                    <li>Alberta Health Care Insurance Plan, Schedule of Medical Benefits, <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cHM6Ly9vcGVuLmFsYmVydGEuY2EvZGF0YXNldC8zNzZkYzEyYy01YmJiLTQ5NGUtODEwYi1hZDNhNmUxMzg3NGEvcmVzb3VyY2UvYWY5MTM4ZTEtYmI2OS00Y2E4LWExMzUtY2JlZmZiYWUzZjQyL2Rvd25sb2FkL3NvbWItbWVkaWNhbC1wcm9jZWR1cmVzLTIwMTctMDQucGRm/1'>click here</a></li>
                 </ul>
                 
             </div>
@@ -658,8 +658,15 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                Not Available for Mifepristone
+                    <li>15313 - clinic: global evaluation for medical abortion of a pregnancy of 63 days or less, including the visit, therapy and counseling - 133.35$</li>
+                    <li>15314 - hospital: global evaluation for medical abortion of a pregnancy of 63 days or less, including the visit, therapy and counseling - 100.00$</li>
+                    <li>15315 - clinic: ultrasonography for the evaluation of the medical abortion - $36.45</li>
+                    <li>15316 - hospital: ultrasonography for the evaluation of the medical abortion - $12.50</li>
+                    <li>15317 - clinic: follow-up visit to confirm the completion of medical abortion - $37.50</li>
+                    <li>15318 - hospital: follow-up visit to confirm the completion of medical abortion - $28.15</li>
+                    <li>15319 - clinic: ultrasonography for follow-up visit - $32.30</li>
+                    <li>15320 - hospital: ultrasonography for follow-up visit - $8.35</li>
+                    <li>For more information on remuneration, please <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cHM6Ly93d3cuY2Fwcy1jcGNhLnViYy5jYS9pbmRleC5waHAvU3BlY2lhbDpXaG9TdXBwbGllcw/1'>click here</a></li>
                 </li>
                 </ul>
          
@@ -698,19 +705,10 @@ class WhoSupplies extends SpecialPage{
                 <h3>Tips on local initiatives to support your practice</h3>
 
                 <h3>Billing Codes</h3>
-                <i> * Medical terminations with methotrexate and mifepristone use the same billing code in SK </i>
-                <ul>
-                <li>
-                50P: Therapeutic abortion (includes incomplete and missed abortion) in the first trimester. Billing Amount: $387.30 
-
-                </li>
-                <li>
-                250P:  Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60  
-                </li>
-                <li>
-                350P: D&C for incomplete or missed abortion. Billing Amount: $387.30 
-                </li>
-                <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a></li>
+                    <li>50P: Therapeutic abortion (includes incomplete and missed abortion includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
+                    <li>250P: Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60</li>
+                    <li>350P: D&C for incomplete or missed abortion. Billing Amount: $387.30</li>
+                    <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cDovL3d3dy5zbWEuc2suY2Eva2FpemVuL2NvbnRlbnQvZmlsZXMvcCg3KS5wZGY'>click here</a></li>
                 </ul>
                 
             </div>
