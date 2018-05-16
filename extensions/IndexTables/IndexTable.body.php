@@ -388,13 +388,17 @@ class IndexTable {
      * User Page | Projects | Twitter
      */
     private function generatePersonTable($table){
+        global $config;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
         if($me->isRoleAtLeast(STAFF)){
-            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, YEAR));
+            $phaseDates = $config->getValue('projectPhaseDates');
+            for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
+                $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+            }
         }
         if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
             $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
