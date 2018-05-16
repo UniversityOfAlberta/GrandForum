@@ -59,6 +59,7 @@ ProductListView = Backbone.View.extend({
                     row.push("");
                 }
             }
+            row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
             if(projectsEnabled){
                 row.push(projects.join(', '));
                 if(_.contains(allowedRoles, STAFF)){
@@ -106,9 +107,9 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
-        var targets = [ 4 ];
+        var targets = [ 4, 5 ];
         if(networkName == "FES"){
-            targets = [4, 5];
+            targets = [4, 5, 6];
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
