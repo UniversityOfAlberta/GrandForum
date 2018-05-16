@@ -99,7 +99,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge,Partner"
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,PS,Collaborator,Knowledge,Partner"
                        startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                        endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
             <ReportItem id="hqp_row" type="StaticReportItem">
