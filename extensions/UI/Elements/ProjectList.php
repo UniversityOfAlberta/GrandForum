@@ -32,7 +32,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 $themes["Other"] = $otherThemes;
             }
         }
-        
+        $i = 0;
         foreach($themes as $theme => $projs){
             $count = ceil(count($projs)/3);
             $i = 0;
