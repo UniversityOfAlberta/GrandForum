@@ -39,7 +39,8 @@ class Report extends AbstractReport{
         $hqps = $person->getHQP();
         $students = $person->getPeopleRelatedTo(SUPERVISES);
         $projects = $person->getProjects();
-        if($person->isRole(PL) && !$person->isRole(HQP)){
+        if(($person->isRole(PL) || $person->isRole(PS)) && !$person->isRole(HQP)){
+            $projectsDone = array();
             foreach($person->leadership() as $project){
                 if(!$project->isDeleted()){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
@@ -47,6 +48,17 @@ class Report extends AbstractReport{
                     
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
+                    $projectsDone[$project->getId()] = true;
+                }
+            }
+            foreach($projects as $project){
+                if(!isset($projectsDone[$project->getId()]) && $person->isRole(PS, $project) && !$project->isDeleted()){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
+                    
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
+                    $projectsDone[$project->getId()] = true;
                 }
             }
         }
