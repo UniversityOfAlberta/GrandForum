@@ -13,7 +13,7 @@ function runApplicationsTable($par) {
 
 class ApplicationsTable extends SpecialPage{
 
-    var $candidates;
+    var $allPeople;
 
     function ApplicationsTable() {
         SpecialPage::__construct("ApplicationsTable", null, false, 'runApplicationsTable');
@@ -30,7 +30,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-        $this->candidates = Person::getAllCandidates();
+        $this->allPeople = array_merge(Person::getAllPeople(), Person::getAllCandidates());
     }
     
     function generateHTML($wgOut){
@@ -69,7 +69,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EOI', $this->candidates, 2018, "EOI"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EOI', $this->allPeople, 2018, "EOI"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
