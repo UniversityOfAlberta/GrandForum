@@ -50,7 +50,7 @@ class ApplicationsTable extends SpecialPage{
             }
         </style>");
 
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=sip'>EOI</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eoi'>EOI</a>";
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
