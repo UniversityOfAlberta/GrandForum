@@ -56,7 +56,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ex_review" name="External Review" blobSection="KT_EX_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
+    <ReportSection id="ex_review" name="External Review" blobSection="KT_EX_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -489,7 +489,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktc_review" name="KTC Review" blobSection="KT_KTC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
+    <ReportSection id="ktc_review" name="KTC Review" blobSection="KT_KTC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -984,7 +984,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="rmc_review" name="RMC Review" blobSection="KT_RMC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
+    <ReportSection id="rmc_review" name="RMC Review" blobSection="KT_RMC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>

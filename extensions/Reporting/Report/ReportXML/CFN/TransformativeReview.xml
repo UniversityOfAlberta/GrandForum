@@ -56,7 +56,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ex_review" name="External Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="ex_review" name="External Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -301,7 +301,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -535,7 +535,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="rmc_review" name="RMC Review" blobSection="TRANS_RMC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="rmc_review" name="RMC Review" blobSection="TRANS_RMC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>

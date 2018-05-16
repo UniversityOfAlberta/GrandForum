@@ -53,7 +53,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
+    <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>

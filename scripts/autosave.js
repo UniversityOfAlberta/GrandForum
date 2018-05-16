@@ -22,7 +22,7 @@ function Autosave(value){
     
     // Submits the form, using an ajax call.
     this.save = function(fn, failFn){
-        var button = $('input[type=submit]', this.value);
+        var button = $('[type=submit]', this.value);
         $(button).prop('disabled', true);
         var dataStr = $(this.value).serialize() + "&" + encodeURIComponent($(button).attr("name")) + "=" + encodeURIComponent($(button).val());
         var url = $(this.value).attr("action");

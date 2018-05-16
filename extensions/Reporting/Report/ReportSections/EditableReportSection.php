@@ -4,6 +4,7 @@ class EditableReportSection extends AbstractReportSection {
     
     var $autosave;
     var $reportCharLimits = true;
+    var $saveText = "Save";
     
     // Creates a new EditableReportSection()
     function EditableReportSection(){
@@ -13,12 +14,17 @@ class EditableReportSection extends AbstractReportSection {
     
     // Sets whether or not to use the autosave feature
     function setAutosave($autosave){
-        $this->autosave = $autosave;
+        $this->autosave = str_replace("'", "&#39;", $autosave);
     }
     
     // Sets whether or not to report this section's character limits for the business rules
     function setReportCharLimits($reportCharLimits){
         $this->reportCharLimits = $reportCharLimits;
+    }
+    
+    // Sets the text that shows up on the "Save" button
+    function setSaveText($saveText){
+        $this->saveText = $saveText;
     }
     
     // Saves all the blobs in this EditableReportSection
@@ -104,7 +110,7 @@ class EditableReportSection extends AbstractReportSection {
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />{$saveText}
+                                <button type='submit' value='Save' name='submit' $disabled>{$this->saveText}</button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />{$saveText}
                              </div>
                          </form></div>\n");
     }

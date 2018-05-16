@@ -432,6 +432,9 @@ class ReportXMLParser {
                 if($type == "EditableReportSection" && isset($attributes->reportCharLimits)){
                     $section->setReportCharLimits(strtolower($attributes->reportCharLimits) == "true");
                 }
+                if($type == "EditableReportSection" && isset($attributes->saveText)){
+                    $section->setSaveText($attributes->saveText);
+                }
                 if(isset($attributes->number)){
                     $section->setNumber($attributes->number);
                 }
