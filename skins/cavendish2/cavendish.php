@@ -1013,7 +1013,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
+		            $failMessage = "<p class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;font-weight:bold;background: none !important;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
 		        }
 		        else{
 		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
@@ -1050,38 +1050,13 @@ class CavendishTemplate2 extends QuickTemplate {
                         </ul>
                     </li>
                 </ol>");
-		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
+		        $message = "<tr><td colspan='2'>
 <p>
 You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
 Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
 If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
-		        $emailPassword = "
-		        
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
-		        <table>
-		            <tr>
-		                <td>
-		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-		                    <input type='hidden' name='wpEmail' value='' />
-		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-		                </td>
-		            </tr>
-		        </table>
-		        </form>
-		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
-		        <script type='text/javascript'>
-		            function showResetMessage(message){
-		                $('#failMessage').html(message);
-		            }
-		            $('#wpUsername1').attr('value', $('#wpName1').val());
-		            $('#wpName1').change(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            }).keyup(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            });
-		        </script>";
 		    }
 		    if($_SESSION == null || 
 		       $wgRequest->getSessionData('wsLoginToken') == "" ||
@@ -1139,7 +1114,33 @@ If you have forgotten your password please enter your login and ID and request a
 		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
 		        }
 		    }
-		    
+		    $emailPassword = "
+		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
+		        <table>
+		            <tr>
+		                <td>
+		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
+		                    <input type='hidden' name='wpEmail' value='' />
+		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
+		                </td>
+		            </tr>
+		        </table>
+		        </form>
+		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
+		        <script type='text/javascript'>
+		            function showResetMessage(message){
+		                $('#failMessage').parent().show();
+		                $('#failMessage').hide();
+		                $('#failMessage').html(message);
+		                $('#failMessage').slideDown();
+		            }
+		            $('#wpUsername1').attr('value', $('#wpName1').val());
+		            $('#wpName1').change(function(){
+		                $('#wpUsername1').attr('value', $('#wpName1').val());
+		            }).keyup(function(){
+		                $('#wpUsername1').attr('value', $('#wpName1').val());
+		            });
+		        </script>";
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);
@@ -1148,6 +1149,11 @@ If you have forgotten your password please enter your login and ID and request a
 		    echo <<< EOF
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
+	    <tr>
+	        <td colspan='2' style='display:none;'>
+	            <div style='display:inline-block;width:103%;font-size:11px;' id='failMessage'>$failMessage</div>
+	        </td>
+	    </tr>
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
 			<td class="mw-input mw-input-string">
@@ -1162,7 +1168,6 @@ If you have forgotten your password please enter your login and ID and request a
 			</td>
 		</tr>
 		<tr>
-			<!--td></td-->
 			<td colspan="2" class="mw-input mw-input-string">
 				<input type='checkbox' name="wpRemember"
 					tabindex="4"
