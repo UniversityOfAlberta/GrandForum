@@ -90,28 +90,7 @@ class EditMember extends SpecialPage{
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
                 }
             }
-            
-            if(isset($_POST['candidate']) && !$person->isCandidate()){
-                MailingList::unsubscribeAll($person);
-                DBFunctions::update('mw_user',
-                                    array('candidate' => '1'),
-                                    array('user_id' => EQ($person->getId())));
-                Cache::delete("idsCache_{$person->getId()}");
-                $person->candidate = true;
-                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
-                MailingList::subscribeAll($person);
-            }
-            else if(!isset($_POST['candidate']) && $person->isCandidate()){
-                MailingList::unsubscribeAll($person);
-                DBFunctions::update('mw_user',
-                                    array('candidate' => '0'),
-                                    array('user_id' => EQ($person->getId())));
-                Cache::delete("idsCache_{$person->getId()}");
-                $person->candidate = false;
-                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
-                MailingList::subscribeAll($person);
-            }
-            
+
             // Project Leadership Changes
             $pl = array();
             $pm = array();
@@ -324,9 +303,6 @@ class EditMember extends SpecialPage{
             $boxes .= "&nbsp;<input id='role_$subRole' type='checkbox' name='sub_wpNS[]' value='".$subRole."' $checked />&nbsp;{$fullSubRole}<br />";            
         }
         $wgOut->addHTML($boxes);
-        $wgOut->addHTML("<hr />");
-        $checked = ($person->isCandidate()) ? " checked" : "";
-        $wgOut->addHTML("&nbsp;<input id='candidate' type='checkbox' name='candidate' value='true' $checked />&nbsp;Candidate?");
         $wgOut->addHTML("</td></tr></table>\n");
     }
 

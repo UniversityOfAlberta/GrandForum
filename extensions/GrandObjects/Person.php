@@ -1003,6 +1003,11 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+            if($me->isRoleAtLeast(STAFF)){
+                DBFunctions::update('mw_user',
+                                    array('candidate' => $this->candidate),
+                                    array('user_id' => EQ($this->getId())));
+            }
             $this->getUser()->invalidateCache();
             Person::$cache = array();
             Person::$namesCache = array();
@@ -1011,6 +1016,7 @@ class Person extends BackboneModel {
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             MailingList::subscribeAll($this);
+            DBFunctions::commit();
             return $status;
         }
         return false;

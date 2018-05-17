@@ -11,7 +11,7 @@ ManagePeopleView = Backbone.View.extend({
         this.allPeople.roles = ['all'];
         this.allPeople.fetch();
         this.template = _.template($('#manage_people_template').html());
-        this.listenTo(this.model, "sync", function(){
+        this.listenToOnce(this.model, "sync", function(){
             this.people = this.model;
             this.listenTo(this.people, "add", this.addRows);
             this.listenTo(this.people, "remove", this.addRows);
@@ -22,6 +22,10 @@ ManagePeopleView = Backbone.View.extend({
     addRows: function(){
         var searchStr = "";
         var order = [4, 'asc'];
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+            order = [5, 'asc'];
+        }
+        
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();

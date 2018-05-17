@@ -18,6 +18,7 @@ ManagePeopleRowView = Backbone.View.extend({
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
+        this.listenTo(this.model, "change:candidate", this.save);
     },
     
     openRolesDialog: function(){
@@ -212,6 +213,21 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editUniversities = new ManagePeopleEditUniversitiesView({model: this.model.universities, 
                                                                       person:this.model,
                                                                       el: this.universitiesDialog});
+    },
+    
+    save: function(){
+        _.defer($.proxy(function(){
+            this.$(".throbber").show();
+        }, this));
+        this.model.save(null, {
+            success: $.proxy(function(){
+                this.$(".throbber").hide();
+            }, this),
+            error: $.proxy(function(){
+                this.$(".throbber").hide();
+            }, this),
+            silent: true
+        });
     },
     
     events: {

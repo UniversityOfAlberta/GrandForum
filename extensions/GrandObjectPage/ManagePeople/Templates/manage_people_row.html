@@ -24,6 +24,16 @@
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Institutions"></span>
 </td>
+<% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
+    <td align="center">
+        <% if(me.get('id') != id){ %>
+            <div style="position: relative; width:100%;">
+                <span style="display:none;"><%= candidate %></span><%= HTML.CheckBox(this, 'candidate', {value: 1, style: "margin: 0;vertical-align:middle;"}) %>
+                <div class="throbber" style="position:absolute; right:0;display:none"></div>
+            </div>
+        <% } %>
+    </td>
+<% } %>
 <td style="border-left: 2px solid #AAAAAA;" align="left">
     <a href="<%= url %>"><%= fullName %></a>
 </td>
