@@ -1141,6 +1141,13 @@ If you have forgotten your password please enter your login and ID and request a
 		                $('#wpUsername1').attr('value', $('#wpName1').val());
 		            });
 		        </script>";
+		    if($failMessage != ""){
+		        $message .= "<script type='text/javascript'>
+		            $('#failMessage').parent().show();
+	                $('#failMessage').hide();
+	                $('#failMessage').slideDown();
+		        </script>";
+		    }
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);

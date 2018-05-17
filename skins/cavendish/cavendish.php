@@ -986,7 +986,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $failMessage = "<p class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
 		        }
 		        else{
-		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
+		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
 		        }
 		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
 		            LoginForm::clearLoginThrottle($_POST['wpName']);
@@ -1112,6 +1112,13 @@ If you have forgotten your password please enter your login and ID and request a
 		                $('#wpUsername1').attr('value', $('#wpName1').val());
 		            });
 		        </script>";
+		    if($failMessage != ""){
+		        $message .= "<script type='text/javascript'>
+		            $('#failMessage').parent().show();
+	                $('#failMessage').hide();
+	                $('#failMessage').slideDown();
+		        </script>";
+		    }
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);
