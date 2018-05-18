@@ -262,6 +262,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
+		    subRoles = <?php $subRoles = $config->getValue('subRoles'); asort($subRoles); echo json_encode($subRoles); ?>;
 		    
 		    <?php
 		        foreach($config->constants as $key => $value){

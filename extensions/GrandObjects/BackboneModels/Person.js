@@ -10,6 +10,8 @@ Person = Backbone.Model.extend({
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
         
+        this.subRoles = new SubRoles({userId: this.get('id')});
+        
         this.relations = new PersonRelations();
         this.relations.url = this.urlRoot + '/' + this.get('id') + '/relations';
         
@@ -71,6 +73,11 @@ Person = Backbone.Model.extend({
     getRoles: function(){
         this.roles.fetch();
         return this.roles;
+    },
+    
+    getSubRoles: function(){
+        this.subRoles.fetch();
+        return this.subRoles;
     },
     
     getRelations: function(){

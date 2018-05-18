@@ -81,12 +81,9 @@ HTML.Element = function(html, options){
 }
 
 HTML.Name = function(attr){
-    if(attr.indexOf('.') != -1){
-        return attr.split(".").join("_");
-    }
-    else{
-        return attr;
-    }
+    return attr.split(".").join("_")
+               .split(" ").join("_")
+               .split("/").join("_");
 }
 
 HTML.Value = function(view, attr){

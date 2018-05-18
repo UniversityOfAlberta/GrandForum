@@ -8,11 +8,13 @@ ManagePeopleRowView = Backbone.View.extend({
     editProjects: null,
     editRelations: null,
     editUniversities: null,
+    editSubRoles: null,
     // Dialogs
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
     universitiesDialog: null,
+    subRolesDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
     initialize: function(options){
@@ -215,6 +217,55 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                       el: this.universitiesDialog});
     },
     
+    openSubRolesDialog: function(){
+        if(this.subRolesDialog == null){
+            this.subRolesDialog = this.$("#subRolesDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: $.proxy(function(){
+	                $("html").css("overflow", "auto");
+	                this.editSubRoles.stopListening();
+	                this.editSubRoles.undelegateEvents();
+	                clearInterval(this.editSubRoles.interval);
+	                this.editSubRoles.interval = null;
+	            }, this),
+	            buttons: {
+	                "Save": $.proxy(function(e){
+	                    this.editSubRoles.model.save(null, {
+	                        success: function(){
+	                            clearAllMessages();
+	                            addSuccess("Sub-Roles saved");
+	                        },
+	                        error: function(){
+	                            clearAllMessages();
+	                            addError("Could not modify Sub-Roles");
+	                        }
+	                    });
+                        this.subRolesDialog.dialog('close');
+	                }, this),
+	                "Cancel": $.proxy(function(){
+	                    this.subRolesDialog.dialog('close');
+	                }, this)
+	            }
+	        });
+	    }
+        this.subRolesDialog.empty();
+        this.subRolesDialog.dialog('open');
+        this.editSubRoles = new ManagePeopleEditSubRolesView({model: this.model.subRoles,
+                                                              el: this.subRolesDialog});
+    },
+    
     save: function(){
         _.defer($.proxy(function(){
             this.$(".throbber").show();
@@ -234,7 +285,8 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editRoles": "openRolesDialog",
         "click #editProjects": "openProjectsDialog",
         "click #editRelations": "openRelationsDialog",
-        "click #editUniversities": "openUniversitiesDialog"
+        "click #editUniversities": "openUniversitiesDialog",
+        "click #editSubRoles": "openSubRolesDialog"
     },
     
     render: function(){

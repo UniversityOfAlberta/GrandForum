@@ -65,32 +65,6 @@ class EditMember extends SpecialPage{
 
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
 
-            // Sub-Role Changes
-            $subRoles = @$_POST['sub_wpNS'];
-            if(!is_array($subRoles)){
-                $subRoles = array();
-            }
-            $subKeys = array_flip($subRoles);
-            $currentSubRoles = $person->getSubRoles();
-            // Removing Sub-Roles
-            foreach($currentSubRoles as $subRole){
-                if(!isset($subKeys[$subRole])){
-                    DBFunctions::delete('grand_role_subtype',
-                                        array('user_id' => EQ($person->getId()),
-                                              'sub_role' => EQ($subRole)));
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a {$subRole}");
-                }
-            }
-            // Adding Sub-Roles
-            foreach($subRoles as $subRole){
-                if(!$person->isSubRole($subRole)){
-                    DBFunctions::insert('grand_role_subtype',
-                                        array('user_id' => EQ($person->getId()),
-                                              'sub_role' => EQ($subRole)));
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
-                }
-            }
-
             // Project Leadership Changes
             $pl = array();
             $pm = array();
@@ -260,16 +234,12 @@ class EditMember extends SpecialPage{
         <p>Select the Roles and Projects to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
-                        <li><a id='SubRolesTab' href='#tabs-1'>Sub-Roles</a></li>
                         <li><a id='LeadershipTab' href='#tabs-2'>Project Leadership</a></li>
                         <li><a id='ThemesTab' href='#tabs-3'>{$config->getValue('projectThemes')} Leaders</a></li>");
         $wgOut->addHTML("
                     </ul>");
-                    
-        $wgOut->addHTML("<div id='tabs-1'>");
-                            EditMember::generateSubRoleFormHTML($wgOut);
-        $wgOut->addHTML("</div>
-                         <div id='tabs-2'>");
+
+        $wgOut->addHTML("<div id='tabs-2'>");
                             EditMember::generatePLFormHTML($wgOut);
         $wgOut->addHTML("</div>
                          <div id='tabs-3'>");
@@ -281,29 +251,6 @@ class EditMember extends SpecialPage{
                          <input type='hidden' name='name' value='{$_GET['name']}' />
                          <input type='submit' name='submit' value='Submit Request' onSubmit />
                          </form>");
-    }
-
-    function generateSubRoleFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $me = Person::newFromWgUser();
-        if(!isset($_GET['name'])){
-            return;
-        }
-        $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $wgOut->addHTML("<table style='min-width:300px;'><tr>
-                        <td class='mw-input'>");
-        $boxes = "";
-        $projects = "";
-        
-        $subRoles = $config->getValue("subRoles");
-        
-        asort($subRoles);
-        foreach($subRoles as $subRole => $fullSubRole){
-            $checked = ($person->isSubRole($subRole)) ? " checked" : "";
-            $boxes .= "&nbsp;<input id='role_$subRole' type='checkbox' name='sub_wpNS[]' value='".$subRole."' $checked />&nbsp;{$fullSubRole}<br />";            
-        }
-        $wgOut->addHTML($boxes);
-        $wgOut->addHTML("</td></tr></table>\n");
     }
 
     function generatePLFormHTML($wgOut){
