@@ -93,7 +93,7 @@ person/:id/roles
             Returns a simplified array of this Person's Roles
             
 person/:id/subroles
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
         **:id**
