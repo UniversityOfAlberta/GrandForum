@@ -47,6 +47,7 @@ $(document).ready(function(){
             };
             //$("div#reportIssueDialog img").remove();
             //$("div#reportIssueDialog").append('<img src="' + canvas.toDataURL() + '" />');
+            $("div#reportIssueDialog textarea").val('');
             $("div#reportIssueDialog").dialog('open');
             $("div#reportIssue .throbber").hide();
         });
