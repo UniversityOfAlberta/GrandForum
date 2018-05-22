@@ -226,9 +226,8 @@ class GrantAward extends BackboneModel {
     
     function create(){
         $coapplicants = array();
-
         if(!is_array($this->coapplicants)){
-            $this->getCoApplicants();
+            $this->coapplicants = array();
         }
         foreach($this->coapplicants as $co){
             if(isset($co->id) && $co->id != 0){

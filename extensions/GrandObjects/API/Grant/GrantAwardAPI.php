@@ -32,6 +32,8 @@ class GrantAwardAPI extends RESTAPI {
         $grant->institution = $this->POST('institution');
         $grant->province = $this->POST('province');
         $grant->country = $this->POST('country');
+        $grant->start_year = $this->POST('start_year');
+        $grant->end_year = $this->POST('end_year');
         $grant->fiscal_year = $this->POST('fiscal_year');
         $grant->competition_year = $this->POST('competition_year');
         $grant->amount = $this->POST('amount');
@@ -66,6 +68,8 @@ class GrantAwardAPI extends RESTAPI {
             $grant->institution = $this->POST('institution');
             $grant->province = $this->POST('province');
             $grant->country = $this->POST('country');
+            $grant->start_year = $this->POST('start_year');
+            $grant->end_year = $this->POST('end_year');
             $grant->fiscal_year = $this->POST('fiscal_year');
             $grant->competition_year = $this->POST('competition_year');
             $grant->amount = $this->POST('amount');
