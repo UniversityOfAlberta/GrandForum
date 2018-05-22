@@ -437,8 +437,8 @@
         <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title} (<b>{$product_scope}</b>)</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
+                    <p style='margin-left:2em;'>{$product_date_range}: {getProductData(organization)} (<b>{$product_scope}</b>)</p>
+                    <p style='margin-left:4em;'>{$product_title}<br />{$product_description}</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>
