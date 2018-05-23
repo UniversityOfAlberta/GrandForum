@@ -3,9 +3,32 @@
     <Permissions>
         <Role role="NI">
             <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="information" permissions="-" />
+            <SectionPermission id="courses" permissions="-" />
+            <SectionPermission id="students" permissions="-" />
+            <SectionPermission id="publications" permissions="-" />
+            <SectionPermission id="awards" permissions="-" />
+            <SectionPermission id="grants" permissions="-" />
+            <SectionPermission id="services" permissions="-" />
+            <SectionPermission id="supplementary" permissions="-" />
+            <SectionPermission id="additionalInfo" permissions="-" />
+            <SectionPermission id="chair" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </If>
     </Permissions>
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
@@ -585,56 +608,53 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <!--ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
-        <ReportItem id="chairTable" type="StaticReportItem">
+    <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="ReportSection">
+        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">
             <![CDATA[
-                <p id='comment_p'></p>
-                <div id='chair_comments_none' style=visibility:hidden;">
-                    No Chair Recommendation Available.
-                </div>
-                <div id='chair_comments' style="visibility:hidden;">
-                    <table class='dashboard wikitable'>
-                    <tbody>
-                    <tr><td>Teaching Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Research Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RESEARCH_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Departmental</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_DEPARTMENTAL,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Faculty</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>University</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Scientific</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_SCIENTIFIC,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Community Outreach</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMUNITY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Other</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_OTHER,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Comments</td><td><p id='fec_comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMENTS,{$user_id},{$chair_id},0)}</p></td></tr>
-                    </tbody>
-                    </table>
-                </div>
-                <script type='text/javascript'>
-                var intervalId = setInterval(function(){
-                    if ($('#comment_p').is(':visible') && !$('#fec_comments').is(':empty')){
-                        document.getElementById('chair_comments').style.visibility = 'visible';
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                    else if($('#comment_p').is(':visible') && $('#fec_comments').is(':empty')){
-                        document.getElementById('chair_comments_none').style.visibility = 'visible';
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                }, 100);
-                </script>
+                {$item}
             ]]>
         </ReportItem>
-    </ReportSection-->
+        <ReportItem id="chairTable" type="StaticReportItem">
+            <![CDATA[
+                
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Submit" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
             <![CDATA[
-
+                <h3>3. Sign & Lock</h3>
+                <p>Once you are satisfied with with generated PDF, you can lock your annual report.
+                <div id='lockContainer' style='display:none;'>{$item}</div>
+                <button id='lock' type="button" value="Save" name="submit" disabled>Sign & Lock</button>
+                <script type="text/javascript">
+                    $('#reportFooter').prev().hide();
+                    $('#reportFooter').hide();
+                    setInterval(function(){
+                        if(!$('#download_button_FECpdf').is(':disabled') && !$('#generateButton').is(':disabled')){
+                            $('#lock').prop('disabled', false);
+                        }
+                        else{
+                            $('#lock').prop('disabled', true);
+                        }
+                    }, 100);
+                    $('#lock').click(function(){
+                        if(confirm('Are you sure you want to proceed?\n\nThis annual report will be locked. You will not be able to make further changes.')){
+                            $('#lockContainer input[type=checkbox]').prop('checked', true);
+                            saveAll(function(){location.reload();});
+                        } else {
+                            $('#lockContainer input[type=checkbox]').prop('checked', false);
+                        }
+                        return false;
+                    });
+                </script>
             ]]>
-        </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        </ReportItem>
     </ReportSection>
 </Report>

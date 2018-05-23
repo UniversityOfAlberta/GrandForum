@@ -1079,7 +1079,7 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", "){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
@@ -1088,7 +1088,15 @@ class ReportItemCallback {
         }
         else{
             $array = $blb->getData();
-            return @$array[$index];
+            $index = explode("|", $index);
+            foreach($index as $i){
+                $array = @$array[$i];
+            }
+            $value = $array;
+            if(is_array($value) && $delim != ""){
+                return str_replace(")", "&#41;", str_replace("(", "&#40;", @implode($delim, $value)));
+            }
+            return $value;
         }
     }
     

@@ -78,10 +78,11 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $disabled = "disabled='true'";
 		}
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
-		$wgOut->addHTML("<p>Generate a PDF with the data submitted: <button id='generateButton' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3>2. Download the PDF</h3>");
+		$wgOut->addHTML("<h3>2. Download the PDF</h3>
+		Verify that the pdf looks correct.");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
@@ -120,7 +121,7 @@ EOF;
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>
-            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>
 EOF;
 

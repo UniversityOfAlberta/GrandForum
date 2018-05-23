@@ -723,6 +723,7 @@ abstract class AbstractReport extends SpecialPage {
             $roles[] = $role->getRole();
         }
         $permissions = array();
+        
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){
                 $found = true;
@@ -752,6 +753,19 @@ abstract class AbstractReport extends SpecialPage {
                 $permissions[$key] = $perm;
                 if($key == "-"){
                     return array();
+                }
+            }
+        }
+        foreach($this->sectionPermissions as $if => $sections){
+            if(strstr($if, "If_") !== false){
+                $found = true;
+                if(isset($this->sectionPermissions[$if][$section->id])){
+                    foreach($this->sectionPermissions[$if][$section->id] as $key => $perm){
+                        $permissions[$key] = $perm;
+                        if($key == "-"){
+                            return array();
+                        }
+                    }
                 }
             }
         }
@@ -921,7 +935,7 @@ abstract class AbstractReport extends SpecialPage {
                             <div id='optionsDiv'>");
         $this->renderOptions();
         if($this->extends == "" && !$this->hasSubReport()){
-            $this->renderBackup();  
+            //$this->renderBackup();  
         }
         $wgOut->addHTML("</div></div>
                             </div>");

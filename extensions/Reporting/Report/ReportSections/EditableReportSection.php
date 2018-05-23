@@ -89,17 +89,10 @@ class EditableReportSection extends AbstractReportSection {
         if(!DBFunctions::DBWritable()){
             $disabled = "disabled='disabled'";
         }
-        $allSections = $this->getParent()->sections;
-        $saveText = "";
-        foreach($allSections as $section){
-            if($section->name == "Submit" && $section->checkPermission('r')){
-                $saveText = "<br /><small>Once you have saved and reviewed your text you will need to generate/submit your report by going to the <a style='cursor:pointer;' onclick=\"$('a#Submit').click()\">Submit</a> section.</small>";
-            }
-        }
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />{$saveText}
+                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
     }
