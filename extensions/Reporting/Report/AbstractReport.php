@@ -823,6 +823,13 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($me->isEvaluator($this->year)){
             $roles[] = EVALUATOR;
+            $data = DBFunctions::select(array('grand_eval'),
+                                        array('DISTINCT `type`'),
+                                        array('user_id' => EQ($me->getId()),
+                                              'year' => $this->year));
+            foreach($data as $row){
+                $roles[] = EVALUATOR."-{$row['type']}";
+            }
         }
         $permissions = array();
         foreach($roles as $role){
