@@ -129,6 +129,10 @@ $(document).ready(function(){
                             delay: 300
                         }
 		            });
+		            $("#reportMain > div .clicktooltip").qtip({
+		                show: 'click',
+                        hide: 'click unfocus'
+		            });
                     updateProgress();
                     var heightDifference = oldHeight - $("#reportMain > div > div").height();
 					var height = Math.max(parseInt($('#outerReport').css('min-height')), $('#reportMain > div > div').height());

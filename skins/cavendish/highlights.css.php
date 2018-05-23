@@ -201,6 +201,10 @@ a:active {
     color: $hl;
 }
 
+.clicktooltip:hover {
+    color: $hl;
+}
+
 .rte-autocomplete >li > a:hover, .rte-autocomplete > li > a:focus, .rte-autocomplete:hover > a, .rte-autocomplete:focus > a {
     background-color: $hl !important;
     background-image: none !important;

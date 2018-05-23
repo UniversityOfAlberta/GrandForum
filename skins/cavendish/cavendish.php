@@ -197,6 +197,16 @@ class CavendishTemplate extends QuickTemplate {
                         delay: 300
                     }
 		        });
+		        this.$el.find('.clicktooltip').qtip({
+		            position: {
+		                adjust: {
+			                x: -(this.$el.find('.clicktooltip').width()/25),
+			                y: -(this.$el.find('.clicktooltip').height()/2)
+		                }
+		            },
+		            show: 'click',
+                    hide: 'click unfocus'
+		        });
             };
             
             Backbone.View = (function(View) {
@@ -448,6 +458,16 @@ class CavendishTemplate extends QuickTemplate {
                         fixed: true,
                         delay: 300
                     }
+		        });
+		        $('.clicktooltip').qtip({
+		            position: {
+		                adjust: {
+			                x: -($('.clicktooltip').width()/25),
+			                y: -($('.clicktooltip').height()/2)
+		                }
+		            },
+                    show: 'click',
+                    hide: 'click unfocus'
 		        });
 		        $('.menuTooltip').qtip({
 		            position: {
