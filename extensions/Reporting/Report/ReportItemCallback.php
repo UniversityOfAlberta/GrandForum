@@ -660,10 +660,12 @@ class ReportItemCallback {
                 $datas = explode("=", $d);
                 foreach($products as $key => $product){
                     $productData = $product->getData();
-                    if($datas[0] == "status" && $product->getStatus() != $datas[1]){
-                        unset($products[$key]);
+                    if($datas[0] == "status"){
+                        if($product->getStatus() != $datas[1]){
+                            unset($products[$key]);
+                        }
                     }
-                    else if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
+                    else if(!isset($productData[$datas[0]]) || $productData[$datas[0]] != $datas[1]){
                         // Data doesn't match
                         unset($products[$key]);
                     }
