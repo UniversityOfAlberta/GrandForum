@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Review Report" ajax="true" disabled="false" personId="0" pdfFiles="IFPReviewReportPDF,IFPReviewSummaryPDF,TransformativeReviewReportPDF,TransformativeReviewSummaryPDF,CatalystReviewReportPDF,CatalystReviewSummaryPDF" year="2015">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF">
-            
-        </Role>
+        <Role role="STAFF"></Role>
     </Permissions>
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
