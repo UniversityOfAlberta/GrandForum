@@ -410,20 +410,26 @@
             <data></data>
         </Product>
         
-        <Product type="Oral Presentation">
-            <data></data>
+        <Product type="Oral Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Level" type="Radio" options="National|International">level</field>
+            </data>
         </Product>
         
-        <Product type="Panel Presentation">
-            <data></data>
+        <Product type="Panel Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Level" type="Radio" options="National|International">level</field>
+            </data>
         </Product>
         
         <Product type="Research Brief">
             <data></data>
         </Product>
         
-        <Product type="Symposium Presentation">
-            <data></data>
+        <Product type="Symposium Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Level" type="Radio" options="National|International">level</field>
+            </data>
         </Product>
         
         <Product type="Teaching Seminar">

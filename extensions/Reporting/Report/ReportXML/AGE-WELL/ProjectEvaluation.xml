@@ -256,7 +256,7 @@
                     {getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation,level=National|status=)})}">
             <![CDATA[
                     #invited expert presentations meetings keynotes, etc. at:<br />
-                    national: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation', and level equal to 'National' and associated with this Project">{$value}</b>
+                    national: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation', and level equal to 'National' and status equal to 'Invited' (or empty) and associated with this Project">{$value}</b>
                     <br />
             ]]>
         </ReportItem>
@@ -264,7 +264,7 @@
                     {getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation,level=International|status=Invited)},
                     {getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation,level=International|status=)})}">
             <![CDATA[
-                    international: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation', and level equal to 'International' and associated with this Project">{$value}</b>
+                    international: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation', and level equal to 'International' and status equal to 'Invited' (or empty) and associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
