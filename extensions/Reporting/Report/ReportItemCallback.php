@@ -655,12 +655,18 @@ class ReportItemCallback {
             }
         }
         if($data != ""){
-            foreach($products as $key => $product){
-                $productData = $product->getData();
-                $datas = explode("=", $data);
-                if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
-                    // Data doesn't match
-                    unset($products[$key]);
+            $ds = explode("|", $data);
+            foreach($ds as $d){
+                $datas = explode("=", $d);
+                foreach($products as $key => $product){
+                    $productData = $product->getData();
+                    if($datas[0] == "status" && $product->getStatus() != $datas[1]){
+                        unset($products[$key]);
+                    }
+                    else if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
+                        // Data doesn't match
+                        unset($products[$key]);
+                    }
                 }
             }
         }
