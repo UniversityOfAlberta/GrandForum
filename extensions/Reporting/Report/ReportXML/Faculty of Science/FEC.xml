@@ -578,7 +578,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         <!-- Other -->
         <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
             <![CDATA[
-            	<h3>Other</h3>
+                <h3>Other</h3>
             ]]>
         </ReportItem>
         <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
@@ -647,6 +647,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                     $('#lock').click(function(){
                         if(confirm('Are you sure you want to proceed?\n\nThis annual report will be locked. You will not be able to make further changes.')){
                             $('#lockContainer input[type=checkbox]').prop('checked', true);
+                            findAutosaves();
                             saveAll(function(){location.reload();});
                         } else {
                             $('#lockContainer input[type=checkbox]').prop('checked', false);

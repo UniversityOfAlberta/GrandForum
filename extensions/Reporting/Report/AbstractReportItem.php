@@ -274,13 +274,11 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
-        $sec = $this->getAttr('blobSection', '0'); //added for FEC report -rd
-        if($sec != '0'){
-            $section->sec = $sec;
-        }
+        $sec = $this->getAttr('blobSection', $section->sec);
+        $rep = $this->getAttr('blobReport', $report->reportType);
 
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();
@@ -351,8 +349,11 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $sec = $this->getAttr('blobSection', $section->sec);
+        $rep = $this->getAttr('blobReport', $report->reportType);
+        
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();
