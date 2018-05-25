@@ -15,6 +15,7 @@
                     <thead>
                         <tr>
                             <th>Faculty Member</th>
+                            <th>Position</th>
                             <th>Annual Report</th>
                             <th>Recommendations</th>
                     </thead>
@@ -26,14 +27,15 @@
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
+                        <td>{$user_level}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
-	    	     <![CDATA[
+	    	    <![CDATA[
 	    	            <td align='center'>{$item}</td>
-	    	     ]]>
-	    	 </ReportItem>
-	    	 <ReportItem id="recommendation" type="Textarea" blobItem="RECOMMENDATION" blobSubItem="{$user_id}">
+	    	    ]]>
+	    	</ReportItem>
+	    	<ReportItem id="recommendation" type="Textarea" blobItem="RECOMMENDATION" blobSubItem="{$user_id}">
                 <![CDATA[
                         <td></td>
                     </tr>

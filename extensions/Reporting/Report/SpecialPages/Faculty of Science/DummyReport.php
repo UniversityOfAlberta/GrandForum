@@ -12,7 +12,7 @@ class DummyReport extends AbstractReport{
         }
         $topProjectOnly = false;
 
-        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$reportType.xml", $person->getId(), $projectName, $topProjectOnly, $year);
+        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$reportType.xml", $person->getId(), $projectName, $topProjectOnly, $year, true);
     }
     
 }

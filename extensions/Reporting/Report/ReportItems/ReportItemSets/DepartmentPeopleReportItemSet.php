@@ -9,14 +9,16 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         foreach($allPeople as $person){
-            $tuple = self::createTuple();
-            foreach($person->getUniversitiesDuring($start, $end) as $uni){
-                if($uni['department'] == $dept){
+            //foreach($person->getUniversitiesDuring($start, $end) as $uni){
+                //if($uni['department'] == $dept){
+                if($person->isInDepartment($dept)){
+                    $tuple = self::createTuple();
                     $tuple['person_id'] = $person->getId();
                     $data[] = $tuple;
-                    break;
                 }
-            }
+                    //break;
+                //}
+            //}
         }
         return $data;
     }

@@ -314,12 +314,10 @@ class ReportStorage {
         }
         $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
-                WHERE user_id IN ({$uarr}) 
-                AND submitted = {$subm} 
+                WHERE user_id IN ({$uarr})
                 AND type = '{$type}' 
                 {$year}
-                AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
-                ORDER BY timestamp DESC
+                ORDER BY submitted, timestamp DESC
                 {$lim};";
         return DBFunctions::execSQL($sql);
     }

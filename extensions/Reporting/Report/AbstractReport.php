@@ -95,7 +95,7 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
+    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
         global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
@@ -132,7 +132,12 @@ abstract class AbstractReport extends SpecialPage {
             $exploded = explode(".", $xmlFileName);
             $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
-            $xml = file_get_contents($xmlFileName);
+            if(isset(ReportXMLParser::$parserCache[$this->xmlName])){
+                $xml = "";
+            }
+            else{
+                $xml = file_get_contents($xmlFileName);
+            }
             $parser = new ReportXMLParser($xml, $this);
             if(isset($_COOKIE['showSuccess'])){
                 unset($_COOKIE['showSuccess']);
@@ -150,7 +155,7 @@ abstract class AbstractReport extends SpecialPage {
                     redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
                 }
             }
-            $parser->parse();
+            $parser->parse($quick);
             if(isset($_GET['saveBackup'])){
                 $parser->saveBackup();
             }
@@ -183,7 +188,7 @@ abstract class AbstractReport extends SpecialPage {
                 // If this gets run, it will probably result in a permissions error, but atleast it error out later
                 $this->currentSection = @$this->sections[0];
             }
-            $this->currentSection->selected = true;
+            @$this->currentSection->selected = true;
             SpecialPage::__construct("Report", '', false);
         }
         else{
@@ -373,11 +378,6 @@ abstract class AbstractReport extends SpecialPage {
         else{
             // First check submitted
             $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
-            $check2 = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
-            if(count($check) == 0){
-                // If found none, then look for any generated PDF
-                $check = $check2;
-            }
             foreach($check as $c){
                 if($c['generation_user_id'] == $c['user_id']){
                    $foundSameUser = true;
@@ -413,13 +413,6 @@ abstract class AbstractReport extends SpecialPage {
             if(strcmp($tst, $largestDate) > 0){
                 $largestDate = $tst;
                 $return = array($c);
-            }
-        }
-        if(isset($check2) && count($check2) > 0){
-            foreach($check2 as $chk){
-                if($chk['timestamp'] > $largestDate){
-                    $return[0]['status'] = "Submitted/Re-Generated";
-                }
             }
         }
         return $return;

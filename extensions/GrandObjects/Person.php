@@ -2121,6 +2121,14 @@ class Person extends BackboneModel {
         return $universities;
     }
     
+    function isInDepartment($dept){
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('id'),
+                                    array('department' => $dept,
+                                          'user_id' => $this->getId()));
+        return (count($data) > 0);
+    }
+    
     /**
      * Returns all the Universities that this Person has been a part of
      * @return array All the Universities that this Person has been a part of
