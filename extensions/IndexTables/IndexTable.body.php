@@ -195,6 +195,7 @@ class IndexTable {
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){//Here we can get role
                             $wgOut->setPageTitle($config->getValue('roleDefs', $role));
                             self::generatePersonTable($role);
+                            break;
                         }
                     }
                     if($wgTitle->getText() == "ALL ".NI){
