@@ -7,8 +7,8 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
-$wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
-//$notificationFunctions[] = 'Report::createNotification';
+
+require_once("GraduateStudents.php");
 
 class Report extends AbstractReport{
     
@@ -21,23 +21,6 @@ class Report extends AbstractReport{
         }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
-    
-    /*static function createNotification(){
-        global $notifications, $wgUser, $wgServer, $wgScriptPath;
-        $groups = $wgUser->getGroups();
-        if($wgUser->isLoggedIn()){
-            $me = Person::newFromId($wgUser->getId());
-            $notifications[] = new Notification("Annual Report Out of Date", "The data in your report has changed since the last time that you generated your Annual Report. <button id='ar_button'>Regenerate PDF</button><span id='ar_throbber' style='display:none;' class='throbber'></span>
-            <script type='text/javascript'>
-                $('#ar_button').click(function(){
-                    $('#ar_throbber').show();
-                    $.get('$wgServer$wgScriptPath/index.php/Special:Report?report=FEC&generatePDF', function(){
-                        $('#ar_throbber').hide();
-                    });
-                });
-            </script>", "$wgServer$wgScriptPath/index.php/Special:Report?report=FEC");
-        }
-    }*/
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
@@ -62,13 +45,8 @@ class Report extends AbstractReport{
         }
         if($person->isRole(ISAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
-            $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Chair", "{$url}ChairTable", $selected);
+            $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
-        return true;
-    }
-    
-    static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $config;
         return true;
     }
 }
