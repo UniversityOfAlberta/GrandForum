@@ -147,7 +147,7 @@ class PeopleTableTab extends AbstractTab {
                         $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                     }
                 }
-                $this->html .= "<td align='left'style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
+                $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             $university = $person->getUniversity();
             $this->html .= "<td align='left'>{$university['university']}</td>";
