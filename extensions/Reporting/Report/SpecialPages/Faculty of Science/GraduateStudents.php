@@ -47,6 +47,17 @@ class GraduateStudents extends SpecialPage {
                 }
             }
             if($university != null){
+                $supervisors = $hqp->getSupervisorsDuring($start, $end);
+                $sups = array();
+                $cosups = array();
+                foreach($supervisors as $supervisor){
+                    if($supervisor->isRelatedToDuring($hqp, SUPERVISES, $start, $end)){
+                        $sups[] = $supervisor->getNameForForms();
+                    }
+                    else if($supervisor->isRelatedToDuring($hqp, CO_SUPERVISES, $start, $end)){
+                        $cosups[] = $supervisor->getNameForForms();
+                    }
+                }
                 $wgOut->addHTML("<tr>");
                 $wgOut->addHTML("<td>{$hqp->getFirstName()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getMiddleName()}</td>");
@@ -56,8 +67,8 @@ class GraduateStudents extends SpecialPage {
                 $wgOut->addHTML("<td>{$uni['position']}</td>");
                 $wgOut->addHTML("<td align='center'>".substr($uni['start'], 0, 10)."</td>");
                 $wgOut->addHTML("<td align='center'>".substr($uni['end'], 0, 10)."</td>");
-                $wgOut->addHTML("<td></td>");
-                $wgOut->addHTML("<td></td>");
+                $wgOut->addHTML("<td>".implode("; ", $sups)."</td>");
+                $wgOut->addHTML("<td>".implode("; ", $cosups)."</td>");
                 $wgOut->addHTML("</tr>");
             }
         }
