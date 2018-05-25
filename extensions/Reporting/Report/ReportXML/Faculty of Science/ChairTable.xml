@@ -17,7 +17,9 @@
                             <th>Faculty Member</th>
                             <th>Position</th>
                             <th>Annual Report</th>
-                            <th>Recommendations</th>
+                            <th width="1%">Increment</th>
+                            <th width="1%">Tenure</th>
+                            <th width="1%">Promotion</th>
                     </thead>
                     <tbody>
             ]]>
@@ -35,9 +37,19 @@
 	    	            <td align='center'>{$item}</td>
 	    	    ]]>
 	    	</ReportItem>
-	    	<ReportItem id="recommendation" type="Textarea" blobItem="RECOMMENDATION" blobSubItem="{$user_id}">
+	    	<ReportItem id="increment" type="Text" blobItem="INCREMENT" blobSubItem="{$user_id}">
                 <![CDATA[
-                        <td></td>
+                        <td><small>{$item}</small></td>
+                ]]>
+            </ReportItem>
+	    	<ReportItem id="tenure" type="Text" blobItem="TENURE" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td>{$item}</td>
+                ]]>
+            </ReportItem>
+	    	<ReportItem id="promotion" type="Text" blobItem="PROMOTION" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td>{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>
