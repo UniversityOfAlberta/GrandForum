@@ -28,7 +28,7 @@
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
                 ]]>
             </ReportItem>
@@ -37,17 +37,17 @@
 	    	            <td align='center'>{$item}</td>
 	    	    ]]>
 	    	</ReportItem>
-	    	<ReportItem id="increment" type="Text" blobItem="INCREMENT" blobSubItem="{$user_id}">
+	    	<ReportItem id="increment" type="Text" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100px">
                 <![CDATA[
                         <td><small>{$item}</small></td>
                 ]]>
             </ReportItem>
-	    	<ReportItem id="tenure" type="Text" blobItem="TENURE" blobSubItem="{$user_id}">
+	    	<ReportItem id="tenure" type="Text" blobItem="TENURE" blobSubItem="{$user_id}" width="100px">
                 <![CDATA[
                         <td>{$item}</td>
                 ]]>
             </ReportItem>
-	    	<ReportItem id="promotion" type="Text" blobItem="PROMOTION" blobSubItem="{$user_id}">
+	    	<ReportItem id="promotion" type="Text" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100px">
                 <![CDATA[
                         <td>{$item}</td>
                     </tr>
