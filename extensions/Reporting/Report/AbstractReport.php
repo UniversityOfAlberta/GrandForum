@@ -88,7 +88,7 @@ abstract class AbstractReport extends SpecialPage {
                 break;
             }
         }
-        return new DummyReport($type, $pers, $proj, $year);
+        return new DummyReport($type, $pers, $proj, $year, true);
     }
     
     // Creates a new AbstractReport from the given $xmlFileName
@@ -321,7 +321,7 @@ abstract class AbstractReport extends SpecialPage {
     function getLatestPDF(){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
             return $report->getLatestPDF();
         }
         $sto = new ReportStorage($this->person);
@@ -352,7 +352,7 @@ abstract class AbstractReport extends SpecialPage {
     function getPDF($submittedByOwner=false){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
             return $report->getPDF();
         }
         $sto = new ReportStorage($this->person);

@@ -22,7 +22,7 @@ class PDFReportItem extends StaticReportItem {
             $project = Project::newFromId($this->projectId);
         }
         $person = Person::newFromId($this->personId);
-        $report = new DummyReport($reportType, $person, $project, $year);
+        $report = new DummyReport($reportType, $person, $project, $year, true);
         $tok = false;
         $check = $report->getPDF();
         if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
