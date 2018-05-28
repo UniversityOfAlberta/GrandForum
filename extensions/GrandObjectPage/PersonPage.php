@@ -132,9 +132,6 @@ class PersonPage {
                 if($person->isRole(NI)){
                     $tabbedPage->addTab(new PersonFECTab($person, $visibility));
                 }
-                if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
-                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
-                }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
@@ -147,12 +144,8 @@ class PersonPage {
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP))){
                     if($visibility['isMe']){
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Award', $startRange, $endRange));
-                    }
-                    if($visibility['isMe'] || $person->isRole(NI)){
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Publication', $startRange, $endRange));
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Presentation', $startRange, $endRange));
-                    }
-                    if($visibility['isMe']){
                         $tabbedPage->addTab(new PersonPublicationsTypesTab($person,$visibility, 'Activity', $startRange, $endRange));
                     }
                 }
