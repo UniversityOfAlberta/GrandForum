@@ -21,6 +21,9 @@ class GraduateStudents extends SpecialPage {
         $end   = REPORTING_CYCLE_END;
         $hqps = Person::getAllPeopleDuring(HQP, $start, $end);
         $table = (isset($_GET['table'])) ? $_GET['table'] : "grad";
+        if($table == "ugrad"){
+            $wgOut->setPageTitle("Undergraduate Students");
+        }
         
         $wgOut->addHTML("<table id='graduateStudents' frame='box' rules='all'>");
         $wgOut->addHTML("<thead>
@@ -41,8 +44,11 @@ class GraduateStudents extends SpecialPage {
         foreach($hqps as $hqp){
             $universities = $hqp->getUniversitiesDuring($start, $end);
             $university = null;
+            if(!isset(Person::$studentPositions[$table])){
+                continue;
+            }
             foreach($universities as $uni){
-                if($uni['department'] == $dept && in_array(strtolower($uni['position']), @Person::$studentPositions[$table])){
+                if($uni['department'] == $dept && in_array(strtolower($uni['position']), Person::$studentPositions[$table])){
                     $university = $uni;
                     break;
                 }
