@@ -185,7 +185,49 @@ class ApplicationsTable extends SpecialPage{
     function generateAward(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018"));
+        
+        $level = new CheckboxReportItem();
+        $level->setBlobType(BLOB_ARRAY);
+        $level->setBlobItem(HQP_APPLICATION_LVL);
+        $level->setBlobSection(HQP_APPLICATION_FORM);
+        $level->setId("level");
+        
+        $michael = new CheckboxReportItem();
+        $michael->setBlobType(BLOB_ARRAY);
+        $michael->setBlobItem("HQP_APPLICATION_MICHAEL");
+        $michael->setBlobSection(HQP_APPLICATION_FORM);
+        $michael->setId("MICHAEL");
+             
+        $bme = new CheckboxReportItem();
+        $bme->setBlobType(BLOB_ARRAY);
+        $bme->setBlobItem("HQP_APPLICATION_BME");
+        $bme->setBlobSection(HQP_APPLICATION_FORM);
+        $bme->setId("BME");
+        
+        $wbhi = new CheckboxReportItem();
+        $wbhi->setBlobType(BLOB_ARRAY);
+        $wbhi->setBlobItem("HQP_APPLICATION_WBHI");
+        $wbhi->setBlobSection(HQP_APPLICATION_FORM);
+        $wbhi->setId("WBHI");
+        
+        $mira = new CheckboxReportItem();
+        $mira->setBlobType(BLOB_ARRAY);
+        $mira->setBlobItem("HQP_APPLICATION_MIRA");
+        $mira->setBlobSection(HQP_APPLICATION_FORM);
+        $mira->setId("MIRA");
+        
+        $nbhrf = new CheckboxReportItem();
+        $nbhrf->setBlobType(BLOB_ARRAY);
+        $nbhrf->setBlobItem("HQP_APPLICATION_NBHRF");
+        $nbhrf->setBlobSection(HQP_APPLICATION_FORM);
+        $nbhrf->setId("NBHRF");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018", array("Level" => $level,
+                                                                                                                                   "Michael F. Harcourt" => $michael,
+                                                                                                                                   "BME" => $bme,
+                                                                                                                                   "WBHI" => $wbhi,
+                                                                                                                                   "MIRA" => $mira,
+                                                                                                                                   "NBHRF" => $nbhrf)));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2015, "2015"));
