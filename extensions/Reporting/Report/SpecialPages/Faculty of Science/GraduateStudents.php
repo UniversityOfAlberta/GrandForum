@@ -20,6 +20,7 @@ class GraduateStudents extends SpecialPage {
         $start = REPORTING_CYCLE_START;
         $end   = REPORTING_CYCLE_END;
         $hqps = Person::getAllPeopleDuring(HQP, $start, $end);
+        $table = (isset($_GET['table'])) ? $_GET['table'] : "grad";
         
         $wgOut->addHTML("<table id='graduateStudents' frame='box' rules='all'>");
         $wgOut->addHTML("<thead>
@@ -41,7 +42,7 @@ class GraduateStudents extends SpecialPage {
             $universities = $hqp->getUniversitiesDuring($start, $end);
             $university = null;
             foreach($universities as $uni){
-                if($uni['department'] == $dept && in_array(strtolower($uni['position']), Person::$studentPositions['grad'])){
+                if($uni['department'] == $dept && in_array(strtolower($uni['position']), @Person::$studentPositions[$table])){
                     $university = $uni;
                     break;
                 }
@@ -89,8 +90,11 @@ class GraduateStudents extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         if($person->isRole(ISAC)){
-            $selected = @($wgTitle->getText() == "GraduateStudents") ? "selected" : false;
-            $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Graduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents", $selected);
+            $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "grad") ? "selected" : false;
+            $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Graduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=grad", $selected);
+            
+            $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "ugrad") ? "selected" : false;
+            $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Undergraduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=ugrad", $selected);
         }
         return true;
     }
