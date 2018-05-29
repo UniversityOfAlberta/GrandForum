@@ -701,6 +701,136 @@ class Person extends BackboneModel {
         }
         return false;
     }
+    
+    function hasTenure($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfTenure == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateOfTenure);
+    }
+    
+    function isAssistantProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfAssistant == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateOfAssistant && !$this->isAssociateProfessor($date) &&
+                                                   !$this->isProfessor($date));
+    }
+    
+    function isAssociateProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfAssociate == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateOfAssociate && !$this->isProfessor($date));
+    }
+    
+    function isProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfProfessor == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateOfProfessor);
+    }
+    
+    function isFSO2($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateFso2 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateFso2 && !$this->isFSO3($date) &&
+                                            !$this->isFSO4($date));
+    }
+    
+    function isFSO3($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateFso3 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateFso3 && !$this->isFSO4($data));
+    }
+    
+    function isFSO4($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateFso2 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date >= $this->dateFso4);
+    }
+    
+    function isNew($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfAppointment == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($date <= $this->dateOfAppointment);
+    }
+    
+    /**
+     * N1XX - New assistant professor, associate professor, or professor.
+     * M1XX - New FSO2, FSO3, or FSO4.
+     * A1XX - Assistant professor.
+     * B1XX - Untenured associate professor.
+     * B2XX - Tenured associate professor.
+     * C1XX - Professor.
+     * D1XX - FSO2.
+     * E1XX - FSO3.
+     * F1XX - FSO4.
+     */
+    function getFECType($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
+                                   $this->isAssociateProfessor($date) ||
+                                   $this->isProfessor($date))){
+            return "N1";                          
+        }
+        else if($this->isNew($date) && ($this->isFSO2($date) ||
+                                        $this->isFSO3($date) ||
+                                        $this->isFSO4($date))){
+            return "M1";
+        }
+        else if($this->isAssistantProfessor($date)){
+            return "A1";
+        }
+        else if($this->isAssociateProfessor($date) && !$this->hasTenure($date)){
+            return "B1";
+        }
+        else if($this->isAssociateProfessor($date) && $this->hasTenure($date)){
+            return "B2";
+        }
+        else if($this->isProfessor($date)){
+            return "C1";
+        }
+        else if($this->isFSO2($date)){
+            return "D1";
+        }
+        else if($this->isFSO3($date)){
+            return "E1";
+        }
+        else if($this->isFSO4($date)){
+            return "F1";
+        }
+    }
 
     /**
      * Returns an array of all University names
