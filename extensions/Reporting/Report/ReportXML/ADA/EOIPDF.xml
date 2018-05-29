@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF" year="YEAR">
+<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
     <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection" pagebreak="false">
         <ReportItem type="Static">
             <![CDATA[
