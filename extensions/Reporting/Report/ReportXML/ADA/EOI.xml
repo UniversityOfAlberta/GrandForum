@@ -52,8 +52,7 @@
         </ReportItem>
         
         <!-- Co-Principal Investigator -->
-        <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|
-Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Co-PI">
+        <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Co-PI">
             <![CDATA[
                 <h2>Co-Principal Investigator(s)</h2>
                 <small>Co-PIs are individuals who will contribute to the formulation of the project activities, and deliverables. Multi-institutional and multi-disciplinary collaborations are strongly encouraged, and will be given priority.</small>

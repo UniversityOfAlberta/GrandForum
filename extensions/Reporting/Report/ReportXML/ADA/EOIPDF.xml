@@ -92,7 +92,7 @@
                 <h3>Co-Principal Investigator</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
+        <ReportItemSet id="copis" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
             <ReportItem type="Static">
                 <![CDATA[
                     <table class="wikitable" class="wikitable" width="100%" rules="all" frame="box">
@@ -118,7 +118,7 @@
                         </tr>
                         <tr>
                             <td class='tdLabel'>Role/Contribution:</td>
-                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|rolecontribution)}</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|role/contribution)}</td>
                         </tr>
                     </table><br />
                 ]]>
