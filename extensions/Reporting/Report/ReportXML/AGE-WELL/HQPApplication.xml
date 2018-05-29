@@ -258,7 +258,7 @@ Funding Commences: September 2018 or January 2019<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Start Date:</b></td><td style='padding-top:5px;padding-bottom:5px;'><div style='position:relative;'>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTHER">
+        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTHER" optional="true">
             <![CDATA[
                 <tr><td></td><td><div style='position:relative;top:-37px;left:100px;'>{$item}</td></tr>
             ]]>
