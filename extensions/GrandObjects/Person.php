@@ -709,7 +709,7 @@ class Person extends BackboneModel {
         if($this->dateOfTenure == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateOfTenure);
+        return ($this->dateOfTenure != "" && $date >= $this->dateOfTenure);
     }
     
     function isAssistantProfessor($date){
@@ -719,8 +719,8 @@ class Person extends BackboneModel {
         if($this->dateOfAssistant == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateOfAssistant && !$this->isAssociateProfessor($date) &&
-                                                   !$this->isProfessor($date));
+        return ($this->dateOfAssistant != "" && $date >= $this->dateOfAssistant && !$this->isAssociateProfessor($date) &&
+                                                                                   !$this->isProfessor($date));
     }
     
     function isAssociateProfessor($date){
@@ -730,7 +730,7 @@ class Person extends BackboneModel {
         if($this->dateOfAssociate == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateOfAssociate && !$this->isProfessor($date));
+        return ($this->dateOfAssociate != "" && $date >= $this->dateOfAssociate && !$this->isProfessor($date));
     }
     
     function isProfessor($date){
@@ -740,7 +740,7 @@ class Person extends BackboneModel {
         if($this->dateOfProfessor == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateOfProfessor);
+        return ($this->dateOfProfessor != "" && $date >= $this->dateOfProfessor);
     }
     
     function isFSO2($date=null){
@@ -750,8 +750,8 @@ class Person extends BackboneModel {
         if($this->dateFso2 == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateFso2 && !$this->isFSO3($date) &&
-                                            !$this->isFSO4($date));
+        return ($this->dateFso2 != "" && $date >= $this->dateFso2 && !$this->isFSO3($date) &&
+                                                                       !$this->isFSO4($date));
     }
     
     function isFSO3($date=null){
@@ -761,7 +761,7 @@ class Person extends BackboneModel {
         if($this->dateFso3 == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateFso3 && !$this->isFSO4($data));
+        return ($this->dateFso3 != "" && $date >= $this->dateFso3 && !$this->isFSO4($date));
     }
     
     function isFSO4($date=null){
@@ -771,7 +771,7 @@ class Person extends BackboneModel {
         if($this->dateFso2 == null){
             $this->getFecPersonalInfo();
         }
-        return ($date >= $this->dateFso4);
+        return ($this->dateFso4 != "" && $date >= $this->dateFso4);
     }
     
     function isNew($date=null){
@@ -781,7 +781,17 @@ class Person extends BackboneModel {
         if($this->dateOfAppointment == null){
             $this->getFecPersonalInfo();
         }
-        return ($date <= $this->dateOfAppointment);
+        return ($this->dateOfAppointment != "" && $date <= $this->dateOfAppointment);
+    }
+    
+    function isRetired($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->dateOfRetirement == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfRetirement != "" && $date >= $this->dateOfRetirement);
     }
     
     /**
@@ -798,6 +808,9 @@ class Person extends BackboneModel {
     function getFECType($date=null){
         if($date == null){
             $date = date('Y-m-d');
+        }
+        if($this->isRetired($date)){
+            return "";
         }
         if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
                                    $this->isAssociateProfessor($date) ||
@@ -830,6 +843,7 @@ class Person extends BackboneModel {
         else if($this->isFSO4($date)){
             return "F1";
         }
+        return "";
     }
 
     /**

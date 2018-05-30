@@ -83,6 +83,7 @@ class ReportItemCallback {
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
+            "user_fec" => "getUserFEC",
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_product_count" => "getUserProductCount",
@@ -664,6 +665,11 @@ class ReportItemCallback {
         return $university['university'];
     }
     
+    function getUserFEC(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getFECType($this->reportItem->getReport()->year.CYCLE_END_MONTH);
+    }
+    
     function getUserNationality(){
         $person = Person::newFromId($this->reportItem->personId);
         $nationality = $person->getNationality();
@@ -998,7 +1004,7 @@ class ReportItemCallback {
         $milestoneId = $this->reportItem->milestoneId;
         $set = $this->reportItem->getSet();
         $i = 1;
-        foreach($set->getData() as $item){
+        foreach($set->getCachedData() as $item){
             if($item['milestone_id'] == $milestoneId &&
                $item['project_id'] == $projectId &&
                $item['person_id'] == $personId &&
@@ -1219,8 +1225,11 @@ class ReportItemCallback {
         return "<div class='tinymce'>$blobValue</div>";
     }
     
-    function getExtra($index){
+    function getExtra($index=null){
         $set = $this->reportItem->extra;
+        if($index == null){
+            return $set;
+        }
         if(isset($set[$index])){
             return $set[$index];
         }
