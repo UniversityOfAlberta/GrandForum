@@ -23,7 +23,6 @@ class Project extends BackboneModel {
     var $endDates;
     var $comments;
     var $milestones;
-    var $budgets;
     var $deleted;
     var $effectiveDate;
     private $succ;
@@ -551,7 +550,6 @@ EOF;
                         $pred->startDates = $this->startDates;
                         $pred->endDates = $this->endDates;
                         $pred->comments = $this->comments;
-                        $pred->budgets = $this->budgets;
                     }
                     $this->preds[] = $pred;
                 }
@@ -1483,72 +1481,6 @@ EOF;
             }
         }
         return $milestones;
-    }
-    
-    /**
-     * Returns the allocated amount that this Project received for the specified $year
-     * If the data is not in the DB then it falls back to checking the uploaded revised budgets
-     * @param int $year The allocation year
-     * @return int The amount of allocation
-     */
-    function getAllocatedAmount($year){
-        $alloc = 0;
-        $data = DBFunctions::select(array('grand_allocations'),
-                                    array('amount'),
-                                    array('project_id' => EQ($this->getId()),
-                                          'year' => EQ($year)));
-        if(count($data) > 0){
-            foreach($data as $row){
-                $alloc += $row['amount'];
-            }
-        }
-        return $alloc;
-    }
-    
-    /**
-     * Returns the allocated Budget for this Project
-     * @param integer $year The allocation year
-     * @return Budget A new allocated Budget
-     */
-    function getAllocatedBudget($year){
-        global $config;
-
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_ALLOC;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
-    }
-    
-    function getRequestedBudget($year, $role='all'){
-        global $config;
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_UPLOAD;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
     }
 }
 
