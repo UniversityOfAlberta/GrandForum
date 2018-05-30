@@ -183,10 +183,8 @@
                                      array('*'));
     
     $wgUser = User::newFromId(1);
-    Person::$idsCache = array();
-    Person::$employeeIdsCache = array();
+    Person::$employeeIdCache = array();
     Person::$cache = array();
-    Person::$namesCache = array();
     
     // Index Authorships by publication_id
     $newAuthorships = array();
@@ -237,9 +235,7 @@
         $person->id = $user->getId();
         $person->name = $user->getName();
         $person->realname = $realName;
-        Person::$namesCache[$person->getName()] = $person;
-        Person::$idsCache[$person->getId()] = $person;
-        Person::$employeeIdsCache[$row['uid']] = $person;
+        Person::$employeeIdCache[$row['uid']] = $person;
         Person::$cache[strtolower($person->getName())] = $person;
         Person::$cache[$person->getId()] = $person;
         Person::$cache['eId'.$row['uid']] = $person;
@@ -326,9 +322,7 @@
             $person->realname = $realName;
             $person->firstName = $usernames[1];
             $person->lastName = $usernames[0];
-            Person::$namesCache[$person->getName()] = $person;
-            Person::$employeeIdsCache[$student['EMPLID']] = $person;
-            Person::$idsCache[$person->getId()] = $person;
+            Person::$employeeIdCache[$student['EMPLID']] = $person;
             Person::$cache[strtolower($person->getName())] = $person;
             Person::$cache[$person->getId()] = $person;
             Person::$cache['eId'.$student['EMPLID']] = $person;
@@ -421,8 +415,6 @@
         show_status(++$iterationsSoFar, count($students));
     }
     
-    Person::$namesCache = array();
-    Person::$idsCache = array();
     Person::$cache = array();
     
     $iterationsSoFar = 0;
@@ -583,8 +575,6 @@
         show_status(++$iterationsSoFar, count($responsibilities));
     }
     
-    Person::$namesCache = array();
-    Person::$idsCache = array();
     Person::$cache = array();
     
     // Adding Employment History

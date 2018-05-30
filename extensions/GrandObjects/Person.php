@@ -412,7 +412,7 @@ class Person extends BackboneModel {
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
                 if($row['employee_id'] != 0 && $row['employee_id'] != ""){
-                    self::$employeeIdCache[$row['employee_id']] = $row['employee_id'];
+                    self::$employeeIdCache[$row['employee_id']] = $row['user_id'];
                 }
             }
         }
@@ -540,7 +540,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $sql = "SELECT user_id, university_name, department, position, start_date, end_date, research_area, `primary`
+            $sql = "SELECT id, user_id, university_name, department, position, start_date, end_date, research_area, `primary`
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
@@ -549,7 +549,8 @@ class Person extends BackboneModel {
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']]) || $row['primary'] == true){
                     self::$universityCache[$row['user_id']] = 
-                        array("university" => $row['university_name'],
+                        array("id"         => $row['id'],
+                              "university" => $row['university_name'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
                               "primary"    => $row['primary'],
@@ -2251,7 +2252,8 @@ class Person extends BackboneModel {
         if(count($data) > 0){
             foreach($data as $row){
                 if($row['university_name'] != "Unknown"){
-                    $universities[] = array("university" => $row['university_name'],
+                    $universities[] = array("id"         => $row['id'],
+                                            "university" => $row['university_name'],
                                             "department" => $row['department'],
                                             "position"   => $row['position'],
                                             "research_area" => $row['research_area'],
