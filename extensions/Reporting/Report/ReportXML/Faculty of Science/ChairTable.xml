@@ -11,6 +11,11 @@
     <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="{$user_dept} Reviews" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="thead" type="Static">
             <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -92,10 +97,10 @@
                     </tbody>
                 </table>
                 <script type='text/javascript'>
-                    /*$('#chairTable').dataTable({
+                    $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "iDisplayLength": -1
-                    });*/
+                    });
                 </script>
             ]]>
         </ReportItem>
