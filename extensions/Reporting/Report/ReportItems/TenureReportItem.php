@@ -11,19 +11,17 @@ class TenureReportItem extends SelectReportItem {
 	        case "B2":
 	        case "C1":
 	            $options = array("n/a", 
-	                             "i recommend promotion to full professor", 
-	                             "i do not support the staff member's promotion to full professor");
+	                             "i recommend that an appointment with tenure be offered", 
+	                             "i recommend that the second probationary period be extended by one year",
+	                             "i recommend that no further appointment be offered to the staff member",
+	                             "i recommend tenure as per clause 12.17 (special recommendation for tenure)");
 	            break;
 	        case "D1":
-	            $options = array("n/a", 
-	                             "i recommend promotion to faculty service officer iii");
-	            break;
 	        case "E1":
-	            $options = array("n/a", 
-	                             "i recommend promotion to faculty service officer iv");
-	            break;
 	        case "F1":
-	            $options = array("n/a");
+	            $options = array("n/a", 
+	                             "i recommend that continuing appointment be offered",
+	                             "i recommend that no further appointment be offered");
 	            break;
 	        case "M1":
 	        case "N1":
