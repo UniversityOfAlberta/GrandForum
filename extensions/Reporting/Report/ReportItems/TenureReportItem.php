@@ -4,12 +4,13 @@ class TenureReportItem extends SelectReportItem {
 	
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
+	    if($person->hasTenure($this->getReport()->year.CYCLE_END_MONTH)){
+	        return array("n/a");
+	    }
 	    switch($person->getFECType($this->getReport()->year.CYCLE_END_MONTH)){
 	        default:
 	        case "A1":
 	        case "B1":
-	        case "B2":
-	        case "C1":
 	            $options = array("n/a", 
 	                             "i recommend that an appointment with tenure be offered", 
 	                             "i recommend that the second probationary period be extended by one year",
@@ -23,9 +24,12 @@ class TenureReportItem extends SelectReportItem {
 	                             "i recommend that continuing appointment be offered",
 	                             "i recommend that no further appointment be offered");
 	            break;
+	        case "B2":
+	        case "C1":
 	        case "M1":
 	        case "N1":
 	            $options = array("n/a");
+	            break;
 	    }
 	    return $options;
 	}

@@ -26,6 +26,7 @@ class IncrementReportItem extends SelectReportItem {
 	            $options = array("0.00", 
 	                             "0.50", 
 	                             "1.00");
+	            break;
 	    }
 	    return $options;
 	}

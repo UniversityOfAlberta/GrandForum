@@ -28,6 +28,7 @@ class PromotionReportItem extends SelectReportItem {
 	        case "M1":
 	        case "N1":
 	            $options = array("n/a");
+	            break;
 	    }
 	    return $options;
 	}
