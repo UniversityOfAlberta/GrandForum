@@ -7,6 +7,7 @@ class ApplicationTab extends AbstractTab {
     var $year;
     var $extraCols;
     var $showAllWithPDFs;
+    var $idProjectRange = array(0, 1);
 
     function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
         $me = Person::newFromWgUser();
@@ -58,12 +59,11 @@ class ApplicationTab extends AbstractTab {
             $report = new DummyReport($this->rp, $me, null, $this->year);
             if($report->allowIdProjects){
                 $report = array();
-                $proj0 = new Project(array());
-                $proj1 = new Project(array());
-                $proj0->id = 0;
-                $proj1->id = 1;
-                $report[] = new DummyReport($this->rp, $me, $proj0, $this->year);
-                $report[] = new DummyReport($this->rp, $me, $proj1, $this->year);
+                foreach($this->idProjectRange as $projId){
+                    $proj = new Project(array());
+                    $proj->id = $projId;
+                    $report[] = new DummyReport($this->rp, $me, $proj, $this->year);
+                }
             }
         }
 

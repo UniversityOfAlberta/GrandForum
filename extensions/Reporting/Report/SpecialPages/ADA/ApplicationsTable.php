@@ -69,7 +69,9 @@ class ApplicationsTable extends SpecialPage{
     function generateEOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EOI', $this->allPeople, 2018, "EOI"));
+        $tab = new ApplicationTab('RP_EOI', $this->allPeople, 2016, "EOI");
+        $tab->idProjectRange = array(1,2,3);
+        $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
