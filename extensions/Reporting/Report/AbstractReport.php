@@ -210,7 +210,7 @@ abstract class AbstractReport extends SpecialPage {
                 // If this gets run, it will probably result in a permissions error, but atleast it error out later
                 $this->currentSection = @$this->sections[0];
             }
-            $this->currentSection->selected = true;
+            @$this->currentSection->selected = true;
             SpecialPage::__construct("Report", '', false);
         }
         else{
