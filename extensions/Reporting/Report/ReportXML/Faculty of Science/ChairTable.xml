@@ -77,17 +77,17 @@
             </ReportItemSet>
             <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='increment'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='tenure'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='promotion'>{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -100,6 +100,29 @@
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "iDisplayLength": -1
+                    });
+                    
+                    $('#chairTable tbody tr').each(function(i, tr){
+                        $('.tenure select', tr).change(function(){
+                            var value = $(this).val();
+                            if(value == "i recommend that an appointment with tenure be offered" ||
+                               value == "i recommend tenure as per clause 12.17 (special recommendation for tenure)" ||
+                               value == "i recommend that continuing appointment be offered" ||
+                               value == "already has tenure"){
+                                $('.promotion select option', tr).each(function(){
+                                    if($(this).val() != "n/a"){
+                                        $(this).show();
+                                    }
+                                });
+                            }
+                            else{
+                                $('.promotion select option', tr).each(function(){
+                                    if($(this).val() != "n/a"){
+                                        $(this).hide();
+                                    }
+                                });
+                            }
+                        }).change();
                     });
                 </script>
             ]]>

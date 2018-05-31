@@ -5,12 +5,12 @@ class TenureReportItem extends SelectReportItem {
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
 	    if($person->hasTenure($this->getReport()->year.CYCLE_END_MONTH)){
-	        return array("n/a");
+	        return array("already has tenure");
 	    }
 	    switch($person->getFECType($this->getReport()->year.CYCLE_END_MONTH)){
-	        default:
 	        case "A1":
 	        case "B1":
+	            // Faculty eligible for tenure: not tenured AND not a professor. The second condition is superfluous, because all professors have tenure.
 	            $options = array("n/a", 
 	                             "i recommend that an appointment with tenure be offered", 
 	                             "i recommend that the second probationary period be extended by one year",
@@ -19,11 +19,13 @@ class TenureReportItem extends SelectReportItem {
 	            break;
 	        case "D1":
 	        case "E1":
-	        case "F1":
+	            // FSO eligible for tenure: not tenured AND not an fso4. The second condition is superfluous, because all fso4 have continuing appointment.
 	            $options = array("n/a", 
 	                             "i recommend that continuing appointment be offered",
 	                             "i recommend that no further appointment be offered");
 	            break;
+	        default:
+	        case "F1":
 	        case "B2":
 	        case "C1":
 	        case "M1":

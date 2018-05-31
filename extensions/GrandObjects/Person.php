@@ -849,27 +849,27 @@ class Person extends BackboneModel {
     function getSalary($year){
         $salary = DBFunctions::select(array('grand_user_salaries'),
                                       array('salary'),
-                                      array('id' => $this->getId(),
+                                      array('user_id' => $this->getId(),
                                             'year' => $year));
         return @$salary[0]['salary'];
     }
     
     static function getSalaryIncrement($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scale'),
+        $increment = DBFunctions::select(array('grand_salary_scales'),
                                          array("increment_$type"),
                                          array('year' => $year));
         return @$increment[0]["increment_$type"];
     }
     
     static function getMinSalary($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scale'),
+        $increment = DBFunctions::select(array('grand_salary_scales'),
                                          array("min_salary_$type"),
                                          array('year' => $year));
         return @$increment[0]["min_salary_$type"];
     }
     
     static function getMaxSalary($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scale'),
+        $increment = DBFunctions::select(array('grand_salary_scales'),
                                          array("max_salary_$type"),
                                          array('year' => $year));
         return @$increment[0]["max_salary_$type"];
