@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" allowIdProjects="true" pdfFiles="EOIPDF">
+<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" allowIdProjects="true" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
     <Permissions>
         <Role role="User" />
     </Permissions>
