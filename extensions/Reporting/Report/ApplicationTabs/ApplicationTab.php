@@ -141,7 +141,6 @@ class ApplicationTab extends AbstractTab {
                 }
                 $first = $report;
             }
-
             if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 $pName = $person->getName();
                 if($person instanceof Theme){
