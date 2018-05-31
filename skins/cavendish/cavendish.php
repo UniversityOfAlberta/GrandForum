@@ -1137,7 +1137,7 @@ If you have forgotten your password please enter your login and ID and request a
 			<td valign='middle' align='right' style='width:1%;'>Username:</td>
 			<td class="mw-input">
 				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
-					tabindex="1" size='20' />
+					tabindex="1" size='20' placeholder='First.Last' />
 			</td>
 		</tr>
 		<tr>
