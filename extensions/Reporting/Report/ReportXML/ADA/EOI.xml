@@ -96,7 +96,7 @@
         </ReportItem>
         
         <!-- Funding -->
-        <ReportItem id="other_funding" type="Integer" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING" min="300" max="9999" size="4">
+        <ReportItem id="other_funding" type="Integer" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING" min="300" max="9999" size="4" optional="true">
             <![CDATA[
                 {$item}
             ]]>
