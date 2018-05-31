@@ -40,7 +40,7 @@ class HQPRegisterTable extends SpecialPage{
         }
         $wgOut->addHTML("</ul>");
         
-        $affilReport = new DummyReport("AffiliateApplication", Person::newFromWgUser(), null, 0);
+        $affilReport = new DummyReport("AffiliateApplication", Person::newFromWgUser(), null, 0, true);
 
         $affilReport->year = 0;
         for($year=date('Y'); $year >= $startYear; $year--){
@@ -71,7 +71,7 @@ class HQPRegisterTable extends SpecialPage{
                     $check = $affilReport->getLatestPDF();
                     $button1 = "Started";
                     if(isset($check[0])){
-                        $button1 = "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$check[0]['token']}&type=AffiliateApplication'>Download</a><br />{$check[0]['timestamp']}";
+                        $button1 = "<span style='display:none;'>Z</span><a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$check[0]['token']}&type=AffiliateApplication'>Download</a><br />{$check[0]['timestamp']}";
                     }
                 }
                 
