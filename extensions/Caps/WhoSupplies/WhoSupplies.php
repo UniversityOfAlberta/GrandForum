@@ -666,7 +666,7 @@ class WhoSupplies extends SpecialPage{
                     <li>15318 - hospital: follow-up visit to confirm the completion of medical abortion - $28.15</li>
                     <li>15319 - clinic: ultrasonography for follow-up visit - $32.30</li>
                     <li>15320 - hospital: ultrasonography for follow-up visit - $8.35</li>
-                    <li>For more information on remuneration, please <a target='_blank' href='http://whri.org/mailster/4800/00000000000000000000000000000000/aHR0cHM6Ly93d3cuY2Fwcy1jcGNhLnViYy5jYS9pbmRleC5waHAvU3BlY2lhbDpXaG9TdXBwbGllcw/1'>click here</a></li>
+                    <li>For more information on remuneration, please <a target='_blank' href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_RAMQ_-_Tarification_IVG_m%C3%A9dicale_27_mars_2018.pdf'>click here</a></li>
                 </li>
                 </ul>
          
