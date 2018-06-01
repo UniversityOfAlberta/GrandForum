@@ -86,20 +86,6 @@
             ]]>
         </ReportItem>
         
-        <!-- Suggested reviewers -->
-        <ReportItem id="reviewers" type="MultiTextReportItem" 
-                                   blobType="BLOB_ARRAY" 
-                                   blobItem="CAT_DESC_REV"
-                                   labels="Name|E-Mail|Affiliation" 
-                                   multiple="true" 
-                                   sizes="33%|33%|33%"
-                                   showHeader="false">
-            <![CDATA[
-                <p><b><u>Suggested Reviewers</u> (Name, E-Mail, Affiliation)</b></p>
-                <div style='font-size: smaller;'>{$item}</div><br />
-            ]]>
-        </ReportItem>
-        
         <!-- Environmental Impact Question -->
         <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
             <![CDATA[
