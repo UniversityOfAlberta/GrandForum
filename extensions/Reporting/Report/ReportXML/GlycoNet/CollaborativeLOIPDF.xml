@@ -16,8 +16,6 @@
                 <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
                 <br />
                 <br />
-                <br />
-                <br />
             ]]>
         </ReportItem>
         
