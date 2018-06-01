@@ -4,7 +4,8 @@ class IncrementReportItem extends SelectReportItem {
 
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
-	    switch($person->getFECType($this->getReport()->year.CYCLE_END_MONTH)){
+	    $fecType = $person->getFECType($this->getReport()->year.CYCLE_END_MONTH);
+	    switch($fecType){
 	        default:
 	        case "A1":
 	        case "B1":
@@ -28,6 +29,51 @@ class IncrementReportItem extends SelectReportItem {
 	                             "1.00");
 	            break;
 	    }
+	    
+	    $salary = $person->getSalary($this->getReport()->year-1);
+	    $increment = 0;
+        $maxSalary = 0;
+        switch($fecType){
+	        default:
+	        case "A1":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'assist');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'assist');
+                break;
+	        case "B1":
+	        case "B2":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'assoc');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'assoc');
+                break;
+	        case "C1":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'prof');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'prof');
+                break;
+	        case "D1":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso2');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso2');
+                break;
+	        case "E1":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso3');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso3');
+                break;
+	        case "F1":
+	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso4');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso4');
+                break;
+	    }
+        if($increment > 0 && $maxSalary > 0){
+            $exactIncrement = number_format(($maxSalary - $salary)/$increment, 2, '.', '');
+            if($exactIncrement > 0){
+                if(!in_array($exactIncrement, $options) && $exactIncrement < max($options)){
+                    $options[] = $exactIncrement;
+                }
+                foreach($options as $key => $option){
+                    if($option > $exactIncrement){
+                        unset($options[$key]);
+                    }
+                }
+            }
+        }
 	    return $options;
 	}
 
