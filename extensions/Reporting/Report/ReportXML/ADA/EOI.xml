@@ -2,6 +2,7 @@
 <Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" allowIdProjects="true" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
     <Permissions>
         <Role role="User" />
+        <Role role="HQP+" />
     </Permissions>
     <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection">
         <ReportItem id="title" type="Text"  blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
