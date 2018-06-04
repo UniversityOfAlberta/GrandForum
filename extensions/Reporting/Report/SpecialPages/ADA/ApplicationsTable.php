@@ -69,7 +69,20 @@ class ApplicationsTable extends SpecialPage{
     function generateEOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab('RP_EOI', $this->allPeople, 2018, "EOI");
+        
+        $themes1 = new RadioReportItem();
+        $themes1->setBlobType(BLOB_TEXT);
+        $themes1->setBlobItem("PRIMARY_THEMES");
+        $themes1->setBlobSection("EOI");
+        $themes1->setId("primary_themes");
+        
+        $themes2 = new CheckboxReportItem();
+        $themes2->setBlobType(BLOB_ARRAY);
+        $themes2->setBlobItem("SECONDARY_THEMES");
+        $themes2->setBlobSection("EOI");
+        $themes2->setId("secondary_themes");
+        
+        $tab = new ApplicationTab('RP_EOI', $this->allPeople, 2018, "EOI", array('Primary Theme' => $themes1, 'Secondary Themes' => $themes2));
         $tab->idProjectRange = array(1,2,3);
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
