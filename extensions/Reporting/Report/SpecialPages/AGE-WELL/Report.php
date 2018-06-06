@@ -166,16 +166,15 @@ class Report extends AbstractReport {
                 }
             }
         }
-        if(count($person->getEvaluates("HQP-2017-07-21", 2017)) > 0){
+        if(count($person->getEvaluates("HQP-2018", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award HQP-2017-07-21", "{$url}HQPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award", "{$url}HQPReview", $selected);
         }
         return true;
     }
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $config;
-
         return true;
     }
 }
