@@ -3768,31 +3768,34 @@ class Person extends BackboneModel {
      * @param mixed $history Whether or not to include all HQP in history (can also be a specific date)
      * @return array This Person's HQP
      */
-    function getHQP($history=false){
+    function getHQP($history=false, $onlySupervises=false){
+        $extraSQL = "";
+        if(!$onlySupervises){
+            $extraSQL = " OR type LIKE '%Supervisory Committee%' OR
+                             type LIKE '%Examiner%' OR
+                             type LIKE '%Committee Chair%'";
+        }
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
                 if($this->historyHqps != null){
                     return $this->historyHqps;
                 }
+                
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
                         AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%' OR
-                             type LIKE '%Supervisory Committee%' OR
-                             type LIKE '%Examiner%' OR
-                             type LIKE '%Committee Chair%')";
+                             type LIKE '%Co-Supervises%'
+                             $extraSQL)";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
                         AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%' OR
-                             type LIKE '%Supervisory Committee%' OR
-                             type LIKE '%Examiner%' OR
-                             type LIKE '%Committee Chair%')
+                             type LIKE '%Co-Supervises%'
+                             $extraSQL)
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -3814,10 +3817,8 @@ class Person extends BackboneModel {
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
                 AND (type LIKE '%Supervises%' OR 
-                     type LIKE '%Co-Supervises%' OR
-                     type LIKE '%Supervisory Committee%' OR
-                     type LIKE '%Examiner%' OR
-                     type LIKE '%Committee Chair%')
+                     type LIKE '%Co-Supervises%'
+                     $extraSQL)
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         $hqps = array();
@@ -4073,7 +4074,7 @@ class Person extends BackboneModel {
         $processed = array();
         $papersArray = array();
         $papers = array();
-        foreach($this->getHQP($history) as $hqp){
+        foreach($this->getHQP($history, true) as $hqp){
             $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access);
             foreach($ps as $p){
                 if(!isset($processed[$p->getId()])){
