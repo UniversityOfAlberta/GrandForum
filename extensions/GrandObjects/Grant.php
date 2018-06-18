@@ -63,7 +63,7 @@ class Grant extends BackboneModel {
         if(count($data) > 0){
             $row = $data[0];
             $copi = unserialize($row['copi']);
-            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(ISAC) ||
+            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(STAFF) ||
                array_search($me->getId(), $copi) !== false){
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];

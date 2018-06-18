@@ -52,7 +52,7 @@ class GrantAward extends BackboneModel {
         $me = Person::newFromWgUser();
         $grants = array();
         $where = array();
-        if(!$me->isRoleAtLeast(ISAC) || $person != null){
+        if(!$me->isRoleAtLeast(STAFF) || $person != null){
             if($person == null){
                 $person = $me;
             }
@@ -87,7 +87,7 @@ class GrantAward extends BackboneModel {
         $me = Person::newFromWgUser();
         if(count($data) > 0){
             $row = $data[0];
-            if($me->getId() == $row['user_id'] || strstr($row['coapplicants'], "\"{$me->getId()}\";") !== false || $me->isRoleAtLeast(ISAC)){
+            if($me->getId() == $row['user_id'] || strstr($row['coapplicants'], "\"{$me->getId()}\";") !== false || $me->isRoleAtLeast(STAFF)){
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->grant_id = $row['grant_id'];
