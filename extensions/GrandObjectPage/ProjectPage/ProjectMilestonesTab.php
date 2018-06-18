@@ -527,10 +527,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 };
                 
                 $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
-                var start = new Date().getTime();
                 $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
-                var end = new Date().getTime();
-                console.log(end - start);
                 $('#milestones_table td#status select').change(function(){
                     var status = $(this).val();
                     var color = colors[status];

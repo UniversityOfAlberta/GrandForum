@@ -597,7 +597,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 });
                 
                 var changeColor = function(){
-                    var checked = $(this).is(':checked');
+                    var checked = $(this)[0].checked;
                     var allChecks = $('input.milestone.single[type=checkbox]:checked', $(this).parent().parent());
                     if(checked){
                         var status = $('td#status select', $(this).parent().parent()).val();
@@ -605,25 +605,25 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         var color = colors[status];
                         var color2 = colors2[modification];
                         if(allChecks.length <= 1 || allChecks.last()[0] == this){
-                            $(this).parent().css('background', color)
-                                            .css('outline', '2px solid ' + color2)
-                                            .css('outline-offset', '-1px');
+                            $(this).parent()[0].style.backgroundColor = color;
+                            $(this).parent()[0].style.outline = '2px solid ' + color2;
+                            $(this).parent()[0].style.outlineOffset = '-1px';
                             if(color2 != undefined){
-                                $(this).parent().css('background-image', 'url($wgServer$wgScriptPath/skins/' + color2.replace('#', '') + '_diag.png)');
+                                $(this).parent()[0].style.backgroundImage = 'url($wgServer$wgScriptPath/skins/' + color2.replace('#', '') + '_diag.png)';
                             }
                         }
                         else{
-                            $(this).parent().css('background', '#BBBBBB')
-                                            .css('background-image', '')
-                                            .css('outline', '0 solid transparent')
-                                            .css('outline-offset', '');
+                            $(this).parent()[0].style.backgroundColor = '#BBBBBB';
+                            $(this).parent()[0].style.backgroundImage = '';
+                            $(this).parent()[0].style.outline = '0 solid transparent';
+                            $(this).parent()[0].style.outlineOffset = '';
                         }
                     }
                     else{
-                        $(this).parent().css('background', '#FFFFFF')
-                                        .css('background-image', '')
-                                        .css('outline', '0 solid transparent')
-                                        .css('outline-offset', '');
+                        $(this).parent()[0].style.backgroundColor = '#FFFFFF';
+                        $(this).parent()[0].style.backgroundImage = '';
+                        $(this).parent()[0].style.outline = '0 solid transparent';
+                        $(this).parent()[0].style.outlineOffset = '';
                     }
                 };
 
