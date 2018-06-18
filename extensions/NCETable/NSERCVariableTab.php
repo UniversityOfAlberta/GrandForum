@@ -441,7 +441,7 @@ EOF;
         }    
 
         //additional people may still be on the forum, we find them through their theses
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to);
+        /*$papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to);
         foreach($papers as $paper){
             $type = $paper->getType();
             if($type == "PhD Thesis" || $type == "Masters Thesis"){
@@ -468,7 +468,7 @@ EOF;
                     $unknown[] = $author;
                 }
             }   
-        }
+        }*/
 
         $this->html .= "<a id='Table4.2a'></a><h3>Table 4.2a: HQP Breakdown by University</h3>" .self::getHQPUniStats();
         $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by Project</h3>" .self::getHQPProjStats();
