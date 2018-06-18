@@ -207,7 +207,7 @@ class ProjectPage {
             }
             $projects = array_values($myProjects);
             usort($projects, function($a, $b){
-                return ($a->getName() >= $b->getName());
+                return strnatcmp($a->getName(), $b->getName());
             });
             foreach($projects as $project){
                 $selected = (str_replace("_", " ", $wgTitle->getNSText()) == $project->getName()) ? "selected" : "";
