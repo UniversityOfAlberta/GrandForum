@@ -1253,6 +1253,9 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a theme coordinator of the given Project
      */
     function isThemeCoordinatorOf($project){
+        if($project == null){
+            return false;
+        }
         $themes = $this->getCoordThemes();
         if($project instanceof Theme){
             $challenge = $project;
