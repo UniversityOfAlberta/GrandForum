@@ -668,8 +668,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     else{
                         checked.not(this).prop('checked', false);
                     }
-
-                    $('#milestones_table td input.milestone.single[type=checkbox]').each(changeColor);
+                    $('td input.milestone.single[type=checkbox]', $(this).parent().parent()).each(changeColor);
                 };
                 
                 $('input.single').click(clickFn);
