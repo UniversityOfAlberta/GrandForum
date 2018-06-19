@@ -608,7 +608,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="ReportSection">
+    <ReportSection id="chair" tooltip="Sign &amp; Lock" name="Sign &amp; Lock" blobSection="CHAIR_REVIEW" type="ReportSection">
         <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">
             <![CDATA[
                 {$item}
