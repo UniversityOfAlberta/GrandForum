@@ -19,7 +19,7 @@ echo "\"FORUM ID\",\"FIRST NAME\",\"MIDDLE NAME\",\"LAST NAME\",\"STUDENT ID\",\
 foreach($people as $person){
     $unis = $person->getUniversities();
     foreach($unis as $uni){
-        if($uni['department'] == $department){
+        if($uni['department'] == $department && in_array(strtolower($uni['position']), array_merge(Person::$studentPositions['grad'], Person::$studentPositions['pdf']))){
             $position = $uni['position'];
             $id = $person->getId();
             $firstName = $person->getFirstName();
