@@ -40,13 +40,15 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        var copy = this.relations.where({'user2': this.person.get('id')})
+        var person = this.person;
+        var copy = this.relations.where({'user2': person.get('id')})
         clearAllMessages();
         _.each(copy, $.proxy(function(relation){
             if(relation.get('deleted') != "true"){
                 if(!relation.save(null, {
                     success: function(){
                         addSuccess("Relation saved");
+                        person.fetch();
                     },
                     error: function(){
                         addError("Relation could not be saved");
@@ -59,6 +61,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 relation.destroy(null, {
                     success: function(){
                         addSuccess("Relation saved");
+                        person.fetch();
                     },
                     error: function(){
                         addError("Relation could not be saved");
