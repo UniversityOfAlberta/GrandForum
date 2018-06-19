@@ -15,6 +15,20 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="chair" permissions="-" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </If>
         <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
             <SectionPermission id="information" permissions="-" />
             <SectionPermission id="courses" permissions="-" />
@@ -608,7 +622,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="chair" tooltip="Sign &amp; Lock" name="Sign &amp; Lock" blobSection="CHAIR_REVIEW" type="ReportSection">
+    <ReportSection id="chair" tooltip="Signed &amp; Locked" name="Signed &amp; Locked" blobSection="CHAIR_REVIEW" type="ReportSection">
         <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">
             <![CDATA[
                 {$item}
