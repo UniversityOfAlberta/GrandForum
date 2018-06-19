@@ -77,6 +77,10 @@ RangeCollection = Backbone.Collection.extend({
         return all;
     },
     
+    fetching: function(){
+        return (this.xhrs.length > 0 && this.ready().state() != "resolved");
+    },
+    
     ready: function(){
         return $.when.apply(null, this.xhrs);
     },

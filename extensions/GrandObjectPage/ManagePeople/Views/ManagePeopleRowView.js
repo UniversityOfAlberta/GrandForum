@@ -59,6 +59,17 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editUniversities": "openUniversitiesDialog"
     },
     
+    renderRelationType: function(){
+        if(!me.relations.fetching()){ // Only Fetch once
+            me.getRelations();
+        }
+        me.relations.ready().then($.proxy(function(){
+            var relations = new PersonRelations(me.relations.where({user2: this.model.get('id')}));
+            this.$("#relationType").text(_.uniq(relations.pluck('type')).join(", "));
+            this.parent.table.rows().invalidate('dom').draw();
+        }, this));
+    },
+    
     render: function(){
         var classes = new Array();
         this.$("td").each(function(i, val){
@@ -88,6 +99,7 @@ ManagePeopleRowView = Backbone.View.extend({
         }
 
         this.el.innerHTML = this.template(_.extend(this.model.toJSON(), complete, doubtful));
+        this.renderRelationType();
         if(this.parent.table != null){
             var data = new Array();
             this.$("td").each(function(i, val){
