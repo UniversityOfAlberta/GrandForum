@@ -165,7 +165,7 @@
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
         <ReportItem id="ugrad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="1,2,3,4" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
-                <h3>Undergraduate <span class='clicktooltip' style='font-weight:normal;' title='Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <h3>Undergraduate <span class='clicktooltip' style='font-weight:normal;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
                 {$item}
                 <script type='text/javascript'>
                     var mentions = new Array();
@@ -174,7 +174,7 @@
         </ReportItem>
         <ReportItem id="grad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="5,6,7,8" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
-                <h3>Graduate <span class='clicktooltip' style='font-weight:normal;' title='Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <h3>Graduate <span class='clicktooltip' style='font-weight:normal;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>

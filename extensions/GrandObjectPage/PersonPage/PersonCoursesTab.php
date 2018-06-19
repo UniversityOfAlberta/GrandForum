@@ -33,7 +33,7 @@ class PersonCoursesTab extends AbstractTab {
         }
         $item = "";
         if($this->levels == null){
-            $item .= "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses.";
+            $item .= "<small><i>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.";
             if($showPercentages){
                 $item .= "  Teaching percentages in square brackets.";
             }
