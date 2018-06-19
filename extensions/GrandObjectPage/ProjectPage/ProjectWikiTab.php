@@ -27,7 +27,7 @@ class ProjectWikiTab extends AbstractTab {
         $upload = new SpecialUpload($wgRequest);
 	    $upload->execute(null);
 	    if($upload->mLocalFile != null){
-	        $uploadName = preg_replace('/\s+/', ' ', str_replace("_", " ", ucfirst($name)));
+	        $uploadName = preg_replace('/\s+/', ' ', str_replace("]", "-", str_replace("[", "-", str_replace("_", " ", ucfirst($name)))));
 	        $nsName = preg_replace('/\s+/', ' ', str_replace(" ", "_", $this->project->getName()));
 	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
 	                                    array('*'),
