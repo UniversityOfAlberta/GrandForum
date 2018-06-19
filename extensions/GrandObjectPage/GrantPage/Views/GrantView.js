@@ -36,18 +36,32 @@ GrantView = Backbone.View.extend({
     },
     
     delete: function(){
-        this.model.destroy({
-            success: function(model, response) {
-                clearSuccess();
-                clearError();
-                addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
-            },
-            error: function(model, response) {
-                clearSuccess();
-                clearError();
-                addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
-            }
-        });
+        if(this.model.get('deleted') != true){
+            this.model.destroy({
+                success: function(model, response) {
+                    if(response.deleted == true){
+                        model.set(response);
+                        clearSuccess();
+                        clearError();
+                        addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
+                    }
+                    else{
+                        clearSuccess();
+                        clearError();
+                        addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                    }
+                },
+                error: function(model, response) {
+                    clearSuccess();
+                    clearError();
+                    addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                }
+            });
+        }
+        else{
+            clearAllMessages();
+            addError('This Revenue Account is already deleted');
+        }
     },
     
     events: {
@@ -88,6 +102,11 @@ GrantView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributions();
         this.renderCoPI();
+        if(this.model.get('deleted') == true){
+            this.$el.find("#delete").prop('disabled', true);
+            clearInfo();
+            addInfo('This Revenue Account has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Revenue Account.');
+        }
         return this.$el;
     }
 

@@ -107,7 +107,7 @@ ProductView = Backbone.View.extend({
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);
             clearInfo();
-            addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the <%= siteName %>.  You may still edit the ' + this.model.get('category') + '.');
+            addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the ' + this.model.get('category') + '.');
         }
         return this.$el;
     }

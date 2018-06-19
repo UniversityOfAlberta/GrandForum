@@ -18,6 +18,7 @@ class Grant extends BackboneModel {
     var $request;
     var $start_date;
     var $end_date;
+    var $deleted;
     var $contributions = null;
     
     static function newFromId($id){
@@ -48,7 +49,8 @@ class Grant extends BackboneModel {
     static function getAllGrants(){
         $grants = array();
         $data = DBFunctions::select(array('grand_grants'),
-                                    array('*'));
+                                    array('*'),
+                                    array('deleted' => '0'));
         foreach($data as $row){
             $grant = new Grant(array($row));
             if($grant != null && $grant->getId() != 0){
@@ -81,6 +83,7 @@ class Grant extends BackboneModel {
                 $this->request = $row['request'];
                 $this->start_date = $row['start_date'];
                 $this->end_date = $row['end_date'];
+                $this->deleted = $row['deleted'];
             }
         }
     }
@@ -244,12 +247,11 @@ class Grant extends BackboneModel {
     }
     
     function delete(){
-        DBFunctions::delete('grand_grants',
+        DBFunctions::update('grand_grants',
+                            array('deleted' => 1),
                             array('id' => EQ($this->id)));
-        DBFunctions::delete('grand_grant_contributions',
-                            array('grant_id' => EQ($this->id)));
         DBFunctions::commit();
-        $this->id = null;
+        $this->deleted = 1;
         return $this;
     }
     
@@ -280,6 +282,7 @@ class Grant extends BackboneModel {
             'request' => $this->request,
             'start_date' => time2date($this->getStartDate(), "Y-m-d"),
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
+            'deleted' => $this->deleted,
             'url' => $this->getUrl(),
             'contributions' => $this->getContributions()
         );
