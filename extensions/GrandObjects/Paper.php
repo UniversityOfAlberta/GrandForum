@@ -688,6 +688,9 @@ class Paper extends BackboneModel{
      * @return string The status of this Paper
      */
     function getStatus(){
+        if($this->category == "Publication" && $this->acceptance_date != "0000-00-00" && $this->acceptance_date != ""){
+            return "Published";
+        }
         return $this->status;
     }
     

@@ -513,6 +513,13 @@ select {
 	outline: none;
 }
 
+select[disabled] {
+    background: #cccccc !important;
+    color: #777777 !important;
+    text-shadow:1px 1px 0px #FFFFFF;
+    box-shadow:inset 0 0 1px 0 #f8f8f8;
+}
+
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
@@ -623,8 +630,8 @@ input[disabled] {
 }
 
 input[type=button][disabled], input[type=button][disabled]:hover, input[type=button][disabled]:active,
-input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active,
-select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
+input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active, 
+button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
     background: #cccccc !important;
     color: #777777 !important;
     top:0;

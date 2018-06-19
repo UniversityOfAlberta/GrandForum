@@ -39,9 +39,23 @@ ProductEditView = Backbone.View.extend({
         "click #saveProduct": "saveProduct",
         "click #cancel": "cancel",
         "change #acceptance_date": "changeStart",
+        "change #acceptance_date": "updateStatus",
         "change #date": "changeEnd",
         "change [name=data_start_date]": "changeDataStart",
         "change [name=data_end_date]": "changeDataEnd"
+    },
+    
+    updateStatus: function(){
+        _.defer($.proxy(function(){
+            if(this.model.get('category') == "Publication" && this.model.get('acceptance_date') != "0000-00-00" && 
+                                                              this.model.get('acceptance_date') != ""){
+                this.model.set('status', "Published");
+                this.$("[name=status]").prop("disabled", true);
+            }
+            else{
+                this.$("[name=status]").prop("disabled", false);
+            }
+        }, this));
     },
     
     changeStart: function(){
@@ -256,6 +270,7 @@ ProductEditView = Backbone.View.extend({
             this.$("#acceptance_date").change();
             this.$("#date").change();
         }, this));
+        //this.updateStatus();
         return this.$el;
     }
 
