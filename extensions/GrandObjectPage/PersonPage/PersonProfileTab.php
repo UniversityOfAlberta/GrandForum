@@ -188,7 +188,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
             $this->person->employeeId = @$_POST['employeeId'];
-            $this->person->gender = @$_POST['gender'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->ldap = @$_POST['ldap'];
@@ -510,22 +509,6 @@ EOF;
                     </td>
                 </tr>";
             }
-            
-            $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
-            $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
-            $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
-            $otherSelected = ($person->getGender() == "Other") ? "selected='selected'" : "";
-            $gender = "<tr>
-                <td align='right'><b>Gender:</b></td>
-                <td>
-                    <select name='gender'>
-                        <option value='' $blankSelected>----</option>
-                        <option value='Male' $maleSelected>Male</option>
-                        <option value='Female' $femaleSelected>Female</option>
-                        <option value='Other' $otherSelected>Other</option>
-                    </select>
-                </td>
-            </tr>";
         }
         $this->html .= "<table>
                             <tr>
@@ -549,7 +532,6 @@ EOF;
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
-                            {$gender}
                         </table>";
         
         $this->html .= "<script type='text/javascript'>
