@@ -35,8 +35,24 @@ GrantView = Backbone.View.extend({
         document.location = this.model.get('url') + "/edit";
     },
     
+    delete: function(){
+        this.model.destroy({
+            success: function(model, response) {
+                clearSuccess();
+                clearError();
+                addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
+            },
+            error: function(model, response) {
+                clearSuccess();
+                clearError();
+                addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+            }
+        });
+    },
+    
     events: {
-        "click #edit": "edit"
+        "click #edit": "edit",
+        "click #delete": "delete"
     },
     
     renderContributions: function(){
