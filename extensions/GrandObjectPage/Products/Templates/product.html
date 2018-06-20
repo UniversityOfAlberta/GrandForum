@@ -18,7 +18,7 @@
 <% } %>
 <h2>Metadata</h2>
 <table id="productData">
-    <tr><td align="right"><b>Type:</b></td><td><%= type.replace("Misc: ", "") %></td></tr>
+    <tr><td align="right"><b>Type:</b></td><td><%= type.replace("Misc: ", "").replace("Other: ", "") %></td></tr>
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr><td align="right"><b>Status:</b></td><td><%= status %></td></tr>
     <% } %>

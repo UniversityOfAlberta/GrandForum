@@ -226,7 +226,7 @@ class ReportItemCallback {
         $award_names = array();
         $awards = $hqp->getPapers("Award", false, 'both', true, "Public");
         foreach($awards as $award){
-            $award_names[] = str_replace("Misc: ", "", $award->type);
+            $award_names[] = str_replace("Misc: ", "", str_replace("Other: ", "", $award->type));
         }
         return implode(",",$award_names);
     }
@@ -777,7 +777,7 @@ class ReportItemCallback {
     
     function getProductType(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->getType();
+        return str_replace("Misc: ", "", str_replace("Other: ", "", $product->getType()));
     }
     
     function getProductTitle(){
@@ -822,7 +822,7 @@ class ReportItemCallback {
     
     function getPresentationType(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->getType();
+        return str_replace("Misc: ", "", str_replace("Other: ", "", $product->getType()));
     }
 
     function getPresentationInvited(){

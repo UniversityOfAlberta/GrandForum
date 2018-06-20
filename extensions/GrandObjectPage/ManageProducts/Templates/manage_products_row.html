@@ -33,7 +33,7 @@
     <%= category %>
 </td>
 <td>
-    <%= type %>
+    <%= type.replace("Misc: ", "").replace("Other: ", "") %>
 </td>
 <td style="<% if(incomplete) { %>background: #FFA500; <% } %>" >
     <a target="_blank" href="<%= url %>"><%= title %></a>

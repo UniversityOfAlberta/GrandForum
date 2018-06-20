@@ -303,7 +303,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td> {$product_citation}</td><td width="30px" align="center">{$item}</td></tr>

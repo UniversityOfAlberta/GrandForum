@@ -545,6 +545,50 @@
             <date label="Date"></date>
         </Presentation>
         
+        <Presentation type="Colloquium" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Length (minutes)" type="Integer">length</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <authors label="Presented By" single="true">
+                <![CDATA[
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
+                ]]>
+            </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
+            <date label="Date"></date>
+        </Presentation>
+        
+        <Presentation type="Plenary" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Length (minutes)" type="Integer">length</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <authors label="Presented By" single="true">
+                <![CDATA[
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
+                ]]>
+            </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
+            <date label="Date"></date>
+        </Presentation>
+        
         <Presentation type="Panel Member" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
@@ -589,7 +633,29 @@
             <date label="Date"></date>
         </Presentation>
         
-        <Presentation type="Oral Presentation" status="Invited|Not Invited">
+        <Presentation type="Conference Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Length (minutes)" type="Integer">length</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <authors label="Presented By" single="true">
+                <![CDATA[
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
+                ]]>
+            </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
+            <date label="Date"></date>
+        </Presentation>
+        
+        <Presentation type="Workshop Presentation" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
@@ -721,7 +787,7 @@
             <date label="Date"></date>
         </Presentation>
         
-        <Presentation type="Misc" status="Invited|Not Invited">
+        <Presentation type="Other" status="Invited|Not Invited">
             <data>
                 <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccvtk="event_title" label="Event Title" type="String">event_title</field>
                 <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccvtk="location" label="Location" type="String">location</field>

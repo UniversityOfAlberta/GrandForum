@@ -364,7 +364,11 @@ HTML.File = function(view, attr, options){
 HTML.MiscAutoComplete = function(view, attr, options){
     var el = HTML.Element("<input type='text' />", options);
     $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
+    $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "")
+                                              .replace("Misc", "")
+                                              .replace("Other: ", "")
+                                              .replace("Other", ""));
+    var prefix = (options.prefix != undefined) ? options.prefix : "Misc";
     $(el).wrap('div');
     
     var evt = function(e){
@@ -372,11 +376,11 @@ HTML.MiscAutoComplete = function(view, attr, options){
             if(attr.indexOf('.') != -1){
                 var index = attr.indexOf('.');
                 var data = view.model.get(attr.substr(0, index));
-                data[attr.substr(index+1)] = "Misc: " + $(e.target).val();
+                data[attr.substr(index+1)] = prefix + ": " + $(e.target).val();
                 view.model.set(attr.substr(0, index), _.clone(data), {silent: true});
             }
             else{                
-                view.model.set(attr, "Misc: " + $(e.target).val(), {silent: true});
+                view.model.set(attr, prefix + ": " + $(e.target).val(), {silent: true});
             }
         });
     };
