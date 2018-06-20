@@ -149,17 +149,21 @@ ProductEditView = Backbone.View.extend({
         });
 
         var delimiter = ';';
+        var tagLimit = (this.model.isSingleAuthor()) ? 1 : 1000;
+        var placeholderText = (this.model.isSingleAuthor()) ? 'Enter ' + this.model.getAuthorsLabel().toLowerCase() + ' here...'
+                                                            : 'Enter ' + this.model.getAuthorsLabel().pluralize().toLowerCase() + ' here...';
         var html = HTML.TagIt(this, 'authors.fullname', {
             values: _.pluck(this.model.get('authors'), 'fullname'),
             strictValues: false, 
             objs: objs,
             options: {
-                placeholderText: 'Enter ' + this.model.getAuthorsLabel().pluralize().toLowerCase() + ' here...',
+                placeholderText: placeholderText,
                 allowSpaces: true,
                 allowDuplicates: false,
                 removeConfirmation: false,
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
+                tagLimit: tagLimit,
                 availableTags: this.allPeople.pluck('fullName'),
                 afterTagAdded: $.proxy(function(event, ui){
                     if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){

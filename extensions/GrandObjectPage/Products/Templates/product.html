@@ -1,4 +1,8 @@
-<h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
+<% if(this.model.isSingleAuthor()){ %>
+    <h2><%= this.model.getAuthorsLabel() %></h2>
+<% } else { %>
+    <h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
+<% } %>
 <div id="productAuthors">
 </div>
 <% if(description.trim() != "") { %>

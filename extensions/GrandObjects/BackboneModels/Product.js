@@ -145,6 +145,24 @@ Product = Backbone.Model.extend({
         }
         return label;
     },
+    
+    isSingleAuthor: function(){
+        var type = this.getType();
+        if(this.get('category') == ""){
+            return false;
+        }
+        var single = "";
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            single = _.first(_.values(productStructure.categories[this.get('category')].types)).authors_single;
+        }
+        else{
+            single = productStructure.categories[this.get('category')].types[type].authors_single;
+        }
+        if(single == undefined){
+            return false;
+        }
+        return single;
+    },
 
     urlRoot: 'index.php?action=api.product',
     

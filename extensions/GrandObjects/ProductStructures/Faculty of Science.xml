@@ -523,7 +523,6 @@
 
     <!-- Presentations -->
     <Presentations category="Presentation" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
-        
         <Presentation type="Seminar" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
@@ -533,9 +532,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -550,9 +549,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -567,9 +566,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -584,9 +583,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -601,9 +600,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -618,7 +617,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
                 ]]>
@@ -635,9 +634,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -652,9 +651,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -669,9 +668,9 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
@@ -686,14 +685,13 @@
                 <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presented By" single="true">
                 <![CDATA[
-                    <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
+                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
             <date label="Date"></date>
         </Presentation>
-
     </Presentations>
     
     <!-- Patents and Spin Offs -->
