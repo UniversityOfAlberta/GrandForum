@@ -163,6 +163,39 @@ Product = Backbone.Model.extend({
         }
         return single;
     },
+    
+    hasContributors: function(){
+        var type = this.getType();
+        if(this.get('category') == ""){
+            return false;
+        }
+        var contrib = false;
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            contrib = (_.first(_.values(productStructure.categories[this.get('category')].types)).contributors_label != undefined);
+        }
+        else{
+            contrib = (productStructure.categories[this.get('category')].types[type].contributors_label != undefined);
+        }
+        return contrib;
+    },
+
+    getContributorsLabel: function(){
+        var type = this.getType();
+        if(this.get('category') == ""){
+            return "Contibutor";
+        }
+        var label = "";
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            label = _.first(_.values(productStructure.categories[this.get('category')].types)).contributors_label;
+        }
+        else{
+            label = productStructure.categories[this.get('category')].types[type].contributors_label;
+        }
+        if(label == undefined){
+            return "Contributor";
+        }
+        return label;
+    },
 
     urlRoot: 'index.php?action=api.product',
     
@@ -179,6 +212,7 @@ Product = Backbone.Model.extend({
             status: "",
             data: {},
             authors: new Array(),
+            contributors: new Array(),
             projects: new Array(),
             lastModified: "",
             deleted: "",

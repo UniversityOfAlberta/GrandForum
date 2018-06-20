@@ -537,6 +537,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -554,6 +559,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -571,6 +581,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -588,6 +603,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -605,6 +625,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -622,6 +647,11 @@
                     <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -639,6 +669,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -656,6 +691,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -673,6 +713,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
         
@@ -690,6 +735,11 @@
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
             </authors>
+            <contributors>
+                <![CDATA[
+                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
+                ]]>
+            </contributors>
             <date label="Date"></date>
         </Presentation>
     </Presentations>

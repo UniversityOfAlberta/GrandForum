@@ -201,18 +201,84 @@ ProductEditView = Backbone.View.extend({
         });
     },
     
+    renderContributorsWidget: function(){
+        var objs = [];
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
+        });
+
+        var delimiter = ';';
+        var html = HTML.TagIt(this, 'contributors.fullname', {
+            values: _.pluck(this.model.get('contributors'), 'fullname'),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: 'Enter ' + this.model.getContributorsLabel().pluralize().toLowerCase() + ' here...',
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter,
+                availableTags: this.allPeople.pluck('fullName'),
+                afterTagAdded: $.proxy(function(event, ui){
+                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
+                        ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                    }
+                }, this),
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 2){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                }
+            }
+        });
+        this.$("#productContributors").html(html);
+        if(!this.model.isSingleAuthor()){
+            this.$("#productContributors").append("<p><i>Drag to re-order each " + this.model.getContributorsLabel().toLowerCase() + "</i></p>");
+        }
+        this.$("#productContributors .tagit").sortable({
+            stop: function(event,ui) {
+                $('input[name=contributors_fullname]').val(
+                    $(".tagit-label",$(this))
+                        .clone()
+                        .text(function(index,text){ return (index == 0) ? text : delimiter + text; })
+                        .text()
+                ).change();
+            }
+        });
+        this.$el.on('mouseover', 'div[name=contributors_fullname] li.tagit-choice', function(){
+            $(this).css('cursor', 'move');
+        });
+    },
+    
     renderAuthors: function(){
         if(this.allPeople != null && this.allPeople.length > 0){
             this.renderAuthorsWidget();
+            if(this.model.hasContributors()){
+                this.renderContributorsWidget();
+            }
         }
         else{
             this.allPeople = new People();
             this.allPeople.simple = true;
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
+            if(this.model.hasContributors()){
+                var spin = spinner("productContributors", 10, 20, 10, 3, '#888');
+            }
             this.allPeople.bind('sync', function(){
                 if(this.allPeople.length > 0){
                     this.renderAuthorsWidget();
+                    if(this.model.hasContributors()){
+                        this.renderContributorsWidget();
+                    }
                 }
             }, this);
         }

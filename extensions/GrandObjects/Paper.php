@@ -22,6 +22,7 @@ class Paper extends BackboneModel{
     var $date;
     var $status;
     var $authors;
+    var $contributors;
     var $data = false;
     var $lastModified;
     var $authorsWaiting;
@@ -268,7 +269,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date
+            $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -580,6 +581,12 @@ class Paper extends BackboneModel{
                             $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
                             $categories['categories'][$cname]['types'][$tname]["authors_text"] = $text;
                         }
+                        else if($child->getName() == "contributors"){
+                            $attrs = $child->attributes();
+                            $text = "$child";
+                            $categories['categories'][$cname]['types'][$tname]["contributors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Contributor";
+                            $categories['categories'][$cname]['types'][$tname]["contributors_text"] = $text;
+                        }
                     }
                     if(DBFunctions::isReady()){
                         $misc_types = Paper::getAllMiscTypes($cname);
@@ -623,6 +630,8 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
+            $this->contributors = $data[0]['contributors'];
+            $this->contributorsWaiting = true;
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
@@ -815,93 +824,126 @@ class Paper extends BackboneModel{
         if($this->authorsWaiting && $evaluate){
             $authors = array();
             $unserialized = array();
-            if(is_array($this->authors)){
-                // For creation/update of Product
-                foreach($this->authors as $auth){
-                    if(isset($auth->id)){
-                        $unserialized[] = $auth->id;
-                    }
-                    else if(isset($auth->fullname)){
-                        $unserialized[] = $auth->fullname;
-                    }
-                    else{
-                        $unserialized[] = $auth->name;
-                    }
-                }
-            }
-            else{
-                $unserialized = unserialize($this->authors);
-            }
-            foreach(@$unserialized as $author){
-                if($author == ""){
-                    continue;
-                }
-                $person = null;
-                if(is_numeric($author)){
-                    $person = Person::newFromId($author);
-                }
-                else{
-                    if(isset(Person::$cache[strtolower($author)])){
-                        $person = Person::$cache[strtolower($author)];
-                    }
-                    else{
-                        $person = Person::newFromNameLike($author);
-                        if($person == null || $person->getName() == null || $person->getName() == ""){
-                            // The name might not match exactly what is in the db, try aliases
-                            try{
-                                $person = Person::newFromAlias($author);
-                            }
-                            catch(DomainException $e){
-                                $person = null;
-                            }
-                        }
-                    }
-                }
-                self::generateIllegalAuthorsCache();
-                if($person == null || 
-                   $person->getName() == null || 
-                   $person->getName() == "" || 
-                   isset(self::$illegalAuthorsCache[$person->getNameForForms()]) ||
-                   ($person->getId() != 0 && isset(self::$illegalAuthorsCache[$person->getId()]))){
-                    // Ok this person is not in the db, make a fake Person object
-                    $pdata = array();
-                    $pdata[0]['user_id'] = "";
-                    $pdata[0]['user_name'] = $author;
-                    $pdata[0]['user_real_name'] = $author;
-                    $pdata[0]['first_name'] = "";
-                    $pdata[0]['middle_name'] = "";
-                    $pdata[0]['last_name'] = "";
-                    $pdata[0]['prev_first_name'] = "";
-                    $pdata[0]['prev_last_name'] = "";
-                    $pdata[0]['honorific'] = "";
-                    $pdata[0]['language'] = "";
-                    $pdata[0]['user_email'] = "";
-                    $pdata[0]['user_gender'] = "";
-                    $pdata[0]['user_twitter'] = "";
-                    $pdata[0]['user_website'] = "";
-                    $pdata[0]['user_nationality'] = "";
-                    $pdata[0]['user_registration'] = "";
-                    $pdata[0]['user_public_profile'] = "";
-                    $pdata[0]['user_private_profile'] = "";
-                    $pdata[0]['candidate'] = 0;
-                    $person = new Person($pdata);
-                    if($cache){
-                        Person::$cache[strtolower($person->getName())] = $person;
-                    }
-                }
-                if($person->getName() == "WikiSysop"){
-                    // Under no circumstances should WikiSysop be an author
-                    continue;
-                }
-                $authors[] = $person;
-            }
+            
+            $this->authors = $this->getAuthorsInternal($this->authors, $cache);
             $this->authorsWaiting = false;
-            $this->authors = $authors;
         }
         if(!is_array($this->authors)){
             return array();
         }
         return $this->authors;
+    }
+    
+    /**
+     * Returns an array of authors who wrote this Paper
+     * @param boolean $evaluate Whether or not to ignore the cache
+     * @param boolean $cache Whether or not to cache the authors
+     * @return array The authors who wrote this Paper
+     */
+    function getContributors($evaluate=true, $cache=true){
+        if($this->contributorsWaiting && $evaluate){
+            $authors = array();
+            $unserialized = array();
+            
+            $this->contributors = $this->getAuthorsInternal($this->contributors, $cache);
+            $this->contributorsWaiting = false;
+        }
+        if(!is_array($this->contributors)){
+            return array();
+        }
+        return $this->contributors;
+    }
+    
+    /**
+     * Handles both authors and contributors
+     */
+    private function getAuthorsInternal($authorArray, $cache){
+        $authors = array();
+        $unserialized = array();
+        if(is_array($authorArray)){
+            // For creation/update of Product
+            foreach($authorArray as $auth){
+                if(isset($auth->id)){
+                    $unserialized[] = $auth->id;
+                }
+                else if(isset($auth->fullname)){
+                    $unserialized[] = $auth->fullname;
+                }
+                else{
+                    $unserialized[] = $auth->name;
+                }
+            }
+        }
+        else{
+            $unserialized = unserialize($authorArray);
+        }
+        if($unserialized == null){
+            return array();
+        }
+        foreach(@$unserialized as $author){
+            if($author == ""){
+                continue;
+            }
+            $person = null;
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+            }
+            else{
+                if(isset(Person::$cache[strtolower($author)])){
+                    $person = Person::$cache[strtolower($author)];
+                }
+                else{
+                    $person = Person::newFromNameLike($author);
+                    if($person == null || $person->getName() == null || $person->getName() == ""){
+                        // The name might not match exactly what is in the db, try aliases
+                        try{
+                            $person = Person::newFromAlias($author);
+                        }
+                        catch(DomainException $e){
+                            $person = null;
+                        }
+                    }
+                }
+            }
+            self::generateIllegalAuthorsCache();
+            if($person == null || 
+               $person->getName() == null || 
+               $person->getName() == "" || 
+               isset(self::$illegalAuthorsCache[$person->getNameForForms()]) ||
+               ($person->getId() != 0 && isset(self::$illegalAuthorsCache[$person->getId()]))){
+                // Ok this person is not in the db, make a fake Person object
+                $pdata = array();
+                $pdata[0]['user_id'] = "";
+                $pdata[0]['user_name'] = $author;
+                $pdata[0]['user_real_name'] = $author;
+                $pdata[0]['first_name'] = "";
+                $pdata[0]['middle_name'] = "";
+                $pdata[0]['last_name'] = "";
+                $pdata[0]['prev_first_name'] = "";
+                $pdata[0]['prev_last_name'] = "";
+                $pdata[0]['honorific'] = "";
+                $pdata[0]['language'] = "";
+                $pdata[0]['user_email'] = "";
+                $pdata[0]['user_gender'] = "";
+                $pdata[0]['user_twitter'] = "";
+                $pdata[0]['user_website'] = "";
+                $pdata[0]['user_nationality'] = "";
+                $pdata[0]['user_registration'] = "";
+                $pdata[0]['user_public_profile'] = "";
+                $pdata[0]['user_private_profile'] = "";
+                $pdata[0]['candidate'] = 0;
+                $person = new Person($pdata);
+                if($cache){
+                    Person::$cache[strtolower($person->getName())] = $person;
+                }
+            }
+            if($person->getName() == "WikiSysop"){
+                // Under no circumstances should WikiSysop be an author
+                continue;
+            }
+            $authors[] = $person;
+        }
+        return $authors;
     }
     
     function getAuthorNames(){
@@ -1625,6 +1667,18 @@ class Paper extends BackboneModel{
                     $authors[] = $author->name;
                 }
             }
+            $contributors = array();
+            foreach($this->contributors as $contributor){
+                if(isset($contributor->id) && $contributor->id != 0){
+                    $contributors[] = $contributor->id;
+                }
+                else if(isset($contributor->fullname)){
+                    $contributors[] = $contributor->fullname;
+                }
+                else{
+                    $contributors[] = $contributor->name;
+                }
+            }
             foreach($this->projects as $project){
                 if(!isset($project->id) || $project->id == 0){
                     $p = Project::newFromName($project->name);
@@ -1642,6 +1696,7 @@ class Paper extends BackboneModel{
                                                 'acceptance_date' => $this->acceptance_date,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
+                                                'contributors' => serialize($contributors),
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
                                                 'created_by' => $created_by,
@@ -1703,6 +1758,7 @@ class Paper extends BackboneModel{
             // Begin Transaction
             DBFunctions::begin();
             $authors = array();
+            $contributors = array();
             $oldProduct = new Product(DBFunctions::select(array('grand_products'),
                                                           array('*'),
                                                           array('id' => EQ($this->getId()))));
@@ -1716,6 +1772,18 @@ class Paper extends BackboneModel{
                 else{
                     // This is more for legacy purposes
                     $authors[] = $author->name;
+                }
+            }
+            foreach($this->contributors as $contributor){
+                if(isset($contributor->id) && $contributor->id != 0){
+                    $contributors[] = $contributor->id;
+                }
+                else if(isset($contributor->fullname)){
+                    $contributors[] = $contributor->fullname;
+                }
+                else{
+                    // This is more for legacy purposes
+                    $contributors[] = $contributor->name;
                 }
             }
             foreach($this->projects as $project){
@@ -1734,6 +1802,7 @@ class Paper extends BackboneModel{
                                                 'acceptance_date' => $this->acceptance_date,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
+                                                'contributors' => serialize($contributors),
                                                 'data' => serialize($this->data),
                                                 'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
@@ -1850,6 +1919,7 @@ class Paper extends BackboneModel{
         }
         else{
             $authors = array();
+            $contributors = array();
             $projects = array();
             
             foreach($this->getAuthors(true, false) as $author){
@@ -1857,6 +1927,12 @@ class Paper extends BackboneModel{
                                    'name' => $author->getNameForProduct(),
                                    'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
+            }
+            foreach($this->getContributors(true, false) as $contributor){
+                $contributors[] = array('id' => $contributor->getId(),
+                                   'name' => $contributor->getNameForProduct(),
+                                   'fullname' => $contributor->getNameForForms(),
+                                   'url' => $contributor->getUrl());
             }
             if(is_array($this->getProjects())){
                 foreach($this->getProjects() as $project){
@@ -1880,6 +1956,7 @@ class Paper extends BackboneModel{
                           'url' => $this->getUrl(),
                           'data' => $data,
                           'authors' => $authors,
+                          'contributors' => $contributors,
                           'projects' => $projects,
                           'lastModified' => $this->lastModified,
                           'deleted' => $this->isDeleted(),

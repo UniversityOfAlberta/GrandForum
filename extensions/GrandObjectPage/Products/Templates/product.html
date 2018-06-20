@@ -5,6 +5,13 @@
 <% } %>
 <div id="productAuthors">
 </div>
+
+<% if(this.model.hasContributors()){ %>
+    <h2><%= this.model.getContributorsLabel().pluralize() %></h2>
+    <div id="productContributors">
+    </div>
+<% } %>
+
 <% if(description.trim() != "") { %>
     <h2>Description</h2>
     <%= nl2br(description) %>

@@ -63,6 +63,21 @@ ProductView = Backbone.View.extend({
         csv.render();
     },
     
+    renderContributors: function(){
+        var views = Array();
+        var that = this;
+        _.each(this.model.get('contributors'), function(author, index){
+            var link = new Link({id: author.id,
+                                 text: author.name.replace(/&quot;/g, ''),
+                                 url: author.url,
+                                 target: ''});
+            views.push(new PersonLinkView({model: link}).render());
+        });
+        var csv = new CSVView({el: this.$('#productContributors'), model: views});
+        csv.separator = '; ';
+        csv.render();
+    },
+    
     renderProjects: function(){
         var xhrs = new Array();
         var projects = new Array();
@@ -103,6 +118,7 @@ ProductView = Backbone.View.extend({
         _.extend(data, dateTimeHelpers);
         this.$el.html(this.template(data));
         this.renderAuthors();
+        this.renderContributors();
         this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);

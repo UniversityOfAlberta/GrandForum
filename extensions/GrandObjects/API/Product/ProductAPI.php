@@ -73,6 +73,7 @@ class ProductAPI extends RESTAPI {
         $paper->acceptance_date = $this->POST('acceptance_date');
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
+        $paper->contributors = $this->POST('contributors');
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
@@ -99,6 +100,7 @@ class ProductAPI extends RESTAPI {
         $paper->acceptance_date = $this->POST('acceptance_date');
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
+        $paper->contributors = $this->POST('contributors');
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
