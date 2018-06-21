@@ -611,28 +611,6 @@
             <date label="Date"></date>
         </Presentation>
         
-        <Presentation type="Workshop" status="Invited|Not Invited">
-            <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
-                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <authors label="Presented By" single="true">
-                <![CDATA[
-                    <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
-                ]]>
-            </authors>
-            <contributors>
-                <![CDATA[
-                    <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
-                ]]>
-            </contributors>
-            <date label="Date"></date>
-        </Presentation>
-        
         <Presentation type="Conference Presentation" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
