@@ -465,15 +465,6 @@ ManageProductsView = Backbone.View.extend({
             }
         }, this));
         this.$el.html(this.template());
-        /*$("#pageTitle").qtip({
-            content: {
-                text: this.$('#instructions').html()
-            },
-            position: {
-                my: 'top left',
-                at: 'bottom left',
-            }
-        });*/
         main.bind('change:title', $.proxy(function(){
             $("#pageTitle").append("&nbsp;<span class='clicktooltip' title=''>&#9432;</span>");
             $("#pageTitle .clicktooltip").attr('title', this.$('#instructions').html());
