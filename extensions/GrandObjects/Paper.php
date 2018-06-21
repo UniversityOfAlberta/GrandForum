@@ -1119,7 +1119,8 @@ class Paper extends BackboneModel{
         $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
                                       WHERE (`title` = '{$journal_title}' 
                                              AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
-                                      OR `issn` = '{$issn}'");
+                                      OR `issn` = '{$issn}'
+                                      LIMIT 1");
         if(count($data) > 0){
             return $data[0];
         }
