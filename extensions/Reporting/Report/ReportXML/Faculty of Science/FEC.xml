@@ -275,7 +275,7 @@ Add a new other teaching entry to create a new paragraph.<br />
     <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-                <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'>
                     <thead>
@@ -319,7 +319,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             <![CDATA[
                 <h2>Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
 <br />
-(Do not include presentations given by your students or by others.  HQP presentations are included in the next table)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+(Do not include presentations given by your students or by others.  HQP presentations are included in the next table)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
                 <small></small>
                 <table class ='wikitable' style='width:100%'>
                     <thead>
@@ -357,50 +357,10 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </tbody></table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="hqppresentationheader" type="StaticReportItem">
-            <![CDATA[
-                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
-                <small></small>
-                <table class ='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Invited</th>
-                        <th>Organization</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Length (minutes)</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
-                        <td align='center'>{$presentation_type}</td>
-                        <td align='center'>{$presentation_invited}</td>
-                        <td>{$presentation_organization}</td>
-                        <td align='center'>{$presentation_country}</td>
-                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
-                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
-                        <td align='center'>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="hqppresentationfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </ReportItem>
         <ReportItem id="patentsheader" type="StaticReportItem">
             <![CDATA[
                 
-                <h2>Patents/Spin-Offs <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
+                <h2>Patents/Spin-Offs <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <table class='wikitable' style='width:100%'><tbody>
                     <thead>
@@ -429,7 +389,7 @@ Add a new other teaching entry to create a new paragraph.<br />
     <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
-                <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -510,7 +470,7 @@ Add a new other teaching entry to create a new paragraph.<br />
 &lt;b>Other&lt;/b>: Enter any other relevant information.'>&#9432;&lt;/span>" type="ReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-                <a class="button" style="position:absolute;top:4px;right:10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
+                <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
             ]]>
         </ReportItem>
         
@@ -619,6 +579,48 @@ Add a new other teaching entry to create a new paragraph.<br />
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqppresentationheader" type="StaticReportItem">
+            <![CDATA[
+                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>HQP</th>
+                        <th>Invited</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Length (minutes)</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title}</td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td>{$product_authors}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqppresentationfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table><br />
             ]]>
         </ReportItem>
     </ReportSection>
