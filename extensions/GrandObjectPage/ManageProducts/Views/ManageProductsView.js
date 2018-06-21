@@ -465,7 +465,7 @@ ManageProductsView = Backbone.View.extend({
             }
         }, this));
         this.$el.html(this.template());
-        $("#pageTitle").qtip({
+        /*$("#pageTitle").qtip({
             content: {
                 text: this.$('#instructions').html()
             },
@@ -473,7 +473,22 @@ ManageProductsView = Backbone.View.extend({
                 my: 'top left',
                 at: 'bottom left',
             }
-        });
+        });*/
+        main.bind('change:title', $.proxy(function(){
+            $("#pageTitle").append("&nbsp;<span class='clicktooltip' title=''>&#9432;</span>");
+            $("#pageTitle .clicktooltip").attr('title', this.$('#instructions').html());
+            $("#pageTitle .clicktooltip").qtip({
+	            position: {
+	                adjust: {
+		                x: -($("#pageTitle .clicktooltip").width()/25),
+		                y: -($("#pageTitle .clicktooltip").height()/2)
+	                }
+	            },
+	            show: 'click',
+                hide: 'click unfocus'
+	        });
+        }, this));
+        main.trigger('change:title');
         this.addRows();
 	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){
