@@ -48,18 +48,13 @@ ProductEditView = Backbone.View.extend({
     
     updateStatus: function(){
         _.defer($.proxy(function(){
-            console.log(this.model.get('status'));
             if(this.model.get('category') == "Publication" && this.model.get('date') != "0000-00-00" && 
                                                               this.model.get('date') != ""){
-                console.log("PUBLISH");
-                //this.model.set('status', "Published");
                 this.$("[name=status]").val("Published").change();
                 this.$("[name=status]").prop("disabled", true);
             }
             else if(this.model.get('category') == "Publication" && this.model.get('acceptance_date') != "0000-00-00" && 
                                                                    this.model.get('acceptance_date') != ""){
-                console.log("ACCEPT");
-                //this.model.set('status', "Accepted");
                 this.$("[name=status]").val("Accepted").change();
                 this.$("[name=status]").prop("disabled", true);
             }
