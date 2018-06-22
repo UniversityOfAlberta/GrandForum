@@ -72,7 +72,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     addRelation: function(){
-        this.relations.add(new PersonRelation({type: 'Works With', user1: me.get('id'), user2: this.person.get('id')}));
+        this.relations.add(new PersonRelation({type: 'Supervises', user1: me.get('id'), user2: this.person.get('id')}));
         this.$el.scrollTop(this.el.scrollHeight);
     },
     

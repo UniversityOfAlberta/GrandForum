@@ -103,7 +103,7 @@ class AddHqp extends SpecialPage{
         $employeeRow->append($employeeLabel)->append($employeeField->attr('size', 20));
         
         $relLabel = new Label("rel_label", "Relationship", "The relationship with this user", VALIDATE_NOTHING);
-        $relField = new SelectBox("rel_field", "Relationship", "", array("", "Co-Supervises","Committee Chair","Examiner","Supervises","Supervisory Committee","Works With"), VALIDATE_NOTHING);
+        $relField = new SelectBox("rel_field", "Relationship", "", array("", "Supervises", "Co-Supervises", "Committee Chair","Supervisory-Committee member","Examining-Committee member","Examining-Committee chair"), VALIDATE_NOTHING);
         $relRow = new FormTableRow("rel_row");
         $relRow->append($relLabel)->append($relField);
         

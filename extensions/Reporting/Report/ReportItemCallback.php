@@ -1588,7 +1588,7 @@ class ReportItemCallback {
             $hqp = $relation->getUser2();
             $role = $relation->getType();
             
-            if($role == SUPERVISES || $role == CO_SUPERVISES || $role == WORKS_WITH || $role == MENTORS){
+            if($role == SUPERVISES || $role == CO_SUPERVISES){
                 continue;
             }
             

@@ -65,20 +65,7 @@ class PersonPage {
                         break;
                     }
                 }
-                $isChampion = $person->isRole(CHAMP);
-                if($isChampion){
-                    $creators = $person->getCreators();
-                    foreach($creators as $creator){
-                        if($creator->getId() == $me->getId()){
-                            $isSupervisor = true;
-                        }
-                    }
-                    foreach($person->getProjects() as $project){
-                        if(($project->isSubProject() && $me->leadershipOf($project->getParent())) || $me->leadershipOf($project)){
-                            $isSupervisor = true;
-                        }
-                    }
-                }
+                
                 foreach($me->getThemeProjects() as $project){
                     if($person->isMemberOf($project)){
                         $isSupervisor = true;
@@ -105,7 +92,6 @@ class PersonPage {
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
                 $visibility['isSupervisor'] = $isSupervisor;
-                $visibility['isChampion'] = $isChampion;
                 
                 self::showTitle($person, $visibility);
 

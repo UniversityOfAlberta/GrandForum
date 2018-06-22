@@ -616,16 +616,7 @@ abstract class AbstractReport extends SpecialPage {
                             $rResult = true;
                         }
                         else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
-                            if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
-                                $rResult = true;
-                            }
-                            else {
-                                foreach($this->project->getSubProjects() as $sub){
-                                    if($me->isChampionOfOn($sub, $perm['end'])){
-                                        $rResult = true;
-                                    }
-                                }
-                            }
+                            $rResult = true;
                         }
                         else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);

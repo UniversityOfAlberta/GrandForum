@@ -3,13 +3,11 @@
 require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
 
 // Relations Constants
-define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("CO_SUPERVISES", 'Co-Supervises');
-define("MENTORS", 'Mentors');
-define("SUPERVISORY_COMMITTEE", "Supervisory Committee");
-define("EXAMINER", "Examiner");
-define("COMMITTEE_CHAIR", "Committee Chair");
+define("SUPERVISORY_COMMITTEE", "Supervisory-Committee member");
+define("EXAMINER", "Examining-Committee member");
+define("COMMITTEE_CHAIR", "Examining-Committee chair");
 
 // Autoloads
 autoload_register('GrandObjects');

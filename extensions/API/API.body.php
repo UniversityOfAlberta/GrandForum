@@ -154,7 +154,6 @@ class APIRequest{
         $this->addAction('Themes', 'getThemeInfo', 'ThemeInfoAPI');
 
         // HIDDENS
-        $this->addAction('Hidden', 'getJung', 'JungAPI');
         $this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
         $this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
     }

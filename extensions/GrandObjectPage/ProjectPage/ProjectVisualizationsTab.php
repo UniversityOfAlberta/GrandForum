@@ -382,7 +382,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             if(!isset($_GET['noRelations'])){
                 foreach($people as $k1 => $person){
                     foreach($people as $k2 => $p){
-                        $relations = $person->getRelationsDuring(WORKS_WITH, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
+                        $relations = $person->getRelationsDuring("all", $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){

@@ -276,7 +276,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $hqp = $r->getUser2();
             $role = $r->getType();
             
-            if($role == SUPERVISES || $role == CO_SUPERVISES || $role == WORKS_WITH || $role == MENTORS){
+            if($role == SUPERVISES || $role == CO_SUPERVISES){
                 continue;
             }
             
