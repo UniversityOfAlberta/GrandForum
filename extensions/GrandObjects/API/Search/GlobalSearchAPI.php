@@ -318,9 +318,6 @@ class GlobalSearchAPI extends RESTAPI {
                         case RPTP_HQP:
                             $keywords = "hqp individual report pdf";
                             break;
-                        case RPTP_CHAMP:
-                            $keywords = "champ champion report project pdf";
-                            break;
                         case RPTP_NI_COMMENTS:
                             $keywords = "ni individual report milestone comments pdf";
                             break;

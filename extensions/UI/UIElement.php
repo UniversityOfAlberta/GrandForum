@@ -9,7 +9,6 @@ function initValidations(){
                              'PERCENT'  => 'PercentValidation',
                              'PROJECT'  => 'ProjectValidation',
                              'PERSON'   => 'PersonValidation',
-                             'CHAMPION' => 'ChampionValidation',
                              'NI'       => 'NIValidation',
                              'EMAIL'    => 'EmailValidation');
     $i = 0;

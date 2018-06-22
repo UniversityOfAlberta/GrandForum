@@ -87,7 +87,6 @@ class ProjectMainTab extends AbstractEditableTab {
         }
 
         $this->showPeople();
-        //$this->showChampions();
         $this->showDescription();
         
         return $this->html;

@@ -113,9 +113,6 @@ $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizat
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
-$egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
-                                                'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                          
