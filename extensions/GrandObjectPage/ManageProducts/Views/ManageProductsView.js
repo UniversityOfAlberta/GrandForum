@@ -85,10 +85,26 @@ ManageProductsView = Backbone.View.extend({
         this.calendarDialog.dialog('open');
     },
     
+    currentProducts: function(){
+        // Returns the current list of products that should be displayed in the table
+        var products = this.products;
+        if(this.category != null){
+            products = new Products(products.where({category: this.category}));
+        }
+        if(this.onlyRecent){
+            products = new Products(products.filter(function(p){
+                return ((p.get('date') >= (YEAR - 6) + "-04-01") || (p.get('acceptance_date') >= (YEAR - 6) + "-04-01"));
+            }));
+        }
+        return products;
+    },
+    
     productChanged: function(){
+        var products = this.currentProducts();
+    
         // Count how many products there are dirty
         var sum = 0;
-        this.products.each(function(product){
+        products.each(function(product){
             if(product.dirty){
                 sum++;
             }
@@ -111,7 +127,7 @@ ManageProductsView = Backbone.View.extend({
         
         // Count how many products are private
         var sum = 0;
-        this.products.each(function(product){
+        products.each(function(product){
             if(product.get('access_id') > 0){
                 sum++;
             }
@@ -130,7 +146,7 @@ ManageProductsView = Backbone.View.extend({
         // Change the state of the 'selectAll' checkbox
         this.projects.each(function(project){
             var allFound = true;
-            this.products.each(function(product){
+            products.each(function(product){
                 if(allFound && _.where(product.get('projects'), {id: project.get('id')}).length == 0){
                     allFound = false;
                 }
@@ -154,15 +170,7 @@ ManageProductsView = Backbone.View.extend({
             this.table = null;
         }
         
-        var products = this.products;
-        if(this.category != null){
-            products = new Products(products.where({category: this.category}));
-        }
-        if(this.onlyRecent){
-            products = new Products(products.filter(function(p){
-                return ((p.get('date') >= (YEAR - 6) + "-04-01") || (p.get('acceptance_date') >= (YEAR - 6) + "-04-01"));
-            }));
-        }
+        var products = this.currentProducts();
         
         // First remove deleted models
         _.each(this.subViews, $.proxy(function(view){
@@ -263,7 +271,8 @@ ManageProductsView = Backbone.View.extend({
         this.$("#saveProducts").prop('disabled', true);
         this.$(".throbber").show();
         var xhrs = new Array();
-        this.products.each(function(product){
+        var products = this.currentProducts();
+        products.each(function(product){
             if(product.get('access_id') > 0){
                 product.set('access_id', 0);
                 var duplicates = product.getDuplicates();
@@ -643,7 +652,8 @@ ManageProductsView = Backbone.View.extend({
 	                button.prop("disabled", true);
                     var xhrs = new Array();
                     var toDelete = new Array();
-                    this.products.each(function(product){
+                    var products = this.currentProducts();
+                    products.each(function(product){
                         if(product.get('access_id') > 0){
                             toDelete.push(product);
                         }
@@ -666,7 +676,7 @@ ManageProductsView = Backbone.View.extend({
                         clearAllMessages();
                         var list = new Array();
                         list.push("There was a problem deleting the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
-                        this.products.each(function(product){
+                        products.each(function(product){
                             if(product.get('access_id') > 0){
                                 list.push("<li>" + product.get('title') + "</li>");
                             }
