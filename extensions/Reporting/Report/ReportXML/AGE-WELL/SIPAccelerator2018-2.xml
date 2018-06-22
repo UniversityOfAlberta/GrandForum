@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL SIP Accelerator" reportType="RP_SIP_ACC_2018" pdfType="RPTP_SIP_ACC_2018" allowIdProjects="true" pdfFiles="SIPAccelerator2018PDF" ajax="true" year="2018" disabled="true">
+<Report name="AGE-WELL SIP Accelerator" reportType="RP_SIP_ACC_2018_2" pdfType="RPTP_SIP_ACC_2018_2" allowIdProjects="true" pdfFiles="SIPAccelerator2018-2PDF" ajax="true" year="2018">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="description" permissions="rw" />
@@ -70,7 +70,7 @@
                 </ul>
                 <p>AGE-WELL is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our aim is to help older Canadians maintain their independence, health and quality of life through technologies and services that increase their safety and security, support their independent living, and enhance their social participation.</p>
                 <p>Please refer to the SIP Accelerator webpage on the AGE-WELL website (<a href='http://www.agewell-nce.ca' target='_blank'>www.agewell-nce.ca</a>) for information about investigator eligibility, partnerships, award amount etc. </p>
-                <p>Questions about this funding program can be directed to Jeanie Zabukovec, AGE-WELL Research and Partnerships Administrator (<a href='mailto:jeanie@agewell-nce.ca'>jeanie@agewell-nce.ca</a>).</p>
+                <p>Questions about this funding program can be directed to Jennifer Wong, AGE-WELL Research Program Administrator (<a href='mailto:jennifer@agewell-nce.ca'>jennifer@agewell-nce.ca</a>).</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -155,7 +155,7 @@
             <![CDATA[
                 <div id="extra" style="display:none;">
                     <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
-                    <p>If you previously received an AGE-WELL SIP, SIP Accelerator or Catalyst award for this project please complete the following questions related to the work already completed (1 page). If objectives from your previous award have not been met and you wish to apply for a no-cost extension, please contact jeanie@agewell-nce.ca. </p>
+                    <p>If you previously received an AGE-WELL SIP, SIP Accelerator or Catalyst award for this project please complete the following questions related to the work already completed (1 page). If objectives from your previous award have not been met and you wish to apply for a no-cost extension, please contact jennifer@agewell-nce.ca. </p>
                     <h3>Were the objectives of the previously funded project met?  Please explain.</h3>
                     {$item}
             ]]>
