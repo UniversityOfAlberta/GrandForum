@@ -531,7 +531,7 @@ EOF;
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
             $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
-            $genderFluidSelected = ($person->getGender() == "Gender-Fluid") ? "selected='selected'" : "";
+            $genderFluidSelected = ($person->getGender() == "Gender-fluid") ? "selected='selected'" : "";
             $nonBinarySelected = ($person->getGender() == "Non-binary") ? "selected='selected'" : "";
             $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
             $declinedSelected = ($person->getGender() == "Not disclosed") ? "selected='selected'" : "";
