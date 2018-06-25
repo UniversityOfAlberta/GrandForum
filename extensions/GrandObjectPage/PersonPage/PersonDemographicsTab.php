@@ -81,7 +81,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             
             $indigenousYes = ($person->getIndigenousStatus() == "Yes") ? "selected='selected'" : "";
             $indigenousNo = ($person->getIndigenousStatus() == "No") ? "selected='selected'" : "";
-            $indigenousDeclined = ($person->getIndigenousStatus() == "Declined") ? "selected='selected'" : "";
+            $indigenousDeclined = ($person->getIndigenousStatus() == "Not disclosed") ? "selected='selected'" : "";
             $indigenous = "<tr>
                 <td align='right'><b>Do you identify as Indigenous?:</b></td>
                 <td>
@@ -89,7 +89,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
                         <option value=''>---</option>
                         <option value='Yes' $indigenousYes>Yes</option>
                         <option value='No' $indigenousNo>No</option>
-                        <option value='Declined' $indigenousDeclined>I prefer not to answer</option>
+                        <option value='Not disclosed' $indigenousDeclined>I prefer not to answer</option>
                     </select>
                 </td>
             </tr>";
@@ -103,13 +103,13 @@ class PersonDemographicsTab extends AbstractEditableTab {
                         <option value=''>---</option>
                         <option value='Yes' $disabilityYes>Yes</option>
                         <option value='No' $disabilityNo>No</option>
-                        <option value='declined' $disabilityDeclined>I prefer not to answer</option>
+                        <option value='Not disclosed' $disabilityDeclined>I prefer not to answer</option>
                     </select>
                 </td>
             </tr>";
             $minorityYes = ($person->getMinorityStatus() == "Yes") ? "selected='selected'" : "";
             $minorityNo = ($person->getMinorityStatus() == "No") ? "selected='selected'" : "";
-            $minorityDeclined = ($person->getMinorityStatus() == "Declined") ? "selected='selected'" : "";
+            $minorityDeclined = ($person->getMinorityStatus() == "Not disclosed") ? "selected='selected'" : "";
             $minority = "<tr>
                 <td align='right'><b>Do you identify as a member<br> of a visible minority in Canada:</b></td>
                 <td>
@@ -117,7 +117,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
                         <option value=''>---</option>
                         <option value='Yes' $minorityYes>Yes</option>
                         <option value='No' $minorityNo>No</option>
-                        <option value='declined' $minorityDeclined>I prefer not to answer</option>
+                        <option value='Not disclosed' $minorityDeclined>I prefer not to answer</option>
                     </select>
                 </td>
             </tr>";
