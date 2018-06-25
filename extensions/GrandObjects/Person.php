@@ -3334,6 +3334,7 @@ class Person extends BackboneModel {
                 $this->isSubRole("Affiliate HQP") || 
                 $this->isSubRole("Project Funded HQP") ||
                 $this->isSubRole("WP/CC Funded HQP") ||
+                $this->isSubRole("SIP/CAT HQP") ||
                 $this->isSubRole("Alumni HQP") ||
                 $this->isSubRole("EPIC grad"));
     }
