@@ -531,6 +531,10 @@ EOF;
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
             $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
+            $genderFluidSelected = ($person->getGender() == "Gender-Fluid") ? "selected='selected'" : "";
+            $nonBinarySelected = ($person->getGender() == "Non-binary") ? "selected='selected'" : "";
+            $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
+            $declinedSelected = ($person->getGender() == "declined") ? "selected='selected'" : "";
             $gender = "<tr>
                 <td align='right'><b>Gender:</b></td>
                 <td>
@@ -538,6 +542,10 @@ EOF;
                         <option value='' $blankSelected>---</option>
                         <option value='Male' $maleSelected>Male</option>
                         <option value='Female' $femaleSelected>Female</option>
+                        <option value='Gender-fluid' $genderFluidSelected>Gender-fluid</option>
+                        <option value='Non-binary' $nonBinarySelected>Non-binary</option>
+                        <option value='Two-spirit' $twoSpiritSelected>Two-spirit</option>
+                        <option value='declined' $declinedSelected>I prefer not to answer</option>
                     </select>
                 </td>
             </tr>";
