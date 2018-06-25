@@ -40,6 +40,10 @@ class Person extends BackboneModel {
     var $prevLastName;
     var $honorific;
     var $language;
+    var $age;
+    var $indigenousStatus;
+    var $disabilityStatus;
+    var $minorityStatus;
     var $projects;
     var $university;
     var $universityDuring;
@@ -821,6 +825,10 @@ class Person extends BackboneModel {
             //$this->prevLastName = @$data[0]['prev_last_name'];
             //$this->honorific = @$data[0]['honorific'];
             //$this->language = @$data[0]['language'];
+            //$this->age = @$data[0]['age'];
+            //$this->indigenousStatus = @$data[0]['indigenous_status'];
+            //$this->disabilityStatus = @$data[0]['disability_status'];
+            //$this->minorityStatus = @$data[0]['minority_status'];
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
@@ -4648,5 +4656,53 @@ class Person extends BackboneModel {
         }
         return false;
     }
+    
+    /**
+     * Returns the age of this Person
+     * @return string The age of this Person
+     */
+    function getAge(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->age;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns whether the person identifies as indigenous 
+     * @return string The indigenous status of this person
+     */
+    function getIndigenousStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->indigenousStatus;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the if this person has a disability
+     * @return string The disability status of this Person
+     */
+    function getDisabilityStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->disabilityStatus;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the if this person is a visible minority
+     * @return string The minority status of this Person
+     */
+    function getMinorityStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->minorityStatus;
+        }
+        return "";
+    }    
 }
 ?>
