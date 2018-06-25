@@ -205,7 +205,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tab = new ApplicationTab(array('RP_COLLAB_LOI_2018');
+        $tab = new ApplicationTab(array('RP_COLLAB_LOI_2018'));
         $tab->idProjectRange = array(0,1);
         $tabbedPage->addTab($tab, $this->allNis, 2018, "LOI 2018", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
