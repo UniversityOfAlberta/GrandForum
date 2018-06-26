@@ -30,6 +30,11 @@ class PersonProductsReportItemSet extends ReportItemSet {
             }
             $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate));
             if($onlyHQP){
+                foreach($products as $key => $product){
+                    if($person->isAuthorOf($product)){
+                        unset($products[$key]);
+                    }
+                }
                 $hqps = $person->getHQPDuring($start_date, $end_date);
                 foreach($products as $key => $product){
                     $found = false;

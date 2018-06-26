@@ -1396,7 +1396,7 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
-        if($this->isMe()){
+        if($person->isMe()){
             // User is themselves
             return true;
         }

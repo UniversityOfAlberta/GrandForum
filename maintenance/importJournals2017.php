@@ -22,8 +22,13 @@
     foreach($categoriesCSV as $category){
         $csv = str_getcsv($category);
         if(count($csv) <= 1) break;
-        $categories[trim($csv[0])] = $csv;
-        $categories[trim($csv[0])]['count'] = 0;
+        if(!isset($categories[trim($csv[0])])){
+            $categories[trim($csv[0])] = $csv;
+            $categories[trim($csv[0])]['count'] = 0;
+        }
+        else{
+            $categories[trim($csv[0])][2] += $csv[2];
+        }
     }
     
     foreach($connectionsCSV as $connection){
