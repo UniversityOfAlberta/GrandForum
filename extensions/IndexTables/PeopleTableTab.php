@@ -24,7 +24,15 @@ class PeopleTableTab extends AbstractTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
-        if(!$this->past){
+        if($this->table == "Candidate"){
+            $data = Person::getAllCandidates();
+            foreach($data as $key => $row){
+                if(!$row->isCandidate()){
+                    unset($data[$key]);
+                }
+            }
+        }
+        else if(!$this->past){
             $data = Person::getAllPeople($this->table);
         }
         else if(is_numeric($this->past)){
@@ -47,7 +55,7 @@ class PeopleTableTab extends AbstractTab {
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
         if($me->isLoggedIn() &&
-           ($this->table == TL || $this->table == TC || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
+           ($this->table == TL || $this->table == TC || $this->table == "Candidate" || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
         if($this->table == HQP){

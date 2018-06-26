@@ -91,6 +91,11 @@ class IndexTable {
             }
         }
         
+        if($me->isRoleAtLeast(STAFF)){
+            $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
+        }
+        
         if($config->getValue('projectsEnabled')){
             $tabs['Main']['subtabs'][] = $projectTab;
         }
@@ -115,12 +120,6 @@ class IndexTable {
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Bibliographies", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage", "$selected");
         }
         $tabs['Main']['subtabs'][] = $productsSubTab;
-        
-        /*if(Wiki::newFromTitle("{$config->getValue('networkName')}_Conferences")->exists()){
-            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}_Conferences", "$selected");
-        }*/
-
 
         return true;
     }
@@ -201,6 +200,10 @@ class IndexTable {
                     if($wgTitle->getText() == "ALL ".NI){
                         $wgOut->setPageTitle($config->getValue('roleDefs', NI));
                         self::generatePersonTable(NI);
+                    }
+                    if($wgTitle->getText() == "ALL Candidates" && $me->isRoleAtLeast(STAFF)){
+                        $wgOut->setPageTitle("Candidates");
+                        self::generatePersonTable("Candidate");
                     }
                     break;
             }
@@ -394,15 +397,17 @@ class IndexTable {
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
-        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
-        if($me->isRoleAtLeast(STAFF)){
-            $phaseDates = $config->getValue('projectPhaseDates');
-            for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
-                $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+        if($table != "Candidate"){
+            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
+            if($me->isRoleAtLeast(STAFF)){
+                $phaseDates = $config->getValue('projectPhaseDates');
+                for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
+                    $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+                }
             }
-        }
-        if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
-            $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+            if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
+                $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+            }
         }
         $tabbedPage->showPage();
         return true;
