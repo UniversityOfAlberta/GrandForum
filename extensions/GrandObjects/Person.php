@@ -981,7 +981,7 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
-            if($status && ($this->isMe() || $me-isRoleAtLeast(STAFF))){
+            if($status && ($this->isMe() || $me->isRoleAtLeast(STAFF))){
                 $status = DBFunctions::update('mw_user',
                                         array('user_gender' => $this->getGender()),
                                         array('user_name' => EQ($this->getName())));     
@@ -1031,7 +1031,7 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
-            if($status && ($this->isMe() || $me-isRoleAtLeast(STAFF))){
+            if($status && ($this->isMe() || $me->isRoleAtLeast(STAFF))){
                 $status = DBFunctions::update('mw_user',
                                         array('user_gender' => $this->getGender()),
                                         array('user_id' => EQ($this->getId())));      
@@ -1436,7 +1436,7 @@ class Person extends BackboneModel {
      */
     function getGender(){
         $me = Person::newFromWgUser();
-        if($this->isMe() || $me-isRoleAtLeast(STAFF)){
+        if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
         }
         return "";
