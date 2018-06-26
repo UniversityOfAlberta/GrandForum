@@ -18,9 +18,10 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;>";
             $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
             $this->html .= "<table>";
+            $age = date_diff(date_create($this->person->getAge()), date_create('today'))->y;
             $this->html .= "<tr>
                  <td align='right'><b>Age:</b></td>
-                 <td>".str_replace("'", "&#39;", $this->person->getAge())."</td>
+                 <td>".str_replace("'", "&#39;",$age)."</td>
             </tr>";
             $this->html .= "<tr>
                 <td align='right'><b>Indigenous:</b></td>
@@ -75,10 +76,10 @@ class PersonDemographicsTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($person)){
             $age = "<tr>
-                <td align='right'><b>Age:</b></td>
-                <td><input type='text' name='age' value='".str_replace("'", "&#39;", $person->getAge())."'></td>
+                <td align='right'><b>Date of birth:</b></td>
+                <td><input type='date' name='age' value='".str_replace("'", "&#39;", $person->getAge())."'></td>
             </tr>";
-            
+                        
             $indigenousYes = ($person->getIndigenousStatus() == "Yes") ? "selected='selected'" : "";
             $indigenousNo = ($person->getIndigenousStatus() == "No") ? "selected='selected'" : "";
             $indigenousDeclined = ($person->getIndigenousStatus() == "Not disclosed") ? "selected='selected'" : "";
