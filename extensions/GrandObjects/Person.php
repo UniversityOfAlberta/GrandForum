@@ -981,6 +981,11 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
+            if($status && ($this->isMe() || $me-isRoleAtLeast(STAFF))){
+                $status = DBFunctions::update('mw_user',
+                                        array('user_gender' => $this->getGender()),
+                                        array('user_name' => EQ($this->getName())));     
+            }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
                                         array('user_age' => $this->getAge(),
@@ -1021,12 +1026,16 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
-                                          'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+            if($status && ($this->isMe() || $me-isRoleAtLeast(STAFF))){
+                $status = DBFunctions::update('mw_user',
+                                        array('user_gender' => $this->getGender()),
+                                        array('user_id' => EQ($this->getId())));      
+            }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
                                         array('user_age' => $this->getAge(),
@@ -1427,7 +1436,7 @@ class Person extends BackboneModel {
      */
     function getGender(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if($this->isMe() || $me-isRoleAtLeast(STAFF)){
             return $this->gender;
         }
         return "";
