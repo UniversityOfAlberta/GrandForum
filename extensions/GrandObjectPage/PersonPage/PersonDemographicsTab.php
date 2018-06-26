@@ -18,7 +18,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;>";
             $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
             $this->html .= "<table>";
-            $age = date_diff(date_create($this->person->getAge()), date_create('today'))->y;
+            $age = @date_diff(date_create($this->person->getAge()), date_create('today'))->y;
             $this->html .= "<tr>
                  <td align='right'><b>Age:</b></td>
                  <td>".str_replace("'", "&#39;",$age)."</td>
@@ -96,7 +96,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             </tr>";
             $disabilityYes = ($person->getDisabilityStatus() == "Yes") ? "selected='selected'" : "";
             $disabilityNo = ($person->getDisabilityStatus() == "No") ? "selected='selected'" : "";
-            $disabilityDeclined = ($person->getDisabilityStatus() == "Declined") ? "selected='selected'" : "";
+            $disabilityDeclined = ($person->getDisabilityStatus() == "Not disclosed") ? "selected='selected'" : "";
             $disability = "<tr>
                 <td align='right'><b>Are you a person with a disability?:</b></td>
                 <td>
