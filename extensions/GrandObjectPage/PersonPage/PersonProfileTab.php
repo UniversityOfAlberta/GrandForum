@@ -90,6 +90,20 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = $_POST['public_profile'];
         $this->person->privateProfile = $_POST['private_profile'];
         $this->person->update();
+        
+        // Update Role Titles
+        if(isset($_POST['role_title'])){
+            foreach($this->person->getRoles() as $role){
+                if(isset($_POST['role_title'][$role->getId()])){
+                    $value = $_POST['role_title'][$role->getId()];
+                    DBFunctions::update('grand_roles', 
+                                        array('title' => $value),
+                                        array('id' => $role->getId()));
+                }
+            }
+            Cache::delete("personRolesDuring{$this->person->getId()}*", true);
+	        Cache::delete("rolesCache");
+        }
 
         Person::$rolesCache = array();
         Person::$cache = array();
@@ -596,11 +610,13 @@ EOF;
                                 <td><table>";
             $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
             foreach($roles as $role){
-                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
-                $this->html .= "<tr>
-                                    <td align='right'><b>{$role->getRole()}:</b></td>
-                                    <td>{$roleTitleCombo->render()}</td>
-                                </tr>";
+                if($role->getId() > 0){
+                    $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
+                    $this->html .= "<tr>
+                                        <td align='right'><b>{$role->getRole()}:</b></td>
+                                        <td>{$roleTitleCombo->render()}</td>
+                                    </tr>";
+                }
             }
             $this->html .= "</table></td></tr>";
         }
