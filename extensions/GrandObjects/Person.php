@@ -40,7 +40,7 @@ class Person extends BackboneModel {
     var $prevLastName;
     var $honorific;
     var $language;
-    var $age;
+    var $birthDate;
     var $indigenousStatus;
     var $disabilityStatus;
     var $minorityStatus;
@@ -313,7 +313,7 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_stakeholder',
                                               'user_gender',
-                                              'user_age',
+                                              'user_birth_date',
                                               'user_indigenous_status',
                                               'user_minority_status',
                                               'user_disability_status',
@@ -832,7 +832,7 @@ class Person extends BackboneModel {
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
-            $this->age = @$data[0]['user_age'];
+            $this->birthDate = @$data[0]['user_birth_date'];
             $this->indigenousStatus = @$data[0]['user_indigenous_status'];
             $this->disabilityStatus = @$data[0]['user_disability_status'];
             $this->minorityStatus = @$data[0]['user_minority_status'];
@@ -905,7 +905,7 @@ class Person extends BackboneModel {
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
-                      'age' => $this->getAge(),
+                      'birthDate' => $this->getBirthDate(),
                       'indigenousStatus' => $this->getIndigenousStatus(),
                       'minorityStatus' => $this->getMinorityStatus(),
                       'disabilityStatus' => $this->getDisabilityStatus(),
@@ -988,7 +988,7 @@ class Person extends BackboneModel {
             }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
-                                        array('user_age' => $this->getAge(),
+                                        array('user_birthDate' => $this->getBirthDate(),
                                               'user_indigenous_status' => $this->getIndigenousStatus(),
                                               'user_minority_status' => $this->getMinorityStatus(),
                                               'user_disability_status' => $this->getDisabilityStatus()),
@@ -1038,7 +1038,7 @@ class Person extends BackboneModel {
             }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
-                                        array('user_age' => $this->getAge(),
+                                        array('user_birth_date' => $this->getBirthDate(),
                                               'user_indigenous_status' => $this->getIndigenousStatus(),
                                               'user_minority_status' => $this->getMinorityStatus(),
                                               'user_disability_status' => $this->getDisabilityStatus()),
@@ -4708,13 +4708,13 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the age of this Person
-     * @return string The age of this Person
+     * Returns the birth date of this Person
+     * @return string The birth date of this Person
      */
-    function getAge(){
+    function getBirthDate(){
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($this)){
-            return $this->age;
+            return $this->birthDate;
         }
         return "";
     }

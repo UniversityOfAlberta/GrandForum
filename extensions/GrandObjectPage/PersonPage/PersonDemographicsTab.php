@@ -18,7 +18,10 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;>";
             $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
             $this->html .= "<table>";
-            $age = @date_diff(date_create($this->person->getAge()), date_create('today'))->y;
+            $age = $this->person->getBirthDate();
+            if($age != ''){
+                $age = @date_diff(date_create($this->person->getBirthDate()), date_create('today'))->y;            
+            }
             $this->html .= "<tr>
                  <td align='right'><b>Age:</b></td>
                  <td>".str_replace("'", "&#39;",$age)."</td>
@@ -56,7 +59,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
-        $this->person->age = $_POST['age']; 
+        $this->person->birthDate = $_POST['birthDate']; 
         $this->person->indigenousStatus = $_POST['indigenousStatus']; 
         $this->person->minorityStatus = $_POST['minorityStatus']; 
         $this->person->disabilityStatus = $_POST['disabilityStatus']; 
@@ -75,9 +78,9 @@ class PersonDemographicsTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($person)){
-            $age = "<tr>
+            $birthDate = "<tr>
                 <td align='right'><b>Date of birth:</b></td>
-                <td><input type='date' name='age' value='".str_replace("'", "&#39;", $person->getAge())."'></td>
+                <td><input type='date' name='birthDate' value='".str_replace("'", "&#39;", $person->getBirthDate())."'></td>
             </tr>";
                         
             $indigenousYes = ($person->getIndigenousStatus() == "Yes") ? "selected='selected'" : "";
@@ -124,7 +127,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             </tr>";
         }
         $this->html .= "<table>
-                          {$age}
+                          {$birthDate}
                           {$indigenous}
                           {$disability}
                           {$minority}";

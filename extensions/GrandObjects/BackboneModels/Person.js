@@ -143,7 +143,7 @@ Person = Backbone.Model.extend({
         nationality: '',
         stakeholder: '',
         gender: '',
-        age: '',
+        birthDate: '',
         indigenousStatus: '',
         minorityStatus: '',
         disabilityStatus: '',
