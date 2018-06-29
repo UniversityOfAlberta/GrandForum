@@ -300,7 +300,6 @@
         
         $check = Product::newFromTitle($product->title, $product->category);
         if($check == null || $check->getId() == 0){
-            echo $product->getTitle()."\n";
             $product->create(false);
             if($product->date != ""){
                 if(isset($authorships[$publication['id']])){
