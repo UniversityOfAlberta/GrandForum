@@ -37,6 +37,21 @@
         'Patent'          => array('Patent/Spin-Off', 'Patent')
     );
     
+    $presentationMap = array(
+        'colloquium/seminar presentation at another university or other institution' => 'Seminar',
+        'panel member' => 'Panel Member',
+        'conference/symposium/workshop keynote or plenary presentation (no parallel sessions during presentation)' => 'Keynote',
+        'colloquium/seminar presentation at the university of alberta' => 'Seminar',
+        'conference/symposium/workshop oral presentation' => 'Conference Presentation',
+        'public (non-academic audience) off campus presentation' => 'Public Presentation',
+        'conference/symposium/workshop poster presentation' => 'Poster Presentation',
+        'tutorial presentation' => 'Tutorial',
+        'presentation on the web' => 'Web Presentation',
+        'public (non-academic audience) presentation' => 'Public Presentation',
+        'colloquium/seminar presentation' => 'Seminar',
+        'conference/symposium/workshop keynote or plenary presentation' => 'Keynote'
+    );
+    
     $wgUser = User::newFromId(1);
     
     DBFunctions::execSQL("TRUNCATE grand_salary_scales", true);
@@ -54,6 +69,10 @@
     $publications = DBFunctions::select(array('bddEfec2_production.publications'),
                                         array('*'),
                                         array('id' => GT(10253)));
+                                        
+    $presentations = DBFunctions::select(array('bddEfec2_production.presentations'),
+                                         array('*'),
+                                         array('id' => GT(8022)));
                                         
     $authorships = DBFunctions::select(array('bddEfec2_production.authorships'),
                                        array('*'),
@@ -322,6 +341,58 @@
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    foreach($presentations as $presentation){
+        $product = new Product(array());
+        $product->category = 'Presentation';
+        $product->type = $presentationMap[$presentation['category']];
+        $product->title = trim($presentation['organization'])." {$product->type}";
+        $product->date = $presentation['date'];
+        $product->access = "Public";
+        
+        if($presentation['invited'] == "formal invitation"){
+            $product->status = "Invited";
+        }
+        else{
+            $product->status = "Not Invited";
+        }
+        
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+        $data = array(
+            'organizing_body' => $presentation['organization'],
+            'location' => $presentation['country'],
+            'length' => $presentation['duration']
+        );
+        if($presentation['refereed'] == "not refereed" ||
+           $presentation['refereed'] == ""){
+            $data['peer_reviewed'] = "No";
+        }
+        else{
+            $data['peer_reviewed'] = "Yes";
+        }
+        
+        $product->data = $data;
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            if(isset($facultyMap[$presentation['faculty_staff_member_id']])){
+                $faculty = $facultyMap[$presentation['faculty_staff_member_id']];
+                $product->authors[] = $faculty;
+                
+                $product->create(false);
+                $reportedYear = substr($presentation['created_at'], 0, 4);
+                $reportedMonth = substr($presentation['created_at'], 5, 5);
+                if($reportedMonth < "12-01"){
+                    $reportedYear--;
+                }
+                DBFunctions::insert('grand_products_reported',
+                                    array('product_id' => $product->getId(),
+                                          'user_id' => $faculty->getId(),
+                                          'year' => $reportedYear));
             }
         }
     }
