@@ -147,7 +147,7 @@ class Paper extends BackboneModel{
     // Returns a new Paper from the given id
     static function newFromTitle($title, $category = "%", $type = "%", $status = "%"){
         $title = str_replace("&#58;", ":", $title);
-        $title = str_replace("'", "&#39;", $title);
+        $title = DBFunctions::escape($title);
         $category = DBFunctions::escape($category);
         $type = DBFunctions::escape($type);
         $status = DBFunctions::escape($status);

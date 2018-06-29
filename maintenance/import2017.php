@@ -24,6 +24,19 @@
         $r->create();
     }
     
+    $productCategoryMap = array(
+        'Conference'      => array('Publication', 'Conference Paper'),
+        'Journal'         => array('Publication', 'Journal Paper'),
+        'BookChapter'     => array('Publication', 'Book Chapter'),
+        'TechnicalReport' => array('Publication', 'Tech Report'),
+        'Other'           => array('Publication', 'Misc'),
+        'PosterArticle'   => array('Publication', 'Poster'),
+        'PaperAbstract'   => array('Publication', 'Journal Abstract'),
+        'Review'          => array('Publication', 'Book Review'),
+        'Book'            => array('Publication', 'Book'),
+        'Patent'          => array('Patent/Spin-Off', 'Patent')
+    );
+    
     $wgUser = User::newFromId(1);
     
     DBFunctions::execSQL("TRUNCATE grand_salary_scales", true);
@@ -37,7 +50,50 @@
                                          
     $salaries = DBFunctions::select(array('bddEfec2_production.salaries'),
                                     array('*'));
+                                    
+    $publications = DBFunctions::select(array('bddEfec2_production.publications'),
+                                        array('*'),
+                                        array('id' => GT(10253)));
+                                        
+    $authorships = DBFunctions::select(array('bddEfec2_production.authorships'),
+                                       array('*'),
+                                       array(),
+                                       array('position' => 'ASC'));
+                                       
+    $external_authors = DBFunctions::select(array('bddEfec2_production.external_authors'),
+                                            array('*'));
+                                            
+    $responsibility_authors = DBFunctions::select(array('bddEfec2_production.responsibility_coauthors'),
+                                                  array('*'));
+                                            
+    $responsibilities = DBFunctions::select(array('bddEfec2_production.responsibilities'),
+                                            array('*'));
      
+    // Index Authorships by publication_id
+    $newAuthorships = array();
+    foreach($authorships as $author){
+        $newAuthorships[$author['publication_id']][] = $author;
+    }
+    $authorships = $newAuthorships; 
+    
+    // Index Externals by id
+    $newExternals = array();
+    foreach($external_authors as $s){
+        $newExternals[$s['id']] = $s;
+    }
+    $external_authors = $newExternals;
+    
+    $respIdMap = array();
+    foreach($responsibilities as $resp){
+        $person = Person::newFromNameLike($resp['name']);
+        if($person != null && $person->getId() > 0){
+            $respIdMap[$resp['id']] = $person;
+        }
+        else{
+            $respIdMap[$resp['id']] = $resp;
+        }
+    }
+    
     $facultyMap = array();                                 
     foreach($faculty as $f){
         if($f['uid'] != 0){
@@ -162,6 +218,112 @@
                                 array('user_id' => $person->getId(),
                                       'year' => $salary['year'],
                                       'salary' => $salary['salary']));
+        }
+    }
+
+    foreach($publications as $publication){
+        $product = new Product(array());
+        $product->category = $productCategoryMap[$publication['type']][0];
+        $product->type = $productCategoryMap[$publication['type']][1];
+        $product->title = trim(str_replace("•", "", str_replace("￼", "", $publication['title'])));
+        
+        $product->date = $publication['publication_date'];
+        $product->acceptance_date = $publication['acceptance_date'];
+        if($product->date == ""){
+            $product->date = $product->acceptance_date;
+        }
+        $product->status = "Published";
+        $product->access = "Public";
+        
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+        
+        $pages = "";
+        $pageRange = "";
+        if(!is_numeric(str_replace(array("-", " "), "", $publication['pages'])) && strstr($publication['pages'], "-") === false){
+            $pages = $publication['pages'];
+        }
+        else {
+            $pageRange = $publication['pages'];
+        }
+        $data = array(
+            'publisher' => $publication['publisher'],
+            'ms_pages' => $pages,
+            'pages' => $pageRange,
+            'volume' => $publication['volume'],
+            'issue' => $publication['issue'],
+            'number' => $publication['issue'],
+            'doi' => $publication['doi'],
+            'url' => $publication['url'],
+            'venue' => $publication['venue'],
+            'event_title' => $publication['venue'],
+            'book_title' => $publication['venue'],
+            'journal_title' => $publication['venue'],
+            'published_in' => $publication['venue'],
+            'event_location' => $publication['location'],
+            'location' => $publication['location'],
+            'editors' => $publication['editors'],
+            'peer_reviewed' => ucwords($publication['refereed']),
+            'acceptance_ratio' => "{$publication['acceptance_ratio_numerator']}/{$publication['acceptance_ratio_denominator']}"
+        );
+        $product->data = $data;
+        
+        // Add Authors
+        if(isset($authorships[$publication['id']])){
+            foreach($authorships[$publication['id']] as $author){
+                if($author['author_type'] == 'FacultyStaffMember'){
+                    // Faculty Staff
+                    if(isset($facultyMap[$author['author_id']])){
+                        $product->authors[] = $facultyMap[$author['author_id']];
+                    }
+                }
+                else if($author['author_type'] == 'ExternalAuthor'){
+                    // External Author
+                    $person = new Person(array());
+                    $person->name = $external_authors[$author['author_id']]['name'];
+                    $product->authors[] = $person;
+                }
+                else if($author['author_type'] == 'Responsibility'){
+                    // HQP
+                    if(isset($respIdMap[$author['author_id']]) && $respIdMap[$author['author_id']] instanceof Person){
+                        $product->authors[] = $respIdMap[$author['author_id']];
+                    }
+                    else{
+                        $person = new Person(array());
+                        $person->name = $respIdMap[$author['author_id']]['name'];
+                        $product->authors[] = $person;
+                    }
+                }
+            }
+        }
+        
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            echo $product->getTitle()."\n";
+            $product->create(false);
+            if($product->date != ""){
+                if(isset($authorships[$publication['id']])){
+                    foreach($authorships[$publication['id']] as $author){
+                        if($author['author_type'] == 'FacultyStaffMember'){
+                            // Faculty Staff
+                            if(isset($facultyMap[$author['author_id']])){
+                                $faculty = $facultyMap[$author['author_id']];
+                                $reportedYear = substr($publication['created_at'], 0, 4);
+                                $reportedMonth = substr($publication['created_at'], 5, 5);
+                                if($reportedMonth < "12-01"){
+                                    $reportedYear--;
+                                }
+                                DBFunctions::insert('grand_products_reported',
+                                                    array('product_id' => $product->getId(),
+                                                          'user_id' => $faculty->getId(),
+                                                          'year' => $reportedYear));
+                                                          
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
