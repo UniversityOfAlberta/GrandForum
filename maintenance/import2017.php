@@ -73,6 +73,30 @@
     $presentations = DBFunctions::select(array('bddEfec2_production.presentations'),
                                          array('*'),
                                          array('id' => GT(8022)));
+                                         
+    $community_outreach_committees = DBFunctions::select(array('bddEfec2_production.community_outreach_committees'),
+                                                         array('*'),
+                                                         array('id' => GT(1958)));
+                                                         
+    $departmental_committees = DBFunctions::select(array('bddEfec2_production.departmental_committees'),
+                                                   array('*'),
+                                                   array('id' => GT(3391)));
+                                                   
+    $faculty_committees = DBFunctions::select(array('bddEfec2_production.faculty_committees'),
+                                                   array('*'),
+                                                   array('id' => GT(875)));
+                                                   
+    $scientific_committees = DBFunctions::select(array('bddEfec2_production.scientific_committees'),
+                                                   array('*'),
+                                                   array('id' => GT(8356)));
+                                                   
+    $university_committees = DBFunctions::select(array('bddEfec2_production.university_committees'),
+                                                   array('*'),
+                                                   array('id' => GT(1272)));
+    
+    $other_committees = DBFunctions::select(array('bddEfec2_production.other_committees'),
+                                                   array('*'),
+                                                   array('id' => GT(1135)));
                                         
     $authorships = DBFunctions::select(array('bddEfec2_production.authorships'),
                                        array('*'),
@@ -394,6 +418,183 @@
                                           'user_id' => $faculty->getId(),
                                           'year' => $reportedYear));
             }
+        }
+    }
+    
+    foreach($community_outreach_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Community Outreach Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                    
+        $product->data = array();
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
+        }
+    }
+    
+    foreach($departmental_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Departmental Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                               
+        $product->data = array();
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($facultyMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
+        }
+    }
+    
+    foreach($faculty_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Faculty Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                               
+        $product->data = array();
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($facultyMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
+        }
+    }
+    
+    foreach($other_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Other Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                       
+        $product->data = array();        
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($facultyMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
+        }
+    }
+    
+    foreach($scientific_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Scientific Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+        $product->data = array(
+            'scope' => ucfirst($committee['scientific_committee_scope']),
+            'organization' => trim($committee['organization'])
+        );
+                               
+        // Add Authors
+        if(isset($facultyMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
+        }
+    }
+    
+    foreach($university_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'University Committee';
+        $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
+        $product->access = "Public";
+                               
+        $product->data = array();  
+        $product->authors = array();
+        $product->contributors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($facultyMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $facultyMap[$committee['faculty_staff_member_id']];
+        }
+        $check = Product::newFromTitle($product->title, $product->category);
+        if($check == null || $check->getId() == 0){
+            $product->create(false);
         }
     }
 
