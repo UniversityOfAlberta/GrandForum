@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL 2018 Fellowship Application" reportType="RP_FELLOW" pdfType="RPTP_FELLOW" pdfFiles="FellowshipApplicationPDF" ajax="true" year="2018" disabled="false">
+    <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;">
+                    <h4 style='font-size:1.5em;'>AGE-WELL 2018 Fellowship Application</h4>
+                </div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="name" type="Static">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td align="right">
+                            <b>Name:&nbsp;</b>
+                        </td>
+                        <td>
+                            {$user_name}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="supervisor" type="Text" blobType="BLOB_TEXT" blobItem="SUPERVISOR">
+            <![CDATA[
+                <tr>
+                    <td align="right">
+                        <b>Supervisor:&nbsp;</b>
+                    </td>
+                    <td>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="question" type="Radio" blobType="BLOB_TEXT" blobItem="QUESTION" options="What factors are associated with premature transitions to long-term care? What are the challenges Government faces in addressing this problem?|What housing options would support seniors with disabilities to age in place and live independently for as long as possible?|What are the privacy issues related to wearable technologies? How can we properly address data access and ownership concerns for new wearable health technologies?|What supports can we provide to informal caregivers to assist them in providing care to their loved ones?">
+            <![CDATA[
+                <tr>
+                    <td align="right" valign="top">
+                        <b>Question:&nbsp;</b>
+                    </td>
+                    <td>
+                        {$item}
+                    </td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="steps" type="Textarea" blobType="BLOB_TEXT" blobItem="STEPS" limit="300" rich="true">
+            <![CDATA[
+                <h3>Please describe what steps you would take to answer this question</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="experience" type="Textarea" blobType="BLOB_TEXT" blobItem="EXPERIENCE" limit="300" rich="true">
+            <![CDATA[
+                <h3>Please outline any experience you may have related to working with government or policy stakeholders</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sample" type="Upload" blobType="BLOB_RAW" blobItem="SAMPLE" mimeType=".pdf" fileSize="5">
+            <![CDATA[
+                <h3>Please attach a writing sample (5 pages max) – upload PDF.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
