@@ -446,11 +446,40 @@
                 <h2>Supplementary Professional Activities</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
+        <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
             <![CDATA[
+                <h3>If you have SPA to report, select "Minor SPA" or "Major SPA"</h3>
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItemSet type="If" if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Minor SPA)},
+                                         {==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Major SPA)})}">
+            <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
+                <![CDATA[
+                    <h3>I confirm that I have an up to date Disclosure Report on file</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Major SPA)}">
+                <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
+                    <![CDATA[
+                        <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT">
+                <![CDATA[
+                    <h3>Describe the SPA below</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <!--ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem-->
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
