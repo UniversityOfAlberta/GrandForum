@@ -564,9 +564,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations.&lt;br />
-&lt;br />
-(Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf&quot;>FSO Agreement&lt;/a>.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf&quot;>FSO Agreement&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
             <![CDATA[
                 <script type="text/javascript">
@@ -587,7 +585,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                                 $("#outer_major").slideUp();
                             }
                         }).change();
-                    })
+                    });
                 </script>
                 <h3>If you have SPA to report, select "Minor SPA" or "Major SPA"</h3>
                 {$item}

@@ -233,7 +233,6 @@ abstract class AbstractReportItem {
     // By default only calls setBlobValue using the postdata, but can
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
-        //print_r($_POST);
         if(isset($_POST[$this->getPostId()])){
             if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
@@ -245,7 +244,6 @@ abstract class AbstractReportItem {
                 if(isset($_POST['oldData'][$this->getPostId()]) &&
                    $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
                    // Don't save, but also don't display an error
-                   //echo "HELLO";
                    return array();
                 }
                 else if(isset($_POST['oldData'][$this->getPostId()]) && 

@@ -28,6 +28,15 @@ class SelectReportItem extends AbstractReportItem {
 	    return $options;
 	}
 	
+	function getBlobValue(){
+	    $value = parent::getBlobValue();
+	    if($value == ""){
+	        $options = $this->parseOptions();
+	        return $options[0];
+	    }
+	    return $value;
+	}
+	
 	function renderForPDF(){
 	    global $wgOut;
 	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));
