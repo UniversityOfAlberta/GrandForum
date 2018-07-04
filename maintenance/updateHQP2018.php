@@ -14,23 +14,49 @@
         $api->params['id'] = $person->getId();
         $api->doPOST();
     }
+    
+    function addUserRole($person, $role, $startDate="", $endDate="0000-00-00 00:00:00"){
+        $r = new Role(array());
+        $r->user = $person->getId();
+        $r->role = $role;
+        $r->startDate = $startDate;
+        $r->endDate = $endDate;
+        $r->create();
+    }
 
     $wgUser = User::newFromId(1);
-    $cs_hqp = explode("\n", file_get_contents("cs_hqp.csv"));
+    $hqps = explode("\n", file_get_contents("math_hqp.csv"));
     
-    foreach($cs_hqp as $hqp){
+    foreach($hqps as $key => $hqp){
         $csv = str_getcsv($hqp);
-        if($csv[0] == "graddb"){
+        if($csv[0] == "change" || $csv[0] == "add"){
             $person = Person::newFromId($csv[1]);
+            if($person == null || $person->getId() == 0){
+                // Create First
+                $username = str_replace(" ", "", "{$csv[2]}.{$csv[4]}");
+                $email = "{$csv[6]}@ualberta.ca";
+                $user = User::createNew($username, array('real_name' => "{$csv[4]}, {$csv[2]}", 
+                                                         'password' => User::crypt(mt_rand()), 
+                                                         'email' => $email));
+                if($user != null){
+                    $hqps[$key] = preg_replace("/,/", ",{$user->getId()}", $hqp, 1);
+                    $csv[1] = $user->getId();
+                    Person::$cache = array();
+                    $person = Person::newFromUser($user);
+                    $person->updateNamesCache();
+                    echo $person->getId();
+                    addUserRole($person, HQP, $hqp[8], $hqp[9]);
+                }
+            }
             // First delete previous University Information
             DBFunctions::delete('grand_user_university',
                                 array('user_id' => $person->getId()));
         }
     }
     
-    foreach($cs_hqp as $hqp){
+    foreach($hqps as $hqp){
         $csv = str_getcsv($hqp);
-        if($csv[0] == "graddb"){
+        if($csv[0] == "change" || $csv[0] == "add"){
             $person = Person::newFromId($csv[1]);
             echo "=== {$csv[2]} {$csv[4]} ===\n";
             
@@ -50,7 +76,7 @@
 
             addUserUniversity($person, 
                               "University of Alberta",
-                              "Computing Science",
+                              "Mathematical And Statistical Sciences",
                               $title,
                               $csv[8],
                               $csv[9]);
