@@ -44,7 +44,6 @@
                     Person::$cache = array();
                     $person = Person::newFromUser($user);
                     $person->updateNamesCache();
-                    echo $person->getId();
                     addUserRole($person, HQP, $hqp[8], $hqp[9]);
                 }
             }
