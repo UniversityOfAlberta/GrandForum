@@ -61,7 +61,7 @@
                     </table>
                 </div>
                 <div style='display:inline-block;width:40%;vertical-align:top;'>
-                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf' target='_blank'>Faculty Agreement</a> or <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf' target='_blank'>FSO Agreement</a>. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
+                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-agreement.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-service-officer-agreement.pdf' target='_blank'>FSO Agreement</a>. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
                     <table width="100%" class='wikitable'>
                         <tr>
                             <th></th>
@@ -112,7 +112,7 @@
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <h2>Responsibilities Variation <span class='clicktooltip' title='Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.'>&#9432;</span></h2>
-                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the <a href='http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf' target='_blank'>Faculty Agreement</a>?
+                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the <a href='https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-agreement.pdf' target='_blank'>Faculty Agreement</a>?
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
@@ -564,7 +564,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/Faculty.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;http://www.hrs.ualberta.ca/en/MyEmployment/~/media/hrs/MyEmployment/Agreements/Academic/FSO.pdf&quot;>FSO Agreement&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-agreement.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-service-officer-agreement.pdf&quot;>FSO Agreement&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
             <![CDATA[
                 <script type="text/javascript">
