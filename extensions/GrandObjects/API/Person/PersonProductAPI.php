@@ -21,7 +21,7 @@ class PersonProductAPI extends RESTAPI {
                 $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
             }
             else{
-                $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
+                $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public', false);
             }
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 

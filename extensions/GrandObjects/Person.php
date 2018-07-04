@@ -3926,9 +3926,10 @@ class Person extends BackboneModel {
      * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
      * @param string $access Whether to include 'Forum' or 'Public' access
+     * @param string $exclude Whether or not to obey exclusion
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
-    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
+    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum', $exclude=true){
         $me = Person::newFromWgUser();
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -3978,6 +3979,20 @@ class Person extends BackboneModel {
                 }
             }
         }
+        if($exclude){
+            foreach($papersArray as $key => $paper){
+                $skip = false;
+                foreach($paper->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($papersArray[$key]);
+                }
+            }
+        }
         return $papersArray;
     }
     
@@ -3991,7 +4006,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -4049,6 +4064,21 @@ class Person extends BackboneModel {
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange)))){
                 $papersArray[] = $paper;
+            }
+        }
+        
+        if($exclude){
+            foreach($papersArray as $key => $paper){
+                $skip = false;
+                foreach($paper->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($papersArray[$key]);
+                }
             }
         }
         return $papersArray;

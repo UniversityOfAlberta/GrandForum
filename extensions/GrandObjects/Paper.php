@@ -12,6 +12,7 @@ class Paper extends BackboneModel{
     static $cache = array();
     static $dataCache = array();
     static $productProjectsCache = array();
+    static $exclusionCache = array();
 
     var $id;
     var $category;
@@ -29,6 +30,7 @@ class Paper extends BackboneModel{
     var $projectsWaiting;
     var $deleted;
     var $access_id = 0;
+    var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
     var $access = "Forum"; // Either 'Public' or 'Forum'
     var $created_by = 0;
     var $ccv_id;
@@ -613,6 +615,7 @@ class Paper extends BackboneModel{
     // Constructor
     function Paper($data){
         if(count($data) > 0){
+            $me = Person::newFromWgUser();
             $this->id = $data[0]['id'];
             $this->category = $data[0]['category'];
             $this->description = isset($data[0]['description']) ? $data[0]['description'] : false;
@@ -635,6 +638,12 @@ class Paper extends BackboneModel{
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
+            $exclude = false;
+            foreach($this->getExclusions() as $exclusion){
+                if($exclusion->getId() == $me->getId()){
+                    $this->exclude = true;
+                }
+            }
         }
     }
     
@@ -969,6 +978,22 @@ class Paper extends BackboneModel{
         }
         unset($author);
         return $authors;
+    }
+    
+    /**
+     * Returns a list of People who want this Product to be exluded from them
+     * @return array the list of People who want this Product to be excluded from them
+     */
+    function getExclusions(){
+        if(count(self::$exclusionCache) == 0){
+            $data = DBFunctions::select(array('grand_products_exclude'),
+                                        array('*'));
+            foreach($data as $row){
+                self::$exclusionCache[$row['product_id']][] = Person::newFromId($row['user_id']);
+            }
+            self::$exclusionCache[-1] = array(); // This is just to garuntee that there will be at least 1 row in the cache
+        }
+        return (isset(self::$exclusionCache[$this->getId()])) ? self::$exclusionCache[$this->getId()] : array();
     }
     
     /**
@@ -1730,6 +1755,11 @@ class Paper extends BackboneModel{
                 }
             }
             
+            if($this->exclude){
+                DBFunctions::insert('grand_products_exclude',
+                                    array('product_id' => $this->id,
+                                          'user_id' => $me->id));
+            }
             if($status){
                 // Commit transaction
                 DBFunctions::commit();
@@ -1750,6 +1780,7 @@ class Paper extends BackboneModel{
                 self::$cache = array();
                 self::$dataCache = array();
                 self::$productProjectsCache = array();
+                self::$exclusionCache = array();
             }
             return $status;
         }
@@ -1828,6 +1859,14 @@ class Paper extends BackboneModel{
                                                   true);
                 }
             }
+            DBFunctions::delete('grand_products_exclude',
+                                array('product_id' => $this->id,
+                                      'user_id' => $me->id));
+            if($this->exclude){
+                DBFunctions::insert('grand_products_exclude',
+                                    array('product_id' => $this->id,
+                                          'user_id' => $me->id));
+            }
             if($status){
                 // Commit transaction
                 DBFunctions::commit();
@@ -1867,6 +1906,7 @@ class Paper extends BackboneModel{
                 self::$cache = array();
                 self::$dataCache = array();
                 self::$productProjectsCache = array();
+                self::$exclusionCache = array();
             }
             return $status;
         }
@@ -1966,7 +2006,8 @@ class Paper extends BackboneModel{
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
-                          'access' => $this->getAccess());
+                          'access' => $this->getAccess(),
+                          'exclude' => $this->exclude);
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }
