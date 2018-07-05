@@ -74,7 +74,11 @@
     }
 
     
-    $courseID = 0; // needs to be out of the whole loop.
+    $auto_increment = DBFunctions::execSQL("SELECT `AUTO_INCREMENT`
+                                            FROM  INFORMATION_SCHEMA.TABLES
+                                            WHERE TABLE_SCHEMA = '{$config->getValue('dbName')}'
+                                            AND   TABLE_NAME   = 'grand_courses'");
+    $courseID = $auto_increment[0]['AUTO_INCREMENT'] - 1; // needs to be out of the whole loop.
     foreach($dir as $file) {
     
         $filename = $file->getFilename();
