@@ -293,8 +293,11 @@
     foreach($grants1 as $row){
         $person = Person::newFromEmployeeId($row['PI/ Student Employee ID']);
         $check = Grant::newFromProjectId($row['Project']);
-        if($check == null || $check->getId() == 0){
+        if($check != null && $check->getId() != 0){
             // Already exists
+            //$newGrant->total = $row['Total Award (Budget)'];
+            //$newGrant->start_date = $row['Proj Start Date'];
+            //$newGrant->end_date = $row['Proj End Date'];
             continue;
         }
         if($person != null && $person->getId() != 0){
