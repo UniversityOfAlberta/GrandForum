@@ -111,6 +111,30 @@
                                             
     $responsibilities = DBFunctions::select(array('bddEfec2_production.responsibilities'),
                                             array('*'));
+                                            
+    // Basic Grant Information
+    $grants1 = DBFunctions::select(array('bddEfec2_production.grants1'),
+                                   array('*'));
+    
+    // Co-Applicant Information
+    $grants2 = DBFunctions::select(array('bddEfec2_production.grants2'),
+                                   array('*'));
+    
+    // Sponsor Information (Mainly for MULTI)
+    $grants3 = DBFunctions::select(array('bddEfec2_production.grants3'),
+                                   array('*'));
+                                   
+    $newGrants2 = array();
+    foreach($grants2 as $grant){
+        $newGrants2[$grant['Project']][] = $grant;
+    }
+    $grants2 = $newGrants2;
+    
+    $newGrants3 = array();
+    foreach($grants3 as $grant){
+        $newGrants3[$grant['Project']][] = $grant;
+    }
+    $grants3 = $newGrants3;
      
     // Index Authorships by publication_id
     $newAuthorships = array();
@@ -261,6 +285,51 @@
                                 array('user_id' => $person->getId(),
                                       'year' => $salary['year'],
                                       'salary' => $salary['salary']));
+        }
+    }
+    
+    // Import Grants
+    DBFunctions::execSQL("DELETE FROM `grand_grants` WHERE id > 3475", true);
+    foreach($grants1 as $row){
+        $person = Person::newFromEmployeeId($row['PI/ Student Employee ID']);
+        $check = Grant::newFromProjectId($row['Project']);
+        if($check == null || $check->getId() == 0){
+            // Already exists
+            continue;
+        }
+        if($person != null && $person->getId() != 0){
+            $newGrant = new Grant(array());
+            $newGrant->user_id = $person->getId();
+            $newGrant->total = $row['Total Award (Budget)'];
+            $newGrant->title = $row['Project Title'];
+            $newGrant->description = $row['Scientific Title (Awd Long Description)'];
+            $newGrant->start_date = $row['Proj Start Date'];
+            $newGrant->end_date = $row['Proj End Date'];
+            $newGrant->project_id = $row['Project'];
+            $newGrant->role = str_replace("Principal Investigat", "Principal Investigator", $row['PI/ Student Role']);
+            $newGrant->seq_no = $row['Awd Spons Prog Seq No.'];
+            $newGrant->prog_description = $row['Awd Spons Program Description'];
+            if($row['Award Sponsor ID'] == "MULTI" && isset($grants3[$row['Project']])){
+                $sponsors = array();
+                foreach($grants3[$row['Project']] as $sponsor){
+                    $sponsors[$sponsor['Sponsor Description']] = $sponsor['Sponsor Description'];
+                }
+                $newGrant->sponsor = implode(", ", $sponsors);
+            }
+            else{
+                $newGrant->sponsor = $row['Award Sponsor Name'];
+            }
+            if(isset($grants2[$row['Project']])){
+                foreach($grants2[$row['Project']] as $row2){
+                    if($row2['Proposal Team Member Role Description'] == "Co-PI"){
+                        $member = Person::newFromEmployeeId($row2['Prop Team Member Emplid (if available)']);
+                        if($member != null && $member->getId() != 0){
+                            $newGrant->copi[] = $member->getId();
+                        }
+                    }
+                }
+            }
+            $newGrant->create();
         }
     }
 
@@ -424,7 +493,7 @@
     foreach($community_outreach_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'Community Outreach Committee';
+        $product->type = 'Community Outreach';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
@@ -453,7 +522,7 @@
     foreach($departmental_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'Departmental Committee';
+        $product->type = 'Departmental';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
@@ -482,7 +551,7 @@
     foreach($faculty_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'Faculty Committee';
+        $product->type = 'Faculty';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
@@ -511,7 +580,7 @@
     foreach($other_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'Other Committee';
+        $product->type = 'Other';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
@@ -540,7 +609,7 @@
     foreach($scientific_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'Scientific Committee';
+        $product->type = 'Scientific';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
@@ -572,7 +641,7 @@
     foreach($university_committees as $committee){
         $product = new Product(array());
         $product->category = 'Activity';
-        $product->type = 'University Committee';
+        $product->type = 'University';
         $committee['description'] = str_replace("”", "\"", str_replace("“", "\"", str_replace("￼", "", $committee['description'])));
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
