@@ -4,7 +4,7 @@
     require_once('commandLine.inc');
     global $wgUser;
     
-    // Grabs excel style date for given term
+    // Grabs excel style date for given term (Number of days since Jan 1, 1900, use https://www.timeanddate.com/date/durationresult.html
     function getStartEndDate($term){
     
         $startEndDate = array("start" => 0, "end" => 0);
@@ -38,25 +38,27 @@
         else if ($term == "Winter2017"){ $startEndDate["start"] = 42742; $startEndDate["end"]  = 42835;} //Winter2017: Jan 9, 2017 - Apr 12, 2017
         else if ($term == "Spring2017"){ $startEndDate["start"] = 42861; $startEndDate["end"]  = 42867;} //Spring2017: May 8, 2017 - Jun 14, 2017
         else if ($term == "Summer2017"){ $startEndDate["start"] = 42924; $startEndDate["end"]  = 42961;} //Summer2017: Jul 10, 2017 - Aug 16, 2017
+        
+        else if ($term == "Fall2017"){ $startEndDate["start"] = 42981; $startEndDate["end"]  = 43075;}   //Fall2017:   Sep 5, 2017 - Dec 8, 2017
+        else if ($term == "Winter2018"){ $startEndDate["start"] = 43106; $startEndDate["end"]  = 43201;} //Winter2018: Jan 8, 2018 - Apr 13, 2018
+        else if ($term == "Spring2018"){ $startEndDate["start"] = 43225; $startEndDate["end"]  = 43262;} //Spring2018: May 7, 2018 - Jun 13, 2018
+        else if ($term == "Summer2018"){ $startEndDate["start"] = 43288; $startEndDate["end"]  = 43325;} //Summer2018: Jul 9, 2018 - Aug 15, 2018
                     
         return $startEndDate; 
     }
-    
-
     
     //Start Timer
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("TRUNCATE grand_courses", true);
-    DBFunctions::execSQL("TRUNCATE grand_user_courses", true);    
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 6056", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 6056", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
     //$dataDir = dirname(__FILE__).'/csv_test/'; // if csv in maintanence
     
     $dir = new DirectoryIterator($dataDir);
-    
     
     // Generate a map of course title and description under key of subject+catalog
     $filename = $dataDir . $courseDescrFile;
@@ -155,7 +157,7 @@
                                 `Facil ID`, `Start Date`, `End Date`,
                                 `Hrs From`, `Hrs To`, `Tot Enrl`,
                                 `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
-                                
+        
         $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
                
         DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);

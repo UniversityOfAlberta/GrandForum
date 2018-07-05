@@ -6,8 +6,8 @@
     
     $wgUser = User::newFromId(1);
 
-    $faculty = DBFunctions::execSQL("SELECT * FROM bddEfec2_development.faculty_staff_members");
-    $eFECourses = DBFunctions::execSQL("SELECT * FROM bddEfec2_development.courses");
+    $faculty = DBFunctions::execSQL("SELECT * FROM bddEfec2_production.faculty_staff_members");
+    $eFECourses = DBFunctions::execSQL("SELECT * FROM bddEfec2_production.courses");
     $coursesIndex = array();
     $facultyIndex = array();
     $courses = DBFunctions::execSQL("SELECT * FROM grand_courses");
