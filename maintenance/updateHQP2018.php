@@ -25,10 +25,11 @@
     }
 
     $wgUser = User::newFromId(1);
-    $hqps = explode("\n", file_get_contents("math_hqp.csv"));
+    $hqps = explode("\n", file_get_contents("chem_hqp.csv"));
     
     foreach($hqps as $key => $hqp){
         $csv = str_getcsv($hqp);
+        $hqp[9] = "0000-00-00 00:00:00"; // Hard-coded end date
         if($csv[0] == "change" || $csv[0] == "add"){
             $person = Person::newFromId($csv[1]);
             if($person == null || $person->getId() == 0){
@@ -55,6 +56,7 @@
     
     foreach($hqps as $hqp){
         $csv = str_getcsv($hqp);
+        $csv[9] = "0000-00-00 00:00:00"; // Hard-coded end date
         if($csv[0] == "change" || $csv[0] == "add"){
             $person = Person::newFromId($csv[1]);
             echo "=== {$csv[2]} {$csv[4]} ===\n";
@@ -75,7 +77,7 @@
 
             addUserUniversity($person, 
                               "University of Alberta",
-                              "Mathematical And Statistical Sciences",
+                              "Chemistry",
                               $title,
                               $csv[8],
                               $csv[9]);
