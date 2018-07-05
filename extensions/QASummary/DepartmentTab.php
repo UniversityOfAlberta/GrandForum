@@ -18,7 +18,7 @@ class DepartmentTab extends AbstractTab {
             return;
         }
         $me = Person::newFromWgUser();
-        $year = YEAR;
+        $year = YEAR-1;
         $people = array();
         $hqps = array();
         $ugrads = array();
@@ -253,7 +253,7 @@ class DepartmentTab extends AbstractTab {
         
         $report = new Report();
         $report->pdfType = "QA_SUMMARY: {$this->department}";
-        $report->year = YEAR+1;
+        $report->year = YEAR;
         if(isset($_GET['generatePDF']) && isset($_GET['showTab']) && $_GET['showTab'] == $this->id){
             $report->headerName = " ";
             $report->pageCount = false;
