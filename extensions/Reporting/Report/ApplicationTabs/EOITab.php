@@ -9,7 +9,7 @@ class EOITab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function ProjectTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
+    function EOITab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
