@@ -1404,22 +1404,6 @@ class Person extends BackboneModel {
             // User is at least Staff
             return true;
         }
-        if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
-            // User is NI, therefore can edit anyone who is not in a committee or higher
-            return true;
-        }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
-            // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
-            return true;
-        }
-        if(($this->isThemeCoordinator() || $this->isThemeLeader()) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
-            // User is a Theme Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
-            return true;
-        }
-        if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
-            // User is in a committee or higher, therefore can edit anyone who is not at least Staff
-            return true;
-        }
         if($this->relatedTo($person, SUPERVISES)){
             // User supervises the Person
             return true;
