@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL 2018 Fellowship Application" reportType="RP_FELLOW" pdfType="RPTP_FELLOW" pdfFiles="FellowshipApplicationPDF" ajax="true" year="2018" disabled="false">
+<Report name="AGE-WELL 2018 Policy Challenge Application" reportType="RP_FELLOW" pdfType="RPTP_FELLOW" pdfFiles="FellowshipApplicationPDF" ajax="true" year="2018" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -24,7 +24,7 @@
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div style="float:left;">
-                    <h4 style='font-size:1.5em;'>AGE-WELL 2018 Fellowship Application</h4>
+                    <h4 style='font-size:1.5em;'>AGE-WELL 2018 Policy Challenge Application</h4>
                 </div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
