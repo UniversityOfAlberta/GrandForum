@@ -80,6 +80,7 @@ class ImportBibTeXAPI extends API{
             $product->title = str_replace("&#39;", "'", $paper['title']);
             $product->category = $category;
             $product->type = $type;
+            $product->contributors = array();
         }
         if(isset($this->structure['categories'][$category]['types'][$type])){
             // Make sure that the type actually exists
