@@ -48,15 +48,15 @@ class PeopleTableTab extends AbstractTab {
         $subRoleHeader = "";
         $projectsHeader = "";
         $committees = $config->getValue('committees');
-        if($me->isLoggedIn()){
-            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
-        }
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        if($me->isLoggedIn() &&
-           ($this->table == TL || $this->table == TC || $this->table == "Candidate" || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
+        if($me->isLoggedIn() && $this->table != "Candidate" &&
+           ($this->table == TL || $this->table == TC || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
+        }
+        else if($me->isLoggedIn()){
+            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
