@@ -369,8 +369,9 @@ class Person extends BackboneModel {
             // In APC
             self::$userRows[$id] = Cache::fetch("mw_user_{$id}");
         }
-        else if(count(self::$userRows) == 0) {
+        else {
             // Not loaded yet
+            self::$userRows[$id] = array(); // This is to make sure that this doesn't get called too many times
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
                                               'user_name',
