@@ -115,7 +115,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if($r->getEndDate() != "0000-00-00 00:00:00"){
+            if($r->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($r->getStartDate(), $r->getEndDate());
             }
@@ -280,7 +280,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if($r->getEndDate() != "0000-00-00 00:00:00"){
+            if($r->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($r->getStartDate(), $r->getEndDate());
             }

@@ -686,7 +686,7 @@ class ReportItemCallback {
                 $start = $rel->getStartDate();
                 $end = $rel->getEndDate();
                 if($rel->getUser2()->getId() == $me->getId()){
-                    if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0)) ||
+                    if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00") == 0)) ||
                        (strcmp($start, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($start, REPORTING_CYCLE_START."00:00:00") >= 0) ||
                        (strcmp($end, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0)){
                         $sup = $rel->getUser1();
@@ -1289,7 +1289,7 @@ class ReportItemCallback {
                 continue;
             }
            
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1331,7 +1331,7 @@ class ReportItemCallback {
                 continue;
             }
            
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1373,7 +1373,7 @@ class ReportItemCallback {
                 continue;
             }
            
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1415,7 +1415,7 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1457,7 +1457,7 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1500,7 +1500,7 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1547,7 +1547,7 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
@@ -1596,7 +1596,7 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+            if($relation->getEndDate() != "0000-00-00"){
                 // Normal Date range
                 $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
             }
