@@ -32,6 +32,14 @@
                             {$user_name}
                         </td>
                     </tr>
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$user_email}
+                        </td>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItem id="supervisor" type="Text" blobType="BLOB_TEXT" blobItem="SUPERVISOR">
@@ -46,7 +54,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="question" type="Radio" blobType="BLOB_TEXT" blobItem="QUESTION" options="What factors are associated with premature transitions to long-term care? What are the challenges Government faces in addressing this problem?|What housing options would support seniors with disabilities to age in place and live independently for as long as possible?|What are the privacy issues related to wearable technologies? How can we properly address data access and ownership concerns for new wearable health technologies?|What supports can we provide to informal caregivers to assist them in providing care to their loved ones?">
+        <ReportItem id="question" type="Radio" blobType="BLOB_TEXT" blobItem="QUESTION" options="What factors are associated with premature transitions to long-term care? Describe the barriers and facilitators to addressing this challenge.|What housing options would support seniors with disabilities to age in place and live independently for as long as possible?|What are the privacy issues related to wearable health technologies? Describe how government can begin to address these issues.|What are the leading practices in providing supports for informal caregivers? Please include technology-based examples.">
             <![CDATA[
                 <tr>
                     <td align="right" width="150px" valign="top">
@@ -62,13 +70,13 @@
         </ReportItem>
         <ReportItem id="steps" type="Textarea" blobType="BLOB_TEXT" blobItem="STEPS" limit="300" rich="true">
             <![CDATA[
-                <h3>Please describe what steps you would take to answer this question</h3>
+                <h3>Please describe what steps you would take to answer this question.</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="experience" type="Textarea" blobType="BLOB_TEXT" blobItem="EXPERIENCE" limit="300" rich="true">
             <![CDATA[
-                <h3>Please outline any experience you may have related to working with government or policy stakeholders</h3><small>(e.g. answering questions from government using research evidence or presenting to government)</small>
+                <h3>Please outline any experience you may have related to working with government or policy stakeholders.</h3><small>(e.g. answering questions from government using research evidence or presenting to government)</small>
                 {$item}
             ]]>
         </ReportItem>
