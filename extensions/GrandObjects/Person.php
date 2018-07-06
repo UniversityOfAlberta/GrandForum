@@ -369,7 +369,7 @@ class Person extends BackboneModel {
             // In APC
             self::$userRows[$id] = Cache::fetch("mw_user_{$id}");
         }
-        else {
+        else if(count(self::$userRows) == 0) {
             // Not loaded yet
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
@@ -2938,7 +2938,10 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $relations = array();
         foreach($data as $row){
-            $relations[] = Relationship::newFromId($row['id']);
+            $relation = Relationship::newFromId($row['id']);
+            if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                $relations[] = $relation;
+            }
         }
         return $relations;
     }
@@ -2982,7 +2985,10 @@ class Person extends BackboneModel {
             $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+                $relation = Relationship::newFromId($row['id']);
+                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                    $this->relations[$row['type']][$row['id']] = $relation;
+                }
             }
             return $this->relations;
         }
@@ -3000,7 +3006,10 @@ class Person extends BackboneModel {
             $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+                $relation = Relationship::newFromId($row['id']);
+                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                    $this->relations[$row['type']][$row['id']] = $relation;
+                }
             }
             return $this->relations;
         }
@@ -3020,7 +3029,10 @@ class Person extends BackboneModel {
             $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+                $relation = Relationship::newFromId($row['id']);
+                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                    $this->relations[$row['type']][$row['id']] = $relation;
+                }
             }
         //}
         return $this->relations[$type];
@@ -4802,7 +4814,10 @@ class Person extends BackboneModel {
                                     array('user1' => EQ($this->id)));
         $relations = array();
         foreach($data as $row){
-            $relations[] = Relationship::newFromId($row['id']);
+            $relation = Relationship::newFromId($row['id']);
+            if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                $relations[] = $relation;
+            }
         }
         usort($relations, function($a, $b){ 
             return str_replace("0000-00-00", "9999-12-31", $a->getEndDate()) < 
