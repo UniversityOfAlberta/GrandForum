@@ -133,7 +133,7 @@ class ApplicationsTable extends SpecialPage{
         $themes2->setId("secondary_themes");
         
         
-        $tab = new ProjectTab('RP_EOI', $this->allPeople, 2018, "EOI", array('Title' => $title, 'Co-PIs' => $copis, 'Partners' => $partner, 'Summary' => $summary, 'Primary Theme' => $themes1, 'Secondary Themes' => $themes2));
+        $tab = new EOITab('RP_EOI', $this->allPeople, 2018, "EOI", array('Title' => $title, 'Co-PIs' => $copis, 'Partners' => $partner, 'Summary' => $summary, 'Primary Theme' => $themes1, 'Secondary Themes' => $themes2));
         $tab->idProjectRange = array(1, 2, 3);
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
