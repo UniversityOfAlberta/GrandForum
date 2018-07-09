@@ -4055,7 +4055,8 @@ class Person extends BackboneModel {
             $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["acceptance_date_label"];
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
-               (($date >= $startRange && $date <= $endRange) ||
+               (($date >= $startRange && $date <= $endRange ||
+                 $acceptanceDate >= $startRange && $acceptanceDate <= $endRange) ||
                 ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
