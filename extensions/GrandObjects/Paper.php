@@ -1535,6 +1535,25 @@ class Paper extends BackboneModel{
         $amonth = date('F', strtotime($acceptance_date));
         $amon = date('M', strtotime($acceptance_date));
         
+        if($ayyyy == "0000"){
+            $ayyyy = "";
+            $ayy = "";
+            $amm = "";
+            $add = "";
+            
+            $amonth = "";
+            $amon = "";
+        }
+        
+        if($yyyy == "0000"){
+            $yyyy = "Accepted: $ayyyy";
+            $yy = $ayy;
+            $mm = $amm;
+            $dd = $add;
+            $month = $amonth;
+            $mon = $amon;
+        }
+        
         $data_syyyy = substr($this->getData('start_date'), 0, 4);
         $data_eyyyy = substr($this->getData('end_date'), 0, 4);
         
