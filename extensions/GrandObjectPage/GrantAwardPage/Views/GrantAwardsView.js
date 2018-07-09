@@ -48,7 +48,7 @@ GrantAwardsView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', "Awarded NSERC Applications");
+        main.set('title', "Awarded NSERC Applications&nbsp;<span class='clicktooltip' title='This information is not currently used for the AR/FEC process.'>&#9432;</span>");
         this.$el.css('display', 'none');
         this.$el.html(this.template());
         var data = this.processData(0);
