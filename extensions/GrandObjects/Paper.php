@@ -710,7 +710,7 @@ class Paper extends BackboneModel{
         $currentDate = date('Y-m-d');
         if($this->category == "Publication" && $this->date != "0000-00-00" && $this->date != ""){
             if($currentDate < $this->date){
-                return "In Press";
+                return "Accepted";
             }
             return "Published";
         }
