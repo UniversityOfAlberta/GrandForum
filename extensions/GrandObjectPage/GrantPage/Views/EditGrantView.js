@@ -243,6 +243,7 @@ EditGrantView = Backbone.View.extend({
         var delimiter = ';';
         var tagLimit = 1000;
         var placeholderText = 'Enter Co-Applicants here...';
+        var that = this;
         var html = HTML.TagIt(this, 'copi.fullname', {
             values: _.pluck(this.model.get('copi'), 'fullname'),
             strictValues: false, 
@@ -256,19 +257,19 @@ EditGrantView = Backbone.View.extend({
                 splitOn: delimiter,
                 tagLimit: tagLimit,
                 availableTags: this.allPeople.pluck('fullName'),
-                beforeTagAdded: $.proxy(function(event, ui) {
-                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) == -1){
+                beforeTagAdded: function(event, ui) {
+                    if(that.allPeople.pluck('fullName').indexOf(ui.tagLabel) == -1){
                         return false;
                     }
                     if(ui.tagLabel == "not found"){
                         return false;
                     }
-                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                    if(that.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
                     }
-                }, this),
+                },
                 tagSource: function(search, showChoices) {
                     if(search.term.length < 2){ showChoices(); return; }
                     var filter = search.term.toLowerCase();
