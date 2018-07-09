@@ -83,7 +83,7 @@ GrantView = Backbone.View.extend({
         var xhrs = new Array();
         var people = new Array();
         _.each(this.model.get('copi'), function(copi){
-            var person = new Person({id: copi});
+            var person = new Person({id: copi.id});
             people.push(person);
             xhrs.push(person.fetch());
         });

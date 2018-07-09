@@ -20,6 +20,7 @@ class GrantAPI extends RESTAPI {
     function doPOST(){
         $grant = new Grant(array());
         $grant->user_id = $this->POST('user_id');
+        $grant->copi = $this->POST('copi');
         $grant->project_id = $this->POST('project_id');
         $grant->sponsor = $this->POST('sponsor');
         $grant->total = $this->POST('total');
@@ -46,6 +47,7 @@ class GrantAPI extends RESTAPI {
                 $this->throwError("This Grant does not exist");
             }
             $grant->user_id = $this->POST('user_id');
+            $grant->copi = $this->POST('copi');
             $grant->project_id = $this->POST('project_id');
             $grant->sponsor = $this->POST('sponsor');
             $grant->total = $this->POST('total');

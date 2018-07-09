@@ -3109,7 +3109,7 @@ class Person extends BackboneModel {
                                               WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
             foreach($data as $row){
                 $grant = Grant::newFromId($row['id']);
-                if($grant != null && $grant->getId() != 0){
+                if($grant != null && $grant->getId() != 0 && !$grant->deleted){
                     $this->grants[] = $grant;
                 }
             }

@@ -189,11 +189,18 @@ class Grant extends BackboneModel {
     }
     
     function create(){
+        $copis = array();
+        foreach($this->copi as $copi){
+            if(isset($copi->id) && $copi->id != 0){
+                // Only add them if an id was specified
+                $copis[] = $copi->id;
+            }
+        }
         DBFunctions::insert('grand_grants',
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
-                                  'copi' => serialize($this->copi),
+                                  'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
@@ -213,16 +220,24 @@ class Grant extends BackboneModel {
                                 array('grant_id' => $this->getId(),
                                       'contribution_id' => $contribution));
         }
+        $this->copi = $copis;
         DBFunctions::commit();
         return $this;
     }
     
     function update(){
+        $copis = array();
+        foreach($this->copi as $copi){
+            if(isset($copi->id) && $copi->id != 0){
+                // Only add them if an id was specified
+                $copis[] = $copi->id;
+            }
+        }
         DBFunctions::update('grand_grants',
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
-                                  'copi' => serialize($this->copi),
+                                  'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
@@ -242,6 +257,7 @@ class Grant extends BackboneModel {
                                 array('grant_id' => $this->getId(),
                                       'contribution_id' => $contribution));
         }
+        $this->copi = $copis;
         DBFunctions::commit();
         return $this;
     }
@@ -257,8 +273,13 @@ class Grant extends BackboneModel {
     
     function toArray(){
         $copis = array();
+        $copis_array = array();
         foreach($this->getCoPI() as $copi){
             $copis[] = $copi->getNameForForms();
+            $copis_array[] = array('id' => $copi->getId(),
+                                   'name' => $copi->getNameForProduct(),
+                                   'fullname' => $copi->getNameForForms(),
+                                   'url' => $copi->getUrl());
         }
         $grantAward = $this->getGrantAward();
         $grantAwardId = ($grantAward != null) ? $grantAward->getId() : 0;
@@ -269,7 +290,7 @@ class Grant extends BackboneModel {
             'project_id' => $this->project_id,
             'grant_award_id' => $grantAwardId,
             'sponsor' => $this->sponsor,
-            'copi' => $this->copi,
+            'copi' => $copis_array,
             'copi_string' => implode("; ", $copis),
             'total' => $this->total,
             'funds_before' => $this->funds_before,

@@ -233,6 +233,70 @@ EditGrantView = Backbone.View.extend({
     },
     
     renderCoapplicantsWidget: function(){
+        var objs = [];
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
+        });
+
+        var delimiter = ';';
+        var tagLimit = 1000;
+        var placeholderText = 'Enter Co-Applicants here...';
+        var html = HTML.TagIt(this, 'copi.fullname', {
+            values: _.pluck(this.model.get('copi'), 'fullname'),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: placeholderText,
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter,
+                tagLimit: tagLimit,
+                availableTags: this.allPeople.pluck('fullName'),
+                beforeTagAdded: $.proxy(function(event, ui) {
+                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) == -1){
+                        return false;
+                    }
+                    if(ui.tagLabel == "not found"){
+                        return false;
+                    }
+                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
+                        ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                    }
+                }, this),
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 2){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                }
+            }
+        });
+        this.$("#coapplicants").html(html);
+        this.$("#coapplicants").append("<p><i>Drag to re-order each co-applicant</i></p>");
+        this.$("#coapplicants .tagit").sortable({
+            stop: function(event,ui) {
+                $('input[name=copi_fullname]').val(
+                    $(".tagit-label",$(this))
+                        .clone()
+                        .text(function(index,text){ return (index == 0) ? text : delimiter + text; })
+                        .text()
+                ).change();
+            }
+        });
+        this.$el.on('mouseover', 'div[name=coapplicants_fullname] li.tagit-choice', function(){
+            $(this).css('cursor', 'move');
+        });
+    },
+    
+    /*renderCoapplicantsWidget: function(){
         var left = _.pluck(this.model.get('coapplicants'), 'fullname');
         var right = _.difference(this.allPeople.pluck('fullName'), left);
         var objs = [];
@@ -248,7 +312,7 @@ EditGrantView = Backbone.View.extend({
                                                                   });
         this.$("#coapplicants").html(html);
         createSwitcheroos();
-    },
+    },*/
     
     renderCoapplicants: function(){
         if(this.allPeople != null && this.allPeople.length > 0){
@@ -268,8 +332,8 @@ EditGrantView = Backbone.View.extend({
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        //this.renderContributionsWidget();
-        //this.renderCoapplicants();
+        this.renderContributionsWidget();
+        this.renderCoapplicants();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
