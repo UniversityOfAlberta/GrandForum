@@ -55,6 +55,11 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        
+        if(!$paper->canView()){
+            $paper = new Paper(array()); 
+        }
+        
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         return $paper;
@@ -77,6 +82,11 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        
+        if(!$paper->canView()){
+            $paper = new Paper(array()); 
+        }
+        
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->ccv_id] = &$paper;
@@ -101,6 +111,11 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        
+        if(!$paper->canView()){
+            $paper = new Paper(array()); 
+        }
+        
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->bibtex_id] = &$paper;
@@ -134,6 +149,9 @@ class Paper extends BackboneModel{
         $papers = array();
         foreach($data as $row){
             $paper = new Paper(array($row));
+            if(!$paper->canView()){
+                continue;
+            }
             if(isset(self::$cache[$paper->id])){
                 $papers[] = self::$cache[$paper->id];
             }
@@ -169,6 +187,9 @@ class Paper extends BackboneModel{
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        if(!$paper->canView()){
+            $paper = new Paper(array()); 
+        }
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->getTitle().$category.$type.$status] = &$paper;
         self::$cache[$paper->getTitle().$paper->getCategory().$paper->getType().$paper->getStatus()] = &$paper;
@@ -202,6 +223,9 @@ class Paper extends BackboneModel{
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $paper = new Paper(array($row));
+                if(!$paper->canView()){
+                    continue;
+                }
                 self::$cache[$paper->getId()] = $paper;
                 $papers[$paper->getId()] = $paper;
             }
@@ -311,6 +335,9 @@ class Paper extends BackboneModel{
                         else{
                             $paper = self::$cache[$row['id']];
                         }
+                        if(!$paper->canView()){
+                            continue;
+                        }
                         $papers[] = $paper;
                     }
                     $i++;
@@ -415,6 +442,9 @@ class Paper extends BackboneModel{
                 else{
                     $paper = self::$cache[$row['id']];
                 }
+                if(!$paper->canView()){
+                    continue;
+                }
                 if($project != "all"){
                     $papers[] = $paper;
                 }
@@ -458,6 +488,9 @@ class Paper extends BackboneModel{
                 }
                 else{
                     $paper = self::$cache[$row['id']];
+                }
+                if(!$paper->canView()){
+                    continue;
                 }
                 $papers[] = $paper;
             }
@@ -742,6 +775,35 @@ class Paper extends BackboneModel{
      */
     function getAccess(){
         return $this->access;
+    }
+    
+    /**
+     * Returns whether or not the logged in Person is allowed to view this Product
+     */
+    function canView(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF) && $this->getAccessId() == 0){
+            return true; // STAFF+ Should have access to everything as long as the Product is not 'Private'
+        }
+        if($this->getCategory() == "Publication" && ($this->getAccessId() == $me->getId() || $this->getAccessId() == 0)){
+            return true; // Product is a publication and is either Public or is marked Private by the logged in user
+        }
+        else if($this->getCreatedBy() == $me->getId() || $this->getAccessId() == $me->getId()){ 
+            return true; // Person created the Product
+        }
+        else if($me->isAuthorOf($this)){
+            return true; // Person is an author of this publication
+        }
+        else {
+            $hqps = $me->getHQP(true, true);
+            foreach($hqps as $hqp){
+                if($hqp->isAuthorOf($this)){
+                    return true; // Person's HQP is an author of this publication
+                    break;
+                }
+            }
+        }
+        return false;
     }
     
     /**
