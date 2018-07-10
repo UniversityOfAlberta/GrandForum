@@ -178,11 +178,22 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left'>{$date}</td>";
             }
             if($contactHeader != ''){
+                if($person->getEmail() == ""){
+                    $this->html .= "<td></td>";
+                }
+                else {
+                    $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                }
                 $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
-                $this->html .= "<td>{$person->getEmail()}</td>";
+                if($person->getEmail() == ""){
+                    $this->html .= "<td></td>";
+                }
+                else {
+                    $this->html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                }
             }
             if($idHeader != ''){
                 $this->html .= "<td>{$person->getId()}</td>";
