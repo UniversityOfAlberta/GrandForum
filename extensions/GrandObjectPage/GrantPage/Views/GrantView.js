@@ -70,7 +70,9 @@ GrantView = Backbone.View.extend({
     },
     
     renderContributions: function(){
-        if(this.allContributions.length != null && this.model.get('contributions').length > 0){
+        if(this.allContributions != null && 
+           this.allContributions.length != null && 
+           this.model.get('contributions').length > 0){
             this.$("#contributions").empty();
             _.each(this.model.get('contributions'), $.proxy(function(cId){
                 var contribution = _.findWhere(this.allContributions, {id: cId.toString()});

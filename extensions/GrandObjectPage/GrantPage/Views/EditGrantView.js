@@ -160,7 +160,7 @@ EditGrantView = Backbone.View.extend({
             this.$("#contributions .sortable-header").css("background", highlightColor);
         }
 
-        if(this.allContributions.length == 0){
+        if(this.allContributions == null || this.allContributions.length == 0){
             return;
         }
 
