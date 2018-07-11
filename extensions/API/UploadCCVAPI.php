@@ -782,7 +782,7 @@ class UploadCCVAPI extends API{
                         }
                     }
                     foreach($presentations as $ccv_id => $paper){
-                        $product = $this->createProduct($person, $paper, "Presentation", "Misc", $ccv_id, $overwrite);
+                        $product = $this->createProduct($person, $paper, "Presentation", "Other", $ccv_id, $overwrite);
                         if($product != null){
                             $createdProducts[] = $product;
                         }
