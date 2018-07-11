@@ -718,7 +718,7 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li> On July 6th, 2018, the Yukon Medical Council published a Mifegymiso® Guideline for physicians licensed to practice in the Yukon. To review the document, <a target='_blank' href='http://www.yukonmedicalcouncil.ca/pdfs/MIFE_Guideline.pdf'>click here</a>.</li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
