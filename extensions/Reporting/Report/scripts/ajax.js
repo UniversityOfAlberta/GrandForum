@@ -47,6 +47,9 @@ $(document).ready(function(){
         $(this).removeAttr('href');
         
         $(this).click(function(){
+            if($(this).attr('href') != undefined){
+                href = $(this).attr('href');
+            }
             var selectedIndex = $(".reportTab").index($(".selectedReportTab"));
             var clickedIndex = $(".reportTab").index($(this));
             if(ajaxSection != null && selectedIndex != clickedIndex){

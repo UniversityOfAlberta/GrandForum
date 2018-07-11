@@ -66,6 +66,7 @@ class ReportItemCallback {
             "my_name" => "getMyName",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
+            "my_dept" => "getMyDept",
             "parent_id" => "getParentId",
             "parent_name" => "getParentName",
             "parent_uni" => "getParentUni",
@@ -545,6 +546,12 @@ class ReportItemCallback {
     function getMyLastName(){
         $person = $this->reportItem->getReport()->person;
         return $person->getLastName();
+    }
+    
+    function getMyDept(){
+        $person = $this->reportItem->getReport()->person;
+        $university = $person->getUniversity();
+        return $university['department'];
     }
     
     function getUserUrl(){

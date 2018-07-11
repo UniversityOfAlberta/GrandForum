@@ -782,8 +782,8 @@ class Paper extends BackboneModel{
      */
     function canView(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(STAFF) && $this->getAccessId() == 0){
-            return true; // STAFF+ Should have access to everything as long as the Product is not 'Private'
+        if($me->isRoleAtLeast(ISAC) && $this->getAccessId() == 0){
+            return true; // ISAC+ (Chairs) Should have access to everything as long as the Product is not 'Private'
         }
         if($this->getCategory() == "Publication" && ($this->getAccessId() == $me->getId() || $this->getAccessId() == 0)){
             return true; // Product is a publication and is either Public or is marked Private by the logged in user
