@@ -14,7 +14,11 @@ class IncrementReportItem extends SelectReportItem {
 	        case "D1":
 	        case "E1":
 	        case "F1":
-	            $options = array("0.00", 
+	            $options = array("0A", 
+	                             "0B", 
+	                             "0C", 
+	                             "0D",
+	                             "0.00", 
 	                             "0.50", 
 	                             "1.00", 
 	                             "1.50", 
@@ -24,7 +28,11 @@ class IncrementReportItem extends SelectReportItem {
 	            break;
 	        case "M1":
 	        case "N1":
-	            $options = array("0.00", 
+	            $options = array("0A", 
+	                             "0B", 
+	                             "0C", 
+	                             "0D",
+	                             "0.00", 
 	                             "0.50", 
 	                             "1.00");
 	            break;
