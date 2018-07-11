@@ -39,19 +39,18 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
-        $university = University::newFromName($this->POST('university'));
-        $posCheck = DBFunctions::select(array('grand_positions'),
-                                        array('*'),
-                                        array('position' => $this->POST('position')));
         
-        if($university == null || $university->getId() == 0){
+        $uniCheck = DBFunctions::execSQL("SELECT * FROM grand_universities
+                                          WHERE university_name = BINARY '".DBFunctions::escape($this->POST('university'))."'");
+        $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
+                                          WHERE position = BINARY '".DBFunctions::escape($this->POST('position'))."'");
+
+        if(count($uniCheck) == 0){
             // Create new University
             DBFunctions::insert('grand_universities',
                                 array('university_name' => $this->POST('university'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
-            unset(University::$cache[$this->POST('university')]);
-            $university = University::newFromName($this->POST('university'));
         }
         
         if(count($posCheck) == 0){
@@ -60,26 +59,33 @@ class PersonUniversitiesAPI extends RESTAPI {
                                 array('position' => $this->POST('position'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
+            
         }
+        
+        $universities = University::getAllUniversities();
+        $positions = Person::getAllPositions();
         
         $university_id = "";
         $position_id = "";
-       
-        $positions = Person::getAllPositions();
         
         $department = $this->POST('department');
         $researchArea = $this->POST('researchArea');
         $primary = $this->POST('primary');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
-
-        $university_id = $university->getId();
+        
+        foreach($universities as $university){
+            if($this->POST('university') == $university->getName()){
+                $university_id = $university->getId();
+            }
+        }
         
         foreach($positions as $id => $position){
             if($this->POST('position') == $position){
                 $position_id = $id;
             }
         }
+        
         MailingList::unsubscribeAll($person);
         DBFunctions::insert('grand_user_university',
                             array('user_id' => $person->getId(),
@@ -107,12 +113,10 @@ class PersonUniversitiesAPI extends RESTAPI {
             $this->throwError("You must be logged in");
         }
         
-        $uniCheck = DBFunctions::select(array('grand_universities'),
-                                        array('*'),
-                                        array('university_name' => $this->POST('university')));
-        $posCheck = DBFunctions::select(array('grand_positions'),
-                                        array('*'),
-                                        array('position' => $this->POST('position')));
+        $uniCheck = DBFunctions::execSQL("SELECT * FROM grand_universities
+                                          WHERE university_name = BINARY '".DBFunctions::escape($this->POST('university'))."'");
+        $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
+                                          WHERE position = BINARY '".DBFunctions::escape($this->POST('position'))."'");
 
         if(count($uniCheck) == 0){
             // Create new University
@@ -128,13 +132,14 @@ class PersonUniversitiesAPI extends RESTAPI {
                                 array('position' => $this->POST('position'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
+            
         }
-        
-        $university_id = "";
-        $position_id = "";
         
         $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
+        
+        $university_id = "";
+        $position_id = "";
 
         $department = $this->POST('department');
         $researchArea = $this->POST('researchArea');
@@ -153,6 +158,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                 $position_id = $id;
             }
         }
+        
         MailingList::unsubscribeAll($person);
         DBFunctions::update('grand_user_university',
                             array('user_id' => $person->getId(),
