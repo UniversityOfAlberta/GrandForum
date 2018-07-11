@@ -149,6 +149,7 @@ EOF;
             }
             $amount = 0;
             $amounts = array();
+            $types = array();
             foreach($partners as $part){
                 if($type == "All" || $part->getOrganization() == $partner->getOrganization()){
                     $parts[] = $part->getOrganization();
