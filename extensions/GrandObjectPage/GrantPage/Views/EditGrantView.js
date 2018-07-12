@@ -335,9 +335,9 @@ EditGrantView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
         this.renderCoapplicants();
-        this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
-        this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
-        this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
+        this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
+        this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
+        this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change($.proxy(this.changePI, this));
         
         _.defer($.proxy(function(){

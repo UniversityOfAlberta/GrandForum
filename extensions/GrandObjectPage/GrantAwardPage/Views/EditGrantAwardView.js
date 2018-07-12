@@ -157,7 +157,7 @@ EditGrantAwardView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderCoapplicants();
         this.renderPartners();
-        this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
+        this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('input[name=competition_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('select[name=grant_id]').chosen();
