@@ -1499,18 +1499,22 @@ class Paper extends BackboneModel{
             $me = Person::newFromId($highlightOnlyMyHQP);
         //}
         if(strstr(strtolower($matches[0]), "authors") !== false){
-            $yearAgo = strtotime("{$this->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
+            $date = $this->getDate();
+            if($date == "0000-00-00"){
+                $date = $this->getAcceptanceDate();
+            }
+            $yearAgo = strtotime("{$date} -1 year"); // Extend the year to last year so that publications after graduation are still counted
             $yearAgo = date('Y-m-d', $yearAgo);
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     $name = $a->getNameForProduct();
-                    if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
+                    if($a->isRoleOn(NI, $date) || $a->wasLastRole(NI)){
                         $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
-                    else if(($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)) &&
+                    else if(($a->isRoleOn(HQP, $date) || $a->wasLastRole(HQP)) &&
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
-                        $unis = $a->getUniversitiesDuring($yearAgo, $this->getDate());
+                        $unis = $a->getUniversitiesDuring($yearAgo, $date);
                         $found = false;
                         foreach($unis as $uni){
                             if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
