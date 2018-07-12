@@ -85,7 +85,7 @@ GrantView = Backbone.View.extend({
         var xhrs = new Array();
         var people = new Array();
         _.each(this.model.get('copi'), function(copi){
-            var person = new Person({id: copi.id});
+            var person = new Person({id: copi.id, realName: copi.fullname});
             people.push(person);
             xhrs.push(person.fetch());
         });
@@ -93,7 +93,12 @@ GrantView = Backbone.View.extend({
             this.$("#copi").empty();
             var html = new Array();
             _.each(people, $.proxy(function(copi){
-                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
+                if(copi.get('id') != null){
+                    html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
+                }
+                else{
+                    html.push(copi.get('realName'));
+                }
             }, this));
             this.$("#copi").html(html.join("; "));
         }, this));

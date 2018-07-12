@@ -117,7 +117,13 @@ class Grant extends BackboneModel {
     function getCoPI(){
         $copis = array();
         foreach($this->copi as $copi){
-            $copis[] = Person::newFromId($copi);
+            $person = Person::newFromId($copi);
+            if($person != null && $person->getId() != 0){
+                $copis[] = $person;
+            }
+            else{
+                $copis[] = $copi;
+            }
         }
         return $copis;
     }
@@ -201,6 +207,9 @@ class Grant extends BackboneModel {
                 // Only add them if an id was specified
                 $copis[] = $copi->id;
             }
+            else if(isset($copi->fullname) && $copi->fullname != ""){
+                $copis[] = $copi->fullname;
+            }
         }
         DBFunctions::insert('grand_grants',
                             array('user_id' => $this->user_id,
@@ -238,6 +247,9 @@ class Grant extends BackboneModel {
             if(isset($copi->id) && $copi->id != 0){
                 // Only add them if an id was specified
                 $copis[] = $copi->id;
+            }
+            else if(isset($copi->fullname) && $copi->fullname != ""){
+                $copis[] = $copi->fullname;
             }
         }
         DBFunctions::update('grand_grants',
@@ -283,11 +295,18 @@ class Grant extends BackboneModel {
         $copis = array();
         $copis_array = array();
         foreach($this->getCoPI() as $copi){
-            $copis[] = $copi->getNameForForms();
-            $copis_array[] = array('id' => $copi->getId(),
-                                   'name' => $copi->getNameForProduct(),
-                                   'fullname' => $copi->getNameForForms(),
-                                   'url' => $copi->getUrl());
+            if($copi instanceof Person){
+                $copis[] = $copi->getNameForForms();
+                $copis_array[] = array('id' => $copi->getId(),
+                                       'name' => $copi->getNameForProduct(),
+                                       'fullname' => $copi->getNameForForms(),
+                                       'url' => $copi->getUrl());
+            }
+            else{
+                $copis[] = $copi;
+                $copis_array[] = array('name' => $copi, 
+                                       'fullname' => $copi);
+            }
         }
         $grantAward = $this->getGrantAward();
         $grantAwardId = ($grantAward != null) ? $grantAward->getId() : 0;
