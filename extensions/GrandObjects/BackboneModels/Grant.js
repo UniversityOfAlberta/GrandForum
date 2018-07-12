@@ -24,6 +24,7 @@ Grant = Backbone.Model.extend({
             project_id: '',
             grant_award_id: 0,
             sponsor: '',
+            external_pi: '',
             total: 0,
             funds_before: 0,
             funds_after: 0,

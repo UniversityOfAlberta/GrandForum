@@ -11,6 +11,13 @@
         <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
     </tr>
     <tr>
+        <td class="label">External PI:</td>
+        <td colspan="3">
+            <%= HTML.TextBox(this, 'external_pi') %>
+            <small>If the PI is not part of the Faculty, then enter their name</small>
+        </td>
+    </tr>
+    <tr>
         <td class="label">Co-Applicants:</td>
         <td colspan="3">
             <div id="coapplicants"></div>

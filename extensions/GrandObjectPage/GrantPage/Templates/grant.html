@@ -2,10 +2,18 @@
     <%= description %>
 </p>
 <table>
-    <tr>
-        <td class="label">PI:</td>
-        <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
-    </tr>
+    <% if(this.person.get('id') != 0){ %>
+        <tr>
+            <td class="label">PI:</td>
+            <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+        </tr>
+    <% } %>
+    <% if(external_pi != ""){ %>
+        <tr>
+            <td class="label">External PI:</td>
+            <td><%= external_pi %></td>
+        </tr>
+    <% } %>
     <% if(copi.length > 0) { %>
         <tr>
             <td class="label">Co-PI:</td>

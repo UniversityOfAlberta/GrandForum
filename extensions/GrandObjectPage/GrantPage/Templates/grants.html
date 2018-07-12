@@ -18,7 +18,14 @@
         <% this.model.each(function(grant){ %>
             <tr>
                 <td><a href="<%= grant.get('url') %>"><%= grant.get('title') %></a><br /><%= grant.get('description') %></td>
-                <td><%= grant.get('pi').reversedName %></td>
+                <td>
+                    <% if(grant.get('pi').id != 0){ %>
+                        <%= grant.get('pi').reversedName %>
+                    <% } %>
+                    <% if(grant.get('external_pi') != ""){ %>
+                        <%= grant.get('external_pi') %>
+                    <% } %>
+                </td>
                 <td><%= grant.get('copi_string') %></td>
                 <td><%= grant.get('sponsor') %></td>
                 <td><%= grant.get('start_date') %></td>

@@ -6,6 +6,7 @@ class Grant extends BackboneModel {
     var $user_id;
     var $project_id;
     var $sponsor;
+    var $external_pi;
     var $copi = array();
     var $total;
     var $funds_before;
@@ -71,6 +72,7 @@ class Grant extends BackboneModel {
                 $this->user_id = $row['user_id'];
                 $this->project_id = $row['project_id'];
                 $this->sponsor = $row['sponsor'];
+                $this->external_pi = $row['external_pi'];
                 $this->copi = $copi;
                 $this->total = $row['total'];
                 $this->funds_before = $row['funds_before'];
@@ -102,6 +104,10 @@ class Grant extends BackboneModel {
     
     function getSponsor(){
         return $this->sponsor;
+    }
+    
+    function getExternalPI(){
+        return $this->external_pi;
     }
     
     function getPI(){
@@ -200,6 +206,7 @@ class Grant extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
+                                  'external_pi' => $this->external_pi,
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
@@ -237,6 +244,7 @@ class Grant extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
+                                  'external_pi' => $this->external_pi,
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
@@ -290,6 +298,7 @@ class Grant extends BackboneModel {
             'project_id' => $this->project_id,
             'grant_award_id' => $grantAwardId,
             'sponsor' => $this->sponsor,
+            'external_pi' => $this->external_pi,
             'copi' => $copis_array,
             'copi_string' => implode("; ", $copis),
             'total' => $this->total,
