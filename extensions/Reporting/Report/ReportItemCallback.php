@@ -1284,9 +1284,11 @@ class ReportItemCallback {
 
     function getUserGradCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1314,7 +1316,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['grad']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1326,9 +1329,11 @@ class ReportItemCallback {
     
     function getUserMscCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1356,7 +1361,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['msc'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['msc']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1368,9 +1374,11 @@ class ReportItemCallback {
     
     function getUserPhDCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1398,7 +1406,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['phd'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['phd']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1410,9 +1419,11 @@ class ReportItemCallback {
 
     function getUserFellowCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1440,7 +1451,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['pdf'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['pdf']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1452,9 +1464,11 @@ class ReportItemCallback {
     
     function getUserTechCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1482,7 +1496,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['tech'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['tech']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1494,9 +1509,11 @@ class ReportItemCallback {
     
     function getUserUgradCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1525,7 +1542,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad'])){
+                if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad']) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
@@ -1537,9 +1555,11 @@ class ReportItemCallback {
     
     function getUserOtherCount(){
         $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
         $relations = array_merge(
-            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
-            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+            $person->getRelationsDuring(SUPERVISES, $startDate, $endDate),
+            $person->getRelationsDuring(CO_SUPERVISES, $startDate, $endDate)
         );
         $count = 0;
         $hqpsDone = array();
@@ -1572,7 +1592,8 @@ class ReportItemCallback {
             }
             
             foreach($universities as $university){
-                if(!in_array(strtolower($university['position']), $merged)){
+                if(!in_array(strtolower($university['position']), $merged) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;

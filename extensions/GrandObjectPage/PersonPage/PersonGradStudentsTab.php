@@ -139,7 +139,9 @@ class PersonGradStudentsTab extends AbstractTab {
             }
             
             foreach($universities as $university){
-                if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && !isset($hqpsDone[$hqp->getId().$university['position']])){
+                if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
+                   !isset($hqpsDone[$hqp->getId().$university['position']]) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $found = true;
                     break;
                 }
