@@ -1,10 +1,10 @@
 <div id="editDialog" style="display:none;"></div>
 <div id="deletePrivateDialog" style="display:none;" title="Delete <%= productsTerm.pluralize() %>">
-    <p>Are you sure you want to delete all "private" <%= productsTerm.pluralize().toLowerCase() %>?</p>
+    <p>Use "Exclude" to disassociate <%= productsTerm.pluralize().toLowerCase() %> from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete all "private" <%= productsTerm.pluralize().toLowerCase() %>?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="deleteDialog" style="display:none;" title="Delete <%= productsTerm %>">
-    <p>Are you sure you want to delete this <%= productsTerm.toLowerCase() %>?  If the <%= productsTerm.toLowerCase() %> was co-authored by another faculty then it will also remove it from their profile.</p>
+    <p>Use "Exclude" to disassociate this output from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete it?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="doiDialog" style="display:none;" title="Add From DOI">
@@ -56,9 +56,13 @@
     <p>
         <%= productsTerm.pluralize() %> which are listed as being 'Private' will not show up anywhere else on the <%= siteName %> except for on this page.  To 'release' the <%= productsTerm.toLowerCase() %> to the rest of the <%= siteName %>, uncheck the 'Private' checkbox for a specific <%= productsTerm.toLowerCase() %>, or press the 'Release All Private' button to release all of them.  Once all of your changes are done, make sure to press the 'Save All' button.
     </p>
+    <p>
+        If, in this table, there exists an output that should not be associated with your record, use "Exclude" to disassociate it from your record.  "Delete" will delete it for all the co-authors.
+    </p>
 </div>
 <p>
-    <b>NOTE: If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b>
+    <b>If, in this table, there exists an output that should not be associated with your record, use "Exclude" to disassociate it from your record.  "Delete" will delete it for all the co-authors.</b><br />
+    <b>If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b>
 </p>
 <p>
     <% if(this.category != null){ %>
