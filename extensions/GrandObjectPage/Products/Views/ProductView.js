@@ -21,7 +21,7 @@ ProductView = Backbone.View.extend({
     
     deleteProduct: function(){
         if(this.model.get('deleted') != true){
-            if(confirm("Are you sure you want to delete this " + this.model.get('category') + "?  If the " + this.model.get('category') + " was co-authored by another faculty then it will also remove it from their profile.")){
+            if(confirm("Use \"Exclude\" in Manage Outputs to disassociate this output from your record. \"Delete\" will delete it for all the co-authors. Press 'Ok' if you still want to delete it?")){
                 this.model.destroy({
                     success: function(model, response) {
                         if(response.deleted == true){
