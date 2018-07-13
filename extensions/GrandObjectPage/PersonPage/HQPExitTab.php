@@ -131,14 +131,14 @@ class HQPExitTab extends AbstractEditableTab {
                         <td colspan='2'><input type='radio' class='reason' name='reason[{$id}]' value='movedOn' $movedOnChecked /> Moved On</td>
                     </tr>
                     <tbody id='step2'>
-                        <tr id='thesis_{$id}' style="$thesisDisplay">
+                        <!--tr id='thesis_{$id}' style="$thesisDisplay">
                             <td align='right'><b>Thesis:</b></td>
                             <td>
                                 <select name='thesis[{$id}]'>
                                     $thesisHTML
                                 </select>
                             </td>
-                        </tr>
+                        </tr-->
                         <tr>
                             <td align='right'><b>Further Studies at:</b></td>
                             <td><input id='studies' type='text' name='studies[{$id}]' value='{$row['studies']}' /></td>
@@ -262,7 +262,7 @@ EOF;
                     }
                     </script>
                 ");
-                
+                $this->html .= "<h2>{$this->person->getNameForForms()}</h2>";
                 foreach($movedOn as $key => $row){
                     $this->html .= $this->addEditHTML($key, $row);
                 }
@@ -286,8 +286,8 @@ EOF;
                         }
                         $this->html .= "<h3>{$type} {$row['effective_date']}</h3>";
                         $this->html .= "<table style='margin-left:30px;'>";
-                        if($row['thesis'] != null){
-                            $this->html .= "<tr><td align='right'><b>Thesis:</b></td><td><a href='{$row['thesis']->getUrl()}'>{$row['thesis']->getTitle()}</a></td></tr>";
+                        if($row['thesis'] != null ){
+                            //$this->html .= "<tr><td align='right'><b>Thesis:</b></td><td><a href='{$row['thesis']->getUrl()}'>{$row['thesis']->getTitle()}</a></td></tr>";
                         }
                         if($row['studies'] != "") $this->html .= "<tr><td align='right'><b>Further Studies at:</b></td><td>{$row['studies']}</td></tr>";
                         if($row['employer'] != "") $this->html .= "<tr><td align='right'><b>Employed By:</b></td><td>{$row['employer']}</td></tr>";
