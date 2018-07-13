@@ -1580,7 +1580,7 @@ class Person extends BackboneModel {
      */
     function getId(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$this->isRole(EXTERNAL)){
             return 0;
         }
         return $this->id;
