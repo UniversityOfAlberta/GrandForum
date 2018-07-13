@@ -406,7 +406,7 @@ HTML.MiscAutoComplete = function(view, attr, options){
 HTML.TagIt = function(view, attr, options){
     options.name = HTML.Name(attr);
     var tagit = new TagIt(options);
-    tagitView = new TagItView({model: tagit});
+    var tagitView = new TagItView({model: tagit});
     var el = tagitView.render();
     $("input", el).attr('id', 'tagit_' + attr);
     
