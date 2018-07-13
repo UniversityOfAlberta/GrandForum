@@ -1408,7 +1408,8 @@ class Person extends BackboneModel {
             // User is at least Staff
             return true;
         }
-        if($this->relatedTo($person, SUPERVISES)){
+        if($this->relatedTo($person, SUPERVISES) ||
+           $this->relatedTo($person, CO_SUPERVISES)){
             // User supervises the Person
             return true;
         }
