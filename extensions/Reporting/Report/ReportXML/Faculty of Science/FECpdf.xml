@@ -123,6 +123,39 @@
                 {$item}
             ]]>
         </ReportItem>
+        <!--ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Select(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" class="wikitable" multiple="true" optional="true">
+            <![CDATA[
+                <h3>Project Courses</h3>
+                {$item}
+            ]]>
+        </ReportItem-->
+        <ReportItemSet type="If" if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
+            <ReportItem id="projectCourses_header" type="Static">
+                <![CDATA[
+                    <h3>Project Courses</h3>
+                    <table class="wikitable" frame="box" rules="all" width="100%">
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="projectCourses_array" type="ArrayReportItemSet" array="{getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0)}" index="projectCourses">
+                <ReportItem id="course_data" type="Static">
+                    <![CDATA[
+                        <tr>
+                            <td style="white-space:nowrap;width:10%;">
+                                {getExtra(classprefix)} {getExtra(number)}<br />
+                                &nbsp;&nbsp;#{getExtra(type)}: 1
+                            </td>
+                            <td width="">{getExtra(title)}</td>
+                            <td style="width:45%;"><b>{getExtra(term)}</b>: 1 {getExtra(type)} ({getExtra(enrolment)})</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="projectCourses_footer" type="Static">
+                <![CDATA[
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" multiple="true" optional="true">
             <![CDATA[
                 <h3>Teaching Development and Innovation</h3>
