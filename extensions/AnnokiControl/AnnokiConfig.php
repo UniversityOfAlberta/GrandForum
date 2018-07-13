@@ -11,6 +11,16 @@ $egAnnokiCommonPath = "$IP/extensions/AnnokiControl/common";
 $wgWhitelistRead = array ("Special:Userlogin", "Special:InvalidateEmail", "Special:AllMessages", "SITENAME");
 $wgWhitelistRead[] = "File:Canadian Resource 1 - Medical Abortion Pharmacist Checklist 2018-02-02.pdf";
 $wgWhitelistRead[] = "File:Canadian Medical Abortion Prescribers Checklist.pdf";
+
+$wgWhitelistRead[] = "File:Canadian Resource 1 - Medical Abortion Pharmacy Checklist 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 1 - Medical Abortion Prescriber Checklist 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 1 FRENCH - Medical Abortion Pharmacy Checklist 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 1 FRENCH - Medical Abortion Prescriber Checklist 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 2 - Medical Abortion Pharmacy Reference Guide 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 2 - Medical Abortion Prescriber Reference Guide 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Pharmacy Reference Guide 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Prescriber Reference Guide 2018-07-11.pdf";
+
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
 $wgGroupPermissions['*']['createaccount']   = false;
