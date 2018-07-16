@@ -1508,10 +1508,10 @@ class Paper extends BackboneModel{
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     $name = $a->getNameForProduct();
-                    if($a->isRoleOn(NI, $date) || $a->wasLastRole(NI)){
+                    if($a->isRoleOn(NI, $date) || $a->isRole(NI) || $a->wasLastRole(NI)){
                         $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
-                    else if(($a->isRoleOn(HQP, $date) || $a->wasLastRole(HQP)) &&
+                    else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
                         $unis = $a->getUniversitiesDuring($yearAgo, $date);
