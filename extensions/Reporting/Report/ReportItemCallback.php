@@ -772,7 +772,7 @@ class ReportItemCallback {
         $people = Person::getAllPeople(ISAC);
         foreach($people as $person){
             if($person->getDepartment() == $user->getDepartment()){
-            return $person->getId();
+                return $person->getId();
             }
         }
         return 0;

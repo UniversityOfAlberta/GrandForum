@@ -5,6 +5,10 @@
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="recommendations" permissions="rw" />
         </Role>
+        <Role role="IAC">
+            <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="r" />
+        </Role>
         <Role role="RMC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="recommendations" permissions="rw" />
