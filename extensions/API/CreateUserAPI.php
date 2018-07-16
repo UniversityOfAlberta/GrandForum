@@ -138,8 +138,8 @@ class CreateUserAPI extends API{
                         $relation->user1 = $creator->getId();
                         $relation->user2 = $person->getId();
                         $relation->type = $_POST['relationship'];
-                        $relation->startDate = $this->POST('startDate');
-                        $relation->endDate = $this->POST('endDate');
+                        $relation->startDate = @$_POST['startDate'];
+                        $relation->endDate = @$_POST['endDate'];
                         $relation->create();
                     }
                     
