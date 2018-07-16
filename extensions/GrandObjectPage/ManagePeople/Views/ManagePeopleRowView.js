@@ -65,7 +65,47 @@ ManagePeopleRowView = Backbone.View.extend({
         }
         me.relations.ready().then($.proxy(function(){
             var relations = new PersonRelations(me.relations.where({user2: this.model.get('id')}));
+            var start = this.model.get('start')
+            var end = this.model.get('end');
+            
+            var latestRel = null;
+            _.each(relations.toJSON(), function(rel){
+                if(latestRel == null || latestRel.startDate <= rel.startDate){
+                    latestRel = rel;
+                }
+            });
+            
+            if(latestRel != null){
+                if((latestRel.endDate == '0000-00-00' && this.model.get('end') != '0000-00-00 00:00:00') ||
+                   (latestRel.endDate != '0000-00-00' && this.model.get('end') != '0000-00-00 00:00:00' && this.model.get('end') < latestRel.endDate)){
+                    // Relationship was not ended, but Basic Info was, use the Basic Info
+                    // or Reltionship was after the Basic Info, use the Basic Info
+                    end = this.model.get('end');
+                }
+                else{
+                    // Otherwise use the relationship date
+                    end = latestRel.endDate;
+                }
+                
+                if(latestRel.startDate <= this.model.get('start')){
+                    // Relationship was before Basic Info, use the Basic Info
+                    start = this.model.get('start');
+                }
+                else{
+                    // Otherwise use the relationship date
+                    start = latestRel.startDate;
+                }
+            }
+            
+            
+            
+            if(end == '0000-00-00' || end == '0000-00-00 00:00:00'){
+                end = 'Current';
+            }
+            
             this.$("#relationType").text(_.uniq(relations.pluck('type')).join(", "));
+            this.$("#startDate").text(start.substr(0, 10));
+            this.$("#endDate").text(end.substr(0, 10));
             this.parent.table.rows().invalidate('dom').draw();
         }, this));
     },

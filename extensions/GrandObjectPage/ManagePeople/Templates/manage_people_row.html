@@ -31,12 +31,14 @@
            <% if(doubtful) { %> font-weight:bold; <% } %>" align="left" >
     <a href="<%= url %>"><%= reversedName %></a>
 </td>
-<td align="center">
+<td id="startDate" align="center">
+    <!-- These dates will most likely change after the relationship data is loaded.  These just make it a bit less jarring -->
     <% if(start != null){ %>
         <%= start.substr(0, 10) %>
     <% } %>
 </td>
-<td align="center">
+<td id="endDate" align="center">
+    <!-- These dates will most likely change after the relationship data is loaded. These just make it a bit less jarring -->
     <% if(end == '0000-00-00 00:00:00'){ %>
         Current
     <% } else if(end != null) { %>
