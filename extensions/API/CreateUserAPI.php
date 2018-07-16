@@ -7,6 +7,8 @@ class CreateUserAPI extends API{
         $this->addPOST("wpPassword",false,"The Password of the user to add","Password");
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");
         $this->addPOST("wpRealName",false,"The User's real name","My Real Name");
+        $this->addPOST("wpFirstName",false,"The User's first name","My First Name");
+        $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
@@ -122,6 +124,13 @@ class CreateUserAPI extends API{
                                                   'start_date' => @$_POST['startDate'],
                                                   'end_date' => @$_POST['endDate']));
                     }
+                    
+                    // Update names
+                    DBFunctions::update('mw_user',
+                                        array('first_name' => @$_POST['wpFirstName'],
+                                              'last_name' => @$_POST['wpLastName'],
+                                              'user_real_name' => @$_POST['wpRealName']),
+                                        array('user_id' => $person->getId()));
                     
                     // Adding Relationship
                     if(isset($_POST['relationship']) && $_POST['relationship'] != ""){

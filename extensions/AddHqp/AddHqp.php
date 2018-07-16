@@ -35,8 +35,8 @@ class AddHqp extends SpecialPage{
 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
-                $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-                $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+                $_POST['wpRealName'] = "{$_POST['wpLastName']}, {$_POST['wpFirstName']}";
+                $_POST['wpName'] = str_replace(" ", "", ucfirst(str_replace("&#39;", "", $_POST['wpFirstName'])).".".ucfirst(str_replace("&#39;", "", $_POST['wpLastName'])));
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = HQP;
                 $sendEmail = "false";
