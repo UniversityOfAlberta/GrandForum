@@ -427,7 +427,7 @@ class ReportItemCallback {
     function getGrantDescription(){
         $grant = Grant::newFromId($this->reportItem->productId);
         $description = $grant->getDescription();
-        if($description == ""){
+        if(trim($description) == ""){
             $description = $grant->getTitle();
         }
         return $description;
