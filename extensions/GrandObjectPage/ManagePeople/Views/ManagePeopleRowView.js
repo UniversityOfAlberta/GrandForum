@@ -97,9 +97,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 }
             }
             
-            
-            
-            if(end == '0000-00-00' || end == '0000-00-00 00:00:00'){
+            if(end == '0000-00-00' || end == '0000-00-00 00:00:00' || end == '' || end == undefined){
                 end = 'Current';
             }
             
