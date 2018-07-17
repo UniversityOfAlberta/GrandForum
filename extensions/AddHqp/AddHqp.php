@@ -37,6 +37,14 @@ class AddHqp extends SpecialPage{
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
                 $_POST['wpRealName'] = "{$_POST['wpLastName']}, {$_POST['wpFirstName']}";
                 $_POST['wpName'] = str_replace(" ", "", ucfirst(str_replace("&#39;", "", $_POST['wpFirstName'])).".".ucfirst(str_replace("&#39;", "", $_POST['wpLastName'])));
+                $tmpName = $_POST['wpName'];
+                $i = 1;
+                while(count(DBFunctions::select(array('mw_user'),
+                                                array('user_id'),
+                                                array('user_name' => EQ($_POST['wpName'])))) > 0){
+                    // Handle duplicates this way
+                    $_POST['wpName'] = $tmpName.($i++);
+                }
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = HQP;
                 $sendEmail = "false";
@@ -86,7 +94,6 @@ class AddHqp extends SpecialPage{
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameField->registerValidation(new SimilarUserValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
-        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         

@@ -154,13 +154,21 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthorsWidget: function(){
-        var objs = [];
+        var objs = {};
         this.allPeople.each(function(p){
+            var fullname = p.get('fullName');
+            if(p.get('email') != ""){
+                fullname += "(" + p.get('email').split('@')[0] + ")";
+            }
+            objs[fullname] = {id: p.get('id'),
+                              name: p.get('name'),
+                              fullname: fullname};
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
-                                       fullname: p.get('fullName')};
+                                       fullname: fullname};
         });
 
+        var availableTags = _.uniq(_.pluck(objs, 'fullname'));
         var delimiter = ';';
         var tagLimit = (this.model.isSingleAuthor()) ? 1 : 1000;
         var placeholderText = (this.model.isSingleAuthor()) ? 'Enter ' + this.model.getAuthorsLabel().toLowerCase() + ' here...'
@@ -177,9 +185,9 @@ ProductEditView = Backbone.View.extend({
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
                 tagLimit: tagLimit,
-                availableTags: this.allPeople.pluck('fullName'),
+                availableTags: availableTags,
                 afterTagAdded: $.proxy(function(event, ui){
-                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                    if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
@@ -215,13 +223,21 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderContributorsWidget: function(){
-        var objs = [];
+        var objs = {};
         this.allPeople.each(function(p){
+            var fullname = p.get('fullName');
+            if(p.get('email') != ""){
+                fullname += "(" + p.get('email').split('@')[0] + ")";
+            }
+            objs[fullname] = {id: p.get('id'),
+                              name: p.get('name'),
+                              fullname: fullname};
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
-                                       fullname: p.get('fullName')};
+                                       fullname: fullname};
         });
 
+        var availableTags = _.uniq(_.pluck(objs, 'fullname'));
         var delimiter = ';';
         var html = HTML.TagIt(this, 'contributors.fullname', {
             values: _.pluck(this.model.get('contributors'), 'fullname'),
@@ -234,9 +250,9 @@ ProductEditView = Backbone.View.extend({
                 removeConfirmation: false,
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
-                availableTags: this.allPeople.pluck('fullName'),
+                availableTags: availableTags,
                 afterTagAdded: $.proxy(function(event, ui){
-                    if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                    if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');

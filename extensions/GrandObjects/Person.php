@@ -1237,6 +1237,7 @@ class Person extends BackboneModel {
     function toSimpleArray(){
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
+                      'email' => $this->getEmail(),
                       'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName());
@@ -2963,7 +2964,7 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $person = Person::newFromId($row['managed_id']);
             if($person->getId() != 0){
-                $people[$person->getReversedName()] = $person;
+                $people[$person->getReversedName().$person->getId()] = $person;
             } 
         }
         return $people;

@@ -132,6 +132,13 @@ class CreateUserAPI extends API{
                                               'user_real_name' => @$_POST['wpRealName']),
                                         array('user_id' => $person->getId()));
                     
+                    // Clear cache again
+                    Person::$cache = array();
+                    Person::$aliasCache = array();
+                    Person::$employeeIdCache = array();
+                    Cache::delete("allPeopleCache");
+                    Cache::delete("mw_user_{$person->getId()}");
+                    
                     // Adding Relationship
                     if(isset($_POST['relationship']) && $_POST['relationship'] != ""){
                         $relation = new Relationship(array());

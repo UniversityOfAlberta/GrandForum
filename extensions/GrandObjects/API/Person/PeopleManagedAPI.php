@@ -13,18 +13,18 @@ class PeopleManagedAPI extends RESTAPI {
                 foreach($type as $rel){
                     // Get the list of Related Users
                     $user = $rel->getUser2();
-                    $people[$user->getReversedName()] = $user;
+                    $people[$user->getReversedName().$user->getId()] = $user;
                 }
             }
             foreach($me->leadership() as $proj){
                 // Get list of people on current lead projects
                 $members = $proj->getAllPeopleDuring('all', "0000-00-00 00:00:00", "2100-01-01 00:00:00");
                 foreach($members as $member){
-                    $people[$member->getReversedName()] = $member;
+                    $people[$member->getReversedName().$member->getId()] = $member;
                 }
             }
             foreach($me->getManagedPeople() as $person){
-                $people[$person->getReversedName()] = $person;
+                $people[$person->getReversedName().$person->getId()] = $person;
             }
             ksort($people);
             $people = new Collection(array_values($people));
