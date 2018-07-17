@@ -158,7 +158,7 @@ ProductEditView = Backbone.View.extend({
         this.allPeople.each(function(p){
             var fullname = p.get('fullName');
             if(p.get('email') != ""){
-                fullname += "(" + p.get('email').split('@')[0] + ")";
+                fullname += " (" + p.get('email').split('@')[0] + ")";
             }
             objs[fullname] = {id: p.get('id'),
                               name: p.get('name'),
@@ -227,7 +227,7 @@ ProductEditView = Backbone.View.extend({
         this.allPeople.each(function(p){
             var fullname = p.get('fullName');
             if(p.get('email') != ""){
-                fullname += "(" + p.get('email').split('@')[0] + ")";
+                fullname += " (" + p.get('email').split('@')[0] + ")";
             }
             objs[fullname] = {id: p.get('id'),
                               name: p.get('name'),
