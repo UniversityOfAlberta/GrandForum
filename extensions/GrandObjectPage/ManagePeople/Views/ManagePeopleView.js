@@ -274,8 +274,11 @@ ManagePeopleView = Backbone.View.extend({
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
         _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
-            //console.log(this);
-            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + p.get('reversedName') + "</option>");
+            var fullname = p.get('reversedName');
+            if(p.get('email') != ""){
+                fullname += " (" + p.get('email').split('@')[0] + ")";
+            }
+            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + fullname + "</option>");
         }, this));
         $("#selectExistingMember").chosen();
         this.addExistingMemberDialog.parent().css('overflow', 'visible');
