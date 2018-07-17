@@ -709,18 +709,25 @@ class ReportItemCallback {
         return implode("; ", $supervisors);
     }
 
-    function getUserPublicationCount($start_date,$end_date,$type='Publication'){
+    function getUserPublicationCount($start_date,$end_date,$case='Publication'){
         $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
-        switch($type){
+        $category = "";
+        switch($case){
             default:
             case "Publication":
+                $category = "Publication";
+                $type = "Journal Paper|Conference Paper";
                 $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Book":
+                $category = "Publication";
+                $type = "Book";
                 $histories = $person->getProductHistories($year, "Book");
                 break;
             case "Patent":
+                $category = "Patent/Spin-Off";
+                $type = "Patent";
                 $histories = $person->getProductHistories($year, "Patent");
                 break;
         }
@@ -728,16 +735,21 @@ class ReportItemCallback {
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
-        $products = $person->getPapersAuthored($type, $start_date, $end_date, false);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false);
         $count = 0;
+        $types = explode("|", $type);
         foreach($products as $product){
-            $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
-            if($reportedYear == "" || $reportedYear == $year){
-                if($type == "Publication" && $product->getData('peer_reviewed') == "Yes"){
-                    $count++;
-                }
-                else{
-                    $count++;
+            if(in_array($product->getType(), $types)){
+                $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
+                if($reportedYear == "" || $reportedYear == $year){
+                    if($case == "Publication"){
+                        if($product->getData('peer_reviewed') == "Yes"){
+                            $count++;
+                        }
+                    }
+                    else{
+                        $count++;
+                    }
                 }
             }
         }
