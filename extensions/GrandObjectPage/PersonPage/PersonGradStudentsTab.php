@@ -169,8 +169,8 @@ class PersonGradStudentsTab extends AbstractTab {
                 }
             }
             $r = $minRelation;
-            $startDate = substr($r->getStartDate(), 0, 10);
-            $endDate = substr($r->getEndDate(), 0, 10);
+            $startDate1 = substr($r->getStartDate(), 0, 10);
+            $endDate1 = substr($r->getEndDate(), 0, 10);
             $status = $r->getStatus();
             
             $uni = $university['university'];
@@ -185,17 +185,17 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if($endDate == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate)){
-                $endDate = substr($university['end'], 0, 10);
+            if($endDate1 == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate1)){
+                $endDate1 = substr($university['end'], 0, 10);
             }
-            $end_date = ($endDate == '0000-00-00')? "Current" : $endDate;
+            $end_date = ($endDate1 == '0000-00-00')? "Current" : $endDate1;
             $hqp_name = $hqp->getNameForForms();
             
             $repeat_check = false;
             $check = array('name'=>$hqp_name, 'role'=>$role);
             //TODO: Might want to remove duplicates, but probably not
 
-            /*$awards = $hqp->getPapersAuthored('Award', $startDate, $endDate);
+            /*$awards = $hqp->getPapersAuthored('Award', $startDate1, $endDate1);
             $awardCitations = array();
             foreach($awards as $award){
                 $awardCitations[] = "<span style='margin-left:2em;><a href='{$award->getUrl()}'>{$award->getTitle()}</a></span>";
@@ -210,17 +210,17 @@ class PersonGradStudentsTab extends AbstractTab {
                 }, $rows[$hqp->getId()]);
             }
             else{
-                $rows[$hqp->getId()][$end_date.$startDate.$position] = "
+                $rows[$hqp->getId()][$end_date.$startDate1.$position] = "
                     <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>";
             }*/
-            $rows[$hqp->getId()][$end_date.$startDate.$position] = "
+            $rows[$hqp->getId()][$end_date.$startDate1.$position] = "
                 <td style='white-space: nowrap;'>$position</td>
-                <td style='white-space: nowrap;'>$startDate</td>
+                <td style='white-space: nowrap;'>$startDate1</td>
                 <td style='white-space: nowrap;'>$end_date</td>
                 <td style='white-space: nowrap;'>$status</td>
                 <td style='white-space: nowrap;'>$role</td>";
             /*if(count($awardCitations) > 0){
-                $rows[$hqp->getId()][$end_date.$startDate.$position."_awards"] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
+                $rows[$hqp->getId()][$end_date.$startDate1.$position."_awards"] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }*/
             $hqpsDone[$hqp->getId().$position] = true;
         }
@@ -321,8 +321,8 @@ class PersonGradStudentsTab extends AbstractTab {
             }
             
             $r = $minRelation;
-            $startDate = substr($r->getStartDate(), 0, 10);
-            $endDate = substr($r->getEndDate(), 0, 10);
+            $startDate1 = substr($r->getStartDate(), 0, 10);
+            $endDate1 = substr($r->getEndDate(), 0, 10);
             $status = $r->getStatus();
             
             $uni = $university['university'];
@@ -333,10 +333,10 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if($endDate == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate)){
-                $endDate = substr($university['end'], 0, 10);
+            if($endDate1 == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate1)){
+                $endDate1 = substr($university['end'], 0, 10);
             }
-            $end_date = ($endDate == '0000-00-00')? "Current" : $endDate;
+            $end_date = ($endDate1 == '0000-00-00')? "Current" : $endDate1;
             $hqp_name = $hqp->getNameForForms();
             
             $repeat_check = false;
@@ -345,9 +345,9 @@ class PersonGradStudentsTab extends AbstractTab {
             $phd = in_array(strtolower($position), Person::$studentPositions['phd']) ? "1" : "0";
             $msc = in_array(strtolower($position), Person::$studentPositions['msc']) ? "1" : "0";
             
-            $rows[$hqp->getId()][$phd.$msc.$end_date.$startDate.$position] = "
+            $rows[$hqp->getId()][$phd.$msc.$end_date.$startDate1.$position] = "
                 <td style='white-space: nowrap;'>$position</td>
-                <td style='white-space: nowrap;'>$startDate</td>
+                <td style='white-space: nowrap;'>$startDate1</td>
                 <td style='white-space: nowrap;'>$end_date</td>
                 <td style='white-space: nowrap;'>$status</td>
                 <td style='white-space: nowrap;'>$role</td>";
