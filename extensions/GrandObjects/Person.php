@@ -3750,9 +3750,9 @@ class Person extends BackboneModel {
             $hqp = Person::newFromId($row['user2']);
             if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
                 $hqps_uniq_ids[] = $hqp->getId();
-                if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
-                    continue;
-                }
+                //if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
+                //    continue;
+                //}
                 $hqps[] = $hqp;
             }
         }
