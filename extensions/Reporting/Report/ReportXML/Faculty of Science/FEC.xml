@@ -446,7 +446,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem> 
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
                         <td align='left'>{$grant_project_id}<br />

@@ -44,6 +44,7 @@ class ReportItemCallback {
             "contribution_recipients" => "getContributionRecipients",
             "contribution_pis" => "getContributionPIs",
             // Grants
+            "grant_id" => "getGrantId",
             "grant_title" => "getGrantTitle",
             "grant_description" => "getGrantDescription",
             "grant_sponsor" => "getGrantSponsor",
@@ -417,6 +418,11 @@ class ReportItemCallback {
             }
         }
         return implode(";",$string_names);
+    }
+    
+    function getGrantId(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        return $grant->getId();
     }
  
     function getGrantTitle(){

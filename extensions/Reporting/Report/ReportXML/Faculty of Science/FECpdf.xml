@@ -347,7 +347,7 @@
             ]]>
         </ReportItem> 
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_GRANTS">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" blobSection="FEC_GRANTS">
                 <![CDATA[
                     <tr>
                         <td align='left'>{$grant_project_id} <sup>{$item}</sup><br />
