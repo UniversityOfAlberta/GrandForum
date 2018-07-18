@@ -1102,6 +1102,31 @@ class Paper extends BackboneModel{
         $invalidate = false;
         $keyOffset = 0;
         foreach($authors as $key => $author){
+            if($author->getId() == "" && is_numeric($author->getName())){
+                // This person was deleted, clean it up
+                $deletedId = $author->getName();
+                $rows = DBFunctions::select(array('mw_user'),
+                                            array('user_name', 'user_real_name'),
+                                            array('user_id' => $deletedId));
+                if(count($rows) > 0){
+                    $row = $rows[0];
+                    $name = ($row['user_real_name'] != "") ? $row['user_real_name'] : str_replace(".", " ", $row['user_name']);
+                    $author->newName = $name;
+                    $productAuthors = DBFunctions::select(array('grand_products'),
+                                                          array('authors'),
+                                                          array('id' => $this->getId()));
+                    $as = unserialize($productAuthors[0]['authors']);
+                    foreach($as as $ak => $a){
+                        if($a == $deletedId){
+                            $as[$ak] = $name;
+                        }
+                    }
+                    // Change the authors in the products table, then continue with the sync
+                    DBFunctions::update('grand_products',
+                                        array('authors' => serialize($as)),
+                                        array('id' => $this->getId()));
+                }
+            }
             if(isset($alreadyDone[$author->getName()])){
                 $keyOffset++;
                 continue;
@@ -1122,11 +1147,17 @@ class Paper extends BackboneModel{
                 $inserts[] = "('{$author->getId()}','{$this->getId()}','{$order}')";
             }
             else{
-                if(@$pastAuthor['author'] != substr($author->getName(), 0, 128)){
+                if(isset($author->newName)){
+                    $name = $author->newName;
+                }
+                else{
+                    $name = $author->getName();
+                }
+                if(@$pastAuthor['author'] != $name){
                     // Author has changed
                     $invalidate = true;
                 }
-                $name = DBFunctions::escape($author->getName());
+                $name = DBFunctions::escape($name);
                 $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
             }
             $order++;
