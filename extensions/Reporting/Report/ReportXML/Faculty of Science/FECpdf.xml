@@ -653,7 +653,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item}
