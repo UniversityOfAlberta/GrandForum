@@ -91,6 +91,9 @@ ProductEditView = Backbone.View.extend({
         if(end_date != "" && end_date != "0000-00-00"){
             this.$("#acceptance_date").datepicker("option", "maxDate", end_date);
         }
+        else{
+            this.$("#acceptance_date").datepicker("option", "maxDate", null);
+        }
     },
     
     changeDataStart: function(){
@@ -108,6 +111,9 @@ ProductEditView = Backbone.View.extend({
         var end_date = this.$("[name=data_end_date]").val();
         if(end_date != "" && end_date != "0000-00-00"){
             this.$("[name=data_start_date]").datepicker("option", "maxDate", end_date);
+        }
+        else{
+            this.$("[name=data_start_date]").datepicker("option", "maxDate", null);
         }
     },
     

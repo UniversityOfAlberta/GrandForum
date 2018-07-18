@@ -128,7 +128,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('');
+        this.$("input[name=endDate]").val('').change();
         this.model.set('endDate', '');
     },
     
@@ -150,9 +150,12 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     changeEnd: function(){
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("[name=startDate]").val();
-        var end_date = this.$("[name=endDate]").val()
+        var end_date = this.$("[name=endDate]").val();
         if(end_date != "" && end_date != "0000-00-00"){
             this.$("[name=startDate]").datepicker("option", "maxDate", end_date);
+        }
+        else{
+            this.$("[name=startDate]").datepicker("option", "maxDate", null);
         }
     },
     
