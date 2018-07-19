@@ -15,7 +15,7 @@ class PublicWordleTab extends AbstractTab {
         $wordle->height = 480;
         $this->html = "<div><a class='button' onClick='$(\"#help{$wordle->index}\").show();$(this).hide();'>Show Help</a>
 	        <div id='help{$wordle->index}' style='display:none;'>
-	            <p>This visualization shows the most used keywords in the project descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>
+	            <p>This visualization shows the most used keywords in the project and theme descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>
 	        </div>
 	    </div>";
 	    $this->html .= $wordle->show();
