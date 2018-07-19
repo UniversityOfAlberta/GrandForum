@@ -184,7 +184,6 @@ class PeopleTableTab extends AbstractTab {
                 else {
                     $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 }
-                $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
