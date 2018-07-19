@@ -7,10 +7,14 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $dept = $this->getAttr("department", "false");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $fecTypes = array();
         foreach($allPeople as $person){
             if($person->isInDepartment($dept) && $person->getFECType() != ""){
+                if($excludeMe && $person->isMe()){
+                    continue;
+                }
                 $fecType = $person->getFECType();
                 $tuple = self::createTuple();
                 $tuple['person_id'] = $person->getId();
