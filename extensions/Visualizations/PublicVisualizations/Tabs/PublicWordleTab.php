@@ -38,11 +38,17 @@ class PublicWordleTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getPublicWordleData"){
 	        $projects = Project::getAllProjects();
-	        $description = "";
+	        $themes = Theme::getAllThemes();
+	        $description = array();
 	        foreach($projects as $project){
-	            $description .= strip_tags($project->getDescription());
+	            $description[] = strip_tags($project->getDescription());
+	            $description[] = strip_tags($project->getFullName());
             }
-            $data = Wordle::createDataFromText($description);
+            foreach($themes as $theme){
+                $description[] = strip_tags($theme->getName());
+                $description[] = strip_tags($theme->getDescription());
+            }
+            $data = Wordle::createDataFromText(implode(" ", $description));
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
