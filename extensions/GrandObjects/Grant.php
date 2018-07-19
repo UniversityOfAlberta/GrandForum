@@ -283,6 +283,16 @@ class Grant extends BackboneModel {
     }
     
     function delete(){
+        $me = Person::newFromWgUser();
+        $pi = $this->getPI();
+        if($pi instanceof Person && $pi->getId() != $me->getId()){
+            Notification::addNotification($me, $pi, "Revenue Account Deleted", "Your Revenue Account entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+        }
+        foreach($this->getCoPI() as $copi){
+            if($copi instanceof Person && $copi->getId() != $me->getId()){
+                Notification::addNotification($me, $copi, "Revenue Account Deleted", "Your Revenue Account entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+            }
+        }
         DBFunctions::update('grand_grants',
                             array('deleted' => 1),
                             array('id' => EQ($this->id)));
