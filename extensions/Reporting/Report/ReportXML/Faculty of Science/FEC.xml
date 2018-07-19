@@ -325,7 +325,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             <![CDATA[
                 <h2>Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
 <br />
-(Do not include presentations given by your students or by others.  HQP presentations are included in the next table)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+(Do not include presentations given by your students or by others.  HQP presentations are included on the Additional Info section.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
                 <small></small>
                 <table class ='wikitable' style='width:100%'>
                     <thead>
