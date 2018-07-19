@@ -1534,7 +1534,7 @@ class Paper extends BackboneModel{
             if($date == "0000-00-00"){
                 $date = $this->getAcceptanceDate();
             }
-            $yearAgo = strtotime("{$date} -1 year"); // Extend the year to last year so that publications after graduation are still counted
+            $yearAgo = strtotime("{$date} -10 year"); // Extend the year to last year so that publications after graduation are still counted
             $yearAgo = date('Y-m-d', $yearAgo);
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
