@@ -96,7 +96,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                 if($tr->getAttribute('hqp-id') != ""){
                     $hqpId = $tr->getAttribute('hqp-id');
                     $section = $this->getSection();
-                    $sec = $this->getAttr('blobSection', '0'); //added for FEC report -rd
+                    $sec = $this->getAttr('blobSection', $section->sec); //added for FEC report -rd
                     if($sec != '0'){
                         $section->sec = $sec;
                     }
