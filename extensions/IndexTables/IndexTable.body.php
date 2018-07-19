@@ -92,8 +92,13 @@ class IndexTable {
         }
         
         if($me->isRoleAtLeast(STAFF)){
-            $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
+            if(count(DBFunctions::select(array('mw_user'),
+                                         array('user_id'),
+                                         array('candidate' => 1,
+                                               'deleted' => 0))) > 0){
+                $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
+                $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
+            }
         }
         
         if($config->getValue('projectsEnabled')){
