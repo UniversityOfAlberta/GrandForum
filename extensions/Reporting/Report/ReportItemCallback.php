@@ -723,7 +723,7 @@ class ReportItemCallback {
             default:
             case "Publication":
                 $category = "Publication";
-                $type = "Journal Paper|Conference Paper";
+                $type = "Journal Paper|Conference Paper|Book Chapter";
                 $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Book":
