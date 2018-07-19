@@ -41,7 +41,7 @@ class AddHqp extends SpecialPage{
                 $i = 1;
                 while(count(DBFunctions::select(array('mw_user'),
                                                 array('user_id'),
-                                                array('user_name' => EQ($_POST['wpName'])))) > 0){
+                                                array('LOWER(CONVERT(`user_name`, CHAR))' => EQ(strtolower($_POST['wpName']))))) > 0){
                     // Handle duplicates this way
                     $_POST['wpName'] = $tmpName.($i++);
                 }
