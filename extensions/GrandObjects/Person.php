@@ -1410,7 +1410,10 @@ class Person extends BackboneModel {
             return true;
         }
         if($this->isRelatedToDuring($person, SUPERVISES, "0000-00-00", "2100-00-00") ||
-           $this->isRelatedToDuring($person, CO_SUPERVISES, "0000-00-00", "2100-00-00")){
+           $this->isRelatedToDuring($person, CO_SUPERVISES, "0000-00-00", "2100-00-00") ||
+           $this->isRelatedToDuring($person, SUPERVISORY_COMMITTEE, "0000-00-00", "2100-00-00") ||
+           $this->isRelatedToDuring($person, EXAMINER, "0000-00-00", "2100-00-00") ||
+           $this->isRelatedToDuring($person, COMMITTEE_CHAIR, "0000-00-00", "2100-00-00")){
             // User has supervised the Person
             return true;
         }

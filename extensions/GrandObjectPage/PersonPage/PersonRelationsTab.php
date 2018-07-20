@@ -21,10 +21,11 @@ class PersonRelationsTab extends AbstractTab {
      */
     function showRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
+        $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
-                    if($visibility['edit'] && $visibility['isSupervisor']){
+                    if($me->isAllowedToEdit($this->person)){
                         $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage HQP</a>";
                     }
                     $this->html .= "<table id='relations_table' class='wikitable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
@@ -64,7 +65,7 @@ class PersonRelationsTab extends AbstractTab {
                 if($visibility['isMe'] && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
                     $this->html .= "Contact your supervisor in order be added as their student";
                 }
-                else if($visibility['isSupervisor']){
+                else if($me->isAllowedToEdit($this->person)){
                     $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage HQP</a>";
                 }
                 else{

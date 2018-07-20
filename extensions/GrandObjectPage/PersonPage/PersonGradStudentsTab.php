@@ -21,6 +21,7 @@ class PersonGradStudentsTab extends AbstractTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
+        $me = Person::newFromWgUser();
         $wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){
@@ -74,7 +75,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 {$this->showCommiteeRelations($this->person, $this->visibility)}   
              </div>
         </div>";
-        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+        if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople' class='button'>Manage HQP</a>";
         }
         return $this->html;

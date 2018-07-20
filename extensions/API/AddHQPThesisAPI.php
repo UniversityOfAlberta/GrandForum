@@ -24,14 +24,7 @@ class AddHQPThesisAPI extends API{
                 exit;
             }
         }
-		$supervisors = $person->getSupervisors(true);
-		$isSupervisor = false;
-		foreach($supervisors as $supervisor){
-		    if($supervisor->getName() == $me->getName()){
-		        $isSupervisor = true;
-		    }
-		}
-		if($me->isRoleAtLeast(STAFF) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
+		if($me->isAllowedToEdit($person)){
             if(is_numeric($_POST['id'])){
                 DBFunctions::delete('grand_theses',
                                     array('moved_on' => EQ($_POST['id'])));

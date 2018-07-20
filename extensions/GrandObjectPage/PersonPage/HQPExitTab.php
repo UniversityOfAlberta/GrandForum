@@ -60,7 +60,7 @@ class HQPExitTab extends AbstractEditableTab {
             }
             $wgMessage->addSuccess("The 'HQP Alumni' information for {$this->person->getNameForForms()} has been updated");
         }
-        if($this->visibility['isSupervisor']){
+        if($me->isAllowedToEdit($this->person)){
             Notification::addNotification($me, $this->person, "Profile Change", "Your profile has been edited by {$me->getNameForForms()}.", "{$this->person->getUrl()}");
             foreach($this->person->getSupervisors() as $supervisor){
                 if($me->getName() != $supervisor->getName()){
@@ -80,15 +80,7 @@ class HQPExitTab extends AbstractEditableTab {
     function canEdit(){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        $supervisors = $this->person->getSupervisors(true);
-        $found = false;
-        foreach($supervisors as $supervisor){
-            if($supervisor->getId() == $me->getId()){
-                $found = true;
-                break;
-            }
-        }
-        return ($found || $me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF));
+        return $me->isAllowedToEdit($this->person);
     }
     
     function addEditHTML($id, $row, $hidden=false){

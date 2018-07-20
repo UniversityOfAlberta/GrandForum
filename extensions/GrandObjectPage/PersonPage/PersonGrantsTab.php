@@ -25,7 +25,7 @@ class PersonGrantsTab extends AbstractTab {
                     });
                 </script>"
         );
-        
+        $me = Person::newFromWgUser();
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
@@ -85,7 +85,7 @@ class PersonGrantsTab extends AbstractTab {
                 {$this->generateGrantTable()}
                 </div>
             </div>";
-        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+        if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:GrantPage' class='button'>Manage Funding</a>";
         }
         return $this->html;

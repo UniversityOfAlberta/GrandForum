@@ -54,27 +54,12 @@ class PersonPage {
                $person->getName() != null && 
                $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
                 TabUtils::clearActions();
-                $supervisors = $person->getSupervisors(true);
                 
                 $isMe = ($person->isMe() ||
                         $me->isRoleAtLeast(STAFF));
-                $isSupervisor = false;
-                foreach($supervisors as $supervisor){
-                    if($supervisor->getName() == $me->getName()){
-                        $isSupervisor = true;
-                        break;
-                    }
-                }
-                
-                foreach($me->getThemeProjects() as $project){
-                    if($person->isMemberOf($project)){
-                        $isSupervisor = true;
-                        break;
-                    }
-                }
-                $isSupervisor = ( $isSupervisor || ($me->isRoleAtLeast(MANAGER)) );
+
                 $isMe = ( $isMe || ($me->isRoleAtLeast(MANAGER)) );
-                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
+                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && $me->isAllowedToEdit($person));
                 $edit = ( $edit && ($me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
@@ -91,7 +76,6 @@ class PersonPage {
                 $visibility = array();
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
-                $visibility['isSupervisor'] = $isSupervisor;
                 
                 self::showTitle($person, $visibility);
 
@@ -120,9 +104,6 @@ class PersonPage {
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
-                if($config->getValue('projectsEnabled')){
-                    $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonEmploymentTab($person, $visibility));

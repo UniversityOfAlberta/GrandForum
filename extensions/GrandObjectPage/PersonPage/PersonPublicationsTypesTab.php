@@ -11,6 +11,7 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
+        $me = Person::newFromWgUser();
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
@@ -63,7 +64,7 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
             $this->html .= "<h3>{$type}</h3>";
             $this->html .= $this->showTable($this->person, $this->visibility, $type);
         }
-        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+        if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:ManageProducts#/".urlencode($this->category)."' class='button'>Manage ".Inflect::pluralize($this->category)."</a>";
         }
     }

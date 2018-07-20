@@ -30,6 +30,7 @@ class PersonPublicationsTab extends AbstractTab {
             return "";
         }
 
+        $me = Person::newFromWgUser();
         $this->html .= "<div id='{$this->id}'>
                         <table>
                             <tr>
@@ -77,7 +78,7 @@ class PersonPublicationsTab extends AbstractTab {
                         </script>
                         </div>";
         $this->html .= $this->showTable($this->person, $this->visibility);
-        if($this->visibility['isMe'] || $this->visibility['isSupervisor']){
+        if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' class='button' href='$wgServer$wgScriptPath/index.php/Special:ManageProducts#/".urlencode($this->category)."'>Manage ".Inflect::pluralize($this->category)."</a>";
         }
     }

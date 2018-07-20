@@ -87,9 +87,7 @@ class PersonProfileTab extends AbstractEditableTab {
     
     function canEdit(){
         $me = Person::newFromWgUser();
-        return (($this->visibility['isMe'] || 
-                 $this->visibility['isSupervisor']) &&
-                $me->isAllowedToEdit($this->person));
+        return $me->isAllowedToEdit($this->person);
     }
     
     function handleEdit(){
@@ -490,7 +488,7 @@ EOF;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
-        if($visibility['isMe'] || $visibility['isSupervisor']){
+        if($this->canEdit()){
             if($person->isRoleDuring(HQP, "0000", "9999") ||
                $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
