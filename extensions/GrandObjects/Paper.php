@@ -1525,10 +1525,10 @@ class Paper extends BackboneModel{
     
     function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
         $authors = array();
-        $me = null;
-        //if($highlightOnlyMyHQP !== false){
+        $me = Person::newFromWgUser();
+        if($highlightOnlyMyHQP !== false && is_numeric($highlightOnlyMyHQP)){
             $me = Person::newFromId($highlightOnlyMyHQP);
-        //}
+        }
         if(strstr(strtolower($matches[0]), "authors") !== false){
             $date = $this->getDate();
             if($date == "0000-00-00"){
@@ -1543,7 +1543,8 @@ class Paper extends BackboneModel{
                         $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
-                            (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
+                            (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 
+                                                                $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
                         $unis = $a->getUniversitiesDuring($yearAgo, $date);
                         $found = false;

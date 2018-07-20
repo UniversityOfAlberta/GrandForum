@@ -837,12 +837,12 @@ class ReportItemCallback {
    
     function getProductCitation(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->getCitation(true, true, false, false, false);
+        return $product->getCitation(true, true, false, false, true);
     }
     
     function getProductQACitation(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->getCitation(true, false, false, false, false);
+        return $product->getCitation(true, false, false, false, true);
     }
     
     function getProductScope(){

@@ -4896,7 +4896,7 @@ class Person extends BackboneModel {
     function isRelatedToDuring($person, $relationship, $start_date, $end_date){
         if($person instanceof Person){
             $relations = $this->getRelationsDuring($relationship, $start_date, $end_date);
-            foreach($relations as $relation){
+            foreach($relations as $relation){                
                 if($relation->getUser2()->getId() == $person->getId()){
                     return true;
                 }
