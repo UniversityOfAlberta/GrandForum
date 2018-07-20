@@ -1409,9 +1409,9 @@ class Person extends BackboneModel {
             // User is at least Staff
             return true;
         }
-        if($this->relatedTo($person, SUPERVISES) ||
-           $this->relatedTo($person, CO_SUPERVISES)){
-            // User supervises the Person
+        if($this->isRelatedToDuring($person, SUPERVISES, "0000-00-00", "2100-00-00") ||
+           $this->isRelatedToDuring($person, CO_SUPERVISES, "0000-00-00", "2100-00-00")){
+            // User has supervised the Person
             return true;
         }
         foreach($person->getCreators() as $creator){
