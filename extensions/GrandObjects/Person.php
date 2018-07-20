@@ -2240,15 +2240,14 @@ class Person extends BackboneModel {
         return $universities;
     }
     
-    function isInDepartment($dept, $university="%"){
-        $data = DBFunctions::select(array('grand_user_university' => 'uu',
-                                          'grand_universities' => 'u'),
-                                    array('uu.id'),
-                                    array('uu.department' => $dept,
-                                          'uu.user_id' => $this->getId(),
-                                          'uu.university_id' => EQ(COL('u.university_id')),
-                                          'u.university_name' => LIKE($university)));
-        return (count($data) > 0);
+    function isInDepartment($department, $university, $startRange, $endRange){
+        $unis = $this->getUniversitiesDuring($startRange, $endRange);
+        foreach($unis as $uni){
+            if($uni['department'] == $department && $uni['university'] == $university){
+                return true;
+            }
+        }
+        return false;
     }
     
     /**

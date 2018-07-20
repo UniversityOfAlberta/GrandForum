@@ -5,14 +5,14 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $dept = $this->getAttr("department", "false");
-        $uni = $this->getAttr("university", "%");
+        $uni = $this->getAttr("university", "University of Alberta");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $fecTypes = array();
         foreach($allPeople as $person){
-            if($person->isInDepartment($dept, $uni) && $person->getFECType() != ""){
+            if($person->isInDepartment($dept, $uni, $start, $end) && $person->getFECType() != ""){
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
