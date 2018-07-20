@@ -4056,8 +4056,9 @@ class Person extends BackboneModel {
             if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
                 $acceptanceDate = $date;
             }
-            $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["date_label"];
-            $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["acceptance_date_label"];
+            $type = explode(":", $paper->getType());
+            $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["date_label"];
+            $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["acceptance_date_label"];
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
                (($date >= $startRange && $date <= $endRange ||
@@ -4065,7 +4066,8 @@ class Person extends BackboneModel {
                 ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
-                  $acceptanceDate <= $endRange && $date >= $endRange)))){
+                  $acceptanceDate <= $endRange && $date >= $endRange ||
+                  $acceptanceDate <= $endRange && $date == "0000-00-00")))){
                 $papersArray[] = $paper;
             }
         }
