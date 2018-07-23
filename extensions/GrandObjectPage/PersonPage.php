@@ -23,7 +23,7 @@ class PersonPage {
     }
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgImpersonating, $wgDelegating;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgImpersonating, $wgDelegating, $wgMessage;
         $result = true;
         self::userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
@@ -96,6 +96,11 @@ class PersonPage {
                     $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : "0000-00-00";
                     $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : date('Y-m-d');
                 }
+                
+                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person)){
+                    $wgMessage->addInfo("You can edit this HQP because you co-supervise them or are on their examining committee. Please make sure that the information you are providing is correct.");
+                }
+                
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
