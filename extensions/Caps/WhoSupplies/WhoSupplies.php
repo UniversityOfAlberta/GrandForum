@@ -336,7 +336,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>On July 19th, 2018, government officials from the province of Newfoundland & Labrador announced universal coverage of mifepristone in coming to their province, this September <a target='_blank' href='https://www.cbc.ca/news/canada/newfoundland-labrador/mifegymiso-universal-coverage-1.4751509'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
@@ -353,9 +353,8 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                  <h3>Tips on local initiatives to support your practice</h3>
                 <ul>
-                <li>
-                What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a>
-                </li>
+                    <li>Patients with an MCP card can get a Mifegymiso prescription through their doctor, through regional health authorities or through the <a target='_blank' href='https://www.thrivecyn.ca/directory-of-services/health/athena-health-centre-formerly-the-morgentaler-clinic/'>Athena Clinic</a>, located in St. John's</li>
+                    <li>What’s out there? Let us know! <a href='mailto:cart.grac@ubc.ca'> Email cart.grac@ubc.ca</a></li>
                 </ul>
 
                 <h3>Billing Codes</h3>
