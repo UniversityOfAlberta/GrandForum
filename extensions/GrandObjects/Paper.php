@@ -1127,7 +1127,8 @@ class Paper extends BackboneModel{
                                         array('id' => $this->getId()));
                 }
             }
-            if(isset($alreadyDone[$author->getName()])){
+            if(isset($alreadyDone[unaccentChars($author->getName())]) || 
+               (isset($author->newName) && $alreadyDone[unaccentChars($author->newName)])){
                 $keyOffset++;
                 continue;
             }
@@ -1138,7 +1139,13 @@ class Paper extends BackboneModel{
                 $pastAuthor = array();
                 $invalidate = true;
             }
-            $alreadyDone[$author->getName()] = true;
+            if(isset($author->newName)){
+                $alreadyDone[unaccentChars($author->newName)] = true;
+            }
+            else{
+                $alreadyDone[unaccentChars($author->getName())] = true;
+            }
+            
             if($author->getId() != ""){
                 if(@$pastAuthor['author'] != $author->getId()){
                     // Author has changed

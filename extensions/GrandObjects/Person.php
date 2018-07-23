@@ -4067,7 +4067,7 @@ class Person extends BackboneModel {
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
                (($date >= $startRange && $date <= $endRange ||
-                 $acceptanceDate >= $startRange && $acceptanceDate <= $endRange) ||
+                ($acceptanceDate >= $startRange && $acceptanceDate <= $endRange && $acceptanceDateLabel != "")) ||
                 ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
