@@ -2220,7 +2220,7 @@ class Person extends BackboneModel {
                 ( (end_date = '0000-00-00 00:00:00') AND
                 ((start_date <= '$endRange')))
                 )
-                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99'), start_date, uu.id DESC";
+                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
         $data = DBFunctions::execSQL($sql);
         $universities = array();
         if(count($data) > 0){
@@ -2260,7 +2260,7 @@ class Person extends BackboneModel {
                 WHERE uu.user_id = '{$this->id}'
                 AND u.university_id = uu.university_id
                 AND uu.position_id = p.position_id
-                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99'), start_date, uu.id DESC";
+                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
         $data = DBFunctions::execSQL($sql);
         $array = array();
         if(count($data) > 0){
