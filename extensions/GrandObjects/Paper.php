@@ -2095,13 +2095,13 @@ class Paper extends BackboneModel{
             $projects = array();
             
             foreach($this->getAuthors(true, false) as $author){
-                $authors[] = array('id' => $author->getId(),
+                $authors[$author->getNameForForms()] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
                                    'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             foreach($this->getContributors(true, false) as $contributor){
-                $contributors[] = array('id' => $contributor->getId(),
+                $contributors[$contributor->getNameForForms()] = array('id' => $contributor->getId(),
                                    'name' => $contributor->getNameForProduct(),
                                    'fullname' => $contributor->getNameForForms(),
                                    'url' => $contributor->getUrl());
@@ -2127,8 +2127,8 @@ class Paper extends BackboneModel{
                           'acceptance_date' => $this->getAcceptanceDate(),
                           'url' => $this->getUrl(),
                           'data' => $data,
-                          'authors' => $authors,
-                          'contributors' => $contributors,
+                          'authors' => array_values($authors),
+                          'contributors' => array_values($contributors),
                           'projects' => $projects,
                           'lastModified' => $this->lastModified,
                           'deleted' => $this->isDeleted(),
