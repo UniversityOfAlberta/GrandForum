@@ -29,8 +29,11 @@
 <td align="center">
     <span style="display:none;">-<%= exclude %></span><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0}) %>
 </td>
-<td>
-    <%= date %>
+<td align="center">
+    <span style="display:none"><%= acceptance_date.replace("0000-00-00", "9999-99-99") %></span><%= acceptance_date.replace("0000-00-00", "") %>
+</td>
+<td align="center">
+    <span style="display:none"><%= date.replace("0000-00-00", "9999-99-99") %></span><%= date.replace("0000-00-00", "") %>
 </td>
 <td>
     <%= category %>

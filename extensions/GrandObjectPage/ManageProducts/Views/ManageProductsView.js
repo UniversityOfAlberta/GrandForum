@@ -162,7 +162,8 @@ ManageProductsView = Backbone.View.extend({
     
     addRows: function(){
         var searchStr = "";
-        var order = [this.projects.length + 3, 'desc'];
+        var order = [[this.projects.length + 4, 'desc'], // Date
+                     [this.projects.length + 3, 'desc']]; // Acceptance Date
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
