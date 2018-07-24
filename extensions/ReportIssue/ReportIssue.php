@@ -24,7 +24,8 @@
                 <li>Screenshot of page</li>
             </ul>
             {$loggedIn}
-            <b>Additional Comments:</b>
+            <b>Additional Comments:</b><br />
+            <small>Include names of HQP, titles of publications, grants etc. in the description if applicable.</small>
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
         return true;
