@@ -4039,20 +4039,6 @@ class Person extends BackboneModel {
             }
         }
         
-        /*
-        if($useReported){
-            $year = substr($startRange, 0, 4);
-            $data = DBFunctions::execSQL("SELECT p.*
-                                          FROM grand_product p LEFT JOIN grand_products_reported r ON r.product_id = p.id, grand_product_authors a
-                                          WHERE r.year = '$year'
-                                          AND a.product_id = p.id
-                                          AND a.author = '{$this->getId()}'");
-            if($){
-                
-            }
-            return;
-        }*/
-        
         $papers = Product::getByIds($papers);
         $structure = Product::structure();
         foreach($papers as $paper){
@@ -4064,6 +4050,7 @@ class Person extends BackboneModel {
             $type = explode(":", $paper->getType());
             $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["date_label"];
             $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["acceptance_date_label"];
+            $reportedYear = $paper->getReportedForPerson($this->getId());
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
                (($date >= $startRange && $date <= $endRange ||
@@ -4072,7 +4059,10 @@ class Person extends BackboneModel {
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange ||
-                  $acceptanceDate <= $endRange && $date == "0000-00-00")))){
+                  $acceptanceDate <= $endRange && $date == "0000-00-00")) ||
+                ($useReported && $reportedYear != "" && ($reportedYear).CYCLE_START_MONTH >= $startRange && 
+                                                        ($reportedYear+1).CYCLE_END_MONTH <= $endRange)
+                )){
                 $papersArray[] = $paper;
             }
         }

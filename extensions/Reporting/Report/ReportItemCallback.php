@@ -741,7 +741,7 @@ class ReportItemCallback {
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, false);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true);
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
