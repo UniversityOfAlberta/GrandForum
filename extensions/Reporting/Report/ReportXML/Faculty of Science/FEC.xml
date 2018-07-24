@@ -106,6 +106,7 @@
                             <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
                         </tr>
                     </table>
+                    <center><small>Note: Refereed includes only <b>refereed</b> Journals, Conferences, and Book Chapters.</small></center>
                 </div>
             ]]>
         </ReportItem>
