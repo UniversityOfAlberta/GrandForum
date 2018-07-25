@@ -532,7 +532,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -554,7 +554,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -576,7 +576,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -598,7 +598,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -620,7 +620,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -642,7 +642,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -664,7 +664,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -686,7 +686,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
                 ]]>
@@ -708,7 +708,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -730,7 +730,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -752,7 +752,7 @@
                 <field label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -774,7 +774,7 @@
                 <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presented By">
+            <authors label="Presenter">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
