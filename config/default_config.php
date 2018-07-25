@@ -224,6 +224,7 @@
     $config->setConst("PS",         "PS");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
+    $config->setConst("ADEAN",      "AssocDean");
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
