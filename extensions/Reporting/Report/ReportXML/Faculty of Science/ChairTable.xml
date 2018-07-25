@@ -72,7 +72,7 @@
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
                                         $('#lock_{$user_id}').prop('disabled', true);
                                         $('#lock_{$user_id}').after("<span class='throbber'></span>");
-                                        saveAll(function(){$("#Reviews").click();});
+                                        saveAll(function(){$("#Evaluations").click();});
                                     } else {
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
                                     }
@@ -132,7 +132,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dean_evaluations" tooltip="Dean's Evaluations" name="Dean's Evaluations" title="Dean's Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="dean_evaluations" tooltip="Dean's Evaluations" name="Dean Evaluations" title="Dean's Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="thead" type="Static">
             <![CDATA[
                 <style>
@@ -182,7 +182,7 @@
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
                                         $('#lock_{$user_id}').prop('disabled', true);
                                         $('#lock_{$user_id}').after("<span class='throbber'></span>");
-                                        saveAll(function(){$("#Reviews").click();});
+                                        saveAll(function(){$("#DeanEvaluations").click();});
                                     } else {
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
                                     }
