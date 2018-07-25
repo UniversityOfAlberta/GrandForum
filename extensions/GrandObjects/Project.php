@@ -930,7 +930,6 @@ EOF;
     function userCanEdit(){
         $me = Person::newFromWgUser();
         if(!$me->isRoleAtLeast(STAFF) && 
-           !$me->isRole(CF) &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&

@@ -221,16 +221,14 @@
      */
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
-    $config->setConst("HQPC",       "HQPC");
     $config->setConst("PS",         "PS");
-    $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
+    $config->setConst("VDEAN",      "ViceDean");
+    $config->setConst("DEAN",       "Dean");
+    $config->setConst("DEANEA",     "DeanEA");
     $config->setConst("SRC",        "SRC");
-    $config->setConst("ETC",        "ETC");
     $config->setConst("IAC",        "IAC");
-    $config->setConst("CAC",        "CAC");
-    $config->setConst("NCE",        "NCE Rep");
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
@@ -239,16 +237,7 @@
     $config->setConst("TL",         "TL");
     $config->setConst("TC",         "TC");
     $config->setConst("RMC",        "RMC");
-    $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
-    $config->setConst("CF",         "CF");
-    $config->setConst("BOD",        "BOD");
-    $config->setConst("BODC",       "BOD Chair");
-    $config->setConst("CHAMP",      "Champion");
-    $config->setConst("PARTNER",    "Partner");
-    $config->setConst("GOV",        "Gov");
-    $config->setConst("ASD",        "ASD");
-    $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
     $config->setConst("ADMIN",    "Admin");
@@ -256,33 +245,20 @@
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
-        $config->getConst('HQPC')           => "HQP Committee",
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "International Scientific Advisory Committee",
         $config->getConst('SRC')            => "Scientific Research Committee",
-        $config->getConst('ETC')            => "Education and Training Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",
-        $config->getConst('CAC')            => "Consumer Advisory Committee",
-        $config->getConst('NCE')            => "NCE Rep",
         $config->getConst('NI')             => "Network Investigator",
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
-        $config->getConst('CHAMP')          => "Champion",
-        $config->getConst('PARTNER')        => "Partner",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
-        $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
-        $config->getConst('CF')             => "Core Facillity",
-        $config->getConst('BOD')            => "Board of Directors",
-        $config->getConst('BODC')           => "Board of Directors Chair",
-        $config->getConst('ASD')            => "Associate Scientific Director",
-        $config->getConst('SD')             => "Scientific Director",
-        $config->getConst('GOV')            => "Government Rep",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));

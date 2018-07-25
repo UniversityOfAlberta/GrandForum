@@ -241,41 +241,31 @@ $wgRoleValues = array(INACTIVE => 0,
                       NI => 5,
                       AR => 5,
                       CI => 6,
-                      CHAMP => 7,
-                      PARTNER => 7,
                       PL => 9,
                       'PL' => 9,
                       TL => 11,
                       'TL' => 11,
                       APL => 11,
                       TC => 11,
-                      CF => 11,
-                      HQPC => 11,
                       ISAC => 11,
                       SRC => 11,
-                      ETC => 11,
                       IAC => 11,
-                      CAC => 11,
-                      NCE => 11,
+                      VDEAN => 12,
+                      DEAN => 12,
+                      DEANEA => 12,
                       RMC => 12,
-                      HQPAC => 13,
                       EVALUATOR => 12,
-                      BOD => 12,
-                      BODC => 13,
-                      ASD => 13,
-                      SD => 13,
-                      GOV => 13,
                       STAFF => 16,
                       MANAGER => 17,
                       ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, HQPC, PS, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, RMC, HQPAC, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, ISAC, SRC, IAC, AR, CI, RMC, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, HQPC, PS, STUDENT, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, PL, APL, TL, TC, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, ISAC, SRC, IAC, AR, CI, PL, APL, TL, TC, RMC, EVALUATOR, STAFF, MANAGER, ADMIN);
 
 
 function unaccentChars($str){

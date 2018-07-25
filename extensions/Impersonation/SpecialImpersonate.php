@@ -24,14 +24,14 @@ class Impersonate extends SpecialPage {
 	        return false;
 	    }
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD) || count($person->getDelegates()) > 0);
+        return ($person->isRoleAtLeast(STAFF) || count($person->getDelegates()) > 0);
     }
 	
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $user = Person::newFromWgUser();
 	    $allPeople = array();
-	    if($user->isRoleAtLeast(STAFF) || $user->isRole(SD)){
+	    if($user->isRoleAtLeast(STAFF)){
 	        $allPeople = Person::getAllCandidates('all');
         }
         else if(count($user->getDelegates()) > 0){
@@ -74,7 +74,7 @@ class Impersonate extends SpecialPage {
             $link = TabUtils::createToolboxLink("Delegate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
             $toolbox['Other']['links'][] = $link;
         }
-        else if(!$wgImpersonating && !$wgDelegating && ($me->isRoleAtLeast(STAFF) || $me->isRole(SD))){
+        else if(!$wgImpersonating && !$wgDelegating && ($me->isRoleAtLeast(STAFF))){
             $link = TabUtils::createToolboxLink("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
             $toolbox['Other']['links'][] = $link;
         }

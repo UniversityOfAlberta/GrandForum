@@ -606,9 +606,6 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
-                        else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
-                            $rResult = true;
-                        }
                         else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){

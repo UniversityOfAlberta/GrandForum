@@ -384,7 +384,7 @@ class IndexTable {
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
         }
-        if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
+        if($config->getValue('projectsEnabled') && $table != ISAC && $table != IAC && $table != RMC){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         if(!$config->getValue('singleUniversity')){
@@ -416,7 +416,7 @@ class IndexTable {
                 $subRoles = $person->getSubRoles();
                 $wgOut->addHTML("<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>");
             }
-            if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
+            if($config->getValue('projectsEnabled') && $table != ISAC && $table != IAC && $table != RMC){
                 $projects = $person->getProjects();
                 $projs = array();
                 foreach($projects as $project){

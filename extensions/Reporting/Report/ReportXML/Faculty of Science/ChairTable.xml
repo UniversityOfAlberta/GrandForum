@@ -3,15 +3,23 @@
     <Permissions>
         <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
         </Role>
         <Role role="IAC">
             <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
         </Role>
-        <Role role="RMC">
-            <SectionPermission id="evaluations" permissions="rw" />
+        <Role role="DEAN">
+            <SectionPermission id="evaluations" permissions="" />
+            <SectionPermission id="dean_evaluations" permissions="rw" />
             <SectionPermission id="recommendations" permissions="rw" />
+        </Role>
+        <Role role="DEANEA">
+            <SectionPermission id="evaluations" permissions="" />
+            <SectionPermission id="dean_evaluations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="r" />
         </Role>
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$user_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
@@ -124,9 +132,121 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="recommendations" tooltip="Chair's Recommendation for Academic Staff Member - {$user_dept}" name="Recommendations" title="Chair's Recommendation for Academic Staff Member - {$user_dept}" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
+    <ReportSection id="dean_evaluations" tooltip="Dean's Evaluations" name="Dean's Evaluations" title="Dean's Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="thead" type="Static">
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case Number</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th width="1%">Annual Report</th>
+                            <th width="1%">Locked</th>
+                            <th>Evaluation</th>
+                            <th width="1%">Merit Increment</th>
+                            <th width="1%">Tenure</th>
+                            <th width="1%">Promotion</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" roles="Chair|ViceDean">
+            <ReportItem id="name" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="download" type="PDFReportItem" reportType="FEC" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="if_lock" type="If" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <ReportItem id="lock" type="Checkbox" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                    <![CDATA[
+                        <td style='white-space:nowrap;' align='center'>
+                            <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
+                            <button id='lock_{$user_id}' type="button" value="Save" name="submit">Unlock</button>
+                            <script type="text/javascript">
+                                $('#lock_{$user_id}').click(function(){
+                                    if(confirm('Are you sure you want to proceed?\n\nThis annual report will be unlocked and the faculty member will be able to edit their report again.')){
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
+                                        $('#lock_{$user_id}').prop('disabled', true);
+                                        $('#lock_{$user_id}').after("<span class='throbber'></span>");
+                                        saveAll(function(){$("#Reviews").click();});
+                                    } else {
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
+                                    }
+                                    return false;
+                                });
+                            </script>
+                        </td>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_not_lock" type="If" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <ReportItem id="lock" type="Static">
+                    <![CDATA[
+                        <td align='center'>Not Locked</td>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="recommendation" type="static">
+                <![CDATA[
+                        <td align='center'><a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>View Evaluation</a></td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
+                <![CDATA[
+                        <td align='center' class='increment'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                <![CDATA[
+                        <td align='center' class='tenure'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                <![CDATA[
+                        <td align='center' class='promotion'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="tfoot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chairTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                    
+                    $(".viewEvaluation").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#Recommendations").attr('href', href);
+                        $("#Recommendations").trigger('click');
+                    });
+                </script>
+                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="Recommendation for Academic Staff Member" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <ReportItemSet id="if" type="If" if="{==({$user_dept},{$my_dept})}">
+            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$user_roles},DEAN)},
+                                                     {contains({$user_roles},DEANEA)})}">
                 <ReportItem type="Static" id="information">
                     <![CDATA[
                         <script type="text/javascript">

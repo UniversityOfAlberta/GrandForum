@@ -29,8 +29,6 @@ define('RPTP_HQP_COMMENTS', 11);
 define('RPTP_LEADER_MILESTONES', 12);
 define('RPTP_NI_PROJECT_COMMENTS', 13);
 define('RPTP_MTG', 18); // Mind The Gap
-define('RPTP_CHAMP', 19);
-define('RPTP_PROJECT_CHAMP', 20);
 define('RPTP_PROJECT_ISAC', 21);
 define('RPTP_SUBPROJECT', 22);
 

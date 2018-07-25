@@ -246,19 +246,11 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && 
-                                            $role != ISAC && 
+            if($me->isRoleAtLeast($role) && $role != ISAC && 
                                             $role != IAC && 
-                                            $role != CAC && 
-                                            $role != NCE &&
-                                            $role != RMC &&
-                                            $role != CF &&
-                                            $role != HQPAC){
+                                            $role != RMC){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
-        }
-        if($me->isRoleAtLeast(PL)){
-            $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){
             if(in_array(ISAC, $wgRoles)){
@@ -267,22 +259,8 @@ class AddMember extends SpecialPage{
             if(in_array(IAC, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
             }
-            if(in_array(CAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CAC)] = CAC;
-            }
             if(in_array(RMC, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
-            }
-            if(in_array(CF, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CF)] = CF;
-            }
-            if(in_array(HQPAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', HQPAC)] = HQPAC;
-            }
-        }
-        if($me->isRoleAtLeast(MANAGER)){
-            if(in_array(NCE, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
             }
         }
         ksort($roleOptions);

@@ -45,7 +45,6 @@ class ProjectPage {
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
                         !$me->isThemeCoordinatorOf($project) &&
-                        !$me->isRole("CF") && 
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();

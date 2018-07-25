@@ -176,7 +176,6 @@ EOF;
             }
             $this->html .= "</td></tr>";
             $this->html .= "<tr><td valign='top' width='50%'>";
-            $this->showRole(CHAMP);
             $this->showRole(PARTNER);
             $this->html .= "</td><td width='50%' valign='top'>";
             $this->showRole(EXTERNAL);

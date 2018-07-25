@@ -1613,7 +1613,7 @@ class Person extends BackboneModel {
      */
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRole(HQPC)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
             return "{$this->email}";
         }
         return "";
@@ -1636,7 +1636,7 @@ class Person extends BackboneModel {
      */
     function getPhoneNumber(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
             return trim("{$this->phone}");
         }
         return "";

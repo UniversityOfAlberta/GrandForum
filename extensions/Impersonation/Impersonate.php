@@ -131,7 +131,7 @@ function impersonate(){
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
-        if(($realPerson->isRoleAtLeast(STAFF) || $realPerson->isRoleAtLeast(SD)) && ($realPerson->isRoleAtLeast(MANAGER) || !$person->isRoleAtLeast(MANAGER))){
+        if(($realPerson->isRoleAtLeast(STAFF)) && ($realPerson->isRoleAtLeast(MANAGER) || !$person->isRoleAtLeast(MANAGER))){
             $pageAllowed = true;
         }
         if($realPerson->isDelegateFor($person)){

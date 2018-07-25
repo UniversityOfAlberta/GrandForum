@@ -868,12 +868,8 @@ class EditMember extends SpecialPage{
             }
             if(($role != ISAC  || $me->isRoleAtLeast(STAFF)) &&
                ($role != IAC   || $me->isRoleAtLeast(STAFF)) &&
-               ($role != CAC   || $me->isRoleAtLeast(STAFF)) &&
-               ($role != HQPAC || $me->isRoleAtLeast(STAFF)) && 
                ($role != RMC   || $me->isRoleAtLeast(STAFF)) && 
-               ($role != CF    || $me->isRoleAtLeast(STAFF)) &&
-               ($role != NCE   || $me->isRoleAtLeast(MANAGER)) && 
-               ($me->isRoleAtLeast($role) || ($role == CHAMP && $me->isRoleAtLeast(PL)))){
+               ($me->isRoleAtLeast($role))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($me->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$me->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='qualifyProjects(this);addComment(this, true);' class='already'"; //Prevent un-check

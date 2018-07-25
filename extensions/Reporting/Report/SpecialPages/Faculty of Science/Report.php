@@ -16,9 +16,6 @@ class Report extends AbstractReport{
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
-        if(isset($_GET['project']) && ($report == "NIReport" || $report == "HQPReport" || $report == "SABReport")){
-            $topProjectOnly = true;
-        }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
 
@@ -28,6 +25,7 @@ class Report extends AbstractReport{
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
             $tabs["CV"] = TabUtils::createTab("My QA CV");
             $tabs["Chair"] = TabUtils::createTab("Chair");
+            $tabs["Dean"] = TabUtils::createTab("Dean");
         }
         return true;
     }
@@ -46,6 +44,10 @@ class Report extends AbstractReport{
         if($person->isRole(ISAC) || $person->isRole(IAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
+        }
+        if($person->isRole(DEAN) || $person->isRole(DEANEA)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
+            $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
         return true;
     }
