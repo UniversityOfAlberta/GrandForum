@@ -156,7 +156,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" roles="Chair|ViceDean|AssocDean">
+        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" roles="Chair|ViceDean|AssocDean" end="{$this_year}-07-01">
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>
