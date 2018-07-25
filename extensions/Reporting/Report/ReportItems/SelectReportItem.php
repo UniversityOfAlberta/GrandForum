@@ -32,7 +32,7 @@ class SelectReportItem extends AbstractReportItem {
 	    $value = parent::getBlobValue();
 	    if($value == ""){
 	        $options = $this->parseOptions();
-	        return $options[0];
+	        return @$options[0];
 	    }
 	    return $value;
 	}
