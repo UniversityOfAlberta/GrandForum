@@ -16,12 +16,7 @@ function runEditMember($par) {
 class EditMember extends SpecialPage{
 
     function EditMember() {
-        if(FROZEN){
-            SpecialPage::__construct("EditMember", STAFF.'+', true, 'runEditMember');
-        }
-        else{
-            SpecialPage::__construct("EditMember", NI.'+', true, 'runEditMember');
-        }
+        SpecialPage::__construct("EditMember", MANAGER.'+', true, 'runEditMember');
     }
 
     function execute($par){
@@ -150,108 +145,7 @@ class EditMember extends SpecialPage{
             // The Form has been entered
             $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
             
-            $p_current = array();
-            $r_current = array();
-            $projects = $person->getProjects(false, true);
-            $roles = $person->getRoles();
-            foreach($projects as $project){
-                $p_current[] = $project->getId();
-            }
-            $p_current = implode(", ", $p_current);
-            if(isset($_POST['p_wpNS'])){
-                foreach($_POST['p_wpNS'] as $key => $proj){
-                    $proj = Project::newFromName($proj);
-                    if($proj != null){
-                        $_POST['p_wpNS'][$key] = $proj->getId();
-                    }
-                }
-                $p_nss = implode(", ", $_POST['p_wpNS']);
-            }
-            else{
-                $p_nss = "";
-                $_POST['p_wpNS'] = array();
-            }
-            foreach($roles as $role){
-                $r_current[] = $role->getRole();
-            }
-            $r_current = implode(", ", $r_current);
-            if(isset($_POST['r_wpNS'])){
-                $r_nss = implode(", ", $_POST['r_wpNS']);
-            }
-            else{
-                $r_nss = "";
-                $_POST['r_wpNS'] = array();
-            }
-            
-            $p_comments = @EditMember::varToString($_POST['p_comment'], $p_current, $p_nss, 'PROJECT', $person);
-            $r_comments = @EditMember::varToString($_POST['r_comment'], $r_current, $r_nss, 'ROLE', $person);
-            $p_effectiveDates = @EditMember::varToString($_POST['p_datepicker'], $p_current, $p_nss, 'PROJECT', $person);
-            $r_effectiveDates = @EditMember::varToString($_POST['r_datepicker'], $r_current, $r_nss, 'ROLE', $person);
-
-            $me = Person::newFromId($wgUser->getId());
-            $message = "";
-            // Project Request
-            if(EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT') != ""){
-                DBFunctions::insert('grand_role_request',
-                                    array('effective_date' => EditMember::parse($p_effectiveDates),
-                                          'requesting_user' => EditMember::parse($wgUser->getId()),
-                                          'current_role' => EditMember::parse($p_current),
-                                          'role' => EditMember::parse($p_nss),
-                                          'comment' => EditMember::parse($p_comments),
-                                          'user' => EditMember::parse($person->getId()),
-                                          'type' => 'PROJECT',
-                                          'created' => 0,
-                                          '`ignore`' => 0));
-                Notification::addNotification("", $me, "Project Change Pending", "{$person->getNameForForms()}'s projects have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
-                $message .= EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT');
-            }
-            // Roles Request
-            $other = "";
-            $processOthers = true;
-            $roleProjects = @serialize($_POST['role_projects']);
-            $roleMessage = EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
-            $roleProjectMessage = "";
-            if(isset($_POST['role_projects']) && is_array($_POST['role_projects']) && count($_POST['role_projects'])){
-                foreach($_POST['role_projects'] as $r => $projects){
-                    sort($projects);
-                    $role = $person->getRole($r);
-                    $skip = false;
-                    if($role != null){
-                        $ps = new Collection($role->getProjects());
-                        $pNames = $ps->pluck('name');
-                        sort($pNames);
-                        $skip = ($pNames === $projects);
-                    }
-                    if(!$skip){
-                        $roleProjectMessage .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
-                    }
-                }
-            }
-            if($roleProjectMessage != ""){
-                $roleMessage .= "<ul>{$roleProjectMessage}</ul>";
-            }
-            $message .= $roleMessage;
-            if($roleMessage != ""){
-                $_POST['user'] = $person->getName();
-                DBFunctions::insert('grand_role_request',
-                                    array('effective_date' => EditMember::parse($r_effectiveDates),
-                                          'requesting_user' => EditMember::parse($wgUser->getId()),
-                                          'current_role' => EditMember::parse($r_current),
-                                          'role' => EditMember::parse($r_nss),
-                                          'role_projects' => $roleProjects,
-                                          'comment' => EditMember::parse($r_comments),
-                                          'other' => serialize($other),
-                                          'user' => EditMember::parse($person->getId()),
-                                          'type' => 'ROLE',
-                                          'created' => 0,
-                                          '`ignore`' => 0));
-                Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
-            }
-            if($message != ""){
-                $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
-            }
-            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
-            if($me->isRoleAtLeast(STAFF)){
+            if($me->isRoleAtLeast(MANAGER)){
                 // Sub-Role Changes
                 $subRoles = @$_POST['sub_wpNS'];
                 if(!is_array($subRoles)){
@@ -298,159 +192,8 @@ class EditMember extends SpecialPage{
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
                     MailingList::subscribeAll($person);
                 }
-                
-                // Project Leadership Changes
-                $pl = array();
-                $pm = array();
-                if(isset($_POST['pl'])){
-                    foreach($_POST['pl'] as $value){
-                        $pl[$value] = $value;
-                    }
-                }
-            
-                $currentPL = array();
-                // Removing Project Leaders
-                foreach($person->leadership() as $project){
-                    if(!isset($pl[$project->getName()])){
-                        // Remove Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'False';
-                        $_POST['role'] = $project->getName();
-                        $_POST['user'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
-                        $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
-                        APIRequest::doAction('DeleteProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', PL))." of {$project->getName()}");
-                    }
-                    $currentPL[$project->getName()] = $project->getName();
-                }
-                
-                // Adding Project Leaders
-                foreach($pl as $project){
-                    if(!isset($currentPL[$project])){
-                        // Add Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'False';
-                        $_POST['role'] = $project;
-                        $_POST['user'] = $person->getName();
-                        APIRequest::doAction('AddProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', PL))." of {$project}");
-                    }
-                }
-                
-                // Theme Leadership Changes
-                $tl = array();
-                if(isset($_POST['tl'])){
-                    foreach($_POST['tl'] as $value){
-                        $tl[$value] = Theme::newFromId($value);
-                    }
-                }
-            
-                $currentTL = array();
-                // Removing Theme Leaders
-                foreach($person->getLeadThemes() as $theme){
-                    if(!isset($tl[$theme->getId()])){
-                        // Remove Theme Leadership
-                        $_POST['coordinator'] = 'False';
-                        $_POST['co_lead'] = 'False';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme->getId()]);
-                        $_POST['effective_date'] = $_POST["tl_datepicker"][$theme->getId()];
-                        APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
-                    }
-                    $currentTL[$theme->getId()] = $theme->getId();
-                }
-                
-                // Adding Theme Leaders
-                foreach($tl as $theme){
-                    if(!isset($currentTL[$theme->getId()])){
-                        // Add Theme Leadership
-                        $_POST['coordinator'] = 'False';
-                        $_POST['co_lead'] = 'False';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
-                    }
-                }
             }
-            
-            // Theme Coordinator Changes
-            $tc = array();
-            if(isset($_POST['tc'])){
-                foreach($_POST['tc'] as $value){
-                    $tc[$value] = Theme::newFromId($value);
-                }
-            }
-        
-            $currentTC = array();
-            // Removing Theme Coordinators
-            foreach($person->getCoordThemes() as $theme){
-                if(!isset($tc[$theme->getId()])){
-                    // Remove Theme Coordinator
-                    $_POST['coordinator'] = 'True';
-                    $_POST['co_lead'] = 'False';
-                    $_POST['theme'] = $theme->getId();
-                    $_POST['name'] = $person->getName();
-                    $_POST['comment'] = @str_replace("'", "", $_POST["tc_comment"][$theme->getId()]);
-                    $_POST['effective_date'] = $_POST["tc_datepicker"][$theme->getId()];
-                    APIRequest::doAction('DeleteThemeLeader', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
-                }
-                $currentTC[$theme->getId()] = $theme->getId();
-            }
-            
-            // Adding Theme Coordinators
-            foreach($tc as $theme){
-                if(!isset($currentTC[$theme->getId()])){
-                    // Add Theme Coordinator
-                    $_POST['coordinator'] = 'True';
-                    $_POST['co_lead'] = 'False';
-                    $_POST['theme'] = $theme->getId();
-                    $_POST['name'] = $person->getName();
-                    APIRequest::doAction('AddThemeLeader', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
-                }
-            }
-            
-            // Process date changes
-            if(isset($_POST['project_start_dates'])){
-                $projectHistory = $person->getProjectHistory(true);
-                foreach($_POST['project_start_dates'] as $id => $start_date){
-                    $project = array();
-                    foreach($projectHistory as $proj){
-                        if($id == $proj['id']){
-                            $project = $proj;
-                        }
-                    }
-                    if(isset($project['id'])){
-                        $proj = Project::newFromId($project['project_id']);
-                        if(isset($_POST['project_end_dates'][$id])){
-                            $end_date = $_POST['project_end_dates'][$id];
-                            if(substr($project['start_date'], 0, 10) != $start_date || 
-                               substr($project['end_date'], 0, 10) != $end_date){
-                                DBFunctions::update('grand_project_members',
-                                                    array('start_date' => $start_date,
-                                                          'end_date' => $end_date),
-                                                    array('id' => $id,
-                                                          'user_id' => $person->getId()));
-                                $wgMessage->addSuccess("Changed dates for the project <b>{$proj->getName()}</b>");
-                            }
-                        }
-                        else{
-                            if(@substr($project['start_date'], 0, 10) != $start_date){
-                                DBFunctions::update('grand_project_members',
-                                                    array('start_date' => $start_date),
-                                                    array('id' => $id,
-                                                          'user_id' => $person->getId()));
-                                $wgMessage->addSuccess("Changed dates for the project <b>{$proj->getName()}</b>");
-                            }
-                        }
-                    }
-                }
-            }
+            EditMember::generateMain();
         }
     }
     
@@ -769,37 +512,7 @@ class EditMember extends SpecialPage{
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
         <p>Select the Roles and Projects to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
-        $wgOut->addHTML("<div id='tabs'>
-                    <ul>
-                        <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
-                        <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
-        if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<li><a id='SubRolesTab' href='#tabs-3'>Sub-Roles</a></li>
-                             <li><a id='LeadershipTab' href='#tabs-4'>Project Leadership</a></li>
-                             <li><a id='ThemesTab' href='#tabs-5'>{$config->getValue('projectThemes')} Leaders</a></li>");
-        }
-        $wgOut->addHTML("
-                    </ul>");
-             
-        $wgOut->addHTML("<div id='tabs-1'>");
-        EditMember::generateRoleFormHTML($wgOut);
-        $wgOut->addHTML("</div>");
-        
-        $wgOut->addHTML("<div id='tabs-2'>");
-                        EditMember::generateProjectFormHTML($wgOut);
-        $wgOut->addHTML("</div>");
-        if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<div id='tabs-3'>");
-                                EditMember::generateSubRoleFormHTML($wgOut);
-            $wgOut->addHTML("</div>
-                             <div id='tabs-4'>");
-                                EditMember::generatePLFormHTML($wgOut);
-            $wgOut->addHTML("</div>
-                             <div id='tabs-5'>");
-                                EditMember::generateTLFormHTML($wgOut);
-            $wgOut->addHTML("</div>");
-        }
-        $wgOut->addHTML("</div>");
+        EditMember::generateSubRoleFormHTML($wgOut);
         $wgOut->addHTML("<br />
                          <input type='hidden' name='name' value='{$_GET['name']}' />
                          <input type='submit' name='submit' value='Submit Request' onSubmit />
@@ -1297,7 +1010,7 @@ class EditMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(MANAGER)){
             $toolbox['People']['links'][] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
