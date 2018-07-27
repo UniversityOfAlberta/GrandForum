@@ -74,7 +74,10 @@ class IncrementReportItem extends SelectReportItem {
                     $options[] = $exactIncrement;
                 }
                 foreach($options as $key => $option){
-                    if($option > $exactIncrement){
+                    if($option > $exactIncrement && ($option != "0A" &&
+                                                     $option != "0B" &&
+                                                     $option != "0C" &&
+                                                     $option != "0D")){
                         unset($options[$key]);
                     }
                 }
