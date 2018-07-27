@@ -330,7 +330,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $research_area = $university['research_area'];
             $position = $university['position'];
             
-            if(isset($hqpsDone[$hqp->getId().$position])){
+            if(isset($hqpsDone[$hqp->getId().$position.$role])){
                 continue;
             }
             
@@ -353,7 +353,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 <td style='white-space: nowrap;'>$status</td>
                 <td style='white-space: nowrap;'>$role</td>";
 
-            $hqpsDone[$hqp->getId().$position] = true;
+            $hqpsDone[$hqp->getId().$position.$role] = true;
         }
         //ksort($rows);
         foreach($rows as $key => $row){
