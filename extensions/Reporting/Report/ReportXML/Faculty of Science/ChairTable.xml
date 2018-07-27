@@ -146,6 +146,7 @@
                             <th>Case Number</th>
                             <th>Name</th>
                             <th>Rank</th>
+                            <th>Special Case</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
                             <th>Evaluation</th>
@@ -156,13 +157,14 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" roles="Chair|ViceDean|AssocDean" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet">
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
+                        <td>{$user_sub_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="download" type="PDFReportItem" reportType="FEC" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">

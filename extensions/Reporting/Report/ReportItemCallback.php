@@ -82,6 +82,7 @@ class ReportItemCallback {
             "user_id" => "getUserId",
             "user_roles" => "getUserRoles",
             "user_full_roles" => "getUserFullRoles",
+            "user_sub_roles" => "getUserSubRoles",
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
@@ -663,6 +664,16 @@ class ReportItemCallback {
             }
         }
         return $roles;
+    }
+    
+    function getUserSubRoles(){
+        global $config;
+        $person = Person::newFromId($this->reportItem->personId);
+        $roles = array();
+        foreach(@$person->getSubRoles() as $subRole){
+            $roles[] = $config->getValue('subRoles', $subRole);
+        }
+        return implode(", ", $roles);
     }
     
     function getUserLevel(){

@@ -18,6 +18,7 @@ class Person extends BackboneModel {
     static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
+    static $subRoleCache = array();
     
     static $studentPositions = array('msc'   => array("msc",
                                                       "m.sc.",
@@ -2636,19 +2637,28 @@ class Person extends BackboneModel {
         return $roles;        
     }
     
+    static function generateSubRoleCache(){
+        if(count(self::$subRoleCache) == 0){
+            self::$subRoleCache[-1] = array();
+            $data = DBFunctions::select(array('grand_role_subtype'),
+                                        array('user_id', 'sub_role'));
+            foreach($data as $row){
+                self::$subRoleCache[$row['user_id']][] = $row['sub_role'];
+            }
+        }
+    }
+    
     /**
      * Returns an array of the subRoles that this Person is in
      * @return array The subRoles that this Person is in
      */
     function getSubRoles(){
+        self::generateSubRoleCache();
         $roles = array();
-        $data = DBFunctions::select(array('grand_role_subtype'),
-                                    array('sub_role'),
-                                    array('user_id' => EQ($this->getId())));
-        foreach($data as $row){
-            $roles[] = $row['sub_role'];
+        if(isset(self::$subRoleCache[$this->getId()])){
+            return self::$subRoleCache[$this->getId()];
         }
-        return $roles;
+        return array();
     }
     
     /**
