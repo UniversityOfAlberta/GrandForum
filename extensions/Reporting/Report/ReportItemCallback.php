@@ -566,7 +566,7 @@ class ReportItemCallback {
         return $university['department'];
     }
     
-    function getyRoles(){
+    function getMyRoles(){
         $person = $this->reportItem->getReport()->person;
         $roles = $person->getRoles();
         $roleNames = array();
