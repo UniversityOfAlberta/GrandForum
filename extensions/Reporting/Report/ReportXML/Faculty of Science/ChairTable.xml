@@ -402,7 +402,9 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="else" type="If" if="{!=({$user_dept},{$my_dept})}">
+            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
+                                                        {!contains({$user_roles},DEAN)},
+                                                        {!contains({$user_roles},DEANEA)})}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
