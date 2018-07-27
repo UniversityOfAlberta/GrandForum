@@ -33,7 +33,7 @@
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Case#</th>
                             <th>Name</th>
                             <th>Rank</th>
                             <th width="1%">Annual Report</th>
@@ -143,7 +143,7 @@
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Case#</th>
                             <th>Name</th>
                             <th>Rank</th>
                             <th>Special Case</th>
