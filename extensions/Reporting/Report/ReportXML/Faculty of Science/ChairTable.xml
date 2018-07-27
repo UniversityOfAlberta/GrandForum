@@ -247,8 +247,8 @@
     <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="Recommendation for Academic Staff Member" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$user_roles},DEAN)},
-                                                     {contains({$user_roles},DEANEA)})}">
+                                                     {contains({$my_roles},DEAN)},
+                                                     {contains({$my_roles},DEANEA)})}">
                 <ReportItem type="Static" id="information">
                     <![CDATA[
                         <script type="text/javascript">
@@ -403,8 +403,8 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$user_roles},DEAN)},
-                                                        {!contains({$user_roles},DEANEA)})}">
+                                                        {!contains({$my_roles},DEAN)},
+                                                        {!contains({$my_roles},DEANEA)})}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>

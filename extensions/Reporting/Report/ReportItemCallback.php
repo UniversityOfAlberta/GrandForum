@@ -68,6 +68,7 @@ class ReportItemCallback {
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
             "my_dept" => "getMyDept",
+            "my_roles" => "getMyRoles",
             "parent_id" => "getParentId",
             "parent_name" => "getParentName",
             "parent_uni" => "getParentUni",
@@ -565,6 +566,16 @@ class ReportItemCallback {
         return $university['department'];
     }
     
+    function getyRoles(){
+        $person = $this->reportItem->getReport()->person;
+        $roles = $person->getRoles();
+        $roleNames = array();
+        foreach($roles as $role){
+            $roleNames[$role->getRole()] = $role->getRole();
+        }
+        return implode(", ", $roleNames);
+    }
+    
     function getUserUrl(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getUrl();
@@ -625,18 +636,10 @@ class ReportItemCallback {
     
     function getUserRoles(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
-            if($project != null && $project->getId() != 0){
-                if($role->hasProject($project)){
-                    $roleNames[$role->getRole()] = $role->getRole();
-                }
-            }
-            else{
-                $roleNames[$role->getRole()] = $role->getRole();
-            }
+            $roleNames[$role->getRole()] = $role->getRole();
         }
         return implode(", ", $roleNames);
     }
