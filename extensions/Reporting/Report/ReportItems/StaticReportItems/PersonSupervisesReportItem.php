@@ -101,7 +101,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                         $section->sec = $sec;
                     }
                     $footnote = new FootnotesReportItem();
-                    $footnote->setId($this->id."_".$hqpId);
+                    $footnote->setId("{$this->id}_{$hqpId}_{$i}");
                     $footnote->setAttr("blobSection", $sec);
                     $footnote->setBlobItem($this->getAttr("blobItem", "HQP"));
                     $footnote->setBlobSubItem($hqpId);
