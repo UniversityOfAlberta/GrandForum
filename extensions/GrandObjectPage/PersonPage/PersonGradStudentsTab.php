@@ -300,7 +300,17 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            $university = $universities[0];
+            $found = false;
+            foreach($universities as $university){
+                if(!isset($hqpsDone[$hqp->getId().$university['position'].$role]) &&
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found){
+                continue;
+            }
             
             $minRelation = $r;
             $minInterval = 1000000;

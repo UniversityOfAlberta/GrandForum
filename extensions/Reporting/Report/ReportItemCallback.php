@@ -1641,7 +1641,9 @@ class ReportItemCallback {
     
     function getUserCommitteeCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelationsDuring('all', ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
+        $relations = $person->getRelationsDuring('all', $startDate, $endDate);
         $count = 0;
         $hqpsDone = array();
         $merged = array();
@@ -1677,8 +1679,14 @@ class ReportItemCallback {
                 continue;
             }
             
-            $count++;
-            $hqpsDone[$hqp->getId()] = true;
+            $found = false;
+            foreach($universities as $university){
+                if(!($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                    $count++;
+                    $hqpsDone[$hqp->getId()] = true;
+                    break;
+                }
+            }
         }
         return $count;
     }
