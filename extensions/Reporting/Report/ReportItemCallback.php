@@ -541,33 +541,33 @@ class ReportItemCallback {
     }
     
     function getMyId(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getId();
     }
     
     function getMyName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getNameForForms();
     }
     
     function getMyFirstName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getFirstName();
     }
     
     function getMyLastName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getLastName();
     }
     
     function getMyDept(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         $university = $person->getUniversity();
         return $university['department'];
     }
     
     function getMyRoles(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){

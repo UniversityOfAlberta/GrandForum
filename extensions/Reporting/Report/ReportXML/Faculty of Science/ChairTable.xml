@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FECReview" reportType="RP_CHAIR" pdfFiles="FECReview" ajax="true">
+<Report name="FECReview" reportType="RP_CHAIR" pdfFiles="FECReview" personId="0" ajax="true">
     <Permissions>
         <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
         </Role>
         <Role role="IAC">
             <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="r" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="rw" />
             <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="rw" />
+            <SectionPermission id="deans_decision" permissions="rw" />
+            <SectionPermission id="chairs_advice" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="r" />
             <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="deans_advice" permissions="r" />
+            <SectionPermission id="deans_decision" permissions="r" />
+            <SectionPermission id="chairs_advice" permissions="" />
+            
         </Role>
     </Permissions>
-    <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$user_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="thead" type="Static">
             <![CDATA[
                 <style>
@@ -46,7 +59,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$user_dept}" university="University of Alberta" excludeMe="true">
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" university="University of Alberta" excludeMe="true">
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>
@@ -92,11 +105,13 @@
             </ReportItemSet>
             <ReportItem id="recommendation" type="static">
                 <![CDATA[
-                        <td align='center'><a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>View Evaluation</a></td>
+                        <td align='center'>
+                        <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
                 ]]>
             </ReportItem>
             <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
                 <![CDATA[
+                        </td>
                         <td align='center' class='increment'>{$item}</td>
                 ]]>
             </ReportItem>
@@ -126,6 +141,18 @@
                         var href = $(this).attr('data-href');
                         $("#Recommendations").attr('href', href);
                         $("#Recommendations").trigger('click');
+                    });
+                    
+                    $(".viewDA").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#DeanAdvice").attr('href', href);
+                        $("#DeanAdvice").trigger('click');
+                    });
+                    
+                    $(".viewDD").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#DeanDecision").attr('href', href);
+                        $("#DeanDecision").trigger('click');
                     });
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
@@ -204,25 +231,87 @@
             </ReportItemSet>
             <ReportItem id="recommendation" type="static">
                 <![CDATA[
-                        <td align='center'><a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>View Evaluation</a></td>
+                        <td align='center'>
                 ]]>
             </ReportItem>
-            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
-                <![CDATA[
-                        <td align='center' class='increment'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
-                <![CDATA[
-                        <td align='center' class='tenure'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
-                <![CDATA[
-                        <td align='center' class='promotion'>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
+                <ReportItem id="dr" type="static">
+                    <![CDATA[
+                            <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
+                <ReportItem id="da" type="static">
+                    <![CDATA[
+                            <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
+                <ReportItem id="dd" type="static">
+                    <![CDATA[
+                            <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="auto">
+                    <![CDATA[
+                            </td>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="auto">
+                    <![CDATA[
+                            </td>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="auto">
+                    <![CDATA[
+                            </td>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="tfoot" type="Static">
             <![CDATA[
@@ -239,6 +328,18 @@
                         $("#Recommendations").attr('href', href);
                         $("#Recommendations").trigger('click');
                     });
+                    
+                    $(".viewDA").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#DeanAdvice").attr('href', href);
+                        $("#DeanAdvice").trigger('click');
+                    });
+                    
+                    $(".viewDD").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#DeanDecision").attr('href', href);
+                        $("#DeanDecision").trigger('click');
+                    });
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
@@ -247,6 +348,7 @@
     <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="Recommendation for Academic Staff Member" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
                 <ReportItem type="Static" id="information">
@@ -403,6 +505,349 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
+                                                        {!contains({$my_roles},ADMIN)},
+                                                        {!contains({$my_roles},DEAN)},
+                                                        {!contains({$my_roles},DEANEA)})}">
+                <ReportItem id="else" type="Static">
+                    <![CDATA[
+                        <p>You are not allowed to view the recommendations for this user.</p>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="Dean's Advice for Academic Staff Member" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
+        <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
+            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$my_roles},ADMIN)},
+                                                     {contains({$my_roles},DEAN)},
+                                                     {contains({$my_roles},DEANEA)})}">
+                <ReportItem type="Static" id="information">
+                    <![CDATA[
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                        <div style='display:inline-block;width:59%;'>
+                            <table class='wikitable'>
+                                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+                                <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
+                                <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
+                                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
+                                <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
+                                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
+                            </table>
+                        </div>
+                        <div style='display:inline-block;width:40%;vertical-align:top;'>
+                            <center><b>Period: July {$start_year} to June {$this_year}</b></center>
+                            <table width="100%" class='wikitable'>
+                                <tr>
+                                    <th></th>
+                                    <th>Refereed</th>
+                                    <th>Books</th>
+                                    <th>Patents</th>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Lifetime</b></td>
+                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h2>Service/Committees Evaluations</h2>
+                        <h3>Departmental</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Faculty</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>University</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Scientific</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Community Outreach</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Other</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>General Comments</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
+                                                        {!contains({$my_roles},ADMIN)},
+                                                        {!contains({$my_roles},DEAN)},
+                                                        {!contains({$my_roles},DEANEA)})}">
+                <ReportItem id="else" type="Static">
+                    <![CDATA[
+                        <p>You are not allowed to view the recommendations for this user.</p>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="Dean's Decision for Academic Staff Member" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
+        <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
+            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$my_roles},ADMIN)},
+                                                     {contains({$my_roles},DEAN)},
+                                                     {contains({$my_roles},DEANEA)})}">
+                <ReportItem type="Static" id="information">
+                    <![CDATA[
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                        <div style='display:inline-block;width:59%;'>
+                            <table class='wikitable'>
+                                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+                                <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
+                                <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
+                                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
+                                <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
+                                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
+                            </table>
+                        </div>
+                        <div style='display:inline-block;width:40%;vertical-align:top;'>
+                            <center><b>Period: July {$start_year} to June {$this_year}</b></center>
+                            <table width="100%" class='wikitable'>
+                                <tr>
+                                    <th></th>
+                                    <th>Refereed</th>
+                                    <th>Books</th>
+                                    <th>Patents</th>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
+                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Lifetime</b></td>
+                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h2>Service/Committees Evaluations</h2>
+                        <h3>Departmental</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Faculty</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>University</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Scientific</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Community Outreach</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Other</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>General Comments</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
+                                                        {!contains({$my_roles},ADMIN)},
                                                         {!contains({$my_roles},DEAN)},
                                                         {!contains({$my_roles},DEANEA)})}">
                 <ReportItem id="else" type="Static">
