@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FECReview" reportType="RP_CHAIR" pdfFiles="FECReview" personId="0" ajax="true">
+<Report name="Evaluations" reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true">
     <Permissions>
         <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -103,10 +103,15 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="recommendation" type="static">
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
-                        <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="da_download" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        {$item} Dean's Advice<br />
                 ]]>
             </ReportItem>
             <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
@@ -235,23 +240,23 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                <ReportItem id="dr" type="static">
+                <ReportItem id="dr" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
+                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
-                <ReportItem id="da" type="static">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
+                            {$item} <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
-                <ReportItem id="dd" type="static">
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
+                            {$item} <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -345,77 +350,19 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="Recommendation for Academic Staff Member" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
+    <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem type="Static" id="information">
+                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
                     <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        <div style='display:inline-block;width:59%;'>
-                            <table class='wikitable'>
-                                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
-                                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
-                                <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
-                                <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
-                                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
-                                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
-                            </table>
-                        </div>
-                        <div style='display:inline-block;width:40%;vertical-align:top;'>
-                            <center><b>Period: July {$start_year} to June {$this_year}</b></center>
-                            <table width="100%" class='wikitable'>
-                                <tr>
-                                    <th></th>
-                                    <th>Refereed</th>
-                                    <th>Books</th>
-                                    <th>Patents</th>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Lifetime</b></td>
-                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
-                                </tr>
-                            </table>
-                        </div>
+                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
@@ -500,7 +447,13 @@
                         </tr>
                         </tbody>
                         </table>
+                        <hr class="pdfnodisplay" />
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -516,77 +469,19 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="Dean's Advice for Academic Staff Member" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
+    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem type="Static" id="information">
+                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
                     <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        <div style='display:inline-block;width:59%;'>
-                            <table class='wikitable'>
-                                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
-                                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
-                                <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
-                                <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
-                                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
-                                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
-                            </table>
-                        </div>
-                        <div style='display:inline-block;width:40%;vertical-align:top;'>
-                            <center><b>Period: July {$start_year} to June {$this_year}</b></center>
-                            <table width="100%" class='wikitable'>
-                                <tr>
-                                    <th></th>
-                                    <th>Refereed</th>
-                                    <th>Books</th>
-                                    <th>Patents</th>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Lifetime</b></td>
-                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
-                                </tr>
-                            </table>
-                        </div>
+                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
@@ -671,7 +566,13 @@
                         </tr>
                         </tbody>
                         </table>
+                        <hr class="pdfnodisplay" />
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -687,77 +588,19 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="Dean's Decision for Academic Staff Member" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
+    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem type="Static" id="information">
+                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
                     <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        <div style='display:inline-block;width:59%;'>
-                            <table class='wikitable'>
-                                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
-                                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
-                                <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
-                                <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
-                                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
-                                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
-                                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
-                            </table>
-                        </div>
-                        <div style='display:inline-block;width:40%;vertical-align:top;'>
-                            <center><b>Period: July {$start_year} to June {$this_year}</b></center>
-                            <table width="100%" class='wikitable'>
-                                <tr>
-                                    <th></th>
-                                    <th>Refereed</th>
-                                    <th>Books</th>
-                                    <th>Patents</th>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Lifetime</b></td>
-                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
-                                </tr>
-                            </table>
-                        </div>
+                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
@@ -842,7 +685,13 @@
                         </tr>
                         </tbody>
                         </table>
+                        <hr class="pdfnodisplay" />
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
                     ]]>
                 </ReportItem>
             </ReportItemSet>

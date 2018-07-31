@@ -349,21 +349,21 @@ abstract class AbstractReport extends SpecialPage {
         return $return;
     }
     
-    function getPDF($submittedByOwner=false){
+    function getPDF($submittedByOwner=false, $section=""){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
             $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
-            return $report->getPDF();
+            return $report->getPDF($submittedByOwner, $section);
         }
         $sto = new ReportStorage($this->person);
         $foundSameUser = false;
         $foundSubmitted = false;
         if($this->project != null){
             if($this->pdfAllProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
+                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType.$section);
             }
             else{
-                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType.$section, $this->year);
                 $check2 = array();
                 foreach($check as $c){
                     if($c['submitted'] == 1){
@@ -377,7 +377,8 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             // First check submitted
-            $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
+            
+            $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType.$section, $this->year);
             foreach($check as $c){
                 if($c['generation_user_id'] == $c['user_id']){
                    $foundSameUser = true;
@@ -798,10 +799,14 @@ abstract class AbstractReport extends SpecialPage {
                 if($preview){
                     exit;
                 }
-                $sto = new ReportStorage($this->person);
-                $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
+                $this_person = $this->person;
+                if(isset($_GET['userId'])){
+                    $this_person = Person::newFromId($_GET['userId']);
+                }
+                $sto = new ReportStorage($this_person);
+                @$sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
                 if($report->project != null){
-                    $ind = new ReportIndex($this->person);
+                    $ind = new ReportIndex($this_person);
                     $rid = $sto->metadata('report_id');
                     $ind->insert_report($rid, $report->project);
                 }
@@ -822,10 +827,14 @@ abstract class AbstractReport extends SpecialPage {
             if($preview){
                 exit;
             }
-            $sto = new ReportStorage($this->person);
-            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $this->pdfType, $this->year);
+            $this_person = $this->person;
+            if(isset($_GET['userId'])){
+                $this_person = Person::newFromId($_GET['userId']);
+            }
+            $sto = new ReportStorage($this_person);
+            @$sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
             if($this->project != null){
-                $ind = new ReportIndex($this->person);
+                $ind = new ReportIndex($this_person);
                 $rid = $sto->metadata('report_id');
                 $ind->insert_report($rid, $this->project);
             }
@@ -1007,6 +1016,9 @@ abstract class AbstractReport extends SpecialPage {
         foreach($sections as $section){
             $permissions = $this->getSectionPermissions($section);
             if(!isset($permissions['r'])){
+                continue;
+            }
+            if(isset($_GET['section']) && $section->name != $_GET['section']){
                 continue;
             }
             if(isset($_GET['preview']) || (!isset($_GET['preview']) && !$section->previewOnly)){

@@ -6,63 +6,75 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
 		$person = Person::newFromId($wgUser->getId());
+
 		$projectGet = "";
 		if($this->getReport()->project != null){
 		    $projectGet = "&project={$this->getReport()->project->getName()}";
 		}
+		
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
+        $section = $this->getAttr("section", "");
+        if($section != ""){
+            $section = "&section={$section}";
+        }
+        $userId = $this->getAttr("userId", "");
+        if($userId != ""){
+            $person = Person::newFromId($userId);
+            $userId = "&userId={$userId}";
+        }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
-		        
 		            $('#generateButton').click(function(){
 		                $('#generateButton').prop('disabled', true);
-		                $('#generate_success').html('');
+	                    $('#generate_success').html('');
                         $('#generate_success').css('display', 'none');
                         $('#generate_error').html('');
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
-		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
-		                        success : function(data){
-		                                        //var data = jQuery.parseJSON(response);
-		                                        for(index in data){
-		                                            val = data[index];
-		                                            if(typeof val.tok != 'undefined'){
-		                                                index = index.replace('/', '');
-		                                                var tok = val.tok;
-		                                                var time = val.time;
-		                                                var len = val.len;
-		                                                var name = val.name;
-		                                                
-		                                                $('#ex_token_' + index).html(tok);
-                                                        $('#ex_time_' + index).html(time);
-                                                        $('#generate_button_' + index).attr('value', tok);
-                                                        $('#download_button_' + index).removeAttr('disabled');
-                                                        
-                                                        $('#generate_success').html('PDF Generated Successfully.');
-                                                        $('#generate_success').css('display', 'block');
-                                                        $('#download_button_' + index).attr('name', tok);
-                                                        $('#download_button_' + index).html(name + ' PDF');
+		                saveAll(function(){
+		                    $.ajax({
+		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}{$section}{$userId}&generatePDF', 
+		                            success : function(data){
+		                                            //var data = jQuery.parseJSON(response);
+		                                            for(index in data){
+		                                                val = data[index];
+		                                                if(typeof val.tok != 'undefined'){
+		                                                    index = index.replace('/', '');
+		                                                    var tok = val.tok;
+		                                                    var time = val.time;
+		                                                    var len = val.len;
+		                                                    var name = val.name;
+		                                                    
+		                                                    $('#ex_token_' + index).html(tok);
+                                                            $('#ex_time_' + index).html(time);
+                                                            $('#generate_button_' + index).attr('value', tok);
+                                                            $('#download_button_' + index).removeAttr('disabled');
+                                                            
+                                                            $('#generate_success').html('PDF Generated Successfully.');
+                                                            $('#generate_success').css('display', 'block');
+                                                            $('#download_button_' + index).attr('name', tok);
+                                                            $('#download_button_' + index).html(name + ' PDF');
+                                                        }
+                                                        else{
+                                                            $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                            $('#generate_error').css('display', 'block');
+                                                        }
                                                     }
-                                                    else{
-                                                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                                        $('#generate_error').css('display', 'block');
-                                                    }
-                                                }
-		                                        $('#generate_throbber').css('display', 'none');
-		                                        $('#generateButton').removeAttr('disabled');
-		                                  },
-		                        error : function(response){
-                                              // Error
-                                              $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                              $('#generate_error').css('display', 'block');
-		                                      $('#generateButton').removeAttr('disabled');
-		                                      $('#generate_throbber').css('display', 'none');
-		                                  }
+		                                            $('#generate_throbber').css('display', 'none');
+		                                            $('#generateButton').removeAttr('disabled');
+		                                      },
+		                            error : function(response){
+                                                  // Error
+                                                  $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                  $('#generate_error').css('display', 'block');
+		                                          $('#generateButton').removeAttr('disabled');
+		                                          $('#generate_throbber').css('display', 'none');
+		                                      }
+		                    });
 		                });
 		            });
 		        });
@@ -98,7 +110,8 @@ EOF;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
             $report = new DummyReport($file, $person, $project);
-        	$check = $report->getPDF();
+            $report->person = $person;
+        	$check = $report->getPDF(false, $this->getAttr("section", ""));
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
         		$tst = $check[0]['timestamp'];
