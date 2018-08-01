@@ -103,34 +103,65 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        <td align='center'>
-                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            <td align='center'>
+                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            <td align='center'>
+                            {$item} <a class="viewCA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Chair+Advice&userId={$user_id}'>Chair's Advice</a><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="da_download" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Dean's Advice<br />
                 ]]>
             </ReportItem>
-            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
-                <![CDATA[
-                        </td>
-                        <td align='center' class='increment'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
-                <![CDATA[
-                        <td align='center' class='tenure'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
-                <![CDATA[
-                        <td align='center' class='promotion'>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
+                    <![CDATA[
+                            </td>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="auto">
+                    <![CDATA[
+                            </td>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="tfoot" type="Static">
             <![CDATA[
@@ -146,6 +177,12 @@
                         var href = $(this).attr('data-href');
                         $("#Recommendations").attr('href', href);
                         $("#Recommendations").trigger('click');
+                    });
+                    
+                    $(".viewCA").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#ChairAdvice").attr('href', href);
+                        $("#ChairAdvice").trigger('click');
                     });
                     
                     $(".viewDA").click(function(){
@@ -260,6 +297,11 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="ca_download" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        {$item} Chair's Advice<br />
+                ]]>
+            </ReportItem>
             <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
                 <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="auto">
                     <![CDATA[
@@ -334,6 +376,12 @@
                         $("#Recommendations").trigger('click');
                     });
                     
+                    $(".viewCA").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#ChairAdvice").attr('href', href);
+                        $("#ChairAdvice").trigger('click');
+                    });
+                    
                     $(".viewDA").click(function(){
                         var href = $(this).attr('data-href');
                         $("#DeanAdvice").attr('href', href);
@@ -345,6 +393,7 @@
                         $("#DeanDecision").attr('href', href);
                         $("#DeanDecision").trigger('click');
                     });
+                    
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
@@ -690,6 +739,125 @@
                     ]]>
                 </ReportItem>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
+                                                        {!contains({$my_roles},ADMIN)},
+                                                        {!contains({$my_roles},DEAN)},
+                                                        {!contains({$my_roles},DEANEA)})}">
+                <ReportItem id="else" type="Static">
+                    <![CDATA[
+                        <p>You are not allowed to view the recommendations for this user.</p>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="" blobSection="FEC_CHAIR_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
+        <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
+            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$my_roles},ADMIN)},
+                                                     {contains({$my_roles},DEAN)},
+                                                     {contains({$my_roles},DEANEA)})}">
+                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Evaluations</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h2>Service/Committees Evaluations</h2>
+                        <h3>Departmental</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Faculty</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>University</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Scientific</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Community Outreach</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <h3>Other</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>General Comments</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' class='increment'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
                     ]]>
