@@ -12,6 +12,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $splitGrad = strtolower($this->getAttr('splitGrad', 'false'));
+        $showOther = (strtolower($this->getAttr('showOther', 'true')) == "true");
         $showCommittees = (strtolower($this->getAttr('showCommittees', 'false')) == "true");
         
         $tab = new PersonGradStudentsTab($person, array());
@@ -73,7 +74,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                                           $this->getReport()->year."-06-30");
         }
         
-        if($otherCount > 0){
+        if($showOther && $otherCount > 0){
             $item .= "<br /><h4>Other: {$otherCount}</h4>";
             $item .= $tab->supervisesHTML('other', 
                                           $this->getReport()->startYear."-07-01", 
