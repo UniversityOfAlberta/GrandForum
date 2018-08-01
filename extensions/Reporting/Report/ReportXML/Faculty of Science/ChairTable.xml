@@ -32,7 +32,6 @@
             <SectionPermission id="deans_advice" permissions="r" />
             <SectionPermission id="deans_decision" permissions="r" />
             <SectionPermission id="chairs_advice" permissions="" />
-            
         </Role>
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">

@@ -19,6 +19,8 @@ class Person extends BackboneModel {
     static $disciplineMap = array();
     static $allPeopleCache = array();
     static $subRoleCache = array();
+    static $fecInfoCache = array();
+    static $salaryCache = array();
     
     static $studentPositions = array('msc'   => array("msc",
                                                       "m.sc.",
@@ -82,6 +84,7 @@ class Person extends BackboneModel {
     var $middleName;
     var $projects;
     var $university;
+    var $salary;
     var $universityDuring;
     var $isProjectLeader;
     var $groups;
@@ -621,29 +624,32 @@ class Person extends BackboneModel {
     }
 
     function getFecPersonalInfo(){
-        $data = DBFunctions::select(array('grand_personal_fec_info'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->getId())));
-        if(count($data) >0){
-            $row = $data[0];
-            foreach($row as $key => $value){
-                $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
+        if(!isset(self::$fecInfoCache[$this->getId()])){
+            $data = DBFunctions::select(array('grand_personal_fec_info'),
+                                        array('*'),
+                                        array('user_id' => EQ($this->getId())));
+            self::$fecInfoCache[$this->getId()] = $data;
+            if(count($data) >0){
+                $row = $data[0];
+                foreach($row as $key => $value){
+                    $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
+                }
+                $this->dateOfPhd = $row['date_of_phd'];
+                $this->dateOfAppointment = $row['date_of_appointment'];
+                $this->dateOfAssistant = $row['date_assistant'];
+                $this->dateOfAssociate = $row['date_associate'];
+                $this->dateOfProfessor = $row['date_professor'];
+                $this->dateOfTenure = $row['date_tenure'];
+                $this->dateOfRetirement = $row['date_retirement'];
+                $this->dateOfLastDegree = $row['date_last_degree'];
+                $this->lastDegree = $row['last_degree'];
+                $this->publicationHistoryRefereed = $row['publication_history_refereed'];
+                $this->publicationHistoryBooks = $row['publication_history_books'];
+                $this->publicationHistoryPatents = $row['publication_history_patents'];
+                $this->dateFso2 = $row['date_fso2'];
+                $this->dateFso3 = $row['date_fso3'];
+                $this->dateFso4 = $row['date_fso4'];
             }
-            $this->dateOfPhd = $row['date_of_phd'];
-            $this->dateOfAppointment = $row['date_of_appointment'];
-            $this->dateOfAssistant = $row['date_assistant'];
-            $this->dateOfAssociate = $row['date_associate'];
-            $this->dateOfProfessor = $row['date_professor'];
-            $this->dateOfTenure = $row['date_tenure'];
-            $this->dateOfRetirement = $row['date_retirement'];
-            $this->dateOfLastDegree = $row['date_last_degree'];
-            $this->lastDegree = $row['last_degree'];
-            $this->publicationHistoryRefereed = $row['publication_history_refereed'];
-            $this->publicationHistoryBooks = $row['publication_history_books'];
-            $this->publicationHistoryPatents = $row['publication_history_patents'];
-            $this->dateFso2 = $row['date_fso2'];
-            $this->dateFso3 = $row['date_fso3'];
-            $this->dateFso4 = $row['date_fso4'];
         }
         return $this;
     }
@@ -653,6 +659,7 @@ class Person extends BackboneModel {
         //fix in the future
         $me = Person::newFromWgUser();
         if($me->getId() == $this->getId() || $me->isRoleAtLeast(MANAGER) || $isSupervisor){
+            unset(self::$fecInfoCache[$this->getId()]);
             $fec = DBFunctions::select(array('grand_personal_fec_info'),
                                        array('*'),
                                        array('user_id' => EQ($this->getId())));
@@ -852,32 +859,47 @@ class Person extends BackboneModel {
     }
     
     function getSalary($year){
-        $salary = DBFunctions::select(array('grand_user_salaries'),
+        if($this->salary === null){
+            $salary = DBFunctions::select(array('grand_user_salaries'),
                                       array('salary'),
                                       array('user_id' => $this->getId(),
                                             'year' => $year));
-        return @$salary[0]['salary'];
+            $this->salary = @$salary[0]['salary'];
+            if($this->salary == null){
+                $this->salary = 0;
+            }
+        }
+        return $this->salary;
     }
     
     static function getSalaryIncrement($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scales'),
-                                         array("increment_$type"),
-                                         array('year' => $year));
-        return @$increment[0]["increment_$type"];
+        if(!isset(self::$salaryCache["increment_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("increment_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["increment_{$type}_{$year}"] = @$increment[0]["increment_$type"];
+        }
+        return self::$salaryCache["increment_{$type}_{$year}"];
     }
     
     static function getMinSalary($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scales'),
-                                         array("min_salary_$type"),
-                                         array('year' => $year));
-        return @$increment[0]["min_salary_$type"];
+        if(!isset(self::$salaryCache["min_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("min_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["min_salary_{$type}_{$year}"] = @$increment[0]["min_salary_$type"];
+        }
+        return self::$salaryCache["min_salary_{$type}_{$year}"];
     }
     
     static function getMaxSalary($year, $type){
-        $increment = DBFunctions::select(array('grand_salary_scales'),
-                                         array("max_salary_$type"),
-                                         array('year' => $year));
-        return @$increment[0]["max_salary_$type"];
+        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("max_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
+        }
+        return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
 
     /**
