@@ -525,6 +525,8 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="sabbatical" type="UploadPDFReportItem" blobItem="SABBATICAL" blobSection="FEC_ADDITIONAL_INFO" />
+        
         <!-- HQP Publications -->
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="HQP Publications">
             <![CDATA[
