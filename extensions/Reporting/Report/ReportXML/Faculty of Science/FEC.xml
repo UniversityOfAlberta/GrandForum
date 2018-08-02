@@ -634,7 +634,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="sabbatical" type="Upload" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
+        <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
                 <h2>Sabbatical Report</h2>
                 <small>Attach a <b>PDF</b> of your sabbatical report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</small>
