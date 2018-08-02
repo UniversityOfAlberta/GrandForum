@@ -210,8 +210,7 @@
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                 <![CDATA[
-                    <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$product_citation}
-                        <div style="float:right">{$item}</div>
+                    <li style="page-break-inside: avoid;">{$item} <b>({$product_type})</b> {$product_citation}
                     </li>
                 ]]>
             </ReportItem>
