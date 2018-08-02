@@ -71,13 +71,14 @@ class IncrementReportItem extends SelectReportItem {
             $exactIncrement = number_format(($maxSalary - $salary)/$increment, 2, '.', '');
             if($exactIncrement > 0){
                 if(!in_array($exactIncrement, $options) && $exactIncrement < max($options)){
-                    $options[] = $exactIncrement;
+                    $options[] = $exactIncrement." (PTC)";
                 }
                 foreach($options as $key => $option){
                     if($option > $exactIncrement && ($option != "0A" &&
                                                      $option != "0B" &&
                                                      $option != "0C" &&
-                                                     $option != "0D")){
+                                                     $option != "0D" &&
+                                                     strstr($option, "PTC") == false)){
                         unset($options[$key]);
                     }
                 }

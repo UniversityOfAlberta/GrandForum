@@ -6,7 +6,7 @@ class SelectReportItem extends AbstractReportItem {
 		global $wgOut;
         $options = $this->parseOptions();
         $value = $this->getBlobValue();
-        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
+        $width = $this->getAttr("width", "150px");
         $items = array();
 		foreach($options as $option){
 		    $selected = "";

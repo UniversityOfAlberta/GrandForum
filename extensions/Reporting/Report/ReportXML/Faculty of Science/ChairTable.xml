@@ -124,7 +124,7 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="auto">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
                     <![CDATA[
                             </td>
                             <td align='center' class='increment'>{$item}</td>
@@ -143,7 +143,7 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="auto">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
                     <![CDATA[
                             </td>
                             <td align='center' class='increment'>{$item}</td>
@@ -302,7 +302,7 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="auto">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
                     <![CDATA[
                             </td>
                             <td align='center' class='increment'>{$item}</td>
@@ -321,7 +321,7 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="auto">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
                     <![CDATA[
                             </td>
                             <td align='center' class='increment'>{$item}</td>
@@ -340,7 +340,7 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="auto">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
                     <![CDATA[
                             </td>
                             <td align='center' class='increment'>{$item}</td>
