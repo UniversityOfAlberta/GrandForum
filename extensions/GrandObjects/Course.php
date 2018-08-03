@@ -6,6 +6,8 @@
 class Course extends BackboneModel{
 
     static $cache = array();
+    static $userCoursesCache = array();
+    
     var $id;
     var $acadOrg;
     var $term;
@@ -367,17 +369,20 @@ class Course extends BackboneModel{
     }
 
     function getUserCourses($id){
-        $sql = "SELECT DISTINCT course_id
-                FROM `grand_user_courses`
-                WHERE (user_id = '$id')";
-        $data = DBFunctions::execSQL($sql);
-        $courses = array();
-        foreach($data as $row){
-            $course = Course::newFromId($row['course_id']);
-            $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
+        if(!isset(self::$userCoursesCache[$id])){
+            $sql = "SELECT DISTINCT course_id
+                    FROM `grand_user_courses`
+                    WHERE (user_id = '$id')";
+            $data = DBFunctions::execSQL($sql);
+            $courses = array();
+            foreach($data as $row){
+                $course = Course::newFromId($row['course_id']);
+                $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
+            }
+            ksort($courses);
+            self::$userCoursesCache[$id] = $courses;
         }
-        ksort($courses);
-        return $courses;
+        return self::$userCoursesCache[$id];
     }
 
     function getProfessors(){
