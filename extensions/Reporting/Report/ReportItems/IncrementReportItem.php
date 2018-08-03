@@ -74,17 +74,18 @@ class IncrementReportItem extends SelectReportItem {
                 if(!in_array($exactIncrement, $options) && $exactIncrement < max($options)){
                     $options[] = $exactIncrement." (PTC)";
                 }
-                foreach($options as $key => $option){
-                    if($option > $exactIncrement && ($option != "0A" &&
-                                                     $option != "0B" &&
-                                                     $option != "0C" &&
-                                                     $option != "0D" &&
-                                                     strstr($option, "PTC") == false)){
-                        unset($options[$key]);
-                    }
-                }
             }
         }
+        usort($options, function($a, $b){
+            $floatA = floatval($a);
+            $floatB = floatval($b);
+            if($floatA == $floatB){
+                return ($a > $b);
+            }
+            else{
+                return (floatval($a) > floatval($b));
+            }
+        });
 	    return $options;
 	}
 

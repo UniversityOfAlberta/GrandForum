@@ -20,5 +20,35 @@ $(document).ready(function(){
                 });
             }
         }).change();
+        $('.promotion select', tr).change(function(){
+            var value = $(this).val();
+            if(value.indexOf('i recommend promotion') != -1){
+                // Show all options
+                $(".increment option", tr).show();
+            }
+            else{
+                // Hide options after PTC
+                var foundPTC = false;
+                var PTC = null;
+                $(".increment option", tr).each(function(){
+                    if(foundPTC){
+                        // PTC was already found, so hide anything after it
+                        $(this).hide();
+                        if($(this).is(":selected")){
+                            // Something higher than the PTC was selected, so unselect it
+                            $(this).prop("selected", false);
+                            if(PTC != null){
+                                // Now select the PTC
+                                $(PTC).prop("selected", true);
+                            }
+                        }
+                    }
+                    if($(this).val().indexOf("PTC") != -1){
+                        foundPTC = true;
+                        PTC = this;
+                    }
+                });
+            }
+        }).change();
     });
 });
