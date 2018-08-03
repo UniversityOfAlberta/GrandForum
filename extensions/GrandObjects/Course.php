@@ -441,7 +441,7 @@ class Course extends BackboneModel{
         else if($month == "Jan"){
             return "Winter";
         }
-        else if($month == "Apr"){
+        else if($month == "Apr" || $month == "May"){
             return "Spring";
         }
         else{
