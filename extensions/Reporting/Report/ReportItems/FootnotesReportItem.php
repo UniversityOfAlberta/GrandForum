@@ -10,6 +10,7 @@ class FootnotesReportItem extends AbstractReportItem {
         $value = $this->getBlobValue();
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "100%";
         $height = (isset($this->attributes['height'])) ? $this->attributes['height'] : "100%";
+        $value = str_replace("&", "&amp;", $value);
         $value = str_replace("<", "&lt;", $value);
         $value = str_replace(">", "&gt;", $value);
         $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
@@ -46,6 +47,7 @@ EOF;
     
     function getPDFHTML(){
         $value = $this->getBlobValue();
+        $value = str_replace("&", "&amp;", $value);
         $value = str_replace("<", "&lt;", $value);
         $value = str_replace(">", "&gt;", $value);
         $value = nl2br($value);
