@@ -17,7 +17,7 @@ class SimilarUserValidation extends UIValidation {
         $allPeople = Person::getAllPeople();
         foreach($allPeople as $person){
             similar_text($person->getName(), "$firstName.$lastName", $percent);
-            if($percent > 80 && $percent != 100){
+            if($percent > 80){
                 $this->duplicatePeople[] = $person;
             }
         }
