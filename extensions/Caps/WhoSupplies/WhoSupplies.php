@@ -62,7 +62,7 @@ class WhoSupplies extends SpecialPage{
                     
                     
                     <li>As of May 2017,the NIHB will provide full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
-                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>Click here</a> for an infographic that shows Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
+                    <li><a href='https://www.caps-cpca.ubc.ca/index.php/File:Canadian_CPhA_Mifegymiso_access_coverage_advocacy_KT_110817.pdf'>INFOGRAPHIC MAP</a> of Mifegymiso® coverage across Canada, as of as of January, 2018.<div>The French Version is available <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/4/41/Canadian_Mifegymiso_advocacy_version_Fr.pdf'>here</a></div></li>
                     <li>
                     In March 2018, The National Defense and Canadian Armed Forces added Mifegymiso to their <a href='http://www.cmp-cpm.forces.gc.ca/hs/en/drug-benefit-list/index.asp'>Drug Benefit </a>List for people covered by Canadian Forces Health Services.
                     </li>

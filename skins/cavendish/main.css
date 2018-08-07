@@ -242,6 +242,11 @@ a.new:visited,#p-personal a.new:visited {
     color: #a55858;
 }
 
+#bodyContent a {
+    font-weight: bold;
+    color: #4c92ac;
+}
+
 /*
  ** the main content area
  */
