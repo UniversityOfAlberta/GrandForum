@@ -777,7 +777,7 @@ class ReportItemCallback {
     }
 
     function getUserLifetimePublicationCount($type='all'){
-        $phdYear = max("1900", $this->getUserPhdYear()-5); // Start at the phd year -5 so there is some flexibility
+        $phdYear = max("1900", $this->getUserPhdYear()-1); // Start at the phd year -1 so there is some flexibility
         $year = $this->reportItem->getReport()->year;
         $person = Person::newFromId($this->reportItem->personId);
         $count = 0;
