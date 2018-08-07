@@ -77,11 +77,11 @@
  
                 <p>The aim of the form is to allow the RMC to assess the progress, performance against the key impact objectives of AGE-WELL and demonstrate that the network is effectively working to achieve our goals. Reporting is crucial to the ongoing success and future of AGE-WELL.</p>
 
-                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages. AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline table</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
+                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages. AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
 
                 <p>Projects are required to justify the current PRL stage they are at, and which stage they will be at one year later. It is expected that projects will progress through theses stages at an appropriate pace, in order to receive ongoing investment however it should be noted that it is expected that some projects may remain at a specific PRL longer than others. Justification and a demonstration of progress is required.</p>
 
-                <p>Each project is required to complete 2 tables related to the 5 NCE objectives (Scientific Excellence, Transdisciplinary Working, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training) for the past year and for the upcoming year. All projects are asked to complete the tables relevant to their project; not all projects may be able to complete both the KM and Commercialization tables.  These tables will be used by the RMC to create a Balance Scorecard to determine the progress projects are making across the TRL continuum each year.  The outcome of RMC review of each project will be used to make a recommendation to the AGE-WELL Board of Directors with respect to ongoing funding levels and continuation of projects.</p>
+                <p>Each project is required to complete 2 tables related to the 5 NCE objectives (Scientific Excellence, Transdisciplinary Working, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training) for the past year and for the upcoming year. All projects are asked to complete the tables relevant to their project; not all projects may be able to complete both the KM and Commercialization tables.  These tables were developed based on the Balance Scorecard approach and will be used by the RMC to review projects progress from year to year. The outcome of RMC review of each project will be used to make a recommendation to the AGE-WELL Board of Directors with respect to ongoing funding levels and continuation of projects. Projects will only be reviewed against themselves and the progress they make towards the objectives they have set.</p>
 
                 <p>The report consists of qualitative and quantitative information to appropriately capture the progress your project is making on the key impact area.</p>
 
@@ -89,7 +89,7 @@
                     <ol>
                         <li>Narrative- a short written account of what the project has been doing to achieve impact;</li>
                         <li>Metrics- quantitative data (most values are auto populated via reporting on Forum) substantiating information must be provided for all entered values; and </li>
-                        <li>Case study (optional)- a short vignette that describes an outstanding work or achievement by the project.</li>
+                        <li>Case study - a short vignette that describes an outstanding work or achievement by the project.</li>
                     </ol>
                 </p>
                 <p>For more information on the development of this evaluation or instructions please watch the <a href='https://youtu.be/xYA7mANKkhM' target='_blank'>Webinar</a> posted on the Intranet. You can also find a Word version of the form <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/08/AGE-WELLProjectEvaluationForm_2017-18.docx' target='_blank'>here</a> if you would like to work offline.</p>
@@ -216,19 +216,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
+        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
+        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_1_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
+        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_1_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -286,19 +286,19 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
+        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_2_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
+        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_2_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
+        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_2_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -317,19 +317,19 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
+        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_3_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Stakeholder and end-user driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
+        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_3_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
+        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_3_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -695,19 +695,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
+        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>National/Global Partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
+        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_1_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
+        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_1_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -754,19 +754,19 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
+        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_3_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Networking within AGE-WELL</b> (e.g. collaboration and production across the Network)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
+        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_3_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
+        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_3_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -937,19 +937,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
+        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_3_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Knowledge dissemination</b> (e.g. academic and non-academic dissemination activities)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
+        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_3_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
+        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_3_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -995,19 +995,19 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
+        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Product Development & IP Management</b></td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
+        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_1_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
+        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_1_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -1050,19 +1050,19 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
+        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_2_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
+        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_2_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
+        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_2_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -1275,19 +1275,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
+        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,HQP,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
                 <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b> (e.g. involvement of HQP in the project and Network)</td>
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
+        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,HQP,PLAN_1_2,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
+        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,HQP,PLAN_1_3,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <td style='height:100%;'>{$item}</td>
             ]]>
@@ -1427,9 +1427,18 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
+        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="500">
             <![CDATA[
-                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. (OPTIONAL)</h3>
+                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. We will draw on these case studies as we prepare our network renewal applications.</h3>
+                The following should be provided for the case study: 
+                <ul>
+                    <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
+                    <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
+                    <li>Details of the beneficiaries – who or what community, constituency or organisation has benefitted, been affected or impacted on.</li>
+                    <li>Details of the nature of the impact – how they have benefitted, been affected or impacted on.</li>
+                    <li>Evidence or indicators of the extent of the impact described, as appropriate to the case being made.</li>
+                    <li>Dates of when these impacts occurred.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>

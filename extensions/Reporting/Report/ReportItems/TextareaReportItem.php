@@ -114,6 +114,11 @@ class TextareaReportItem extends AbstractReportItem {
     
     function getHTML(){
         $value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($value == '' && $default != ''){
+		    $value = $default;
+		}
+		
         $rows = $this->getAttr('rows', 5);
         $width = $this->getAttr('width', '100%');
         $limit = $this->getLimit();
