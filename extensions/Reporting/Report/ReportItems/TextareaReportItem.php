@@ -115,8 +115,9 @@ class TextareaReportItem extends AbstractReportItem {
     function getHTML(){
         $value = $this->getBlobValue();
 		$default = $this->getAttr('default', '');
-		if($value == '' && $default != ''){
+		if($value === null && $default != ''){
 		    $value = $default;
+		    $value = str_replace('<br />', '', $value);
 		}
 		
         $rows = $this->getAttr('rows', 5);
@@ -293,13 +294,15 @@ EOF;
     
     function getBlobValue(){
         $value = parent::getBlobValue();
-        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            // Don't alter the text in any way
-        }
-        else{
-            $value = str_replace("<", "&lt;", $value);
-            $value = str_replace(">", "&gt;", $value);
-            nl2br($value);
+        if($value !== null){
+            if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+                // Don't alter the text in any way
+            }
+            else{
+                $value = str_replace("<", "&lt;", $value);
+                $value = str_replace(">", "&gt;", $value);
+                nl2br($value);
+            }
         }
         return $value;
     }
