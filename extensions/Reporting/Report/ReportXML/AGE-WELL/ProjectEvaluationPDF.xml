@@ -284,7 +284,18 @@
             <![CDATA[
                         </td>
                     </tr>
-                </table>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="file1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="FILE1" mimeType=".pdf" fileSize="5" optional="true">
+            <![CDATA[
+                <h3>Please attach 1 or 2 of the project’s most significant scientific outputs from the past year for reviewers.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="file2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="FILE2" mimeType=".pdf" fileSize="5" optional="true">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
         <!-- Table 2 -->
