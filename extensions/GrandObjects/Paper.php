@@ -1813,27 +1813,31 @@ class Paper extends BackboneModel{
             // Begin Transaction
             DBFunctions::begin();
             $authors = array();
-            foreach($this->authors as $author){
-                if(isset($author->id) && $author->id != 0){
-                    $authors[] = $author->id;
-                }
-                else if(isset($author->fullname)){
-                    $authors[] = $author->fullname;
-                }
-                else{
-                    $authors[] = $author->name;
+            if(is_array($this->authors)){
+                foreach($this->authors as $author){
+                    if(isset($author->id) && $author->id != 0){
+                        $authors[] = $author->id;
+                    }
+                    else if(isset($author->fullname)){
+                        $authors[] = $author->fullname;
+                    }
+                    else{
+                        $authors[] = $author->name;
+                    }
                 }
             }
             $contributors = array();
-            foreach($this->contributors as $contributor){
-                if(isset($contributor->id) && $contributor->id != 0){
-                    $contributors[] = $contributor->id;
-                }
-                else if(isset($contributor->fullname)){
-                    $contributors[] = $contributor->fullname;
-                }
-                else{
-                    $contributors[] = $contributor->name;
+            if(is_array($this->contributors)){
+                foreach($this->contributors as $contributor){
+                    if(isset($contributor->id) && $contributor->id != 0){
+                        $contributors[] = $contributor->id;
+                    }
+                    else if(isset($contributor->fullname)){
+                        $contributors[] = $contributor->fullname;
+                    }
+                    else{
+                        $contributors[] = $contributor->name;
+                    }
                 }
             }
             foreach($this->projects as $project){
@@ -1925,28 +1929,32 @@ class Paper extends BackboneModel{
             $oldProduct = new Product(DBFunctions::select(array('grand_products'),
                                                           array('*'),
                                                           array('id' => EQ($this->getId()))));
-            foreach($this->authors as $author){
-                if(isset($author->id) && $author->id != 0){
-                    $authors[] = $author->id;
-                }
-                else if(isset($author->fullname)){
-                    $authors[] = $author->fullname;
-                }
-                else{
-                    // This is more for legacy purposes
-                    $authors[] = $author->name;
+            if(is_array($this->authors)){
+                foreach($this->authors as $author){
+                    if(isset($author->id) && $author->id != 0){
+                        $authors[] = $author->id;
+                    }
+                    else if(isset($author->fullname)){
+                        $authors[] = $author->fullname;
+                    }
+                    else{
+                        // This is more for legacy purposes
+                        $authors[] = $author->name;
+                    }
                 }
             }
-            foreach($this->contributors as $contributor){
-                if(isset($contributor->id) && $contributor->id != 0){
-                    $contributors[] = $contributor->id;
-                }
-                else if(isset($contributor->fullname)){
-                    $contributors[] = $contributor->fullname;
-                }
-                else{
-                    // This is more for legacy purposes
-                    $contributors[] = $contributor->name;
+            if(is_array($this->contributors)){
+                foreach($this->contributors as $contributor){
+                    if(isset($contributor->id) && $contributor->id != 0){
+                        $contributors[] = $contributor->id;
+                    }
+                    else if(isset($contributor->fullname)){
+                        $contributors[] = $contributor->fullname;
+                    }
+                    else{
+                        // This is more for legacy purposes
+                        $contributors[] = $contributor->name;
+                    }
                 }
             }
             foreach($this->projects as $project){
