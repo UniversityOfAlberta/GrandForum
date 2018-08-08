@@ -9,6 +9,7 @@ ManagePeopleView = Backbone.View.extend({
 
     initialize: function(){
         this.allPeople = new People();
+        this.allPeople.simple = true;
         this.allPeople.fetch();
         this.listenTo(this.allPeople, "sync", this.updateExistingMember);
         this.template = _.template($('#manage_people_template').html());
@@ -273,13 +274,15 @@ ManagePeopleView = Backbone.View.extend({
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
+        var people = new Array();
         _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
             var fullname = p.get('reversedName');
             if(p.get('email') != ""){
                 fullname += " (" + p.get('email').split('@')[0] + ")";
             }
-            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + fullname + "</option>");
+            people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
         }, this));
+        $("#selectExistingMember").html(people.join());
         $("#selectExistingMember").chosen();
         this.addExistingMemberDialog.parent().css('overflow', 'visible');
     },
@@ -291,7 +294,6 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     render: function(){
-        this.$el.empty();
         this.$el.html(this.template());
         this.updateExistingMember();
         this.addRows();
