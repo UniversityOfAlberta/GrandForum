@@ -46,7 +46,8 @@
 <td style="<% if(incomplete) { %>background: #FFA500; <% } %>" >
     <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
-<td style="<% if(!isMine) { %>background: #ffd118; <% } %>">
+<td style="<% if(!isMine) { %>background: #ffd118; <% } %> padding:0;">
+    <div style="overflow-x:auto; padding:5px;">
     <% var names = new Array();
     _.each(authors, function(author){
         if(author.name != undefined){
@@ -62,5 +63,6 @@
         }
     }) %>
     <%= names.join(';&nbsp;') %>
+    </div>
 </td>
 
