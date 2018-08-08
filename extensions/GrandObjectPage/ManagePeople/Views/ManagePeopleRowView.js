@@ -65,7 +65,7 @@ ManagePeopleRowView = Backbone.View.extend({
         }
         me.relations.ready().then($.proxy(function(){
             var relations = new PersonRelations(me.relations.where({user2: this.model.get('id')}));
-            var start = this.model.get('start')
+            var start = this.model.get('start');
             var end = this.model.get('end');
             
             var latestRel = null;
