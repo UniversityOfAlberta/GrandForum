@@ -141,7 +141,7 @@ Note: Please indicate the frailty assessment tool that will be utilized in the s
         </ReportItem>
         <ReportItem id="feasability" type="Textarea" blobItem="FEASABILITY" rich="true" limit="100" height="125px">
             <![CDATA[
-                <b>Study Outcomes and Deliverables</b><br /><small><ul><li>Identify any feasibility issues, barriers, challenges and/or limitations to the successful execution of the study.</li></ul></small>
+                <b>Feasibility</b><br /><small><ul><li>Identify any feasibility issues, barriers, challenges and/or limitations to the successful execution of the study.</li></ul></small>
                 {$item}
             ]]>
         </ReportItem>
