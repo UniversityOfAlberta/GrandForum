@@ -67,7 +67,7 @@ class MultiTextReportItem extends AbstractReportItem {
         else{
             $max = max(array_keys($values));
         }
-        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
+        $widths = explode("|", $this->getAttr("widths"));
         $item = <<<EOF
         <script type='text/javascript'>
             var max{$this->getPostId()} = {$max}+1;
@@ -78,7 +78,7 @@ EOF;
                     foreach($indices as $j => $index){
                         $align = "";
                         if($isVertical){
-                            $item .= "\"<tr id='obj\" + i + \"'><td align='right'><b>{$labels[$j]}:</b></td>\" + \n";
+                            $item .= @"\"<tr id='obj\" + i + \"'><td align='right' width='{$widths[1]}'><b>{$labels[$j]}:</b></td>\" + \n";
                             $align = "left";
                         }
                         if(@$types[$j] == "NI"){
@@ -89,25 +89,25 @@ EOF;
                             }
                             asort($names);
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
-                            $item .= "\"<td align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
-                            $item .= @"\"<td align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='\" + _.random(1000000000) + \"' /></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='\" + _.random(1000000000) + \"' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
-                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){
-                            $item .= @"\"<td align='center'><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='1' /></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='center'><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='1' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                             if(!$isVertical){
                                 $align = "left";
                             }
-                            $item .= @"\"<td align='$align'>";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'>";
                             $matches = array();
                             preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
@@ -123,7 +123,7 @@ EOF;
                                 $align = "center";
                             }
                             $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                            $item .= @"\"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
@@ -139,13 +139,13 @@ EOF;
                         else if(strstr(strtolower(@$types[$j]), "date") !== false){
                             preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                             $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                            $item .= @"\"<td align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
-                            $item .= @"\"<td align='$align'></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'></td>\" + \n";
                         }
                         else{
-                            $item .= @"\"<td align='$align'><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         if($isVertical){
                             $item .= "\"</tr>\" + \n";
@@ -209,7 +209,7 @@ EOF;
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
         $item .= "<div class='table_{$this->getPostId()} warning' style='display:none;'></div>";
-        $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
+        $item .= @"<table id='table_{$this->getPostId()}' class='$class' width='{$widths[0]}' style='margin:0;'>";
         if(!$isVertical){
             if(count($labels) > 0 && $labels[0] != ""){
                 $item .= "<tr>";
@@ -238,7 +238,7 @@ EOF;
                 foreach($indices as $j => $index){
                     $align = "";
                     if($isVertical){
-                        $item .= "<tr id='obj$i' class='$i'><td align='right'><b>{$labels[$j]}:</b></td>";
+                        $item .= @"<tr id='obj$i' class='$i'><td width='{$widths[1]}' align='right'><b>{$labels[$j]}:</b></td>";
                         $align = "left";
                     }
                     if(@$types[$j] == "NI"){
@@ -252,23 +252,23 @@ EOF;
                         $item .= "<td align='$align'>".$combobox->render()."</td>";
                     }
                     else if(strtolower(@$types[$j]) == "random"){
-                        $item .= @"<td align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "integer"){
-                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "checkbox"){
                         $checked = (isset($value[$index]) && $value[$index] == "1") ? "checked" : "";
-                        $item .= @"<td align='center'><input type='checkbox' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='1' $checked /></td>";
+                        $item .= @"<td width='{$widths[2]}' align='center'><input type='checkbox' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='1' $checked /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
-                        $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                         if(!$isVertical){
                             $align = "left";
                         }
-                        $item .= @"<td align='$align'>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'>";
                         $matches = array();
                         preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
@@ -289,7 +289,7 @@ EOF;
                             $align = "center";
                         }
                         $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                        $item .= @"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
@@ -311,17 +311,17 @@ EOF;
                         $val = @str_replace("'", "&#39;", $value[$index]);
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                        $item .= @"<td align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
                         $fn = "{".$types[$j]."}";
                         $val = unserialize($this->varSubstitute($fn));
                         $val = @$val[$i][$this->id];
-                        $item .= @"<td align='$align' valign='top'>{$val}</td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align' valign='top'>{$val}</td>";
                     }
                     else{
                         $val = @str_replace("'", "&#39;", $value[$index]);
-                        $item .= @"<td align='$align'><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
                     }
                     if($isVertical){
                         $item .= "</tr>";
