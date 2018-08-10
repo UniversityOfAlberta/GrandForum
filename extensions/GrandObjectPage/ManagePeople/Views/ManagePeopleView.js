@@ -64,6 +64,10 @@ ManagePeopleView = Backbone.View.extend({
         this.createDataTable(order, searchStr);
     },
     
+    invalidate: _.debounce(function(){
+        this.table.rows().invalidate('dom').draw();
+    }, 1),
+    
     // Sanity Check 3: Check for duplicate HQP
     checkHQPDuplicates: function(){
         deleteHqp = $.proxy(function(button, id){ //global function

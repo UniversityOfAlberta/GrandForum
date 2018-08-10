@@ -20,7 +20,179 @@ ManagePeopleRowView = Backbone.View.extend({
         this.listenTo(this.model, "change", this.render);
     },
     
+    initializeRolesDialog: function(){
+        if(this.rolesDialog == null){
+            this.rolesDialog = this.$("#rolesDialog"+this.model.id).dialog({
+                autoOpen: false,
+                modal: true,
+                show: 'fade',
+                resizable: false,
+                draggable: false,
+                width: 'auto',
+                position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+                open: function(){
+                    $("html").css("overflow", "hidden");
+                },
+                beforeClose: $.proxy(function(){
+                    $("html").css("overflow", "auto");
+                    this.editRoles.stopListening();
+                    this.editRoles.undelegateEvents();
+                }, this),
+                buttons: {
+                    "+": { 
+                        text: "Add Role", 
+                        click: $.proxy(function(e){
+                            this.editRoles.addRole();
+                        }, this), 
+                        disabled: (allowedRoles.length == 0),
+                        style: "position:absolute;left:0;"
+                    },
+                    "Save": { 
+                text: "Save",
+                id: "SaveButton"+this.model.id,
+                    click: $.proxy(function(e){
+                        this.editRoles.saveAll();
+                        this.rolesDialog.dialog('close');
+                    }, this)
+                },
+                    "Cancel": $.proxy(function(){
+                        this.rolesDialog.dialog('close');
+                    }, this)
+                }
+            });
+        }
+    },
+    
+    initializeProjectsDialog: function(){
+        if(this.projectsDialog){
+            this.projectsDialog = this.$("#projectsDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                show: 'fade',
+                resizable: false,
+                draggable: false,
+                width: 'auto',
+                position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+                open: function(){
+                    $("html").css("overflow", "hidden");
+                },
+                beforeClose: $.proxy(function(){
+                    $("html").css("overflow", "auto");
+                    this.editProjects.stopListening();
+                    this.editProjects.undelegateEvents();
+                }, this),
+                buttons: {
+                    "+": { 
+                        text: "Add Project", 
+                        click: $.proxy(function(e){
+                            this.editProjects.addProject();
+                        }, this),
+                        disabled: (allowedProjects.length == 0),
+                        style: "position:absolute;left:0;"
+                    },
+                    "Save": $.proxy(function(e){
+                        this.editProjects.saveAll();
+                        this.projectsDialog.dialog('close');
+                    }, this),
+                    "Cancel": $.proxy(function(){
+                        this.projectsDialog.dialog('close');
+                    }, this)
+                }
+            });
+        }
+    },
+    
+    initializeRelationsDialog: function(){
+        if(this.relationsDialog == null){
+            this.relationsDialog = this.$("#relationsDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                show: 'fade',
+                resizable: false,
+                draggable: false,
+                width: 'auto',
+                position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+                open: function(){
+                    $("html").css("overflow", "hidden");
+                },
+                beforeClose: $.proxy(function(){
+                    $("html").css("overflow", "auto");
+                    this.editRelations.stopListening();
+                    this.editRelations.undelegateEvents();
+                }, this),
+                buttons: {
+                    "+": { 
+                        text: "Add Relationship", 
+                        click: $.proxy(function(e){
+                            this.editRelations.addRelation();
+                        }, this), 
+                        style: "position:absolute;left:0;"
+                    },
+                    "Save": $.proxy(function(e){
+                        this.editRelations.saveAll();
+                        this.relationsDialog.dialog('close');
+                    }, this),
+                    "Cancel": $.proxy(function(){
+                        this.relationsDialog.dialog('close');
+                    }, this)
+                }
+            });
+        }
+    },
+    
+    initializeUniversitiesDialog: function(){
+        if(this.universitiesDialog == null){
+            this.universitiesDialog = this.$("#universitiesDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                show: 'fade',
+                resizable: false,
+                draggable: false,
+                width: 'auto',
+                position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+                open: function(){
+                    $("html").css("overflow", "hidden");
+                },
+                beforeClose: $.proxy(function(){
+                    $("html").css("overflow", "auto");
+                    this.editUniversities.stopListening();
+                    this.editUniversities.undelegateEvents();
+                }, this),
+                buttons: {
+                    "+": {
+                        text: "Add University",
+                        id: "AddUniButton"+this.model.id, 
+                        click: $.proxy(function(e){
+                            this.editUniversities.addUniversity();
+                        }, this), 
+                        style: "position:absolute;left:0;"
+                    },
+                    "Save": $.proxy(function(e){
+                        this.editUniversities.saveAll();
+                        this.universitiesDialog.dialog('close');
+                    }, this),       
+                    "Cancel": $.proxy(function(){
+                        this.universitiesDialog.dialog('close');
+                    }, this)
+                }
+            });
+        }
+    },
+    
     openRolesDialog: function(){
+        this.initializeRolesDialog();
         this.rolesDialog.empty();
         this.rolesDialog.dialog('open');
         this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, 
@@ -29,6 +201,7 @@ ManagePeopleRowView = Backbone.View.extend({
     },
     
     openProjectsDialog: function(){
+        this.initializeProjectsDialog();
         this.projectsDialog.empty();
         this.projectsDialog.dialog('open');
         this.editProjects = new ManagePeopleEditProjectsView({model: this.model.projects, 
@@ -37,6 +210,7 @@ ManagePeopleRowView = Backbone.View.extend({
     },
     
     openRelationsDialog: function(){
+        this.initializeRelationsDialog();
         this.relationsDialog.empty();
         this.relationsDialog.dialog('open');
         this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
@@ -45,6 +219,7 @@ ManagePeopleRowView = Backbone.View.extend({
     },
     
     openUniversitiesDialog: function(){
+        this.initializeUniversitiesDialog();
         this.universitiesDialog.empty();
         this.universitiesDialog.dialog('open');
         this.editUniversities = new ManagePeopleEditUniversitiesView({model: this.model.universities, 
@@ -107,7 +282,7 @@ ManagePeopleRowView = Backbone.View.extend({
             this.$("#relationType").text(_.uniq(relations.pluck('type')).join(", "));
             this.$("#startDate").text(start.substr(0, 10));
             this.$("#endDate").text(end.substr(0, 10));
-            this.parent.table.rows().invalidate('dom').draw();
+            this.parent.invalidate();
         }, this));
     },
     
@@ -155,158 +330,6 @@ ManagePeopleRowView = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         }
-        this.rolesDialog = this.$("#rolesDialog"+this.model.id).dialog({
-            autoOpen: false,
-            modal: true,
-            show: 'fade',
-            resizable: false,
-            draggable: false,
-            width: 'auto',
-            position: {
-                my: "center bottom",
-                at: "center center"
-            },
-            open: function(){
-                $("html").css("overflow", "hidden");
-            },
-            beforeClose: $.proxy(function(){
-                $("html").css("overflow", "auto");
-                this.editRoles.stopListening();
-                this.editRoles.undelegateEvents();
-            }, this),
-            buttons: {
-                "+": { 
-                    text: "Add Role", 
-                    click: $.proxy(function(e){
-                        this.editRoles.addRole();
-                    }, this), 
-                    disabled: (allowedRoles.length == 0),
-                    style: "position:absolute;left:0;"
-                },
-                "Save": { 
-            text: "Save",
-            id: "SaveButton"+this.model.id,
-                click: $.proxy(function(e){
-                    this.editRoles.saveAll();
-                    this.rolesDialog.dialog('close');
-                }, this)
-            },
-                "Cancel": $.proxy(function(){
-                    this.rolesDialog.dialog('close');
-                }, this)
-            }
-        });
-        this.projectsDialog = this.$("#projectsDialog").dialog({
-            autoOpen: false,
-            modal: true,
-            show: 'fade',
-            resizable: false,
-            draggable: false,
-            width: 'auto',
-            position: {
-                my: "center bottom",
-                at: "center center"
-            },
-            open: function(){
-                $("html").css("overflow", "hidden");
-            },
-            beforeClose: $.proxy(function(){
-                $("html").css("overflow", "auto");
-                this.editProjects.stopListening();
-                this.editProjects.undelegateEvents();
-            }, this),
-            buttons: {
-                "+": { 
-                    text: "Add Project", 
-                    click: $.proxy(function(e){
-                        this.editProjects.addProject();
-                    }, this),
-                    disabled: (allowedProjects.length == 0),
-                    style: "position:absolute;left:0;"
-                },
-                "Save": $.proxy(function(e){
-                    this.editProjects.saveAll();
-                    this.projectsDialog.dialog('close');
-                }, this),
-                "Cancel": $.proxy(function(){
-                    this.projectsDialog.dialog('close');
-                }, this)
-            }
-        });
-        this.relationsDialog = this.$("#relationsDialog").dialog({
-            autoOpen: false,
-            modal: true,
-            show: 'fade',
-            resizable: false,
-            draggable: false,
-            width: 'auto',
-            position: {
-                my: "center bottom",
-                at: "center center"
-            },
-            open: function(){
-                $("html").css("overflow", "hidden");
-            },
-            beforeClose: $.proxy(function(){
-                $("html").css("overflow", "auto");
-                this.editRelations.stopListening();
-                this.editRelations.undelegateEvents();
-            }, this),
-            buttons: {
-                "+": { 
-                    text: "Add Relationship", 
-                    click: $.proxy(function(e){
-                        this.editRelations.addRelation();
-                    }, this), 
-                    style: "position:absolute;left:0;"
-                },
-                "Save": $.proxy(function(e){
-                    this.editRelations.saveAll();
-                    this.relationsDialog.dialog('close');
-                }, this),
-                "Cancel": $.proxy(function(){
-                    this.relationsDialog.dialog('close');
-                }, this)
-            }
-        });
-        this.universitiesDialog = this.$("#universitiesDialog").dialog({
-            autoOpen: false,
-            modal: true,
-            show: 'fade',
-            resizable: false,
-            draggable: false,
-            width: 'auto',
-            position: {
-                my: "center bottom",
-                at: "center center"
-            },
-            open: function(){
-                $("html").css("overflow", "hidden");
-            },
-            beforeClose: $.proxy(function(){
-                $("html").css("overflow", "auto");
-                this.editUniversities.stopListening();
-                this.editUniversities.undelegateEvents();
-            }, this),
-            buttons: {
-                "+": {
-                    text: "Add University",
-                    id: "AddUniButton"+this.model.id, 
-                    click: $.proxy(function(e){
-                        this.editUniversities.addUniversity();
-                    }, this), 
-                    style: "position:absolute;left:0;"
-                },
-                "Save": $.proxy(function(e){
-                    this.editUniversities.saveAll();
-                    this.universitiesDialog.dialog('close');
-                }, this),       
-                "Cancel": $.proxy(function(){
-                    this.universitiesDialog.dialog('close');
-                }, this)
-            }
-        });   
-        
         return this.$el;
     }
     
