@@ -69,6 +69,7 @@ class AddHqp extends SpecialPage{
         if(isset($_GET['embed'])){
             $wgOut->addHTML("<script type='text/javascript'>
                 $('#bodyContent h1').hide();
+                parent.enableAddButton();
                 if($('#wgMessages div.success').text() != ''){
                     parent.closeAddHQP();
                 }

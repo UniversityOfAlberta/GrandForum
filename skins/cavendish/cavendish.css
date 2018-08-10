@@ -631,7 +631,7 @@ input[disabled] {
 
 input[type=button][disabled], input[type=button][disabled]:hover, input[type=button][disabled]:active,
 input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active, 
-button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
+button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active, .ui-dialog .ui-dialog-buttonpane button[disabled] {
     background: #cccccc !important;
     color: #777777 !important;
     top:0;

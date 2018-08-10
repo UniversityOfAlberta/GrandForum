@@ -300,6 +300,7 @@ ManagePeopleView = Backbone.View.extend({
         this.$("#hqpDuplicatesProgress").progressbar({
             value: 0
         });
+        enableAddButton = function() {}; // just set this to an empty function for now
         this.addNewMemberDialog = this.$("#addNewMemberDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
@@ -319,12 +320,17 @@ ManagePeopleView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Add": $.proxy(function(e){
-	                closeAddHQP = $.proxy(function(){
+	                var addButton = e.currentTarget;
+	                enableAddButton = function(){ // Used by child frame
+	                    $(addButton).prop('disabled', false);
+	                }
+	                closeAddHQP = $.proxy(function(){ // Used by child frame
 	                    this.addNewMemberDialog.dialog('close');
 	                    clearSuccess();
 	                    addSuccess("User created successfully");
 	                    this.model.fetch();
 	                }, this);
+	                $(addButton).prop('disabled', true);
 	                if(document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').length > 0){
 	                    document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').click();
 	                }
