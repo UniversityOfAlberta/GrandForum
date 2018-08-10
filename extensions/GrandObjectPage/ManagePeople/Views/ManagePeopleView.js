@@ -369,7 +369,9 @@ ManagePeopleView = Backbone.View.extend({
 	                var id = $("#selectExistingMember").val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {id: id})
 	                .done($.proxy(function(){
-	                    this.people.add(this.allPeople.findWhere({'id': id}));
+	                    var person = this.allPeople.findWhere({'id': id});
+	                    person.fetch();
+	                    this.people.add(person);
 	                }, this))
 	                .fail($.proxy(function(){
 	                    addError("There was a problem adding this person");
