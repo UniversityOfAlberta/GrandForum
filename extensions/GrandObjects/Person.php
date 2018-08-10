@@ -464,13 +464,13 @@ class Person extends BackboneModel {
         DBFunctions::delete('grand_names_cache',
                             array('user_id' => $this->getId()));
         $keys = array_unique($keys);
+        $inserts = array();
         foreach($keys as $key){
             if(trim($key) != ""){
-                DBFunctions::insert('grand_names_cache',
-                                    array('name' => $key,
-                                          'user_id' => $this->getId()));
+                $inserts[] = "('".DBFunctions::escape($key)."','".DBFunctions::escape($this->getId())."')";
             }
         }
+        DBFunctions::execSQL("INSERT INTO `grand_names_cache` (`name`, `user_id`) VALUES ".implode(", ", $inserts), true);
     }
     
     /**
