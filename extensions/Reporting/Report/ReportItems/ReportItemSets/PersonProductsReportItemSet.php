@@ -23,10 +23,21 @@ class PersonProductsReportItemSet extends ReportItemSet {
             if($submitProductYear && isset($_GET['generatePDF']) && !isset($_GET['preview'])){
                 $cat = DBFunctions::escape($cat);
                 $year = DBFunctions::escape($this->getReport()->year-1);
-                DBFunctions::execSQL("DELETE FROM grand_products_reported
-                                      WHERE product_id IN (SELECT id FROM grand_products WHERE category = '{$cat}')
-                                      AND user_id = '{$person->getId()}'
-                                      AND year = '{$year}'", true);
+                if(count($productType) == 0){
+                    DBFunctions::execSQL("DELETE FROM grand_products_reported
+                                          WHERE product_id IN (SELECT id FROM grand_products WHERE category = '{$cat}')
+                                          AND user_id = '{$person->getId()}'
+                                          AND year = '{$year}'", true);
+                }
+                else{
+                    foreach($productType as $type){
+                        $type = DBFunctions::escape($type);
+                        DBFunctions::execSQL("DELETE FROM grand_products_reported
+                                              WHERE product_id IN (SELECT id FROM grand_products WHERE category = '{$cat}' AND type LIKE '{$type}%')
+                                              AND user_id = '{$person->getId()}'
+                                              AND year = '{$year}'", true);
+                    }
+                }
             }
             $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate));
             if($onlyHQP){
