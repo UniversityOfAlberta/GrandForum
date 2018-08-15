@@ -91,11 +91,22 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $dom = new SmartDomDocument();
         $dom->loadHTML($item);
         $trs = $dom->getElementsByTagName("tr");
+        $hqpIdDone = array();
         if(strtolower($this->getAttr("footnotes", "false")) == "true"){
             for($i=0; $i<$trs->length; $i++){
                 $tr = $trs->item($i);
+                $tds = $tr->getElementsByTagName("td");
+                $firstTd = $tds->item(0);
+                $rowspan = 1;
+                if($firstTd != null && $firstTd->getAttribute('rowspan') != "" && $firstTd->getAttribute('rowspan') > 1){
+                    $rowspan = $firstTd->getAttribute('rowspan');
+                }
                 if($tr->getAttribute('hqp-id') != ""){
                     $hqpId = $tr->getAttribute('hqp-id');
+                    if(isset($hqpIdDone[$hqpId])){
+                        continue;
+                    }
+                    $hqpIdDone[$hqpId] = true;
                     $section = $this->getSection();
                     $sec = $this->getAttr('blobSection', $section->sec); //added for FEC report -rd
                     if($sec != '0'){
@@ -112,7 +123,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                     if(!$pdf){
                         // EDIT
                         $td = $dom->createDocumentFragment();
-                        $td->appendXML("<td align='center'>{$footnote->getHTML()}</td>");
+                        $td->appendXML("<td rowspan='$rowspan' align='center'>{$footnote->getHTML()}</td>");
                         $tr->appendChild($td);
                     }
                     else{
