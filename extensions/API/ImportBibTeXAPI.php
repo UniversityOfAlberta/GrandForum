@@ -62,7 +62,8 @@ class ImportBibTeXAPI extends API{
         }
         $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
         $checkProduct = Product::newFromTitle($paper['title']);
-        if(!$overwrite && ($checkBibProduct->exists() || $checkProduct->exists())){
+        if(!$overwrite && ($checkBibProduct->exists() || 
+           ($checkProduct->exists() && $checkProduct->getCategory() == $category && $checkProduct->getType() == $type))){
             return null;
         }
         if($bibtex_id != "" && $checkBibProduct->getId() != 0){
