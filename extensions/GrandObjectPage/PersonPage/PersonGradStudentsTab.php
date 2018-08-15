@@ -141,7 +141,7 @@ class PersonGradStudentsTab extends AbstractTab {
             
             foreach($universities as $university){
                 if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
-                   !isset($hqpsDone[$hqp->getId().$university['position']]) &&
+                   !isset($hqpsDone[$hqp->getId().$university['id']]) &&
                    !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $found = true;
                     break;
@@ -182,8 +182,8 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if(isset($hqpsDone[$hqp->getId().$position])){
-                continue;
+            if(isset($hqpsDone[$hqp->getId().$university['id']])){
+                //continue;
             }
             
             if($endDate1 == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate1)){
@@ -223,7 +223,7 @@ class PersonGradStudentsTab extends AbstractTab {
             /*if(count($awardCitations) > 0){
                 $rows[$hqp->getId()][$end_date.$startDate1.$position."_awards"] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
             }*/
-            $hqpsDone[$hqp->getId().$position] = true;
+            $hqpsDone[$hqp->getId().$university['id']] = true;
         }
         //ksort($rows);
         foreach($rows as $key => $row){
