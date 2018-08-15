@@ -369,7 +369,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 
                 <h2>Patents/Spin-Offs <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
-                <table class='wikitable' style='width:100%'><tbody>
+                <table class='wikitable' style='width:100%'>
                     <thead>
                     <tr>
                         <th>Type</th>
