@@ -140,7 +140,7 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         if(!$onlyPublic){
             $me = Person::newFromWgUser();
-            $sql .= "\nAND (access_id = '{$me->getId()}' OR access_id = '0')";
+            $sql .= "\nAND (access_id = '{$me->getId()}' OR created_by = '{$me->getId()}' OR access_id = '0')";
         }
         else{
             $sql .= "\nAND access_id = '0'";
