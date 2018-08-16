@@ -1,10 +1,12 @@
 <div id="editDialog" style="display:none;"></div>
 <div id="deletePrivateDialog" style="display:none;" title="Delete <%= productsTerm.pluralize() %>">
-    <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> to disassociate this output from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete it?</p><p>Use <b>"Exclude"</b> to disassociate <%= productsTerm.pluralize().toLowerCase() %> from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete all "private" <%= productsTerm.pluralize().toLowerCase() %>?</p>
+    <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> to disassociate this output from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete all "private" <%= productsTerm.pluralize().toLowerCase() %>?</p>
+    <input id="deleteCheck" type="checkbox" /> I have read and understand the implications of the above statement.
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="deleteDialog" style="display:none;" title="Delete <%= productsTerm %>">
     <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> to disassociate this output from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete it?</p>
+    <input id="deleteCheck" type="checkbox" /> I have read and understand the implications of the above statement.
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="doiDialog" style="display:none;" title="Add From DOI">

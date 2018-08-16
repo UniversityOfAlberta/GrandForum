@@ -589,9 +589,20 @@ ManageProductsView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        open: function(){
+	        open: $.proxy(function(){
 	            $("html").css("overflow", "hidden");
-	        },
+	            $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
+	            $("#deleteCheck", this.deleteDialog).prop("checked", false);
+	            $("#deleteCheck", this.deleteDialog).change($.proxy(function(e){
+	                var isChecked = $(e.currentTarget).is(":checked");
+	                if(isChecked){
+	                    $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", false);
+	                }
+	                else{
+	                    $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
+	                }
+	            }, this));
+	        }, this),
 	        beforeClose: function(){
 	            $("html").css("overflow", "auto");
 	        },
@@ -641,9 +652,20 @@ ManageProductsView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        open: function(){
+	        open: $.proxy(function(){
 	            $("html").css("overflow", "hidden");
-	        },
+	            $(".ui-dialog-buttonpane button:contains('Yes')", this.deletePrivateDialog.parent()).prop("disabled", true);
+	            $("#deleteCheck", this.deletePrivateDialog).prop("checked", false);
+	            $("#deleteCheck", this.deletePrivateDialog).change($.proxy(function(e){
+	                var isChecked = $(e.currentTarget).is(":checked");
+	                if(isChecked){
+	                    $(".ui-dialog-buttonpane button:contains('Yes')", this.deletePrivateDialog.parent()).prop("disabled", false);
+	                }
+	                else{
+	                    $(".ui-dialog-buttonpane button:contains('Yes')", this.deletePrivateDialog.parent()).prop("disabled", true);
+	                }
+	            }, this));
+	        }, this),
 	        beforeClose: function(){
 	            $("html").css("overflow", "auto");
 	        },
