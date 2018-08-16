@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('DiversitySurvey', 'Diversity Survey', 'network-tools', dirname(__FILE__));
+BackbonePage::register('DiversitySurvey', "{$config->getValue('networkName')} Diversity Census Questionnaire", 'network-tools', dirname(__FILE__));
 
 class DiversitySurvey extends BackbonePage {
     

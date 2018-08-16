@@ -8,6 +8,7 @@ Diversity = Backbone.Model.extend({
         return {
             id: null,
             userId: '',
+            decline: 0,
             reason: '',
             gender: new Array(),
             sexuality: new Array(),
