@@ -17,7 +17,12 @@ Diversity = Backbone.Model.extend({
             disability: '',
             disabilityVisibility: '',
             minority: '',
-            race: new Array(),
+            race: {
+                races: [],
+                indigenousOther: "",
+                other: "",
+                decline: ""
+            },
             racialized: '',
             immigration: '',
             comments: ''

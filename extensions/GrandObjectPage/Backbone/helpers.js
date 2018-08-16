@@ -176,6 +176,7 @@ HTML.CheckBox = function(view, attr, options){
                 data[attr.substr(index+1)] = options.default;
             }
             view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger("change");
         }
         else{
             if($(e.currentTarget).is(":checked")){
@@ -205,12 +206,13 @@ HTML.MultiCheckBox = function(view, attr, options){
         if(attr.indexOf('.') != -1){
             var values = view.$('input[name=' + HTML.Name(attr) + '][type=checkbox]:checked');
             var index = attr.indexOf('.');
-            var data = new Array();
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = new Array();
             $(values).each(function(i, e){
-                data.push($(e).val());
+                data[attr.substr(index+1)].push($(e).val());
             });
-            data[attr.substr(index+1)] = $(e.target).val();
             view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger("change");
         }
         else{
             var values = view.$('input[name=' + HTML.Name(attr) + '][type=checkbox]:checked');

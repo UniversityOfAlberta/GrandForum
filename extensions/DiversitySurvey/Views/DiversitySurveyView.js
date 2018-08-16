@@ -13,7 +13,6 @@ DiversitySurveyView = Backbone.View.extend({
     
     change: function(initial){
         // Declining
-        console.log(this.model.toJSON());
         if(this.model.get('decline') == 1){
             if(initial === true){
                 this.$("#reason").show();
@@ -92,6 +91,22 @@ DiversitySurveyView = Backbone.View.extend({
         else{
             this.$("input[name=minority][type=radio]").prop("disabled", false);
         }
+        
+        // Race
+        if(this.model.get('race').decline == "I prefer not to answer"){
+            this.$("input[name=race_races][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=race_other][type=text]").val("").prop("disabled", true);
+            this.$("input[name=race_indigenousOther][type=text]").val("").prop("disabled", true);
+            this.model.get('race').races = new Array();
+            this.model.get('race').other = "";
+            this.model.get('race').indigenousOther = "";
+        }
+        else{
+            this.$("input[name=race_races][type=checkbox]").prop("disabled", false);
+            this.$("input[name=race_other][type=text]").prop("disabled", false);
+            this.$("input[name=race_indigenousOther][type=text]").prop("disabled", false);
+        }
+        console.log(this.model.toJSON());
     },
     
     render: function(){

@@ -55,12 +55,33 @@
     <div class="answer">
         <p>This self-identification is not intended as an indication of one’s place of origin, citizenship, language or culture and recognizes that there are differences both between and among subgroups of persons of colour.</p>
         <p>Please check all that apply.</p>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Black"]}) %>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Indigenous (other than First Nations, Métis, Inuit)"]}) %>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Latin American"]}) %>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Asian"]}) %>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Caucasian/White"]}) %>
-        <%= HTML.MultiCheckBox(this, 'race', {options: ["Middle Eastern and North African (MENA)"]}) %>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Black"]}) %>
+        <div class="answer" id="black">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["African (eg. Cameroonian, Kenyan, Somali)", "Caribbean (eg Trinidadian, Barbadian, Jamaican)", "European (eg. British, French, Spanish, Portuguese)", "North American (eg. Canadian, American)", "South and Central American (eg. Brazilian, Panamanian)"]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Indigenous (other than First Nations, Métis, Inuit)"]}) %>
+        <div class="answer" id="indigenous">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Native American/North American Indian (eg. Navajo, Dakota, Cherokee)", "Mexican Indigenous (eg. Zapotec, Nahuatl)", "Outside North America (eg. Sami, Quechua, Guarani, Indigenous Australian Peoples, Torres Strait Islander People, Samoan, Māori)", "South American (e.g. Brazilian, Argentinian)"]}) %>
+            Another (please specify) <%= HTML.TextBox(this, 'race.indigenousOther') %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Latin American"]}) %>
+        <div class="answer" id="latin">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Caribbean (eg. Cuban, Haitian)", "Central American (eg. Guatamalan, Honduran)", "South American (eg. Brazilian, Argentinian)", "North American (eg. Caribbean-Canadian, Mexican, American - US)"]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Asian"]}) %>
+        <div class="answer" id="asian">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Asian Caribbean (eg. Guyanese, Trinidadian)", "East Asian (eg. Chinese, Japanese, Korean)", "South Asian (e.g., Indian, Pakistani, Sri Lankan)", "Southeast Asian (e.g., Vietnamese, Cambodian, Malaysian, Filipino)"]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Caucasian/White"]}) %>
+        <div class="answer" id="white">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["European (eg. British, French, Polish, German, Russian)", "North American (eg. Canadian, American - US)", "South American (eg. Argentinian, Chilean)", "African (eg South African, Zimbabwean)"]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.races', {options: ["Middle Eastern and North African (MENA)"]}) %>
+        <div class="answer" id="mena">
+            <%= HTML.MultiCheckBox(this, 'race.races', {options: ["North African (eg. Libyan, Moroccan)", "West Asia (e.g., Iranian, Afghan, etc.)", "Middle Eastern (eg. Syrian, Lebanese)"]}) %>
+        </div>
+        If we have not provided a category with which you identify, please indicate which racial or ethnic origins you identify with: <%= HTML.TextBox(this, 'race.other') %><br />
+        <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
     <h3><span class="number">6.</span> Are you socially perceived as a racialized person?</h3>
     <h3><span class="number">7.</span> What is your immigration status?</h3>
