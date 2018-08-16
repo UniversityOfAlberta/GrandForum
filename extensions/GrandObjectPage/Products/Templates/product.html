@@ -1,3 +1,8 @@
+<div id="deleteDialog" style="display:none;" title="Delete <%= category %>">
+    <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> in Manage Outputs to disassociate this output from your record. "Delete" will delete it for all the co-authors. Are you sure you want to delete it?</p>
+    <input id="deleteCheck" type="checkbox" /> I have read and understand the implications of the above statement.
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
 <% if(this.model.isSingleAuthor()){ %>
     <h2><%= this.model.getAuthorsLabel() %></h2>
 <% } else { %>
