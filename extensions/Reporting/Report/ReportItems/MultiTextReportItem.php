@@ -164,7 +164,7 @@ EOF;
                     }
                     $item .= <<<EOF
                     );
-                $("#table_{$this->getPostId()} tr.obj:last select:not(.raw)").combobox();
+                $("#table_{$this->getPostId()} tr#obj" + i + " select:not(.raw)").combobox();
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
