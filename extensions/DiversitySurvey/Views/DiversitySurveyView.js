@@ -94,17 +94,67 @@ DiversitySurveyView = Backbone.View.extend({
         
         // Race
         if(this.model.get('race').decline == "I prefer not to answer"){
-            this.$("input[name=race_races][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=race_values][type=checkbox]").prop("checked", false).prop("disabled", true);
             this.$("input[name=race_other][type=text]").val("").prop("disabled", true);
             this.$("input[name=race_indigenousOther][type=text]").val("").prop("disabled", true);
-            this.model.get('race').races = new Array();
+            this.model.get('race').values = new Array();
             this.model.get('race').other = "";
             this.model.get('race').indigenousOther = "";
         }
         else{
-            this.$("input[name=race_races][type=checkbox]").prop("disabled", false);
+            this.$("input[name=race_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=race_other][type=text]").prop("disabled", false);
             this.$("input[name=race_indigenousOther][type=text]").prop("disabled", false);
+        }
+        
+        // Racialized
+        if(this.model.get('racialized') == "I prefer not to answer"){
+            this.$("input[name=racialized][type=radio]").prop("checked", false).prop("disabled", true);
+        }
+        else{
+            this.$("input[name=racialized][type=radio]").prop("disabled", false);
+        }
+        
+        // Immigration
+        if(this.model.get('immigration') == "I prefer not to answer"){
+            this.$("input[name=immigration][type=radio]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=immigration][type=text]").val("").prop("disabled", true);
+        }
+        else{
+            if(this.model.get('immigration') != "Canadian citizen" &&
+               this.model.get('immigration') != "Permanent resident" &&
+               this.model.get('immigration') != "Person from another country with a work or study permit"){
+                this.$("input[name=immigration][type=radio]").prop("checked", false);
+            }
+            else{
+                this.$("input[name=immigration][type=text]").val("");
+            }
+            this.$("input[name=immigration][type=radio]").prop("disabled", false);
+            this.$("input[name=immigration][type=text]").prop("disabled", false);
+        }
+        
+        // Gender
+        if(this.model.get('gender').decline == "I prefer not to answer"){
+            this.$("input[name=gender_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=gender_other][type=text]").val("").prop("disabled", true);
+            this.model.get('gender').values = new Array();
+            this.model.get('gender').other = "";
+        }
+        else{
+            this.$("input[name=gender_values][type=checkbox]").prop("disabled", false);
+            this.$("input[name=gender_other][type=text]").prop("disabled", false);
+        }
+        
+        // Sexuality
+        if(this.model.get('sexuality').decline == "I prefer not to answer"){
+            this.$("input[name=sexuality_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=sexuality_other][type=text]").val("").prop("disabled", true);
+            this.model.get('sexuality').values = new Array();
+            this.model.get('sexuality').other = "";
+        }
+        else{
+            this.$("input[name=sexuality_values][type=checkbox]").prop("disabled", false);
+            this.$("input[name=sexuality_other][type=text]").prop("disabled", false);
         }
         console.log(this.model.toJSON());
     },

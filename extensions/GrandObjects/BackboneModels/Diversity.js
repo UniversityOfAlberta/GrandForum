@@ -10,15 +10,23 @@ Diversity = Backbone.Model.extend({
             userId: '',
             decline: 0,
             reason: '',
-            gender: new Array(),
-            sexuality: new Array(),
+            gender: {
+                values: [],
+                other: "",
+                decline: ""
+            },
+            sexuality: {
+                values: [],
+                other: "",
+                decline: ""
+            },
             birth: '',
             indigenous: '',
             disability: '',
             disabilityVisibility: '',
             minority: '',
             race: {
-                races: [],
+                values: [],
                 indigenousOther: "",
                 other: "",
                 decline: ""
