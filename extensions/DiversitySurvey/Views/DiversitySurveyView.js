@@ -36,7 +36,7 @@ DiversitySurveyView = Backbone.View.extend({
             error: $.proxy(function(o, e){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
-                    if(e.responseText != ""){
+                    if(e.responseText != undefined && e.responseText != ""){
                         addError(e.responseText, false, "#diversityMessages");
                     }
                     else{
