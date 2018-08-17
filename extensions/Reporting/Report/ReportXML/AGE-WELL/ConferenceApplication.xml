@@ -40,7 +40,7 @@
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="3_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+        <ReportItemSet id="3_if" type="If" if="{>(2018-08-20,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
                     <div id="3_accordion">
@@ -178,7 +178,7 @@
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="2_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+        <ReportItemSet id="2_if" type="If" if="{>(2018-08-20,{$timestamp})}">
             <ReportItem id="2_head" type="Static">
                 <![CDATA[
                     <div id="2_accordion">
@@ -298,7 +298,7 @@
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="1_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+        <ReportItemSet id="1_if" type="If" if="{>(2018-08-20,{$timestamp})}">
             <ReportItem id="1_head" type="Static">
                 <![CDATA[
                     <div id="1_accordion">
@@ -404,7 +404,7 @@
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="4_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+        <ReportItemSet id="4_if" type="If" if="{>(2018-08-20,{$timestamp})}">
             <ReportItem id="4_head" type="Static">
                 <![CDATA[
                     <div id="4_accordion">
@@ -530,7 +530,7 @@
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="5_if" type="If" if="{>(2018-08-17,{$timestamp})}">
+        <ReportItemSet id="5_if" type="If" if="{>(2018-08-20,{$timestamp})}">
             <ReportItem id="5_head" type="Static">
                 <![CDATA[
                     <div id="5_accordion">
