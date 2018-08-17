@@ -23,13 +23,13 @@ DiversitySurveyView = Backbone.View.extend({
         "click #save": "save"
     },
     
-    save: function(){
+    save: _.debounce(function(){
         this.$("#save").prop("disabled", true);
         this.model.save(null, {
             success: $.proxy(function(){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
-                    addSuccess("Your Diversity Survey has been saved", true, "#diversityMessages");
+                    addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
                 });
                 this.$("#save").prop("disabled", false);
             }, this),
@@ -40,13 +40,13 @@ DiversitySurveyView = Backbone.View.extend({
                         addError(e.responseText, false, "#diversityMessages");
                     }
                     else{
-                        addError("There was a problem saving your Diversity Survey", true, "#diversityMessages");
+                        addError("There was a problem saving your Diversity Survey", false, "#diversityMessages");
                     }
                 });
                 this.$("#save").prop("disabled", false);
             }, this)
         });
-    },
+    }, 200, true),
     
     change: function(initial){
         // Declining
@@ -193,7 +193,6 @@ DiversitySurveyView = Backbone.View.extend({
             this.$("input[name=orientation_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=orientation_other][type=text]").prop("disabled", false);
         }
-        console.log(this.model.toJSON());
     },
     
     render: function(){
