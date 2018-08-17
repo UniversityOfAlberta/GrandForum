@@ -196,7 +196,7 @@ HTML.MultiCheckBox = function(view, attr, options){
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
-        if(val == opt){
+        if(val == opt || val.indexOf(opt) != -1){
             checked = "checked='checked'"
         }
         $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");

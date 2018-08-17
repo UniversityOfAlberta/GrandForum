@@ -4,6 +4,10 @@ Diversity = Backbone.Model.extend({
         
    },
    
+   urlRoot: function(){
+        return 'index.php?action=api.diversity';
+   },
+   
    defaults: function() {
         return {
             id: null,
@@ -15,7 +19,7 @@ Diversity = Backbone.Model.extend({
                 other: "",
                 decline: ""
             },
-            sexuality: {
+            orientation: {
                 values: [],
                 other: "",
                 decline: ""

@@ -4,11 +4,48 @@ DiversitySurveyView = Backbone.View.extend({
         this.model.bind('sync', this.render, this);
         this.model.bind('change', this.change, this);
         this.template = _.template($('#diversity_template').html());
-        _.defer(this.render);
+        this.model.fetch();
+        $(window).bind('keydown', $.proxy(function(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch (String.fromCharCode(event.which).toLowerCase()) {
+                case 's':
+                    var focused = document.activeElement;
+                    focused.blur();
+                    event.preventDefault();
+                    this.save();
+                    break;
+                }
+            }
+        }, this));
     },
     
     events: {
+        "click #save": "save"
+    },
     
+    save: function(){
+        this.$("#save").prop("disabled", true);
+        this.model.save(null, {
+            success: $.proxy(function(){
+                _.defer(function(){
+                    clearAllMessages("#diversityMessages");
+                    addSuccess("Your Diversity Survey has been saved", true, "#diversityMessages");
+                });
+                this.$("#save").prop("disabled", false);
+            }, this),
+            error: $.proxy(function(o, e){
+                _.defer(function(){
+                    clearAllMessages("#diversityMessages");
+                    if(e.responseText != ""){
+                        addError(e.responseText, false, "#diversityMessages");
+                    }
+                    else{
+                        addError("There was a problem saving your Diversity Survey", true, "#diversityMessages");
+                    }
+                });
+                this.$("#save").prop("disabled", false);
+            }, this)
+        });
     },
     
     change: function(initial){
@@ -145,16 +182,16 @@ DiversitySurveyView = Backbone.View.extend({
             this.$("input[name=gender_other][type=text]").prop("disabled", false);
         }
         
-        // Sexuality
-        if(this.model.get('sexuality').decline == "I prefer not to answer"){
-            this.$("input[name=sexuality_values][type=checkbox]").prop("checked", false).prop("disabled", true);
-            this.$("input[name=sexuality_other][type=text]").val("").prop("disabled", true);
-            this.model.get('sexuality').values = new Array();
-            this.model.get('sexuality').other = "";
+        // Orientation
+        if(this.model.get('orientation').decline == "I prefer not to answer"){
+            this.$("input[name=orientation_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=orientation_other][type=text]").val("").prop("disabled", true);
+            this.model.get('orientation').values = new Array();
+            this.model.get('orientation').other = "";
         }
         else{
-            this.$("input[name=sexuality_values][type=checkbox]").prop("disabled", false);
-            this.$("input[name=sexuality_other][type=text]").prop("disabled", false);
+            this.$("input[name=orientation_values][type=checkbox]").prop("disabled", false);
+            this.$("input[name=orientation_other][type=text]").prop("disabled", false);
         }
         console.log(this.model.toJSON());
     },

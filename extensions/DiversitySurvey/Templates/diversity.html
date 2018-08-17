@@ -30,7 +30,7 @@
     </div>
     <h3><span class="number">3.</span> Are you a person with a disability?</h3>
     <div class="answer">
-        <p>Person with a disability is an individual who has a long-term or recurring physical, mental, sensory, psychiatric or learning impairment and:</p>
+        <p style="margin-bottom:0;">Person with a disability is an individual who has a long-term or recurring physical, mental, sensory, psychiatric or learning impairment and:</p>
         <ul>
             <li>Who considers themselves to be disadvantaged in employment by reason of that impairment; or</li>
             <li>Who believes that an employer or potential employer is likely to consider them to be disadvantaged in employment by reason of that impairment; and</li>
@@ -97,7 +97,7 @@
     </div>
     <h3><span class="number">8.</span> Please select all that apply:</h3>
     <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'gender.genders', {options: ["Woman", "Man", "Two-Spirit", "Gender fluid", "Non-binary"]}) %>
+        <%= HTML.MultiCheckBox(this, 'gender.values', {options: ["Woman", "Man", "Two-Spirit", "Gender fluid", "Non-binary"]}) %>
         <div>Another gender identity (Please specify): <%= HTML.TextBox(this, 'gender.other') %></div>
         <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         <p><i>
@@ -108,9 +108,9 @@
     </div>
     <h3><span class="number">9.</span> Do you identify as (choose all that apply):</h3>
     <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'sexuality.values', {options: ["Gay", "Lesbian", "Heterosexual", "Bisexual", "Queer", "Two-Spirit", "Asexual"]}) %>
-        <div>Another orientation (please specify): <%= HTML.TextBox(this, 'sexuality.other') %></div>
-        <%= HTML.CheckBox(this, 'sexuality.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: ["Gay", "Lesbian", "Heterosexual", "Bisexual", "Queer", "Two-Spirit", "Asexual"]}) %>
+        <div>Another orientation (please specify): <%= HTML.TextBox(this, 'orientation.other') %></div>
+        <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
     <h3><span class="number">10.</span> Additional comments</h3>
     <div class="answer">
@@ -118,4 +118,5 @@
         <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
     </div>
 </div><br />
-<button type="button">Save</button>
+<div id="diversityMessages"></div>
+<button id="save" type="button">Save</button>
