@@ -1261,7 +1261,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
+    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies" pagebreak="false">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.</h3>
@@ -1281,7 +1281,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request"  pagebreak="false">
+    <!--ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request" pagebreak="false">
         <ReportItem id="budget_amount" type="Integer" blobItem="BUDGET_AMOUNT" mimeType=".xlsx" min="0" max="10000000" size="6">
             <![CDATA[
                 Total project budget allocation (2018-2020), as determined by your WP: $ {$item}
@@ -1309,5 +1309,5 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
 </Report>

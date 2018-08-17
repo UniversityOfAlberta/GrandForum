@@ -1458,7 +1458,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request">
+    <!--ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request">
         <ReportItem id="budget_amount" type="Integer" blobItem="BUDGET_AMOUNT" min="0" max="10000000" size="6">
             <![CDATA[
                 Total project budget allocation (2018-2020), as determined by your WP: $ {$item}
@@ -1490,7 +1490,7 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
