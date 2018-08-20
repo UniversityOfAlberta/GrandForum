@@ -101,7 +101,7 @@ $egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
                                          
-$egAnnokiExtensions['Diversity'] = array('name' => 'DiversitySurvey',
+$egAnnokiExtensions['DiversitySurvey'] = array('name' => 'DiversitySurvey',
                                          'path' => "$IP/extensions/DiversitySurvey/DiversitySurvey.php");
 
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
