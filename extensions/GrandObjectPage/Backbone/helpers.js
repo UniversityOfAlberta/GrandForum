@@ -114,7 +114,7 @@ HTML.TextBox = function(view, attr, options){
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
     var events = view.events;
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input[name=' + HTML.Name(attr) + '][type=text]'] = function(e){
         if(attr.indexOf('.') != -1){
             var elems = attr.split(".");
             var recurse = function(data, depth) {
@@ -165,7 +165,7 @@ HTML.CheckBox = function(view, attr, options){
         $(el).attr('checked', 'checked');
     }
     var events = view.events;
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -176,6 +176,7 @@ HTML.CheckBox = function(view, attr, options){
                 data[attr.substr(index+1)] = options.default;
             }
             view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger("change");
         }
         else{
             if($(e.currentTarget).is(":checked")){
@@ -190,6 +191,42 @@ HTML.CheckBox = function(view, attr, options){
     return $(el)[0].outerHTML;
 }
 
+HTML.MultiCheckBox = function(view, attr, options){
+    var el = HTML.Element("<span>");
+    var val = HTML.Value(view, attr);
+    _.each(options.options, function(opt){
+        var checked = "";
+        if(val == opt || val.indexOf(opt) != -1){
+            checked = "checked='checked'"
+        }
+        $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+    });
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
+        if(attr.indexOf('.') != -1){
+            var values = view.$('input[name=' + HTML.Name(attr) + '][type=checkbox]:checked');
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = new Array();
+            $(values).each(function(i, e){
+                data[attr.substr(index+1)].push($(e).val());
+            });
+            view.model.set(attr.substr(0, index), _.clone(data));
+            view.model.trigger("change");
+        }
+        else{
+            var values = view.$('input[name=' + HTML.Name(attr) + '][type=checkbox]:checked');
+            var data = new Array();
+            $(values).each(function(i, e){
+                data.push($(e).val());
+            });
+            view.model.set(attr, data);
+        }
+    };
+    view.delegateEvents(events);
+    return $(el)[0].outerHTML;
+}
+
 HTML.Radio = function(view, attr, options){
     var el = HTML.Element("<span>");
     var val = HTML.Value(view, attr);
@@ -198,10 +235,10 @@ HTML.Radio = function(view, attr, options){
         if(val == opt){
             checked = "checked='checked'"
         }
-        $(el).append("<p><input type='radio' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " />" + opt + "</p>");
+        $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
     });
     var events = view.events;
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input[name=' + HTML.Name(attr) + '][type=radio]'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));

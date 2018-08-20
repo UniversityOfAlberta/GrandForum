@@ -27,6 +27,7 @@ autoload_register('GrandObjects/API/Wiki');
 autoload_register('GrandObjects/API/MessageBoard');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
+autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
 
 global $apiRequest;
@@ -136,6 +137,9 @@ $apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
 
+// Diversity Survey
+$apiRequest->addAction('Hidden','diversity', 'DiversityAPI');
+
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 
@@ -152,6 +156,7 @@ function createModels(){
 	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Contribution.js?".filemtime("extensions/GrandObjects/BackboneModels/Contribution.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Diversity.js?".filemtime("extensions/GrandObjects/BackboneModels/Diversity.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Bibliography.js?".filemtime("extensions/GrandObjects/BackboneModels/Bibliography.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Collaboration.js?".filemtime("extensions/GrandObjects/BackboneModels/Collaboration.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";

@@ -143,6 +143,7 @@
         'QueryableTable',
         'IndexTables',
         'Reporting',
+        //'DiversitySurvey',
         'NCETable',
         'EmptyEmailList',
         'GlobalSearch',
