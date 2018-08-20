@@ -4,19 +4,27 @@ DiversitySurveyView = Backbone.View.extend({
         this.model.bind('sync', this.render, this);
         this.model.bind('change', this.change, this);
         this.template = _.template($('#diversity_template').html());
-        this.model.fetch();
-        $(window).bind('keydown', $.proxy(function(event) {
-            if (event.ctrlKey || event.metaKey) {
-                switch (String.fromCharCode(event.which).toLowerCase()) {
-                case 's':
-                    var focused = document.activeElement;
-                    focused.blur();
-                    event.preventDefault();
-                    this.save();
-                    break;
-                }
-            }
-        }, this));
+        this.model.fetch({
+            error: function(obj, e){
+                clearAllMessages();
+                addError(e.responseText);
+            },
+            success: $.proxy(function(){
+                $(window).bind('keydown', $.proxy(function(event) {
+                    if (event.ctrlKey || event.metaKey) {
+                        switch (String.fromCharCode(event.which).toLowerCase()) {
+                        case 's':
+                            var focused = document.activeElement;
+                            focused.blur();
+                            event.preventDefault();
+                            this.save();
+                            break;
+                        }
+                    }
+                }, this));
+            }, this)
+        });
+        
     },
     
     events: {
