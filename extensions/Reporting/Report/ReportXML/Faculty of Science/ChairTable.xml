@@ -58,7 +58,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" university="University of Alberta" excludeMe="true">
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>

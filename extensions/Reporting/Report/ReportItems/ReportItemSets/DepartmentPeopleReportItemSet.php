@@ -15,7 +15,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                                     array('user_id'),
                                     array(),
                                     array('date_of_appointment' => 'DESC'));
-        $fec = array();                  
+        $fec = array();                 
         foreach($data as $row){
             $fec[$row['user_id']] = count($fec) + 1;
         }
