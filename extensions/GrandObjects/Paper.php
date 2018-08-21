@@ -1541,8 +1541,10 @@ class Paper extends BackboneModel{
             if($date == "0000-00-00"){
                 $date = $this->getAcceptanceDate();
             }
-            $yearAgo = strtotime("{$date} -10 year"); // Extend the year to last year so that publications after graduation are still counted
+            $yearAgo = strtotime("{$date} -10 year"); // Extend the year to 10 years ago so that publications after graduation are still counted
             $yearAgo = date('Y-m-d', $yearAgo);
+            $nextYear = strtotime("{$date} +1 year"); // Extend the year to next year so that publications slighly before supervision are still counted
+            $nextYear = date('Y-m-d', $nextYear);
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     $name = $a->getNameForProduct();
@@ -1553,7 +1555,7 @@ class Paper extends BackboneModel{
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 
                                                                 $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
-                        $unis = $a->getUniversitiesDuring($yearAgo, $date);
+                        $unis = $a->getUniversitiesDuring($yearAgo, $nextYear);
                         $found = false;
                         foreach($unis as $uni){
                             if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
