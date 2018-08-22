@@ -6,7 +6,7 @@ class Diversity extends BackboneModel {
 
     var $id = null;
     var $userId = "";
-    var $language = "";
+    var $language = "en";
     var $decline = "";
     var $reason = "";
     var $gender = array(
