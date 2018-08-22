@@ -6,6 +6,7 @@ class Diversity extends BackboneModel {
 
     var $id = null;
     var $userId = "";
+    var $language = "";
     var $decline = "";
     var $reason = "";
     var $gender = array(
@@ -36,6 +37,7 @@ class Diversity extends BackboneModel {
     function Diversity($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
+            $this->language = $data[0]['language'];
             $this->userId = $data[0]['user_id'];
             $this->decline = $data[0]['decline'];
             $this->reason = $data[0]['reason'];
@@ -109,6 +111,7 @@ class Diversity extends BackboneModel {
     function create(){
         DBFunctions::insert('grand_diversity',
                             array('user_id' => $this->userId,
+                                  'language' => $this->language,
                                   'decline' => $this->decline,
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
@@ -129,6 +132,7 @@ class Diversity extends BackboneModel {
     function update(){
         DBFunctions::update('grand_diversity',
                             array('user_id' => $this->userId,
+                                  'language' => $this->language,
                                   'decline' => $this->decline,
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
@@ -163,6 +167,7 @@ class Diversity extends BackboneModel {
         }
         $json = array('id' => $this->id,
                       'user_id' => $this->userId,
+                      'language' => $this->language,
                       'decline' => $this->decline,
                       'reason' => $this->reason,
                       'gender' => $this->gender,

@@ -3,7 +3,9 @@ DiversitySurveyView = Backbone.View.extend({
     initialize: function(){
         this.model.bind('sync', this.render, this);
         this.model.bind('change', this.change, this);
-        this.template = _.template($('#diversity_template').html());
+        this.model.bind('change:language', this.render, this);
+        this.template_en = _.template($('#diversity_en_template').html());
+        this.template_fr = _.template($('#diversity_fr_template').html());
         this.model.fetch({
             error: function(obj, e){
                 clearAllMessages();
@@ -24,7 +26,6 @@ DiversitySurveyView = Backbone.View.extend({
                 }, this));
             }, this)
         });
-        
     },
     
     events: {
@@ -204,7 +205,14 @@ DiversitySurveyView = Backbone.View.extend({
     },
     
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        if(this.model.get('language') == 'en' || this.model.get('language') == ''){
+            main.set('title', networkName + ' Diversity Census Questionnaire');
+            this.$el.html(this.template_en(this.model.toJSON()));
+        }
+        else if (this.model.get('language') == 'fr'){
+            main.set('title', networkName + ' Questionnaire du Recensement sur la Diversité');
+            this.$el.html(this.template_fr(this.model.toJSON()));
+        }
         this.change(true);
         return this.$el;
     }

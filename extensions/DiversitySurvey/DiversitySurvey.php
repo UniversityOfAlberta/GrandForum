@@ -14,7 +14,8 @@ class DiversitySurvey extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
-                     'diversity');
+                     'diversity_en',
+                     'diversity_fr');
     }
     
     function getViews(){

@@ -12,6 +12,7 @@ Diversity = Backbone.Model.extend({
         return {
             id: null,
             userId: '',
+            language: 'en',
             decline: 0,
             reason: '',
             gender: {
