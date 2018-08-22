@@ -18,6 +18,7 @@ class DiversityAPI extends RESTAPI {
         }
         $diversity = new Diversity(array());
         $diversity->userId = $me->getId();
+        $diversity->language = $this->POST('language');
         $diversity->decline = $this->POST('decline');
         $diversity->reason = $this->POST('reason');
         $diversity->gender = $this->POST('gender');
@@ -44,6 +45,7 @@ class DiversityAPI extends RESTAPI {
         if(!$diversity->canView()){
             $this->throwError("You are not allowed to view this Diversity Survey");
         }
+        $diversity->language = $this->POST('language');
         $diversity->decline = $this->POST('decline');
         $diversity->reason = $this->POST('reason');
         $diversity->gender = $this->POST('gender');

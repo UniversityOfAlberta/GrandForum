@@ -1,3 +1,4 @@
+<b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %>
 <p>
     <%= networkName %> is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously drive towards excellence in research and training.
 </p>
@@ -17,7 +18,7 @@
 
 <!-- Start Survey? -->
 <div id="survey">
-    <h3><span class="number">1.</span>What is your year of birth?</h3>
+    <h3><span class="number">1.</span> What is your year of birth?</h3>
     <div class="answer">
         <%= HTML.Select(this, 'birth', {options: [""].concat(_.range(new Date().getFullYear(), 1899, -1))}) %><br />
         <%= HTML.CheckBox(this, 'birth', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>

@@ -196,10 +196,16 @@ HTML.MultiCheckBox = function(view, attr, options){
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
-        if(val == opt || val.indexOf(opt) != -1){
-            checked = "checked='checked'"
+        if(val == opt || (typeof opt == 'object' && (val == opt.value || val.indexOf(opt.value) != -1)) || val.indexOf(opt) != -1){
+            checked = "checked='checked'";
         }
-        $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+        if(typeof opt == 'object'){
+            $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt.value + "'" + checked + " /><span style='vertical-align:middle;'>" + opt.option + "</span></div>");
+        }
+        else{
+
+            $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+        }
     });
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
@@ -232,10 +238,15 @@ HTML.Radio = function(view, attr, options){
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
-        if(val == opt){
-            checked = "checked='checked'"
+        if(val == opt || (typeof opt == 'object' && val == opt.value)){
+            checked = "checked='checked'";
         }
-        $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+        if(typeof opt == 'object'){
+            $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt.value + "'" + checked + " /><span style='vertical-align:middle;'>" + opt.option + "</span></div>");
+        }
+        else{
+            $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+        }
     });
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + '][type=radio]'] = function(e){

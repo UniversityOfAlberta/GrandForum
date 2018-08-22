@@ -1,0 +1,123 @@
+<b style="vertical-align:middle;">Langue:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %>
+<p>
+    <%= networkName %> s'engage à respecter les principes d'équité, de diversité et d'inclusion. Cette enquête contribuera à faciliter l'élaboration de stratégies et de priorités pour un environnement de travail et d'apprentissage diversifié et inclusif, afin de constamment diriger nos efforts vers l'excellence dans la recherche et la formation.
+</p>
+<p>    
+    Votre participation à cette enquête est importante pour identifier où nous en sommes en termes de représentation et pour préparer les prochaines étapes. <%= networkName %> travaille en partenariat avec l’unité sur l’équité, la diversité et l’inclusion dans les services de ressources humaines de l’Université de l’Alberta, qui ont mené des enquêtes de recensement sur l’équité depuis 1994. <b>Des contrôles rigoureux sont en place pour s’assurer que la confidentialité est maintenue et que les résultats ne seront utilisés que sur une base agrégée.Aucun membre de l’executif, du conseil d'administration ou des comités de <%= networkName %> n'a accès aux réponses de l'enquête. Ces individus n’auront accès qu’aux données agrégées. Les renseignements personnels demandés sur ce formulaire sont recueillis en vertu de l'article 33 (c) de la <u><i>Loi sur l'accès à l'information et la protection de la vie privée de l'Alberta</i></u> et seront protégés en vertu de la partie 2 de cette loi. Toutes questions concernant cette collection doivent être adressées à l’unité sur l’équité, la diversité et l’inclusion à l'adresse <a href="mailto:employmentequity@ualberta.ca">employmentequity@ualberta.ca</a></b>.
+</p>
+
+<!-- Decline? -->
+<h3>Si, pour quelque raison que ce soit, vous ne souhaitez pas effectuer ce recensement, veuillez cocher cette case.</h3>
+<div class="answer">
+    <%= HTML.CheckBox(this, 'decline', {value: 1}) %>
+    <div id="reason" style="display:none;">
+        <p><b>Veuillez indiquer pourquoi vous avez choisi de ne pas remplir le questionnaire?</b></p>
+        <%= HTML.TextArea(this, 'reason', {style: 'height:100px'}) %>
+    </div>
+</div>
+
+<!-- Start Survey? -->
+<div id="survey">
+    <h3><span class="number">1.</span> Quelle est votre année de naissance?</h3>
+    <div class="answer">
+        <%= HTML.Select(this, 'birth', {options: [""].concat(_.range(new Date().getFullYear(), 1899, -1))}) %><br />
+        <%= HTML.CheckBox(this, 'birth', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">2.</span> Vous identifiez-vous comme Autochtone? c'est-à-dire Première Nation (Indien de l'Amérique du Nord, Métis ou Inuk (Inuit))?</h3>
+    <div class="answer">
+        <p>Conformément à Statistique Canada et à la Loi sur l'équité en matière d'emploi, les Autochtones sont définis comme Premières Nations (statut, non-inscrits, Traités), Inuits ou Métis et ont été établis par le gouvernement fédéral pour désigner les divers peuples Autochtones du Canada. Cependant, cela peut ne pas être la manière dont vous vous identifiez. Vous pouvez aussi vous identifier comme Cri, Pied-Noir, Mi'kmaq, Dénés ou Nakota Sioux, etc. Toutes ces identités font partie du terme générique des peuples autochtones.</p>
+        <%= HTML.Radio(this, 'indigenous', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'indigenous', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">3.</span> Êtes-vous une personne handicapée?</h3>
+    <div class="answer">
+        <p style="margin-bottom:0;">Une personne handicapée est une personne qui présente des troubles physiques, mentaux, sensoriels, psychiatriques ou d'apprentissage à long terme ou récurrents et:</p>
+        <ul>
+            <li>Qui se considèrent désavantagée dans un emploi en raison de cette déficience; ou</li>
+            <li>Qui croit qu'un employeur ou un employeur potentiel est susceptible de les considérer comme désavantagé dans un emploi en raison de cette déficience; et</li>
+            <li>Comprend les personnes dont les limitations fonctionnelles dues à leur handicap ont pu être prises en compte dans leur emploi ou lieu de travail actuel</li>
+        </ul>
+        <%= HTML.Radio(this, 'disability', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'disability', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+        <div id="disabilityVisibility">
+            <p><b>Si vous avez répondu oui, veuillez indiquer si votre invalidité est:</b></p>
+            <%= HTML.Radio(this, 'disabilityVisibility', {options: ["Invisible", "Visible"]}) %>
+            <%= HTML.CheckBox(this, 'disabilityVisibility', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+            <p><i>Le handicap invisible ou non visible est un terme couramment utilisé pour décrire un handicap qui n'est pas apparent ou qui est invisible pour les autres.</i></p>
+        </div>
+    </div>
+    <h3><span class="number">4.</span> Vous identifiez-vous en tant que membre d’une minorité visible/personne de couleur?</h3>
+    <div class="answer">
+        <p>La Loi sur l'équité en matière d'emploi au Canada utilise l'expression « minorité visible » et la définit comme une personne qui n'est pas de race blanche ou qui n'est pas de couleur blanche. Ceci n'inclut généralement pas les peuples autochtones, sauf s'ils sont d'origine mixte, avec un parent membre d'un groupe de minorités visibles. Nous reconnaissons qu’il peut être préférable de s’identifier comme une personne de couleur ou par la race ou l’ethnie d’un individu. Les options ci-dessous sont basées sur les catégories du recensement du Canada et de la Loi sur l'équité en matière d'emploi.</p>
+        <%= HTML.Radio(this, 'minority', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'minority', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">5.</span> Vous identifiez-vous avec l'une des origines raciales et ethniques suivantes?</h3>
+    <div class="answer">
+        <p>Cette auto-identification ne se veut pas une indication du lieu d'origine, de la citoyenneté, de la langue ou de la culture de chacun et reconnaît qu'il existe des différences entre et parmi les sous-groupes de personnes de couleur.</p>
+        <p>Veuillez cocher tout ce qui s'applique.</p>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Noir", value: "Black"}]}) %>
+        <div class="answer" id="black">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Africain (p. ex. Camerounais, Kenyan, Somalien)", value: "African (eg. Cameroonian, Kenyan, Somali)"}, {option: "Caribéen (p. ex. Trinidadien, Barbadien, Jamaïcain)", value: "Caribbean (eg Trinidadian, Barbadian, Jamaican)"}, {option: "Européen (p. ex. Britannique, Français, Espagnol, Portuguais)", value: "European (eg. British, French, Spanish, Portuguese)"}, {option: "Nord-Américain (p. ex. Canadien, Américain)", value:"North American (eg. Canadian, American)"}, {option: "Sud-Américain et de l’Amérique centrale (p. ex. Brésilien, Panaméen)", value:"South and Central American (eg. Brazilian, Panamanian)"}]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Indigène (autre que les Premières Nations, Métis, Inuit)", value: "Indigenous (other than First Nations, Métis, Inuit)"}]}) %>
+        <div class="answer" id="indigenous">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Autochtone Américain/Indien d'Amérique du Nord (p. ex. Navajo, Dakota, Cherokee)", value:"Native American/North American Indian (eg. Navajo, Dakota, Cherokee)"}, {option: "Autochtone Mexicain (p. ex. Zapotec, Nahuatl)", value:"Mexican Indigenous (eg. Zapotec, Nahuatl)"}, {option: "En dehors de l'Amérique du Nord (p. ex. Sami, Quechua, Guarani, Peuples australiens autochtones, Insulaires du détroit de Torres, Samoans, Maoris)", value:"Outside North America (eg. Sami, Quechua, Guarani, Indigenous Australian Peoples, Torres Strait Islander People, Samoan, Māori)"}, {option: "Sud-Américain (p. ex. Brésilien, Argentin)", value:"South American (e.g. Brazilian, Argentinian)"}]}) %>
+            Autre (veuillez préciser): <%= HTML.TextBox(this, 'race.indigenousOther') %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Latino-Américain", value: "Latin American"}]}) %>
+        <div class="answer" id="latin">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Caribéen (p. ex. Cubain, Haïtien)", value:"Caribbean (eg. Cuban, Haitian)"}, {option: "Amérique centrale (p. ex. Guatamalan, Honduran)", value:"Central American (eg. Guatamalan, Honduran)"}, {option: "Sud-Américain (p. ex. Brésilien, Argentin)", value: "South American (eg. Brazilian, Argentinian)"}, {option: "Nord-Américain (p. ex. Caribéen-Canadien, Mexicain, Américain - États-Unis)", value: "North American (eg. Caribbean-Canadian, Mexican, American - US)"}]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Asiatique", value: "Asian"}]}) %>
+        <div class="answer" id="asian">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Caribéen Asiatique (p. ex. Guyanais, Trinidadien)", value: "Asian Caribbean (eg. Guyanese, Trinidadian)"}, {option: "De l’Asie de l'Est (p. ex. Chinois, Japonais, Coréen)", value: "East Asian (eg. Chinese, Japanese, Korean)"}, {option: "Sud-Asiatique (p. ex. Indien, Pakistanais, Sri Lankais)", value: "South Asian (e.g., Indian, Pakistani, Sri Lankan)"}, {option: "De l’Asie du sud-est (p. ex. Vietnamien, Cambodgien, Malaisien, Philippin)", value: "Southeast Asian (e.g., Vietnamese, Cambodian, Malaysian, Filipino)"}]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Caucasien/blanc", value:"Caucasian/White"}]}) %>
+        <div class="answer" id="white">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Européen (p. ex. Britannique, Français, Polonais, Allemand, Russe)", value: "European (eg. British, French, Polish, German, Russian)"}, {option: "Nord-Américain (p. ex. Canadien, Américain - États-Unis)", value: "North American (eg. Canadian, American - US)"}, {option: "Sud-Américain (p. ex. Argentin, Chilien)", value: "South American (eg. Argentinian, Chilean)"}, {option: "Africain (p. ex. Sud-Africain, Zimbabwéen)", value:"African (eg South African, Zimbabwean)"}]}) %>
+        </div>
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Du Moyen-Orient et Nord-Africain (MENA)", value: "Middle Eastern and North African (MENA)"}]}) %>
+        <div class="answer" id="mena">
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Nord-Africain (p. ex. Libyen, Marocain)", value: "North African (eg. Libyan, Moroccan)"}, {option: "De l’Asie Occidentale (p. ex. Iranien, Afghan)", value:"West Asia (e.g., Iranian, Afghan, etc.)"}, {option: "Du Moyen-Orient (p. ex. Syrien, Libanais)", value: "Middle Eastern (eg. Syrian, Lebanese)"}]}) %>
+        </div>
+        <div>Si nous n'avons pas fourni une catégorie avec laquelle vous vous identifiez, veuillez indiquer à quelle race ou origine ethnique vous vous identifiez: <%= HTML.TextBox(this, 'race.other') %></div>
+        <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">6.</span> Êtes-vous socialement perçu comme une personne racialisée?  </h3>
+    <div class="answer">
+        <p>La racialisation est un processus où les marqueurs sociaux et biologiques (p. ex. couleur de la peau, habitudes culturelles, cheveux, langue, accents, religion, etc.) sont utilisés pour étiqueter ou percevoir une personne comme « autre » ou « non blanche ». Les personnes racialisées peuvent inclure les membres des Premières nations, les Métis ou les Inuits.</p>
+        <%= HTML.Radio(this, 'racialized', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'racialized', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">7.</span> Quel est votre statut d'immigration?</h3>
+    <div class="answer">
+        <%= HTML.Radio(this, 'immigration', {options: [{option: "Citoyen canadien", value: "Canadian citizen"}, {option: "Résident permanent", value: "Permanent resident"}, {option: "Personne d'un autre pays avec un permis de travail ou d'études", value: "Person from another country with a work or study permit"}]}) %>
+        <div>Autre, veuillez préciser: <%= HTML.TextBox(this, 'immigration') %></div>
+        <%= HTML.CheckBox(this, 'immigration', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">8.</span> Veuillez sélectionner tout ce qui s'applique :</h3>
+    <div class="answer">
+        <%= HTML.MultiCheckBox(this, 'gender.values', {options: [{option: "Femme", value: "Woman"}, {option: "Homme", value: "Man"}, {option: "Bispiritualité", value: "Two-Spirit"}, {option: "Genre fluide", value: "Gender fluid"}, {option: "Non-binaire", value: "Non-binary"}]}) %>
+        <div>Une autre identité sexuelle (veuillez préciser): <%= HTML.TextBox(this, 'gender.other') %></div>
+        <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+        <p><i>
+            Bispiritualité est un terme générique utilisé par certains membres des Premières nations pour décrire leur identité sexuelle, leur genre et/ou leur identité spirituelle.<br />
+            Genre Fluide fait référence à une identité de genre en mutation ou « fluide ».<br />
+            Non-binaire est un terme générique préféré pour tous les sexes autres que féminin/masculin ou femme/homme.
+        </i></p>
+    </div>
+    <h3><span class="number">9.</span> Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</h3>
+    <div class="answer">
+        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: [{option: "Gay", value: "Gay"}, {option: "Lesbienne", value: "Lesbian"}, {option: "Hétérosexuel", value:"Heterosexual"}, {option: "Bisexuel", value: "Bisexual"}, {option: "Queer", value: "Queer"}, {option: "Bispirituel", value: "Two-Spirit"}, {option: "Asexuel", value: "Asexual"}]}) %>
+        <div>Une autre orientation (veuillez préciser): <%= HTML.TextBox(this, 'orientation.other') %></div>
+        <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">10.</span> Commentaires supplémentaires</h3>
+    <div class="answer">
+        <p>Tous les commentaires confidentiels que vous pourriez avoir sur le sondage ou sur tout aspect de votre travail ou de votre expérience au sein de <%= networkName %> sont les bienvenus.</p>
+        <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
+    </div>
+</div><br />
+<div id="diversityMessages"></div>
+<button id="save" type="button">Save</button>
