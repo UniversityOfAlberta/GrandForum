@@ -1659,8 +1659,12 @@ class Person extends BackboneModel {
      */
     function getPhoneNumber(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
-            return trim("{$this->phone}");
+        if($me->isAllowedToEdit($this)){
+            $data = DBFunctions::select(array('grand_user_telephone'),
+                                        array('number'),
+                                        array('primary_indicator' => EQ(1),
+                                              'user_id' => EQ($this->getId())));
+            return @trim($data[0]['number']);
         }
         return "";
     }
