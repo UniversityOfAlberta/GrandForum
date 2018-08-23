@@ -63,7 +63,8 @@ class PersonProductsReportItemSet extends ReportItemSet {
         }
         
         usort($products, function($a, $b){
-            return (str_replace("0000-00-00", "9999-99-99", $a->getDate()) < str_replace("0000-00-00", "9999-99-99", $b->getDate())) ? 1 : -1;
+            return (str_replace("0000-00-00", "9999-99-99", $a->getDate()).str_replace("0000-00-00", "9999-99-99", $a->getAcceptanceDate()) < 
+                    str_replace("0000-00-00", "9999-99-99", $b->getDate()).str_replace("0000-00-00", "9999-99-99", $b->getAcceptanceDate())) ? 1 : -1;
         });
         
         if(is_array($products)){
