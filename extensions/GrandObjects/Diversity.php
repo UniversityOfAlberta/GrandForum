@@ -91,7 +91,7 @@ class Diversity extends BackboneModel {
 
         $data = DBFunctions::select(array('grand_diversity'),
                                     array('id'));
-        if(count($data) >0){
+        if(count($data) > 0){
             foreach($data as $diversityId){
                 $diversity = Diversity::newFromId($diversityId['id']);
                 $diversities[] = $diversity;
@@ -106,6 +106,68 @@ class Diversity extends BackboneModel {
     
     function getPerson(){
         return Person::newFromId($this->userId);
+    }
+    
+    function getRaces(){
+        if(!is_array($this->race)){
+            $raceArray = get_object_vars($this->race);
+        }
+        else{
+            $raceArray = $this->race;
+        }
+        $race = $raceArray['values'];
+        $race[] = @$raceArray['other'];
+        $race[] = @$raceArray['indigenousOther'];
+        $race[] = @$raceArray['decline'];
+        $race = array_filter($race);
+        return $race;
+    }
+    
+    function getGenders(){
+        if(!is_array($this->gender)){
+            $genderArray = get_object_vars($this->gender);
+        }
+        else{
+            $genderArray = $this->gender;
+        }
+        $gender = $genderArray['values'];
+        $gender[] = @$genderArray['other'];
+        $gender[] = @$genderArray['decline'];
+        $gender = array_filter($gender);
+        return $gender;
+    }
+    
+    function getOrientations(){
+        if(!is_array($this->orientation)){
+            $orientationArray = get_object_vars($this->orientation);
+        }
+        else{
+            $orientationArray = $this->orientation;
+        }
+        $orientation = $orientationArray['values'];
+        $orientation[] = @$orientationArray['other'];
+        $orientation[] = @$orientationArray['decline'];
+        $orientation = array_filter($orientation);
+        return $orientation;
+    }
+    
+    function isComplete(){
+        if($this->decline === 1){
+            return true;
+        }
+        if(trim($this->birth) == "" ||
+           trim($this->indigenous) == "" ||
+           trim($this->disability) == "" ||
+           (trim($this->disability) == "Yes" && trim($this->disabilityVisibility) == "") ||
+           trim($this->minority) == "" ||
+           trim($this->immigration) == "" ||
+           trim($this->racialized) == "" ||
+           count($this->getRaces()) == 0 ||
+           count($this->getGenders()) == 0 ||
+           count($this->getOrientations()) == 0){
+            return false;  
+        }
+        return true;
     }
     
     function create(){
@@ -157,7 +219,7 @@ class Diversity extends BackboneModel {
     function canView(){
         global $wgImpersonating, $wgDelegating;
         $me = Person::newFromWgUser();
-        return (!$wgImpersonating && !$wgDelegating && ($this->userId == "" || $this->getPerson()->isMe() || $me->isRoleAtLeast(MANAGER)));
+        return (!$wgImpersonating && !$wgDelegating && ($this->userId == "" || $this->getPerson()->isMe() || $me->isRoleAtLeast(MANAGER) || $me->isRole(EDI)));
     }
 
     function toArray(){
