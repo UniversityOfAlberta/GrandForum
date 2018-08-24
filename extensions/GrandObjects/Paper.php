@@ -1555,7 +1555,8 @@ class Paper extends BackboneModel{
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 
                                                                 $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
                              ($highlightOnlyMyHQP === false))){
-                        $unis = $a->getUniversitiesDuring($yearAgo, $nextYear);
+                        $unis = array_merge($a->getUniversitiesDuring($yearAgo, $date), 
+                                            $a->getUniversitiesDuring($yearAgo, $nextYear));
                         $found = false;
                         foreach($unis as $uni){
                             if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
