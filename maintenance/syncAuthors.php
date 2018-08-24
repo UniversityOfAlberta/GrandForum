@@ -21,8 +21,10 @@ foreach($papers as $paper){
 DBFunctions::begin();
 DBFunctions::execSQL("TRUNCATE TABLE `grand_product_authors`", true, true);
 show_status(++$queriesSoFar, $nPapers+3);
-DBFunctions::execSQL($insertSQL.implode(",\n",$inserts), true, true);
+$status = DBFunctions::execSQL($insertSQL.implode(",\n",$inserts), true, true);
 show_status(++$queriesSoFar, $nPapers+3);
-DBFunctions::commit();
+if(!$status){
+    DBFunctions::commit();
+}
 show_status(++$queriesSoFar, $nPapers+3);
 ?>
