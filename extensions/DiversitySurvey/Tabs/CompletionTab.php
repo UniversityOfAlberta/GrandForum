@@ -13,8 +13,9 @@ class CompletionTab extends AbstractTab {
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Position</th>
                                 <th>Institution</th>
+                                <th>Department</th>
+                                <th>Position</th>
                                 <th>Completed?</th>
                                 <th>Decline?</th>
                                 <th>Q1</th>
@@ -49,8 +50,9 @@ class CompletionTab extends AbstractTab {
                 $this->html .= "<tr>
                                     <td>{$person->getNameForForms()}</td>
                                     <td>{$person->getEmail()}</td>
-                                    <td>{$person->getPosition()}</td>
                                     <td>{$person->getUni()}</td>
+                                    <td>{$person->getDepartment()}</td>
+                                    <td>{$person->getPosition()}</td>
                                     <td>{$complete}</td>
                                     <td>
                                         <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
