@@ -24,6 +24,7 @@ show_status(++$queriesSoFar, $nPapers+3);
 $status = DBFunctions::execSQL($insertSQL.implode(",\n",$inserts), true, true);
 show_status(++$queriesSoFar, $nPapers+3);
 if(!$status){
+    // Don't commit if there was an error
     DBFunctions::commit();
 }
 show_status(++$queriesSoFar, $nPapers+3);
