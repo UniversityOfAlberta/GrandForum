@@ -105,6 +105,9 @@ class UploadCCVAPI extends API{
         $product->access = "Public";
         $product->ccv_id = $ccv_id;
         $paper['authors'] = str_replace(";", ",", $paper['authors']);
+        $paper['authors'] = str_replace("(*)", "", $paper['authors']);
+        $paper['authors'] = str_replace("*", "", $paper['authors']);
+        $paper['authors'] = trim($paper['authors']);
         $authors1 = explode(",", $paper['authors']);
         $authors2 = explode(" and ", $paper['authors']);
         $commaFirstLast = false;
