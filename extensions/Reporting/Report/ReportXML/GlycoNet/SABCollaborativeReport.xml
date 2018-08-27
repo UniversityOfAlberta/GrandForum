@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_REPORT" pdfType="RPTP_SAB_COLLAB_REPORT" pdfFiles="SABCollaborativeReportPDF" personId="0" ajax="true" disabled="false" year="2017">
+<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_REPORT" pdfType="RPTP_SAB_COLLAB_REPORT" pdfFiles="SABCollaborativeReportPDF" personId="0" ajax="true" disabled="false" year="2018">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />
@@ -43,9 +43,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport082017" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeLOI" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -73,17 +73,17 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
             <ReportItem id="row_header" type="Static">
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
-                        <td title="{getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
-                            {getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
+                        <td title="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
+                            {getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative082017" includeSelf="true">
+            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative" includeSelf="true">
                 <ReportItem id="default" type="Static">
                     <![CDATA[
                         {set(rank,{getText(RP_SAB_COLLAB_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
@@ -125,10 +125,10 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
             <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
-                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative082017" includeSelf="true">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative" includeSelf="true">
                         <ReportItem id="review" type="StaticReportItem">
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
