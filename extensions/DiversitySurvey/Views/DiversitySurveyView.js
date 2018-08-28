@@ -142,15 +142,12 @@ DiversitySurveyView = Backbone.View.extend({
         if(this.model.get('race').decline == "I prefer not to answer"){
             this.$("input[name=race_values][type=checkbox]").prop("checked", false).prop("disabled", true);
             this.$("input[name=race_other][type=text]").val("").prop("disabled", true);
-            this.$("input[name=race_indigenousOther][type=text]").val("").prop("disabled", true);
             this.model.get('race').values = new Array();
             this.model.get('race').other = "";
-            this.model.get('race').indigenousOther = "";
         }
         else{
             this.$("input[name=race_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=race_other][type=text]").prop("disabled", false);
-            this.$("input[name=race_indigenousOther][type=text]").prop("disabled", false);
         }
         
         // Racialized

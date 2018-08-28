@@ -27,7 +27,6 @@ class Diversity extends BackboneModel {
     var $race = array(
         'values' => array(),
         'other' => "",
-        'indigenousOther' => "",
         'decline' => ""
     );
     var $racialized = "";
@@ -117,7 +116,6 @@ class Diversity extends BackboneModel {
         }
         $race = $raceArray['values'];
         $race[] = @$raceArray['other'];
-        $race[] = @$raceArray['indigenousOther'];
         $race[] = @$raceArray['decline'];
         $race = array_filter($race);
         return $race;

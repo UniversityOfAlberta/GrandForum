@@ -32,7 +32,6 @@ Diversity = Backbone.Model.extend({
             minority: '',
             race: {
                 values: [],
-                indigenousOther: "",
                 other: "",
                 decline: ""
             },
