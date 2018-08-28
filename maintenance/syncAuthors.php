@@ -19,13 +19,17 @@ foreach($papers as $paper){
     show_status(++$queriesSoFar, $nPapers+3);
 }
 DBFunctions::begin();
-DBFunctions::execSQL("TRUNCATE TABLE `grand_product_authors`", true, true);
+DBFunctions::execSQL("DELETE FROM `grand_product_authors`", true, true);
 show_status(++$queriesSoFar, $nPapers+3);
 $status = DBFunctions::execSQL($insertSQL.implode(",\n",$inserts), true, true);
 show_status(++$queriesSoFar, $nPapers+3);
-if(!$status){
+if(@$status){
     // Don't commit if there was an error
     DBFunctions::commit();
 }
+else{
+    DBFunctions::rollback();
+}
+
 show_status(++$queriesSoFar, $nPapers+3);
 ?>
