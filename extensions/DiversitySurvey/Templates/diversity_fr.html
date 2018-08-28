@@ -71,9 +71,10 @@
         <div>Autre, veuillez préciser: <%= HTML.TextBox(this, 'immigration') %></div>
         <%= HTML.CheckBox(this, 'immigration', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
     </div>
-    <h3><span class="number">8.</span> Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</h3>
+    <h3><span class="number">8.</span> Genre</h3>
     <div class="answer">
-        <p>Genre: Les options énumérées ci-dessous sont basées sur les descriptions de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta) de l’identité de genre et d’autres termes fréquemment utilisés pour représenter le genre:</p>
+        <p>Les options énumérées ci-dessous sont basées sur les descriptions de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta) de l’identité de genre et d’autres termes fréquemment utilisés pour représenter le genre:<br />
+        <b>Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</b></p>
         <%= HTML.MultiCheckBox(this, 'gender.values', {options: [{option: "Femme", value: "Woman"}, {option: "Homme", value: "Man"}, {option: "Bispiritualité<sup><small>2</small></sup>", value: "Two-Spirit"}, {option: "Genre fluide<sup><small>3</small></sup>", value: "Gender fluid"}, {option: "Non-binaire<sup><small>4</small></sup>", value: "Non-binary"}]}) %>
         <div>Une autre identité sexuelle (veuillez préciser): <%= HTML.TextBox(this, 'gender.other') %></div>
         <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
@@ -83,9 +84,10 @@
             <sup>4</sup> Non-binaire est un terme générique préféré pour tous les sexes autres que féminin/masculin ou femme/homme.
         </i></p>
     </div>
-    <h3><span class="number">9.</span> Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</h3>
+    <h3><span class="number">9.</span> Orientation sexuelle</h3>
     <div class="answer">
-        <p>Orientation sexuelle: Les options énumérées ci-dessous sont fondées sur la définition de l'orientation sexuelle de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta).</p>
+        <p>Les options énumérées ci-dessous sont fondées sur la définition de l'orientation sexuelle de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta).<br />
+        <b>Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</b></p>
         <%= HTML.MultiCheckBox(this, 'orientation.values', {options: [{option: "Gay", value: "Gay"}, {option: "Lesbienne", value: "Lesbian"}, {option: "Hétérosexuel", value:"Heterosexual"}, {option: "Bisexuel", value: "Bisexual"}, {option: "Queer", value: "Queer"}, {option: "Bispirituel", value: "Two-Spirit"}, {option: "Asexuel", value: "Asexual"}]}) %>
         <div>Une autre orientation (veuillez préciser): <%= HTML.TextBox(this, 'orientation.other') %></div>
         <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
