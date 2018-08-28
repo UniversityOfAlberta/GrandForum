@@ -217,7 +217,7 @@ class Diversity extends BackboneModel {
     function canView(){
         global $wgImpersonating, $wgDelegating;
         $me = Person::newFromWgUser();
-        return (!$wgImpersonating && !$wgDelegating && ($this->userId == "" || $this->getPerson()->isMe() || $me->isRoleAtLeast(MANAGER) || $me->isRole(EDI)));
+        return (!$wgImpersonating && !$wgDelegating && ($this->userId == "" || $this->getPerson()->isMe() || $me->isRole(ADMIN) || $me->isRole(EDI)));
     }
 
     function toArray(){

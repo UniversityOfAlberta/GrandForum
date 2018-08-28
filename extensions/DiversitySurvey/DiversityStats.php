@@ -10,7 +10,13 @@ autoload_register('DiversitySurvey/Tabs');
 class DiversityStats extends SpecialPage{
 
     function DiversityStats() {
-        parent::__construct("DiversityStats", ADMIN.'+', true);
+        parent::__construct("DiversityStats", null, true);
+    }
+    
+    function userCanExecute($user){
+	    global $wgImpersonating, $wgDelegating;
+        $me = Person::newFromWgUser();
+        return (!$wgImpersonating && !$wgDelegating && ($me->isRole(EDI) || $me->isRole(ADMIN)));
     }
 
     function execute($par){
