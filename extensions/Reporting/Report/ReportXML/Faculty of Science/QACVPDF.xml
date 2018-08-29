@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " headerName=" " footer="{$next_year} Quality Assurance Reporting Period: July 1 {$startYear} - June 30 {$endYear}" reportType="RP_QA" pdfType="RPTP_QA" ajax="true" startYear="-6">
+<Report name=" " headerName=" " footer="{$next_year} Quality Assurance Reporting Period: July 1 {$startYear} - June 30 {$endYear}" reportType="RP_QA" pdfType="RPTP_QA" ajax="true" startYear="-7">
     <ReportSection id="information" tooltip="Information" name="Information" title="QA CV" blobSection="FEC_INFORMATION" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
