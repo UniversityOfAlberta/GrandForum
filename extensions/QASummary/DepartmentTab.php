@@ -145,13 +145,16 @@ class DepartmentTab extends AbstractTab {
                 return $b->getAcceptanceYear() - $a->getAcceptanceYear();
             });
             $html .= "<h3>{$scope}</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <tr>
-                        <th width='35%'>Title</th>
-                        <th width='35%'>Awarded By</th>
-                        <th width='20%'>Recipient Last Names</th>
-                        <th width='10%'>Years</th>
-                    </tr>";
+                <table class='wikitable awards' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th width='35%'>Title</th>
+                            <th width='35%'>Awarded By</th>
+                            <th width='20%'>Recipient Last Names</th>
+                            <th width='10%'>Years</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
             foreach($as as $award){
                 $authors = array();
                 foreach($award->getAuthors() as $author){
@@ -174,8 +177,18 @@ class DepartmentTab extends AbstractTab {
                 }
                 $html .= "<tr><td>{$award->getTitle()}</td><td>{$award->getData('awarded_by')}</td><td>".implode(", ", $authors)."</td><td>{$years}</td></tr>";
             }
-            $html .= "</table>";
+            $html .= "</tbody></table>";
         }
+        $html .= "<script type='text/javascript'>
+            $('.awards').dataTable({
+                'aLengthMenu': [[-1], ['All']],
+                'iDisplayLength': -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
+                ]
+            });
+        </script>";
         
         $gradPapers = array();
         $ugradPapers = array();
