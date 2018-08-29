@@ -77,6 +77,12 @@ class AddHqp extends SpecialPage{
                 $('#infinity').click(function(){
                     $('input[name=end_field]').val('0000-00-00').change();
                 });
+                
+                $('form').submit(function(){
+                    _.defer(function(){
+                        $('input[name=ignore_warnings]').prop('disabled', true);
+                    });
+                });
             </script>");
         }
     }
