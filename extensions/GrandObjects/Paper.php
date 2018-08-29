@@ -794,7 +794,9 @@ class Paper extends BackboneModel{
         else if($me->isAuthorOf($this)){
             return true; // Person is an author of this publication
         }
-        else {
+        else if($this->getCategory() == "Publication" ||
+                $this->getCategory() == "Presentation" ||
+                $this->getCategory() == "Award"){
             $hqps = $me->getHQP(true, true);
             foreach($hqps as $hqp){
                 if($hqp->isAuthorOf($this)){
