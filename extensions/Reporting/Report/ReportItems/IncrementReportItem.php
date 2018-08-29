@@ -19,10 +19,15 @@ class IncrementReportItem extends SelectReportItem {
 	                             "0C", 
 	                             "0D",
 	                             "0.50", 
-	                             "1.00", 
-	                             "1.50", 
-	                             "2.00", 
-	                             "2.50", 
+	                             "0.75",
+	                             "1.00",
+	                             "1.25", 
+	                             "1.50",
+	                             "1.75", 
+	                             "2.00",
+	                             "2.25", 
+	                             "2.50",
+	                             "2.75", 
 	                             "3.00");
 	            break;
 	        case "M1":
@@ -31,7 +36,8 @@ class IncrementReportItem extends SelectReportItem {
 	                             "0B", 
 	                             "0C", 
 	                             "0D",
-	                             "0.50", 
+	                             "0.50",
+	                             "0.75",
 	                             "1.00");
 	            break;
 	    }
