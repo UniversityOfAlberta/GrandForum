@@ -276,18 +276,23 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     addExistingMember: function(){
-        this.$("#selectExistingMember").empty();
-        this.addExistingMemberDialog.dialog('open');
-        var people = new Array();
-        _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
-            var fullname = p.get('reversedName');
-            if(p.get('email') != ""){
-                fullname += " (" + p.get('email').split('@')[0] + ")";
-            }
-            people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
-        }, this));
-        $("#selectExistingMember").html(people.join());
-        $("#selectExistingMember").chosen();
+        if(this.$("#selectExistingMember option").length == 0){
+            this.$("#selectExistingMember").empty();
+            this.addExistingMemberDialog.dialog('open');
+            var people = new Array();
+            _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
+                var fullname = p.get('reversedName');
+                if(p.get('email') != ""){
+                    fullname += " (" + p.get('email').split('@')[0] + ")";
+                }
+                people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
+            }, this));
+            $("#selectExistingMember").html(people.join());
+            $("#selectExistingMember").chosen();
+        }
+        else{
+            this.addExistingMemberDialog.dialog('open');
+        }
         this.addExistingMemberDialog.parent().css('overflow', 'visible');
     },
     
