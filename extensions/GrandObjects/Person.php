@@ -4096,7 +4096,7 @@ class Person extends BackboneModel {
                (($date >= $startRange && $date <= $endRange ||
                 ($acceptanceDate >= $startRange && $acceptanceDate <= $endRange && $acceptanceDateLabel != "")) ||
                 ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
-                 ($acceptanceDate >= $startRange && $date <= $endRange ||
+                 ($acceptanceDate >= $startRange && $date <= $endRange && $date >= $startRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange ||
                   $acceptanceDate <= $endRange && $date == "0000-00-00")) ||
