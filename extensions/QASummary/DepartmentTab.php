@@ -140,6 +140,7 @@ class DepartmentTab extends AbstractTab {
                                                       'page' => \$pdf->get_page_number(),
                                                       'subs' => array());
                   </script>";
+        $html .= "<div id='{$this->id}Awards'>";
         foreach($awards as $scope => $as){
             usort($as, function($a, $b){
                 return $b->getAcceptanceYear() - $a->getAcceptanceYear();
@@ -179,8 +180,9 @@ class DepartmentTab extends AbstractTab {
             }
             $html .= "</tbody></table>";
         }
+        $html .= "</div>";
         $html .= "<script type='text/javascript'>
-            $('.awards').dataTable({
+            $('#{$this->id}Awards .awards').dataTable({
                 'aLengthMenu': [[-1], ['All']],
                 'iDisplayLength': -1,
                 'dom': 'Blfrtip',
