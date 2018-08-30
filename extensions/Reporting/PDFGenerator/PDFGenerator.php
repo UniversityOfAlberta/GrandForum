@@ -819,10 +819,10 @@ EOF;
             $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
             // Center the text
-            $nameWidth = $fontMetrics->getTextWidth("'.utf8_encode($headerName).' ", $font, $size);
+            $nameWidth = $fontMetrics->getTextWidth("'.$headerName.' ", $font, $size);
             $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
 
-            $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
+            $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.$headerName.'", $font, $size, $color, 0.01);
             if('.$pageCount.'){
                 $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']-0.2).', $text, $font, $size2, $color, 0.01);
             }

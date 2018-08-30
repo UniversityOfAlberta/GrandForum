@@ -51,8 +51,8 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 6056", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 6056", true);  
+    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 6056", true);
+    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 6056", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
@@ -139,33 +139,38 @@
                 
                 //if ($userID == 337){ echo "yoooooooooo" . $subject . " " . $catalog . "\n"; }
                 
-                $courseID++; // # of total insertions
-                                               
-                // set the key to values string
-                $grandCourses[$key] = "('{$acadOrg}','{$term}','{$termString}',
-                                        '{$classNbr}','{$subject}','{$catalog}',
-                                        '{$component}','{$sect}','{$crsStatus}',
-                                        '{$facilID}','{$startDate}','{$endDate}',
-                                        '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
-                                        '{$campus}','{$note}', '{$title}', '{$descr}')";
-                
-               // set grandUserCourses         
-               $grandUserCourses[] = "('{$userID}','{$courseID}')";
+                if($userID == 410){
+                    $courseID++; // # of total insertions
+                                                   
+                    // set the key to values string
+                    
+                    $grandCourses[$key] = "('{$acadOrg}','{$term}','{$termString}',
+                                            '{$classNbr}','{$subject}','{$catalog}',
+                                            '{$component}','{$sect}','{$crsStatus}',
+                                            '{$facilID}','{$startDate}','{$endDate}',
+                                            '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
+                                            '{$campus}','{$note}', '{$title}', '{$descr}')";
+                    
+                   // set grandUserCourses         
+                   $grandUserCourses[] = "('{$userID}','{$courseID}')";
+               }
             }
         }
         
-        $insertSQLGC = "INSERT INTO `grand_courses` 
-                               (`Acad Org`, `Term`, `term_string`,
-                                `Class Nbr`, `Subject`, `Catalog`, 
-                                `Component`, `Sect`, `Crs Status`,
-                                `Facil ID`, `Start Date`, `End Date`,
-                                `Hrs From`, `Hrs To`, `Tot Enrl`,
-                                `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
-        
-        $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
-               
-        DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);
-        DBFunctions::execSQL($insertSQLGUC . implode(", ", $grandUserCourses), true);
+        if(count($grandUserCourses) > 0 && count($grandCourses) > 0){
+            $insertSQLGC = "INSERT INTO `grand_courses` 
+                                   (`Acad Org`, `Term`, `term_string`,
+                                    `Class Nbr`, `Subject`, `Catalog`, 
+                                    `Component`, `Sect`, `Crs Status`,
+                                    `Facil ID`, `Start Date`, `End Date`,
+                                    `Hrs From`, `Hrs To`, `Tot Enrl`,
+                                    `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
+            
+            $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
+                   
+            DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);
+            DBFunctions::execSQL($insertSQLGUC . implode(", ", $grandUserCourses), true);
+        }
                
         echo "Number of Rows parsed (not necessarily inserted) for " . $termString . " is " . $rowsParsed . "\n\n";    
     }
