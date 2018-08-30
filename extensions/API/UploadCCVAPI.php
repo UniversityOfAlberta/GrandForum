@@ -104,6 +104,9 @@ class UploadCCVAPI extends API{
         }
         $product->access = "Public";
         $product->ccv_id = $ccv_id;
+
+        $paper['authors'] = strip_tags($paper['authors']);
+        $paper['authors'] = str_replace("\n", " ", $paper['authors']);
         $paper['authors'] = str_replace(";", ",", $paper['authors']);
         $paper['authors'] = str_replace("(*)", "", $paper['authors']);
         $paper['authors'] = str_replace("*", "", $paper['authors']);
@@ -117,7 +120,7 @@ class UploadCCVAPI extends API{
                 $commaFirstLast = true;
             }
         }
-        if($commaFirstLast){
+        if($commaFirstLast || count($authors2) > count($authors1)){
             $authors = $authors2;
         }
         else{
