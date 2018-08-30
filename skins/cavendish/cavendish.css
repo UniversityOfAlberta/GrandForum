@@ -388,6 +388,10 @@ table.data th,table.data td {
 	border: 1px solid #ccc;
 }
 
+table.fixedHeader-floating {
+    font-size: 9pt;
+}
+
 tr.odd {
 	background: #F5F5F5;
 }

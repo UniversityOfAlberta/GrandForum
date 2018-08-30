@@ -205,6 +205,7 @@ ManageProductsView = Backbone.View.extend({
         this.createDataTable(order, searchStr);
         this.productChanged();
         this.$("#listTable").show();
+        this.table.draw();
     },
     
     cacheRows: function(){
@@ -223,6 +224,7 @@ ManageProductsView = Backbone.View.extend({
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
+                                                     'fixedHeader': true,
                                                      'aoColumnDefs': [
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 1) }
                                                      ],
