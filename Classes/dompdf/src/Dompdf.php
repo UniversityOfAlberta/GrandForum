@@ -425,7 +425,7 @@ class Dompdf
             $file_encoding = "auto";
         }
         if (in_array(strtoupper($file_encoding), array('UTF-8','UTF8')) === false) {
-            $str = mb_convert_encoding($str, 'UTF-8', $file_encoding);
+            $str = @mb_convert_encoding($str, 'UTF-8', $file_encoding);
         }
 
         $metatags = array(
