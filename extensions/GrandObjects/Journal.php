@@ -86,7 +86,7 @@ class Journal extends BackboneModel {
                 $short_title = unaccentChars($row['short_title']);
                 $iso_abbrev = unaccentChars($row['iso_abbrev']);
                 $issn = unaccentChars($row['issn']);
-                $results = preg_grep("/$string/", array($title, $year, $description, $short_title, $iso_abbrev, $issn));
+                $results = preg_grep("/".preg_quote($string)."/", array($title, $year, $description, $short_title, $iso_abbrev, $issn));
                 if(count($results) == 0){ // everything must match
                     $found = false;
                     break;
