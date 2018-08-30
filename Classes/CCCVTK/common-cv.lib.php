@@ -98,6 +98,10 @@ class CommonCV // {{{
       $record["city"] = $this->get_xpath("field[@id='c2efd9725588489b8df73467c5597c32']/value", $elements->item($i));
       $date = $this->get_xpath("field[@id='0318d139f3e0479083188ff8319a97b2']/value", $elements->item($i));
       @list($date_year, $date_month) = explode("/", $date);
+      $confDate = $this->get_xpath("field[@id='99b57db653a841ccbd5f8e52079745c0']/value", $elements->item($i));
+      if($confDate != ""){
+        @list($date_year, $date_month) = explode("/", $confDate);
+      }
       $record["date_year"] = $date_year;
       $record["date_month"] = $date_month;
       $records[$id] = $record;
