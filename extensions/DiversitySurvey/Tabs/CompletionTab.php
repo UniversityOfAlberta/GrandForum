@@ -32,48 +32,57 @@ class CompletionTab extends AbstractTab {
                          </thead>
                          <tbody>";
         foreach($people as $person){
-            $diversity = Diversity::newFromUserId($person->getId());
-            if($diversity->canView()){
-                $complete = ($diversity->isComplete()) ? "Yes" : "No";
-            
-                // Race
-                $race = implode(", ", $diversity->getRaces());
+            if($person->isRole(NI) ||
+               $person->isRole(HQP) ||
+               $person->isRole(STAFF) ||
+               $person->isRole("BOD") ||
+               $person->isRole("CC") ||
+               $person->isRole("ETC") ||
+               $person->isRole("RMC") ||
+               $person->isRole("SAB")){
+                $diversity = Diversity::newFromUserId($person->getId());
+                if($diversity->canView()){
+                    $complete = ($diversity->isComplete()) ? "Yes" : "No";
                 
-                // Gender
-                $gender = implode(", ", $diversity->getGenders());
-                
-                // Orientation
-                $orientation = implode(", ", $diversity->getOrientations());
-                
-                $decline = ($diversity->decline == 0) ? "No" : "Yes";
-                
-                $this->html .= "<tr>
-                                    <td>{$person->getNameForForms()}</td>
-                                    <td>{$person->getEmail()}</td>
-                                    <td>{$person->getUni()}</td>
-                                    <td>{$person->getDepartment()}</td>
-                                    <td>{$person->getPosition()}</td>
-                                    <td>{$complete}</td>
-                                    <td>
-                                        <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
-                                            {$decline}<br />
-                                            {$diversity->reason}
-                                        </div>
-                                    </td>
-                                    <td>{$diversity->birth}</td>
-                                    <td>{$diversity->indigenous}</td>
-                                    <td>
-                                        {$diversity->disability}<br />
-                                        {$diversity->disabilityVisibility}
-                                    </td>
-                                    <td>{$diversity->minority}</td>
-                                    <td>{$race}</td>
-                                    <td>{$diversity->racialized}</td>
-                                    <td>{$diversity->immigration}</td>
-                                    <td>{$gender}</td>
-                                    <td>{$orientation}</td>
-                                    <td><div style='min-width:200px;max-height: 200px; overflow-y: auto;'>{$diversity->comments}</div></td>
-                                 </tr>";
+                    // Race
+                    $race = implode(", ", $diversity->getRaces());
+                    
+                    // Gender
+                    $gender = implode(", ", $diversity->getGenders());
+                    
+                    // Orientation
+                    $orientation = implode(", ", $diversity->getOrientations());
+                    
+                    $decline = ($diversity->decline == 0) ? "No" : "Yes";
+                    
+                    $this->html .= "<tr>
+                                        <td>{$person->getNameForForms()}</td>
+                                        <td>{$person->getEmail()}</td>
+                                        <td>{$person->getUni()}</td>
+                                        <td>{$person->getDepartment()}</td>
+                                        <td>{$person->getPosition()}</td>
+                                        <td>{$complete}</td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$decline}<br />
+                                                {$diversity->reason}
+                                            </div>
+                                        </td>
+                                        <td>{$diversity->birth}</td>
+                                        <td>{$diversity->indigenous}</td>
+                                        <td>
+                                            {$diversity->disability}<br />
+                                            {$diversity->disabilityVisibility}
+                                        </td>
+                                        <td>{$diversity->minority}</td>
+                                        <td>{$race}</td>
+                                        <td>{$diversity->racialized}</td>
+                                        <td>{$diversity->immigration}</td>
+                                        <td>{$gender}</td>
+                                        <td>{$orientation}</td>
+                                        <td><div style='min-width:200px;max-height: 200px; overflow-y: auto;'>{$diversity->comments}</div></td>
+                                     </tr>";
+                }
             }
         }
         $this->html .= "</tbody>
