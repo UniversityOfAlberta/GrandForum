@@ -13,6 +13,7 @@ class CompletionTab extends AbstractTab {
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Roles</th>
                                 <th>Institution</th>
                                 <th>Department</th>
                                 <th>Position</th>
@@ -37,6 +38,13 @@ class CompletionTab extends AbstractTab {
                 if($diversity->canView()){
                     $complete = ($diversity->isComplete()) ? "Yes" : "No";
                 
+                    // Roles
+                    $roles = array();;
+                    foreach($person->getRoles() as $role){
+                        $roles[] = $role->getRole();
+                    }
+                    $roles = array_unique($roles);
+                
                     // Race
                     $race = implode(", ", $diversity->getRaces());
                     
@@ -51,6 +59,7 @@ class CompletionTab extends AbstractTab {
                     $this->html .= "<tr>
                                         <td>{$person->getNameForForms()}</td>
                                         <td>{$person->getEmail()}</td>
+                                        <td>".implode(", ", $roles)."</td>
                                         <td>{$person->getUni()}</td>
                                         <td>{$person->getDepartment()}</td>
                                         <td>{$person->getPosition()}</td>
