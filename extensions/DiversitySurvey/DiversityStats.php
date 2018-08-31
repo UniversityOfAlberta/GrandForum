@@ -5,6 +5,8 @@ $wgSpecialPages['DiversityStats'] = 'DiversityStats'; # Let MediaWiki know about
 $wgExtensionMessagesFiles['DiversityStats'] = $dir . 'DiversityStats.i18n.php';
 $wgSpecialPageGroups['DiversityStats'] = 'network-tools';
 
+$wgHooks['SubLevelTabs'][] = 'DiversityStats::createSubTabs';
+
 autoload_register('DiversitySurvey/Tabs');
 
 class DiversityStats extends SpecialPage{
@@ -28,6 +30,16 @@ class DiversityStats extends SpecialPage{
         
         $tabbedPage->showPage();
         
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+        $person = Person::newFromWgUser($wgUser);
+        if(self::userCanExecute($person)){
+            $selected = @($wgTitle->getText() == "DiversityStats") ? "selected" : false;
+            $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Stats", "$wgServer$wgScriptPath/index.php/Special:DiversityStats", $selected);
+        }
+        return true;
     }
     
 }
