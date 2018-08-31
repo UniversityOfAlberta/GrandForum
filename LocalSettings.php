@@ -270,6 +270,7 @@ $wgAllRoles = ($config->hasValue('wgAllRoles')) ?
 
 
 function unaccentChars($str){
+    return $str;
     $str = strtolower(strtr(utf8_decode($str), 
                       utf8_decode('àáâãäåšçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÅŠÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
                                   'aaaaaasceeeeiiiinooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'));
