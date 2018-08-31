@@ -4,7 +4,7 @@ BackbonePage::register('DiversitySurvey', "{$config->getValue('networkName')} Di
 require_once("DiversityStats.php");
 
 $wgHooks['TopLevelTabs'][] = 'DiversitySurvey::createTab';
-$wgHooks['SubLevelTabs'][] = 'DiversitySurvey::createSubTabs';
+//$wgHooks['SubLevelTabs'][] = 'DiversitySurvey::createSubTabs';
 
 class DiversitySurvey extends BackbonePage {
     
