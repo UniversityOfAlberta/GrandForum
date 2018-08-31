@@ -32,14 +32,7 @@ class CompletionTab extends AbstractTab {
                          </thead>
                          <tbody>";
         foreach($people as $person){
-            if($person->isRole(NI) ||
-               $person->isRole(HQP) ||
-               $person->isRole(STAFF) ||
-               $person->isRole("BOD") ||
-               $person->isRole("CC") ||
-               $person->isRole("ETC") ||
-               $person->isRole("RMC") ||
-               $person->isRole("SAB")){
+            if(DiversitySurvey::isEligible($person)){
                 $diversity = Diversity::newFromUserId($person->getId());
                 if($diversity->canView()){
                     $complete = ($diversity->isComplete()) ? "Yes" : "No";
