@@ -3602,7 +3602,7 @@ class Person extends BackboneModel {
      * @return boolean Whether or not the Person is the given role
      */
     function isRoleAtLeast($role){
-        global $wgRoleValues;
+        global $wgRoleValues, $config;
         if($role == NI){
             return ($this->isRoleAtLeast(AR) || 
                     $this->isRoleAtLeast(CI));
@@ -3618,19 +3618,21 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
-                return true;
+        if($config->getValue('projectsEnabled')){
+            if($wgRoleValues[PL] >= $wgRoleValues[$role]){
+                if($this->isProjectLeader()){
+                    return true;
+                }
             }
-        }
-        if($wgRoleValues[TL] >= $wgRoleValues[$role]){
-            if($this->isThemeLeader()){
-                return true;
+            if($wgRoleValues[TL] >= $wgRoleValues[$role]){
+                if($this->isThemeLeader()){
+                    return true;
+                }
             }
-        }
-        if($wgRoleValues[TC] >= $wgRoleValues[$role]){
-            if($this->isThemeCoordinator()){
-                return true;
+            if($wgRoleValues[TC] >= $wgRoleValues[$role]){
+                if($this->isThemeCoordinator()){
+                    return true;
+                }
             }
         }
         return false;
@@ -3642,7 +3644,7 @@ class Person extends BackboneModel {
      * @return boolean Whether or not the Person is the given role
      */
     function isRoleAtMost($role){
-        global $wgRoleValues;
+        global $wgRoleValues, $config;
         if($role == NI){
             return ($this->isRoleAtMost(AR) || 
                     $this->isRoleAtMost(CI));
@@ -3655,9 +3657,11 @@ class Person extends BackboneModel {
                 return true;
             }
         }
-        if($wgRoleValues[PL] <= $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
-                return true;
+        if($config->getValue('projectsEnabled')){
+            if($wgRoleValues[PL] <= $wgRoleValues[$role]){
+                if($this->isProjectLeader()){
+                    return true;
+                }
             }
         }
         

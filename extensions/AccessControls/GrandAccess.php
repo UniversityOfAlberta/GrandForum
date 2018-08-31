@@ -54,10 +54,10 @@ class GrandAccess {
 	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	    }
-	    if($me->isEvaluator()){
+	    /*if($me->isEvaluator()){
 	        $aRights[$i++] = "Evaluator";
 	        $aRights[$i++] = "Evaluator+";
-	    }
+	    }*/
 	    if($me->isRole(NI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
