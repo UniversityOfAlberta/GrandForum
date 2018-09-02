@@ -1632,7 +1632,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
-        return str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
+        return @str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
     }
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
