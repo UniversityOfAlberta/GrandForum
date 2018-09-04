@@ -20,7 +20,8 @@ class DiversitySurvey extends BackbonePage {
                 $person->isRole("CC") ||
                 $person->isRole("ETC") ||
                 $person->isRole("RMC") ||
-                $person->isRole("SAB"));
+                $person->isRole("SAB") ||
+                $person->isRole(EDI));
     }
     
     function userCanExecute($user){
@@ -50,8 +51,7 @@ class DiversitySurvey extends BackbonePage {
 
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        $person = Person::newFromWgUser($wgUser);
-        if(self::userCanExecute($person)){
+        if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "DiversitySurvey") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Survey", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey", $selected);
         }
