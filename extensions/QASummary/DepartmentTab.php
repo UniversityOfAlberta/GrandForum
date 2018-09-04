@@ -28,7 +28,7 @@ class DepartmentTab extends AbstractTab {
         $pdfs = array();
         foreach(Person::getAllPeopleDuring(NI, ($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
             foreach($person->getUniversitiesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
-                if($uni['department'] == $this->department){
+                if(strstr($uni['department'], $this->department) !== false){
                     $people[$person->getId()] = $person;
                     break;
                 }
@@ -36,7 +36,7 @@ class DepartmentTab extends AbstractTab {
         }
         foreach(Person::getAllPeopleDuring(HQP, ($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
             foreach($person->getUniversitiesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
-                if($uni['department'] == $this->department){
+                if(strstr($uni['department'], $this->department) !== false){
                     $hqps[$person->getId()] = $person;
                     if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad'])){
                         $ugrads[$person->getId()] = $person;
