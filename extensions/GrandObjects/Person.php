@@ -74,7 +74,7 @@ class Person extends BackboneModel {
     var $sciverseId;
     var $orcId;
     var $publicProfile;
-    var $privateProfile;
+    //var $privateProfile;
     var $profileStartDate;
     var $profileEndDate;
     var $realname;
@@ -94,7 +94,6 @@ class Person extends BackboneModel {
     var $hqps;
     var $historyHqps;
     var $grants;
-    var $multimedia;
     var $aliases = false;
     var $roleHistory;
     var $hqpCache = array();
@@ -111,9 +110,9 @@ class Person extends BackboneModel {
     var $dateOfRetirement;
     var $dateOfLastDegree;
     var $lastDegree;
-    var $publicationHistoryRefereed;
-    var $publicationHistoryBooks;
-    var $publicationHistoryPatents;
+    //var $publicationHistoryRefereed;
+    //var $publicationHistoryBooks;
+    //var $publicationHistoryPatents;
     var $dateFso2;
     var $dateFso3;
     var $dateFso4;
@@ -389,7 +388,7 @@ class Person extends BackboneModel {
                                               'sciverse_id',
                                               'orcid',
                                               'user_public_profile',
-                                              'user_private_profile',
+                                              //'user_private_profile',
                                               'profile_start_date',
                                               'profile_end_date',
                                               'user_nationality',
@@ -579,7 +578,22 @@ class Person extends BackboneModel {
     function getFecPersonalInfo(){
         if(!isset(self::$fecInfoCache[$this->getId()])){
             $data = DBFunctions::select(array('grand_personal_fec_info'),
-                                        array('*'),
+                                        array('user_id', 
+                                              'date_of_phd',
+                                              'date_of_appointment',
+                                              'date_assistant',
+                                              'date_associate',
+                                              'date_professor',
+                                              'date_tenure',
+                                              'date_retirement',
+                                              'date_last_degree',
+                                              'last_degree',
+                                              //'publication_history_refereed',
+                                              //'publication_history_books',
+                                              //'publication_history_patents',
+                                              'date_fso2',
+                                              'date_fso3',
+                                              'date_fso4'),
                                         array('user_id' => EQ($this->getId())));
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
@@ -596,9 +610,9 @@ class Person extends BackboneModel {
                 $this->dateOfRetirement = $row['date_retirement'];
                 $this->dateOfLastDegree = $row['date_last_degree'];
                 $this->lastDegree = $row['last_degree'];
-                $this->publicationHistoryRefereed = $row['publication_history_refereed'];
-                $this->publicationHistoryBooks = $row['publication_history_books'];
-                $this->publicationHistoryPatents = $row['publication_history_patents'];
+                //$this->publicationHistoryRefereed = $row['publication_history_refereed'];
+                //$this->publicationHistoryBooks = $row['publication_history_books'];
+                //$this->publicationHistoryPatents = $row['publication_history_patents'];
                 $this->dateFso2 = $row['date_fso2'];
                 $this->dateFso3 = $row['date_fso3'];
                 $this->dateFso4 = $row['date_fso4'];
@@ -627,9 +641,9 @@ class Person extends BackboneModel {
                                               'date_retirement' => $this->dateOfRetirement,
                                               'date_last_degree' => $this->dateOfLastDegree,
                                               'last_degree' => $this->lastDegree,
-                                              'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                              'publication_history_books' => $this->publicationHistoryBooks,
-                                              'publication_history_patents' => $this->publicationHistoryPatents,
+                                              //'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                              //'publication_history_books' => $this->publicationHistoryBooks,
+                                              //'publication_history_patents' => $this->publicationHistoryPatents,
                                               'date_fso2' => $this->dateFso2,
                                               'date_fso3' => $this->dateFso3,
                                               'date_fso4' => $this->dateFso4),
@@ -651,9 +665,9 @@ class Person extends BackboneModel {
                                           'date_retirement' => $this->dateOfRetirement,
                                           'date_last_degree' => $this->dateOfLastDegree,
                                           'last_degree' => $this->lastDegree,
-                                          'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                          'publication_history_books' => $this->publicationHistoryBooks,
-                                          'publication_history_patents' => $this->publicationHistoryPatents,
+                                          //'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                          //'publication_history_books' => $this->publicationHistoryBooks,
+                                          //'publication_history_patents' => $this->publicationHistoryPatents,
                                           'date_fso2' => $this->dateFso2,
                                           'date_fso3' => $this->dateFso3,
                                           'date_fso4' => $this->dateFso4),
@@ -1180,7 +1194,7 @@ class Person extends BackboneModel {
             $this->sciverseId = @$data[0]['sciverse_id'];
             $this->orcId = @$data[0]['orcid'];
             $this->publicProfile = @$data[0]['user_public_profile'];
-            $this->privateProfile = @$data[0]['user_private_profile'];
+            //$this->privateProfile = @$data[0]['user_private_profile'];
             $this->profileStartDate = @$data[0]['profile_start_date'];
             $this->profileEndDate = @$data[0]['profile_end_date'];
             $this->hqps = null;
@@ -1205,11 +1219,11 @@ class Person extends BackboneModel {
     
     function toArray(){
         global $wgUser;
-        $privateProfile = "";
+        //$privateProfile = "";
         $publicProfile = $this->getProfile(false);
-        if($wgUser->isLoggedIn()){
+        /*if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
-        }
+        }*/
         $roles = array();
         foreach($this->getRoles() as $role){
             if($role->getId() != -1){
@@ -1244,7 +1258,7 @@ class Person extends BackboneModel {
                       'researchArea' => $university['research_area'],
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
-                      'privateProfile' => $privateProfile,
+                      //'privateProfile' => $privateProfile,
                       'profile_start_date' => $this->getProfileStartDate(),
                       'profile_end_date' => $this->getProfileEndDate(),
                       'url' => $this->getUrl());
@@ -1270,7 +1284,7 @@ class Person extends BackboneModel {
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
-                                          'user_private_profile' => $this->getProfile(true),
+                                          //'user_private_profile' => $this->getProfile(true),
                                           'profile_start_date' => $this->getProfileStartDate(),
                                           'profile_end_date' => $this->getProfileEndDate()),
                                     array('user_name' => EQ($this->getName())));
@@ -1307,7 +1321,8 @@ class Person extends BackboneModel {
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
-                                          'user_private_profile' => $this->getProfile(true)),
+                                          //'user_private_profile' => $this->getProfile(true)
+                                          ),
                                     array('user_id' => EQ($this->getId())));
             if(!$wgImpersonating && !$wgDelegating){
                 DBFunctions::update('mw_user',
@@ -1848,12 +1863,12 @@ class Person extends BackboneModel {
      * @return string This Person's profile text
      */
     function getProfile($private=false){
-        if($private){
-            return $this->privateProfile;
-        }
-        else{
+        //if($private){
+        //    return $this->privateProfile;
+        //}
+        //else{
             return $this->publicProfile;
-        }
+        //}
     }
     
     /**

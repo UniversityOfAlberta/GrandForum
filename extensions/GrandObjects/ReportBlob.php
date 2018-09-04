@@ -254,14 +254,6 @@ class ReportBlob {
 		switch ($this->_type) {
 		case BLOB_ARRAY:
 		case BLOB_CSV:
-		case BLOB_OPTIONANDTEXT:
-		case BLOB_TEXTANDAPPROVE:
-		case BLOB_ARTIFACT:
-		case BLOB_PUBLICATION:
-		case BLOB_NEWMILESTONE:
-		case BLOB_MILESTONESTATUS:
-		case BLOB_CURRENTMILESTONE:
-		case BLOB_CONTRIBUTION:
 			// Unserialize.
 			$this->_data = unserialize($dbdata['data']);
 			if ($this->_data === false)
