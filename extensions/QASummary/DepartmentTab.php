@@ -201,13 +201,17 @@ class DepartmentTab extends AbstractTab {
                 if($paper->getData('peer_reviewed') == "Yes"){
                     $yearAgo = strtotime("{$paper->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
                     $yearAgo = date('Y-m-d', $yearAgo);
-                    $uni = $hqp->getUniversityDuring($yearAgo, $paper->getDate());
-                    $pos = @$uni['position'];
-                    if(in_array(strtolower($pos), Person::$studentPositions['grad'])){
-                        $gradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
-                    }
-                    else if(in_array(strtolower($pos), Person::$studentPositions['ugrad'])){
-                        $ugradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
+                    $unis = $hqp->getUniversitiesDuring($yearAgo, $paper->getDate());
+                    foreach($unis as $uni){
+                        $pos = @$uni['position'];
+                        if(in_array(strtolower($pos), Person::$studentPositions['grad'])){
+                            $gradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
+                            break;
+                        }
+                        else if(in_array(strtolower($pos), Person::$studentPositions['ugrad'])){
+                            $ugradPapers[$paper->getDate().$paper->getAcceptanceDate().$paper->getId()] = $paper;
+                            break;
+                        }
                     }
                 }
             }
