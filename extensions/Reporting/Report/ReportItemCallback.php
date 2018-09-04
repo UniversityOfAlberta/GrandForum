@@ -33,16 +33,6 @@ class ReportItemCallback {
             "hqp_end_date" => "getHqpEndDate",
             "hqp_status" => "getHqpStatus",
             "hqp_research_area" => "getHqpResearchArea",
-            // Contributions
-            "contribution_scope" => "getContributionScope",
-            "contribution_agency" => "getContributionAgency",
-            "contribution_program" => "getContributionProgram",
-            "contribution_start_date" => "getContributionStartDate",
-            "contribution_end_date" => "getContributionEndDate",
-            "contribution_yearly" => "getContributionYearly",
-            "contribution_total" => "getContributionTotal",
-            "contribution_recipients" => "getContributionRecipients",
-            "contribution_pis" => "getContributionPIs",
             // Grants
             "grant_id" => "getGrantId",
             "grant_title" => "getGrantTitle",
@@ -100,8 +90,6 @@ class ReportItemCallback {
             "user_other_count" => "getUserOtherCount",
             "user_committee_count" => "getUserCommitteeCount",
             "user_courses_count" => "getUserCoursesCount",
-            "user_contribution_count" => "getUserContributionCount",
-            "user_contribution_cash_total" => "getUserContributionCashTotal",
             "user_grant_count" => "getUserGrantCount",
             "user_cv_grant_count" => "getUserCVGrantCount",
             "user_grant_total" => "getUserGrantTotal",
@@ -334,92 +322,6 @@ class ReportItemCallback {
     function getCourseEnrollPercent(){
         $course = Course::newFromId($this->reportItem->projectId);
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
-    }
-
-    function getContributionAgency(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $partners = $contribution->getPartners();
-        $contribution_string = array();
-        foreach($partners as $partner){
-            $contribution_string[] = $partner->organization; 
-        }
-        return implode(",", $contribution_string);
-    }
-
-    function getContributionProgram(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        return $contribution->name;
-    }
-
-    function getContributionScope(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        return $contribution->scope;
-    }
-
-    function getContributionStartDate(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $array = explode(" ",$contribution->start_date);
-        return $array[0];
-    }   
-
-    function getContributionEndDate(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $array = explode(" ", $contribution->end_date);
-        return $array[0];
-    }
-
-    function getContributionYearly(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $end = new DateTime($contribution->end_date);
-        $start = new DateTime($contribution->start_date);
-        $total = $contribution->getTotal();
-        $diff = $end->diff($start);
-        if(($diff->y) != 0){
-            if(($diff->m) >6){
-                    $yearly = $total/(($diff->y)+1);
-            }
-            else{
-            $yearly = $total/(($diff->y));
-            }
-                return number_format($yearly);
-        }
-        return number_format($contribution->getTotal());
-    }   
-
-    function getContributionTotal(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        return number_format($contribution->getTotal());
-    }   
-
-    function getContributionRecipients(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $recipients = $contribution->getPeople();
-        $string_names = array();
-        foreach($recipients as $recipient){
-            if($recipient instanceof Person){
-                $string_names[] = $recipient->getNameForForms();
-            }
-            else{
-                $string_names[] = $recipient;
-            }
-        }
-        return implode(";",$string_names);
-    }  
-
-
-    function getContributionPIs(){
-        $contribution = Contribution::newFromId($this->reportItem->projectId);
-        $recipients = $contribution->getPIs();
-        $string_names = array();
-        foreach($recipients as $recipient){
-            if($recipient instanceof Person){
-                $string_names[] = $recipient->getNameForForms();
-            }
-            else{
-                $string_names[] = $recipient;
-            }
-        }
-        return implode(";",$string_names);
     }
     
     function getGrantId(){
@@ -1683,22 +1585,6 @@ class ReportItemCallback {
             }
         }
         return $count;
-    }
-    
-    function getUserContributionCount(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $contributions = $person->getContributionsBetween(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
-        return count($contributions);
-    }
-
-    function getUserContributionCashTotal(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $contributions = $person->getContributionsBetween(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
-        $total = 0;
-        foreach($contributions as $contribution){
-            $total += $contribution->getTotal();
-        }
-        return number_format($total);
     }
     
     function getUserGrantCount(){

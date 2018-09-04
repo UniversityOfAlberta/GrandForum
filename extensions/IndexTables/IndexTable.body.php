@@ -175,13 +175,9 @@ class IndexTable {
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
                     self::generateThemesTable();
                     break;
-                            case 'ALL Grants':
-                                $wgOut->setPageTitle("Grants");
-                                self::generateGrantsTable();
-                                break;
-                            case 'ALL Courses':
-                                $wgOut->setPageTitle("Courses");
-                                self::generateCoursesTable();
+                case 'ALL Courses':
+                    $wgOut->setPageTitle("Courses");
+                    self::generateCoursesTable();
                 default:
                     foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
@@ -437,70 +433,6 @@ class IndexTable {
                 $('.indexTable').dataTable().fnSort([[0,'desc']]);
             });
         </script>");
-        return true;
-    }
-
-    /*
-     * Generates the Table for the Grants
-     * Consists of the following columns
-     * Title | Co-grantees | Cash | In Kind | Total 
-     */
-    private function generateGrantsTable(){
-        global $wgUser,$wgOut;
-        if(!$wgUser->isLoggedIn()){
-            permissionError();
-        }
-        $contributions = Contribution::getAllContributions();
-        $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                    <thead><tr><th style='white-space:nowrap;'>Title</th>
-                    <th style ='white-space:nowrap;'>Year</th>
-        <th style='white-space:nowrap;'>Sponsors</th>
-        <th style='white-space:nowrap;'>PI</th>
-                    <th style='white-space:nowrap;'>Co-grantees</th>
-                    <th style='white-space:nowrap;'>Cash</th>
-                    <th style='white-space:nowrap;'>In Kind</th>
-        <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>");
-
-        foreach($contributions as $contribution){
-            $partners = $contribution->getPartners();
-            $names = array();
-            $pis = array();
-            foreach($contribution->getPeople() as $author){
-            if($author instanceof Person){
-                $url = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
-                if(!in_array($url,$names)){
-                    $names[] = $url;}
-                }
-                else{
-                    if(!in_array($author,$names)){
-                        $names[] = $author;
-                    }
-                }
-            }
-            foreach($contribution->getPIs() as $pi){
-                if($pi instanceof Person){
-                    $url = "<a href='{$pi->getUrl()}'>{$pi->getNameForForms()}</a>";
-                    if(!in_array($url,$pis)){
-                        $pis[] = $url;
-                    }
-               }
-               else{
-                    if(!in_array($pi,$pis)){
-                        $pis[] = $pi;
-                    }
-                }
-            }
-
-            $wgOut->addHTML("<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
-                <td align=center>{$contribution->getStartYear()}</td>
-                                <td align=center>{$partners[0]->getOrganization()}</td>
-                                <td>".implode("; ", $pis)."</td>
-                                <td>".implode("; ", $names)."</td>
-                                <td align=right>$".number_format($contribution->getCash())."</td>
-                                <td align=right>$".number_format($contribution->getKind())."</td>
-                                 <td align=right>$".number_format($contribution->getTotal())."</td></tr>");
-        }
-        $wgOut->addHTML("</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100, 'aaSorting':[[0,'asc'],[1,'desc']]});</script>");
         return true;
     }
         

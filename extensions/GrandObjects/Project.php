@@ -17,7 +17,6 @@ class Project extends BackboneModel {
     var $parentId;
     var $bigbet;
     var $people;
-    var $contributions;
     var $multimedia;
     var $startDates;
     var $endDates;
@@ -545,7 +544,6 @@ EOF;
                         // These are the same project id, just different evolution id.  Copy over some of the data
                         $pred->milestones = $this->milestones;
                         $pred->people = $this->people;
-                        $pred->contributions = $this->contributions;
                         $pred->multimedia = $this->multimedia;
                         $pred->startDates = $this->startDates;
                         $pred->endDates = $this->endDates;
@@ -786,48 +784,6 @@ EOF;
             }
         }
         return $people;
-    }
-    
-    // Returns the contributions this relevant to this project
-    function getContributions(){
-        if($this->contributions == null){
-            $this->contributions = array();
-            if(!$this->clear){
-                $preds = $this->getPreds();
-                foreach($preds as $pred){
-                    foreach($pred->getContributions() as $contribution){
-                        $this->contributions[$contribution->getId()] = $contribution;
-                    }
-                }
-            }
-            $sql = "SELECT id
-                    FROM(SELECT c.id, c.name, c.rev_id
-                         FROM grand_contributions c, grand_contributions_projects p
-                         WHERE p.project_id = '{$this->id}'
-                         AND p.contribution_id = c.rev_id
-                         GROUP BY c.id, c.name, c.rev_id
-                         ORDER BY c.id ASC, c.rev_id DESC) a
-                    GROUP BY id";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $contribution = Contribution::newFromId($row['id']);
-                if($contribution->belongsToProject($this)){
-                    $this->contributions[$row['id']] = $contribution;
-                }
-            }
-        }
-        return $this->contributions;
-    }
-    
-    // Returns the contributions relevant to this project during the given year
-    function getContributionsDuring($year){
-        $contribs = array();
-        foreach($this->getContributions() as $contrib){
-            if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
-                $contribs[] = $contrib;
-            }
-        }
-        return $contribs;
     }
 
     /// Returns an array with the leaders of the project.  By default, the

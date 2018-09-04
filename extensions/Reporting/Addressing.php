@@ -18,41 +18,6 @@ define('BLOB_WIKI',		3);
 define('BLOB_ARRAY',    1024);
 define('BLOB_CSV',		1025);
 
-// Structured blob: array containing "selected" and "text" keys, associated
-// with textual values.  Suitable for questions that contain a select, radio,
-// or option box along with an input or textarea element.
-define('BLOB_OPTIONANDTEXT',	1026);
-
-// Structured blob: array containing "approved" array with user casting votes
-// (1 approve, 0 reject) and "text" keys, associated with textual description.
-// Suitable for questions that contain a text blob that is supposed to be
-// approved or rejected.
-define('BLOB_TEXTANDAPPROVE',	1027);
-
-// Structured blob: array containing keys "title", "description", "primary"
-// "secondary", "tertiary" for (old-style?) artifacts.
-define('BLOB_ARTIFACT',		1028);
-
-// Structured blob: array containing keys "page-id", "not-applicable", "primary"
-// "secondary", "tertiary" for (old-style?) publication.
-define('BLOB_PUBLICATION',	1029);
-
-// Structured blob: array; keys "description", "assessment", "title", "year",
-// "month".
-define('BLOB_NEWMILESTONE',	1030);
-
-// Structured blob: array; keys "description", "assessment", "title", "year",
-// "month", "not-applicable", "status".
-define('BLOB_CURRENTMILESTONE',	1031);
-
-// Milestones as reported by leader.
-define('BLOB_MILESTONESTATUS',	1032);
-
-// Structured blob for contributions: array with keys "type", "internal",
-// "description", "source", "inkind", "cash", "primary", "secondary",
-// "tertiary"
-define('BLOB_CONTRIBUTION',	1033);
-
 
 /**
  * Binary blobs.

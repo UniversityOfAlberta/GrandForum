@@ -10,7 +10,6 @@ define('PERSON_HQP', 102);
 define('PERSON_UNIVERSITY', 104);
 define('PERSON_HOURS', 105);
 define('PERSON_PRODUCTS', 118);
-define('PERSON_CONTRIBUTIONS', 112);
 define('PERSON_SUPERVISORS', 113);
 define('PERSON_BUDGET', 114);
 define('PERSON_ALLOCATED_BUDGET', 115);
@@ -25,7 +24,6 @@ $cellTypes[PERSON_ALLOCATED_BUDGET] = "PersonAllocatedBudgetCell";
 $cellTypes[PERSON_UNIVERSITY] = "PersonUniversityCell";
 $cellTypes[PERSON_HOURS] = "PersonHoursCell";
 $cellTypes[PERSON_PRODUCTS] = "PersonProductsCell";
-$cellTypes[PERSON_CONTRIBUTIONS] = "PersonContributionsCell";
 
 //DashboardTable Structures
 define('NI_PUBLIC_PROFILE_STRUCTURE', 1);

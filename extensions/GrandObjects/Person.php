@@ -93,7 +93,6 @@ class Person extends BackboneModel {
     var $relations = array();
     var $hqps;
     var $historyHqps;
-    var $contributions;
     var $grants;
     var $multimedia;
     var $aliases = false;
@@ -2944,68 +2943,7 @@ class Person extends BackboneModel {
         //}
         return $this->relations[$type];
     }
-
-    /**
-     * Returns this Person's Contributions
-     * @return array This Person's Contributions
-     */
-    function getContributions(){
-        if($this->contributions == null){
-            $this->contributions = array();
-            $sql = "SELECT id
-                    FROM(SELECT id, name, rev_id
-                    FROM grand_contributions
-                    WHERE (users LIKE '%\"{$this->id}\"%'
-                    OR pi LIKE '%\"{$this->id}\"%')
-                    AND (access_id = '{$this->id}' OR access_id = '0')
-                    GROUP BY id, name, rev_id
-                    ORDER BY id ASC, rev_id DESC) a
-                    GROUP BY id";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $contribution = Contribution::newFromId($row['id']);
-                if($this->isReceiverOf($contribution)){
-                    $this->contributions[] = $contribution;
-                }
-            }
-        }
-        return $this->contributions;
-    }
-
-    /**
-     * Returns the Contributions this Person has made during the given year
-     * @param string $year The year of the Contribution
-     * @return array The Contribution this Person has made
-     */
-    function getContributionsDuring($year){
-        $contribs = array();
-        foreach($this->getContributions() as $contrib){
-            if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
-                $contribs[] = $contrib;
-            }
-        }
-        return $contribs;
-    }
-    
-    /**
-     * Returns the Contributions this Person has made during the given start and end dates
-     * @param string $start The start date of the Contribution
-     * @param string $end The start date of the Contribution
-     * @return array The Contribution this Person has made
-     */
-    function getContributionsBetween($start, $end){
-        $contribs = array();
-        foreach($this->getContributions() as $contrib){
-            $contribStart = $contrib->getStartDate();
-            $contribEnd = $contrib->getEndDate();
-            if(($start <= $contribStart && $end >= $contribStart) ||
-               ($start >= $contribStart && $end <= $contribEnd)){
-                $contribs[] = $contrib;
-            }
-        }
-        return $contribs;
-    }
-    
+   
     function getGrants(){
         if($this->grants == null){
             $this->grants = array();
@@ -3164,34 +3102,6 @@ class Person extends BackboneModel {
             }
         }
         return $grants;
-    }
-    
-    /**
-     * Returns an array of objects representing this user's recordings
-     * @return array An array of objects representing this user's recordings
-     */
-    function getRecordings(){
-        $data = DBFunctions::select(array('grand_recordings'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->id)));
-        $array = array();
-        foreach($data as $row){
-            $events = json_decode($row['story']);
-            $story = (object)'a';
-            $story->id = $row['id'];
-            $story->person = $row['user_id'];
-            $story->created = $row['created'];
-            $story->events = $events;
-            if(count($events) > 0){
-                foreach($events as $event){
-                    $date = @$event->date;
-                    $time = strtotime($date);
-                    $event->date = date('D, F n, Y e - h:i:s', $time);
-                }
-            }
-            $array[] = $story;
-        }
-        return $array;
     }
     
     function isCandidate(){
@@ -4155,34 +4065,6 @@ class Person extends BackboneModel {
                 }
             }
             return $im_author;
-        }
-        else{
-            return false;
-        }
-    }
-    
-    /**
-     * Returns whether or not this Person received the given Contribution
-     * @param Contribution $contribution The Contribution
-     * @return boolean Whether or not this Person received the given Contribution
-     */
-    function isReceiverOf($contribution){
-        if($contribution instanceof Contribution){
-            $con_people = $contribution->getPeople();
-            $con_people = array_merge($con_people, $contribution->getPIs()); 
-            $con_receiver = false;
-            if(is_array($con_people)){
-                foreach($con_people as $con_pers){
-                    if($con_pers instanceof Person){
-                        $con_pers = $con_pers->getId();
-                        if ( $con_pers == $this->id ){
-                            $con_receiver =  true;
-                            break;
-                        }
-                    }
-                }
-            }
-            return $con_receiver;
         }
         else{
             return false;

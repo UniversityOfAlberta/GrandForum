@@ -154,14 +154,6 @@ class ReportBlob {
 			break;
 		case BLOB_ARRAY:
 		case BLOB_CSV:
-		case BLOB_OPTIONANDTEXT:
-		case BLOB_TEXTANDAPPROVE:
-		case BLOB_ARTIFACT:
-		case BLOB_PUBLICATION:
-		case BLOB_NEWMILESTONE:
-		case BLOB_CURRENTMILESTONE:
-		case BLOB_MILESTONESTATUS:
-		case BLOB_CONTRIBUTION:
 			// Serialize.
 			$this->_data = serialize($data);
 			// Check serialization.
