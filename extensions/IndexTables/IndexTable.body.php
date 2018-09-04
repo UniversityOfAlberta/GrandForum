@@ -66,9 +66,7 @@ class IndexTable {
         }
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
-        $selected = ($wgTitle->getText() == "Products" || 
-                     $wgTitle->getText() == "Multimedia" ||
-                     $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
+        $selected = ($wgTitle->getText() == "Products") ? "selected" : "";
         $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
         $structure = Product::structure();
         $categories = array_keys($structure['categories']);
@@ -86,12 +84,6 @@ class IndexTable {
         $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
         if($wgUser->isLoggedIn()){
             //$tabs['Main']['subtabs'][] = $grantSubTab;
-        }
-        if(Material::countByCategory() > 0){
-            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
-        }
-        if($wgUser->isLoggedIn()){
-            //$tabs['Main']['subtabs'][] = $productsSubTab;
         }
         
         if($config->getValue('projectsEnabled') && Project::areThereAdminProjects()){
@@ -132,9 +124,6 @@ class IndexTable {
             $text = $title->getText();
             switch ($title->getText()) {
                 case 'ALL '.HQP:
-                case 'Multimedia':
-                    $result = $me->isLoggedIn();
-                    break;
                 case 'Forms':
                     $result = $me->isRoleAtLeast(MANAGER);
                     break;
@@ -164,10 +153,6 @@ class IndexTable {
                 });
             </script>");
             switch ($wgTitle->getText()) {
-                case 'Multimedia':
-                    $wgOut->setPageTitle("Multimedia");
-                    self::generateMaterialsTable();
-                    break;
                 case 'Forms':
                     if($me->isRoleAtLeast(MANAGER)){
                         $wgOut->setPageTitle("Forms");
@@ -296,12 +281,8 @@ class IndexTable {
     private function generateAdminTable(){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
-        $activityPlans = "";
-        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
-            $activityPlans = "<th>Activity Plans</th>";
-        }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>");
+                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th></tr></thead><tbody>");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
             if($project->getType() == 'Administrative'){
@@ -314,42 +295,6 @@ class IndexTable {
                 $wgOut->addHTML("<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>");
                 $wgOut->addHTML("<td>{$project->getFullName()}</td>");
                 $wgOut->addHTML("<td>{$leaderString}</td>");
-                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
-                    $wgOut->addHTML("<td>");
-                    $projs = array();
-                    $projects = array();
-                    foreach($me->leadership() as $p){
-                        $projects[$p->getName()] = $p;
-                    }
-                    foreach($me->getThemeProjects() as $p){
-                        $projects[$p->getName()] = $p;
-                    }
-                    foreach($projects as $proj){
-                        if($proj->getType() != 'Administrative'){
-                            $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
-                        }
-                    }
-                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
-                        $report = "";
-                        switch($project->getName()){
-                            case "CC1 K-MOB":
-                                $report = "CC1Leader";
-                                break;
-                            case "CC2 TECH-TRANS":
-                                $report = "CC2Leader";
-                                break;
-                            case "CC3 T-WORK":
-                                $report = "CC3Leader";
-                                break;
-                            case "CC4 TRAIN":
-                                $report = "CC4Leader";
-                                break;
-                        }
-                        $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report}&project={$project->getName()}'>Feedback</a>";
-                    }
-                    $wgOut->addHTML(implode(", ", $projs));
-                    $wgOut->addHTML("</td>");
-                }
                 $wgOut->addHTML("</tr>");
             }
         }
@@ -459,40 +404,6 @@ class IndexTable {
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>");
 
-        return true;
-    }
-
-    function generateMaterialsTable(){
-        global $wgServer, $wgScriptPath, $wgOut;
-        $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>");
-        $materials = Material::getAllMaterials();
-        foreach($materials as $material){
-            $wgOut->addHTML("<tr><td>{$material->getDate()}</td><td><a href='{$material->getUrl()}'>{$material->getTitle()}</a></td><td>{$material->getHumanReadableType()}</td>");
-            $projs = array();
-            foreach($material->getProjects() as $project){
-                $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-            $personLinks = array();
-            foreach($material->getPeople() as $person){
-                if($person->getType() != ""){
-                    $personLinks[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
-                }
-                else{
-                    $personLinks[] = "{$person->getName()}";
-                }
-            }
-            $wgOut->addHTML("<td>".implode("; ", $personLinks)."</td>");
-            $wgOut->addHTML("<td>".implode(", ", $projs)."</td>");
-            $wgOut->addHTML("</tr>");
-        }
-        $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>
-            $(document).ready(function(){
-                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-                $('.indexTable').dataTable().fnSort([[0,'desc']]);
-            });
-        </script>");
         return true;
     }
 

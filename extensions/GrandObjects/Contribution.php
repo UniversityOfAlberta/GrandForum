@@ -213,12 +213,6 @@ class Contribution {
 	                break;
 	            }
 	        }
-	        foreach($contribution->getProjects() as $project){
-	            if($me->leadershipOf($project)){
-	                $isMe = true;
-	                break;
-	            }
-	        }
 	        if($isMe){
 	            $contributions[] = array("id" => $row['id'], "name" => $row['name']);
 	        }

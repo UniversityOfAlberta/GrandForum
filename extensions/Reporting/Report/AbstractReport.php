@@ -607,36 +607,6 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
-                        else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
-                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
-                            if(count($project_objs) > 0){
-                                foreach($project_objs as $project){
-                                    if(!$project->isSubProject() && $project->getId() == $this->project->getId()){
-                                        $rResult = true;
-                                    }
-                                }
-                            }
-                        }
-                        else if($this->project != null && ($perm['perm']['role'] == "SUB-PL")){
-                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
-                            if(count($project_objs) > 0){
-                                foreach($project_objs as $project){
-                                    if($project->isSubProject() && $project->getId() == $this->project->getId()){
-                                        $rResult = true;
-                                    }
-                                }
-                            }
-                        }
-                        else if($this->project != null && ($perm['perm']['role'] == TC || $perm['perm']['role'] == TL)){
-                            $project_objs = $me->getThemeProjects();
-                            if(count($project_objs) > 0){
-                                foreach($project_objs as $project){
-                                    if($project->getId() == $this->project->getId()){
-                                        $rResult = true;
-                                    }
-                                }
-                            }
-                        }
                         else{
                             if(strstr($perm['perm']['role'], "+") !== false){
                                 $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
@@ -1093,22 +1063,6 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
-        
-        if(!$pageAllowed){
-            $leadership = $realPerson->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-            if(count($leadership) > 0){
-                foreach($leadership as $proj){
-                    if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) &&
-                       $person->isMemberOfDuring($proj, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-                        if("$ns:$title" == "Special:Report" &&
-                           @$_GET['report'] == "NIReport" &&
-                           @$_GET['project'] == $proj->getName()){
-                            $pageAllowed = true;
-                        }
-                    }
-                }
-            }
-        }
         return true;
     }
     
@@ -1139,20 +1093,6 @@ abstract class AbstractReport extends SpecialPage {
                     // I should be able to read any pdf which was created by my hqp (for that year)
                     $result = true;
                     return true;
-                }
-            }
-        }
-        else if($pdf->getType() == RPTP_LEADER ||
-                $pdf->getType() == RPTP_LEADER_COMMENTS ||
-                $pdf->getType() == RPTP_LEADER_MILESTONES){
-            if($pdf->getProjectId() != ""){
-                $leads = $me->leadershipDuring($start, $end);
-                foreach($leads as $project){
-                    if($project->getId() == $pdf->getProjectId()){
-                        // I should be able to read any pdf for a Project that I was a project leader to (for that year)
-                        $result = true;
-                        return true;
-                    }
                 }
             }
         }

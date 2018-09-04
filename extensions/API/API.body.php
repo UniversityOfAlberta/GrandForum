@@ -124,38 +124,12 @@ class APIRequest{
         //POST
         $this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
         $this->addAction('User Accounts', 'addUserRequest', 'RequestUserAPI');
-        $this->addAction('User Accounts', 'addProjectLeader', 'AddProjectLeaderAPI');
-        $this->addAction('User Accounts', 'addThemeLeader', 'AddThemeLeaderAPI');
         $this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
         $this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
         $this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
-        $this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
-        $this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
         $this->addAction('User Accounts', 'updateGoogleScholarCitations', 'UpdateGoogleScholarCitationsAPI');
 
-        //POST
-        $this->addAction('Contributions', 'addContribution', 'AddContributionAPI');
-        $this->addAction('Contributions', 'updateContribution', 'AddContributionAPI');
-
-        //POST
-        $this->addAction('Projects', 'createProject', 'CreateProjectAPI');
-        $this->addAction('Projects', 'addProjectMember', 'AddProjectMemberAPI');
-        $this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');
-        $this->addAction('Projects', 'addProjectJoinRequest', 'ProjectJoinRequestAPI');
-        $this->addAction('Projects', 'updateProjectAcronym', 'UpdateProjectAcronymAPI');
-        $this->addAction('Projects', 'updateProjectDescription', 'ProjectDescriptionAPI');
-        $this->addAction('Projects', 'updateProjectChallenge', 'ProjectChallengeAPI');
-        $this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
-        $this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
-        $this->addAction('Projects', 'deleteProjectMember', 'DeleteProjectMemberAPI');
-        $this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
-        //GET
-        $this->addAction('Themes', 'getThemeInfo', 'ThemeInfoAPI');
-
-        // HIDDENS
-        $this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
-        $this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
     }
 }
 

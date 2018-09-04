@@ -27,8 +27,8 @@ autoload_register('GrandObjects/API/Journal');
 global $apiRequest;
 // Person
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
-$apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
-$apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
+//$apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
+//$apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/universities', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/roles', 'PersonRolesAPI');
@@ -48,13 +48,13 @@ $apiRequest->addAction('Hidden','people/:role/:university/:department/simple', '
 $apiRequest->addAction('Hidden','role', 'RoleAPI');
 $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');
 // Project
-$apiRequest->addAction('Hidden','project', 'ProjectAPI');
-$apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
-$apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');
-$apiRequest->addAction('Hidden','project/:id/members/:role', 'ProjectMembersAPI');
+//$apiRequest->addAction('Hidden','project', 'ProjectAPI');
+//$apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
+//$apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');
+//$apiRequest->addAction('Hidden','project/:id/members/:role', 'ProjectMembersAPI');
 
-$apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
-$apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
+//$apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
+//$apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
 // Product
 $apiRequest->addAction('Hidden','product', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand', 'ProductAPI');
@@ -62,8 +62,8 @@ $apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:cou
 $apiRequest->addAction('Hidden','product/:id', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductAPI');
-$apiRequest->addAction('Hidden','product/:id/projects', 'ProjectProductAPI');
-$apiRequest->addAction('Hidden','product/:id/projects/:personId', 'ProjectProductAPI');
+//$apiRequest->addAction('Hidden','product/:id/projects', 'ProjectProductAPI');
+//$apiRequest->addAction('Hidden','product/:id/projects/:personId', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', 'ProductDuplicatesAPI');
 $apiRequest->addAction('Hidden','productHistories/:id', 'ProductHistoriesAPI');
 $apiRequest->addAction('Hidden','productHistories/person/:personId', 'ProductHistoriesAPI');
@@ -103,7 +103,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Link.js?".filemtime("extensions/GrandObjects/BackboneModels/Link.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js?".filemtime("extensions/GrandObjects/BackboneModels/Person.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js?".filemtime("extensions/GrandObjects/BackboneModels/Role.js")."'></script>\n";
-	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
+	//echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Grant.js?".filemtime("extensions/GrandObjects/BackboneModels/Grant.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GrantAward.js?".filemtime("extensions/GrandObjects/BackboneModels/GrantAward.js")."'></script>\n";

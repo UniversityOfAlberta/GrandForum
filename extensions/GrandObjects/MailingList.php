@@ -196,20 +196,6 @@ class MailingList extends BackboneModel {
                                 }
                             }
                         }
-                        else if($value == PL && $person->isProjectLeader()){
-                            $leadership = $person->leadership();
-                            foreach($leadership as $proj){
-                                if(count($phaseRules) > 0){
-                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
-                                }
-                                else{
-                                    $roleResult = ($roleResult || true);
-                                }
-                            }
-                        }
-                        else if($value == TL && $person->isThemeLeader()){
-                            $roleResult = ($roleResult || true);
-                        }
                         else if($value == EVALUATOR && $person->isEvaluator()){
                             $roleResult = ($roleResult || true);
                         }

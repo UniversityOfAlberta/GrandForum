@@ -5,12 +5,10 @@ ManagePeopleRowView = Backbone.View.extend({
     row: null,
     // Views
     editRoles: null,
-    editProjects: null,
     editRelations: null,
     editUniversities: null,
     // Dialogs
     rolesDialog: null,
-    projectsDialog: null,
     relationsDialog: null,
     universitiesDialog: null,
     template: _.template($('#manage_people_row_template').html()),
@@ -60,48 +58,6 @@ ManagePeopleRowView = Backbone.View.extend({
                 },
                     "Cancel": $.proxy(function(){
                         this.rolesDialog.dialog('close');
-                    }, this)
-                }
-            });
-        }
-    },
-    
-    initializeProjectsDialog: function(){
-        if(this.projectsDialog){
-            this.projectsDialog = this.$("#projectsDialog").dialog({
-                autoOpen: false,
-                modal: true,
-                show: 'fade',
-                resizable: false,
-                draggable: false,
-                width: 'auto',
-                position: {
-                    my: "center bottom",
-                    at: "center center"
-                },
-                open: function(){
-                    $("html").css("overflow", "hidden");
-                },
-                beforeClose: $.proxy(function(){
-                    $("html").css("overflow", "auto");
-                    this.editProjects.stopListening();
-                    this.editProjects.undelegateEvents();
-                }, this),
-                buttons: {
-                    "+": { 
-                        text: "Add Project", 
-                        click: $.proxy(function(e){
-                            this.editProjects.addProject();
-                        }, this),
-                        disabled: (allowedProjects.length == 0),
-                        style: "position:absolute;left:0;"
-                    },
-                    "Save": $.proxy(function(e){
-                        this.editProjects.saveAll();
-                        this.projectsDialog.dialog('close');
-                    }, this),
-                    "Cancel": $.proxy(function(){
-                        this.projectsDialog.dialog('close');
                     }, this)
                 }
             });
@@ -200,15 +156,6 @@ ManagePeopleRowView = Backbone.View.extend({
                                                         el: this.rolesDialog});
     },
     
-    openProjectsDialog: function(){
-        this.initializeProjectsDialog();
-        this.projectsDialog.empty();
-        this.projectsDialog.dialog('open');
-        this.editProjects = new ManagePeopleEditProjectsView({model: this.model.projects, 
-                                                              person:this.model, 
-                                                              el: this.projectsDialog});
-    },
-    
     openRelationsDialog: function(){
         this.initializeRelationsDialog();
         this.relationsDialog.empty();
@@ -229,7 +176,6 @@ ManagePeopleRowView = Backbone.View.extend({
     
     events: {
         "click #editRoles": "openRolesDialog",
-        "click #editProjects": "openProjectsDialog",
         "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog"
     },

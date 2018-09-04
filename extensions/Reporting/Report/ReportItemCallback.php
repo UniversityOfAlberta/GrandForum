@@ -648,24 +648,6 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         $roles = $this->getUserRoles();
-        if($project != null && $project->getId() != 0){
-            if($person->leadershipOf($project)){
-                if($roles != ""){
-                    $roles .= ", PL";
-                }
-                else{
-                    $roles .= "PL";
-                }
-            }
-        }
-        else if($person->isProjectLeader()){
-            if($roles != ""){
-                $roles .= ", PL";
-            }
-            else{
-                $roles .= "PL";
-            }
-        }
         return $roles;
     }
     

@@ -16,41 +16,6 @@ class GrandAccess {
 	    foreach($oldRights as $right){
 	        $aRights[$i++] = $right;
 	    }
-	    if($config->getValue('projectsEnabled') && count($me->getProjects()) > 0){
-	        foreach($me->getProjects() as $project){
-	            $aRights[$i++] = $project->getName();
-	        }
-	        if($me->isThemeLeader() || $me->isThemeCoordinator()){
-	            $aRights[$i++] = TL;
-	            $aRights[$i++] = TC;
-	        }
-	        foreach(array_merge($me->getLeadThemes(), $me->getCoordThemes()) as $theme){
-	            $aRights[$i++] = $theme->getAcronym();
-	        }
-	        foreach($me->getThemeProjects() as $project){
-	            $aRights[$i++] = $project->getName();
-	        }
-	        if($me->isRoleAtLeast(STAFF)){
-	            $aRights[$i++] = PL;
-	            $aRights[$i++] = TL;
-	            $aRights[$i++] = TC;
-	        }
-	        $leadership = $me->leadership();
-	        if(count($leadership) > 0){
-	            $aRights[$i++] = "Leadership";
-	            $aRights[$i++] = "Leadership+";
-	            if($me->isProjectLeader()){
-	                $aRights[$i++] = PL;
-	                $aRights[$i++] = PL.'+';
-	            }
-	            foreach($leadership as $lead){
-	                if($lead->isSubProject()){
-	                    $aRights[$i++] = "SUB-PL";
-	                    break;
-	                }
-	            }
-	        }
-	    }
 	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	    }
@@ -68,9 +33,6 @@ class GrandAccess {
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
 	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Leadership+', $aRights) === false){
-	                $aRights[$i++] = 'Leadership+';
-	            }
 	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
 	                $aRights[$i++] = 'Evaluator+';
 	            }

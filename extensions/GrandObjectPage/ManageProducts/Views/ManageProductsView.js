@@ -2,13 +2,8 @@ ManageProductsView = Backbone.View.extend({
 
     category: null,
     onlyRecent: true,
-    allProjects: null,
-    otherProjects: null,
-    oldProjects: null,
     products: null,
-    projects: null,
     table: null,
-    nProjects: 0,
     subViews: new Array(),
     editDialog: null,
     deleteDialog: null,
@@ -19,32 +14,16 @@ ManageProductsView = Backbone.View.extend({
 
     initialize: function(options){
         this.subViews = new Array();
-        this.allProjects = new Projects();
-        this.allProjects.fetch();
         if(options.category != undefined){
             this.category = options.category;
         }
         this.template = _.template($('#manage_products_template').html());
-        me.getProjects();
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
             this.listenTo(this.products, "remove", this.addRows);
             this.listenToOnce(this.products, "sync", $.proxy(function(){
-                me.projects.ready().then($.proxy(function(){
-                    this.projects = me.projects.getCurrent();
-                    return this.projects.ready();
-                }, this)).then($.proxy(function(){
-                    return this.allProjects.ready();
-                }. this)).then($.proxy(function(){
-                    this.otherProjects = new Projects(this.allProjects.getCurrent().where({status: 'Active'}));
-                    this.oldProjects = this.allProjects.getOld();
-                    this.otherProjects.remove(this.projects.models);
-                    this.oldProjects.remove(this.projects.models);
-                    return me.projects.ready();
-                }, this)).then($.proxy(function(){
-                    this.render();
-                }, this));              
+                this.render();
             }, this));
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
@@ -142,28 +121,12 @@ ManageProductsView = Backbone.View.extend({
             this.$("#deletePrivate").prop("disabled", false);
             this.$("#releasePrivate").prop("disabled", false);
         }
-        
-        // Change the state of the 'selectAll' checkbox
-        this.projects.each(function(project){
-            var allFound = true;
-            products.each(function(product){
-                if(allFound && _.where(product.get('projects'), {id: project.get('id')}).length == 0){
-                    allFound = false;
-                }
-            }, this);
-            if(allFound){
-                this.$("input.selectAll[data-project=" + project.get('id') + "]").prop('checked', true);
-            }
-            else{
-                this.$("input.selectAll[data-project=" + project.get('id') + "]").prop('checked', false);
-            }
-        }, this);
     },
     
     addRows: function(){
         var searchStr = "";
-        var order = [[this.projects.length + 4, 'desc'], // Date
-                     [this.projects.length + 3, 'desc']]; // Acceptance Date
+        var order = [[4, 'desc'], // Date
+                     [3, 'desc']]; // Acceptance Date
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
@@ -226,7 +189,7 @@ ManageProductsView = Backbone.View.extend({
                                                      'autoWidth': false,
                                                      'fixedHeader': true,
                                                      'aoColumnDefs': [
-                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 1) }
+                                                        {'bSortable': false, 'aTargets': _.range(0, 1) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.cacheRows();
@@ -247,23 +210,6 @@ ManageProductsView = Backbone.View.extend({
 	        }
 	        this.$("#showOnly select").append(el);
 	    }, this));
-    },
-    
-    toggleSelect: function(e){
-        var wrapper = this.$('#listTable_wrapper').detach();
-        var target = $(e.currentTarget);
-        var projectId = target.attr('data-project');
-        var checked = target.is(":checked");
-        _.each(this.subViews, function(view){
-            if(checked){
-                view.select(projectId);
-            }
-            else{
-                view.unselect(projectId);
-            }
-        });
-        wrapper.appendTo("#currentView");
-        this.productChanged();
     },
     
     deletePrivate: function(){
@@ -448,7 +394,6 @@ ManageProductsView = Backbone.View.extend({
     },
     
     events: {
-        "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
         "click #deletePrivate": "deletePrivate",
         "click #releasePrivate": "releasePrivate",

@@ -10,8 +10,6 @@ class Person extends BackboneModel {
     static $cache = array();
     static $rolesCache = array();
     static $universityCache = array();
-    static $leaderCache = array();
-    static $themeLeaderCache = array();
     static $aliasCache = array();
     static $authorshipCache = array();
     static $employeeIdCache = array();
@@ -87,7 +85,6 @@ class Person extends BackboneModel {
     var $university;
     var $salary;
     var $universityDuring;
-    var $isProjectLeader;
     var $groups;
     var $roles;
     var $rolesDuring;
@@ -101,9 +98,6 @@ class Person extends BackboneModel {
     var $multimedia;
     var $aliases = false;
     var $roleHistory;
-    var $leadershipCache = array();
-    var $themesCache = array();
-    var $coordCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
@@ -499,47 +493,6 @@ class Person extends BackboneModel {
                     }
                 }
                 Cache::store("rolesCache", self::$rolesCache);
-            }
-        }
-    }
-    
-    /**
-     * Caches the resultset of the leaders
-     */
-    static function generateLeaderCache(){
-        if(count(self::$leaderCache) == 0){
-            $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
-                    FROM grand_project_leaders l, grand_project p, grand_project_status s
-                    WHERE l.type = 'leader'
-                    AND p.id = l.project_id
-                    AND p.id = s.project_id
-                    AND (l.end_date = '0000-00-00 00:00:00'
-                         OR l.end_date > CURRENT_TIMESTAMP)
-                    GROUP BY s.project_id, l.user_id";
-            $data = DBFunctions::execSQL($sql);
-            self::$leaderCache[-1][] = array();
-            foreach($data as $row){
-                self::$leaderCache[$row['user_id']][] = $row;
-            }
-        }
-    }
-    
-    /**
-     * Caches the resultset of the theme leaders
-     */
-    static function generateThemeLeaderCache(){
-        if(count(self::$themeLeaderCache) == 0){
-            $sql = "SELECT *
-                    FROM grand_theme_leaders
-                    WHERE co_lead = 'False'
-                    AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)";
-            $data = DBFunctions::execSQL($sql);
-            self::$themeLeaderCache[TL] = array();
-            self::$themeLeaderCache[TC] = array();
-            foreach($data as $row){
-                $type = ($row['coordinator'] == 'True') ? TC : TL;
-                self::$themeLeaderCache[$type][$row['user_id']][] = $row;
             }
         }
     }
@@ -1048,27 +1001,6 @@ class Person extends BackboneModel {
                     $people[strtolower($person->getName())] = $person;
                 }
             }
-            if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
-                self::generateThemeLeaderCache();
-                self::generateLeaderCache();
-                if(isset(self::$themeLeaderCache[$filter][$row]) ||
-                   (($filter == PL || $filter == APL) && isset(self::$leaderCache[$row]))){
-                    $person = Person::newFromId($row);
-                    if($filter == APL && !$person->isRole(APL)){
-                        continue;
-                    }
-                    if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                            if($idOnly){
-                                $people[] = $row;
-                            }
-                            else{
-                                $people[strtolower($person->getName())] = $person;
-                            }
-                        }
-                    }
-                }
-            }
             if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
                 if($filter != null && $filter != "all"){
                     $found = false;
@@ -1549,56 +1481,6 @@ class Person extends BackboneModel {
         $interval = $joined->diff($now);
         $diff = $interval->format('%m');
         return $diff;
-    }
-    
-    /**
-     * Returns whether or not this Person is theme leader
-     * @return boolean Whether or not this Person is a theme leader
-     */
-    function isThemeLeader(){
-        self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TL][$this->id]));
-    }
-    
-    /**
-     * Returns whether or not this Person is a theme coodinator
-     * @return boolean Whether or not this Person is a theme coodinator
-     */
-    function isThemeCoordinator(){
-        self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TC][$this->id]));
-    }
-    
-    /**
-     * Returns whether or not this Person is a theme leader of the given Project
-     * @param Project $project The Project to check
-     * @return boolean Whether or not this Person is a theme leader of the given Project
-     */
-    function isThemeLeaderOf($project){
-        $themes = $this->getLeadThemes();
-        $challenge = $project->getChallenge();
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a theme coodinator of the given Project
-     * @param Project $project The Project to check
-     * @return boolean Whether or not this Person is a theme coordinator of the given Project
-     */
-    function isThemeCoordinatorOf($project){
-        $themes = $this->getCoordThemes();
-        $challenge = $project->getChallenge();
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
-            }
-        }
-        return false;
     }
     
     /**
@@ -2403,21 +2285,8 @@ class Person extends BackboneModel {
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
-        if($this->isProjectLeader()){
-            $roleNames[] = "PL";
-        }
-        if($this->isThemeLeader()){
-            $roleNames[] = TL;
-        }
-        if($this->isThemeCoordinator()){
-            $roleNames[] = TC;
-        }
         foreach($roleNames as $key => $role){
             if($role == INACTIVE){
-                if($this->isProjectLeader()){
-                    unset($roleNames[$key]);
-                    continue;
-                }
                 $lastRole = $this->getLastRole();
                 if($lastRole != null){
                     $roleNames[$key] = "Inactive-".$lastRole->getRole();
@@ -2508,14 +2377,11 @@ class Person extends BackboneModel {
         if($year == null){
             $year = date('Y');
         }
-        if($this->isRole(NI) && !$this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+        if($this->isRole(NI) && !$this->isFundedOn($project, $year)){
             return AR;
         }
-        else if($this->isRole(NI) && $this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+        else if($this->isRole(NI) && $this->isFundedOn($project, $year)){
             return CI;
-        }
-        else if($this->leadershipOf($project)){
-            return PL;
         }
         else if($this->isRole(HQP)){
             return HQP;
@@ -2732,16 +2598,6 @@ class Person extends BackboneModel {
         }
         $projects = array();
         foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->getThemeProjects() as $project){
             if(!$project->isSubProject()){
                 $projects[$project->getId()] = $project->getName();
             }
@@ -3311,25 +3167,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the Multimedia this Person has made
-     * @return array the Multimedia this Person has made
-     */
-    function getMultimedia(){
-        if($this->multimedia == null){
-            $this->multimedia = array();
-            $sql = "SELECT m.id
-                    FROM `grand_materials` m, `grand_materials_people` p
-                    WHERE p.user_id = '{$this->id}'
-                    AND p.material_id = m.id";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->multimedia[] = Material::newFromId($row['id']);
-            }
-        }
-        return $this->multimedia;
-    }
-    
-    /**
      * Returns an array of objects representing this user's recordings
      * @return array An array of objects representing this user's recordings
      */
@@ -3412,22 +3249,6 @@ class Person extends BackboneModel {
             return ($this->isRole(AR, $project) || 
                     $this->isRole(CI, $project));
         }
-        if($role == PL || $role == 'PL'){
-            return $this->isProjectLeader();
-        }
-        if($role == APL){
-            $leadership = $this->leadership(false, true, 'Administrative');
-            if(count($leadership) > 0){
-                return true;
-            }
-            return false;
-        }
-        if($role == TL || $role == 'TL'){
-            return $this->isThemeLeader();
-        }
-        if($role == TC || $role == 'TC'){
-            return $this->isThemeCoordinator();
-        }
         if($role == EVALUATOR){
             return $this->isEvaluator();
         }
@@ -3435,19 +3256,7 @@ class Person extends BackboneModel {
         $role_objs = $this->getRoles();
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $skip = false;
-                if($project != null && count($r->getProjects()) > 0){
-                    $skip = true;
-                    foreach($r->getProjects() as $p){
-                        if($p->getId() == $project->getId()){
-                            $skip = false;
-                            break;
-                        }
-                    }
-                }
-                if(!$skip){
-                    $roles[] = $r->getRole();
-                }
+                $roles[] = $r->getRole();
             }
         }
         else{
@@ -3475,27 +3284,9 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL || $role == "PL"){
-            $project_objs = $this->leadershipOn($date);
-            if(count($project_objs) > 0){
-                $roles[] = "PL";
-            }
-        }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $skip = false;
-                if($project != null && count($r->getProjects()) > 0){
-                    $skip = true;
-                    foreach($r->getProjects() as $p){
-                        if($p->getId() == $project->getId()){
-                            $skip = false;
-                            break;
-                        }
-                    }
-                }
-                if(!$skip){
-                    $roles[] = $r->getRole();
-                }
+                $roles[] = $r->getRole();
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){
@@ -3527,27 +3318,9 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL || $role == "PL"){
-            $project_objs = $this->leadershipDuring($startRange, $endRange);
-            if(count($project_objs) > 0){
-                $roles[] = "PL";
-            }
-        }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $skip = false;
-                if($project != null && count($r->getProjects()) > 0){
-                    $skip = true;
-                    foreach($r->getProjects() as $p){
-                        if($p->getId() == $project->getId()){
-                            $skip = false;
-                            break;
-                        }
-                    }
-                }
-                if(!$skip){
-                    $roles[] = $r->getRole();
-                }
+                $roles[] = $r->getRole();
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){
@@ -3588,11 +3361,6 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeaderDuring($startRange, $endRange)){
-                return true;
-            }
-        }
         return false;
     }
     
@@ -3614,23 +3382,6 @@ class Person extends BackboneModel {
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
-                    return true;
-                }
-            }
-        }
-        if($config->getValue('projectsEnabled')){
-            if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-                if($this->isProjectLeader()){
-                    return true;
-                }
-            }
-            if($wgRoleValues[TL] >= $wgRoleValues[$role]){
-                if($this->isThemeLeader()){
-                    return true;
-                }
-            }
-            if($wgRoleValues[TC] >= $wgRoleValues[$role]){
-                if($this->isThemeCoordinator()){
                     return true;
                 }
             }
@@ -3657,14 +3408,6 @@ class Person extends BackboneModel {
                 return true;
             }
         }
-        if($config->getValue('projectsEnabled')){
-            if($wgRoleValues[PL] <= $wgRoleValues[$role]){
-                if($this->isProjectLeader()){
-                    return true;
-                }
-            }
-        }
-        
         return false;
     }
     
@@ -4230,305 +3973,7 @@ class Person extends BackboneModel {
         }
         return $year;
     }
-    
-    /**
-     * Returns the date that this person became leader of the given Project
-     * @param Project $project The Project that this person is/was a leader of
-     * @return string The date that this person became a leader
-     */
-    function getLeaderStartDate($project){
-        $dates = $this->getLeaderDates($project, 'leader');
-        return $dates['start_date'];
-    }
-    
-    /**
-     * Returns the date that this person stopped being leader of the given Project
-     * @param Project $project The Project that this person is/was a leader of
-     * @return string The date that this person stopped being a leader
-     */
-    function getLeaderEndDate($project){
-        $dates = $this->getLeaderDates($project, 'leader');
-        return $dates['end_date'];
-    }
-    
-    /**
-     * Returns an array containing both the start and end dates that this Person
-     * was leader/co-leader of the given project
-     * @param Project $project The Project that this person is/was a leader of
-     * @param string $lead Whether to look for 'leader' or 'co-leader'
-     * @return array An array containing both the start and end 
-     */
-    private function getLeaderDates($project, $lead='leader'){
-        foreach($project->getAllPreds() as $pred){
-            $projectIds[] = $pred->getId();
-        }
-        $sql = "SELECT start_date, end_date
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.project_id = p.id
-                AND p.id IN (".implode(",", $projectIds).")
-                AND l.user_id = '{$this->id}'
-                AND l.type = '$lead'";
-        $data = DBFunctions::execSQL($sql);
-        $date = "";
-        if(count($data) > 0){
-            return $data[0];
-        }
-        return array('start_date' => '0000-00-00 00:00:00',
-                     'end_date'   => '0000-00-00 00:00:00');
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a leader or co-leader of
-     * @param boolean $history Whether or not to include the entire leadership history
-     * @param boolean $idsOnly Whether or not to just return the ids of the Projects
-     * @param string $type The type of Project (ie. 'Administrative', 'Research')
-     * @return array The array of Projects
-     */
-    function leadership($history=false, $idsOnly=false, $type='') {
-        $ret = array();
-        $res = array();
-        if(!$history){
-            self::generateLeaderCache();
-            if(isset(self::$leaderCache[$this->getId()])){
-                $res = self::$leaderCache[$this->getId()];
-            }
-        }
-        else{
-            if(isset($this->leadershipCache['history'])){
-                return $this->leadershipCache['history'];
-            }
-            $res = DBFunctions::execSQL("SELECT id
-                                         FROM grand_project_leaders l, grand_project p
-                                         WHERE l.project_id = p.id
-                                         AND l.user_id = '{$this->id}'");
-        }
-        foreach ($res as &$row) {
-            if($idsOnly){
-                if($type == '' || !isset($row['type']) || $type == $row['type']){
-                    $ret[] = $row['id'];
-                }
-            }
-            else{
-                if($type == '' || !isset($row['type']) || $type == $row['type']){
-                    $project = Project::newFromId($row['id']);
-                    if($project != null && $project->getName() != "" && !$project->isDeleted()){
-                        $ret[] = $project;
-                    }
-                }
-            }
-        }
-        if($history){
-            $this->leadershipCache['history'] = $ret;
-        }
-        return $ret;
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a leader of between the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return The Projects that this Person is a leader of
-     */
-    function leadershipDuring($startRange, $endRange){
-        if(isset($this->leadershipCache[$startRange.$endRange])){
-            return $this->leadershipCache[$startRange.$endRange];
-        }
-        
-        $sql = "SELECT DISTINCT project_id
-                FROM grand_project_leaders
-                WHERE user_id = '{$this->id}'
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if($project != null && 
-               ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $startRange)))){
-                $projects[] = $project;
-            }
-        }
-        $this->leadershipCache[$startRange.$endRange] = $projects;
-        return $projects;
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a leader of on the given date
-     * @param string $date The date this Person was a leader of
-     * @return The Projects that this Person is a leader of
-     */
-    function leadershipOn($date){
-        if(isset($this->leadershipCache[$date])){
-            return $this->leadershipCache[$date];
-        }
-        
-        $sql = "SELECT DISTINCT project_id
-                FROM grand_project_leaders
-                WHERE user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date ) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if($project != null && 
-               ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $date)))){
-                $projects[] = $project;
-            }
-        }
-        $this->leadershipCache[$date] = $projects;
-        return $projects;
-    } 
-    
-    /**
-     * Returns whether or not this Person is a leader of a given Project
-     * @param mixed $project The Project object (or name)
-     * @param string $type The type of leadership (depricated)
-     * @return boolean Whether or not this Person is a leader of a given Project
-     */
-    function leadershipOf($project, $type=null) {
-        if($project instanceof Project){
-            $p = $project;
-        }
-        else{
-            $p = Project::newFromHistoricName($project);
-        }
-        if($p == null || $p->getName() == ""){
-            return false;
-        }
-        $extra = "";
-        if($type != null){
-            $extra = "AND l.type = '$type'";
-        }
-        $data = DBFunctions::execSQL("SELECT 1
-                                     FROM grand_project_leaders l, grand_project p 
-                                     WHERE l.project_id = p.id
-                                     AND l.user_id = '{$this->id}'
-                                     AND p.name = '{$p->getName()}'
-                                     AND (l.end_date = '0000-00-00 00:00:00'
-                                          OR l.end_date > CURRENT_TIMESTAMP)
-                                     $extra");
        
-        if(DBFunctions::getNRows() > 0){
-            return true;
-        }
-        if(!$p->clear){
-            foreach($p->getPreds() as $pred){
-                if($this->leadershipOf($pred, $type)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a leader of at least one Project
-     * @return boolean Whether or not this Person is a leader
-     */
-    function isProjectLeader(){
-        if($this->isProjectLeader != null){
-            return $this->isProjectLeader;
-        }
-        self::generateLeaderCache();
-        if(isset(self::$leaderCache[$this->id])){
-            $this->isProjectLeader = true;
-        }
-        else{
-            $this->isProjectLeader = false;
-        }
-        return $this->isProjectLeader;
-    }
-    
-    /**
-     * Returns whether or not this Person was a leader between the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return boolean Whether or not this Person was a leader
-     */
-    function isProjectLeaderDuring($startRange, $endRange){
-        $sql = "SELECT p.id
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.type = 'leader'
-                AND p.id = l.project_id
-                AND l.user_id = '{$this->id}' 
-                AND ( 
-                ( (l.end_date != '0000-00-00 00:00:00') AND
-                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
-                OR
-                ( (l.end_date = '0000-00-00 00:00:00') AND
-                ((l.start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
-    /**
-     * Returns the Themes that this Person is a leader of
-     * @return array The Themes that this Person is a leader of
-     */
-    function getLeadThemes(){
-        $themes = array();
-        self::generateThemeLeaderCache();
-        if(isset(self::$themeLeaderCache[TL][$this->getId()])){
-            $data = self::$themeLeaderCache[TL][$this->getId()];
-            foreach($data as $row){
-                $themes[$row['theme']] = Theme::newFromId($row['theme']);
-            }
-        }
-        return $themes;
-    }
-    
-    /**
-     * Returns the Themes that this Person is a coordinator of
-     * @return array The Themes that this Person is a coordinator of
-     */
-    function getCoordThemes(){
-        $themes = array();
-        self::generateThemeLeaderCache();
-        if(isset(self::$themeLeaderCache[TC][$this->getId()])){
-            $data = self::$themeLeaderCache[TC][$this->getId()];
-            foreach($data as $row){
-                $themes[$row['theme']] = Theme::newFromId($row['theme']);
-            }
-        }
-        return $themes;
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a Theme Leader of
-     * @return array The Projects that this Person is a Theme Leader of
-     */
-    function getThemeProjects(){
-        $projects = array();
-        $themes = array_merge($this->getLeadThemes(), $this->getCoordThemes());
-        if(count($themes) > 0){
-            $themeIds = array();
-            foreach($themes as $theme){
-                $themeIds[] = $theme->getId();
-            }
-            $data = DBFunctions::select(array('grand_project_challenges'),
-                                        array('project_id'),
-                                        array('challenge_id' => IN($themeIds)));
-            foreach($data as $row){
-                $project = Project::newFromId($row['project_id']);
-                $projects[$project->getName()] = $project;
-            }
-        }
-        return $projects;
-    }
-    
     /**
      * Returns the CCV XML that belongs to this Person
      * @return string The CCV XML that belongs to this Person

@@ -14,7 +14,6 @@ define('PERSON_CONTRIBUTIONS', 112);
 define('PERSON_SUPERVISORS', 113);
 define('PERSON_BUDGET', 114);
 define('PERSON_ALLOCATED_BUDGET', 115);
-define('PERSON_MULTIMEDIA', 116);
 //// Person Array Types
 
 $cellTypes[PERSON_NAME] = "PersonNameCell";
@@ -26,7 +25,6 @@ $cellTypes[PERSON_ALLOCATED_BUDGET] = "PersonAllocatedBudgetCell";
 $cellTypes[PERSON_UNIVERSITY] = "PersonUniversityCell";
 $cellTypes[PERSON_HOURS] = "PersonHoursCell";
 $cellTypes[PERSON_PRODUCTS] = "PersonProductsCell";
-$cellTypes[PERSON_MULTIMEDIA] = "PersonMultimediaCell";
 $cellTypes[PERSON_CONTRIBUTIONS] = "PersonContributionsCell";
 
 //DashboardTable Structures

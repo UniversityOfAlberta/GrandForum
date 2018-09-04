@@ -829,30 +829,6 @@ EOF;
         }
         return $contribs;
     }
-    
-    // Returns an array of Materials for this Project
-    function getMultimedia(){
-        if($this->multimedia == null){
-            $this->multimedia = array();
-            if(!$this->clear){
-                $preds = $this->getPreds();
-                foreach($preds as $pred){
-                    foreach($pred->getMultimedia() as $multimedia){
-                        $this->multimedia[$multimedia->getId()] = $multimedia;
-                    }
-                }
-            }
-            $sql = "SELECT m.id
-                    FROM `grand_materials` m, `grand_materials_projects` p
-                    WHERE p.project_id = '{$this->id}'
-                    AND p.material_id = m.id";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->multimedia[$row['id']] = Material::newFromId($row['id']);
-            }
-        }
-        return $this->multimedia;
-    }
 
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
