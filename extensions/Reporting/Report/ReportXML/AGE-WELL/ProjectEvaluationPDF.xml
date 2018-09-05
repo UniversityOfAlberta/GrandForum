@@ -82,17 +82,17 @@
             <![CDATA[
                 <tr>
                 <td><b>National & International leadership</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m1a" blobItem="REV_1_5_M1A" type="Integer" size="3">
@@ -148,17 +148,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Advancing knowledge</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
@@ -179,17 +179,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Stakeholder and end-user driven research</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m6" blobItem="REV_3_5_M6" type="Integer" size="3">
@@ -326,17 +326,17 @@
             <![CDATA[
                 <tr>
                 <td><b>National & International leadership</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m1a" blobItem="PLAN_1_5_M1A" type="Integer" size="3">
@@ -392,17 +392,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Advancing knowledge</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
@@ -423,17 +423,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Stakeholder and end-user driven research</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m6" blobItem="PLAN_3_5_M6" type="Integer" size="3">
@@ -556,17 +556,17 @@
             <![CDATA[
                 <tr>
                 <td><b>National/Global Partnerships</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
@@ -615,17 +615,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Networking within AGE-WELL</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
@@ -675,17 +675,17 @@
             <![CDATA[
                 <tr>
                 <td><b>National/Global Partnerships</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
@@ -734,17 +734,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Networking within AGE-WELL</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
@@ -791,17 +791,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Knowledge dissemination</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
@@ -849,17 +849,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Product Development & IP Management</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Integer" size="3">
@@ -904,17 +904,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Establishment of a start-up company</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
@@ -958,17 +958,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Knowledge dissemination</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
@@ -1016,17 +1016,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Product development & IP Management</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
@@ -1071,17 +1071,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Establishment of a start-up company</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
@@ -1122,17 +1122,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Integer" size="3">
@@ -1205,17 +1205,17 @@
             <![CDATA[
                 <tr>
                 <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b></td>
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td>{$item}</td>
+                <td class="smallest">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Integer" size="3">
