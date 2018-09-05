@@ -55,7 +55,7 @@ class ReportStorage {
         // the hash of the data and the hash of PDF file.
         $tok = md5($this->_uid . $uname . $tst . $hdata . $hpdf);
 
-        $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
+        $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, '{$type}', {$special}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
             DBFunctions::escape($sdata) . "', '" .
             DBFunctions::escape(utf8_decode($html)) . "', '" .
             DBFunctions::escape($pdf) . "');";
@@ -75,7 +75,7 @@ class ReportStorage {
         }
 
         $user = ($strict) ? "user_id = {$this->_uid} AND" : '';
-        $sql = "SELECT report_id, user_id, type, submitted, auto, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$user} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
+        $sql = "SELECT report_id, user_id, type, submitted, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$user} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
             return false;
@@ -85,7 +85,6 @@ class ReportStorage {
         $this->_cache['user_id'] = $res[0]['user_id'];
         $this->_cache['type'] = $res[0]['type'];
         $this->_cache['submitted'] = $res[0]['submitted'];
-        $this->_cache['auto'] = $res[0]['auto'];
         $this->_cache['token'] = $tok;
         $this->_cache['timestamp'] = $res[0]['timestamp'];
         $this->_cache['year'] = $res[0]['year'];
@@ -199,10 +198,10 @@ class ReportStorage {
         // Load data from the DB.
         if ($tok === false) {
             // FIXME: token must be enforced --- no token-use must be removed.
-            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$uid} ORDER BY timestamp DESC LIMIT 1;";
+            $sql = "SELECT report_id, type, user_id, submitted, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$uid} ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
-            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$ext} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
+            $sql = "SELECT report_id, type, user_id, submitted, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$ext} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
@@ -215,7 +214,6 @@ class ReportStorage {
         $this->_cache['type'] = $res[0]['type'];
         $this->_cache['user_id'] = $res[0]['user_id'];
         $this->_cache['submitted'] = $res[0]['submitted'];
-        $this->_cache['auto'] = $res[0]['auto'];
         $this->_cache['token'] = $res[0]['token'];
         $this->_cache['year'] = $res[0]['year'];
         $this->_cache['timestamp'] = $res[0]['timestamp'];
@@ -312,7 +310,7 @@ class ReportStorage {
         if($year != ""){
             $year = "AND year = {$year}";
         }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr})
                 AND type = '{$type}' 
@@ -335,7 +333,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
@@ -355,7 +353,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
+        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.token, r.timestamp, r.year
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
@@ -377,7 +375,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
+        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.token, r.timestamp, r.year
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
@@ -402,7 +400,7 @@ class ReportStorage {
         if (strlen($uarr) === 0)
             return array();
 
-        $sql = "SELECT p1.user_id, p1.report_id, p1.auto, p1.token, p1.timestamp, p1.year 
+        $sql = "SELECT p1.user_id, p1.report_id, p1.token, p1.timestamp, p1.year 
                 FROM grand_pdf_report p1 
                 WHERE p1.user_id IN ({$uarr}) 
                 AND p1.timestamp IN (SELECT MAX(p2.timestamp) 
