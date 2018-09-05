@@ -1052,9 +1052,40 @@ class Person extends BackboneModel {
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         self::generateAllPeopleCache();
         $people = array();
-        foreach(self::$allPeopleCache as $row){
-            $person = Person::newFromId($row);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
+        if($filter != null && $filter != "all"){
+            $peopleWithRole = array();
+            $roleSQL = "role = '".DBFunctions::escape($filter)."'";
+            if($filter == NI){
+                $roleSQL = "role = '".DBFunctions::escape(CI)."' OR role = '".DBFunctions::escape(AR)."'";
+            }
+            $data = DBFunctions::execSQL(
+                "SELECT DISTINCT user_id
+                FROM grand_roles
+                WHERE ($roleSQL) AND
+                (
+                    ((end_date != '0000-00-00 00:00:00') AND
+                     ((start_date BETWEEN '$startRange' AND '$endRange') || 
+                      (end_date BETWEEN '$startRange' AND '$endRange') || 
+                      (start_date <= '$startRange' AND end_date >= '$endRange'))
+                    )
+                    OR
+                    ((end_date = '0000-00-00 00:00:00') AND
+                     ((start_date <= '$endRange'))
+                    )
+                )");
+            foreach($data as $row){
+                $peopleWithRole[$row['user_id']] = $row['user_id'];
+            }
+            foreach(self::$allPeopleCache as $row){
+                if(isset($peopleWithRole[$row])){
+                    $person = Person::newFromId($row);
+                    $people[strtolower($person->getName())] = $person;
+                }
+            }
+        }
+        else{
+            foreach(self::$allPeopleCache as $row){
+                $person = Person::newFromId($row);
                 $people[strtolower($person->getName())] = $person;
             }
         }
