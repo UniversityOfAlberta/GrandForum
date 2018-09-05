@@ -67,7 +67,7 @@
                         <td>{$user_level}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="download" type="PDFReportItem" reportType="FEC" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}</td>
                 ]]>
@@ -235,7 +235,7 @@
                         <td>{$user_sub_roles}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="download" type="PDFReportItem" reportType="FEC" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}</td>
                 ]]>
@@ -404,7 +404,7 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
+                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
                         <script type="text/javascript">
@@ -523,7 +523,7 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
+                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
                         <script type="text/javascript">
@@ -642,7 +642,7 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
+                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
                         <script type="text/javascript">
@@ -761,7 +761,7 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
-                <ReportItem id="download" type="PDFReportItem" reportType="FEC" height="385px" embed="true">
+                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
                         <script type="text/javascript">

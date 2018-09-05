@@ -228,7 +228,6 @@ class ReportXMLParser {
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
-            $children = $this->parser->children();
             if(isset($attributes->extends)){
                 $xmlFileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$attributes->extends}.xml";
                 if(file_exists($xmlFileName) && $this->report->xmlName != $attributes->extends){
@@ -297,10 +296,11 @@ class ReportXMLParser {
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }
-            if(isset($children->Permissions)){
-                $this->parsePermissions($children->Permissions);
-            }
             if(!$quick){
+                $children = $this->parser->children();
+                if(isset($children->Permissions)){
+                    $this->parsePermissions($children->Permissions);
+                }
                 if(isset($children->ReportSection)){
                     $this->parseReportSection($children->ReportSection);
                 }

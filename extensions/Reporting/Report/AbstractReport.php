@@ -156,42 +156,43 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             $parser->parse($quick);
-            if(isset($_GET['saveBackup'])){
-                $parser->saveBackup();
-            }
-            
-            $currentSection = @$_GET['section'];
-            foreach($this->sections as $section){
-                if($section->name == $currentSection && $currentSection != ""){
-                    $this->currentSection = $section;
-                    break;
+            if(!$quick){
+                if(isset($_GET['saveBackup'])){
+                    $parser->saveBackup();
                 }
-            }
-            if($this->currentSection == null){
-                $i = 0;
-                if(isset($this->sections[$i])){
-                    $permissions = $this->getSectionPermissions($this->sections[$i]);
-                    while(isset($this->sections[$i]) && 
-                          (
-                            (($this->sections[$i] instanceof HeaderReportSection) || !isset($permissions['r'])) ||
-                            ($this->topProjectOnly && $this->sections[$i]->private))
-                          ){
-                        $i++;
-                        if(isset($this->sections[$i])){
-                            $permissions = $this->getSectionPermissions($this->sections[$i]);
-                        }
+                
+                $currentSection = @$_GET['section'];
+                foreach($this->sections as $section){
+                    if($section->name == $currentSection && $currentSection != ""){
+                        $this->currentSection = $section;
+                        break;
                     }
-                    $this->currentSection = @$this->sections[$i];
                 }
+                if($this->currentSection == null){
+                    $i = 0;
+                    if(isset($this->sections[$i])){
+                        $permissions = $this->getSectionPermissions($this->sections[$i]);
+                        while(isset($this->sections[$i]) && 
+                              (
+                                (($this->sections[$i] instanceof HeaderReportSection) || !isset($permissions['r'])) ||
+                                ($this->topProjectOnly && $this->sections[$i]->private))
+                              ){
+                            $i++;
+                            if(isset($this->sections[$i])){
+                                $permissions = $this->getSectionPermissions($this->sections[$i]);
+                            }
+                        }
+                        $this->currentSection = @$this->sections[$i];
+                    }
+                }
+                if($this->currentSection == null){
+                    // If this gets run, it will probably result in a permissions error, but atleast it error out later
+                    $this->currentSection = @$this->sections[0];
+                }
+                @$this->currentSection->selected = true;
             }
-            if($this->currentSection == null){
-                // If this gets run, it will probably result in a permissions error, but atleast it error out later
-                $this->currentSection = @$this->sections[0];
-            }
-            @$this->currentSection->selected = true;
-            SpecialPage::__construct("Report", '', false);
         }
-        else{
+        if(!$quick){
             SpecialPage::__construct("Report", '', false);
         }
     }
@@ -377,7 +378,6 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             // First check submitted
-            
             $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType.$section, $this->year);
             foreach($check as $c){
                 if($c['generation_user_id'] == $c['user_id']){
