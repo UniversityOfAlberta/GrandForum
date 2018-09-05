@@ -4,7 +4,9 @@ class DeansPeopleReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $allPeople = Person::getAllPeople();
+        $start = $this->getAttr("start", REPORTING_CYCLE_START);
+        $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
 
         $data = DBFunctions::select(array('grand_personal_fec_info'),
                                     array('user_id'),

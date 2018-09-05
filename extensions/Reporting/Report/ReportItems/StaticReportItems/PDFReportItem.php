@@ -28,7 +28,7 @@ class PDFReportItem extends StaticReportItem {
         $report->person = $person;
         $tok = false;
         $check = $report->getPDF(false, $section);
-        if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
+        if (count($check) > 0) {
             $tok = $check[0]['token'];
             if($embed){
                 $item = "<iframe src='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}' width='100%' height='{$height}' frameborder='0'></iframe>";

@@ -76,7 +76,6 @@ class CavendishTemplate extends QuickTemplate {
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/fixedHeader.dataTables.min.css" rel="Stylesheet" />
-		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/fixedHeader.jqueryui.min.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
 		
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css"; /*]]>*/</style>
@@ -116,7 +115,6 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>   
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/dataTables.fixedHeader.min.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/fixedHeader.jqueryui.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
@@ -411,45 +409,6 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 	        
 		    $(document).ready(function(){
-		        /*
-		        var ajax = null;
-		        $(document).ajaxComplete(function(e, xhr, settings) {
-		            if(settings.url.indexOf("action=getUserMode") == -1){
-		                if(ajax != null){
-		                    ajax.abort();
-		                }
-		                ajax = $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
-		                    if(response.mode == 'loggedOut'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'frozen'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'impersonating'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'differentUser'){
-		                        if($('#wgMessages .warning').text() != response.message){
-		                            clearWarning();
-		                        }
-		                        addWarning(response.message);
-		                    }
-		                    else{
-		                        clearInfo();
-		                        clearWarning();
-		                    }
-		                });
-		            }
-                });*/
                 
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();

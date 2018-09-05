@@ -225,7 +225,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet">
+        <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <ReportItem id="name" type="Static">
                 <![CDATA[
                     <tr>
