@@ -146,9 +146,6 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 }
-                /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
-                    $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
-                }*/
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }

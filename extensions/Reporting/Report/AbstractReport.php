@@ -7,12 +7,10 @@
 
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
-$wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
 $wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
 $wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
 
 require_once("ReportConstants.php");
-require_once("ReportDashboardTableTypes.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){
@@ -100,11 +98,11 @@ abstract class AbstractReport extends SpecialPage {
         $this->extends = "";
         $this->year = $year; // Default, can be overriden
         $this->startYear = $year - 1; // Default, can be overriden
-        $this->reportType = RP_RESEARCHER;
+        $this->reportType = '';
         $this->disabled = false;
         $this->ajax = false;
         $this->generatePDF = false;
-        $this->pdfType = RPTP_NORMAL;
+        $this->pdfType = '';
         $this->pdfFiles = array();
         $this->header = null;
         $this->sections = array();
@@ -1026,50 +1024,6 @@ abstract class AbstractReport extends SpecialPage {
         if($isSupervisor){
             $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
         }
-        return true;
-    }
-    
-    static function canUserReadPDF($me, $pdf, $result){
-        $start = $pdf->getYear().REPORTING_CYCLE_START_MONTH;
-        $end = ($pdf->getYear()+1).REPORTING_CYCLE_END_MONTH;
-        
-        if($pdf->getType() == RPTP_HQP ||
-           $pdf->getType() == RPTP_EXIT_HQP ||
-           $pdf->getType() == RPTP_HQP_COMMENTS){
-            $hqps = $me->getHQPDuring($start, $end);
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $pdf->userId){
-                    // I should be able to read any pdf which was created by my hqp (for that year)
-                    $result = true;
-                    return true;
-                }
-            }
-        }
-        if($pdf->getType() == RPTP_LEADER ||
-           $pdf->getType() == RPTP_NORMAL){
-            if($me->isEvaluator($pdf->getYear())){
-                $evals = $me->getEvaluateSubs($pdf->getYear());
-                foreach($evals as $eval){
-                    if($eval instanceof Project && 
-                       $pdf->getType() == RPTP_LEADER){
-                        if($pdf->getProjectId() == $eval->getId()){
-                            // I should be able to read any pdf for the Projects that I am evaluating (for that year)
-                            $result = true;
-                            return true;
-                        }
-                    }
-                    else if($eval instanceof Person &&
-                            $pdf->getType() == RPTP_NORMAL){
-                        if($pdf->getPerson()->getId() == $eval->getId()){
-                            // I should be able to read any pdf for the People that I am evaluating (for that year)
-                            $result = true;
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        $result = false;
         return true;
     }
     

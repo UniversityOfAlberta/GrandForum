@@ -386,34 +386,6 @@ class ReportItemCallback {
         return "<span>No</span>";
     }
     
-    private function getReportNIComments($item){
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, $item, 0);
-        }
-        else{
-            return;
-        }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
-        $ni_comments = "";
-        $alreadyDone = array();
-        foreach($nis as $ni){
-            if(isset($alreadyDone[$ni->getId()])){
-                continue;
-            }
-            $alreadyDone[$ni->getId()] = true;
-            $ni_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $ni->getId(), $project->getId());
-            $ni_blob->load($ni_rep_addr);
-            $ni_data = $ni_blob->getData();
-            if($ni_data != null){
-                $ni_data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $ni_data);
-                $ni_comments .= $ni->getReversedName() . ":<br /><i style='margin:10px;display:block;'>" . 
-                        $ni_data . "</i><br />";
-            }
-        }
-        return $ni_comments;
-    }
-    
     function getMyId(){
         $person = Person::newFromWgUser();
         return $person->getId();

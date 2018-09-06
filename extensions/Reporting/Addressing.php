@@ -48,6 +48,5 @@ define('BLOB_RAW',		65535);
  * change them accordingly, before allowing end-users to change their report
  * blobs.
  *****************************************************************************/
-define('RP_RESEARCHER',		1);
 
 define('SEC_NONE',              0); 
