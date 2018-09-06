@@ -85,9 +85,6 @@ $egAnnokiExtensions['AddHqp'] = array('name' => 'AddHqp',
 
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
-                                          
-$egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
-                                          'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");

@@ -112,7 +112,6 @@
         //'AddHqp',
         'EditMember',
         'ManagePeople',
-        //'HQPRegister',
         'QueryableTable',
         'IndexTables',
         //'Reporting',
