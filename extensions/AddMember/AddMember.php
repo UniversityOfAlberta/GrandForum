@@ -49,7 +49,6 @@ class AddMember extends SpecialPage{
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $form->getElementById('role_field')->setPOST('wpUserType');
-                $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('university_field')->setPOST('university');
                 $form->getElementById('dept_field')->setPOST('department');
                 $form->getElementById('position_field')->setPOST('position');
@@ -104,7 +103,6 @@ class AddMember extends SpecialPage{
                             <th>Timestamp</th>
                             <th>Staff</th>
                             <th>User Type</th>
-                            <th>Projects</th>
                             <th>Institution</th>
                             <th>Candidate</th>
                             <th>Action</th>
@@ -118,7 +116,6 @@ class AddMember extends SpecialPage{
                             <th>User Name</th>
                             <th>Timestamp</th>
                             <th>User Type</th>
-                            <th>Projects</th>
                             <th>Institution</th>
                             {$hqpType}
                             <th>Candidate</th>
@@ -129,25 +126,7 @@ class AddMember extends SpecialPage{
         $requests = UserCreateRequest::getAllRequests($history);
         foreach($requests as $request){
             $req_user = $request->getRequestingUser();
-            $projects = $req_user->getProjects();
             $projs = array();
-            if(count($projects) > 0){
-                foreach($projects as $project){
-                    if(!$project->isSubProject()){
-                        $subprojs = array();
-                        foreach($project->getSubProjects() as $subproject){
-                            if($req_user->isMemberOf($subproject)){
-                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-                            }
-                        }
-                        $subprojects = "";
-                        if(count($subprojs) > 0){
-                            $subprojects = "(".implode(", ", $subprojs).")";
-                        }
-                        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-                    }
-                }
-            }
             $roles = array();
             if($req_user->getRoles() != null){
                 foreach($req_user->getRoles() as $role){
@@ -156,8 +135,7 @@ class AddMember extends SpecialPage{
             }
             $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
                         <td align='left'>
-                            <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$request->id}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
-                            <div id='{$request->id}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
+                            <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")
                         </td>");
             if($history && $request->isCreated()){
                 $user = Person::newFromName($request->getName());
@@ -171,7 +149,6 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
             }
             $wgOut->addHTML("<td>{$request->getRoles()}</td>
-                             <td align='left'>{$request->getProjects()}</td>
                              <td>{$request->getUniversity()}<br />
                                  {$request->getDepartment()}<br />
                                  {$request->getPosition()}</td> ");
@@ -190,7 +167,6 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
-                            <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
@@ -269,7 +245,6 @@ class AddMember extends SpecialPage{
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
 
-        $projects = Project::getAllProjects();
         $universities = Person::getAllUniversities();
         $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Undergraduate Student");
         $departments = Person::getAllDepartments();
@@ -278,11 +253,6 @@ class AddMember extends SpecialPage{
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
-               
-        $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
-        $projectsRow = new FormTableRow("project_row");
-        $projectsRow->append($projectsLabel)->append($projectsField);
         
         $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
         $universityField = new ComboBox("university_field", "Instutution", $me->getUni(), $universities, VALIDATE_NOTHING);
@@ -311,7 +281,6 @@ class AddMember extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($rolesRow)
-                  ->append($projectsRow)
                   ->append($universityRow)
                   ->append($deptRow)
                   ->append($positionRow)

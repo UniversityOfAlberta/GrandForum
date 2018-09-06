@@ -11,17 +11,6 @@ class IndexTable {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
-        if($config->getValue('projectsEnabled')){
-            $project = Project::newFromHistoricName($wgTitle->getNSText());
-            $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
-                         !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
-            $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
-            if(Project::areThereDeletedProjects()){
-                $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
-                $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
-            }
-            $tabs['Main']['subtabs'][] = $projectTab;
-        }
         
         $lastRole = "";
         if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
@@ -356,26 +345,6 @@ class IndexTable {
             if($subRoleHeader != ""){
                 $subRoles = $person->getSubRoles();
                 $wgOut->addHTML("<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>");
-            }
-            if($config->getValue('projectsEnabled') && $table != ISAC && $table != IAC && $table != RMC){
-                $projects = $person->getProjects();
-                $projs = array();
-                foreach($projects as $project){
-                    if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
-                        $subprojs = array();
-                        foreach($project->getSubProjects() as $subproject){
-                            if($person->isMemberOf($subproject)){
-                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-                            }
-                        }
-                        $subprojects = "";
-                        if(count($subprojs) > 0){
-                            $subprojects = "(".implode(", ", $subprojs).")";
-                        }
-                        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-                    }
-                }
-                $wgOut->addHTML("<td align='left'>".implode("<br />", $projs)."</td>");
             }
             $university = $person->getUniversity();
             if(!$config->getValue('singleUniversity')){

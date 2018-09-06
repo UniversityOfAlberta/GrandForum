@@ -40,17 +40,6 @@ class PersonHandler extends AbstractDuplicatesHandler {
                 $percent = round(($percent1 + $percent3)/2);
             }
             if($percent >= 80){
-                $projs1 = $person1->getProjects();
-                $projs2 = $person2->getProjects();
-                $projects1 = array();
-                $projects2 = array();
-                foreach($projs1 as $proj){
-                    $projects1[] = $proj->getName();
-                }
-                foreach($projs2 as $proj){
-                    $projects2[] = $proj->getName();
-                }
-                
                 $r1 = $person1->getRoles();
                 $r2 = $person2->getRoles();
                 $roles1 = array();
@@ -62,19 +51,6 @@ class PersonHandler extends AbstractDuplicatesHandler {
                     $roles2[] = $role->getRole();
                 }
                 
-                $papers1 = $person1->getPapers();
-                $papers2 = $person2->getPapers();
-                $paperTitles1 = array();
-                $paperTitles2 = array();
-                foreach($papers1 as $paper){
-                    $paperTitles1[] = $paper->getTitle();
-                }
-                foreach($papers2 as $paper){
-                    $paperTitles2[] = $paper->getTitle();
-                }
-                sort($paperTitles1);
-                sort($paperTitles2);
-                
                 $uni1 = $person1->getUniversity();
                 $uni2 = $person2->getUniversity();
                 
@@ -84,14 +60,11 @@ class PersonHandler extends AbstractDuplicatesHandler {
                 $buffer .= $this->addDiffRow("<b>Employee Id:</b> {$person1->getEmployeeId()}", "<b>Employee Id:</b> {$person2->getEmployeeId()}");
                 $buffer .= $this->addDiffRow("<b>Email:</b> {$person1->getEmail()}", "<b>Email:</b> {$person2->getEmail()}");
                 $buffer .= $this->addDiffRow("<b>Roles:</b> ".implode(" ", $roles1), "<b>Roles:</b> ".implode(" ", $roles2));
-                //$buffer .= $this->addDiffRow(implode(" ", $projects1), implode(" ", $projects2));
                 $buffer .= $this->addDiffRow("<b>Nationality:</b> {$person1->getNationality()}", "<b>Nationality:</b> {$person2->getNationality()}");
                 $buffer .= $this->addDiffRow("<b>Gender:</b> {$person1->getGender()}", "<b>Gender:</b> {$person2->getGender()}");
                 $buffer .= $this->addDiffRow("<b>Title:</b> {$uni1['position']}", "<b>Title:</b> {$uni2['position']}");
                 $buffer .= $this->addDiffRow("<b>University:</b> {$uni1['university']}", "<b>University:</b> {$uni2['university']}");
                 $buffer .= $this->addDiffRow("<b>Department:</b> {$uni1['department']}", "<b>Department:</b> {$uni2['department']}");
-                //$buffer .= $this->addDiffNLRow(implode("\n", $paperTitles1), implode("\n", $paperTitles2));
-                //$buffer .= $this->addDiffNLRow($person1->getProfile(), $person2->getProfile());
                 $buffer .= $this->addControls($person1->getId(), $person2->getId());
                 $buffer .= $this->endTable();
                 return $buffer;

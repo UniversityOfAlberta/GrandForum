@@ -4,9 +4,6 @@
 Person = Backbone.Model.extend({
 
     initialize: function(){
-        this.projects = new PersonProjects();
-        this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
-        
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
         
@@ -53,11 +50,6 @@ Person = Backbone.Model.extend({
                          url: this.get('url'),
                          target: ''});
                                
-    },
-    
-    getProjects: function(){
-        this.projects.fetch();
-        return this.projects;
     },
     
     getRoles: function(){
@@ -173,51 +165,6 @@ People = Backbone.Collection.extend({
         }
         return url;
     }
-});
-
-/**
- * PersonProject RelationModel
- */
-PersonProject = RelationModel.extend({
-    initialize: function(){
-        
-    },
-
-    urlRoot: function(){
-        return 'index.php?action=api.person/' + this.get('personId') + '/projects'
-    },
-    
-    getOwner: function(){
-        var person = new Person({id: this.get('personId')});
-        return person;
-    },
-    
-    getTarget: function(){
-        var project = new Project({id: this.get('projectId')});
-        return project;
-    },
-    
-    defaults: {
-        id: null,
-        personId: "",
-        projectId: "",
-        startDate: new Date().toISOString().substr(0, 10),
-        endDate: "",
-        name: "",
-        comment: "",
-        deleted: false
-    }
-});
-
-/**
- * PersonProjects RangeCollection
- */
-PersonProjects = RangeCollection.extend({
-    model: PersonProject,
-    
-    newModel: function(){
-        return new Projects();
-    },
 });
 
 /**

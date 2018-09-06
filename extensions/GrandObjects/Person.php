@@ -81,7 +81,6 @@ class Person extends BackboneModel {
     var $firstName;
     var $lastName;
     var $middleName;
-    var $projects;
     var $university;
     var $salary;
     var $universityDuring;
@@ -97,7 +96,6 @@ class Person extends BackboneModel {
     var $aliases = false;
     var $roleHistory;
     var $hqpCache = array();
-    var $projectCache = array();
     var $evaluateCache = array();
     var $splitName = array();
     
@@ -1455,78 +1453,6 @@ class Person extends BackboneModel {
     function getRegistration(){
         return $this->getUser()->getRegistration();
     }
-      
-    /**
-     * Returns whether this Person is a member of the given Project or not
-     * @param Project $project The Project to check
-     * @return boolean Whether or not this Person is currently a member of the given Project
-     */
-    function isMemberOf($project){
-        $projects = $this->getProjects(false, true);
-        if(count($projects) > 0 && $project != null){
-            foreach($projects as $project1){
-                if($project1 != null && $project->getName() == $project1->getName()){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether this Person is a member of the given Project during the given dates
-     * @param Project $project The Project to check
-     * @param string $start The start date
-     * @param string $end The end date
-     * @return boolean Whether or not this Person is a member of the given Project
-     */
-    function isMemberOfDuring($project, $start, $end){
-        $projects = $this->getProjectsDuring($start, $end);
-        if(count($projects) > 0 && $project != null){
-            foreach($projects as $project1){
-                if($project1 != null && $project->getName() == $project1->getName()){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person has been funded on the given Project
-     * @param Project $project The Project that the Person has been funded
-     * @param string $year The year in which the Person has been funded
-     * @return boolean Whether or not this Person has been funded
-     */
-    function isFundedOn($project, $year){
-        if(count(self::$allocationsCache) == 0){
-            $data = DBFunctions::select(array('grand_allocations'),
-                                        array('user_id', 'project_id', 'year', 'amount'));
-            foreach($data as $row){
-                self::$allocationsCache[$row['year']][$row['user_id']][$row['project_id']] = $row['amount'];
-            }
-        }
-        return (isset(self::$allocationsCache[$year][$this->getId()][$project->getId()]) &&
-                self::$allocationsCache[$year][$this->getId()][$project->getId()] > 0);   
-    }
-    
-    /**
-     * Returns the amount of time that this Person has been on the specified project
-     * @param Project $project The Project that the Person has been on
-     * @param string $format The format for the time (Defaults to number of days)
-     * @param string $now What time to compare the join date to (Defaults to now)
-     * @return string The time spent on the specified project
-     */
-    function getTimeOnProject($project, $format="%d", $now=""){
-        if($now == ""){
-            $now = time();
-        }
-        $joined = new DateTime($project->getJoinDate($this));
-        $now = new DateTime(date("Y-m-d", $now));
-        $interval = $joined->diff($now);
-        $diff = $interval->format('%m');
-        return $diff;
-    }
     
     /**
      * Returns the id of this Person.  
@@ -2414,27 +2340,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the role that this Person is on the given Project
-     * @param Project $project The Project to check the roles of
-     * @param integer $year The year to check
-     */
-    function getRoleOn($project, $year=null){
-        if($year == null){
-            $year = date('Y');
-        }
-        if($this->isRole(NI) && !$this->isFundedOn($project, $year)){
-            return AR;
-        }
-        else if($this->isRole(NI) && $this->isFundedOn($project, $year)){
-            return CI;
-        }
-        else if($this->isRole(HQP)){
-            return HQP;
-        }
-        return $this->getType();
-    }
-    
-    /**
      * Returns the first role that this Person had
      * @return Role The first role that this Person had, null if this Person has never had any Roles
      */
@@ -2633,103 +2538,6 @@ class Person extends BackboneModel {
     }
     
     /*
-     * Returns a list of projects (strings) which this Person is allowed to edit
-     * @returns array A list of projects (strings) which this Person is allowed to edit
-     */
-    function getAllowedProjects(){
-        global $config;
-        if(!$config->getValue('projectsEnabled')){
-            return array();
-        }
-        $projects = array();
-        foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjects() as $project){
-                if(!$project->isSubProject()){
-                    $projects[$project->getId()] = $project->getName();
-                }
-            }
-        }
-        asort($projects);
-        return array_values($projects);
-    }
-   
-    /**
-     * Returns all of the Projects that this Person has been a member of
-     * @param boolean $groupBySubs Whether or not to group by sub-projects
-     * @return array The Projects that this Person has been a member of
-     */ 
-    function getProjectHistory($groupBySubs=false){
-        $projects = array();
-        $tmpProjects = array();
-        $data = DBFunctions::select(array('grand_project_members'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->getId())));
-        foreach($data as $row){
-            $start = $row['start_date'];
-            $end = $row['end_date'];
-            if($end == "0000-00-00 00:00:00"){
-                $end = "9999";
-            }
-            $tmpProjects[$end.$start.$row['id']] = $row;
-        }
-        ksort($tmpProjects);
-        $projects = array_reverse($tmpProjects);
-        if($groupBySubs){
-            $tmpProjects = array();
-            foreach($projects as $proj){
-                $project = Project::newFromId($proj['project_id']);
-                if($project != null && !$project->isSubProject()){
-                    $tmpProjects[] = $proj;
-                    foreach($projects as $id => $proj2){
-                        $sub = Project::newFromId($proj2['project_id']);
-                        if($sub != null && $sub->isSubProject() && $sub->getParent()->getId() == $project->getId()){
-                            $tmpProjects[] = $proj2;
-                            unset($projects[$id]);
-                        }  
-                    }
-                }
-            }
-            $projects = $tmpProjects;
-        }
-        return $projects;
-    }
-    
-    /*
-     * Returns an array of 'PersonProjects' (used for Backbone API)
-     * @return array
-     */
-    function getPersonProjects(){
-        $projects = array();
-        $data = DBFunctions::select(array('grand_project_members' => 'u',
-                                          'grand_project' => 'p'),
-                                    array('u.id', 'u.project_id', 'u.start_date', 'u.end_date', 'u.comment'),
-                                    array('u.user_id' => EQ($this->id),
-                                          'p.id' => EQ(COL('u.project_id'))),
-                                    array('end_date' => 'DESC'));
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if(!$project->isSubProject()){
-                $projects[] = array(
-                    'id' => $row['id'],
-                    'projectId' => $project->getId(),
-                    'personId' => $this->getId(),
-                    'startDate' => $row['start_date'],
-                    'endDate' => $row['end_date'],
-                    'name' => $project->getName(),
-                    'comment' => $row['comment']
-                );
-            }
-        }
-        return $projects;
-    }
-    
-    
-    /*
      * Returns an array of 'PersonUniversities' (used for Backbone API)
      * @return array
      */
@@ -2757,106 +2565,6 @@ class Person extends BackboneModel {
             );
         }
         return $universities;
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a part of
-     * @param boolean $history Whether or not to include the full history
-     * @param boolean $allowProposed Whether or not to include proposed projects
-     * @return array The Projects that this Person is a part of
-     */
-     function getProjects($history=false, $allowProposed=false){
-        $projects = array();
-        if(($this->projects == null || $history) && $this->id != null){
-            $sql = "SELECT p.name
-                    FROM grand_project_members u, grand_project p
-                    WHERE user_id = '{$this->id}'
-                    AND p.id = u.project_id \n";
-            if($history === false){
-                $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)\n";
-            }
-            else if($history !== true){
-                $sql .= "AND start_date <= '{$history}'
-                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00'))\n";
-            }
-            $sql .= "ORDER BY p.name";
-            $data = DBFunctions::execSQL($sql);
-            $projectNames = array();
-            foreach($data as $row){
-                $project = Project::newFromHistoricName($row['name']);
-                if($project != null && $project->getName() != ""){
-                    if(!isset($projectNames[$project->getName()])){
-                        // Make sure that the project is not being added twice
-                        if((!$project->isDeleted() || ($project->isDeleted() && $history)) && ($allowProposed || $project->getStatus() != "Proposed")){
-                            // Make sure the project is not deleted or proposed, and then add it
-                            $projectNames[$project->getName()] = true;
-                            $projects[] = $project;
-                        }
-                    }
-                }
-            }
-        }
-        if($history === false && $this->projects == null){
-            $this->projects = $projects;
-        }
-        if($history === false && $this->projects != null){
-            return $this->projects;
-        }
-        return $projects;
-    }
-
-    /**
-     * Returns an array of Projects that this Person is a part of between the given dates
-     * @param string $start The start date
-     * @param string $end The end date
-     * @param boolean $allowProposed Whether or not to include proposed Projects
-     * @return array The Projects that this Person is a part of
-     */
-    function getProjectsDuring($start, $end, $allowProposed=false){
-        if(isset($this->projectCache[$start.$end])){
-            return $this->projectCache[$start.$end];
-        }
-        $projectsDuring = array();
-        $projects = $this->getProjects(true);
-        if(count($projects) > 0){
-            foreach($projects as $project){
-                $project = Project::newFromHistoricName($project->getName());
-                if(((!$project->isDeleted()) || 
-                    ($project->isDeleted() && !($project->effectiveDate < $start))) &&
-                   ($allowProposed || $project->getStatus() != "Proposed")){
-                    $members = $project->getAllPeopleDuring(null, $start, $end, true);
-                    foreach($members as $member){
-                        if($member->getId() == $this->id){
-                            $projectsDuring[] = $project;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        $this->projectCache[$start.$end] = $projectsDuring;
-        return $projectsDuring;
-    }
-    
-    /**
-     * Returns the number of months an HQP has been a part of a project
-     * TODO: This need to be updated! (it was used for 2010)
-     * @param Project $project The Project the HQP was on
-     * @return string The number of months
-     */
-    function getHQPMonth($project){
-        $sql = "SELECT months 
-                FROM grand_hqp_months
-                WHERE user_id = '{$this->id}'
-                AND project_id = '{$project->getId()}'";
-        $data = DBFunctions::execSQL($sql);
-        if(isset($data[0]) && isset($data[0]['months'])){
-            return $data[0]['months'];
-        }
-        else{
-            return "Unknown";
-        }
     }
     
     /**
@@ -3718,15 +3426,7 @@ class Person extends BackboneModel {
                !$paper->deleted && 
                $paper->getId() != 0 &&
                ($category == 'all' || $paper->getCategory() == $category)){
-                if($grand == 'grand' && $paper->isGrandRelated()){
-                    $papersArray[] = $paper;
-                }
-                else if($grand == 'nonGrand' && !$paper->isGrandRelated()){
-                    $papersArray[] = $paper;
-                }
-                else if($grand == 'both'){
-                    $papersArray[] = $paper;
-                }
+                $papersArray[] = $paper;
             }
         }
         if($exclude){
@@ -4068,30 +3768,6 @@ class Person extends BackboneModel {
             $subs[] = Person::newFromId($row['user_id']);
         }
         return $subs;
-    }
-
-    /**
-     * Returns the allocation for this Person for year $year
-     * @param string $year The allocation year to use
-     * @return array The allocation information
-     */
-    function getAllocation($year) {
-        $allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
-
-        if (!is_numeric($year)) {
-            return $allocation;
-        }
-
-        $query = "SELECT * FROM grand_review_results WHERE user_id = '{$this->id}' AND year='{$year}'";
-        $res = DBFunctions::execSQL($query);
-
-        if (count($res) > 0) {
-            $allocation['allocated_amount'] = $res[0]['allocated_amount'];
-            $allocation['overall_score'] = $res[0]['overall_score'];
-            $allocation['email_sent'] = $res[0]['email_sent'];
-        }
-        
-        return $allocation;
     }
     
     /**

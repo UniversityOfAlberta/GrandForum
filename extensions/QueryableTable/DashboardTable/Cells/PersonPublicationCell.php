@@ -19,42 +19,7 @@ abstract class PersonPublicationCell extends PublicationCell {
             }
         }
         if(isset($params[2])){
-            $project = Project::newFromName($params[2]);
-            if($project != null && $project->getName() != null){
-                $this->obj = $project;
-                $this->table = $table;
-                $person = $table->obj;
-                $papers = $person->getPapersAuthored($this->category, $start, $end, true);
-                $values = array();
-                foreach($papers as $paper){
-                    if($paper->belongsToProject($project)){
-                        $type = str_replace("Misc: ", "", $paper->getType());
-                        if($type == ""){
-                            $type = " ";
-                        }
-                        if($paper->getCategory() == "Publication"){
-                            $status = $paper->getStatus();
-                            if($status == "Published"){
-                                $type .= "(PB)";
-                            }
-                            else{
-                                $type .= "(Not PB)";
-                            }
-                        }
-                        else if($paper->getCategory() == "Artifact"){
-                            $status = $paper->getStatus();
-                            if($status == "Peer Reviewed"){
-                                $type .= "(PR)";
-                            }
-                            else{
-                                $type .= "(Not PR)";
-                            }
-                        }
-                        $values[$type][] = $paper->getId();
-                    }
-                }
-                $this->setValues($values);
-            }
+            // Used to be used for projects
         }
         else{
             $person = $table->obj;

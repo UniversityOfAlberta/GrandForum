@@ -52,7 +52,6 @@ abstract class AbstractReport extends SpecialPage {
     var $generatePDF;
     var $pdfType;
     var $pdfFiles;
-    var $pdfAllProjects;
     var $showInstructions = true;
     var $variables = array();
     
@@ -112,7 +111,6 @@ abstract class AbstractReport extends SpecialPage {
         $this->permissions = array();
         $this->sectionPermissions = array();
         $this->topProjectOnly = $topProjectOnly;
-        $this->pdfAllProjects = false;
         if($personId == -1){
             $this->person = Person::newFromId($wgUser->getId());
         }
@@ -261,14 +259,6 @@ abstract class AbstractReport extends SpecialPage {
             else if(isset($_GET['submitReport'])){
                 $me = Person::newFromId($wgUser->getId());
                 foreach($this->pdfFiles as $file){
-                    if($this->pdfAllProjects){
-                        foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                            if(!$project->isSubProject()){
-                                $report = new DummyReport($file, $this->person, $project, $this->year);
-                                $report->submitReport();
-                            }
-                        }
-                    }
                     $report = new DummyReport($file, $this->person, $this->project, $this->year);
                     $report->submitReport();
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
@@ -327,12 +317,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         $sto = new ReportStorage($this->person);
         if($this->project != null){
-            if($this->pdfAllProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
-            }
-            else{
-                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
-            }
+            $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
         }
         else{
             $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
@@ -360,19 +345,14 @@ abstract class AbstractReport extends SpecialPage {
         $foundSameUser = false;
         $foundSubmitted = false;
         if($this->project != null){
-            if($this->pdfAllProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType.$section);
-            }
-            else{
-                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType.$section, $this->year);
-                $check2 = array();
-                foreach($check as $c){
-                    if($c['submitted'] == 1){
-                        $foundSubmitted = true;
-                    }
-                    else{
-                        $check2[] = $c;
-                    }
+            $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType.$section, $this->year);
+            $check2 = array();
+            foreach($check as $c){
+                if($c['submitted'] == 1){
+                    $foundSubmitted = true;
+                }
+                else{
+                    $check2[] = $c;
                 }
             }
         }
@@ -480,11 +460,6 @@ abstract class AbstractReport extends SpecialPage {
     // Sets the PDF Files that this Report will generate
     function setPDFFiles($files){
         $this->pdfFiles = explode(",", $files);
-    }
-    
-    // Sets whether or not this Report should generate a different PDF for every Project this user is a member of
-    function setPDFAllProjects($allProjects){
-        $this->pdfAllProjects = $allProjects;
     }
     
     function setHeader($header){
@@ -730,32 +705,6 @@ abstract class AbstractReport extends SpecialPage {
         }
         $json = array();
         $preview = isset($_GET['preview']);
-        if($this->pdfAllProjects && !$preview){
-            foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                if(!$project->isSubProject()){
-                    foreach($this->pdfFiles as $pdfFile){
-                        set_time_limit(120); // Renew the execution timer
-                        if(!$wgOut->isDisabled()){
-                            $wgOut->clearHTML();
-                        }
-                        $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
-                        $report->renderForPDF();
-                        $data = "";
-                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report);
-                        $sto = new ReportStorage($this->person);
-                        $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
-                        if($project != null){
-                            $ind = new ReportIndex($this->person);
-                            $rid = $sto->metadata('report_id');
-                            $ind->insert_report($rid, $report->project);
-                        }
-                        if($submit){
-                            $report->submitReport($person);
-                        }
-                    }
-                }
-            }
-        }
         if(count($this->pdfFiles) > 0){
             foreach($this->pdfFiles as $pdfFile){
                 set_time_limit(120); // Renew the execution timer

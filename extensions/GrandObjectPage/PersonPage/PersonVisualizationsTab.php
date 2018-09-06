@@ -127,9 +127,6 @@ class PersonVisualizationsTab extends AbstractTab {
                             array('id' => 'locations',
                                   'content' => 'Locations',
                                   'className' => 'visPurple'),
-                            array('id' => 'projects',
-                                  'content' => 'Projects',
-                                  'className' => 'visBlue'),
                             array('id' => 'relations',
                                   'content' => 'Relations',
                                   'className' => 'visGreen'),
@@ -179,24 +176,6 @@ class PersonVisualizationsTab extends AbstractTab {
                                                                     </tr>
                                                                     </table>"),
                                  'group' => 'locations',
-                                 'start' => $start,
-                                 'end' => $end);
-            }
-       
-            foreach($person->getProjects(true) as $project){
-                $start = substr($project->getJoinDate($person), 0, 10);
-                $end = substr($project->getEndDate($person), 0, 10);
-                if($end == "0000-00-00"){
-                    $end = $today;
-                }
-                if(strcmp($start, $end) > 0){
-                    $start = $end;
-                }
-                $content = "<a href='{$project->getUrl()}' target='_blank'>View Project's Page</a>";
-                $items[] = array('content' => $project->getName(),
-                                 'description' => array('title' => $project->getName(),
-                                                        'text' => $content),
-                                 'group' => 'projects',
                                  'start' => $start,
                                  'end' => $end);
             }
@@ -252,11 +231,6 @@ class PersonVisualizationsTab extends AbstractTab {
             $i = 0;
             $legend[$i]['name'] = "Year";
             $legend[$i++]['color'] = "#a6cee3";
-            if($config->getValue('projectsEnabled')){
-                $legend[$i]['name'] = "Project";
-                $legend[$i++]['color'] = "#82D868";
-            }
-            
             $legend[$i]['name'] = "University";
             $legend[$i++]['color'] = "#b2df8a";
             $legend[$i]['name'] = "Co-authorship";
@@ -282,30 +256,6 @@ class PersonVisualizationsTab extends AbstractTab {
                 @$levels[$i]['values'][$labelIndicies[$year]]++;
             }
             $i++;
-            $labelIndicies = array();
-            $index = 0;
-            if($config->getValue('projectsEnabled')){
-                foreach($products as $paper){
-                    $projects = $paper->getProjects();
-                    if(count($projects) == 0){
-                        if(!isset($labelIndicies["None"])){
-                            $labelIndicies["None"] = $index;
-                            $levels[$i]['labels'][] = "None";
-                            $index++;
-                        }
-                        @$levels[$i]['values'][$labelIndicies["None"]]++;
-                    }
-                    foreach($projects as $project){
-                        if(!isset($labelIndicies[$project->getName()])){
-                            $labelIndicies[$project->getName()] = $index;
-                            $levels[$i]['labels'][] = $project->getName();
-                            $index++;
-                        }
-                        @$levels[$i]['values'][$labelIndicies[$project->getName()]]++;
-                    }
-                }
-                $i++;
-            }
             
             $labelIndicies = array();
             $index = 0;

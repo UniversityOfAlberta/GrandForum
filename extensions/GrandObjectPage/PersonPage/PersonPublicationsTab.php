@@ -114,15 +114,9 @@ class PersonPublicationsTab extends AbstractTab {
                 if($type != null && $paper->getType() != $type){
                     continue;
                 }
-                $projects = array();
-                if($config->getValue('projectsEnabled')){
-                    foreach($paper->getProjects() as $project){
-                        $projects[] = "{$project->getName()}";
-                    }
-                }
 
                 $string .= "<tr>";
-                $string .= "<td>{$paper->getCitation(true, true, true, true, true)}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
+                $string .= "<td>{$paper->getCitation(true, true, true, true, true)}<span style='display:none'>{$paper->getDescription()}</span></td>";
                 if(is_array($this->category) || $this->category == "all"){
                     $string .= "<td align='center'>{$paper->getCategory()}</td>";
                 }

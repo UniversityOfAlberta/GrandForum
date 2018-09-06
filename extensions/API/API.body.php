@@ -116,7 +116,6 @@ class APIRequest{
         $this->addAction('Products', 'uploadCSV', 'UploadCSVAPI');
         $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
         $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
-        $this->addAction('Products', 'getPublicationSearch', 'PublicationSearchAPI');
         $this->addAction('Products', 'importGradDb', 'ImportGradDbAPI');
         $this->addAction('Products', 'uploadGrantXls', 'UploadGrantXlsAPI');
         $this->addAction('Products', 'uploadEvals', 'UploadCourseEvalsAPI');

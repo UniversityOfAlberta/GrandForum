@@ -7,9 +7,6 @@ Product = Backbone.Model.extend({
         this.authors = new ProductAuthors();
         this.authors.url = this.urlRoot + '/' + this.get('id') + '/authors';
         
-        this.projects = new ProductAuthors();
-        this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
-        
         this.duplicates = new ProductDuplicates();
               
         this.on("change:category", function(){
@@ -46,11 +43,6 @@ Product = Backbone.Model.extend({
     getAuthors: function(){
         this.authors.fetch();
         return this.authors;
-    },
-    
-    getProjects: function(){
-        this.projects.fetch();
-        return this.projects;
     },
     
     getDuplicates: function(){
@@ -213,7 +205,6 @@ Product = Backbone.Model.extend({
             data: {},
             authors: new Array(),
             contributors: new Array(),
-            projects: new Array(),
             lastModified: "",
             deleted: "",
             access_id: 0,
@@ -369,53 +360,6 @@ ProductAuthors = RangeCollection.extend({
         return new People();
     },
 });
-
-/**
- * ProductProject RelationModel
- */
-ProductProject = RelationModel.extend({
-    initialize: function(){
-    
-    },
-
-    urlRoot: function(){
-        return 'index.php?action=api.product/' + this.get('productId') + '/projects'
-    },
-    
-    idAttribute: 'projectId',
-    
-    getOwner: function(){
-        product = new Product({id: this.get('productId')});
-        person.fetch();
-        return person;
-    },
-    
-    getTarget: function(){
-        person = new Project({id: this.get('projectId')});
-        person.fetch();
-        return person;
-    },
-    
-    defaults: {
-        productId: null,
-        projectId: null,
-        startDate: "",
-        endDate: "",
-    }
-});
-
-/**
- * ProductProjects RangeCollection
- */
-ProductProjects = RangeCollection.extend({
-
-    model: ProductProject,
-    
-    newModel: function(){
-        return new Projects();
-    },
-});
-
 
 /**
  * ProductHistory Model

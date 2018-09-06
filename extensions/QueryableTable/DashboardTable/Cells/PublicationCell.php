@@ -96,22 +96,15 @@ abstract class PublicationCell extends DashboardCell {
     
     function getHeaders(){
         if($this->category == "Publication" || $this->category == "Artifact"){
-            return array("Publication Date", "Projects", "First Author", $this->category);
+            return array("Publication Date", "First Author", $this->category);
         }
-        return array("Publication Date", "Projects", "First Author", $this->category);
+        return array("Publication Date", "First Author", $this->category);
     }
     
     function detailsRow($item){
         global $wgServer, $wgScriptPath;
         $paper = Paper::newFromId($item);
         $data = $paper->getData();
-        $projects = $paper->getProjects();
-        $projs = array();
-        foreach($projects as $project){
-            if(!$project->isSubProject()){
-                $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
-            }
-        }
         $authors = $paper->getAuthors();
         $first_author = (isset($authors[0]))? explode(' ', $authors[0]->getNameForForms()) : array("","");
         if(count($first_author) > 1){
@@ -155,10 +148,8 @@ abstract class PublicationCell extends DashboardCell {
                 $stat = "{$status}";
             }
         }
-        if($stat != "" && count($projs) > 0){
-            $stat .= " / ".implode(", ", $projs);
-        }
-        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>{$stat}</i></div></td>\n";
+
+        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>{$stat}</i></div></td>\n";
         return $details;
     }
     

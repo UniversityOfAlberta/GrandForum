@@ -186,28 +186,13 @@ class MailingList extends BackboneModel {
                 $value = $rule->getValue();
                 switch($rule->getType()){
                     case "ROLE":
-                        if($person->isRole($value)){
-                            foreach($person->getProjects() as $proj){
-                                if(count($phaseRules) > 0){
-                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
-                                }
-                                else{
-                                    $roleResult = ($roleResult || true);
-                                }
-                            }
-                        }
-                        else if($value == EVALUATOR && $person->isEvaluator()){
+                        if($value == EVALUATOR && $person->isEvaluator()){
                             $roleResult = ($roleResult || true);
                         }
                         else {
                             $roleResult = ($roleResult || $person->isRole($value));
                         }
                         $results['roleResult'] = $roleResult;
-                        break;
-                    case "PROJ":
-                        $project = Project::newFromId($value);
-                        $projResult = ($projResult || $person->isMemberOf($project));
-                        $results['projResult'] = $projResult;
                         break;
                     case "LOC":
                         $found = false;

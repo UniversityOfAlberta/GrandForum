@@ -20,21 +20,7 @@ class PersonSupervisorsCell extends DashboardCell {
             }
         }
         if(isset($params[2])){
-            $project = Project::newFromName($params[2]);
-            if($project != null && $project->getName() != null){
-                $this->obj = $project;
-                $person = $table->obj;
-                $supervisors = $person->getSupervisors();
-                $values = array();
-                foreach($supervisors as $supervisor){
-                    if($supervisor->isMemberOf($project)){
-                        $uni = $supervisor->getUniversity();
-                        $position = ($uni['position'] != "") ? $uni['position'] : "Other";
-                        $values[$position][] = $supervisor->getId();
-                    }
-                }
-                $this->setValues($values);
-            }
+            // Used to be for projects
         }
         else{
             $person = $table->obj;

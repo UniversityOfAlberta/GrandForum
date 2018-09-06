@@ -11,7 +11,6 @@ class Paper extends BackboneModel{
     static $oldSyncCache = array();
     static $cache = array();
     static $dataCache = array();
-    static $productProjectsCache = array();
     static $exclusionCache = array();
 
     var $id;
@@ -19,7 +18,6 @@ class Paper extends BackboneModel{
     var $description=false;
     var $title;
     var $type;
-    var $projects = array();
     var $date;
     var $status;
     var $authors;
@@ -27,7 +25,6 @@ class Paper extends BackboneModel{
     var $data = false;
     var $lastModified;
     var $authorsWaiting;
-    var $projectsWaiting;
     var $deleted;
     var $access_id = 0;
     var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
@@ -265,47 +262,17 @@ class Paper extends BackboneModel{
      * @return array All of the Products
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
-        global $config;
-        if(!$config->getValue('projectsEnabled')){
-            $grand = 'both';
-        }
+        $grand = 'both';
         $data = array();
-        if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count])){
-            return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count];
+        if(isset(self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count])){
+            return self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count];
         }
         else{
             $papers = array();
-            if($project != "all"){
-                if($project instanceof Project){
-                    $p = $project;
-                }
-                else{
-                    $p = Project::newFromHistoricName($project);
-                }
-                if(!$p->clear){
-                    $preds = $p->getPreds();
-                    foreach($preds as $pred){
-                        foreach(Paper::getAllPapers($pred->getName(), $category, $grand) as $paper){
-                            $papers[$paper->getId()] = $paper;
-                        }
-                    }
-                }
-            }
-            if($project instanceof Project){
-                $project = $project->getName();
-            }
             $me = Person::newFromWgUser();
             $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date
-                    FROM `grand_products` p";
-            if($project != "all"){
-                $p = Project::newFromName($project);
-                $sql .= ", `grand_product_projects` pp
-                         WHERE pp.`project_id` = '{$p->getId()}'
-                         AND pp.`product_id` = p.`id`";
-            }
-            else {
-                $sql .= "\nWHERE 1";
-            }
+                    FROM `grand_products` p
+                    WHERE 1";
             $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
@@ -319,31 +286,24 @@ class Paper extends BackboneModel{
             }
             $sql .= "\nORDER BY p.`type`, p.`title`";
             $data = DBFunctions::execSQL($sql);
-            self::generateProductProjectsCache();
             $i = 0;
             foreach($data as $row){
-                $hasProjects = (isset(self::$productProjectsCache[$row['id']]) && count(self::$productProjectsCache[$row['id']]) > 0);
-                if($project != "all" || 
-                   (($grand == 'grand' && $hasProjects) ||
-                    ($grand == 'nonGrand' && !$hasProjects) ||
-                     $grand == 'both')){
-                    if($i >= $start && $i < $start + $count){
-                        if(!isset(self::$cache[$row['id']])){
-                            $paper = new Paper(array($row));
-                            self::$cache[$paper->id] = $paper;
-                        }
-                        else{
-                            $paper = self::$cache[$row['id']];
-                        }
-                        if(!$paper->canView()){
-                            continue;
-                        }
-                        $papers[] = $paper;
+                if($i >= $start && $i < $start + $count){
+                    if(!isset(self::$cache[$row['id']])){
+                        $paper = new Paper(array($row));
+                        self::$cache[$paper->id] = $paper;
                     }
-                    $i++;
+                    else{
+                        $paper = self::$cache[$row['id']];
+                    }
+                    if(!$paper->canView()){
+                        continue;
+                    }
+                    $papers[] = $paper;
                 }
+                $i++;
             }
-            self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count] = $papers;
+            self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count] = $papers;
         }
         return $papers;
     }
@@ -361,56 +321,23 @@ class Paper extends BackboneModel{
      */
     static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
         global $config;
-        if(!$config->getValue('projectsEnabled')){
-            $grand = 'both';
-        }
+        $grand = 'both';
         if($startRange === false || $endRange === false){
             debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
         }
         $str = ($strict) ? 'true' : 'false';
-        $proj = $project;
-        if($project instanceof Project){
-            $proj = $project->getName();
-        }
-        if(isset(self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str])){
-            return self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str];
+        if(isset(self::$dataCache[$category.$grand.$startRange.$endRange.$str])){
+            return self::$dataCache[$category.$grand.$startRange.$endRange.$str];
         }
         else{
             $papers = array();
-            if($project != "all"){
-                if($project instanceof Project){
-                    $p = $project;
-                }
-                else{
-                    $p = Project::newFromHistoricName($project);
-                }
-                if(!$p->clear){
-                    $preds = $p->getPreds();
-                    foreach($preds as $pred){
-                        foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
-                            $papers[$paper->getId()] = $paper;
-                        }
-                    }
-                }
-            }
-            if($project instanceof Project){
-                $project = $project->getName();
-            }
             $data = array();
             $me = Person::newFromWgUser();
             $sql = "SELECT *
-                    FROM `grand_products` p";
-            if($project != "all"){
-                $p = Project::newFromName($project);
-                $sql .= ", `grand_product_projects` pp
-                         WHERE pp.`project_id` = '{$p->getId()}'
-                         AND pp.`product_id` = p.`id`";
-            }
-            else {
-                $sql .= "\nWHERE 1";
-            }
+                    FROM `grand_products` p
+                    WHERE 1";
             $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
@@ -445,23 +372,16 @@ class Paper extends BackboneModel{
                 if(!$paper->canView()){
                     continue;
                 }
-                if($project != "all"){
-                    $papers[] = $paper;
-                }
-                else if(($grand == 'grand' && $paper->isGrandRelated()) ||
-                        ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
-                         $grand == 'both'){
-                    $papers[] = $paper;
-                }
+                $papers[] = $paper;
             }
-            self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
+            self::$dataCache[$category.$grand.$startRange.$endRange.$str] = $papers;
             return $papers;
         }
     }
 
     static function getAllPrivatePapers($project='all', $category='all', $grand='grand'){
-        if(isset(self::$dataCache["me".$project.$category.$grand])){
-            return self::$dataCache["me".$project.$category.$grand];
+        if(isset(self::$dataCache["me".$category.$grand])){
+            return self::$dataCache["me".$category.$grand];
         }
         $me = Person::newFromWgUser();
         $sql = "SELECT *
@@ -474,31 +394,23 @@ class Paper extends BackboneModel{
         }
         $sql .= "\nORDER BY `type`, `title`";
         $data = DBFunctions::execSQL($sql);
-        self::generateProductProjectsCache();
         $papers = array();
         foreach($data as $row){
-            $hasProjects = (isset(self::$productProjectsCache[$row['id']]) && count(self::$productProjectsCache[$row['id']]) > 0);
-            if($project != "all" ||
-               (($grand == 'grand' && $hasProjects) ||
-                ($grand == 'nonGrand' && !$hasProjects) ||
-                 $grand == 'both')){
-                if(!isset(self::$cache[$row['id']])){
-                    $paper = new Paper(array($row));
-                    self::$cache[$paper->id] = $paper;
-                }
-                else{
-                    $paper = self::$cache[$row['id']];
-                }
-                if(!$paper->canView()){
-                    continue;
-                }
-                $papers[] = $paper;
+            if(!isset(self::$cache[$row['id']])){
+                $paper = new Paper(array($row));
+                self::$cache[$paper->id] = $paper;
             }
+            else{
+                $paper = self::$cache[$row['id']];
+            }
+            if(!$paper->canView()){
+                continue;
+            }
+            $papers[] = $paper;
         }
-        self::$dataCache["me".$project.$category.$grand] = $papers;
+        self::$dataCache["me".$category.$grand] = $papers;
         return $papers;
     }
-
     
     static function generateIllegalAuthorsCache(){
         if(count(self::$illegalAuthorsCache) == 0){
@@ -507,16 +419,6 @@ class Paper extends BackboneModel{
             self::$illegalAuthorsCache[""] = "";
             foreach($data as $row){
                 self::$illegalAuthorsCache[$row['author']] = $row['author'];
-            }
-        }
-    }
-    
-    static function generateProductProjectsCache(){
-        if(count(self::$productProjectsCache) == 0){
-            $data = DBFunctions::select(array('grand_product_projects'),
-                                        array('product_id', 'project_id'));
-            foreach($data as $row){
-                self::$productProjectsCache[$row['product_id']][] = $row['project_id'];
             }
         }
     }
@@ -662,8 +564,6 @@ class Paper extends BackboneModel{
             $this->access = $data[0]['access'];
             $this->ccv_id = $data[0]['ccv_id'];
             $this->bibtex_id = $data[0]['bibtex_id'];
-            $this->projects = array();
-            $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
             $this->contributors = $data[0]['contributors'];
@@ -1189,61 +1089,6 @@ class Paper extends BackboneModel{
     }
     
     /**
-     * Returns whether or not this Paper belongs to the specified Project
-     * @param Project $project The project to check
-     * @return boolean Whether or not this Paper belongs to the specifed Project
-     */
-    function belongsToProject($project){
-        if($project == null){
-            return false;
-        }
-        foreach($this->getProjects() as $p){
-            if($p != null && $p->getId() == $project->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns an array or Projects which this Paper is related to
-     * @return array The Projects which this Paper is related to
-     */
-    function getProjects(){
-        if($this->projectsWaiting){
-            self::generateProductProjectsCache();
-            if(isset(self::$productProjectsCache[$this->id])){
-                $data = self::$productProjectsCache[$this->id];
-                if(is_array($data)){
-                    foreach($data as $projectId){
-                        $project = Project::newFromId($projectId);
-                        if($project instanceof Project){
-                            $this->projects[] = $project;
-                        }
-                    }
-                }
-            }
-            $this->projectsWaiting = false;
-        }
-        return $this->projects;
-    }
-    
-    // Returns an array of Projects which this Paper is related to
-    function getProjectNames(){
-        $projs = array();
-        if($this->projects != null){
-            foreach($this->projects as $key => $project){
-                if($project == null){
-                    unset($this->projects[$key]);
-                } else {
-                    $projs[] = $project->name;
-                }
-            }
-        }
-        return $projs;
-    }
-    
-    /**
      * Returns the journal entry in the db that matches up with this Product
      * @return array The journal entry in the db that matches up with this Product
      */
@@ -1289,14 +1134,6 @@ class Paper extends BackboneModel{
             }
         }
         return array_values($unis);
-    }
-    
-    /**
-     * Returns whether or not this Paper is related to this network (has projects)
-     * @return boolean Whether or not this Paper is related to this network
-     */
-    function isGrandRelated(){
-        return (count($this->getProjects()) > 0);
     }
 
     /**
@@ -1845,12 +1682,6 @@ class Paper extends BackboneModel{
                     }
                 }
             }
-            foreach($this->projects as $project){
-                if(!isset($project->id) || $project->id == 0){
-                    $p = Project::newFromName($project->name);
-                    $project->id = $p->getId();
-                }
-            }
             // Update products table
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
@@ -1877,21 +1708,6 @@ class Paper extends BackboneModel{
                 $this->id = DBFunctions::insertId();
             }
             
-            // Update product_projects table
-            if($status && count($this->projects) > 0){
-                $status = DBFunctions::delete("grand_product_projects", 
-                                              array('product_id' => $this->id),
-                                              true);
-                foreach($this->projects as $project){
-                    if($status){
-                        $status = DBFunctions::insert("grand_product_projects", 
-                                                      array('product_id' => $this->id,
-                                                            'project_id' => $project->id),
-                                                      true);
-                    }
-                }
-            }
-            
             if($this->exclude){
                 DBFunctions::insert('grand_products_exclude',
                                     array('product_id' => $this->id,
@@ -1916,7 +1732,6 @@ class Paper extends BackboneModel{
                 }
                 self::$cache = array();
                 self::$dataCache = array();
-                self::$productProjectsCache = array();
                 self::$exclusionCache = array();
             }
             return $status;
@@ -1962,12 +1777,6 @@ class Paper extends BackboneModel{
                     }
                 }
             }
-            foreach($this->projects as $project){
-                if(!isset($project->id) || $project->id == 0){
-                    $p = Project::newFromName($project->name);
-                    $project->id = $p->getId();
-                }
-            }
             // Update products table
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
@@ -1986,20 +1795,6 @@ class Paper extends BackboneModel{
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);
-            // Update product_projects table
-            if($status){
-                $status = DBFunctions::delete("grand_product_projects", 
-                                              array('product_id' => EQ($this->id)),
-                                              true);
-            }
-            foreach($this->projects as $project){
-                if($status){
-                    $status = DBFunctions::insert("grand_product_projects", 
-                                                  array('product_id' => $this->id,
-                                                        'project_id' => $project->id),
-                                                  true);
-                }
-            }
             DBFunctions::delete('grand_products_exclude',
                                 array('product_id' => $this->id,
                                       'user_id' => $me->id));
@@ -2046,7 +1841,6 @@ class Paper extends BackboneModel{
                 }
                 self::$cache = array();
                 self::$dataCache = array();
-                self::$productProjectsCache = array();
                 self::$exclusionCache = array();
             }
             return $status;
@@ -2064,8 +1858,6 @@ class Paper extends BackboneModel{
                 if($status){
                     // Clean up other tables
                     DBFunctions::delete('grand_product_authors',
-                                        array('product_id' => EQ($this->getId())));
-                    DBFunctions::delete('grand_product_projects',
                                         array('product_id' => EQ($this->getId())));
                     DBFunctions::delete('grand_products_reported',
                                         array('product_id' => EQ($this->getId())));
@@ -2105,7 +1897,6 @@ class Paper extends BackboneModel{
         else{
             $authors = array();
             $contributors = array();
-            $projects = array();
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[$author->getNameForForms()] = array('id' => $author->getId(),
@@ -2118,13 +1909,6 @@ class Paper extends BackboneModel{
                                    'name' => $contributor->getNameForProduct(),
                                    'fullname' => $contributor->getNameForForms(),
                                    'url' => $contributor->getUrl());
-            }
-            if(is_array($this->getProjects())){
-                foreach($this->getProjects() as $project){
-                    $projects[] = array('id' => $project->getId(),
-                                        'name' => $project->getName(),
-                                        'url' => $project->getUrl());
-                }
             }
             $data = $this->getData();
             if(count($data) == 0){
@@ -2142,7 +1926,6 @@ class Paper extends BackboneModel{
                           'data' => $data,
                           'authors' => array_values($authors),
                           'contributors' => array_values($contributors),
-                          'projects' => $projects,
                           'lastModified' => $this->lastModified,
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),

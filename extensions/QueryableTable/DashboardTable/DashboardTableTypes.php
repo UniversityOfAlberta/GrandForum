@@ -8,7 +8,6 @@ define('PERSON_NAME', 100);
 define('PERSON_ROLES', 101);
 define('PERSON_HQP', 102);
 define('PERSON_UNIVERSITY', 104);
-define('PERSON_HOURS', 105);
 define('PERSON_PRODUCTS', 118);
 define('PERSON_SUPERVISORS', 113);
 define('PERSON_BUDGET', 114);
@@ -22,7 +21,6 @@ $cellTypes[PERSON_SUPERVISORS] = "PersonSupervisorsCell";
 $cellTypes[PERSON_BUDGET] = "PersonBudgetCell";
 $cellTypes[PERSON_ALLOCATED_BUDGET] = "PersonAllocatedBudgetCell";
 $cellTypes[PERSON_UNIVERSITY] = "PersonUniversityCell";
-$cellTypes[PERSON_HOURS] = "PersonHoursCell";
 $cellTypes[PERSON_PRODUCTS] = "PersonProductsCell";
 
 //DashboardTable Structures

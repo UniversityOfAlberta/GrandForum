@@ -282,9 +282,6 @@ class ReportXMLParser {
             if(isset($attributes->pdfFiles)){
                 $this->report->setPDFFiles("{$attributes->pdfFiles}");
             }
-            if(isset($attributes->pdfAllProjects) && strtolower($attributes->pdfAllProjects) == 'true'){
-                $this->report->setPDFAllProjects(true);
-            }
             if(isset($attributes->ajax) && strtolower($attributes->ajax) == 'true'){
                 $this->report->ajax = true;
             }

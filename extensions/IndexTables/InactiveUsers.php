@@ -32,11 +32,7 @@ class InactiveUsers extends SpecialPage {
 		    if(count($roles) > 0){
 		        $role = $roles[count($roles) - 1]->getRole();
 		    }
-		    $projects = $person->getProjects();
-            $projs = array();
-            foreach($projects as $project){
-                $projs[] = $project->getName();
-            }
+
             $university = $person->getUniversity();
             if(isset($university['university'])){
                 $projs[] = $university['university'];

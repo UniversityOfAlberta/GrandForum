@@ -56,17 +56,6 @@ class ProductHandler extends AbstractDuplicatesHandler {
                 $percent = round($percent);
             }
             if($percent >= 85){
-                $projs1 = $paper1->getProjects();
-                $projs2 = $paper2->getProjects();
-                $projects1 = array();
-                $projects2 = array();
-                foreach($projs1 as $proj){
-                    $projects1[] = $proj->getName();
-                }
-                foreach($projs2 as $proj){
-                    $projects2[] = $proj->getName();
-                }
-                
                 $auths1 = $paper1->getAuthors();
                 $auths2 = $paper2->getAuthors();
                 $authors1 = array();
@@ -93,7 +82,6 @@ class ProductHandler extends AbstractDuplicatesHandler {
                 $buffer .= $this->beginTable($paper1->getId(), $paper2->getId(), $paper1->getTitle());
                 $buffer .= $this->addDiffHeadRow("{$paper1->getCategory()}: {$paper1->getTitle()}", "{$paper2->getCategory()}: {$paper2->getTitle()}", "{$paper1->getUrl()}", "{$paper2->getUrl()}");
                 $buffer .= $this->addDiffRow($paper1->getType(), $paper2->getType());
-                $buffer .= $this->addDiffRow(implode(" ", $projects1), implode(" ", $projects2));
                 $buffer .= $this->addDiffRow(implode(" ", $authors1), implode(" ", $authors2));
                 $buffer .= $this->addDiffRow($paper1->getStatus(), $paper2->getStatus());
                 $buffer .= $this->addDiffRow($paper1->getDate(), $paper2->getDate());

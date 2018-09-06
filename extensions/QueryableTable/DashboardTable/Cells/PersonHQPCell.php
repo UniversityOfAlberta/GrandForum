@@ -25,22 +25,7 @@ class PersonHQPCell extends DashboardCell {
             }
         }
         if(isset($params[2])){
-            $project = Project::newFromName($params[2]);
-            if($project != null && $project->getName() != null){
-                $this->obj = $project;
-                $person = $table->obj;
-                $hqps = $person->getHQPDuring($start, $end);
-                $values = array();
-                foreach($hqps as $hqp){
-                    if($hqp->isMemberOfDuring($project, $start, $end)){
-                        $uni = $hqp->getUniversity();
-                        $position = ($uni['position'] != "") ? $uni['position'] : "Other";
-                        $values[$position][] = $hqp->getId();
-                    }
-                }
-                $this->setValues($values);
-                $this->sortByPosition();
-            }
+            // Used to be for projects
         }
         else{
             $person = $table->obj;
@@ -114,7 +99,7 @@ class PersonHQPCell extends DashboardCell {
     }
     
     function getHeaders(){
-        return array("Projects", "Full Name", "Title", "University");
+        return array("Full Name", "Title", "University");
     }
     
     function render(){
@@ -145,20 +130,6 @@ class PersonHQPCell extends DashboardCell {
         global $wgServer, $wgScriptPath;
         $hqp = Person::newFromId($item);
         $uni = $hqp->getUniversity();
-        if($this->start != null && $this->end != null){
-            $projects = $hqp->getProjectsDuring($this->start, $this->end);
-        }
-        else{
-            $projects = $hqp->getProjects();
-        }
-        $projectNames = array();
-        if(is_array($projects)){
-            foreach($projects as $project){
-                if(!$project->isSubProject()){
-                    $projectNames[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
-                }
-            }
-        }
         $style = "";
         $inactive = "";
         if($hqp->isRole(INACTIVE)){
@@ -211,12 +182,7 @@ class PersonHQPCell extends DashboardCell {
 	            $movedOnString .= " on {$when}";
 	        }
 	    }
-	    $projString = "";
-	    if($movedOnString != "" && count($projectNames) > 0){
-	        $projString .= " / ";
-	    }
-	    $projString .= implode(", ", $projectNames);
-        $details = "<td style='$style;'><span class='pdfnodisplay'>".implode(", ", $projectNames)."</span></td><td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'><span class='pdfnodisplay'>{$posString}</span></td><td style='$style;'>{$uniString}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$movedOnString}{$projString}</i></div></td>";
+        $details = "<td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'><span class='pdfnodisplay'>{$posString}</span></td><td style='$style;'>{$uniString}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$movedOnString}{$projString}</i></div></td>";
         return $details;
     }
 }

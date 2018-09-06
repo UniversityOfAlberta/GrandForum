@@ -90,11 +90,6 @@ class DashboardReportItem extends StaticReportItem {
 	        $project = $this->getReport()->project;
             $dashboard = $dashboard->copy();
             $dashboard->filter(HEAD, array('Total:'));
-            foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $proj){
-                if($proj->getId() != $project->getId()){
-                    $dashboard = $dashboard->filter(PERSON_PROJECTS, array("%{$proj->getName()}%"));
-                }
-            }
         }
         return $dashboard;
 	}

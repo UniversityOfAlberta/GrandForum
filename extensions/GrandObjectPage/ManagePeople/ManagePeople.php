@@ -19,8 +19,6 @@ class ManagePeople extends BackbonePage {
                      'manage_people_row',
                      'edit_roles',
                      'edit_roles_row',
-                     'edit_projects',
-                     'edit_projects_row',
                      'edit_universities',
                      'edit_universities_row',
                      'edit_relations',
@@ -45,7 +43,6 @@ class ManagePeople extends BackbonePage {
                      'ManagePeopleView',
                      'ManagePeopleRowView',
                      'ManagePeopleEditRolesView',
-                     'ManagePeopleEditProjectsView',
                      'ManagePeopleEditUniversitiesView',
                      'ManagePeopleEditRelationsView');
     }

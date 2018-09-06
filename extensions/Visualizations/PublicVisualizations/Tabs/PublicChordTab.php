@@ -87,18 +87,6 @@ class PublicChordTab extends AbstractTab {
                     $matrix[$project->getId()][$p->getId()] = 0;
                 }
             }
-
-            foreach($people as $k1 => $person){
-                foreach($projects as $project){
-                    if($person->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
-                        foreach($projects as $p){
-                            if($person->isMemberOfDuring($p, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && isset($matrix[$p->getId()]) && $project->getId() != $p->getId()){
-                                $matrix[$project->getId()][$p->getId()] += 1;
-                            }
-                        }
-                    }
-                }
-            }
             
             $found = false;
             foreach($projects as $k1 => $project){

@@ -99,22 +99,7 @@ class EditMember extends SpecialPage{
                                 });
                             }
                            </script>");
-        if(isset($_GET['action']) && $_GET['action'] == "view" && $me->isRoleAtLeast(STAFF)){
-            if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
-                // Admin Accepted
-                EditMember::handleAdminAccept();
-            }
-            else if(isset($_POST['submit']) && $_POST['submit'] == "Ignore"){
-                // Admin Ignored
-                DBFunctions::update('grand_role_request',
-                                    array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
-                                          'staff' => $me->getId(),
-                                          '`ignore`' => 1),
-                                    array('id' => EQ($_POST['id'])));
-            }
-            EditMember::generateViewHTML($wgOut);
-        }
-        else if(!isset($_POST['submit'])){
+        if(!isset($_POST['submit'])){
             // Form not entered yet
             if(isset($_GET['next']) || isset($_POST['next']) || isset($_GET['name'])){
                 if(!isset($_GET['next']) && isset($_POST['next'])){
@@ -220,60 +205,6 @@ class EditMember extends SpecialPage{
         $output = "";
         //$date = "2013-11-28 10:24:25";
         //echo $date."<br />";
-        if($type == "PROJECT"){
-            $projects = explode(", ", $string);
-            if(!is_null($current)){
-                if($current == ""){
-                    $current = array();
-                }
-                else{
-                    $current = explode(", ", $current);
-                }
-            }
-            else{
-                $current = array();
-                $projs = $person->getProjects($date, true);
-                if($projs == null){
-                    $projs = array();
-                }
-                foreach($projs as $project){
-                    $current[] = $project->getName();
-                }
-            }
-            foreach($current as $project){
-                $id = array_search($project, $projects);
-                if($id !== false){
-                    // No Change
-                    unset($projects[$id]);
-                }
-                else{
-                    if(is_numeric($project)){
-                        $project = Project::newFromId($project);
-                        if($project != null){
-                            $project = $project->getName();
-                        }
-                        else{
-                            $project = "";
-                        }
-                    }
-                    $output .= "-{$project}<br />\n";
-                }
-            }
-            foreach($projects as $project){
-                if($project != ""){
-                    if(is_numeric($project)){
-                        $project = Project::newFromId($project);
-                        if($project != null){
-                            $project = $project->getName();
-                        }
-                        else{
-                            $project = "";
-                        }
-                    }
-                    $output .= "+{$project}<br />\n";
-                }
-            }
-        }
         if($type == "ROLE"){
             $roles = explode(", ", $string);
             if(!is_null($current)){
@@ -367,14 +298,14 @@ class EditMember extends SpecialPage{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'>View New Requests</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Staff</th> <th>Role/Project Diff</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Status</th>
+                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Staff</th> <th>Role</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Status</th>
                         </tr></thead><tbody>\n");
         }
         else{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&history=true'>View History</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Role/Project Diff</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Accept</th> <th>Ignore</th>
+                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Role</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Accept</th> <th>Ignore</th>
                         </tr></thead><tbody>\n");
         }
         if($history){
@@ -404,25 +335,7 @@ class EditMember extends SpecialPage{
             $req_user = Person::newFromId($row['requesting_user']);
             $staff = Person::newFromId($row['staff']);
             $person = Person::newFromId($row['user']);
-            $projects = $req_user->getProjects(false, true);
             $projs = array();
-            if(count($projects) > 0){
-                foreach($projects as $project){
-                    if(!$project->isSubProject()){
-                        $subprojs = array();
-                        foreach($project->getSubProjects() as $subproject){
-                            if($req_user->isMemberOf($subproject)){
-                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-                            }
-                        }
-                        $subprojects = "";
-                        if(count($subprojs) > 0){
-                            $subprojects = "(".implode(", ", $subprojs).")";
-                        }
-                        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-                    }
-                }
-            }
             $roles = array();
             if($req_user->getName() != null){
                 foreach($req_user->getRoles() as $role){
@@ -543,135 +456,6 @@ class EditMember extends SpecialPage{
         $checked = ($person->isCandidate()) ? " checked" : "";
         $wgOut->addHTML("&nbsp;<input id='candidate' type='checkbox' name='candidate' value='true' $checked />&nbsp;Candidate?");
         $wgOut->addHTML("</td></tr></table>\n");
-    }
-    
-    function handleAdminAccept(){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
-        $me = Person::newFromWgUser();
-        // Admin Accepted
-        $person = Person::newFromId($_POST['user']);
-        //Process Project Changes
-        MailingList::subscribeAll($person);
-        if($_POST['type'] == "PROJECT"){
-            $unsubscribed = array();
-            $comments = explode("::", $_POST['comment']);
-            $effectiveDates = explode("::", $_POST['effectiveDates']);
-            $current = explode(", ", $_POST['current_role']);
-            $roles = explode(", ", $_POST['role']);
-            foreach($current as $project){
-                // Unsubscribe user from all of his project lists(defer until later loop)
-                $unsubscribed[$project] = true;
-            }
-            foreach($roles as $role){
-                if($role == ""){
-                    //Probably don't need to continue, but to be on the safe side it will
-                    continue;
-                }
-                if(isset($unsubscribed[$role])){
-                    unset($unsubscribed[$role]);
-                }
-                else{
-                    if(is_numeric($role)){
-                        $proj = Project::newFromId($role);
-                        $role = $proj->getName();
-                    }
-                    $_POST['role'] = $role;
-                    APIRequest::doAction('AddProjectMember', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> added to $role");
-                }
-            }
-            foreach($unsubscribed as $key => $unsub){
-                $id1 = array_search($key, $comments);
-                $id2 = array_search($key, $effectiveDates);
-                $comment = "";
-                $effectiveDate = "";
-                $role = $key;
-                if($id1 !== false && isset($comments[$id1+1])){
-                    $comment = $comments[$id1+1];
-                }
-                if($id2 !== false && isset($effectiveDates[$id2+1])){
-                    $effectiveDate = $effectiveDates[$id2+1];
-                }
-                $_POST['comment'] = $comment;
-                $_POST['effective_date'] = $effectiveDate;
-                if(is_numeric($key)){
-                    $proj = Project::newFromId($key);
-                    $key = $proj->getName();
-                }
-                $_POST['role'] = $key;
-                if(Project::newFromName($key) != null){
-                    APIRequest::doAction('DeleteProjectMember', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
-                }
-            }
-        }
-        // Process Role Changes
-        else if($_POST['type'] == "ROLE"){
-            $unsubscribed = array();
-            $comments = explode("::", $_POST['comment']);
-            $effectiveDates = explode("::", $_POST['effectiveDates']);
-            $current = explode(", ", $_POST['current_role']);
-            $roles = explode(", ", $_POST['role']);
-            $roleProjects = unserialize($_POST['role_projects']);
-            foreach($current as $role){
-                // Unsubscribe user from all of his project lists
-                $unsubscribed[$role] = true;
-            }
-            foreach($roles as $role){
-                if($role == ""){
-                    //Probably don't need to continue, but to be safe it will
-                    continue;
-                }
-                if(isset($unsubscribed[$role])){
-                    unset($unsubscribed[$role]);
-                }
-                else{
-                    $_POST['role'] = $role;
-                    APIRequest::doAction('AddRole', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> added to $role");
-                }
-            }
-            foreach($unsubscribed as $key => $unsub){
-                $id1 = array_search($key, $comments);
-                $id2 = array_search($key, $effectiveDates);
-                $comment = "";
-                $effectiveDate = "";
-                $role = $key;
-                if($id1 !== false && isset($comments[$id1+1])){
-                    $comment = $comments[$id1+1];
-                }
-                if($id2 !== false && isset($effectiveDates[$id2+1])){
-                    $effectiveDate = $effectiveDates[$id2+1];
-                }
-                $_POST['comment'] = $comment;
-                $_POST['effective_date'] = $effectiveDate;
-                $_POST['role'] = $key;
-                APIRequest::doAction('DeleteRole', true);
-                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
-            }
-            foreach($person->getRoles() as $role){
-                DBFunctions::delete('grand_role_projects',
-                                    array('role_id' => EQ($role->getId())));
-                if(is_array($roleProjects) && isset($roleProjects[$role->getRole()])){
-                    foreach($roleProjects[$role->getRole()] as $project){
-                        $proj = Project::newFromName($project);
-                        DBFunctions::insert('grand_role_projects',
-                                            array('role_id' => $role->getId(),
-                                                  'project_id' => $proj->getId()));
-                        $_POST['name'] = $person->getName();
-                        $_POST['role'] = $project;
-                        APIRequest::doAction('AddProjectMember', true);
-                    }
-                }
-            }
-        }
-        
-        DBFunctions::update('grand_role_request',
-                            array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
-                                  'staff' => $me->getId(),
-                                  'created' => 1),
-                            array('id' => $_POST['id']));
-        MailingList::subscribeAll($person);
     }
     
     function parse($text){

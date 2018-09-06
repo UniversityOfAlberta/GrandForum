@@ -222,18 +222,9 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);
       if(array_search($uploadNS, AnnokiNamespaces::getPublicNamespaces()) !== false){
-        $project = Project::newFromName($uploadNS);
         $isRole = isset($wgRoles[$uploadNS]);
         $me = Person::newFromId($user->getId());
-        if($project == null || $project->getName() == null){
-            $result = true;
-            return true;
-        }
-        else if(($project != null && $project->getName() != null) && $me->isMemberOf($project)){
-            $result = true;
-            return true;
-        }
-        else if($isRole && $me->isRole($uploadNS)){
+        if($isRole && $me->isRole($uploadNS)){
             $result = true;
             return true;
         }
