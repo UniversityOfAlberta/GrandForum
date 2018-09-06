@@ -5,26 +5,7 @@ if(isExtensionEnabled("AddMember")){
 
 $wgHooks['AddNewAccount'][] = 'UserCreate::afterCreateUser';
 
-$notificationFunctions[] = 'UserCreate::createNotification';
-
 class UserCreate {
-
-    static function createNotification(){
-        global $notifications, $wgUser, $wgServer, $wgScriptPath;
-        $groups = $wgUser->getGroups();
-        if($wgUser->isLoggedIn()){
-            $me = Person::newFromId($wgUser->getId());
-            if($me->isRoleAtLeast(STAFF)){
-                $data = DBFunctions::select(array('grand_user_request'),
-                                            array('requesting_user', 'wpName'),
-                                            array('created' => EQ(0),
-                                                  '`ignore`' => EQ(0)));
-                if(count($data) > 0){
-                    $notifications[] = new Notification("User Creation Request", "There is at least one user creation request pending.", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view");
-                }
-            }
-        }
-    }
     
     function afterCreateUser($wgUser, $byEmail=true){
         global $wgLocalTZoffset, $wgOut;

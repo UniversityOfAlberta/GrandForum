@@ -1,7 +1,5 @@
 <?php
 
-require_once("EditMemberAdmin.php");
-
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['EditMember'] = 'EditMember'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['EditMember'] = $dir . 'EditMember.i18n.php';
