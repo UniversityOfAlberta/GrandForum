@@ -55,6 +55,7 @@ class IndexTable {
         }
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
+        /*
         $selected = ($wgTitle->getText() == "Products") ? "selected" : "";
         $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
         $structure = Product::structure();
@@ -74,35 +75,7 @@ class IndexTable {
         if($wgUser->isLoggedIn()){
             //$tabs['Main']['subtabs'][] = $grantSubTab;
         }
-        
-        if($config->getValue('projectsEnabled') && Project::areThereAdminProjects()){
-            $themesColl = new Collection(Theme::getAllThemes());
-            $themeAcronyms = $themesColl->pluck('getAcronym()');
-            $themeNames = $themesColl->pluck('getName()');
-            $themes = array();
-            foreach($themeAcronyms as $id => $acronym){
-                $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
-            }
-            $project = Project::newFromHistoricName($wgTitle->getNSText());
-            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
-                                                                "$selected");
-            if(count($themes) > 0){
-                $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                             ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
-                             array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
-                
-                $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                    "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                    "$selected");
-            }
-        }
-        
-        /*if(Wiki::newFromTitle("{$config->getValue('networkName')}_Conferences")->exists()){
-            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}_Conferences", "$selected");
-        }*/
+        */
         return true;
     }
 
@@ -142,28 +115,6 @@ class IndexTable {
                 });
             </script>");
             switch ($wgTitle->getText()) {
-                case 'Forms':
-                    if($me->isRoleAtLeast(MANAGER)){
-                        $wgOut->setPageTitle("Forms");
-                        self::generateFormsTable();
-                    }
-                    break;
-                case 'Projects':
-                    $wgOut->setPageTitle("Current Projects");
-                    self::generateProjectsTable('Active', 'Research');
-                    break;
-                case 'CompletedProjects':
-                    $wgOut->setPageTitle("Completed Projects");
-                    self::generateProjectsTable('Ended', 'Research');
-                    break;
-                case 'AdminProjects':
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
-                    self::generateAdminTable();
-                    break;
-                case Inflect::pluralize($config->getValue('projectThemes')):
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
-                    self::generateThemesTable();
-                    break;
                 case 'ALL Courses':
                     $wgOut->setPageTitle("Courses");
                     self::generateCoursesTable();
@@ -180,111 +131,6 @@ class IndexTable {
             $wgOut->output();
             $wgOut->disable();
         }
-        return true;
-    }
-
-    /**
-     * Generates the Table for the projects
-     * Consists of the following columns
-     * Acronym | Name 
-     */
-    private function generateProjectsTable($status, $type="Research"){
-        global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
-        $me = Person::newFromId($wgUser->getId());
-        $themesHeader = "";
-        $idHeader = "";
-        if($type != "Administrative"){
-            $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
-        }
-        if($me->isRoleAtLeast(ADMIN)){
-            $idHeader = "<th>Project Id</th>";
-        }
-        $data = Project::getAllProjectsEver();
-        $wgOut->addHTML("
-            <table class='indexTable' style='display:none;' frame='box' rules='all'>
-            <thead>
-            <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
-        foreach($data as $proj){
-            if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
-                $wgOut->addHTML("<tr>
-                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
-                    <td align='left'>{$proj->getFullName()}</td>");
-                if($type != "Administrative"){
-                    $wgOut->addHTML("<td align='center'>{$proj->getChallenge()->getAcronym()}</td>");
-                }
-                if($idHeader){
-                    $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
-                }
-                $wgOut->addHTML("</tr>\n");
-            }
-        }
-        $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
-
-        return true;
-    }
-
-    /**
-     * Generates the Table for the themes
-     * Consists of the following columns
-     * Theme | Name 
-     */
-    private function generateThemesTable(){
-        global $wgScriptPath, $wgServer, $config, $wgOut;
-        $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
-");
-        $themes = Theme::getAllThemes(PROJECT_PHASE);
-        foreach($themes as $theme){
-            $leaders = array();
-            $coordinators = array();
-            $leads = $theme->getLeaders();
-            $coords = $theme->getCoordinators();
-            foreach($leads as $lead){
-                $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
-            }
-            foreach($coords as $coord){
-                $coordinators[] = "<a href='{$coord->getUrl()}'>{$coord->getNameForForms()}</a>";
-            }
-            $leadersString = implode("; ", $leaders);
-            $coordsString = implode("; ", $coordinators);
-            $wgOut->addHTML("<tr>
-                <td align='left'>
-                <a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
-                </td><td align='left'>
-                {$theme->getName()}
-                </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>");
-        }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
-
-        return true;
-    }
-
-    /**
-     * Generates the Table of Admin Projects
-     */
-    private function generateAdminTable(){
-        global $wgScriptPath, $wgServer, $config, $wgOut;
-        $me = Person::newFromWgUser();
-        $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th></tr></thead><tbody>");
-        $adminProjects = Project::getAllProjects();
-        foreach($adminProjects as $project){
-            if($project->getType() == 'Administrative'){
-                $leaders = array();
-                foreach($project->getLeaders() as $lead){
-                    $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
-                }
-                $leaderString = implode("; ", $leaders);
-                $wgOut->addHTML("<tr>");
-                $wgOut->addHTML("<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>");
-                $wgOut->addHTML("<td>{$project->getFullName()}</td>");
-                $wgOut->addHTML("<td>{$leaderString}</td>");
-                $wgOut->addHTML("</tr>");
-            }
-        }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
-
         return true;
     }
 
@@ -369,39 +215,6 @@ class IndexTable {
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>");
 
-        return true;
-    }
-
-    function generateFormsTable(){
-        global $wgServer, $wgScriptPath, $wgOut;
-        $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>");
-        $forms = Form::getAllForms();
-        foreach($forms as $form){
-            $personName = "";
-            $person = $form->getPerson();
-            if($person != null && $person->getName() != ""){
-                $personName = "<a href='{$person->getType()}'>{$person->getReversedName()}</a>";
-            }
-
-            $university = $form->getUniversity();
-
-            $projectName = "";
-            $project = $form->getProject();
-            if($project != null && $project->getName() != ""){
-                $projectName = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-            $wgOut->addHTML("<tr><td>{$form->getDate()}</td><td><a href='$wgServer$wgScriptPath/index.php/Form:{$form->getId()}'>{$form->getTitle()}</a></td><td>{$personName}</td><td>{$university}</td><td>{$projectName}</td>");
-            
-            $wgOut->addHTML("</tr>");
-        }
-        $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>
-            $(document).ready(function(){
-                $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-                $('.indexTable').dataTable().fnSort([[0,'desc']]);
-            });
-        </script>");
         return true;
     }
         
