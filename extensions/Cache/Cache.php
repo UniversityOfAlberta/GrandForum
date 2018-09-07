@@ -1,9 +1,5 @@
 <?php
 
-define("CACHE_FOLDER", "extensions/Cache/cache/");
-
-require_once("SerializedCache.php");
-
 abstract class Cache {
 
 	var $fileName;

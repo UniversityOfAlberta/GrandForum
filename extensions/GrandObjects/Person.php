@@ -1970,8 +1970,8 @@ class Person extends BackboneModel {
                                           'type' => LIKE('%Supervises%')),
                                     array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
-          return $data[0]['end_date'];
-        return NULL;
+            return $data[0]['end_date'];
+        return null;
     }
     
     /**
