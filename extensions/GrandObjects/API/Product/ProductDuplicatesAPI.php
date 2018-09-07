@@ -9,7 +9,10 @@ class ProductDuplicatesAPI extends RESTAPI {
             $category = $this->getParam('category');
             $title = strtolower($this->getParam('title'));
             $id = $this->getParam('id');
-            $allProducts = Product::getAllPapers('all', $category, 'both', false);
+            $allProducts = DBFunctions::select(array('grand_products'),
+                                               array('id', 'title'),
+                                               array('deleted' => EQ(0),
+                                                     'category' => EQ($category)));
             $duplicates = array();
             $data = DBFunctions::execSQL("SELECT `id1`, `id2`
                                           FROM `grand_ignored_duplicates`
@@ -20,12 +23,15 @@ class ProductDuplicatesAPI extends RESTAPI {
                 $ignores[$row['id2'].'_'.$row['id1']] = true;
             }
             foreach($allProducts as $product){
-                if($product->getId() != $id){
+                if($product['id'] != $id){
                     $percent = 0;
-                    similar_text(strtolower($product->getTitle()), $title, $percent);
+                    similar_text(strtolower($product['title']), $title, $percent);
                     if($percent >= 85){
-	                    if(!isset($ignores[$id.'_'.$product->getId()])){
-                            $duplicates[] = $product->toArray();
+	                    if(!isset($ignores[$id.'_'.$product['id']])){
+	                        $prod = Product::newFromId($product['id']);
+	                        if($prod->canView()){
+                                $duplicates[] = $prod->toArray();
+                            }
                         }
                     }
                 }
