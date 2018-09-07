@@ -36,7 +36,7 @@ class ApplicationsTable extends SpecialPage{
                                     Person::getAllCandidates(EXTERNAL));
         
         $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        $this->projects = Project::getAllProjects();
+        $this->projects = Project::getAllProjectsEver();
         
         $this->startUpLegal2018Applicants = array();
         $this->startUpDev2018Applicants = array();
