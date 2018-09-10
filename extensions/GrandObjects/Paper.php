@@ -25,6 +25,7 @@ class Paper extends BackboneModel{
     var $data = false;
     var $lastModified;
     var $authorsWaiting;
+    var $contributorsWaiting;
     var $deleted;
     var $access_id = 0;
     var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
