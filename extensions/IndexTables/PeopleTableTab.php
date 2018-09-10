@@ -135,7 +135,8 @@ class PeopleTableTab extends AbstractTab {
             }
 
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                $projects = array_merge($person->leadership(), $person->getProjects());
+                $history = ($config->getValue('networkName') == "GlycoNet");
+                $projects = array_merge($person->leadership($history), $person->getProjects($history));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&

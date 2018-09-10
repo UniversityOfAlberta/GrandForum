@@ -4047,7 +4047,7 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT id
+            $res = DBFunctions::execSQL("SELECT p.id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'");
