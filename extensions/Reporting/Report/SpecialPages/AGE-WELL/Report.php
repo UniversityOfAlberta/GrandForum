@@ -159,10 +159,12 @@ class Report extends AbstractReport {
         }
         if($person->isRole(APL) || $person->isRole(HQP)){
             $ccs = array_merge($person->leadership(), $person->getProjects());
+            $alreadyDone = array();
             foreach($ccs as $cc){
-                if($cc->getType() == 'Administrative'){
+                if(!isset($alreadyDone[$cc->getId()]) && $cc->getType() == 'Administrative'){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCReport" && @$_GET['project'] == $cc->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$cc->getName()}", "{$url}CCReport&project={$cc->getName()}", $selected);
+                    $alreadyDone[$cc->getId()] = true;
                 }
             }
         }
