@@ -114,7 +114,6 @@ class ImportBibTeXAPI extends API{
         if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
         if($product->acceptance_date == ""){$product->acceptance_date = @"{$paper['acceptance_date']}";}
         if(!is_array($product->data)){ $product->data = array(); }
-        if(!is_array($product->projects)){ $product->projects = array(); }
         if(!is_array($product->authors)){ $product->authors = array(); }
         if(!$product->exists()){
             $product->access_id = $me->getId();
