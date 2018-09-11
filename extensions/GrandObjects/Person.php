@@ -56,7 +56,9 @@ class Person extends BackboneModel {
                                                       "honors thesis",
                                                       "honor's thesis",
                                                       "honor&#39;s thesis",
-                                                      "undergraduate, honours")
+                                                      "undergraduate, honours",
+                                                      "diplomaed engineer (dipl.ing.)",
+                                                      "diplomaed engineer")
                                     );
 
     var $user = null;
