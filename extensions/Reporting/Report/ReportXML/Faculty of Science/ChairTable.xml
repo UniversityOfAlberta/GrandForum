@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Evaluations" reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true">
+<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true">
     <Permissions>
         <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -404,6 +404,16 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
+                <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
+                        <ReportItem id="code" type="Static">
+                            <![CDATA[
+                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
+                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
                 <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
@@ -523,6 +533,16 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
+                <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
+                        <ReportItem id="code" type="Static">
+                            <![CDATA[
+                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
+                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
                 <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
@@ -642,6 +662,16 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
+                <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
+                        <ReportItem id="code" type="Static">
+                            <![CDATA[
+                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
+                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
                 <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
@@ -761,6 +791,16 @@
                                                      {contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},DEANEA)})}">
+                <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
+                        <ReportItem id="code" type="Static">
+                            <![CDATA[
+                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
+                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
                 <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
