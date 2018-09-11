@@ -64,7 +64,8 @@
                         <th>Name</th>
                         <th>Location</th>
                         <th>Title</th>
-                        <th>E-mail address</th>
+                        <th>Citizenship</th>
+                        <th>Gender</th>
                         <th>Supervisor(s)</th>
                     </tr>
             ]]>
@@ -76,7 +77,8 @@
                         <td>{$user_name}</td>
                         <td>{$user_uni}</td>
                         <td>{$user_level}</td>
-                        <td>{$user_email}</td>
+                        <td>{$user_nationality}</td>
+                        <td>{$user_gender}</td>
                         <td>{$user_supervisors}</td>
                     </tr>
                 ]]>
@@ -251,16 +253,17 @@
                 <table class='wikitable small' rules="all" frame="box" width="100%">
                     <tr>
                         <th rowspan='2'>Name</th>
-                        <th rowspan='2'>Citizenship</th>
-                        <th rowspan='2'>Gender</th>
                         <th rowspan='2'>Title</th>
                         <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
-                        <th colspan='2'>%Salary/time<br />devoted to project</th>
+                        <th colspan='5'>%Salary/time<br />devoted to project</th>
                         <th colspan='2'>Person Years</th>
                     </tr>
                     <tr>
                         <th>Paid from<br />NCE funds</th>
                         <th>Paid from<br />other funds</th>
+                        <th>Source of<br />non-NCE Funds</th>
+                        <th>Category of<br />non-NCE Funds</th>
+                        <th>$ Value of<br />non-NCE Funds</th>
                         <th>Paid from<br />NCE funds</th>
                         <th>Paid from<br />other funds</th>
                     </tr>
@@ -271,9 +274,7 @@
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
-                        <td align='center'>{$user_nationality}</td>
-                        <td align='center'>{$user_gender}</td>
-                        <td align='center'>{$user_level}</td>
+                        <td align='left'>{$user_level}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
@@ -288,7 +289,26 @@
             </ReportItem>
             <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align='left' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
+                <![CDATA[
+                        <td align='left' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
+                <![CDATA[
+                        <td align='right' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_years" type="Static">
+                <![CDATA[
                         <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
                         <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
                     </tr>
@@ -302,9 +322,18 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="false" details="true" showButton="false" totalOnly="true">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Balance of unused funds|University recieving funds" types="Text|Integer|Text|Integer|Text" multiple="true">
             <![CDATA[
+                <h3>Cash Contributions</h3>
                 {$item}<br />
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Description|Amount|University receiving contribution" types="Text|Textarea|Integer|Text" multiple="true">
+            <![CDATA[
+                <h3>In-Kind Contributions</h3>
+                {$item}<br />
+                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-NCE <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
             ]]>
         </ReportItem>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
