@@ -67,6 +67,7 @@ class ReportItemCallback {
             // People
             "my_id" => "getMyId",
             "my_name" => "getMyName",
+            "my_email" => "getMyEmail",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
             "my_roles" => "getMyRoles",
@@ -913,6 +914,11 @@ class ReportItemCallback {
     function getMyName(){
         $person = Person::newFromWgUser();
         return $person->getNameForForms();
+    }
+    
+    function getMyEmail(){
+        $person = Person::newFromWgUser();
+        return $person->getEmail();
     }
     
     function getMyFirstName(){

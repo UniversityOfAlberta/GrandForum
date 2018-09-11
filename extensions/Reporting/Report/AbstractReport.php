@@ -300,7 +300,9 @@ abstract class AbstractReport extends SpecialPage {
                                    "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
-                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                        foreach(explode(",", $_GET['emails']) as $email){
+                            mail($email, "Report Submitted", $message, $headers);
+                        }
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
@@ -959,7 +961,9 @@ abstract class AbstractReport extends SpecialPage {
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
-                mail($_GET['emails'], "Report Submitted", $message, $headers);
+                foreach(explode(",", $_GET['emails']) as $email){
+                    mail($email, "Report Submitted", $message, $headers);
+                }
             }
         }
         if($submit){
