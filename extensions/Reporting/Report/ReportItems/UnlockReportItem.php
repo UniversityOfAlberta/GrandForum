@@ -14,17 +14,21 @@ class UnlockReportItem extends CheckboxReportItem {
         $message = "The Annual Report belonging to {$person->getNameForForms()} has been unlocked by {$me->getNameForForms()}.";
         $headers = "From: {$config->getValue('supportEmail')}" . "\r\n" .
                    "Reply-To: {$config->getValue('supportEmail')}" . "\r\n";
-        if($me->isRole(IAC)){
-            foreach($chairs as $chair){
-                if($chair->getDepartment() == $me->getDepartment() && $wgScriptPath == ""){
-                    mail($chair->getEmail(), $title, $message, $headers);
+        if(isset($value[0]) && !isset($value[1])){
+            if($me->isRole(IAC)){
+                foreach($chairs as $chair){
+                    if(!isset($alreadySent[$chair->getEmail()]) && $chair->getDepartment() == $me->getDepartment() && $wgScriptPath == ""){
+                        mail($chair->getEmail(), $title, $message, $headers);
+                        $alreadySent[$chair->getEmail()] = true;
+                    }
                 }
             }
-        }
-        else if($me->isRole(DEANEA)){
-            foreach($deans as $dean){
-                if($wgScriptPath == ""){
-                    mail($dean->getEmail(), $title, $message." {$dean->getName()}", $headers);
+            else if($me->isRole(DEANEA)){
+                foreach($deans as $dean){
+                    if(!isset($alreadySent[$dean->getEmail()]) && $wgScriptPath == ""){
+                        mail($dean->getEmail(), $title, $message." {$dean->getName()}", $headers);
+                        $alreadySent[$dean->getEmail()] = true;
+                    }
                 }
             }
         }
