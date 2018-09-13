@@ -322,7 +322,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Balance of unused funds|University receiving funds" types="Text|Integer|Text|Integer|Text" multiple="true">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Balance of unused funds|University receiving funds" types="Text|Integer|Text|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
