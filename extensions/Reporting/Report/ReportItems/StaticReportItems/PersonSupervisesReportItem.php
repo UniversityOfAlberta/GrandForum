@@ -168,7 +168,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
     
     function renderForPDF(){
         global $wgOut;
-        $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'false')) == 'true');
+        $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
         $item = $this->getHTML(true);
         if($isTopAnchor){
             // Top Anchor
