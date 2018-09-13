@@ -136,6 +136,7 @@ class ReportItemCallback {
             "id" => "getId",
             "name" => "getName",
             "index" => "getIndex",
+            "value" => "getValue",
             "extraIndex" => "getExtraIndex",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
@@ -896,6 +897,16 @@ class ReportItemCallback {
             $i++;
         }
         return 0;
+    }
+    
+    function getValue(){
+        $default = $this->reportItem->getAttr('default', '');
+		if($default != ''){
+		    return $default;
+		}
+		else{
+		    return $this->reportItem->getBlobValue();
+		}
     }
     
     function getExtraIndex(){

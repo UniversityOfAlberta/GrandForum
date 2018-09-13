@@ -10,7 +10,7 @@
             <SectionPermission id="chairs_advice" permissions="rw" />
         </Role>
         <Role role="IAC">
-            <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
             <SectionPermission id="deans_advice" permissions="" />
@@ -27,7 +27,7 @@
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
+            <SectionPermission id="dean_evaluations" permissions="rw" />
             <SectionPermission id="recommendations" permissions="r" />
             <SectionPermission id="deans_advice" permissions="r" />
             <SectionPermission id="deans_decision" permissions="r" />
@@ -73,7 +73,7 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_lock" type="If" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
-                <ReportItem id="lock" type="Checkbox" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                <ReportItem id="lock" type="Unlock" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
                     <![CDATA[
                         <td style='white-space:nowrap;' align='center'>
                             <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
@@ -123,43 +123,85 @@
                         {$item} Dean's Advice<br />
                 ]]>
             </ReportItem>
-            <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
-                    <![CDATA[
-                            </td>
-                            <td align='center' class='increment'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if_chair" type="If" if="{contains({$my_roles},Chair)}">
+                <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$item}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$item}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
-            <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
-                    <![CDATA[
-                            </td>
-                            <td align='center' class='increment'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if_ea" type="If" if="{contains({$my_roles},EA)}">
+                <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$value}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$value}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="tfoot" type="Static">
@@ -241,7 +283,7 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_lock" type="If" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
-                <ReportItem id="lock" type="Checkbox" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                <ReportItem id="lock" type="Unlock" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
                     <![CDATA[
                         <td style='white-space:nowrap;' align='center'>
                             <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
@@ -301,62 +343,123 @@
                         {$item} Chair's Advice<br />
                 ]]>
             </ReportItem>
-            <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
-                    <![CDATA[
-                            </td>
-                            <td align='center' class='increment'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if_dean" type="If" if="{!contains({$my_roles},DeanEA)}">
+                <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$item}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$item}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$item}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
-            <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
-                    <![CDATA[
-                            </td>
-                            <td align='center' class='increment'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
-                    <![CDATA[
-                            </td>
-                            <td align='center' class='increment'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
-                    <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if_ea" type="If" if="{contains({$my_roles},DeanEA)}">
+                <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$value}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$value}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
+                        <![CDATA[
+                                </td>
+                                <td align='center' class='increment'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$value}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                        <![CDATA[
+                                <td align='center' class='promotion'>{$value}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="tfoot" type="Static">
