@@ -26,7 +26,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
-                if($person->isRole(DEAN)){
+                if($person->isRole(DEAN) || $person->isSubRole("VPR")){
                     continue;
                 }
                 $index = $fec[$person->getId()];
