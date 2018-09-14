@@ -26,6 +26,9 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
+                if($person->isRole(DEAN)){
+                    continue;
+                }
                 $index = $fec[$person->getId()];
                 $fecType = $person->getFECType();
                 $tuple = self::createTuple();
