@@ -50,6 +50,7 @@ class Person extends BackboneModel {
                                                       "b.sc. student",
                                                       "bsc thesis",
                                                       "b.sc. thesis",
+                                                      "bachelors of science",
                                                       "ugrad",
                                                       "undergraduate",
                                                       "undergraduate student",
