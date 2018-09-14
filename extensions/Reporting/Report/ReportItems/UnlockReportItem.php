@@ -17,7 +17,7 @@ class UnlockReportItem extends CheckboxReportItem {
         if(isset($value[0]) && !isset($value[1])){
             if($me->isRole(IAC)){
                 foreach($chairs as $chair){
-                    if(!isset($alreadySent[$chair->getEmail()]) && $chair->getDepartment() == $me->getDepartment() && $wgScriptPath == ""){
+                    if(!isset($alreadySent[$chair->getEmail()]) && $chair->getDepartment() == $me->getDepartment() && $me->getId() != $chair->getId() && $wgScriptPath == ""){
                         mail($chair->getEmail(), $title, $message, $headers);
                         $alreadySent[$chair->getEmail()] = true;
                     }
@@ -25,7 +25,7 @@ class UnlockReportItem extends CheckboxReportItem {
             }
             else if($me->isRole(DEANEA)){
                 foreach($deans as $dean){
-                    if(!isset($alreadySent[$dean->getEmail()]) && $wgScriptPath == ""){
+                    if(!isset($alreadySent[$dean->getEmail()]) && $me->getId() != $dean->getId() && $wgScriptPath == ""){
                         mail($dean->getEmail(), $title, $message." {$dean->getName()}", $headers);
                         $alreadySent[$dean->getEmail()] = true;
                     }
