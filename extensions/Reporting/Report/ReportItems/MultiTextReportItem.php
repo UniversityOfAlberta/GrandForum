@@ -126,12 +126,13 @@ EOF;
                             $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                            $matches[2] = str_replace('\,', '\comma', $matches[2]);
                             $matches = @explode(",", $matches[2]);
-                            if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                            if(array_search(@str_replace(',', '\comma', $value[$index]), $matches) === false && @$value[$index] != ""){
                                 $item .= @"<option selected>{$value[$index]}</option>";
                             }
                             foreach($matches as $match){
-                                $match = trim($match);
+                                $match = trim(str_replace('\comma', ',', $match));
                                 $item .= "<option>{$match}</option>";
                             }
                             $item .= "</select></td>\" + \n";
@@ -292,12 +293,13 @@ EOF;
                         $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                        $matches[2] = str_replace('\,', '\comma', $matches[2]);
                         $matches = @explode(",", $matches[2]);
-                        if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                        if(array_search(@str_replace(',', '\comma', $value[$index]), $matches) === false && @$value[$index] != ""){
                             $item .= @"<option selected>{$value[$index]}</option>";
                         }
                         foreach($matches as $match){
-                            $match = trim($match);
+                            $match = trim(str_replace('\comma', ',', $match));
                             if($match == @$value[$index]){
                                 $item .= "<option selected>{$match}</option>";
                             }

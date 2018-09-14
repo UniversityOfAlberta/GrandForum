@@ -322,18 +322,17 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Balance of unused funds|University receiving funds" types="Text|Integer|Text|Integer|Text" multiple="true">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|ComboBox(Bachelors Salaries - Canadian and Permanent Residents,Bachelors Salaries - Foreign,Masters Salaries - Canadian and Permanent Residents,Masters - Foreign,Doctorate Salaries - Canadian and Permanent Residents,Doctorate Salaries - Foreign,Post-doctoral Salaries - Canadian and Permanent Residents,Post-doctoral Salaries - Foreign,Equipment,Materials\, supplies and other expenditures,Travel)|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
                 
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Description|Amount|University receiving contribution" types="Text|Textarea|Integer|Text" multiple="true">
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount|Use of Funds|Description|University receiving contribution" types="Text|Integer|ComboBox(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel)|Textarea|Text" multiple="true">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}<br />
-                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-NCE <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
             ]]>
         </ReportItem>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
