@@ -87,7 +87,13 @@
         <ReportItem id="hqp_table" type="StaticReportItem">
             <![CDATA[
                 </table>
-                </p>
+                </p><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+            <![CDATA[
+                <p><b>Partners:</b>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
