@@ -322,7 +322,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|ComboBox(Bachelors Salaries - Canadian and Permanent Residents,Bachelors Salaries - Foreign,Masters Salaries - Canadian and Permanent Residents,Masters - Foreign,Doctorate Salaries - Canadian and Permanent Residents,Doctorate Salaries - Foreign,Post-doctoral Salaries - Canadian and Permanent Residents,Post-doctoral Salaries - Foreign,Equipment,Materials\, supplies and other expenditures,Travel)|Textarea|Integer|Text" multiple="true">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|ComboBox(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel)|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
