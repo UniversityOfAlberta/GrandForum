@@ -60,7 +60,7 @@
             <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
                 <![CDATA[
                     <h2>Honors and Awards</h2>
-                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <table class='wikitable' frame='box' rules='all' width='100%' style='page-break-inside: avoid;'>
                         <thead>
                             <tr>
                                 <th>Title</th>
