@@ -92,7 +92,7 @@
         </ReportItem>
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
-                <p><b>Partners:</b>
+                <p><b>Partners and Collaborators:</b>
                 {$item}
             ]]>
         </ReportItem>

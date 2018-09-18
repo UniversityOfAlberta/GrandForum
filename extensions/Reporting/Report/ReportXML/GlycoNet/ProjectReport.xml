@@ -262,8 +262,8 @@
         </ReportItem>
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
-                <p><b>Partners:</b><br />
-                    List of individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that are involved in the project (e.g. research, KTEE)
+                <p><b>Partners and Collaborators:</b><br />
+                    List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.
                 </p>
                 {$item}
             ]]>
@@ -792,7 +792,7 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then each column would be 25%.</p>
+                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then the "Paid from NCE funds" and "Paid from other funds" columns would each be 25%.</p>
                 <script type="text/javascript">
                     var calcs = function(){
                         var rows = $(".hqp-budget tbody tr");
@@ -821,6 +821,7 @@
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
         <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|ComboBox(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel)|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
             <![CDATA[
+                Contact information for each funding source described in the tables below should be entered into the "Partners and Collaborators" table in the Project Information tab.
                 <h3>Cash Contributions</h3>
                 {$item}
                 <small>*Add additional lines for different uses of funds from the same source</small>
