@@ -13,8 +13,8 @@
     $person = Person::newFromName($argv[0]);
     $ccv = file_get_contents($argv[1]);
     
-    $publications = count($person->getPapers('Publication'));
-    $presentations = count($person->getPapers('Presentation'));
+    $publications = count($person->getPapersAuthored('Publication', '0000-00-00 00:00:00', '2100-01-01 00:00:00'));
+    $presentations = count($person->getPapersAuthored('Presentation', '0000-00-00 00:00:00', '2100-01-01 00:00:00'));
     $grants = count($person->getGrants());
     $hqp = count($person->getHQP(true));
     
@@ -30,9 +30,9 @@
     echo "============================\n";
     echo "              Forum |  CCV |\n";
     echo "============================\n";
-    printf("Publications:  %4s | %4s |\n", $publications, count($nJournals) + count($nConferences) + count($nBooks));
-    printf("Presentations: %4s | %4s |\n", $presentations, count($nPresentations));
-    printf("Grants:        %4s | %4s |\n", $grants, count($nGrants));
-    printf("HQP:           %4s | %4s |\n", $hqp, count($nHQP));
+    printf("Publications:  %4s | %4s |\n", $publications, count($nJournals[0]) + count($nConferences[0]) + count($nBooks[0]));
+    printf("Presentations: %4s | %4s |\n", $presentations, count($nPresentations[0]));
+    printf("Grants:        %4s | %4s |\n", $grants, count($nGrants[0]));
+    printf("HQP:           %4s | %4s |\n", $hqp, count($nHQP[0]));
     echo "============================\n";
 ?>

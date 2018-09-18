@@ -2771,16 +2771,17 @@ class Person extends BackboneModel {
                         //echo "Rule 103 {$grant->getTitle()}<br />";
                         continue;
                     }
-                    else if(strpos($grant->getProjectId(), 'B') === 0 ||
-                            strpos($grant->getProjectId(), 'P') === 0 ||
-                            strtolower($grant->getSponsor()) === "national research council of canada" ||
-                            strstr(strtolower($grant->getDescription()), "billing") !== false ||
-                            strstr(strtolower($grant->getDescription()), "charges") !== false ||
-                            strstr(strtolower($grant->getDescription()), "service") !== false ||
-                            strstr(strtolower($grant->getDescription()), "maintenance") !== false ||
-                            strstr(strtolower($grant->getDescription()), "assistant") !== false ||
-                            strstr(strtolower($grant->getDescription()), "lecture") !== false ||
-                            strstr(strtolower($grant->getDescription()), "expenses") !== false){
+                    else if($this->getId() != "106" && // Exception
+                            (strpos($grant->getProjectId(), 'B') === 0 ||
+                             strpos($grant->getProjectId(), 'P') === 0 ||
+                             strtolower($grant->getSponsor()) === "national research council of canada" ||
+                             strstr(strtolower($grant->getDescription()), "billing") !== false ||
+                             strstr(strtolower($grant->getDescription()), "charges") !== false ||
+                             strstr(strtolower($grant->getDescription()), "service") !== false ||
+                             strstr(strtolower($grant->getDescription()), "maintenance") !== false ||
+                             strstr(strtolower($grant->getDescription()), "assistant") !== false ||
+                             strstr(strtolower($grant->getDescription()), "lecture") !== false ||
+                             strstr(strtolower($grant->getDescription()), "expenses") !== false)){
                         // Rule 104: Project ID scan – Billing/Journal productions/services
                         //echo "Rule 104 {$grant->getTitle()}<br />";
                         continue;
