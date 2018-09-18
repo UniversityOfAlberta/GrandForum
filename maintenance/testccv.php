@@ -19,7 +19,7 @@
     $hqp = count($person->getHQP(true));
     
     preg_match_all('/9a34d6b273914f18b2273e8de7c48fd6/', $ccv, $nJournals);
-    preg_match_all('/7cc778c33e64469987c55e2078be60d3/', $ccv, $nConferences);
+    preg_match_all('/4b9f909503cd4c8aa8d826c87d6d874d/', $ccv, $nConferences);
     preg_match_all('/fd8f2ffe3f5c43db8b5c3f72d8ffd994/', $ccv, $nBooks);
     preg_match_all('/c7ce6f054e0941ea8b27127dbd4a26d0/', $ccv, $nPresentations);
     preg_match_all('/aaedc5454412483d9131f7619d10279e/', $ccv, $nGrants);
