@@ -680,6 +680,10 @@ class ReportItemCallback {
    
     function getProductCitation(){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($this->reportItem->personId > 0){
+            echo $this->reportItem->personId;
+            return $product->getCitation(true, true, false, false, $this->reportItem->personId);
+        }
         return $product->getCitation(true, true, false, false, true);
     }
     
