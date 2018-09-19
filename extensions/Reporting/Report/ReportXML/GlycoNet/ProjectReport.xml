@@ -263,7 +263,7 @@
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Partners and Collaborators:</b><br />
-                    List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.
+                    List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. <b>Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.</b>
                 </p>
                 {$item}
             ]]>
