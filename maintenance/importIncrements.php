@@ -36,11 +36,11 @@
                 foreach($incs as $year => $inc){
                     $inc = @number_format($inc, 2);
                     if(($inc == "0" || $inc == "0.00") && 
-                       (strtolower($reas[$year]) == "a" ||
-                        strtolower($reas[$year]) == "b" ||
-                        strtolower($reas[$year]) == "c" ||
-                        strtolower($reas[$year]) == "d")){
-                        $inc .= strtolower($reas[$year]);
+                       (strtoupper($reas[$year]) == "A" ||
+                        strtoupper($reas[$year]) == "B" ||
+                        strtoupper($reas[$year]) == "C" ||
+                        strtoupper($reas[$year]) == "D")){
+                        $inc .= strtoupper($reas[$year]);
                     }
                     else if(trim($reas[$year]) != ""){
                         $inc .= " ({$reas[$year]})";
