@@ -19,6 +19,7 @@ class Person extends BackboneModel {
     static $subRoleCache = array();
     static $fecInfoCache = array();
     static $salaryCache = array();
+    static $personSalaryCache = array();
     
     static $studentPositions = array('msc'   => array("msc",
                                                       "m.sc.",
@@ -85,7 +86,6 @@ class Person extends BackboneModel {
     var $lastName;
     var $middleName;
     var $university;
-    var $salary;
     var $universityDuring;
     var $groups;
     var $roles;
@@ -827,17 +827,29 @@ class Person extends BackboneModel {
     }
     
     function getSalary($year){
-        if($this->salary === null){
+        if(!isset(self::$personSalaryCache[$this->id][$year])){
             $salary = DBFunctions::select(array('grand_user_salaries'),
-                                      array('salary'),
-                                      array('user_id' => $this->getId(),
-                                            'year' => $year));
-            $this->salary = @$salary[0]['salary'];
-            if($this->salary == null){
-                $this->salary = 0;
-            }
+                                          array('salary', 'increment'),
+                                          array('user_id' => $this->getId(),
+                                                'year' => $year));
+            self::$personSalaryCache[$this->id][$year] = @$salary[0];
         }
-        return $this->salary;
+        return @self::$personSalaryCache[$this->id][$year]['salary'];
+    }
+    
+    function getIncrement($year){
+        if(!isset(self::$personSalaryCache[$this->id][$year])){
+            $salary = DBFunctions::select(array('grand_user_salaries'),
+                                          array('salary', 'increment'),
+                                          array('user_id' => $this->getId(),
+                                                'year' => $year));
+            self::$personSalaryCache[$this->id][$year] = @$salary[0];
+        }
+        $increment = @self::$personSalaryCache[$this->id][$year]['increment'];
+        if($increment == ""){
+            return "N/A";
+        }
+        return $increment;
     }
     
     static function getSalaryIncrement($year, $type){

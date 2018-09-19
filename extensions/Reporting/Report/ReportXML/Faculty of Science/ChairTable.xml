@@ -132,7 +132,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$item}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
@@ -151,7 +151,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$item}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
@@ -172,7 +172,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$value}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
@@ -191,7 +191,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$value}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
@@ -352,7 +352,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$item}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
@@ -371,7 +371,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$item}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
@@ -390,7 +390,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$item}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
@@ -411,7 +411,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$value}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
@@ -430,7 +430,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$value}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
@@ -449,7 +449,7 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
                                 </td>
-                                <td align='center' class='increment'>{$value}</td>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
@@ -598,7 +598,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td align='center' class='increment'>{$item}</td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
@@ -727,7 +727,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td align='center' class='increment'>{$item}</td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
@@ -856,7 +856,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td align='center' class='increment'>{$item}</td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
@@ -985,7 +985,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td align='center' class='increment'>{$item}</td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">

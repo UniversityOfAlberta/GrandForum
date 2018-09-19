@@ -19,7 +19,7 @@ class SelectReportItem extends AbstractReportItem {
 
         $output = "<select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";
         
-        $output = $this->processCData("<div>{$output}</div>");
+        $output = $this->processCData("<div style='display:inline-block;'>{$output}</div>");
 		$wgOut->addHTML($output);
 	}
 	
