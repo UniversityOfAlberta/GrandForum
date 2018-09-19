@@ -46,6 +46,12 @@
                         font-size:11px !important;
                     }
                 </style>
+                <div style='float:right; margin-top: -45px;'><button id='generateAll' type='button'>Generate All Evaluations</button></div>
+                <script type='text/javascript'>
+                    $('#generateAll').click(function(){
+                        $('.generateButton').click();
+                    });
+                </script>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -107,7 +113,7 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
                             {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
@@ -115,7 +121,7 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" class="downloadButton{$user_id}" section="Chair Advice" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
                             {$item} <a class="viewCA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Chair+Advice&userId={$user_id}'>Chair's Advice</a><br />
@@ -127,6 +133,20 @@
                         {$item} Dean's Advice<br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_ca" type="If" if="{contains({$user_sub_roles},Chair's Advice)}">
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItemSet id="if_chair" type="If" if="{contains({$my_roles},Chair)}">
                 <ReportItemSet id="if_not_ca" type="If" if="{!contains({$user_sub_roles},Chair's Advice)}">
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
@@ -254,6 +274,12 @@
                         font-size:11px !important;
                     }
                 </style>
+                <div style='float:right; margin-top: -45px;'><button id='generateAll' type='button'>Generate All Evaluations</button></div>
+                <script type='text/javascript'>
+                    $('#generateAll').click(function(){
+                        $('.generateButton').click();
+                    });
+                </script>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -322,31 +348,52 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                <ReportItem id="dr" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="dr" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
-                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             {$item} <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
-                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             {$item} <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="ca_download" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="ca_download" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Chair's Advice<br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_da" type="If" if="{contains({$user_sub_roles},Dean's Advice)}">
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="if_dd" type="If" if="{contains({$user_sub_roles},Dean's Decision)}">
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItemSet id="if_dean" type="If" if="{!contains({$my_roles},DeanEA)}">
                 <ReportItemSet id="if_dr" type="If" if="{contains({$user_sub_roles},Dean's Recommendation)}">
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="50px">

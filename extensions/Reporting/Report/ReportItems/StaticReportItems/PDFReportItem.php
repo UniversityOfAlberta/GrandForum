@@ -47,7 +47,8 @@ class PDFReportItem extends StaticReportItem {
                 $wgOut->addHTML($this->processCData("{$buttonName}"));
             }
             else{
-                $wgOut->addHTML($this->processCData(""));
+                $item = "<a class='$class' style='width:{$width};display:none;' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+                $wgOut->addHTML($this->processCData($item));
             }
         }
     }

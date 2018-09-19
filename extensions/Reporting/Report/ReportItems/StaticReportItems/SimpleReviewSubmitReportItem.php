@@ -17,6 +17,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
         $onlyGenerate = (strtolower($this->getAttr("onlyGenerate", "false")) == "true");
+        $specialDownload = $this->getAttr("specialDownload", "");
         $section = $this->getAttr("section", "");
         if($section != ""){
             $section = "&section={$section}";
@@ -29,13 +30,13 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
-		            $('#generateButton').click(function(){
-		                $('#generateButton').prop('disabled', true);
-	                    $('#generate_success').html('');
-                        $('#generate_success').css('display', 'none');
-                        $('#generate_error').html('');
-                        $('#generate_error').css('display', 'none');
-                        $('#generate_throbber').css('display', 'inline-block');
+		            $('#generateButton{$this->getPostId()}').click(function(){
+		                $('#generateButton{$this->getPostId()}').prop('disabled', true);
+	                    $('#generate_success{$this->getPostId()}').html('');
+                        $('#generate_success{$this->getPostId()}').css('display', 'none');
+                        $('#generate_error{$this->getPostId()}').html('');
+                        $('#generate_error{$this->getPostId()}').css('display', 'none');
+                        $('#generate_throbber{$this->getPostId()}').css('display', 'inline-block');
 		                saveAll(function(){
 		                    $.ajax({
 		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}{$section}{$userId}&generatePDF', 
@@ -59,21 +60,24 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                             $('#generate_success').css('display', 'block');
                                                             $('#download_button_' + index).attr('name', tok);
                                                             $('#download_button_' + index).html(name + ' PDF');
+                                                            
+                                                            $('$specialDownload').attr('href', '$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=' + tok);
+                                                            $('$specialDownload').show();
                                                         }
                                                         else{
-                                                            $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                                            $('#generate_error').css('display', 'block');
+                                                            $('#generate_error{$this->getPostId()}').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                            $('#generate_error{$this->getPostId()}').css('display', 'block');
                                                         }
                                                     }
-		                                            $('#generate_throbber').css('display', 'none');
-		                                            $('#generateButton').removeAttr('disabled');
+		                                            $('#generate_throbber{$this->getPostId()}').css('display', 'none');
+		                                            $('#generateButton{$this->getPostId()}').removeAttr('disabled');
 		                                      },
 		                            error : function(response){
                                                   // Error
-                                                  $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                                  $('#generate_error').css('display', 'block');
-		                                          $('#generateButton').removeAttr('disabled');
-		                                          $('#generate_throbber').css('display', 'none');
+                                                  $('#generate_error{$this->getPostId()}').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                  $('#generate_error{$this->getPostId()}').css('display', 'block');
+		                                          $('#generateButton{$this->getPostId()}').removeAttr('disabled');
+		                                          $('#generate_throbber{$this->getPostId()}').css('display', 'none');
 		                                      }
 		                    });
 		                });
@@ -91,14 +95,15 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $disabled = "disabled='true'";
 		}
 		if(!$onlyGenerate){
-		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
-		$wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
-		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
+		    $wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
+		    $wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		                     <div style='display:none;' class='error' id='generate_error{$this->getPostId()}'></div><div style='display:none;' class='success' id='generate_success{$this->getPostId()}'></div></p>");
         }
         else{
-            $wgOut->addHTML("<button id='generateButton' type='button' $disabled>Generate PDF</button>");
+            $wgOut->addHTML("<button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />");
             return;
         }
+        
 		$wgOut->addHTML("<h3>2. Download the PDF</h3>
 		Verify that the pdf looks correct.");
 		
