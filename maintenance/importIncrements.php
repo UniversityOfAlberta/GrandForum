@@ -40,7 +40,7 @@
                         strtoupper($reas[$year]) == "B" ||
                         strtoupper($reas[$year]) == "C" ||
                         strtoupper($reas[$year]) == "D")){
-                        $inc .= strtoupper($reas[$year]);
+                        $inc = "0".strtoupper($reas[$year]);
                     }
                     else if(trim($reas[$year]) != ""){
                         $inc .= " ({$reas[$year]})";
