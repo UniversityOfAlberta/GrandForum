@@ -16,6 +16,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
+        $onlyGenerate = (strtolower($this->getAttr("onlyGenerate", "false")) == "true");
         $section = $this->getAttr("section", "");
         if($section != ""){
             $section = "&section={$section}";
@@ -89,10 +90,15 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
 		}
+		if(!$onlyGenerate){
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
 		$wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
-
+        }
+        else{
+            $wgOut->addHTML("<button id='generateButton' type='button' $disabled>Generate PDF</button>");
+            return;
+        }
 		$wgOut->addHTML("<h3>2. Download the PDF</h3>
 		Verify that the pdf looks correct.");
 		
