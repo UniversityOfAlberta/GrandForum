@@ -60,17 +60,58 @@ class ProjectBudgetTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
+        global $config, $wgMessage;
         $me = Person::newFromWgUser();
+        $error = null;
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
                 foreach($file['tmp_name'] as $year => $tmp){
                     if($tmp != ""){
                         $contents = file_get_contents($tmp);
-                        
-                        $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
-                        $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
-                        $blb->store($contents, $addr);
-                        $this->updateAllocations($year, $contents);
+                        // Network specific Budget Validations
+                        if($config->getValue('networkName') == "FES"){
+                            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
+                            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
+                            $budget = $multiBudget->getBudget(0);
+                            $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
+                            for($i=0; $i < $nYears; $i++){
+                                $request  = $budget->copy()
+                                                   ->where(HEAD1_ROW, array('Request From Future Energy System'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $other    = $budget->copy()
+                                                   ->where(HEAD2_ROW, array('Other Federal Funding'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $external = $budget->copy()
+                                                   ->where(HEAD2_ROW, array('External Funding (not Federal)'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $total    = $budget->copy()
+                                                   ->where(HEAD1_ROW, array('Total Funding for the project'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                                   
+                                $requestVal  = floatval(str_replace("$", "", $request->toString()));
+                                $otherVal    = floatval(str_replace("$", "", $other->toString()));
+                                $externalVal = floatval(str_replace("$", "", $external->toString()));
+                                $totalVal    = floatval(str_replace("$", "", $total->toString()));
+
+                                if(($request->size() == 0 ||
+                                    $other->size() == 0 ||
+                                    $external->size() == 0 ||
+                                    $total->size() == 0) ||
+                                   ($requestVal + $otherVal + $externalVal) != $totalVal){
+                                    $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
+                                } 
+                            }
+                        }
+                        if($error == null){
+                            $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
+                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                            $blb->store($contents, $addr);
+                            $this->updateAllocations($year, $contents);
+                        }
                     }
                 }
             }
@@ -125,6 +166,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_CARRYOVER', 0);
                 $blb->store($carryOver, $addr);
             }
+        }
+        if($error != null){
+            return $error;
         }
         redirect($this->project->getUrl()."?tab=budget");
     }
