@@ -177,6 +177,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
             $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
             
             for($i=$endYear+1; $i >= $startYear; $i--){
+                $firstBudget = ($i == $endYear+1);
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
@@ -220,7 +221,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $alloc = "\$".number_format($allocation);
                 }
                 
-                if($edit){
+                if($edit && $firstBudget){
                     if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
@@ -236,7 +237,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
                 
-                if(!$edit){
+                if(!$edit || !$firstBudget){
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
                     if($config->getValue('networkName') == "FES"){
@@ -311,7 +312,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         </script>";
                     }
                 }
-                if($edit && $config->getValue('networkName') == "FES"){
+                if($edit && $config->getValue('networkName') == "FES" && $firstBudget){
                     $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
                     $this->html .= "<h3>Budget Justification</h3>
                                     <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
