@@ -94,6 +94,9 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // Whether to allow users to upload photos (if false, only Staff+ will be able to)
+    $config->setValue("allowPhotoUpload", true);
+    
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
