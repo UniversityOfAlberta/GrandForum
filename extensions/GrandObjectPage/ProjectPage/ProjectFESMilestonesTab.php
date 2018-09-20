@@ -347,6 +347,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         }
         $milestones = array_merge($uofaMilestones, $otherMilestones);
         
+        usort($milestones, function($a, $b){
+            $aQuarters = explode(",", $a->quarters);
+            $bQuarters = explode(",", $b->quarters);
+            return ($aQuarters[count($aQuarters)-1] > $bQuarters[count($bQuarters)-1]);
+        });
+        
         $this->html .= "<style type='text/css' rel='stylesheet'>
             .left_border {
                 border-left: 2px solid #555555;
