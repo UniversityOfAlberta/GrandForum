@@ -829,10 +829,10 @@ class CCVExport extends SpecialPage {
                 $val = self::setChild($field, 'value', 'type', 'Year');
                 self::setAttribute($val, 'format', 'yyyy/MM');
                 if($product->getStatus() == "Published"){
-                    $product_date = str_replace('-', '/', $product->getDate());
+                    $product_date = str_replace('-', '/', substr($product->getDate(), 0, 7));
                 }
                 else{
-                    $product_date = str_replace('-', '/', $product->getAcceptanceDate());
+                    $product_date = str_replace('-', '/', substr($product->getAcceptanceDate(), 0, 7));
                 }
                 $field->value = $product_date;
                 
