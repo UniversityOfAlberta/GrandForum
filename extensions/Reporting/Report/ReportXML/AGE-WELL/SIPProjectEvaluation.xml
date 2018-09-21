@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's Project Scorecard and Reporting Framework" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation" disabled="false">
     <ReportSection id="overview">
         <ReportItem id="instructions">
             <![CDATA[
