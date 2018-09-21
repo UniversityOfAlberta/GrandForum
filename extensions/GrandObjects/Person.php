@@ -1096,6 +1096,15 @@ class Person extends BackboneModel {
             // User is NI, therefore can edit anyone who is not in a committee or higher
             return true;
         }
+        if($this->isRole(PA)){
+            // User is a Project Assistant, therefore can edit anyone who is on their project
+            foreach($this->getProjects() as $project){
+                // Allow Project Assistants to edit
+                if($me->isRole(PA, $project)){
+                    return true;
+                }
+            }
+        }
         if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
