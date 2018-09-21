@@ -53,19 +53,19 @@ class CCVExport extends SpecialPage {
         }
       
         $wgOut->setPageTitle("Export To CCV");
-        $wgOut->addHTML("<p>You must click \"Reload Page\" to set a time period.</p>");
+        //$wgOut->addHTML("<p>You must click \"Reload Page\" to set a time period.</p>");
         if(isset($_GET['datefrom']) && $_GET['datefrom'] != ""){
             $dateto= date("Y-m-d");
             $datefrom = $_GET['datefrom'];
             if(isset($_GET['dateto']) && $_GET['dateto'] !=""){
                  $dateto = $_GET['dateto'];
             }
-            $wgOut->addHTML("<form><p><b>Date:</b> <input type='date' format='yy-mm-dd' id='datefrom' value={$datefrom} name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' value={$dateto} class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            //$wgOut->addHTML("<form><p><b>Date:</b> <input type='date' format='yy-mm-dd' id='datefrom' value={$datefrom} name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' value={$dateto} class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
             $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML&datefrom={$datefrom}&dateto={$dateto}'>Download XML</a></p>");
 
         }
         else{
-            $wgOut->addHTML("<form><p>Date: <input type='date' format='yy-mm-dd' id='datefrom' name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            //$wgOut->addHTML("<form><p>Date: <input type='date' format='yy-mm-dd' id='datefrom' name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
             $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>Download XML</a></p>");
         }
         // Display export preview
@@ -143,7 +143,7 @@ class CCVExport extends SpecialPage {
         }
         $dom = new DOMDocument(); 
         $person = Person::newFromId($userID);
-        $personCCV = $person->getCCV();
+        $personCCV = "";
 
         // Template Files
         $map_file = getcwd()."/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
@@ -177,7 +177,7 @@ class CCVExport extends SpecialPage {
         $funding_year_map = simplexml_load_file($funding_year_file);
         $funding_source_map = simplexml_load_file($funding_source_file);
 
-        $all_products = $person->getPapers("Publication", false, "both",true,"Public");
+        $all_products = $person->getPapers("Publication", true, "both",true,"Public");
         $prod_sorted = array();
 
         foreach($all_products as $p){
@@ -190,7 +190,7 @@ class CCVExport extends SpecialPage {
             }
         }
         self::setAttribute($ccv, 'dateTimeGenerated', date('Y-m-d H:i:s'));
-
+/*
         $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']");
         $res = CCVExport::mapId($person, 
                                 $id_map, 
@@ -210,7 +210,7 @@ class CCVExport extends SpecialPage {
                                            $phone_map,
                                            $phone,
                                            $section[0]);
-        }
+        }*/
         $counter = 0;
         $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
@@ -231,7 +231,7 @@ class CCVExport extends SpecialPage {
                 $counter += $res;
             }
         }
-
+/*
         $rels = $person->getRelations('Supervises', true);
         $sortedRels = array();
         foreach($rels as $rel){
@@ -278,6 +278,7 @@ class CCVExport extends SpecialPage {
         }
         //HERE
         //==== Grants End ======== //
+        */
         // Format and indent the XML
         $xml_string = $ccv->asXML();
         $xml_string = preg_replace('/generic-cv:section/', 'section', $xml_string);
@@ -753,7 +754,6 @@ class CCVExport extends SpecialPage {
              && isset($item['ccv_id']) && isset($item['ccv_name']))){ 
 
                 $title = htmlentities($product->getTitle(), ENT_COMPAT);
-
                 $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
                 $ccv_el_title = $ccv->xpath("section/field/value[.=\"{$title}\"]/../..");
                 if(count($ccv_el) > 0){
@@ -800,8 +800,8 @@ class CCVExport extends SpecialPage {
                 }
 
                 //Add Data Fields
+                //echo "{$product->getType()}: {$product->getTitle()}\n";
                 $product_data = $product->getData();
-
                 foreach($item->data->field as $data_field){
                     $key = (string) $data_field;
                     if(isset($data_field['ccv_id']) && 
@@ -822,12 +822,18 @@ class CCVExport extends SpecialPage {
                 }
 
                 //Date
+                
                 $field = self::setChild($ccv_item, 'field', 'id', $item->date['ccv_id']);
-                self::setAttribute($field, 'label', $item->date['ccv_name']);
-                $val = self::setChild($field, 'value', 'type', 'YearMonth');
-                self::setAttribute($val, 'format', 'yyyy/MM');
-                $product_date = preg_split('/\-/', $product->getDate());
-                $field->value = $product_date[0].'/'.$product_date[1];
+                self::setAttribute($field, 'label', 'Year');
+                $val = self::setChild($field, 'value', 'type', 'Year');
+                self::setAttribute($val, 'format', 'yyyy');
+                if($product->getStatus() == "Published"){
+                    $product_date = $product->getYear();
+                }
+                else{
+                    $product_date = $product->getAcceptanceYear();
+                }
+                $field->value = $product_date;
                 
                 //Authors
                 $field = self::setChild($ccv_item, 'field', 'id', $item->authors['ccv_id']);
@@ -836,7 +842,14 @@ class CCVExport extends SpecialPage {
                 $product_authors = $product->getAuthors();
                 $auth_arr = array();
                 foreach($product_authors as $a){
-                    $auth_arr[] = $a->getNameForForms();
+                    $authorName = trim($a->getNameForProduct("{%first} {%last}"));
+                    if($person->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") ||
+                       $person->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00")){
+                        $auth_arr[] = $authorName."*";
+                    }
+                    else{
+                        $auth_arr[] = $authorName;
+                    }
                 }
 
                 $val = self::setChild($field, 'value', 'type', 'String');

@@ -21,8 +21,8 @@
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Student"></authors>
             <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -46,8 +46,8 @@
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
             <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -74,8 +74,8 @@
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="51bd72e89f85442a9ae199e75fe5e765" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
             <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -104,7 +104,7 @@
                 <field ccv_id="55de4e145f4f4a10b7cc0eb797e9464b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="96f6d37a0c6041d1a6a8d09f4cb8537b" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="3af9bb3859ad4c8a83094a176627c678" ccv_name="Review Date" label="Review Date"></date>
             <authors ccv_id="fffe619bc6264073b21cb7f8581b77b2" ccv_name="Book Reviewed Authors"></authors>
             <description ccv_id="52508c116e1d46ea91e9715f35317e38" ccv_name="Description / Contribution Value"></description>
@@ -134,8 +134,8 @@
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
             <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -158,8 +158,8 @@
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
             <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -190,8 +190,8 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
             <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -224,8 +224,8 @@
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
             <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -254,8 +254,8 @@
                 <field ccv_id="56b229f58f6749c3902dfcc33854ed36" ccv_name="URL" label="URL" type="String">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="06b9551cd0e8452a80d9c3cc2540ab3c" ccv_name="Authors"></authors>
             <description ccv_id="124a4f172b4246dd92d434a6c0b2fda0" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -279,8 +279,8 @@
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url"  label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -296,7 +296,7 @@
                 <field ccv_id="980b4c7ed330401aa6525e5870b4aae0" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="e859d3e3458640cfae550f4435cbb9b2" ccv_name="Completion Date" label="Completion Date"></date>
             <authors ccv_id="aa63e11228a04494b226a3a9e7e7778f" ccv_name="Supervisor"></authors>
             <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
@@ -316,8 +316,8 @@
                 <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
         </Publication>
 
         <Publication type="Conference Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -347,8 +347,8 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -372,8 +372,8 @@
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -389,8 +389,8 @@
                 <field ccv_id="980b4c7ed330401aa6525e5870b4aae0" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="e859d3e3458640cfae550f4435cbb9b2" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="e859d3e3458640cfae550f4435cbb9b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="aa63e11228a04494b226a3a9e7e7778f" ccv_name="Supervisor"></authors>
             <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -421,8 +421,8 @@
                 <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -437,8 +437,8 @@
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
             <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -455,8 +455,8 @@
                 <field bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
         </Publication>
         
         <Publication type="Poster" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -486,8 +486,8 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
@@ -514,8 +514,8 @@
                 <field ccv_id="8ee878c89ccc43089ee35784a143dddd" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <acceptance_date ccv_name="Date" label="Acceptance Date"></acceptance_date>
-            <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Date" label="Publication Date"></date>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
             <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
