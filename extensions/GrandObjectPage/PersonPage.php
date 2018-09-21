@@ -79,6 +79,13 @@ class PersonPage {
                         }
                     }
                 }
+                foreach($person->getProjects() as $project){
+                    // Allow Project Assistants to edit
+                    if($me->isRole(PA, $project)){
+                        $isSupervisor = true;
+                        break;
+                    }
+                }
                 foreach($me->getThemeProjects() as $project){
                     if($person->isMemberOf($project)){
                         $isSupervisor = true;
