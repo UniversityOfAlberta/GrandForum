@@ -54,6 +54,7 @@ class CCVExport extends SpecialPage {
       
         $wgOut->setPageTitle("Export To CCV");
         //$wgOut->addHTML("<p>You must click \"Reload Page\" to set a time period.</p>");
+        $wgOut->addHTML("<p class='warning'><b>IMPORTANT:</b> Before importing your CV on the Canadian CCV Website, it is advised that you first create a backup CCV XML of your CV.</p>");
         if(isset($_GET['datefrom']) && $_GET['datefrom'] != ""){
             $dateto= date("Y-m-d");
             $datefrom = $_GET['datefrom'];
@@ -231,8 +232,9 @@ class CCVExport extends SpecialPage {
                 $counter += $res;
             }
         }
-/*
-        $rels = $person->getRelations('Supervises', true);
+
+        $rels = array_merge($person->getRelations(SUPERVISES, true),
+                            $person->getRelations(CO_SUPERVISES, true));
         $sortedRels = array();
         foreach($rels as $rel){
             $start_date_array = explode(" ",$rel->getStartDate());
@@ -252,7 +254,7 @@ class CCVExport extends SpecialPage {
                                      $rel, 
                                      $section[0]);
         }
-
+/*
         //=== Grants Start == //
         //change next line into getGrants() once the table has been switched
         foreach($person->getGrants() as $grant){
@@ -543,8 +545,7 @@ class CCVExport extends SpecialPage {
                 $field->addAttribute('label', $item_name);
                 $lov = $field->addChild('lov');
                 $lov->addAttribute('id', '00000000000000000000000100002900');
-                $supers = $hqp->getSupervisors();
-                if(count($supers) > 1){
+                if($rel->getType() == CO_SUPERVISES){
                     self::setValue($lov, "Co-Supervisor");
                 }
                 else{

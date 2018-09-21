@@ -1951,7 +1951,7 @@ class Person extends BackboneModel {
             $papers = $this->getPapers();
             foreach($papers as $p){
                 if($p->getType() == 'Masters Thesis' ||
-                   $p->getType() == 'PhD Thesis'){
+                   $p->getType() == 'PHD Thesis'){
                      $paper = $p;
                      break; 
                 }
@@ -1976,13 +1976,13 @@ class Person extends BackboneModel {
 
     /**
      * Returns when this Person's degree ended (NOTE: This is a guesstimate)
-     * @return string The date that this Person's degree started
+     * @return string The date that this Person's degree ended
      */
     function getDegreeReceivedDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
                                     array('user2' => EQ($this->getId()),
-                                          'type' => LIKE('%Supervises%')),
+                                          'type' => LIKE('%Supervises%'),),
                                     array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
             return $data[0]['end_date'];
