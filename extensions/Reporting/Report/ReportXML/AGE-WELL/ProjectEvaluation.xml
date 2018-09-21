@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true" disabled="true">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="instructions" permissions="rw" />
