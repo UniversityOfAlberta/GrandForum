@@ -1098,9 +1098,9 @@ class Person extends BackboneModel {
         }
         if($this->isRole(PA)){
             // User is a Project Assistant, therefore can edit anyone who is on their project
-            foreach($this->getProjects() as $project){
+            foreach($person->getProjects() as $project){
                 // Allow Project Assistants to edit
-                if($me->isRole(PA, $project)){
+                if($this->isRole(PA, $project)){
                     return true;
                 }
             }
