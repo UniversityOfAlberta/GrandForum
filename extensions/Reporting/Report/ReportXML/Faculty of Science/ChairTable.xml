@@ -231,7 +231,8 @@
         <ReportItem id="tfoot" type="Static">
             <![CDATA[
                     </tbody>
-                </table>
+                </table><br />
+                <b>Average Increment:</b> <span id='average'></span>
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -261,6 +262,18 @@
                         $("#DeanDecision").attr('href', href);
                         $("#DeanDecision").trigger('click');
                     });
+                    
+                    $(".increment select").change(function(){
+                        var sum = 0;
+                        var nFaculty = $(".increment select").length;
+                        $(".increment select").each(function(i, el){
+                            sum += parseFloat($(el).val());
+                        });
+                        $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
+                    });
+                    
+                    $(".increment select").first().trigger('change');
+                    
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
@@ -516,7 +529,8 @@
         <ReportItem id="tfoot" type="Static">
             <![CDATA[
                     </tbody>
-                </table>
+                </table><br />
+                <b>Average Increment:</b> <span id='average'></span>
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -546,6 +560,17 @@
                         $("#DeanDecision").attr('href', href);
                         $("#DeanDecision").trigger('click');
                     });
+                    
+                    $(".increment select").change(function(){
+                        var sum = 0;
+                        var nFaculty = $(".increment select").length;
+                        $(".increment select").each(function(i, el){
+                            sum += parseFloat($(el).val());
+                        });
+                        $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
+                    });
+                    
+                    $(".increment select").first().trigger('change');
                     
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
