@@ -266,6 +266,9 @@ class IndexTable {
                                                                             'iDisplayLength': 100, 
                                                                             'autoWidth': false,
                                                                             'dom': 'Blfrtip',
+                                                                            columnDefs: [
+                                                                               {type: 'natural', targets: 0}
+                                                                            ],
                                                                             'buttons': [
                                                                                 'excel', 'pdf'
                                                                             ]
