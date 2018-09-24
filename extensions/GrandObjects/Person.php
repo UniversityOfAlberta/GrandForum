@@ -2426,7 +2426,8 @@ class Person extends BackboneModel {
                 }
             }
         }
-        asort($projects);
+        natsort($projects);
+        //asort($projects);
         return array_values($projects);
     }
     

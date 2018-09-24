@@ -510,3 +510,5 @@ function sanitizeInput($str){
     $str = str_replace("/", "&#x2F;", $str);
     return $str;
 }
+
+function knatsort(&$arr){return uksort($arr,function($a, $b){return strnatcmp($a,$b);});}
