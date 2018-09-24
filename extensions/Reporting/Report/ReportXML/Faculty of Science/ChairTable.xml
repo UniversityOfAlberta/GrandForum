@@ -232,7 +232,33 @@
             <![CDATA[
                     </tbody>
                 </table><br />
-                <b>Average Increment:</b> <span id='average'></span>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Year</th><th>Average<br />Increment</th>
+                    </tr>
+                    <tr>
+                        <td><b>{$this_year}</b></td><td id='average' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},1)}</b></td><td id='average{subtract({$this_year},1)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},2)}</b></td><td id='average{subtract({$this_year},2)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},3)}</b></td><td id='average{subtract({$this_year},3)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},4)}</b></td><td id='average{subtract({$this_year},4)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},5)}</b></td><td id='average{subtract({$this_year},5)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},6)}</b></td><td id='average{subtract({$this_year},6)}' align='right'></td>
+                    </tr>
+                </table>
+                <small>Averages are based on the people currently in the table, so previous averages may differ slightly as it does not factor in people who are no longer in the department</small>
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -272,8 +298,29 @@
                         $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
                     });
                     
-                    $(".increment select").first().trigger('change');
+                    var increments = new Array();
+                    var counts = new Array();
+                    var sums = new Array();
                     
+                    increments[{subtract({$this_year},1)}] = $(".increment{subtract({$this_year},1)}");
+                    increments[{subtract({$this_year},2)}] = $(".increment{subtract({$this_year},2)}");
+                    increments[{subtract({$this_year},3)}] = $(".increment{subtract({$this_year},3)}");
+                    increments[{subtract({$this_year},4)}] = $(".increment{subtract({$this_year},4)}");
+                    increments[{subtract({$this_year},5)}] = $(".increment{subtract({$this_year},5)}");
+                    increments[{subtract({$this_year},6)}] = $(".increment{subtract({$this_year},6)}");
+                    _.each(increments, function(increment, i){
+                        counts[i] = 0;
+                        sums[i] = 0;
+                        $(increment).each(function(j, el){
+                            var val = $(el).text();
+                            if(val != "N/A"){
+                                counts[i]++;
+                                sums[i] += parseFloat(val);
+                            }
+                        });
+                        $('#average' + i).html((sums[i]/Math.max(1, counts[i])).toFixed(3));
+                    });
+                    $(".increment select").first().trigger('change');
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
@@ -530,7 +577,33 @@
             <![CDATA[
                     </tbody>
                 </table><br />
-                <b>Average Increment:</b> <span id='average'></span>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Year</th><th>Average<br />Increment</th>
+                    </tr>
+                    <tr>
+                        <td><b>{$this_year}</b></td><td id='average' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},1)}</b></td><td id='average{subtract({$this_year},1)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},2)}</b></td><td id='average{subtract({$this_year},2)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},3)}</b></td><td id='average{subtract({$this_year},3)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},4)}</b></td><td id='average{subtract({$this_year},4)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},5)}</b></td><td id='average{subtract({$this_year},5)}' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>{subtract({$this_year},6)}</b></td><td id='average{subtract({$this_year},6)}' align='right'></td>
+                    </tr>
+                </table>
+                <small>Averages are based on the people currently in the table, so previous averages may differ slightly as it does not factor in people who are no longer in the department</small>
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -570,8 +643,29 @@
                         $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
                     });
                     
-                    $(".increment select").first().trigger('change');
+                    var increments = new Array();
+                    var counts = new Array();
+                    var sums = new Array();
                     
+                    increments[{subtract({$this_year},1)}] = $(".increment{subtract({$this_year},1)}");
+                    increments[{subtract({$this_year},2)}] = $(".increment{subtract({$this_year},2)}");
+                    increments[{subtract({$this_year},3)}] = $(".increment{subtract({$this_year},3)}");
+                    increments[{subtract({$this_year},4)}] = $(".increment{subtract({$this_year},4)}");
+                    increments[{subtract({$this_year},5)}] = $(".increment{subtract({$this_year},5)}");
+                    increments[{subtract({$this_year},6)}] = $(".increment{subtract({$this_year},6)}");
+                    _.each(increments, function(increment, i){
+                        counts[i] = 0;
+                        sums[i] = 0;
+                        $(increment).each(function(j, el){
+                            var val = $(el).text();
+                            if(val != "N/A"){
+                                counts[i]++;
+                                sums[i] += parseFloat(val);
+                            }
+                        });
+                        $('#average' + i).html((sums[i]/Math.max(1, counts[i])).toFixed(3));
+                    });
+                    $(".increment select").first().trigger('change');
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>

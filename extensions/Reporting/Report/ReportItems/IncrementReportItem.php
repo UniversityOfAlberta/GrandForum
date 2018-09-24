@@ -107,7 +107,7 @@ class IncrementReportItem extends SelectReportItem {
 	    for($year=$this->getReport()->year-1; $year >= $this->getReport()->year - 6; $year--){
 	        $popup .= "<tr>
 	            <td align='center'>{$year}</td>
-	            <td align='center'>{$person->getIncrement($year)}</td>
+	            <td align='center' class='increment{$year}'>{$person->getIncrement($year)}</td>
 	        </tr>";
 	    }
 	    $popup .= "</table></div>";
