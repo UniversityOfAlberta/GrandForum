@@ -155,6 +155,7 @@ class CCVExport extends SpecialPage {
         $phone_file = getcwd()."/extensions/CCVExport/templates/Telephone.xml";
         $grant_file = getcwd()."/extensions/CCVExport/templates/Grant.xml";
         $degree_file = getcwd()."/extensions/CCVExport/templates/Degree.xml";
+        $employment_file = getcwd()."/extensions/CCVExport/templates/Employment.xml";
         $investigator_file = getcwd()."/extensions/CCVExport/templates/OtherInvestigator.xml";
         $funding_year_file = getcwd()."/extensions/CCVExport/templates/FundingByYear.xml";
         $funding_source_file = getcwd()."/extensions/CCVExport/templates/FundingSources.xml";
@@ -176,6 +177,7 @@ class CCVExport extends SpecialPage {
         $phone_map = simplexml_load_file($phone_file);
         $grant_map = simplexml_load_file($grant_file);
         $degree_map = simplexml_load_file($degree_file);
+        $employment_map = simplexml_load_file($employment_file);
         $investigator_map = simplexml_load_file($investigator_file);
         $funding_year_map = simplexml_load_file($funding_year_file);
         $funding_source_map = simplexml_load_file($funding_source_file);
@@ -333,6 +335,15 @@ class CCVExport extends SpecialPage {
                                         $degree_map,
                                         $uni,
                                         $ccv_item);
+        }
+        
+        $section = $ccv->xpath("section[@id='94b1e26073ae476da13ede5baf1f1cc0']");
+        foreach($employment as $uni){
+            $ccv_item = $section[0]->addChild("section");
+            $res = CCVExport::mapEmployment($person,
+                                            $employment_map,
+                                            $uni,
+                                            $ccv_item);
         }
         
         //HERE
@@ -946,6 +957,12 @@ class CCVExport extends SpecialPage {
         }
         return $success;
     }
+    
+    static function mapEmployment($person, $section, $degree, $ccv){
+        self::mapDegree($person, $section, $degree, $ccv);
+        $ccv['id'] = "b857f61b33484cb093068bd2da764f99";
+        $ccv['label'] = "Academic Work Experience";
+    }
 
     static function mapDegree($person, $section, $degree, $ccv){
         global $edu_map;
@@ -981,14 +998,17 @@ class CCVExport extends SpecialPage {
                     }
                     break;
                 case "7df537009941493789a32bcae3499909":
-                    $value = self::setChild($field, 'value', 'type', 'Bilingual');
+                case "886807b87b624978bc8ca9045ff56e47";
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     self::setValue($value, $position);
                     break;
                 case "35696972e69541dd86a80521d3737b26":
-                    $value = self::setChild($field, 'value', 'type', 'Bilingual');
+                case "cd6e5e97994e42f893bd5c9e7212c94b":
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     self::setValue($value, $department);
                     break;
                 case "020ec1f40f3d4065bf5424f77209b8e4":
+                case "69b0f4fab5e64d7da044e0f8cbd70e52":
                     $value = self::setChild($field, 'value', 'type', 'String');
                     self::setValue($value, $uni);
                     break;
@@ -1009,11 +1029,13 @@ class CCVExport extends SpecialPage {
                     $val->addAttribute('id', $lov_id);
                     break;
                 case "337ee6b2606c4c899f0e0c4ec3bd6ec2":
+                case "c7e85d10d10249c68b28c71fc80ec570":
                     $value = self::setChild($field, 'value', 'type', 'YearMonth');
                     self::setAttribute($value, 'format', 'yyyy/MM');
                     self::setValue($value, str_replace("-","/",substr($start, 0, 7)));
                     break;
                 case "4b818aef68a84743b19149d376032afb":
+                case "b4681f52d85440829faa3160ba3bb31f":
                     $value = self::setChild($field, 'value', 'type', 'YearMonth');
                     self::setAttribute($value, 'format', 'yyyy/MM');
                     self::setValue($value, str_replace("-","/",substr($end, 0, 7)));
