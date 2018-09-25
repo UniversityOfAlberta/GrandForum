@@ -1,0 +1,9 @@
+<section id="aee5a225a504442fb83f716235cfb587" label="Degrees">
+    <field id="a83a0af883924c57bb66107cc32b6d5e" label="Degree Type"></field>
+    <field id="7df537009941493789a32bcae3499909" label="Degree Name"></field>
+    <field id="35696972e69541dd86a80521d3737b26" label="Specialization"></field>
+    <field id="020ec1f40f3d4065bf5424f77209b8e4" label="Other Organization"></field>
+    <field id="c42a1deb6fe046dfa5502169032760de" label="Degree Status"></field>
+    <field id="337ee6b2606c4c899f0e0c4ec3bd6ec2" label="Degree Start Date"></field>
+    <field id="4b818aef68a84743b19149d376032afb" label="Degree Received Date"></field>
+</section>

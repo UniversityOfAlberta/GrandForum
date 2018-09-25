@@ -6,17 +6,17 @@ $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'network-tools';
-/*
+
+$edu_map = 
+  array('msc'=>array("00000000000000000000000000000072","Master's Thesis"),
+        'phd'=>array("00000000000000000000000000000073","Doctorate"),
+        'ugrad'=>array("00000000000000000000000000000071","Bachelor's"),
+        'pdf'=>array("00000000000000000000000000000074","Post-doctorate"));
 $degree_map = 
-  array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
-        'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
-        'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
-        'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));*/
-$degree_map = 
-  array('MSc Student'=>array("6bb179b92d1d46059bae10f6d21ea096","Master's Thesis"),
-        'PhD Student'=>array("971953ad86ca49f3b32ac5c7c2758a1b","Doctorate"),
-        'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
-        'PostDoc'=>array("e0b26301c88d4be5a6f7143981c9b3bb","Post-doctorate"));
+  array('msc'=>array("6bb179b92d1d46059bae10f6d21ea096","Master's Thesis"),
+        'phd'=>array("971953ad86ca49f3b32ac5c7c2758a1b","Doctorate"),
+        'ugrad'=>array("00000000000000000000000000000071","Bachelor's"),
+        'pdf'=>array("e0b26301c88d4be5a6f7143981c9b3bb","Post-doctorate"));
 
 function runCCVExport($par) {
     CCVExport::execute($par);
@@ -154,6 +154,7 @@ class CCVExport extends SpecialPage {
         $addr_file = getcwd()."/extensions/CCVExport/templates/Address.xml";
         $phone_file = getcwd()."/extensions/CCVExport/templates/Telephone.xml";
         $grant_file = getcwd()."/extensions/CCVExport/templates/Grant.xml";
+        $degree_file = getcwd()."/extensions/CCVExport/templates/Degree.xml";
         $investigator_file = getcwd()."/extensions/CCVExport/templates/OtherInvestigator.xml";
         $funding_year_file = getcwd()."/extensions/CCVExport/templates/FundingByYear.xml";
         $funding_source_file = getcwd()."/extensions/CCVExport/templates/FundingSources.xml";
@@ -174,6 +175,7 @@ class CCVExport extends SpecialPage {
         $addr_map = simplexml_load_file($addr_file);
         $phone_map = simplexml_load_file($phone_file);
         $grant_map = simplexml_load_file($grant_file);
+        $degree_map = simplexml_load_file($degree_file);
         $investigator_map = simplexml_load_file($investigator_file);
         $funding_year_map = simplexml_load_file($funding_year_file);
         $funding_source_map = simplexml_load_file($funding_source_file);
@@ -309,6 +311,30 @@ class CCVExport extends SpecialPage {
                                        $funding_source_map 
                                        );
         }
+        
+        // Education & Employment
+        $education = array();
+        $employment = array();
+        foreach($person->getUniversities() as $university){
+            if(in_array(strtolower($university['position']), array_merge(Person::$studentPositions['ugrad'],
+                                                                         Person::$studentPositions['msc'], 
+                                                                         Person::$studentPositions['phd']))){
+                $education[] = $university;
+            }
+            else{
+                $employment[] = $university;
+            }
+        }
+        
+        $section = $ccv->xpath("section[@id='0d82220f95f043e0bc9608bbb6bf413a']");
+        foreach($education as $uni){
+            $ccv_item = $section[0]->addChild("section");
+            $res = CCVExport::mapDegree($person,
+                                        $degree_map,
+                                        $uni,
+                                        $ccv_item);
+        }
+        
         //HERE
         //==== Grants End ======== //
         
@@ -649,20 +675,36 @@ class CCVExport extends SpecialPage {
             elseif($item_name == "Degree Type or Postdoctoral Status"){    //else if($item_name == "Study / Postdoctoral Level"){
                 $uni = $hqp->getUniversity();
                 $hqp_pos = $uni['position'];
-                if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
+                $group = "";
+                if(in_array(strtolower($hqp_pos), Person::$studentPositions['ugrad'])){
+                    $group = 'ugrad';
+                }
+                else if(in_array(strtolower($hqp_pos), Person::$studentPositions['msc'])){
+                    $group = 'msc';
+                }
+                else if(in_array(strtolower($hqp_pos), Person::$studentPositions['phd'])){
+                    $group = 'phd';
+                }
+                else if(in_array(strtolower($hqp_pos), Person::$studentPositions['pdf'])){
+                    $group = 'pdf';
+                }
+                if(!empty($hqp_pos) && isset($degree_map[$group])){
                     $field = $ccv_item->addChild("field");
                     $field->addAttribute('id', $item_id);
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('lov');
-                    $lov_id = $degree_map[$hqp_pos][0];
+                    $lov_id = $degree_map[$group][0];
                     $val->addAttribute('id', $lov_id);
-                    self::setValue($val, $degree_map[$hqp_pos][1]);
+                    self::setValue($val, $degree_map[$group][1]);
                 }
             }
             else if($item_name == "Student Degree Status"){
                 // If active  Completed 
                 // Otherwise  In Progress
-                $hqp_pos = $hqp->getPosition();
+                $uni = $hqp->getUniversity();
+                $hqp_pos = $uni['position'];
+                $start = $uni['start'];
+                $end = $uni['date'];
                 if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
                     $status_map = array('Completed'=>"00000000000000000000000000000068",
                                         'In Progress'=>"00000000000000000000000000000070");
@@ -672,7 +714,8 @@ class CCVExport extends SpecialPage {
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('lov');
         
-                    if (!$hqp->isActive()){
+                    if($end != "0000-00-00 00:00:00" &&
+                       $end != "0000-00-00"){
                         $lov_id = $status_map['Completed'];
                         self::setValue($val, "Completed");
                     } else {
@@ -904,6 +947,80 @@ class CCVExport extends SpecialPage {
         return $success;
     }
 
+    static function mapDegree($person, $section, $degree, $ccv){
+        global $edu_map;
+        $uni = $degree['university'];
+        $position = $degree['position'];
+        $department = $degree['department'];
+        $start = $degree['start'];
+        $end = $degree['end'];
+        $ccv->addAttribute('id', "aee5a225a504442fb83f716235cfb587");
+        $ccv->addAttribute('label', "Degrees");
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = self::setChild($ccv, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
+            switch($id){
+                case "a83a0af883924c57bb66107cc32b6d5e":
+                    $group = "";
+                    if(in_array(strtolower($position), Person::$studentPositions['ugrad'])){
+                        $group = 'ugrad';
+                    }
+                    else if(in_array(strtolower($position), Person::$studentPositions['msc'])){
+                        $group = 'msc';
+                    }
+                    else if(in_array(strtolower($position), Person::$studentPositions['phd'])){
+                        $group = 'phd';
+                    }
+                    if($position != "" && $edu_map[$group]){
+                        $val = $field->addChild('lov');
+                        $lov_id = $edu_map[$group][0];
+                        $val->addAttribute('id', $lov_id);
+                        self::setValue($val, $edu_map[$group][1]);
+                    }
+                    break;
+                case "7df537009941493789a32bcae3499909":
+                    $value = self::setChild($field, 'value', 'type', 'Bilingual');
+                    self::setValue($value, $position);
+                    break;
+                case "35696972e69541dd86a80521d3737b26":
+                    $value = self::setChild($field, 'value', 'type', 'Bilingual');
+                    self::setValue($value, $department);
+                    break;
+                case "020ec1f40f3d4065bf5424f77209b8e4":
+                    $value = self::setChild($field, 'value', 'type', 'String');
+                    self::setValue($value, $uni);
+                    break;
+                case "c42a1deb6fe046dfa5502169032760de":
+                    $status_map = array('Completed'=>"00000000000000000000000000000068",
+                                        'In Progress'=>"00000000000000000000000000000070");
+
+                    $val = $field->addChild('lov');
+        
+                    if($end != "0000-00-00 00:00:00" &&
+                       $end != "0000-00-00"){
+                        $lov_id = $status_map['Completed'];
+                        self::setValue($val, "Completed");
+                    } else {
+                        $lov_id = $status_map['In Progress'];
+                        self::setValue($val, "In Progress");
+                    }
+                    $val->addAttribute('id', $lov_id);
+                    break;
+                case "337ee6b2606c4c899f0e0c4ec3bd6ec2":
+                    $value = self::setChild($field, 'value', 'type', 'YearMonth');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($start, 0, 7)));
+                    break;
+                case "4b818aef68a84743b19149d376032afb":
+                    $value = self::setChild($field, 'value', 'type', 'YearMonth');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($end, 0, 7)));
+                    break;
+            }
+        }
+    }
 
     static function mapGrant($person, $section, $grant, $ccv, $investigator_map, $funding_year_map, $funding_source_map){
         global $wgUser, $wgOut;
