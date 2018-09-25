@@ -523,16 +523,22 @@
 
     <!-- Presentations -->
     <Presentations category="Presentation" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
-        <Presentation type="Seminar" status="Invited|Not Invited">
+        <Presentation type="Seminar" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -542,19 +548,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Colloquium" status="Invited|Not Invited">
+        <Presentation type="Colloquium" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -564,19 +576,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Plenary" status="Invited|Not Invited">
+        <Presentation type="Plenary" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -586,19 +604,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Panel Member" status="Invited|Not Invited">
+        <Presentation type="Panel Member" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -608,19 +632,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Conference Presentation" status="Invited|Not Invited">
+        <Presentation type="Conference Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -630,19 +660,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Workshop Presentation" status="Invited|Not Invited">
+        <Presentation type="Workshop Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -652,19 +688,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Public Presentation" status="Invited|Not Invited">
+        <Presentation type="Public Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -674,19 +716,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Tutorial" status="Invited|Not Invited">
+        <Presentation type="Tutorial" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenters of the Presentation.</b></i></small>
                 ]]>
@@ -696,19 +744,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Keynote" status="Invited|Not Invited">
+        <Presentation type="Keynote" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -718,19 +772,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Web Presentation" status="Invited|Not Invited">
+        <Presentation type="Web Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -740,19 +800,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Poster Presentation" status="Invited|Not Invited">
+        <Presentation type="Poster Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -762,19 +828,25 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
         
-        <Presentation type="Other" status="Invited|Not Invited">
+        <Presentation type="Other" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
+            <title ccv_id="3f6a7ac56ee64b7dbd84dba9d6e3302d" ccv_name="Presentation Title"></title>
+            <statuses ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?">
+                <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
+                <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
+            </statuses>
             <data>
-                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccvtk="event_title" label="Event Title" type="String">event_title</field>
-                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
+                <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
+                <field ccv_id="de6f8e0d7a714b07a4671af86405c6c9" ccv_name="City" ccvtk="city" label="City" type="String">city</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Length (minutes)" type="Integer">length</field>
-                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccvtk="url" label="URL" type="URL">url</field>
+                <field ccv_id="8f612e2d2b23458fa114d8a790c38e13" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <authors label="Presenter">
+            <authors label="Presenter" ccv_id="d1dde22650bf4c508cf997beee12ef50" ccv_name="Co-Presenters">
                 <![CDATA[
                     <small><i><b>*Only include the actual presenter of the Presentation.</b></i></small>
                 ]]>
@@ -784,7 +856,7 @@
                     <small><i><b>*Include any other people involved in preparing the Presentation.</b></i></small>
                 ]]>
             </contributors>
-            <date label="Date"></date>
+            <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
         </Presentation>
     </Presentations>
     

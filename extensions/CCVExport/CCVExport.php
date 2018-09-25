@@ -179,7 +179,9 @@ class CCVExport extends SpecialPage {
         $funding_source_map = simplexml_load_file($funding_source_file);
 
         $all_products = $person->getPapers("Publication", true, "both",true,"Public");
+        $all_presentations = $person->getPapers("Presentation", true, "both", true, "Public");
         $prod_sorted = array();
+        $pres_sorted = array();
 
         foreach($all_products as $p){
             $t = $p->getType();
@@ -188,6 +190,16 @@ class CCVExport extends SpecialPage {
             } else {
                 $prod_sorted[$t] = array();
                 $prod_sorted[$t][] = $p;
+            }
+        }
+        
+        foreach($all_presentations as $p){
+            $t = $p->getType();
+            if(isset($pres_sorted[$t])){
+                $pres_sorted[$t][] = $p;
+            } else {
+                $pres_sorted[$t] = array();
+                $pres_sorted[$t][] = $p;
             }
         }
         self::setAttribute($ccv, 'dateTimeGenerated', date('Y-m-d H:i:s'));
@@ -212,7 +224,7 @@ class CCVExport extends SpecialPage {
                                            $phone,
                                            $section[0]);
         }*/
-        $counter = 0;
+        // Publications
         $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
             foreach($products as $product){
@@ -229,7 +241,26 @@ class CCVExport extends SpecialPage {
                                           $map->Publications->Publication, 
                                           $product, 
                                           $section[0]);
-                $counter += $res;
+            }
+        }
+        
+        // Presentations
+        $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']");
+        foreach($pres_sorted as $type => $products){
+            foreach($products as $product){
+                // CCV does not include 'Rejected' Publishing Status
+                if($product->getStatus() == 'Rejected'){
+                    continue;
+                }
+                $start_date_array = explode(" ",$product->getDate());
+                $start_date = strtotime($start_date_array[0]);
+                if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
+                    continue;
+                }
+                $res = CCVExport::mapItem($person, 
+                                          $map->Presentations->Presentation, 
+                                          $product, 
+                                          $section[0]);
             }
         }
 
@@ -254,7 +285,7 @@ class CCVExport extends SpecialPage {
                                      $rel, 
                                      $section[0]);
         }
-/*
+
         //=== Grants Start == //
         //change next line into getGrants() once the table has been switched
         foreach($person->getGrants() as $grant){
@@ -280,7 +311,7 @@ class CCVExport extends SpecialPage {
         }
         //HERE
         //==== Grants End ======== //
-        */
+        
         // Format and indent the XML
         $xml_string = $ccv->asXML();
         $xml_string = preg_replace('/generic-cv:section/', 'section', $xml_string);
@@ -752,8 +783,7 @@ class CCVExport extends SpecialPage {
             ||
                (($type != "Masters Thesis" && $type != "PHD Thesis") 
              && ($type == $item['type'])
-             && isset($item['ccv_id']) && isset($item['ccv_name']))){ 
-
+             && isset($item['ccv_id']) && isset($item['ccv_name']))){
                 $title = htmlentities($product->getTitle(), ENT_COMPAT);
                 $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
                 $ccv_el_title = $ccv->xpath("section/field/value[.=\"{$title}\"]/../..");
@@ -787,12 +817,15 @@ class CCVExport extends SpecialPage {
                 self::setAttribute($field, 'label', $item->title['ccv_name']);
                 $val = self::setChild($field, 'value', 'type', 'String');
                 $field->value = $title;
+                
                 //Status
                 $prod_status = $product->getStatus();
                 if(isset($item->statuses)){
                     foreach($item->statuses->status as $status){
                         if ($prod_status != $status)
                             continue;
+                        $prod_status = str_replace("Not Invited", "No", $prod_status);
+                        $prod_status = str_replace("Invited", "Yes", $prod_status);
                         $field = self::setChild($ccv_item, 'field', 'id', $item->statuses['ccv_id']);
                         self::setAttribute($field, 'label', $item->statuses['ccv_name']);
                         $status_tag = self::setChild($field, 'lov', 'id', $status['lov_id']);
@@ -801,7 +834,6 @@ class CCVExport extends SpecialPage {
                 }
 
                 //Add Data Fields
-                //echo "{$product->getType()}: {$product->getTitle()}\n";
                 $product_data = $product->getData();
                 foreach($item->data->field as $data_field){
                     $key = (string) $data_field;
@@ -823,9 +855,8 @@ class CCVExport extends SpecialPage {
                 }
 
                 //Date
-                
                 $field = self::setChild($ccv_item, 'field', 'id', $item->date['ccv_id']);
-                self::setAttribute($field, 'label', 'Year');
+                self::setAttribute($field, 'label', $item->date['ccv_name']);
                 $val = self::setChild($field, 'value', 'type', 'Year');
                 self::setAttribute($val, 'format', 'yyyy/MM');
                 if($product->getStatus() == "Published"){
@@ -843,9 +874,10 @@ class CCVExport extends SpecialPage {
                 $product_authors = $product->getAuthors();
                 $auth_arr = array();
                 foreach($product_authors as $a){
-                    $authorName = trim($a->getNameForProduct("{%first} {%last}"));
-                    if($person->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") ||
-                       $person->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00")){
+                    $authorName = trim($a->getNameForProduct("{%last} {%f}"));
+                    if($product->getCategory() == "Publication" &&
+                       ($person->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") ||
+                        $person->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))){
                         $auth_arr[] = $authorName."*";
                     }
                     else{
@@ -905,7 +937,7 @@ class CCVExport extends SpecialPage {
                 case "0674312de78f4647aba3bf202a41d58e":
                     $bilin = $field->addChild("bilingual");
                     $bilin->addChild("english");
-                    self::setValue($bilin->english, $grant->getDescription());
+                    $bilin->english = $grant->getDescription();
                     break;
                 case "0991ead151e3445ca7537aa15acbec57":
                     //$gtype = $grant->getStatus();
@@ -923,7 +955,6 @@ class CCVExport extends SpecialPage {
                     $bilin = $field->addChild("bilingual");
                     $bilin->addChild("english");
                     self::setValue($bilin->english, "");
-                    break;
                     break;
             }
         }
@@ -1008,6 +1039,10 @@ class CCVExport extends SpecialPage {
                     $value = self::setChild($field, 'value', 'type', 'Date');
                     self::setAttribute($value, 'format', 'yyyy/MM');
                     self::setValue($value, str_replace("-","/",substr($grant->getStartDate(), 0, 7)));
+                    break;
+                case "3fb9015d879f435d937ae9aa7ccd2973":
+                    $value = self::setChild($field, 'value', 'type', 'String');
+                    self::setValue($value, $grant->getProjectId());
                     break;
                 case "efc68e7d74f849eebb59f9a3bb85e5db":
                     $value = self::setChild($field, 'value', 'type', 'Date');
