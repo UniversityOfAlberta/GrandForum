@@ -455,9 +455,10 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                Not Available for Mifepristone
-                </li>
+                    <li>As of May 23rd, 2018, the province of NS has officially announced a new billing code for mifepristone medical abortion, <a href='https://www.ctvnews.ca/health/abortion-pill-to-become-more-widely-available-in-n-s-after-new-billing-code-adopted-1.3942030' target='_blank'>read more</a>.</li>
+                    <li>Comprehensive fee for the initial visit, 47.5 units: Billing amount, $120.00</li>
+                    <li>Follow up visits can be billed as regular office visits</li>
+                    <li>Nova Scotia MSI Billing Physicians Manual, <a href='https://doctorsns.com/contract-and-support/billing/msi' target='_blank'>click here</a></li>
                 </ul>
             </div>
             
@@ -753,14 +754,12 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                <li>
-                Not Available for Mifepristone
-                </li>
+                    <li>4111: Therapeutic abortion < 12 weeks/surgical, $269.00</li>
+                    <li>4112: Therapeutic abortions >12 weeks/surgical, $521.00</li>
+                    <li>4116: Medical abortion (includes methotrexate and mifepristone) for physicians and nurse practitioners, $207.70</li>
+                    <li>Yukon Drug Formulary, <a href='http://apps.gov.yk.ca/drugs/' target='_blank'>click here</a></li>
                 </ul>
             </div>
-            
-            
-
         </div>
         
         <script type='text/javascript'>
