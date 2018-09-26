@@ -612,12 +612,14 @@ class CCVExport extends SpecialPage {
                 $field->addAttribute('id', $item_id);
                 $field->addAttribute('label', $item_name);
                 $lov = $field->addChild('lov');
-                $lov->addAttribute('id', '00000000000000000000000100002900');
+                
                 if($rel->getType() == CO_SUPERVISES){
                     self::setValue($lov, "Co-Supervisor");
+                    $lov->addAttribute('id', '00000000000000000000000100002901');
                 }
                 else{
                     self::setValue($lov, "Principal Supervisor");
+                    $lov->addAttribute('id', '00000000000000000000000100002900');
                 }
             }
             else if($item_name == "Supervision Start Date"){
