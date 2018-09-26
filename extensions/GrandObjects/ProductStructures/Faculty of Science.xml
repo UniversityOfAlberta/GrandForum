@@ -549,6 +549,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Colloquium" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -577,6 +578,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Plenary" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -605,6 +607,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Panel Member" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -633,6 +636,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Conference Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -661,6 +665,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Workshop Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -689,6 +694,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Public Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -717,6 +723,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Tutorial" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -745,6 +752,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Keynote" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -773,6 +781,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Web Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -801,6 +810,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Poster Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -829,6 +839,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Other" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -857,6 +868,7 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
+            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
     </Presentations>
     
