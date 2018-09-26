@@ -839,17 +839,7 @@ class CCVExport extends SpecialPage {
              && ($type == $item['type'])
              && isset($item['ccv_id']) && isset($item['ccv_name']))){
                 $title = htmlentities($product->getTitle(), ENT_COMPAT);
-                $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
-                $ccv_el_title = $ccv->xpath("section/field/value[.=\"{$title}\"]/../..");
-                if(count($ccv_el) > 0){
-                    $ccv_item = $ccv_el[0];
-                }
-                else if(count($ccv_el_title) > 0){
-                    $ccv_item = $ccv_el_title[0];
-                }
-                else{
-                    $ccv_item = $ccv->addChild("section");
-                }
+                $ccv_item = $ccv->addChild("section");
                 $ccv_id = $item['ccv_id'];
                 $ccv_name = $item['ccv_name'];
 
