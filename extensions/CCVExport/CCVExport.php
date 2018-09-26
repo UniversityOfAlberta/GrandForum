@@ -74,7 +74,7 @@ class CCVExport extends SpecialPage {
         $xml = str_replace("<", "&lt;", $xml); // show tags as text
         $xml = str_replace("\n", "<br/>", $xml); // show newlines
         $xml = str_replace(" ", "&nbsp;", $xml); // show indents
-        $wgOut->addHTML('<p><pre style="white-space:pre-wrap;">'.$xml."</pre></p>");
+        $wgOut->addHTML('<p><pre style="white-space:pre-wrap; max-height: 600px; overflow: auto;">'.$xml."</pre></p>");
     }
   
     static function getLovId($cat, $val, $default){
