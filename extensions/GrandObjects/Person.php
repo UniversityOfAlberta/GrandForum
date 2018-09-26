@@ -2754,33 +2754,27 @@ class Person extends BackboneModel {
                     if(strtolower($grant->getSponsor()) == "university of alberta" &&
                        array_search($grant->getSeqNo(), array(0, 35)) !== false){
                         // Rule 1: inside Fac of Science and start up funds
-                        //echo "Rule 1 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strtolower($grant->getSponsor()) == "university of alberta" &&
                             array_search($grant->getSeqNo(), array(60)) !== false){
                         // Rule 1.1: inside Fac of Science and start up funds
-                        //echo "Rule 1 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if($grant->getTotal() == 0){
                         // Rule 2: blank PI names or 0 funding signal a reason to exclude
-                        //echo "Rule 2 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'Z') === 0){
                         // Rule 101: Not interesting – internal facilities support/ centre support
-                        //echo "Rule 101 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'Y224') === 0){
                         // Rule 102: AITF Centre support
-                        //echo "Rule 102 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'Y000') === 0){
                         // Rule 103: Internal Centre Funding
-                        //echo "Rule 103 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if($this->getId() != "106" && // Exception
@@ -2795,12 +2789,10 @@ class Person extends BackboneModel {
                              strstr(strtolower($grant->getDescription()), "lecture") !== false ||
                              strstr(strtolower($grant->getDescription()), "expenses") !== false)){
                         // Rule 104: Project ID scan – Billing/Journal productions/services
-                        //echo "Rule 104 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'N') === 0){
                         // Rule 105: Other internally transferred research funds
-                        //echo "Rule 105 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'D') === 0 ||
@@ -2817,14 +2809,12 @@ class Person extends BackboneModel {
                             strstr(strtolower($grant->getTitle()), "school") !== false ||
                             strstr(strtolower($grant->getTitle()), "symposium") !== false){
                         // Rule 106: donations
-                        //echo "Rule 106 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'G022') === 0 ||
                             strpos($grant->getProjectId(), 'G099') === 0 ||
                             strstr(strtolower($grant->getDescription()), "general research") !== false){
                         // Rule 107: “General Research Funds”
-                        //echo "Rule 107 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strtolower($grant->getRole()) == "student" ||
@@ -2832,7 +2822,6 @@ class Person extends BackboneModel {
                             strstr(strtolower($grant->getProgDescription()), "student") !== false ||
                             strstr(strtolower($grant->getProgDescription()), "scholarship") !== false){
                         // Rule 200: awards to students seems to capture all student cases
-                        //echo "Rule 200 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if(strtolower($grant->getSponsor()) == "university of alberta" &&
@@ -2840,7 +2829,6 @@ class Person extends BackboneModel {
                          strstr(strtolower($grant->getProjectId()), "triumf") !== false
                         )){
                         // Rule 300: Miscellaneous not interesting for different kinds of reasons
-                        //echo "Rule 300 {$grant->getTitle()}<br />";
                         continue;
                     }
                     else if($grant->getTotal() < 10000){
