@@ -11,7 +11,7 @@ class Paper extends BackboneModel{
     static $oldSyncCache = array();
     static $cache = array();
     static $dataCache = array();
-    static $exclusionCache = array();
+    static $exclusionCache = null;
 
     var $id;
     var $category;
@@ -572,7 +572,7 @@ class Paper extends BackboneModel{
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
-            $exclude = false;
+            $this->exclude = false;
             foreach($this->getExclusions() as $exclusion){
                 if($exclusion->getId() == $me->getId()){
                     $this->exclude = true;
@@ -954,7 +954,7 @@ class Paper extends BackboneModel{
      * @return array the list of People who want this Product to be excluded from them
      */
     function getExclusions(){
-        if(count(self::$exclusionCache) == 0){
+        if(self::$exclusionCache === null){
             $data = DBFunctions::select(array('grand_products_exclude'),
                                         array('*'));
             foreach($data as $row){

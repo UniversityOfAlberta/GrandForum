@@ -50,14 +50,12 @@ abstract class Cache {
 
 	function getCache(){
 		$xml = "";
-		//if(true){
 		if(!file_exists("extensions/Cache/cache/{$this->fileName}")){
 			// Miss
 			$xml = $this->run();
 			$zp = gzopen("extensions/Cache/cache/{$this->fileName}", "w9");
 			gzwrite($zp, $xml);
 			gzclose($zp);
-			//echo "MISS";
 		}
 		else {
 			$xml = implode("", gzfile("extensions/Cache/cache/{$this->fileName}"));

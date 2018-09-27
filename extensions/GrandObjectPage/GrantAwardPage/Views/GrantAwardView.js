@@ -46,6 +46,7 @@ GrantAwardView = Backbone.View.extend({
 
     render: function(){
         main.set('title', this.model.get('application_title'));
+        $("#pageTitle").html("<a href='#'>Awarded NSERC Applications</a> > " + this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderCoApplicants();
         return this.$el;

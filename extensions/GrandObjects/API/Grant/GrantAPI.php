@@ -36,6 +36,7 @@ class GrantAPI extends RESTAPI {
         $grant->start_date = $this->POST('start_date');
         $grant->end_date = $this->POST('end_date');
         $grant->contributions = $this->POST('contributions');
+        $grant->exclude = $this->POST('exclude');
         $grant->create();
         return $grant->toJSON();
     }
@@ -64,6 +65,7 @@ class GrantAPI extends RESTAPI {
             $grant->start_date = $this->POST('start_date');
             $grant->end_date = $this->POST('end_date');
             $grant->contributions = $this->POST('contributions');
+            $grant->exclude = $this->POST('exclude');
             $grant->update();
             return $grant->toJSON();
         }

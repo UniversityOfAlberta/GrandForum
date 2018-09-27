@@ -37,26 +37,7 @@ GrantView = Backbone.View.extend({
     
     delete: function(){
         if(this.model.get('deleted') != true){
-            this.model.destroy({
-                success: function(model, response) {
-                    if(response.deleted == true){
-                        model.set(response);
-                        clearSuccess();
-                        clearError();
-                        addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
-                    }
-                    else{
-                        clearSuccess();
-                        clearError();
-                        addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
-                    }
-                },
-                error: function(model, response) {
-                    clearSuccess();
-                    clearError();
-                    addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
-                }
-            });
+            this.deleteDialog.dialog('open');
         }
         else{
             clearAllMessages();
@@ -64,9 +45,35 @@ GrantView = Backbone.View.extend({
         }
     },
     
+    save: function(){
+        _.defer($.proxy(function(){
+            this.model.save(null, {
+                success: $.proxy(function(){
+                    clearAllMessages();
+                    if(this.model.get('exclude')){
+                        addSuccess("The Revenue Account is now Excluded");
+                    }
+                    else{
+                        addSuccess("The Revenue Account is no longer Excluded");
+                    }
+                }, this),
+                error: $.proxy(function(o, e){
+                    clearAllMessages();
+                    if(e.responseText != ""){
+                        addError(e.responseText, true);
+                    }
+                    else{
+                        addError("There was a problem saving the Revenue Account", true);
+                    }
+                }, this)
+            });
+        }, this));
+    },
+    
     events: {
         "click #edit": "edit",
-        "click #delete": "delete"
+        "click #delete": "delete",
+        "change [name=exclude]": "save"
     },
     
     renderContributions: function(){
@@ -106,6 +113,7 @@ GrantView = Backbone.View.extend({
 
     render: function(){
         main.set('title', this.model.get('title'));
+        $("#pageTitle").html("<a href='#'>Revenue Accounts</a> > " + this.model.get('title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributions();
         this.renderCoPI();
@@ -114,6 +122,68 @@ GrantView = Backbone.View.extend({
             clearInfo();
             addInfo('This Revenue Account has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Revenue Account.');
         }
+        this.deleteDialog = this.$("#deleteDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            open: $.proxy(function(){
+                $("html").css("overflow", "hidden");
+                $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
+                $("#deleteCheck", this.deleteDialog).prop("checked", false);
+                $("#deleteCheck", this.deleteDialog).change($.proxy(function(e){
+                    var isChecked = $(e.currentTarget).is(":checked");
+                    if(isChecked){
+                        $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", false);
+                    }
+                    else{
+                        $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
+                    }
+                }, this));
+            }, this),
+            beforeClose: function(){
+                $("html").css("overflow", "auto");
+            },
+            buttons: {
+                "Yes": $.proxy(function(){
+                    var model = this.model;
+                    if(model.get('deleted') != true){
+                        $("div.throbber", this.deleteDialog).show();
+                        model.destroy({
+                            success: $.proxy(function(model, response) {
+                                this.deleteDialog.dialog('close');
+                                $("div.throbber", this.deleteDialog).hide();
+                                if(response.deleted == true){
+                                    model.set(response);
+                                    clearSuccess();
+                                    clearError();
+                                    addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
+                                }
+                                else{
+                                    clearSuccess();
+                                    clearError();
+                                    addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                                }
+                            }, this),
+                            error: function(model, response) {
+                                clearSuccess();
+                                clearError();
+                                addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                            }
+                        });
+                    }
+                    else{
+                        this.deleteDialog.dialog('close');
+                        clearAllMessages();
+                        addError('This ' + model.get('category') + ' is already deleted');
+                    }
+                }, this),
+                "No": $.proxy(function(){
+                    this.deleteDialog.dialog('close');
+                }, this)
+            }
+        });
         return this.$el;
     }
 

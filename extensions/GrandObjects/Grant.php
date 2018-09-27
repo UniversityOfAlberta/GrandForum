@@ -2,6 +2,8 @@
 
 class Grant extends BackboneModel {
 
+    static $exclusionCache = null;
+
     var $id;
     var $user_id;
     var $project_id;
@@ -21,6 +23,7 @@ class Grant extends BackboneModel {
     var $end_date;
     var $deleted;
     var $contributions = null;
+    var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
     
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_grants'),
@@ -86,6 +89,12 @@ class Grant extends BackboneModel {
                 $this->start_date = $row['start_date'];
                 $this->end_date = $row['end_date'];
                 $this->deleted = $row['deleted'];
+                $this->exclude = false;
+                foreach($this->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $me->getId()){
+                        $this->exclude = true;
+                    }
+                }
             }
         }
     }
@@ -187,6 +196,23 @@ class Grant extends BackboneModel {
         return "$wgServer$wgScriptPath/index.php/Special:GrantPage#/{$this->getId()}";
     }
     
+    /**
+     * Returns a list of People who want this Product to be exluded from them
+     * @return array the list of People who want this Product to be excluded from them
+     */
+    function getExclusions(){
+        if(self::$exclusionCache === null){
+            self::$exclusionCache = array();
+            $data = DBFunctions::select(array('grand_grants_exclude'),
+                                        array('*'));
+            foreach($data as $row){
+                self::$exclusionCache[$row['grant_id']][] = Person::newFromId($row['user_id']);
+            }
+            self::$exclusionCache[-1] = array(); // This is just to garuntee that there will be at least 1 row in the cache
+        }
+        return (isset(self::$exclusionCache[$this->getId()])) ? self::$exclusionCache[$this->getId()] : array();
+    }
+    
     function getContributions(){
         if($this->contributions == null){
             $this->contributions = array();
@@ -201,6 +227,7 @@ class Grant extends BackboneModel {
     }
     
     function create(){
+        $me = Person::newFromWgUser();
         $copis = array();
         foreach($this->copi as $copi){
             if(isset($copi->id) && $copi->id != 0){
@@ -229,6 +256,11 @@ class Grant extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
         $this->id = DBFunctions::insertId();
+        if($this->exclude){
+            DBFunctions::insert('grand_grants_exclude',
+                                array('grant_id' => $this->id,
+                                      'user_id' => $me->id));
+        }
         DBFunctions::delete('grand_grant_contributions',
                             array('grant_id' => EQ($this->getId())));
         foreach($this->getContributions() as $contribution){
@@ -242,6 +274,7 @@ class Grant extends BackboneModel {
     }
     
     function update(){
+        $me = Person::newFromWgUser();
         $copis = array();
         foreach($this->copi as $copi){
             if(isset($copi->id) && $copi->id != 0){
@@ -270,6 +303,14 @@ class Grant extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date),
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_grants_exclude',
+                            array('grant_id' => $this->id,
+                                  'user_id' => $me->id));
+        if($this->exclude){
+            DBFunctions::insert('grand_grants_exclude',
+                                array('grant_id' => $this->id,
+                                      'user_id' => $me->id));
+        }
         DBFunctions::delete('grand_grant_contributions',
                             array('grant_id' => EQ($this->getId())));
         foreach($this->getContributions() as $contribution){
@@ -343,7 +384,8 @@ class Grant extends BackboneModel {
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
             'deleted' => $this->deleted,
             'url' => $this->getUrl(),
-            'contributions' => $this->getContributions()
+            'contributions' => $this->getContributions(),
+            'exclude' => $this->exclude
         );
         return $json;
     }

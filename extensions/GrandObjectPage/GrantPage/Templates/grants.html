@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>Title</th>
+            <th>Excluded&nbsp;<span class="tooltip" title="If a Revenue Account is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></th>
             <th>PI</th>
             <th>Co-PI</th>
             <th>Sponsor</th>
@@ -24,6 +25,9 @@
                         <a href="<%= grant.get('url') %>">(Missing Title)</a>
                     <% } %>
                     <br /><%= grant.get('description') %>
+                </td>
+                <td align="center">
+                    <% if(grant.get('exclude')){ %>Yes<% } %>
                 </td>
                 <td>
                     <% if(grant.get('pi').id != 0){ %>

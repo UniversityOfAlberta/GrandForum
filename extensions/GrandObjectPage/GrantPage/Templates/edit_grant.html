@@ -40,17 +40,9 @@
         <td class="label">Project ID:</td>
         <td colspan="3"><%= HTML.TextBox(this, 'project_id') %></td>
     </tr>
-</table>
-<table class="wikitable" rules="all" frame="box">
     <tr>
-        <th>Total</th>
-        <th>Funds Available<br />Before Commitments</th>
-        <th>Funds Available<br />After Commitments</th>
-    </tr>
-    <tr>
-        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'total') %></span></td>
-        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'funds_before') %></span></td>
-        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'funds_after') %></span></td>
+        <td class="label">Funding Amount ($):</td>
+        <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'total') %></td>
     </tr>
 </table>
 <!--h2>Contributions</h2>

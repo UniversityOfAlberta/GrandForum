@@ -2713,7 +2713,7 @@ class Person extends BackboneModel {
         return $this->relations[$type];
     }
    
-    function getGrants(){
+    function getGrants($exclude=true){
         if($this->grants == null){
             $this->grants = array();
             $data = DBFunctions::select(array('grand_grants'),
@@ -2727,22 +2727,25 @@ class Person extends BackboneModel {
                 }
             }
         }
+        $grants = $this->grants;
+        if($exclude){
+            foreach($grants as $key => $grant){
+                $skip = false;
+                foreach($grant->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($grants[$key]);
+                }
+            }
+        }
         return $this->grants;
     }
     
-    function getGrantsDuring($year){
-        $grants = array();
-        foreach($this->getGrants() as $grant){
-            if($grant->getStartYear() <= $year && $grant->getEndYear() >= $year){
-                $grants[$grant->getStartDate().$grant->getEndYear.$grant->getId()] = $grant;
-            }
-        }
-        ksort($grants);
-        $grants = array_reverse($grants);
-        return $grants;
-    }
-    
-    function getGrantsBetween($start, $end, $exclude=false){
+    function getGrantsBetween($start, $end, $filter=false, $exclude=true){
         $grants = array();
         foreach($this->getGrants() as $grant){
             $grantStart = $grant->getStartDate();
@@ -2750,7 +2753,7 @@ class Person extends BackboneModel {
             if(($grantStart >= $start && $grantStart <= $end) ||
                ($grantEnd >= $start && $grantEnd <= $end) ||
                ($grantStart <= $start && $grantEnd >= $end)){
-                if($exclude){
+                if($filter){
                     if(strtolower($grant->getSponsor()) == "university of alberta" &&
                        array_search($grant->getSeqNo(), array(0, 35)) !== false){
                         // Rule 1: inside Fac of Science and start up funds
@@ -2777,17 +2780,9 @@ class Person extends BackboneModel {
                         // Rule 103: Internal Centre Funding
                         continue;
                     }
-                    else if($this->getId() != "106" && // Exception
-                            (strpos($grant->getProjectId(), 'B') === 0 ||
-                             strpos($grant->getProjectId(), 'P') === 0 ||
-                             strtolower($grant->getSponsor()) === "national research council of canada" ||
-                             strstr(strtolower($grant->getDescription()), "billing") !== false ||
-                             strstr(strtolower($grant->getDescription()), "charges") !== false ||
-                             strstr(strtolower($grant->getDescription()), "service") !== false ||
-                             strstr(strtolower($grant->getDescription()), "maintenance") !== false ||
-                             strstr(strtolower($grant->getDescription()), "assistant") !== false ||
-                             strstr(strtolower($grant->getDescription()), "lecture") !== false ||
-                             strstr(strtolower($grant->getDescription()), "expenses") !== false)){
+                    else if(strpos($grant->getProjectId(), 'B') === 0 ||
+                            strpos($grant->getProjectId(), 'P') === 0 ||
+                            strtolower($grant->getSponsor()) === "national research council of canada"){
                         // Rule 104: Project ID scan – Billing/Journal productions/services
                         continue;
                     }
@@ -2796,24 +2791,12 @@ class Person extends BackboneModel {
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'D') === 0 ||
-                            strpos($grant->getProjectId(), 'W') === 0 ||
-                            strstr(strtolower($grant->getDescription()), "donations") !== false ||
-                            strstr(strtolower($grant->getDescription()), "donation") !== false ||
-                            strstr(strtolower($grant->getTitle()), "rconf") !== false ||
-                            strstr(strtolower($grant->getTitle()), "conf") !== false ||
-                            strstr(strtolower($grant->getTitle()), "donat") !== false ||
-                            strstr(strtolower($grant->getTitle()), "congress") !== false ||
-                            strstr(strtolower($grant->getTitle()), "conference") !== false ||
-                            strstr(strtolower($grant->getTitle()), "meeting") !== false ||
-                            strstr(strtolower($grant->getTitle()), "workshop") !== false ||
-                            strstr(strtolower($grant->getTitle()), "school") !== false ||
-                            strstr(strtolower($grant->getTitle()), "symposium") !== false){
+                            strpos($grant->getProjectId(), 'W') === 0){
                         // Rule 106: donations
                         continue;
                     }
                     else if(strpos($grant->getProjectId(), 'G022') === 0 ||
-                            strpos($grant->getProjectId(), 'G099') === 0 ||
-                            strstr(strtolower($grant->getDescription()), "general research") !== false){
+                            strpos($grant->getProjectId(), 'G099') === 0){
                         // Rule 107: “General Research Funds”
                         continue;
                     }
@@ -2837,6 +2820,20 @@ class Person extends BackboneModel {
                     }
                 }
                 $grants[$grantStart.$grantEnd.$grant->getId()] = $grant;
+            }
+        }
+        if($exclude){
+            foreach($grants as $key => $grant){
+                $skip = false;
+                foreach($grant->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($grants[$key]);
+                }
             }
         }
         ksort($grants);
@@ -2875,26 +2872,6 @@ class Person extends BackboneModel {
         else{
             return false;
         }
-    }
-    
-    /**
-     * Returns whether or not this person is a Student
-     * @return boolean Whether or not his person is a Student
-     */
-    function isStudent(){
-        if($this->isRole(HQP)){
-            $uni = $this->getUniversity();
-            if(strtolower($uni['position']) == "graduate student - master's course" ||
-               strtolower($uni['position']) == "graduate student - master's thesis" ||
-               strtolower($uni['position']) == "graduate student - master's" ||
-               strtolower($uni['position']) == "graduate student - doctoral" ||
-               strtolower($uni['position']) == "post-doctoral fellow" ||
-               strtolower($uni['position']) == 'undergraduate' ||
-               strtolower($uni['position']) == 'summer student'){
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
