@@ -456,8 +456,8 @@ class WhoSupplies extends SpecialPage{
                 <h3>Billing Codes</h3>
                 <ul>
                     <li>As of May 23rd, 2018, the province of NS has officially announced a new billing code for mifepristone medical abortion, <a href='https://www.ctvnews.ca/health/abortion-pill-to-become-more-widely-available-in-n-s-after-new-billing-code-adopted-1.3942030' target='_blank'>read more</a>.</li>
-                    <li>Comprehensive fee for the initial visit, 47.5 units: Billing amount, $120.00</li>
-                    <li>Follow up visits can be billed as regular office visits</li>
+                    <li>03.03V Comprehensive fee for the initial visit for a medical abortion: Billing amount, $120.00</li>
+                    <li>03.03 Follow up visits can be billed as regular office visits</li>
                     <li>Nova Scotia MSI Billing Physicians Manual, <a href='https://doctorsns.com/contract-and-support/billing/msi' target='_blank'>click here</a></li>
                 </ul>
             </div>
