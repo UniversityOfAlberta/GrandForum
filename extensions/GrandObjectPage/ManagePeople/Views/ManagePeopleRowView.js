@@ -174,10 +174,16 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                       el: this.universitiesDialog});
     },
     
+    removePerson: function(){
+        $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {'_method': 'DELETE', 'model': '{"id":' + this.model.get('id') + '}'});
+        this.parent.people.remove(this.model);
+    },
+    
     events: {
         "click #editRoles": "openRolesDialog",
         "click #editRelations": "openRelationsDialog",
-        "click #editUniversities": "openUniversitiesDialog"
+        "click #editUniversities": "openUniversitiesDialog",
+        "click .delete-icon": "removePerson"
     },
     
     renderRelationType: function(){
@@ -190,6 +196,14 @@ ManagePeopleRowView = Backbone.View.extend({
             var end = this.model.get('end');
             
             var latestRel = null;
+            if(relations.length == 0){
+                // No Relations with this person, so the 'Remove' icon
+                this.$(".delete-icon").show();
+            }
+            else{
+                // This will probably already be hidden, but just incase
+                this.$(".delete-icon").hide();
+            }
             _.each(relations.toJSON(), function(rel){
                 if(latestRel == null || latestRel.startDate <= rel.startDate){
                     latestRel = rel;

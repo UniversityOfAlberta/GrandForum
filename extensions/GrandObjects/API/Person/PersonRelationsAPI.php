@@ -69,7 +69,7 @@ class PersonRelationsAPI extends RESTAPI {
             $this->throwError("This Relationship does not exist");
         }
         $relation->delete();
-        return false;
+        return $relation->toJSON();
     }
 }
 

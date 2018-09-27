@@ -58,7 +58,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 };
             }
             else {
-                relation.destroy(null, {
+                relation.destroy({
                     success: function(){
                         addSuccess("Relation saved");
                         person.fetch();

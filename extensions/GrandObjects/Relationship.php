@@ -196,6 +196,7 @@ class Relationship extends BackboneModel {
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
+            $this->id = "";
             if($status){
                 Notification::addNotification($me, $this->getUser1(), "Relation Deleted", "You and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
                 Notification::addNotification($me, $this->getUser2(), "Relation Deleted", "You and {$this->getUser1()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");

@@ -49,6 +49,16 @@ class PeopleManagedAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            DBFunctions::delete('grand_managed_people',
+                                array('user_id' => $me->getId(),
+                                      'managed_id' => $this->POST('id')));
+            return false;
+        }
+        else{
+            $this->throwError("Not Logged In");
+        }
         return false;
     }
 
