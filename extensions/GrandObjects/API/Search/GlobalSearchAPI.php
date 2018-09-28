@@ -16,33 +16,29 @@ class GlobalSearchAPI extends RESTAPI {
         switch($group){
             case 'people':
                 $data = array();
-                $people = DBFunctions::select(array('mw_user'),
-                                              array('user_name', 'user_real_name', 'user_id', 'user_email'),
-                                              array('deleted' => '0'));
-                foreach($people as $pRow){
-                    $person = new Person(array());
-                    $person->name = $pRow['user_name'];
-                    $person->realname = $pRow['user_real_name'];
-                    if($me->isLoggedIn()){
-                        // Only search by email if the person is logged in
-                        $person->email = $pRow['user_email'];
-                    }
-                    $realName = unaccentChars($person->getNameForForms());
-                    $names = array_merge(explode(".", str_replace(" ", "", $realName)), 
-                                         explode(" ", str_replace(".", "", $realName)));
-                    $names[] = unaccentChars($person->getEmail());
-                    $found = true;
+                $fullTextSearch = DBFunctions::escape(implode("* +", $searchNames));
+                $people = DBFunctions::execSQL("SELECT DISTINCT user_id
+                                                FROM `grand_names_cache`
+                                                WHERE MATCH(name) AGAINST ('+$fullTextSearch*' IN BOOLEAN MODE) 
+                                                LIMIT 100");
+                foreach($people as $person){
+                    $data[$person['user_id']] = $person['user_id'];
+                }
+                if(count($searchNames) == 1 && $me->isLoggedIn()){
+                    // Only search email if a single search word was used
                     foreach($searchNames as $name){
-                        $grepped = preg_grep("/^$name.*/", $names);
-                        if(count($grepped) == 0){
-                            $found = false;
-                            break;
+                        $name = DBFunctions::escape($name);
+                        $people = DBFunctions::execSQL("SELECT DISTINCT user_id
+                                                        FROM `mw_user`
+                                                        WHERE user_email LIKE '$name%'
+                                                        AND deleted != 1
+                                                        LIMIT 100");
+                        foreach($people as $person){
+                            $data[$person['user_id']] = $person['user_id'];
                         }
                     }
-                    if($found){
-                        $data[] = $pRow['user_id'];
-                    }
                 }
+                
                 $results = array();
                 $myRelations = $me->getRelations();
                 $sups = $me->getSupervisors();
