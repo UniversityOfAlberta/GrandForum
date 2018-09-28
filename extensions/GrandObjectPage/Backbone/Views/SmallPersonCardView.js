@@ -20,7 +20,6 @@ SmallPersonCardView = Backbone.View.extend({
 
     render: function(options){
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderRoles();
         return this.$el;
     }
 

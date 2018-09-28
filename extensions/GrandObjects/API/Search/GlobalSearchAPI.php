@@ -89,7 +89,6 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'products':
                 $data = array();
-                $start = microtime(true);
                 $products = DBFunctions::select(array('grand_products'),
                                                 array('title', 'category', 'type', 'id'),
                                                 array('deleted' => '0'));
@@ -112,7 +111,6 @@ class GlobalSearchAPI extends RESTAPI {
                         $data[] = $product['id'];
                     }
                 }
-                $end = microtime(true);
                 $results = array();
                 $myProducts = new Collection($me->getPapers('all', false, 'both'));
                 $productIds = $myProducts->pluck('id');
