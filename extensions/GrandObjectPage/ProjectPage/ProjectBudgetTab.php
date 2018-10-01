@@ -213,15 +213,16 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
+            //$endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
+            $endYear = date('Y');
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
             
-            for($i=$endYear+1; $i >= $startYear; $i--){
-                $firstBudget = ($i == $endYear+1);
+            for($i=$endYear; $i >= $startYear; $i--){
+                $firstBudget = ($i == $endYear);
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
