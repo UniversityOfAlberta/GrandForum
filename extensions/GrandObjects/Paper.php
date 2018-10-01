@@ -717,6 +717,8 @@ class Paper extends BackboneModel{
         foreach($data as $row){
             if(!($row['user_id'] == $me->getId() &&
                  $row['year'] == REPORTING_YEAR)){
+                // Prevent deletion if it has been reported by anyone else, 
+                // or in a past year by the current user
                 return false;
             }
         }
