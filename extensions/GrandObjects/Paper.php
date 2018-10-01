@@ -839,6 +839,7 @@ class Paper extends BackboneModel{
      * Handles both authors and contributors
      */
     private function getAuthorsInternal($authorArray, $cache){
+        $me = Person::newFromWgUser();
         $authors = array();
         $unserialized = array();
         if(is_array($authorArray)){
@@ -870,19 +871,39 @@ class Paper extends BackboneModel{
                 $person = Person::newFromId($author);
             }
             else{
-                if(isset(Person::$cache[strtolower($author)])){
-                    $person = Person::$cache[strtolower($author)];
+                if($me->isRole(ADMIN)){
+                    $person = Person::newFromNameLike($author);
                 }
                 else{
-                    $person = Person::newFromNameLike($author);
-                    if($person == null || $person->getName() == null || $person->getName() == ""){
-                        // The name might not match exactly what is in the db, try aliases
-                        try{
-                            $person = Person::newFromAlias($author);
+                    $people = Person::newFromNameLike($author, true);
+                    $maxScore = 0;
+                    foreach($people as $p){
+                        $score = 1;
+                        if($p->isMe()){
+                            // Author matches themselves
+                            $score += 1000;
                         }
-                        catch(DomainException $e){
-                            $person = null;
+                        if($me->isRelatedToDuring($p, "all", "0000-00-00", "2100-00-00")){
+                            // Author is related to user
+                            $score += 100;
                         }
+                        if($me->getDepartment() == $p->getDepartment()){
+                            // Author is in same department as user
+                            $score += 10;
+                        }
+                        if($score > $maxScore){
+                            $person = $p;
+                        }
+                        $maxScore = max($maxScore, $score);
+                    }
+                }
+                if($person == null || $person->getName() == null || $person->getName() == ""){
+                    // The name might not match exactly what is in the db, try aliases
+                    try{
+                        $person = Person::newFromAlias($author);
+                    }
+                    catch(DomainException $e){
+                        $person = null;
                     }
                 }
             }

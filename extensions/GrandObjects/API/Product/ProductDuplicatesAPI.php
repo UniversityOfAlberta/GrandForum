@@ -29,7 +29,7 @@ class ProductDuplicatesAPI extends RESTAPI {
                     if($percent >= 85){
 	                    if(!isset($ignores[$id.'_'.$product['id']])){
 	                        $prod = Product::newFromId($product['id']);
-	                        if($prod->canView()){
+	                        if($prod->getId() != ""){
                                 $duplicates[] = $prod->toArray();
                             }
                         }

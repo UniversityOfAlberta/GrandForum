@@ -248,7 +248,7 @@ class Person extends BackboneModel {
     static function newFromNameLike($name, $multiple=false){
         $name = Person::cleanName($name);
         $name = unaccentChars(strtolower($name));
-        if(isset(Person::$cache[$name])){
+        if(isset(Person::$cache[$name]) && !$multiple){
             return Person::$cache[$name];
         }
         $namesCache = DBFunctions::select(array('grand_names_cache'),
