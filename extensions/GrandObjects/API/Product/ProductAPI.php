@@ -107,6 +107,7 @@ class ProductAPI extends RESTAPI {
         $paper->access_id = $this->POST('access_id');
         $paper->access = $this->POST('access');
         $paper->exclude = $this->POST('exclude');
+        $paper->deleted = $this->POST('deleted');
         $status = $paper->update();
         if(!$status){
             $this->throwError("The product <i>{$paper->getTitle()}</i> could not be updated");

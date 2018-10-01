@@ -14,7 +14,8 @@ ProductView = Backbone.View.extend({
     
     events: {
         "click #editProduct": "editProduct",
-        "click #deleteProduct": "deleteProduct"
+        "click #deleteProduct": "deleteProduct",
+        "click #undeleteProduct": "undeleteProduct"
     },
     
     editProduct: function(){
@@ -29,6 +30,28 @@ ProductView = Backbone.View.extend({
             clearAllMessages();
             addError('This ' + this.model.get('category') + ' is already deleted');
         }
+    },
+    
+    undeleteProduct: function(){
+        this.model.set('deleted', 0);
+        this.$("#deleteProduct").prop("disabled", true);
+        this.$("#undeleteProduct").prop("disabled", true);
+        this.model.save(null, {
+            success: $.proxy(function(model, response) {
+                clearSuccess();
+                clearError();
+                addSuccess('The ' + response.category + ' <i>' + response.title + '</i> was un-deleted sucessfully');
+                this.$("#deleteProduct").prop("disabled", false);
+                this.$("#undeleteProduct").prop("disabled", false);
+            }, this),
+            error: $.proxy(function(model, response) {
+                clearSuccess();
+                clearError();
+                addError('The ' + response.category + ' <i>' + response.title + '</i> was not un-deleted sucessfully');
+                this.$("#deleteProduct").prop("disabled", false);
+                this.$("#undeleteProduct").prop("disabled", false);
+            }, this)
+        });
     },
     
     renderAuthors: function(){
@@ -104,7 +127,7 @@ ProductView = Backbone.View.extend({
         this.renderContributors();
         this.renderProjects();
         if(this.model.get('deleted') == true){
-            this.$el.find("#deleteProduct").prop('disabled', true);
+            this.$("#deleteProduct").prop('disabled', true);
             clearInfo();
             addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the ' + this.model.get('category') + '.');
         }

@@ -1860,8 +1860,6 @@ class Paper extends BackboneModel{
                     // Clean up other tables
                     DBFunctions::delete('grand_product_authors',
                                         array('product_id' => EQ($this->getId())));
-                    DBFunctions::delete('grand_products_reported',
-                                        array('product_id' => EQ($this->getId())));
                 }
             }
             else{
