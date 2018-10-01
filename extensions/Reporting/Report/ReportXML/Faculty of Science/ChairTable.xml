@@ -291,9 +291,12 @@
                     
                     $(".increment select").change(function(){
                         var sum = 0;
-                        var nFaculty = $(".increment select").length;
+                        var nFaculty = 0;
                         $(".increment select").each(function(i, el){
-                            sum += parseFloat($(el).val());
+                            if($(el).val() != ""){
+                                sum += parseFloat($(el).val());
+                                nFaculty++;
+                            }
                         });
                         $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
                     });
@@ -313,7 +316,7 @@
                         sums[i] = 0;
                         $(increment).each(function(j, el){
                             var val = $(el).text();
-                            if(val != "N/A"){
+                            if(val != "N/A" && val != ""){
                                 counts[i]++;
                                 sums[i] += parseFloat(val);
                             }
@@ -636,9 +639,12 @@
                     
                     $(".increment select").change(function(){
                         var sum = 0;
-                        var nFaculty = $(".increment select").length;
+                        var nFaculty = 0;
                         $(".increment select").each(function(i, el){
-                            sum += parseFloat($(el).val());
+                            if($(el).val() != ""){
+                                sum += parseFloat($(el).val());
+                                nFaculty++;
+                            }
                         });
                         $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
                     });
@@ -658,7 +664,7 @@
                         sums[i] = 0;
                         $(increment).each(function(j, el){
                             var val = $(el).text();
-                            if(val != "N/A"){
+                            if(val != "N/A" && val != ""){
                                 counts[i]++;
                                 sums[i] += parseFloat(val);
                             }
