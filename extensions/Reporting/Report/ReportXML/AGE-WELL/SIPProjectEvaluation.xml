@@ -80,6 +80,24 @@
     </ReportSection>
     <ReportSection id="research">
         <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="rev_head">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("table b").qtip();
+                    });
+                </script>
+                <br /><br />
+                <table rules="all" frame="box" class="small">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="planning" delete="true" />
         <ReportItem id="plan_head">
             <![CDATA[
@@ -89,6 +107,24 @@
     </ReportSection>
     <ReportSection id="networking">
         <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="rev_head">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("table b").qtip();
+                    });
+                </script>
+                <br /><br />
+                <table rules="all" frame="box" class="small">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="planning" delete="true" />
         <ReportItem id="plan_head">
             <![CDATA[
@@ -98,6 +134,24 @@
     </ReportSection>
     <ReportSection id="ktee1">
         <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="rev_head">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("table b").qtip();
+                    });
+                </script>
+                <br /><br />
+                <table rules="all" frame="box" class="small">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="planning" delete="true" />
         <ReportItem id="plan_head">
             <![CDATA[
@@ -107,6 +161,24 @@
     </ReportSection>
     <ReportSection id="hqp">
         <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="rev_head">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("table b").qtip();
+                    });
+                </script>
+                <br /><br />
+                <table rules="all" frame="box" class="small">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="planning" delete="true" />
         <ReportItem id="plan_head">
             <![CDATA[
