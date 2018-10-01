@@ -70,7 +70,7 @@
 <% if(parseInt(me.get('id')) > 0) { %>
     <br />
     <button id='editProduct'>Edit <%= category %></button>&nbsp;
-    <% if(!deleted){ %>
+    <% if(!deleted && canDelete){ %>
         <button id='deleteProduct'>Delete <%= category %></button>&nbsp;
     <% } %>
     <% if(deleted){ %>

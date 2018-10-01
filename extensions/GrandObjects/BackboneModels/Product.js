@@ -210,7 +210,8 @@ Product = Backbone.Model.extend({
             access_id: 0,
             created_by: 0,
             access: "Forum",
-            exclude: false
+            exclude: false,
+            canDelete: true,
         };
     },
 });

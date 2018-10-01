@@ -205,10 +205,10 @@ class Grant extends BackboneModel {
             self::$exclusionCache = array();
             $data = DBFunctions::select(array('grand_grants_exclude'),
                                         array('*'));
+            self::$exclusionCache = array();
             foreach($data as $row){
                 self::$exclusionCache[$row['grant_id']][] = Person::newFromId($row['user_id']);
             }
-            self::$exclusionCache[-1] = array(); // This is just to garuntee that there will be at least 1 row in the cache
         }
         return (isset(self::$exclusionCache[$this->getId()])) ? self::$exclusionCache[$this->getId()] : array();
     }
@@ -269,6 +269,7 @@ class Grant extends BackboneModel {
                                       'contribution_id' => $contribution));
         }
         $this->copi = $copis;
+        self::$exclusionCache = null;
         DBFunctions::commit();
         return $this;
     }
@@ -319,6 +320,7 @@ class Grant extends BackboneModel {
                                       'contribution_id' => $contribution));
         }
         $this->copi = $copis;
+        self::$exclusionCache = null;
         DBFunctions::commit();
         return $this;
     }

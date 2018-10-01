@@ -10,7 +10,7 @@ The following Products have similar titles.  Please verify that they are unique.
         <td><a href="<%= url %>" target="_blank"><%= title %></a></td>
         <td><%= type %></td>
         <td align="center"><%= date %></td>
-        <td align="center"><input type="checkbox" value="<%= id %>" /></td>
+        <td align="center"><% if(canDelete){ %><input type="checkbox" value="<%= id %>" /><% } %></td>
     </tr>
     <tr>
         <th colspan="4">Potential Duplicates</th>
@@ -20,7 +20,7 @@ The following Products have similar titles.  Please verify that they are unique.
         <td><a href="<%= duplicate.get('url') %>" target="_blank"><%= duplicate.get('title') %></a></td>
         <td><%= duplicate.get('type') %></td>
         <td align="center"><%= duplicate.get('date') %></td>
-        <td align="center"><input type="checkbox" value="<%= duplicate.get('id') %>" /></td>
+        <td align="center"><% if(duplicate.get('canDelete')){ %><input type="checkbox" value="<%= duplicate.get('id') %>" /><% } %></td>
     </th>
 <% }) %>
 </table>

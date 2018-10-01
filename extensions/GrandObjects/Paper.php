@@ -572,7 +572,7 @@ class Paper extends BackboneModel{
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
-            $this->exclude = false;
+            //$this->exclude = false;
             foreach($this->getExclusions() as $exclusion){
                 if($exclusion->getId() == $me->getId()){
                     $this->exclude = true;
@@ -707,6 +707,20 @@ class Paper extends BackboneModel{
             }
         }
         return false;
+    }
+    
+    function canDelete(){
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('grand_products_reported'),
+                                    array('user_id', 'year'),
+                                    array('product_id' => $this->getId()));
+        foreach($data as $row){
+            if(!($row['user_id'] == $me->getId() &&
+                 $row['year'] == REPORTING_YEAR)){
+                return false;
+            }
+        }
+        return true;
     }
     
     /**
@@ -978,10 +992,10 @@ class Paper extends BackboneModel{
         if(self::$exclusionCache === null){
             $data = DBFunctions::select(array('grand_products_exclude'),
                                         array('*'));
+            self::$exclusionCache = array();
             foreach($data as $row){
                 self::$exclusionCache[$row['product_id']][] = Person::newFromId($row['user_id']);
             }
-            self::$exclusionCache[-1] = array(); // This is just to garuntee that there will be at least 1 row in the cache
         }
         return (isset(self::$exclusionCache[$this->getId()])) ? self::$exclusionCache[$this->getId()] : array();
     }
@@ -1754,7 +1768,7 @@ class Paper extends BackboneModel{
                 }
                 self::$cache = array();
                 self::$dataCache = array();
-                self::$exclusionCache = array();
+                self::$exclusionCache = null;
             }
             return $status;
         }
@@ -1863,7 +1877,7 @@ class Paper extends BackboneModel{
                 }
                 self::$cache = array();
                 self::$dataCache = array();
-                self::$exclusionCache = array();
+                self::$exclusionCache = null;
             }
             return $status;
         }
@@ -1872,7 +1886,7 @@ class Paper extends BackboneModel{
     
     function delete(){
         $me = Person::newFromWGUser();
-        if($me->isLoggedIn()){
+        if($me->isLoggedIn() && $this->canDelete()){
             if($this->getAccessId() > 0){
                 // Delete Permanently
                 $status = DBFunctions::delete('grand_products',
@@ -1912,6 +1926,8 @@ class Paper extends BackboneModel{
         if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
+            $json['exclude'] = $this->exclude;
+            $json['canDelete'] = $this->canDelete();
             return $json;
         }
         else{
@@ -1950,11 +1966,12 @@ class Paper extends BackboneModel{
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
-                          'access' => $this->getAccess(),
-                          'exclude' => $this->exclude);
+                          'access' => $this->getAccess());
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }
+            $json['exclude'] = $this->exclude;
+            $json['canDelete'] = $this->canDelete();
             return $json;
         }
     }
