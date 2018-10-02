@@ -13,6 +13,7 @@ Journal = Backbone.Model.extend({
             iso_abbrev: '',
             title: '',
             issn: '',
+            eissn: '',
             description: '',
             ranking_numerator: '',
             ranking_denominator: '',

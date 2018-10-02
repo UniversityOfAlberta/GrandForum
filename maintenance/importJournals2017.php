@@ -49,18 +49,20 @@
             $half_life = trim(ltrim($csv[4], '>'));
             $eigenfactor = $csv[5];
             foreach($connections[$issn] as $conn){
+                $type = "";
                 if(trim($conn[7]) == "Yes"){
                     $type = "SCIE";
                 }
                 if(trim($conn[8]) == "Yes"){
                     $type = "SSCI";
                 }
-                if(trim($conn[9]) == "Yes"){
+                /*if(trim($conn[9]) == "Yes"){
                     $type = "AHCI";
                 }
                 if(trim($conn[10]) == "Yes"){
                     $type = "ESCI";
-                }
+                }*/
+                $eissn = $conn[5];
                 $description = strtoupper(trim($conn[12]));
                 if(isset($alreadyDone[$issn.$description.$type]) || $type == ""){
                     continue;
@@ -70,6 +72,10 @@
                 if(isset($categories[$description.$type])){
                     $numer = trim(++$categories[$description.$type]['count']);
                 }
+                else{
+                    $categories[$description.$type]['count'] = 0;
+                    $numer = trim(++$categories[$description.$type]['count']);
+                }
 
                 $toBeInserted[$description.$type][] = 
                     array('year' => 2017,
@@ -77,6 +83,7 @@
                           'iso_abbrev' => $iso_abbrev,
                           'title' => $title,
                           'issn' => $issn,
+                          'eissn' => $eissn,
                           'description' => $description,
                           'ranking_numerator' => $numer,
                           'impact_factor' => trim($impact),

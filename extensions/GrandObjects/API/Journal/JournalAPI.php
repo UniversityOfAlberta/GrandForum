@@ -14,7 +14,6 @@ class JournalAPI extends RESTAPI {
         }
         else if ($search != ""){
             $journals = new Collection(Journal::getAllJournalsBySearch($search));
-
             return $journals->toJSON();           
         }
         else{

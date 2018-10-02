@@ -12,6 +12,7 @@ class Journal extends BackboneModel {
     var $iso_abbrev;
     var $title;
     var $issn;
+    var $eissn;
     var $description;
     var $ranking_numerator;
     var $ranking_denominator;
@@ -28,6 +29,7 @@ class Journal extends BackboneModel {
             $this->iso_abbrev = $row['iso_abbrev'];
             $this->title = $row['title'];
             $this->issn = $row['issn'];
+            $this->eissn = $row['eissn'];
             $this->description = $row['description'];
             $this->ranking_numerator = $row['ranking_numerator'];
             $this->ranking_denominator = $row['ranking_denominator'];
@@ -58,18 +60,21 @@ class Journal extends BackboneModel {
      */
     static function newFromIssn($issn){
         $journals = array();
-        $data = DBFunctions::select(array('grand_journals'),
-                                    array('*'),
-                                    array('issn' => $issn),
-                                    array('year' => 'DESC'));
-        $lastYear = "0000";
-        foreach($data as $row){
-            if($row['year'] >= $lastYear){
-                $journals[] = new Journal(array($row));
-                $lastYear = $row['year'];
-            }
-            else{
-                break;
+        if($issn != ""){
+            $data = DBFunctions::select(array('grand_journals'),
+                                        array('*'),
+                                        array('issn' => $issn,
+                                              WHERE_OR('eissn') => $issn),
+                                        array('year' => 'DESC'));
+            $lastYear = "0000";
+            foreach($data as $row){
+                if($row['year'] >= $lastYear){
+                    $journals[] = new Journal(array($row));
+                    $lastYear = $row['year'];
+                }
+                else{
+                    break;
+                }
             }
         }
         return $journals;
@@ -101,15 +106,16 @@ class Journal extends BackboneModel {
                                     array('*'));
         
         foreach($data as $row){
-        $found = true;
+            $found = true;
             foreach($strings as $string){
                 $title = unaccentChars($row['title']); // removes accented chars + lowers <-- exists in Javascript
                 $description = unaccentChars($row['description']);
-                $year = unaccentChars($row['year']);
+                $year = $row['year'];
                 $short_title = unaccentChars($row['short_title']);
                 $iso_abbrev = unaccentChars($row['iso_abbrev']);
-                $issn = unaccentChars($row['issn']);
-                $results = preg_grep("/".preg_quote($string)."/", array($title, $year, $description, $short_title, $iso_abbrev, $issn));
+                $issn = $row['issn'];
+                $eissn = $row['eissn'];
+                $results = preg_grep("/".preg_quote($string)."/", array($title, $year, $description, $short_title, $iso_abbrev, $issn, $eissn));
                 if(count($results) == 0){ // everything must match
                     $found = false;
                     break;
@@ -173,6 +179,7 @@ class Journal extends BackboneModel {
             'iso_abbrev' => $this->iso_abbrev,
             'title' => $this->title,
             'issn' => $this->issn,
+            'eissn', $this->eissn,
             'description' => $this->description,
             'ranking_numerator' => $this->ranking_numerator,
             'ranking_denominator' => $this->ranking_denominator,
