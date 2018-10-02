@@ -3,6 +3,7 @@ ManageProductsViewRow = Backbone.View.extend({
     tagName: 'tr',
     parent: null,
     row: null,
+    duplicating: false,
     template: _.template($('#manage_products_row_template').html()),
     otherPopupTemplate: _.template($('#manage_products_other_popup_template').html()),
     projectsPopupTemplate: _.template($('#manage_products_projects_popup_template').html()),
@@ -136,6 +137,36 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent.deleteDialog.dialog('open');
     },
     
+    duplicateProduct: function(){
+        if(!this.duplicating){
+            // Only duplicate if there isn't already a pending one happening
+            this.$(".copy-icon").css('background', 'none');
+            this.$(".copy-icon .throbber").show();
+            this.duplicating = true;
+            var product = new Product(this.model.toJSON());
+            product.set('id', null);
+            product.save(null, {
+                success: $.proxy(function(){
+                    clearSuccess();
+                    clearError();
+                    addSuccess('The ' + product.get('category') + ' <i>' + product.get('title') + '</i> was duplicated');
+                    this.parent.products.add(product);
+                    this.duplicating = false;
+                    this.$(".copy-icon").css('background', '');
+                    this.$(".copy-icon .throbber").hide();
+                }, this),
+                error: $.proxy(function(){
+                    clearSuccess();
+                    clearError();
+                    addError('There was a problem duplicating the ' + product.get('category') + ' <i>' + product.get('title') + '</i>');
+                    this.duplicating = false;
+                    this.$(".copy-icon").css('background', '');
+                    this.$(".copy-icon .throbber").hide();
+                }, this)
+            });
+        }
+    },
+    
     events: {
         "change input[type=checkbox]": "toggleSelect",
         "click div.showSubprojects": "showSubprojects",
@@ -143,6 +174,7 @@ ManageProductsViewRow = Backbone.View.extend({
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch",
         "click .edit-icon": "editProduct",
+        "click .copy-icon": "duplicateProduct",
         "click .delete-icon": "deleteProduct"
     },
     
