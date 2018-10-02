@@ -27,6 +27,10 @@ class JournalEissn extends AbstractMigration
      */
     public function change()
     {
-
+        $table = $this->table('grand_journals');
+        $table->addColumn('eissn', 'string', array('after' => 'issn', 'length' => 9))
+              ->addIndex('issn')
+              ->addIndex('eissn')
+              ->update();
     }
 }
