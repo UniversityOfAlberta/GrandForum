@@ -37,7 +37,6 @@ class Journal extends BackboneModel {
         }
     }
 
-
     /**
      * Returns a Journal from the given id
      * @param int $id The id of the journal
@@ -51,6 +50,30 @@ class Journal extends BackboneModel {
         return $journal;
     }
 
+    /**
+     * Returns Journals from the given issn
+     * @param string $issn The issn of the journal
+     * @return array The Journals from the given issn. 
+     * (Will only return journals from the more recent year)
+     */
+    static function newFromIssn($issn){
+        $journals = array();
+        $data = DBFunctions::select(array('grand_journals'),
+                                    array('*'),
+                                    array('issn' => $issn),
+                                    array('year' => 'DESC'));
+        $lastYear = "0000";
+        foreach($data as $row){
+            if($row['year'] >= $lastYear){
+                $journals[] = new Journal(array($row));
+                $lastYear = $row['year'];
+            }
+            else{
+                break;
+            }
+        }
+        return $journals;
+    }
 
     /**
      * Returns all Journals

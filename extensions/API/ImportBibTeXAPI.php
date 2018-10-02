@@ -149,6 +149,19 @@ class ImportBibTeXAPI extends API{
                     if($dfield['bibtex'] == $key){
                         if(!isset($product->data[$dkey]) || $product->data[$dkey] == ""){
                             $product->data[$dkey] = $field;
+                            if($dkey == "issn"){
+                                $journals = Journal::newFromIssn($field);
+                                $nJournals = count($journals);
+                                if($nJournals >= 1){
+                                    $journal = $journals[0];
+                                    if($nJournals == 1 && $journal->ranking_numerator > 0 && $journal->ranking_denominator > 0){
+                                        // Only one for this category found, also include ranking
+                                        $product->data['category_ranking'] = "{$journal->ranking_numerator}/{$journal->ranking_denominator}";
+                                    }
+                                    $product->data['impact_factor'] = $journal->impact_factor;
+                                    $product->data['eigen_factor'] = $journal->eigenfactor;
+                                }
+                            }
                         }
                         break;
                     }
