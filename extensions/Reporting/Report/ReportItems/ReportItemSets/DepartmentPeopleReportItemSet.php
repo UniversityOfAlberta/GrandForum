@@ -22,7 +22,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
-            if($person->isInDepartment($dept, $uni, $start, $end) && $person->getFECType() != ""){
+            if($person->isInDepartment($dept, $uni, $start, $end) && $person->getFECType($end) != ""){
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
@@ -30,10 +30,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 $index = $fec[$person->getId()];
-                $fecType = $person->getFECType();
+                $fecType = $person->getFECType($end);
                 $tuple = self::createTuple();
                 $tuple['person_id'] = $person->getId();
-                $tuple['extra'] = "<b>{$person->getFECType()}</b>".str_pad($index, 3, "0", STR_PAD_LEFT);
+                $tuple['extra'] = "<b>{$person->getFECType($end)}</b>".str_pad($index, 3, "0", STR_PAD_LEFT);
                 $data[] = $tuple;
             }
         }

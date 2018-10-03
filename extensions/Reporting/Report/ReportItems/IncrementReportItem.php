@@ -45,7 +45,7 @@ class IncrementReportItem extends SelectReportItem {
 	    }
 	    
 	    $salary = $person->getSalary($this->getReport()->year-1);
-	    $increment = "";
+	    $increment = "0A";
         $maxSalary = 0;
         switch($fecType){
 	        default:

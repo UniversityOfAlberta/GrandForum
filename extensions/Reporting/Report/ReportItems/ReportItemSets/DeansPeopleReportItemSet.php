@@ -25,9 +25,9 @@ class DeansPeopleReportItemSet extends ReportItemSet {
             if($found){
                 $tuple = self::createTuple();
                 $index = @$fec[$person->getId()];
-                $fecType = $person->getFECType();
+                $fecType = $person->getFECType($end);
                 $tuple['person_id'] = $person->getId();
-                $tuple['extra'] = "<b>{$person->getFECType()}</b>".str_pad($index, 3, "0", STR_PAD_LEFT);
+                $tuple['extra'] = "<b>{$person->getFECType($end)}</b>".str_pad($index, 3, "0", STR_PAD_LEFT);
                 $data[] = $tuple;
             }
         }
