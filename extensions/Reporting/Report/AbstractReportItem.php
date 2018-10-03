@@ -315,11 +315,13 @@ abstract class AbstractReportItem {
             case BLOB_TEXT:
             case BLOB_WIKI:
             case BLOB_HTML:
-                $blob_data = str_replace("\00", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "fi", $blob_data);
+                if($blob_data !== null){
+                    $blob_data = str_replace("\00", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "fi", $blob_data);
+                }
             case BLOB_EXCEL:
             case BLOB_RAW:
                 $value = $blob_data;

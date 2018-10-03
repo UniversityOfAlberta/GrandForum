@@ -92,6 +92,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ih'>IH</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=fellow'>Policy Challenge</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer Institute</a>";
@@ -123,6 +124,9 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal")){
             $this->generateSummer();
         }
+        else if($program == "fellow" && $me->isRoleAtLeast(SD)){
+            $this->generateFellow();
+        }
         else if($program == "wp" && $me->isRoleAtLeast(SD)){
             $this->generateWP();
         }
@@ -141,6 +145,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018_2', $this->nis, 2018, "Accelerator 4"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018', $this->nis, 2018, "Accelerator 3"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_09_2017', $this->nis, 2017, "Accelerator 2"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC', $this->nis, 2017, "Accelerator"));
@@ -185,7 +190,49 @@ class ApplicationsTable extends SpecialPage{
     function generateAward(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018"));
+        
+        $level = new CheckboxReportItem();
+        $level->setBlobType(BLOB_ARRAY);
+        $level->setBlobItem(HQP_APPLICATION_LVL);
+        $level->setBlobSection(HQP_APPLICATION_FORM);
+        $level->setId("level");
+        
+        $michael = new CheckboxReportItem();
+        $michael->setBlobType(BLOB_ARRAY);
+        $michael->setBlobItem("HQP_APPLICATION_MICHAEL");
+        $michael->setBlobSection(HQP_APPLICATION_FORM);
+        $michael->setId("MICHAEL");
+             
+        $bme = new CheckboxReportItem();
+        $bme->setBlobType(BLOB_ARRAY);
+        $bme->setBlobItem("HQP_APPLICATION_BME");
+        $bme->setBlobSection(HQP_APPLICATION_FORM);
+        $bme->setId("BME");
+        
+        $wbhi = new CheckboxReportItem();
+        $wbhi->setBlobType(BLOB_ARRAY);
+        $wbhi->setBlobItem("HQP_APPLICATION_WBHI");
+        $wbhi->setBlobSection(HQP_APPLICATION_FORM);
+        $wbhi->setId("WBHI");
+        
+        $mira = new CheckboxReportItem();
+        $mira->setBlobType(BLOB_ARRAY);
+        $mira->setBlobItem("HQP_APPLICATION_MIRA");
+        $mira->setBlobSection(HQP_APPLICATION_FORM);
+        $mira->setId("MIRA");
+        
+        $nbhrf = new CheckboxReportItem();
+        $nbhrf->setBlobType(BLOB_ARRAY);
+        $nbhrf->setBlobItem("HQP_APPLICATION_NBHRF");
+        $nbhrf->setBlobSection(HQP_APPLICATION_FORM);
+        $nbhrf->setId("NBHRF");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018", array("Level" => $level,
+                                                                                                                                   "Michael F. Harcourt" => $michael,
+                                                                                                                                   "BME" => $bme,
+                                                                                                                                   "WBHI" => $wbhi,
+                                                                                                                                   "MIRA" => $mira,
+                                                                                                                                   "NBHRF" => $nbhrf)));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2015, "2015"));
@@ -210,6 +257,13 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2015, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateFellow(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_FELLOW', $this->hqps, 2018, "2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

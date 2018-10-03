@@ -210,7 +210,7 @@ abstract class AbstractReport extends SpecialPage {
                 // If this gets run, it will probably result in a permissions error, but atleast it error out later
                 $this->currentSection = @$this->sections[0];
             }
-            $this->currentSection->selected = true;
+            @$this->currentSection->selected = true;
             SpecialPage::__construct("Report", '', false);
         }
         else{
@@ -300,7 +300,9 @@ abstract class AbstractReport extends SpecialPage {
                                    "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
-                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                        foreach(explode(",", $_GET['emails']) as $email){
+                            mail($email, "Report Submitted", $message, $headers);
+                        }
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
@@ -385,7 +387,7 @@ abstract class AbstractReport extends SpecialPage {
     function getPDF($submittedByOwner=false){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project, $this->year);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
             $report->year = $this->year;
             return $report->getPDF();
         }
@@ -682,7 +684,7 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
-                        else if($perm['perm']['role'] == EVALUATOR && $me->isEvaluator($this->year)){
+                        else if(strstr($perm['perm']['role'], EVALUATOR) !== false && $me->isEvaluator($this->year)){
                             $rResult = true;
                         }
                         else if($perm['perm']['role'] == "Supervisor" && 
@@ -823,6 +825,13 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($me->isEvaluator($this->year)){
             $roles[] = EVALUATOR;
+            $data = DBFunctions::select(array('grand_eval'),
+                                        array('DISTINCT `type`'),
+                                        array('user_id' => EQ($me->getId()),
+                                              'year' => $this->year));
+            foreach($data as $row){
+                $roles[] = EVALUATOR."-{$row['type']}";
+            }
         }
         $permissions = array();
         foreach($roles as $role){
@@ -952,7 +961,9 @@ abstract class AbstractReport extends SpecialPage {
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
-                mail($_GET['emails'], "Report Submitted", $message, $headers);
+                foreach(explode(",", $_GET['emails']) as $email){
+                    mail($email, "Report Submitted", $message, $headers);
+                }
             }
         }
         if($submit){

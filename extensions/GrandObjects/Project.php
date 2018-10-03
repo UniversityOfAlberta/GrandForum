@@ -306,7 +306,7 @@ class Project extends BackboneModel {
                     }
                 }
             }
-            ksort($projects);
+            knatsort($projects);
             $projects = array_values($projects);
             self::$projectCache[$subProjects[1]] = $projects;
         }
@@ -341,7 +341,7 @@ class Project extends BackboneModel {
                 }
             }
         }
-        ksort($projects);
+        knatsort($projects);
         $projects = array_values($projects);
         return $projects;
     }
@@ -368,7 +368,7 @@ class Project extends BackboneModel {
                 }
             }
         }
-        ksort($projects);
+        knatsort($projects);
         $projects = array_values($projects);
         return $projects;
     }

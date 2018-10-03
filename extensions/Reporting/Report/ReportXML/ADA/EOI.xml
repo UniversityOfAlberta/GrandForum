@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
+<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" allowIdProjects="true" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
     <Permissions>
         <Role role="User" />
+        <Role role="HQP+" />
     </Permissions>
     <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection">
         <ReportItem id="title" type="Text"  blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
@@ -52,8 +53,7 @@
         </ReportItem>
         
         <!-- Co-Principal Investigator -->
-        <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|
-Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Co-PI">
+        <ReportItem id="copis" type="MultiText" blobType="BLOB_ARRAY" blobItem="COPIS" labels="Name|Department|Institution|E-mail|Website|Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|250|250" orientation="vertical" multiple="true" addText="Add Co-PI">
             <![CDATA[
                 <h2>Co-Principal Investigator(s)</h2>
                 <small>Co-PIs are individuals who will contribute to the formulation of the project activities, and deliverables. Multi-institutional and multi-disciplinary collaborations are strongly encouraged, and will be given priority.</small>
@@ -97,7 +97,7 @@ Role/Contribution" types="Text|Text|Text|Text|Text|Text" sizes="250|250|250|250|
         </ReportItem>
         
         <!-- Funding -->
-        <ReportItem id="other_funding" type="Integer" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING" min="300" max="9999" size="4">
+        <ReportItem id="other_funding" type="Integer" blobType="BLOB_TEXT" blobItem="OTHER_FUNDING" min="300" max="9999" size="4" optional="true">
             <![CDATA[
                 {$item}
             ]]>

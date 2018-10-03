@@ -79,6 +79,13 @@ class PersonPage {
                         }
                     }
                 }
+                foreach($person->getProjects() as $project){
+                    // Allow Project Assistants to edit
+                    if($me->isRole(PA, $project)){
+                        $isSupervisor = true;
+                        break;
+                    }
+                }
                 foreach($me->getThemeProjects() as $project){
                     if($person->isMemberOf($project)){
                         $isSupervisor = true;
@@ -109,6 +116,10 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                
+                if($config->getValue('networkName') == 'ADA'){
+                    $tabbedPage->addTab(new PersonDemographicsTab($person, $visibility));
+                }                
                 
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));

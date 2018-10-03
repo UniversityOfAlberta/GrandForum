@@ -67,6 +67,7 @@ class ReportItemCallback {
             // People
             "my_id" => "getMyId",
             "my_name" => "getMyName",
+            "my_email" => "getMyEmail",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
             "my_roles" => "getMyRoles",
@@ -655,12 +656,20 @@ class ReportItemCallback {
             }
         }
         if($data != ""){
-            foreach($products as $key => $product){
-                $productData = $product->getData();
-                $datas = explode("=", $data);
-                if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
-                    // Data doesn't match
-                    unset($products[$key]);
+            $ds = explode("|", $data);
+            foreach($ds as $d){
+                $datas = explode("=", $d);
+                foreach($products as $key => $product){
+                    $productData = $product->getData();
+                    if($datas[0] == "status"){
+                        if($product->getStatus() != $datas[1]){
+                            unset($products[$key]);
+                        }
+                    }
+                    else if(!isset($productData[$datas[0]]) || $productData[$datas[0]] != $datas[1]){
+                        // Data doesn't match
+                        unset($products[$key]);
+                    }
                 }
             }
         }
@@ -905,6 +914,11 @@ class ReportItemCallback {
     function getMyName(){
         $person = Person::newFromWgUser();
         return $person->getNameForForms();
+    }
+    
+    function getMyEmail(){
+        $person = Person::newFromWgUser();
+        return $person->getEmail();
     }
     
     function getMyFirstName(){
@@ -1188,6 +1202,7 @@ class ReportItemCallback {
         $id = $this->reportItem->personId;
         
         $fileNumbers = array(
+            // IFP2016
             1       => "IFP2016-00",
             1791    => "IFP2016-01",
             1790    => "IFP2016-04",
@@ -1213,7 +1228,30 @@ class ReportItemCallback {
             1775    => "IFP2016-32",
             1774    => "IFP2016-33",
             1773    => "IFP2016-34",
-            1772    => "IFP2016-35"
+            1772    => "IFP2016-35",
+            // IFP2017
+            2258    => "IFP2017-01",
+            2260    => "IFP2017-02",
+            2251    => "IFP2017-06",
+            2269    => "IFP2017-10",
+            2273    => "IFP2017-13",
+            2225    => "IFP2017-15",
+            2283    => "IFP2017-22",
+            2290    => "IFP2017-27",
+            2305    => "IFP2017-41",
+            2309    => "IFP2017-45",
+            // IFP2018
+            389     => "IFP2018-03",
+            2518    => "IFP2018-05",
+            2541    => "IFP2018-06",
+            2292    => "IFP2018-10",
+            2511    => "IFP2018-11",
+            2543    => "IFP2018-16",
+            2536    => "IFP2018-17",
+            2306    => "IFP2018-26",
+            2551    => "IFP2018-31",
+            2542    => "IFP2018-35",
+            2790    => "IFP2018-40"
         );
         
         if(isset($fileNumbers[$id])){
@@ -1619,15 +1657,16 @@ class ReportItemCallback {
         }
     }
     
-    function getText($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
-        return str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
+        return @str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
     }
     
-    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
-        return (float) str_replace(",", "", $this->getText($rp, $section, $blobId, $subId, $personId, $projectId));
+    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        return (float) str_replace(",", "", $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year));
     }
     
     function concat(){

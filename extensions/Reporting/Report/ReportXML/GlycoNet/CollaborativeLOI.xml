@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB_LOI_2018" pdfType="RPTP_COLLAB_LOI_2018" pdfFiles="CollaborativeLOIPDF" ajax="true" disabled="false" year="2018">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB_LOI_2018" pdfType="RPTP_COLLAB_LOI_2018" pdfFiles="CollaborativeLOIPDF" ajax="true" allowIdProjects="true" disabled="true" year="2018">
     <Permissions>
         <Role role="NI">
 
@@ -19,7 +19,7 @@
     </Permissions>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
         <!-- Theme -->
-        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Neurodegenerative Diseases|Cancer">
             <![CDATA[
                 <h3>Theme</h3>
                 {$item}
@@ -59,6 +59,7 @@
                                sizes="0|150|125|150">
             <![CDATA[
                 <h2>Other Investigators</h2>
+                <p>Equity, diversity and inclusion should be taken into account when selecting members for the Project Team.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -80,7 +81,7 @@
         </ReportItem>
         
         <!-- Partners involved (Companies, agencies etc) -->
-        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
+        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Partner Name|Contact Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h2>Partners involved (Companies, agencies etc)</h2>
                 {$item}
@@ -241,12 +242,12 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>

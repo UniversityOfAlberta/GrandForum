@@ -60,17 +60,58 @@ class ProjectBudgetTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
+        global $config, $wgMessage;
         $me = Person::newFromWgUser();
+        $error = null;
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
                 foreach($file['tmp_name'] as $year => $tmp){
                     if($tmp != ""){
                         $contents = file_get_contents($tmp);
-                        
-                        $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
-                        $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
-                        $blb->store($contents, $addr);
-                        $this->updateAllocations($year, $contents);
+                        // Network specific Budget Validations
+                        if($config->getValue('networkName') == "FES"){
+                            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
+                            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
+                            $budget = $multiBudget->getBudget(0);
+                            $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
+                            for($i=0; $i < $nYears; $i++){
+                                $request  = $budget->copy()
+                                                   ->where(HEAD1_ROW, array('Request From Future Energy System'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $other    = $budget->copy()
+                                                   ->where(HEAD2_ROW, array('Other Federal Funding'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $external = $budget->copy()
+                                                   ->where(HEAD2_ROW, array('External Funding (not Federal)'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                $total    = $budget->copy()
+                                                   ->where(HEAD1_ROW, array('Total Funding for the project'))
+                                                   ->select(HEAD_MONEY)
+                                                   ->limitCols($i, 1);
+                                                   
+                                $requestVal  = floatval(str_replace("$", "", $request->toString()));
+                                $otherVal    = floatval(str_replace("$", "", $other->toString()));
+                                $externalVal = floatval(str_replace("$", "", $external->toString()));
+                                $totalVal    = floatval(str_replace("$", "", $total->toString()));
+
+                                if(($request->size() == 0 ||
+                                    $other->size() == 0 ||
+                                    $external->size() == 0 ||
+                                    $total->size() == 0) ||
+                                   ($requestVal + $otherVal + $externalVal) != $totalVal){
+                                    $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
+                                } 
+                            }
+                        }
+                        if($error == null){
+                            $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
+                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                            $blb->store($contents, $addr);
+                            $this->updateAllocations($year, $contents);
+                        }
                     }
                 }
             }
@@ -126,6 +167,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $blb->store($carryOver, $addr);
             }
         }
+        if($error != null){
+            return $error;
+        }
         redirect($this->project->getUrl()."?tab=budget");
     }
     
@@ -169,14 +213,15 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
+            $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over budget in April
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
             
-            for($i=$endYear+1; $i >= $startYear; $i--){
+            for($i=$endYear; $i >= $startYear; $i--){
+                $firstBudget = ($i == $endYear);
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
@@ -220,7 +265,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $alloc = "\$".number_format($allocation);
                 }
                 
-                if($edit){
+                if($edit && $firstBudget){
                     if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
@@ -236,7 +281,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
                 
-                if(!$edit){
+                if(!$edit || !$firstBudget){
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
                     if($config->getValue('networkName') == "FES"){
@@ -311,7 +356,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         </script>";
                     }
                 }
-                if($edit && $config->getValue('networkName') == "FES"){
+                if($edit && $config->getValue('networkName') == "FES" && $firstBudget){
                     $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
                     $this->html .= "<h3>Budget Justification</h3>
                                     <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";

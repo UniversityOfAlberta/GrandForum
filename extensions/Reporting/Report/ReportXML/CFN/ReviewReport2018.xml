@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Review Report" ajax="true" disabled="false" personId="0" year="2018">
     <Permissions>
-        <Role role="STAFF">
-            
-        </Role>
-        <Person id="2333" />
-        <Person id="847" />
-        <Person id="2565" />
+        <Role role="STAFF"></Role>
     </Permissions>
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">

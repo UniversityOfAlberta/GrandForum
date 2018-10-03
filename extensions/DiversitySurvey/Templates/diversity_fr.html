@@ -1,0 +1,102 @@
+<b style="vertical-align:middle;">Langue:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %>
+<p>
+    <%= networkName %> s'engage à respecter les principes d'équité, de diversité et d'inclusion. Cette enquête contribuera à faciliter l'élaboration de stratégies et de priorités pour un environnement de travail et d'apprentissage diversifié et inclusif, afin de constamment diriger nos efforts vers l'excellence dans la recherche et la formation.
+</p>
+<p>    
+    Votre participation à cette enquête est importante pour identifier où nous en sommes en termes de représentation et pour préparer les prochaines étapes. <%= networkName %> travaille en partenariat avec l’unité sur l’équité, la diversité et l’inclusion dans les services de ressources humaines de l’Université de l’Alberta, qui ont mené des enquêtes de recensement sur l’équité depuis 1994. <b>Des contrôles rigoureux sont en place pour s’assurer que la confidentialité est maintenue et que les résultats ne seront utilisés que sur une base agrégée.Aucun membre de l’executif, du conseil d'administration ou des comités de <%= networkName %> n'a accès aux réponses de l'enquête. Ces individus n’auront accès qu’aux données agrégées. Les renseignements personnels demandés sur ce formulaire sont recueillis en vertu de l'article 33 (c) de la <u><i>Loi sur l'accès à l'information et la protection de la vie privée de l'Alberta</i></u> et seront protégés en vertu de la partie 2 de cette loi. Toutes questions concernant cette collection doivent être adressées à l’unité sur l’équité, la diversité et l’inclusion à l'adresse <a href="mailto:employmentequity@ualberta.ca">employmentequity@ualberta.ca</a></b>.
+</p>
+
+<!-- Decline? -->
+<h3>Si, pour quelque raison que ce soit, vous ne souhaitez pas effectuer ce recensement, veuillez cocher cette case.</h3>
+<div class="answer">
+    <%= HTML.CheckBox(this, 'decline', {value: 1}) %>
+    <div id="reason" style="display:none;">
+        <p><b>Veuillez indiquer pourquoi vous avez choisi de ne pas remplir le questionnaire?</b></p>
+        <%= HTML.TextArea(this, 'reason', {style: 'height:100px'}) %>
+    </div>
+</div>
+
+<!-- Start Survey? -->
+<div id="survey">
+    <h3><span class="number">1.</span> Quelle est votre année de naissance?</h3>
+    <div class="answer">
+        <%= HTML.Select(this, 'birth', {options: [""].concat(_.range(new Date().getFullYear(), 1899, -1))}) %><br />
+        <%= HTML.CheckBox(this, 'birth', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">2.</span> Êtes-vous un(e) indigène/personne autochtone?</h3>
+    <div class="answer">
+        <p>Conformément à Statistique Canada et à la Loi sur l'équité en matière d'emploi, les Autochtones sont définis comme Premières Nations (statut, non-inscrits, Traités), Inuits ou Métis.  Les Autochtones sont désignés par le gouvernement fédéral comme un terme générique pour désigner les divers peuples autochtones au Canada. Cependant, cela peut ne pas être la manière dont vous vous identifiez. Vous pouvez aussi vous identifier comme Cri, Pied-Noir, Mi'kmaq, Dénés ou Nakota Sioux, etc. Toutes ces identités font partie du terme générique des peuples autochtones.</p>
+        <%= HTML.Radio(this, 'indigenous', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'indigenous', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">3.</span> Vous considérez-vous comme une personne handicapée?</h3>
+    <div class="answer">
+        <p style="margin-bottom:0;">Conformément à Statistique Canada et à la Loi sur l'équité en matière d'emploi, une personne handicapée est une personne qui présente des troubles physiques, mentaux, sensoriels, psychiatriques ou d'apprentissage à long terme ou récurrents et:</p>
+        <ul>
+            <li>Qui se considèrent désavantagée dans un emploi en raison de cette déficience; ou</li>
+            <li>Qui croit qu'un employeur ou un employeur potentiel est susceptible de les considérer comme désavantagé dans un emploi en raison de cette déficience; et</li>
+            <li>Comprend les personnes dont les limitations fonctionnelles dues à leur handicap ont pu être prises en compte dans leur emploi ou lieu de travail actuel</li>
+        </ul>
+        <%= HTML.Radio(this, 'disability', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'disability', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+        <div id="disabilityVisibility">
+            <p><b>Si vous avez répondu oui, veuillez indiquer si votre invalidité est:</b></p>
+            <%= HTML.Radio(this, 'disabilityVisibility', {options: [{option: "Invisible<sup><small>1</small></sup>", value: "Invisible"}, "Visible"]}) %>
+            <%= HTML.CheckBox(this, 'disabilityVisibility', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+            <p><i><sup>1</sup> Le handicap invisible ou non visible est un terme couramment utilisé pour décrire un handicap qui n'est pas apparent ou qui est invisible pour les autres.</i></p>
+        </div>
+    </div>
+    <h3><span class="number">4.</span> Vous identifiez-vous en tant que membre d’une minorité visible/personne de couleur?</h3>
+    <div class="answer">
+        <p>Conformément à Statistique Canada et à la Loi sur l'équité en matière d'emploi, le terme « minorité visible » désigne les personnes qui ne sont pas de race blanche ou qui ne sont pas de couleur blanche. Ceci n'inclut généralement pas les peuples autochtones, sauf s'ils sont d'origine mixte, avec un parent membre d'un groupe de minorités visibles. Nous reconnaissons qu’il peut être préférable de s’identifier comme une personne de couleur ou par la race ou l’ethnie d’un individu. Les options ci-dessous sont basées sur les catégories du recensement du Canada et de la Loi sur l'équité en matière d'emploi.</p>
+        <%= HTML.Radio(this, 'minority', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'minority', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">5.</span> S'il vous plaît choisissez ce qui vous décrit le mieux (choisissez tout ce qui s'applique):</h3>
+    <div class="answer">
+        <%= HTML.MultiCheckBox(this, 'race.values', {options: [{option: "Asiatique du Sud (p. ex. Indien, Pakistanais, Sri Lankais, etc.)", value: "South Asian"}, {option: "Chinois", value: "Chinese"}, {option: "Noir", value: "Black"}, {option: "Blanc", value: "White"}, {option: "Philippin", value: "Filipino"}, {option: "Latino-Américain", value: "Latin American"}, {option: "Arabe", value: "Arab"}, {option: "Asiatique du Sud-Est (p. ex. Vietnamien, Cambodgien, Malaisien, Laotien, Thaïlandais, etc.)", value: "Southeast Asian"}, {option: "Asiatique Occidental (p. ex. Iranien, Afghan, etc.)", value: "West Asian"}, {option: "Coréen", value: "Korean"}, {option: "Japonais", value: "Japanese"}]}) %>
+        
+        <div>Autre, veuillez préciser: <%= HTML.TextBox(this, 'race.other') %></div>
+        <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">6.</span> Êtes-vous socialement perçu comme une personne racialisée?</h3>
+    <div class="answer">
+        <p>La racialisation est un processus où les marqueurs sociaux et biologiques (p. ex. couleur de la peau, habitudes culturelles, cheveux, langue, accents, religion, etc.) sont utilisés pour étiqueter ou percevoir une personne comme « autre » ou « non blanche ». Les personnes racialisées peuvent inclure les membres des Premières nations, les Métis ou les Inuits.</p>
+        <%= HTML.Radio(this, 'racialized', {options: [{option: "Oui", value: "Yes"}, {option: "Non", value: "No"}]}) %>
+        <%= HTML.CheckBox(this, 'racialized', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">7.</span> Quel est votre statut d'immigration?</h3>
+    <div class="answer">
+        <%= HTML.Radio(this, 'immigration', {options: [{option: "Citoyen canadien", value: "Canadian citizen"}, {option: "Résident permanent", value: "Permanent resident"}, {option: "Personne d'un autre pays avec un permis de travail ou d'études", value: "Person from another country with a work or study permit"}]}) %>
+        <div>Autre, veuillez préciser: <%= HTML.TextBox(this, 'immigration') %></div>
+        <%= HTML.CheckBox(this, 'immigration', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">8.</span> Genre</h3>
+    <div class="answer">
+        <p>Les options énumérées ci-dessous sont basées sur les descriptions de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta) de l’identité de genre et d’autres termes fréquemment utilisés pour représenter le genre:<br />
+        <b>Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</b></p>
+        <%= HTML.MultiCheckBox(this, 'gender.values', {options: [{option: "Femme", value: "Woman"}, {option: "Homme", value: "Man"}, {option: "Bispiritualité<sup><small>2</small></sup>", value: "Two-Spirit"}, {option: "Genre fluide<sup><small>3</small></sup>", value: "Gender fluid"}, {option: "Non-binaire<sup><small>4</small></sup>", value: "Non-binary"}]}) %>
+        <div>Une autre identité sexuelle (veuillez préciser): <%= HTML.TextBox(this, 'gender.other') %></div>
+        <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+        <p><i>
+            <sup>2</sup> Bispiritualité est un terme générique utilisé par certains membres des Premières nations pour décrire leur identité sexuelle, leur genre et/ou leur identité spirituelle.<br />
+            <sup>3</sup> Genre Fluide fait référence à une identité de genre en mutation ou « fluide ».<br />
+            <sup>4</sup> Non-binaire est un terme générique préféré pour tous les sexes autres que féminin/masculin ou femme/homme.
+        </i></p>
+    </div>
+    <h3><span class="number">9.</span> Orientation sexuelle</h3>
+    <div class="answer">
+        <p>Les options énumérées ci-dessous sont fondées sur la définition de l'orientation sexuelle de l’Alberta Human Rights Commission (Commission des droits de la personne de l'Alberta).<br />
+        <b>Est-ce que vous vous identifiez comme (choisissez tout ce qui s'applique):</b></p>
+        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: [{option: "Gay", value: "Gay"}, {option: "Lesbienne", value: "Lesbian"}, {option: "Hétérosexuel", value:"Heterosexual"}, {option: "Bisexuel", value: "Bisexual"}, {option: "Queer", value: "Queer"}, {option: "Bispirituel", value: "Two-Spirit"}, {option: "Asexuel", value: "Asexual"}]}) %>
+        <div>Une autre orientation (veuillez préciser): <%= HTML.TextBox(this, 'orientation.other') %></div>
+        <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Je préfère ne pas répondre</span>
+    </div>
+    <h3><span class="number">10.</span> Commentaires supplémentaires</h3>
+    <div class="answer">
+        <p>Nous vous invitons à nous faire part de vos commentaires confidentiels. Nous communiquerons avec vous uniquement si vous avez demandé une réponse à vos commentaires.</p>
+        <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
+    </div>
+</div><br />
+<div id="diversityMessages"></div>
+<button id="save" type="button">Save</button>

@@ -30,6 +30,10 @@ class PersonAPI extends RESTAPI {
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
         $person->gender = $this->POST('gender');
+        $person->birthDate = $this->POST('birthDate');
+        $person->indigenousStatus = $this->POST('indigenousStatus');
+        $person->minorityStatus = $this->POST('minorityStatus');
+        $person->disabilityStatus = $this->POST('disabilityStatus');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');
@@ -56,6 +60,10 @@ class PersonAPI extends RESTAPI {
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
         $person->gender = $this->POST('gender');
+        $person->birthDate = $this->POST('birthDate');
+        $person->indigenousStatus = $this->POST('indigenousStatus');
+        $person->minorityStatus = $this->POST('minorityStatus');
+        $person->disabilityStatus = $this->POST('disabilityStatus');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');

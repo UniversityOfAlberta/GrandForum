@@ -90,6 +90,20 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = $_POST['public_profile'];
         $this->person->privateProfile = $_POST['private_profile'];
         $this->person->update();
+        
+        // Update Role Titles
+        if(isset($_POST['role_title'])){
+            foreach($this->person->getRoles() as $role){
+                if(isset($_POST['role_title'][$role->getId()])){
+                    $value = $_POST['role_title'][$role->getId()];
+                    DBFunctions::update('grand_roles', 
+                                        array('title' => $value),
+                                        array('id' => $role->getId()));
+                }
+            }
+            Cache::delete("personRolesDuring{$this->person->getId()}*", true);
+	        Cache::delete("rolesCache");
+        }
 
         Person::$rolesCache = array();
         Person::$cache = array();
@@ -450,12 +464,15 @@ EOF;
     }
     
     function showEditPhoto($person, $visibility){
+        global $config;
+        $me = Person::newFromWgUser();
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' style='max-width:100px;max-height:132px;' />";
         $this->html .= "<div id=\"special_links\"></div>";
         $this->html .= "</td></tr>";
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>
-                            <tr>
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>";
+        if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
+            $this->html .= "<tr>
                                 <td align='right'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
                             </tr>
@@ -463,8 +480,9 @@ EOF;
                                 <td></td><td><small><li>For best results, the image should be 300x396</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+        }
+        $this->html .= "    <tr>
                                 <td align='right'><b>Website Url:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
@@ -527,20 +545,30 @@ EOF;
                     </select>
                 </td>
             </tr>";
-            
-            $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
-            $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
-            $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
-            $gender = "<tr>
-                <td align='right'><b>Gender:</b></td>
-                <td>
-                    <select name='gender'>
-                        <option value='' $blankSelected>---</option>
-                        <option value='Male' $maleSelected>Male</option>
-                        <option value='Female' $femaleSelected>Female</option>
-                    </select>
-                </td>
-            </tr>";
+            $gender = "";
+            if($person->isMe() || $me->isRoleAtLeast(STAFF)){
+                $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
+                $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
+                $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
+                $genderFluidSelected = ($person->getGender() == "Gender-fluid") ? "selected='selected'" : "";
+                $nonBinarySelected = ($person->getGender() == "Non-binary") ? "selected='selected'" : "";
+                $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
+                $declinedSelected = ($person->getGender() == "Not disclosed") ? "selected='selected'" : "";
+                $gender = "<tr>
+                    <td align='right'><b>Gender:</b></td>
+                    <td>
+                        <select name='gender'>
+                            <option value='' $blankSelected>---</option>
+                            <option value='Male' $maleSelected>Male</option>
+                            <option value='Female' $femaleSelected>Female</option>
+                            <option value='Gender-fluid' $genderFluidSelected>Gender-fluid</option>
+                            <option value='Non-binary' $nonBinarySelected>Non-binary</option>
+                            <option value='Two-spirit' $twoSpiritSelected>Two-spirit</option>
+                            <option value='Not disclosed' $declinedSelected>I prefer not to answer</option>
+                        </select>
+                    </td>
+                </tr>";
+            }
             
             $stakeholderCategories = $config->getValue('stakeholderCategories');
             $stakeholder = "";
@@ -586,11 +614,13 @@ EOF;
                                 <td><table>";
             $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
             foreach($roles as $role){
-                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
-                $this->html .= "<tr>
-                                    <td align='right'><b>{$role->getRole()}:</b></td>
-                                    <td>{$roleTitleCombo->render()}</td>
-                                </tr>";
+                if($role->getId() > 0){
+                    $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
+                    $this->html .= "<tr>
+                                        <td align='right'><b>{$role->getRole()}:</b></td>
+                                        <td>{$roleTitleCombo->render()}</td>
+                                    </tr>";
+                }
             }
             $this->html .= "</table></td></tr>";
         }

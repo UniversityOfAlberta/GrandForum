@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2018 Catalyst Grant - Frailty Priorities Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2018" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="NI">
+            <SectionPermission id="intent" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="intent" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="Intent To Apply">
+        <ReportItem id="information" type="Static">
+            <![CDATA[
+                <ul>
+                    <li>All sections of this document must be completed.</li>
+                    <li>Information in this document will be used to determine conflicts of interest when assigning reviewers.</li>
+                    <li>The Project Leader, other Principal Investigators and Co-Investigators cannot be changed, nor new team members added after this document has been submitted to CFN.</li>
+                    <li>Visit CFN’s website for project team role definitions <a target='_blank' href='http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf'>http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf</a></li>
+                    <li>This document must be submitted by <b>Monday January 15, 2018 - 5 pm ET</b>.</li>
+                    <li>Please note that all information must be provided in English.</li>
+                </ul>
+                <table class="wikitable" width="100%">
+                    <tr>
+                        <th width='1%'>Information Required</th>
+                        <th>Enter information in this column</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Title of CAT Proposal</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small></td>
+                    <td><div style="width:100%;box-sizing:border-box;padding-right:12px;">{$item}</div></td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="16">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Term of CAT Proposal</b><br /><small>(Maximum 16 months)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Integer" width="55px" blobItem="FUNDING" min="0" max="100000">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Funding Requested from CFN</b><br /><small>(Maximum $100,000)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="||||400|" orientation="vertical">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center">
+                        Visit CFN’s website for project team role definitions<br />
+                        <a target='_blank' href='http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf'>http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>Project Leader (PL)</b><br /><small>(i.e. Principal Investigator responsible for managing project team.  He/She will be the primary contact for CFN)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" orientation="vertical">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Secondary Contact for PL</b><br /><small>(i.e., Project Manager, Assistant etc.)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobType="BLOB_ARRAY" blobItem="PI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add PI">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Principal Investigators</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" blobType="BLOB_ARRAY" blobItem="CI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add CI">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Co-Investigator</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address|Estimated Cash and In-Kind Contributions" orientation="vertical" multiple="true" addText="Add Partner">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Partners</b><br /><small>Please list current identified and potential partners for your CAT proposal and provide the (estimated) amount of cash or in-kind contribution they will be providing.  Additional partners can be added in the final proposal.</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" widths="100%|200|auto" labels="Keyword" orientation="horizontal" max="10" multiple="true" addText="Add Keyword">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Keywords</b><br /><small>(Max. 10 words that describe Proposal (e.g. Medline headings)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="150" height="150px">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b>Non-Confidential Project Summary</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Background, Knowledge Gap(s) and Rationale</b><br /><small><ul><li>Clearly state the rationale for the project and specifically how the research findings of this proposal may be used to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</li></ul></small>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hypothesis" type="Textarea" blobItem="HYPOTHESIS" rich="true" limit="50" height="100px">
+            <![CDATA[
+                <b>Hypothesis</b><br /><small><ul><li>State the proposed hypothesis and study question(s) to be addressed.</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="goal" type="Textarea" blobItem="GOAL" rich="true" limit="100" height="125px">
+            <![CDATA[
+                <b>Overall Goal, Study Question(s) and Objective(s)</b><br /><small><ul><li>Describe the overall goal of the study,</li><li>Describe the specific questions to be answered and/or objectives of the study.</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="100" height="125px">
+            <![CDATA[
+                <b>Methodological Approach</b><br /><small><ul><li>Describe the overall goal of the study,</li><li>Briefly describe the overall study design and methods to be used in the study.<br />
+Note: Please indicate the frailty assessment tool that will be utilized in the study.</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables" type="Textarea" blobItem="DELIVERABLES" rich="true" limit="150" height="150px">
+            <![CDATA[
+                <b>Study Outcomes and Deliverables</b><br /><small><ul><li>Briefly list and describe all anticipated outputs and outcomes for the duration of the project.</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="feasability" type="Textarea" blobItem="FEASABILITY" rich="true" limit="100" height="125px">
+            <![CDATA[
+                <b>Feasibility</b><br /><small><ul><li>Identify any feasibility issues, barriers, challenges and/or limitations to the successful execution of the study.</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="100" height="125px">
+            <![CDATA[
+                <b>Expertise and Experience of Study team</b><br /><small><ul><li>Briefly describe the expertise and experience of the Principal Investigators, Co-investigators, and Partners as they relate to the successful completion of the proposed study</li></ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true" limit="200" height="175px">
+            <![CDATA[
+                <b>Potential Impact and Knowledge Translation</b><br /><small><ul><li>Describe the potential impact of the anticipated study results (i.e., socio-economic benefits related to the care of Canadians living with frailty) and the knowledge translation activities that will be conducted at the end of the study.</li></ul></small>
+                {$item}
+                </td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="priority" type="Radio" blobItem="PRIORITY" options="How can health systems be organized to provide integrated/coordinated care that would better meet the health and social care needs of older adults living with frailty, and their family/caregivers?|How can care, services and treatments be tailored to meet the needs of older adults living with frailty who are isolated and/or without family/caregiver support or advocates?|What is the impact of community- and home-based services, programs and resources in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?|What are the costs and benefits of alternative models of housing, including multigenerational or shared living, for older adults living with frailty?|What would help avoid unnecessary hospitalizations and emergency department visits for older adults living with frailty?|What frailty-related attitudes, skills and knowledge should health and social care providers have? What are effective ways of improving attitudes and providing skills and knowledge about frailty for health and social care providers?|What would help older adults living with frailty and their family/caregivers recognize when living at home is no longer viable?|What are effective ways of supporting family/caregivers of older adults living with frailty to maintain their own health and wellbeing and/or that of older adults living with frailty?|How can frailty measures be used by health care practitioners, older adults and family/caregivers to inform treatment and care decisions?|What is the impact of exercise and physical activity (including type, duration and intensity) in preventing and managing frailty (including slowing progression and/or minimizing the impact of frailty)?">
+            <![CDATA[
+                <tr>
+                    <td><b>Please highlight only one priorities that your application will address.</b><br /><small>(Select the best fit with your application)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="national" type="MultiText" blobType="BLOB_ARRAY" blobItem="NATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>NATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>National Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="international" type="MultiText" blobType="BLOB_ARRAY" blobItem="INTERNATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>INTERNATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>International Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer" type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem> 
+    </ReportSection>
+</Report>

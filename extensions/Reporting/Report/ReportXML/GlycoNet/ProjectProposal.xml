@@ -340,6 +340,6 @@ containing information from all PI groups.</i></b></p>
 
             ]]>
         </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>

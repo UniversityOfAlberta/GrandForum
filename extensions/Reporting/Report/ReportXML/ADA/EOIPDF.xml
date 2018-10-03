@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF" year="YEAR">
+<Report name="Research Project Expression of Interest (EOI)" ajax="true" disabled="false" allowIdProjects="true" reportType="RP_EOI" pdfType="RPTP_EOI" pdfFiles="EOIPDF">
     <ReportSection id="application" name="Expression of Interest" tooltip="Research Project Expression of Interest (EOI)" title="Research Project Expression of Interest (EOI)" blobSection="EOI" type="EditableReportSection" pagebreak="false">
         <ReportItem type="Static">
             <![CDATA[
@@ -92,7 +92,7 @@
                 <h3>Co-Principal Investigator</h3>
             ]]>
         </ReportItem>
-        <ReportItemSet id="partners" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
+        <ReportItemSet id="copis" type="Array" array="{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis,)}">
             <ReportItem type="Static">
                 <![CDATA[
                     <table class="wikitable" class="wikitable" width="100%" rules="all" frame="box">
@@ -118,7 +118,7 @@
                         </tr>
                         <tr>
                             <td class='tdLabel'>Role/Contribution:</td>
-                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|rolecontribution)}</td>
+                            <td>{getArray(RP_EOI,EOI,COPIS,0,{$user_id},{$project_id},copis|{$extraIndex}|role/contribution)}</td>
                         </tr>
                     </table><br />
                 ]]>

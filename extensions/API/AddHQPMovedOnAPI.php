@@ -45,7 +45,6 @@ class AddHQPMovedOnAPI extends API{
 		    if($_POST['effective_date'] == ""){
 		        $_POST['effective_date'] = EQ(COL('CURRENT_TIMESTAMP'));
 		    }
-            // Actually Add the Project Member
             if(is_numeric($_POST['id'])){
                 DBFunctions::update('grand_movedOn',
                                     array('studies' => $_POST['studies'],
@@ -66,6 +65,8 @@ class AddHQPMovedOnAPI extends API{
                                           'effective_date' => $_POST['effective_date'],
                                           'date_changed' => EQ(COL('CURRENT_TIMESTAMP'))));
             }
+            Notification::addNotification($me, Person::newFromId(0), "Alumni Changed", "Alumni information for <b>{$person->getNameForForms()}</b> has been changed/added", "{$person->getUrl()}");
+            DBFunctions::commit();
             if(!$noEcho){
                 echo "{$person->getName()} movedOn added\n";
             }

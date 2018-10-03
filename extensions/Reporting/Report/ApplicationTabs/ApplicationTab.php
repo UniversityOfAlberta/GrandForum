@@ -7,6 +7,7 @@ class ApplicationTab extends AbstractTab {
     var $year;
     var $extraCols;
     var $showAllWithPDFs;
+    var $idProjectRange = array(0, 1);
 
     function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
         $me = Person::newFromWgUser();
@@ -58,12 +59,11 @@ class ApplicationTab extends AbstractTab {
             $report = new DummyReport($this->rp, $me, null, $this->year);
             if($report->allowIdProjects){
                 $report = array();
-                $proj0 = new Project(array());
-                $proj1 = new Project(array());
-                $proj0->id = 0;
-                $proj1->id = 1;
-                $report[] = new DummyReport($this->rp, $me, $proj0, $this->year);
-                $report[] = new DummyReport($this->rp, $me, $proj1, $this->year);
+                foreach($this->idProjectRange as $projId){
+                    $proj = new Project(array());
+                    $proj->id = $projId;
+                    $report[] = new DummyReport($this->rp, $me, $proj, $this->year);
+                }
             }
         }
 
@@ -100,16 +100,16 @@ class ApplicationTab extends AbstractTab {
             foreach($report as $rep){
                 $this->html .= "<th>Generation Date</th>
                                 <th width='1%'>PDF&nbsp;Download</th>";
-                if(count($this->extraCols) > 0){
-                    $this->html .= "<th>Extra</th>";
+                foreach($this->extraCols as $key => $extra){
+                    $this->html .= (!is_numeric($key)) ? "<th>$key</th>" : "<th>Extra</th>";
                 }
             }
         }
         else{
             $this->html .= "<th>Generation Date</th>
                             <th width='1%'>PDF&nbsp;Download</th>";
-            if(count($this->extraCols) > 0){
-                $this->html .= "<th>Extra</th>";
+            foreach($this->extraCols as $key => $extra){
+                $this->html .= (!is_numeric($key)) ? "<th>$key</th>" : "<th>Extra</th>";
             }
         }
         $this->html .= "</tr>
@@ -189,6 +189,19 @@ class ApplicationTab extends AbstractTab {
                     $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                     $this->html .= "<td align='center'>{$pdfDate}</td>
                                     <td>{$pdfButton}</td>";
+                    foreach($this->extraCols as $extra){
+                        $section = new EditableReportSection();
+                        $section->setParent($first);
+                        $extra->setParent($section);
+                        $extra->setPersonId($first->person->getId());
+                        if($first->project != null){
+                            $extra->setProjectId($first->project->getId());
+                        }
+                        else{
+                            $extra->setProjectId(0);
+                        }
+                        $this->html .= "<td>{$extra->getText()}</td>";
+                    }
                 }  
                 $this->html .= "</tr>";
             }

@@ -40,6 +40,10 @@ class Person extends BackboneModel {
     var $prevLastName;
     var $honorific;
     var $language;
+    var $birthDate;
+    var $indigenousStatus;
+    var $disabilityStatus;
+    var $minorityStatus;
     var $projects;
     var $university;
     var $universityDuring;
@@ -309,6 +313,10 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_stakeholder',
                                               'user_gender',
+                                              'user_birth_date',
+                                              'user_indigenous_status',
+                                              'user_minority_status',
+                                              'user_disability_status',
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
@@ -824,6 +832,10 @@ class Person extends BackboneModel {
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
+            $this->birthDate = @$data[0]['user_birth_date'];
+            $this->indigenousStatus = @$data[0]['user_indigenous_status'];
+            $this->disabilityStatus = @$data[0]['user_disability_status'];
+            $this->minorityStatus = @$data[0]['user_minority_status'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->university = false;
@@ -893,6 +905,10 @@ class Person extends BackboneModel {
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
+                      'birthDate' => $this->getBirthDate(),
+                      'indigenousStatus' => $this->getIndigenousStatus(),
+                      'minorityStatus' => $this->getMinorityStatus(),
+                      'disabilityStatus' => $this->getDisabilityStatus(),
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
                       'twitter' => $this->getTwitter(),
@@ -965,6 +981,19 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
+            if($status && ($this->isMe() || $me->isRoleAtLeast(STAFF))){
+                $status = DBFunctions::update('mw_user',
+                                        array('user_gender' => $this->getGender()),
+                                        array('user_name' => EQ($this->getName())));     
+            }
+            if($status && $me->isAllowedToEditDemographics($this)){
+                $status = DBFunctions::update('mw_user',
+                                        array('user_birthDate' => $this->getBirthDate(),
+                                              'user_indigenous_status' => $this->getIndigenousStatus(),
+                                              'user_minority_status' => $this->getMinorityStatus(),
+                                              'user_disability_status' => $this->getDisabilityStatus()),
+                                        array('user_name' => EQ($this->getName())));      
+            }
             DBFunctions::commit();
             Cache::delete("rolesCache");
             Person::$cache = array();
@@ -997,16 +1026,28 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
-                                          'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
-            if($me->isRoleAtLeast(STAFF)){
-                DBFunctions::update('mw_user',
-                                    array('candidate' => $this->candidate),
-                                    array('user_id' => EQ($this->getId())));
+            if($status && $me->isRoleAtLeast(STAFF)){
+                $status = DBFunctions::update('mw_user',
+                                              array('candidate' => $this->candidate),
+                                              array('user_id' => EQ($this->getId())));
+            }
+            if($status && ($this->isMe() || $me->isRoleAtLeast(STAFF))){
+                $status = DBFunctions::update('mw_user',
+                                              array('user_gender' => $this->getGender()),
+                                              array('user_id' => EQ($this->getId())));      
+            }
+            if($status && $me->isAllowedToEditDemographics($this)){
+                $status = DBFunctions::update('mw_user',
+                                              array('user_birth_date' => $this->getBirthDate(),
+                                                    'user_indigenous_status' => $this->getIndigenousStatus(),
+                                                    'user_minority_status' => $this->getMinorityStatus(),
+                                                    'user_disability_status' => $this->getDisabilityStatus()),
+                                              array('user_id' => EQ($this->getId())));      
             }
             $this->getUser()->invalidateCache();
             Person::$cache = array();
@@ -1046,10 +1087,10 @@ class Person extends BackboneModel {
     /**
      * Returns whether or not this Person is allowed to edit the specified Person
      * @param Person $person The Person to edit
-     * @return Person Whether or not this Person is allowd to edit the specified Person
+     * @return Person Whether or not this Person is allowed to edit the specified Person
      */
     function isAllowedToEdit($person){
-        if($this->isMe()){
+        if($person->isMe()){
             // User is themselves
             return true;
         }
@@ -1060,6 +1101,15 @@ class Person extends BackboneModel {
         if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
             // User is NI, therefore can edit anyone who is not in a committee or higher
             return true;
+        }
+        if($this->isRole(PA)){
+            // User is a Project Assistant, therefore can edit anyone who is on their project
+            foreach($person->getProjects() as $project){
+                // Allow Project Assistants to edit
+                if($this->isRole(PA, $project)){
+                    return true;
+                }
+            }
         }
         if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
@@ -1082,6 +1132,22 @@ class Person extends BackboneModel {
                 // User created the Person
                 return true;
             }
+        }
+        return false;
+    }
+    /**
+     * Returns whether or not this Person is allowed to edit the specified Person's demographics
+     * @param Person $person The Person to edit
+     * @return Person Whether or not this Person is allowed to edit the specified Person
+     */
+    function isAllowedToEditDemographics($person){
+        if($person->isMe()){
+            // User is themselves
+            return true;
+        }
+        if($this->isRoleAtLeast(MANAGER)){
+            // User is at least Manager
+            return true;
         }
         return false;
     }
@@ -1259,6 +1325,9 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a theme coordinator of the given Project
      */
     function isThemeCoordinatorOf($project){
+        if($project == null){
+            return false;
+        }
         $themes = $this->getCoordThemes();
         if($project instanceof Theme){
             $challenge = $project;
@@ -1382,7 +1451,7 @@ class Person extends BackboneModel {
      */
     function getGender(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
         }
         return "";
@@ -2110,7 +2179,7 @@ class Person extends BackboneModel {
         $maxRoleValue = 0;
         if(count($roles) > 0){
             foreach($roles as $role){
-                if(!$role->isAlias()){
+                if(!$role->isAlias() || count($roles) == 1){
                     if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
                         $maxRoleValue = $wgRoleValues[$role->getRole()];
                         $maxRole = $role->getRole();
@@ -2363,7 +2432,8 @@ class Person extends BackboneModel {
                 }
             }
         }
-        asort($projects);
+        natsort($projects);
+        //asort($projects);
         return array_values($projects);
     }
     
@@ -3337,6 +3407,7 @@ class Person extends BackboneModel {
                 $this->isSubRole("Affiliate HQP") || 
                 $this->isSubRole("Project Funded HQP") ||
                 $this->isSubRole("WP/CC Funded HQP") ||
+                $this->isSubRole("SIP/CAT HQP") ||
                 $this->isSubRole("Alumni HQP") ||
                 $this->isSubRole("EPIC grad"));
     }
@@ -3992,7 +4063,7 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT id
+            $res = DBFunctions::execSQL("SELECT p.id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'");
@@ -4651,5 +4722,53 @@ class Person extends BackboneModel {
         }
         return false;
     }
+    
+    /**
+     * Returns the birth date of this Person
+     * @return string The birth date of this Person
+     */
+    function getBirthDate(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->birthDate;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns whether the person identifies as indigenous 
+     * @return string The indigenous status of this person
+     */
+    function getIndigenousStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->indigenousStatus;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the if this person has a disability
+     * @return string The disability status of this Person
+     */
+    function getDisabilityStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->disabilityStatus;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the if this person is a visible minority
+     * @return string The minority status of this Person
+     */
+    function getMinorityStatus(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->minorityStatus;
+        }
+        return "";
+    }    
 }
 ?>

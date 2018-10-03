@@ -27,6 +27,7 @@ autoload_register('GrandObjects/API/Wiki');
 autoload_register('GrandObjects/API/MessageBoard');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
+autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
 
 global $apiRequest;
@@ -137,6 +138,9 @@ $apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
 
+// Diversity Survey
+$apiRequest->addAction('Hidden','diversity', 'DiversityAPI');
+
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 
@@ -159,6 +163,7 @@ function createModels(){
     addScript("Project");
     addScript("Product");
     addScript("Contribution");
+    addScript("Diversity");
     addScript("Bibliography");
     addScript("Collaboration");
     addScript("University");

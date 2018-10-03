@@ -38,12 +38,11 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
-        $uniCheck = DBFunctions::select(array('grand_universities'),
-                                        array('*'),
-                                        array('university_name' => $this->POST('university')));
-        $posCheck = DBFunctions::select(array('grand_positions'),
-                                        array('*'),
-                                        array('position' => $this->POST('position')));
+        
+        $uniCheck = DBFunctions::execSQL("SELECT * FROM grand_universities
+                                          WHERE university_name = BINARY '".DBFunctions::escape($this->POST('university'))."'");
+        $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
+                                          WHERE position = BINARY '".DBFunctions::escape($this->POST('position'))."'");
         
         if(count($uniCheck) == 0){
             // Create new University
@@ -108,12 +107,10 @@ class PersonUniversitiesAPI extends RESTAPI {
             $this->throwError("You must be logged in");
         }
         
-        $uniCheck = DBFunctions::select(array('grand_universities'),
-                                        array('*'),
-                                        array('university_name' => $this->POST('university')));
-        $posCheck = DBFunctions::select(array('grand_positions'),
-                                        array('*'),
-                                        array('position' => $this->POST('position')));
+        $uniCheck = DBFunctions::execSQL("SELECT * FROM grand_universities
+                                          WHERE university_name = BINARY '".DBFunctions::escape($this->POST('university'))."'");
+        $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
+                                          WHERE position = BINARY '".DBFunctions::escape($this->POST('position'))."'");
 
         if(count($uniCheck) == 0){
             // Create new University

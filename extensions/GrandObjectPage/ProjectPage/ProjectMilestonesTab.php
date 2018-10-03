@@ -515,14 +515,14 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 });
                 
                 var changeColor = function(){
-                    var checked = $(this).is(':checked');
+                    var checked = $(this)[0].checked;
                     if(checked){
                         var status = $('td#status select', $(this).parent().parent()).val();
                         var color = colors[status];
-                        $(this).parent().css('background', color);
+                        $(this).parent()[0].style.backgroundColor = color;
                     }
                     else{
-                        $(this).parent().css('background', '#FFFFFF');
+                        $(this).parent()[0].style.backgroundColor = '#FFFFFF';
                     }
                 };
                 

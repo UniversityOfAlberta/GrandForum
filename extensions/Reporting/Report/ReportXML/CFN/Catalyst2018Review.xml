@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="CAT Review" reportType="RP_CAT_REVIEW" pdfFiles="Catalyst2018Review" pdfType="RP_CAT_REVIEW" ajax="true" disabled="false" year="2018">
     <Permissions>
-        <Role role="RMC">
-            <SectionPermission id="eula" permissions="-" />
-            <SectionPermission id="ex_review" permissions="-" />
-            <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="-" />
+        <Role role="Evaluator-CAT-RMC">
+            <SectionPermission id="eula" permissions="" />
+            <SectionPermission id="ex_review" permissions="" />
+            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
-        <Role role="SRC">
-            <SectionPermission id="eula" permissions="-" />
-            <SectionPermission id="ex_review" permissions="-" />
+        <Role role="Evaluator-CAT-SRC">
+            <SectionPermission id="eula" permissions="" />
+            <SectionPermission id="ex_review" permissions="" />
             <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="" />
         </Role>
-        <Role role="EVALUATOR">
+        <Role role="Evaluator-CAT-EX">
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="ex_review" permissions="rw" />
             <SectionPermission id="src_review" permissions="" />
@@ -51,7 +51,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
-
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
@@ -986,30 +985,10 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         {$item}
                         <div class='info'>
                             <ol>
-                                <li>Please provide scores and comments for all evaluation criteria.</li>
-                                <li>You can use decimals in your scores.</li>
-                            </ol>
-                            <b>Note: Applicants were provided the following information:</b>
-                            <ol>
-                                <li>Goal of the Competition: To fund studies investigating appropriate medication prescribing/deprescribing and optimizing medication management for older Canadians living with frailty.</li>
-                                <li>The Catalyst Program supports novel/innovative pilot and feasibility studies (research or translational studies).</li>
-                                <li>Funding Details:  To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000. Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.</li>
-                                <li>CFN is looking to invest a maximum of $650,000 for this competition. In addition there are separate funds allocated for work to be conducted in the province of New Brunswick.</li>
-                                <li>Projects must fit within CFN’s strategic priorities and patient-oriented themes.  These are:
-                                    <ol>
-                                        <li>CFN’s strategic priorities are: Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes and Improving care across the continuum.</li>
-                                        <li>CFN’s patient-oriented themes are: Improved end-of-life care (EOL) and advance care planning (ACP); Improved acute care and critical care; Optimization of community care/residential care and Optimization of transitions of care.</li>
-                                    </ol>
-                                </li>
-                            </ol>
-                            <b>Note in addition to a full study description the applicants were asked to:</b>
-                            <ol>
-                                <li>Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of Canadians living with frailty.</li>
-                                <li>Develop Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</li>
-                                <li>Demonstrate a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</li>
-                                <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the study in a meaningful manner.</li>
-                                <li>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the proposed study along a continuum leading to social or economic impacts or policy and practice change.</li>
-                                <li>Demonstrate meaningful partnerships and collaborations with other organizations and stakeholders (e.g. health care practices, service providers, care facilities, etc.) to create opportunities for knowledge exchange, translation and mobilization.  </li>
+                                <li>Please score all sections.  You can use decimals in your scores.</li>
+                                <li>Please provide comments to justify your scores.</li>
+                                <li>Overall Competition Goal: To fund projects with multidisciplinary, multi-institutional teams, for up to 16 months and to a maximum of $100,000.</li>
+                                <li>Note: Proposals must include partners who have committed cash or eligible in-kind contributions on a 1:1 basis to that of CFN funding. To be clear, as an example, if you request $100,000 from CFN you will need to secure an additional minimum $100,000 in partner cash or in-kind contributions.  Total budget for this competition is $650,000.</li>
                             </ol>
                         </div>
                     ]]>

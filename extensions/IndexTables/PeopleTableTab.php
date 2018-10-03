@@ -24,7 +24,15 @@ class PeopleTableTab extends AbstractTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
-        if(!$this->past){
+        if($this->table == "Candidate"){
+            $data = Person::getAllCandidates();
+            foreach($data as $key => $row){
+                if(!$row->isCandidate()){
+                    unset($data[$key]);
+                }
+            }
+        }
+        else if(!$this->past){
             $data = Person::getAllPeople($this->table);
         }
         else if(is_numeric($this->past)){
@@ -40,15 +48,15 @@ class PeopleTableTab extends AbstractTab {
         $subRoleHeader = "";
         $projectsHeader = "";
         $committees = $config->getValue('committees');
-        if($me->isLoggedIn()){
-            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
-        }
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        if($me->isLoggedIn() &&
+        if($me->isLoggedIn() && $this->table != "Candidate" &&
            ($this->table == TL || $this->table == TC || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
+        }
+        else if($me->isLoggedIn()){
+            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
@@ -127,7 +135,8 @@ class PeopleTableTab extends AbstractTab {
             }
 
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                $projects = array_merge($person->leadership(), $person->getProjects());
+                $history = ($config->getValue('networkName') == "GlycoNet");
+                $projects = array_merge($person->leadership($history), $person->getProjects($history));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
@@ -147,7 +156,7 @@ class PeopleTableTab extends AbstractTab {
                         $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                     }
                 }
-                $this->html .= "<td align='left'style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
+                $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             $university = $person->getUniversity();
             $this->html .= "<td align='left'>{$university['university']}</td>";
@@ -170,11 +179,21 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left'>{$date}</td>";
             }
             if($contactHeader != ''){
-                $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                if($person->getEmail() == ""){
+                    $this->html .= "<td></td>";
+                }
+                else {
+                    $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                }
                 $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
-                $this->html .= "<td>{$person->getEmail()}</td>";
+                if($person->getEmail() == ""){
+                    $this->html .= "<td></td>";
+                }
+                else {
+                    $this->html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                }
             }
             if($idHeader != ''){
                 $this->html .= "<td>{$person->getId()}</td>";

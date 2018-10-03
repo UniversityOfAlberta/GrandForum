@@ -53,6 +53,14 @@
                                         </tr>
                                         <tr>
                                             <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Structure & Format:</b>
+                                            </td>
+                                            <td>
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_STRUCTURE,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
                                                 <b>Audience:</b>
                                             </td>
                                             <td>

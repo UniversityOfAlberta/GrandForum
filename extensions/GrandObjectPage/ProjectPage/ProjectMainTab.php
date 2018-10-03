@@ -4,6 +4,7 @@ class ProjectMainTab extends AbstractEditableTab {
 
     var $project;
     var $visibility;
+    var $rolesShown = array();
 
     function ProjectMainTab($project, $visibility){
         parent::AbstractTab("Main");
@@ -202,7 +203,10 @@ EOF;
     function showRole($role, $text=null){
         global $config;
         $me = Person::newFromWgUser();
-        
+        if(isset($this->shownRoles[$role])){
+            return;
+        }
+        $this->shownRoles[$role] = true;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 

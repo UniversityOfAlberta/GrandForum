@@ -66,7 +66,7 @@ function addMilestones($data, $person, $project){
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
-        $startYear = REPORTING_YEAR;
+        $startYear = REPORTING_YEAR+1;
         foreach($cells as $rowN => $row){
             if($rowN == 0){
                 foreach($row as $colN => $cell){
@@ -200,7 +200,7 @@ foreach($allPeople as $person){
             addMilestones($data, $person, $project);
         }
         else {
-            echo "No data uploaded for {$person->getNameForForms()}\n";
+            echo "No data uploaded for {$person->getName()} {$lead->getName()}\n";
             continue;
         }
     }

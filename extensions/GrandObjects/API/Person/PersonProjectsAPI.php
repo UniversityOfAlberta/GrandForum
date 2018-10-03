@@ -20,6 +20,7 @@ class PersonProjectsAPI extends RESTAPI {
     }
     
     function doPOST(){
+        global $config, $wgScriptPath;
         $person = Person::newFromId($this->getParam('id'));
         $project = Project::newFromName($this->POST('name'));
         $me = Person::newFromWgUser();
@@ -46,6 +47,9 @@ class PersonProjectsAPI extends RESTAPI {
         $this->params['personProjectId'] = $id;
         
         Notification::addNotification($me, Person::newFromId(0), "Project Membership Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> joins <b>{$project->getName()}</b>", "{$person->getUrl()}");
+        if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
+            mail("training@cfn-nce.ca", "Project Membership Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> joins <b>{$project->getName()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+        }
         Notification::addNotification($me, $person, "Project Membership Added", "Effective {$this->POST('startDate')} you join <b>{$project->getName()}</b>", "{$person->getUrl()}");
 
         Cache::delete("project{$project->getId()}_people*", true);
@@ -55,6 +59,7 @@ class PersonProjectsAPI extends RESTAPI {
     }
     
     function doPUT(){
+        global $config, $wgScriptPath;
         $person = Person::newFromId($this->getParam('id'));
         $project = Project::newFromName($this->POST('name'));
         $me = Person::newFromWgUser();
@@ -78,6 +83,9 @@ class PersonProjectsAPI extends RESTAPI {
                                       array('id' => $this->getParam('personProjectId')));
         $person->projects = null;
         Notification::addNotification($me, Person::newFromId(0), "Project Membership Changed", "The project membership ({$project->getName()}) of <b>{$person->getNameForForms()}</b> has been changed", "{$person->getUrl()}");
+        if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
+            mail("training@cfn-nce.ca", "Project Membership Changed", "The project membership ({$project->getName()}) of <b>{$person->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+        }
         if($this->POST('endDate') != '0000-00-00 00:00:00'){
             Notification::addNotification($me, $person, "Project Membership Removed", "Effective {$this->POST('endDate')} you are no longer a member of <b>{$project->getName()}</b>", "{$person->getUrl()}");
         }
@@ -91,6 +99,7 @@ class PersonProjectsAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        global $config, $wgScriptPath;
         $person = Person::newFromId($this->getParam('id'));
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
@@ -118,6 +127,9 @@ class PersonProjectsAPI extends RESTAPI {
                                       'project_id' => $data[0]['project_id']));
         }
         Notification::addNotification($me, Person::newFromId(0), "Project Membership Removed", "<b>{$person->getNameForForms()}</b> has been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
+        if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
+            mail("training@cfn-nce.ca", "Project Membership Removed", "<b>{$person->getNameForForms()}</b> has been removed from <b>{$project->getName()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+        }
         Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
         Cache::delete("project{$project->getId()}_people*", true);
         $person->projects = null;
