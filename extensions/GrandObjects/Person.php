@@ -686,92 +686,101 @@ class Person extends BackboneModel {
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfTenure == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfTenure != "" && $date >= $this->dateOfTenure);
+        return ($this->dateOfTenure != "" && $date >= substr($this->dateOfTenure, 0, 10));
     }
     
     function isAssistantProfessor($date){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfAssistant == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfAssistant != "" && $date >= $this->dateOfAssistant && !$this->isAssociateProfessor($date) &&
-                                                                                   !$this->isProfessor($date));
+        return ($this->dateOfAssistant != "" && $date >= substr($this->dateOfAssistant, 0, 10) && !$this->isAssociateProfessor($date) &&
+                                                                                                  !$this->isProfessor($date));
     }
     
     function isAssociateProfessor($date){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfAssociate == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfAssociate != "" && $date >= $this->dateOfAssociate && !$this->isProfessor($date));
+        return ($this->dateOfAssociate != "" && $date >= substr($this->dateOfAssociate, 0, 10) && !$this->isProfessor($date));
     }
     
     function isProfessor($date){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfProfessor == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfProfessor != "" && $date >= $this->dateOfProfessor);
+        return ($this->dateOfProfessor != "" && $date >= substr($this->dateOfProfessor, 0, 10));
     }
     
     function isFSO2($date=null){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateFso2 == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateFso2 != "" && $date >= $this->dateFso2 && !$this->isFSO3($date) &&
-                                                                       !$this->isFSO4($date));
+        return ($this->dateFso2 != "" && $date >= substr($this->dateFso2, 0, 10) && !$this->isFSO3($date) &&
+                                                                                    !$this->isFSO4($date));
     }
     
     function isFSO3($date=null){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateFso3 == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateFso3 != "" && $date >= $this->dateFso3 && !$this->isFSO4($date));
+        return ($this->dateFso3 != "" && $date >= substr($this->dateFso3, 0, 10) && !$this->isFSO4($date));
     }
     
     function isFSO4($date=null){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateFso2 == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateFso4 != "" && $date >= $this->dateFso4);
+        return ($this->dateFso4 != "" && $date >= substr($this->dateFso4, 0, 10));
     }
     
     function isNew($date=null){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfAppointment == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfAppointment != "" && $date <= $this->dateOfAppointment);
+        return ($this->dateOfAppointment != "" && $date <= substr($this->dateOfAppointment, 0, 10));
     }
     
     function isRetired($date=null){
         if($date == null){
             $date = date('Y-m-d');
         }
+        $date = substr($date, 0, 10);
         if($this->dateOfRetirement == null){
             $this->getFecPersonalInfo();
         }
-        return ($this->dateOfRetirement != "" && $date >= $this->dateOfRetirement);
+        return ($this->dateOfRetirement != "" && $date >= substr($this->dateOfRetirement, 0, 10));
     }
     
     /**
