@@ -2704,6 +2704,33 @@ class Person extends BackboneModel {
     }
     
     /*
+     * Returns an array of 'PersonThemes' (used for Backbone API)
+     * @return array
+     */
+    function getPersonThemes(){
+        $themes = array();
+        $data = DBFunctions::select(array('grand_theme_leaders'),
+                                    array('id', 'theme', 'co_lead', 'coordinator', 'start_date', 'end_date', 'comment'),
+                                    array('user_id' => EQ($this->id)),
+                                    array('end_date' => 'DESC'));
+        foreach($data as $row){
+            $theme = Theme::newFromId($row['theme']);
+            $themes[] = array(
+                'id' => $row['id'],
+                'themeId' => $theme->getId(),
+                'personId' => $this->getId(),
+                'coLead' => $row['co_lead'],
+                'coordinator' => $row['coordinator'],
+                'startDate' => $row['start_date'],
+                'endDate' => $row['end_date'],
+                'name' => $theme->getAcronym(),
+                'comment' => $row['comment']
+            );
+        }
+        return $themes;
+    }
+    
+    /*
      * Returns an array of 'PersonUniversities' (used for Backbone API)
      * @return array
      */

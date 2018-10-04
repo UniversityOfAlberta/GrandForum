@@ -10,6 +10,9 @@ Person = Backbone.Model.extend({
         this.leaderships = new PersonLeaderships();
         this.leaderships.url = this.urlRoot + '/' + this.get('id') + '/leaderships';
         
+        this.themes = new PersonThemes();
+        this.themes.url = this.urlRoot + '/' + this.get('id') + '/themes';
+        
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
         
@@ -76,6 +79,11 @@ Person = Backbone.Model.extend({
     getLeaderships: function(){
         this.leaderships.fetch();
         return this.leaderships;
+    },
+    
+    getThemes: function(){
+        this.themes.fetch();
+        return this.themes;
     },
     
     getRoles: function(){
@@ -288,6 +296,52 @@ PersonLeaderships = RangeCollection.extend({
     
     newModel: function(){
         return new Projects();
+    },
+});
+
+/**
+ * PersonThemesLeadership RelationModel
+ */
+PersonTheme = RelationModel.extend({
+    initialize: function(){
+        
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/themes'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('personId')});
+        return person;
+    },
+    
+    getTarget: function(){
+        return null;
+    },
+    
+    defaults: {
+        id: null,
+        personId: "",
+        themeId: "",
+        coLead: false,
+        coordinator: false,
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
+    }
+});
+
+/**
+ * PersonLeaderships RangeCollection
+ */
+PersonThemes = RangeCollection.extend({
+    model: PersonTheme,
+    
+    newModel: function(){
+        return null;
     },
 });
 

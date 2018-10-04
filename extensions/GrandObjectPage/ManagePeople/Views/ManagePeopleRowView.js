@@ -10,6 +10,7 @@ ManagePeopleRowView = Backbone.View.extend({
     editUniversities: null,
     editSubRoles: null,
     editProjectLeaders: null,
+    editThemeLeaders: null,
     // Dialogs
     rolesDialog: null,
     projectsDialog: null,
@@ -17,6 +18,7 @@ ManagePeopleRowView = Backbone.View.extend({
     universitiesDialog: null,
     subRolesDialog: null,
     projectLeadersDialog: null,
+    themeLeadersDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
     initialize: function(options){
@@ -317,6 +319,55 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                           el: this.projectLeadersDialog});
     },
     
+    openThemeLeadersDialog: function(){
+        if(this.themeLeadersDialog == null){
+            this.themeLeadersDialog = this.$("#themeLeadershipDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: $.proxy(function(){
+	                $("html").css("overflow", "auto");
+	                this.editThemeLeaders.stopListening();
+	                this.editThemeLeaders.undelegateEvents();
+	                clearInterval(this.editThemeLeaders.interval);
+	                this.editThemeLeaders.interval = null;
+	            }, this),
+	            buttons: {
+	                "+": { 
+	                    text: "Add Theme", 
+	                    click: $.proxy(function(e){
+	                        this.editThemeLeaders.addTheme();
+	                    }, this),
+	                    disabled: (allowedThemes.length == 0),
+	                    style: "float: left;"
+	                },
+	                "Save": $.proxy(function(e){
+	                    this.editThemeLeaders.saveAll();
+                        this.themeLeadersDialog.dialog('close');
+	                }, this),
+	                "Cancel": $.proxy(function(){
+	                    this.themeLeadersDialog.dialog('close');
+	                }, this)
+	            }
+	        });
+        }
+        this.themeLeadersDialog.empty();
+        this.themeLeadersDialog.dialog('open');
+        this.editThemeLeaders = new ManagePeopleEditThemeLeadersView({model: this.model.themes, 
+                                                                      person:this.model, 
+                                                                      el: this.themeLeadersDialog});
+    },
+    
     save: function(){
         _.defer($.proxy(function(){
             this.$(".throbber").show();
@@ -338,7 +389,8 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog",
         "click #editSubRoles": "openSubRolesDialog",
-        "click #editProjectLeadership": "openProjectLeadersDialog"
+        "click #editProjectLeadership": "openProjectLeadersDialog",
+        "click #editThemeLeadership": "openThemeLeadersDialog"
     },
     
     render: function(){

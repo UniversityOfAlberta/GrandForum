@@ -140,7 +140,6 @@
         //'Twitter',
         'MailingList',
         'AddMember',
-        'EditMember',
         //'HQPRegister',
         'Poll',
         'QueryableTable',
