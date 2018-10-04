@@ -2654,15 +2654,13 @@ class Person extends BackboneModel {
      */
     function getPersonProjects(){
         $projects = array();
-        $data = DBFunctions::select(array('grand_project_members' => 'u',
-                                          'grand_project' => 'p'),
-                                    array('u.id', 'u.project_id', 'u.start_date', 'u.end_date', 'u.comment'),
-                                    array('u.user_id' => EQ($this->id),
-                                          'p.id' => EQ(COL('u.project_id'))),
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('id', 'project_id', 'start_date', 'end_date', 'comment'),
+                                    array('user_id' => EQ($this->id)),
                                     array('end_date' => 'DESC'));
         foreach($data as $row){
             $project = Project::newFromId($row['project_id']);
-            if(!$project->isSubProject()){
+            if(!$project->isSubProject() && !$project->isDeleted()){
                 $projects[] = array(
                     'id' => $row['id'],
                     'projectId' => $project->getId(),
@@ -2677,6 +2675,33 @@ class Person extends BackboneModel {
         return $projects;
     }
     
+    /*
+     * Returns an array of 'PersonLeaderships' (used for Backbone API)
+     * @return array
+     */
+    function getPersonLeaderships(){
+        $projects = array();
+        $data = DBFunctions::select(array('grand_project_leaders'),
+                                    array('id', 'project_id', 'type', 'start_date', 'end_date', 'comment'),
+                                    array('user_id' => EQ($this->id)),
+                                    array('end_date' => 'DESC'));
+        foreach($data as $row){
+            $project = Project::newFromId($row['project_id']);
+            if(!$project->isSubProject() && !$project->isDeleted()){
+                $projects[] = array(
+                    'id' => $row['id'],
+                    'projectId' => $project->getId(),
+                    'personId' => $this->getId(),
+                    'type' => $row['type'],
+                    'startDate' => $row['start_date'],
+                    'endDate' => $row['end_date'],
+                    'name' => $project->getName(),
+                    'comment' => $row['comment']
+                );
+            }
+        }
+        return $projects;
+    }
     
     /*
      * Returns an array of 'PersonUniversities' (used for Backbone API)

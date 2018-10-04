@@ -64,45 +64,6 @@ class EditMember extends SpecialPage{
             $me = Person::newFromId($wgUser->getId());
 
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
-
-            // Project Leadership Changes
-            $pl = array();
-            $pm = array();
-            if(isset($_POST['pl'])){
-                foreach($_POST['pl'] as $value){
-                    $pl[$value] = $value;
-                }
-            }
-        
-            $currentPL = array();
-            // Removing Project Leaders
-            foreach($person->leadership() as $project){
-                if(!isset($pl[$project->getName()])){
-                    // Remove Project Leadership
-                    $_POST['co_lead'] = 'False';
-                    $_POST['manager'] = 'False';
-                    $_POST['role'] = $project->getName();
-                    $_POST['user'] = $person->getName();
-                    $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
-                    $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
-                    APIRequest::doAction('DeleteProjectLeader', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', PL))." of {$project->getName()}");
-                }
-                $currentPL[$project->getName()] = $project->getName();
-            }
-            
-            // Adding Project Leaders
-            foreach($pl as $project){
-                if(!isset($currentPL[$project])){
-                    // Add Project Leadership
-                    $_POST['co_lead'] = 'False';
-                    $_POST['manager'] = 'False';
-                    $_POST['role'] = $project;
-                    $_POST['user'] = $person->getName();
-                    APIRequest::doAction('AddProjectLeader', true);
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', PL))." of {$project}");
-                }
-            }
             
             // Theme Leadership Changes
             $tl = array();
@@ -234,15 +195,11 @@ class EditMember extends SpecialPage{
         <p>Select the Roles and Projects to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
-                        <li><a id='LeadershipTab' href='#tabs-2'>Project Leadership</a></li>
                         <li><a id='ThemesTab' href='#tabs-3'>{$config->getValue('projectThemes')} Leaders</a></li>");
         $wgOut->addHTML("
                     </ul>");
 
-        $wgOut->addHTML("<div id='tabs-2'>");
-                            EditMember::generatePLFormHTML($wgOut);
-        $wgOut->addHTML("</div>
-                         <div id='tabs-3'>");
+        $wgOut->addHTML("<div id='tabs-3'>");
                             EditMember::generateTLFormHTML($wgOut);
         $wgOut->addHTML("</div>");
 
@@ -251,27 +208,6 @@ class EditMember extends SpecialPage{
                          <input type='hidden' name='name' value='{$_GET['name']}' />
                          <input type='submit' name='submit' value='Submit Request' onSubmit />
                          </form>");
-    }
-
-    function generatePLFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath;
-        if(!isset($_GET['name'])){
-            return;
-        }
-        $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $projects = Project::getAllProjects();
-        
-        $leadProjects = new Collection($person->leadership());
-        $myLeadProjects = $leadProjects->pluck('name');
-
-        $projList = new ProjectList("pl", "Projects", $myLeadProjects, $projects);
-        $projList->attr('expand', true);
-        $wgOut->addHTML($projList->render());
-        $wgOut->addHTML("<script type='text/javascript'>
-            $('input.pl.already').change(function(){
-                addComment(this, false);
-            });
-        </script>");
     }
     
     function generateTLFormHTML($wgOut){

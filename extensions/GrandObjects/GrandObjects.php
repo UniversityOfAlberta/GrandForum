@@ -35,6 +35,8 @@ global $apiRequest;
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
+$apiRequest->addAction('Hidden','person/:id/leaderships', 'PersonLeadershipAPI');
+$apiRequest->addAction('Hidden','person/:id/leaderships/:personProjectId', 'PersonLeadershipAPI');
 $apiRequest->addAction('Hidden','person/:id/universities', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/roles', 'PersonRolesAPI');
