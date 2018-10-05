@@ -297,6 +297,30 @@ class DepartmentTab extends AbstractTab {
             foreach($data as $row){
                 $strings[] = '"'.implode('","', $row).'"';
             }
+            $strings[] = ""; // Separate CCV Entries from MovedOn entries
+            foreach($hqps as $hqp){
+                $movedOn = $hqp->getAllMovedOn();
+                foreach($movedOn as $mo){
+                    $mo['employer'] = ($mo['employer'] == "") ? $mo['studies'] : $mo['employer'];
+                    if($mo['employer'] != ""){
+                        $supervisors = $hqp->getSupervisors($mo['effective_date']);
+                        $sups = array();
+                        foreach($supervisors as $sup){
+                            $sups[] = $sup->getNameForForms();
+                        }
+                        $row = array();
+                        $row[] = implode(", ", $sups);
+                        $row[] = $hqp->getNameForForms();
+                        $row[] = $mo['effective_date'];
+                        $row[] = $mo['where'];
+                        $row[] = $mo['employer'];
+                        $row[] = $hqp->getUni();
+                        $row[] = $mo['status'];
+                        $row[] = $hqp->getPosition();
+                        $strings[] = '"'.implode('","', $row).'"';
+                    }
+                }
+            }
             header("Content-Type: text/csv");
             header('Content-Disposition: attachment; filename="'.$this->department.' HQP Moved On.csv"');
             header('Cache-Control: private, max-age=0, must-revalidate');
