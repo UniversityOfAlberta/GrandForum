@@ -302,11 +302,21 @@ class DepartmentTab extends AbstractTab {
                 $movedOn = $hqp->getAllMovedOn();
                 foreach($movedOn as $mo){
                     $mo['employer'] = ($mo['employer'] == "") ? $mo['studies'] : $mo['employer'];
-                    if($mo['employer'] != ""){
+                    if($mo['employer'] != "" && $mo['effective_date'] != "0000-00-00"){
                         $supervisors = $hqp->getSupervisors($mo['effective_date']);
+                        $status = $mo['status'];
                         $sups = array();
                         foreach($supervisors as $sup){
                             $sups[] = $sup->getNameForForms();
+                            $relations = $sup->getRelationsDuring('all', "0000-00-00", $mo['effective_date']);
+                            foreach($relations as $rel){
+                                if($rel->user2 == $hqp->getId()){
+                                    if($rel->status != ""){
+                                        $status = $rel->status;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                         $row = array();
                         $row[] = implode(", ", $sups);
@@ -315,7 +325,7 @@ class DepartmentTab extends AbstractTab {
                         $row[] = $mo['where'];
                         $row[] = $mo['employer'];
                         $row[] = $hqp->getUni();
-                        $row[] = $mo['status'];
+                        $row[] = $status;
                         $row[] = $hqp->getPosition();
                         $strings[] = '"'.implode('","', $row).'"';
                     }
