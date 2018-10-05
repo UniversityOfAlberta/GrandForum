@@ -48,6 +48,12 @@ class PersonLeadershipAPI extends RESTAPI {
                                             'comment'    => $this->POST('comment')));
 
         $id = DBFunctions::insertId();
+        Cache::delete("project{$project->getId()}_people", true);
+        Person::$cache = array();
+        Person::$idsCache = array();
+        Person::$namesCache = array();
+        Person::$leaderCache = array();
+        $person->isProjectLeader = null;
         $this->params['personProjectId'] = $id;
         
         Notification::addNotification($me, Person::newFromId(0), "Project Leader Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> is a project leader of <b>{$project->getName()}</b>", "{$person->getUrl()}");
@@ -81,6 +87,12 @@ class PersonLeadershipAPI extends RESTAPI {
                                             'end_date'   => $this->POST('endDate'),
                                             'comment'    => $this->POST('comment')),
                                       array('id' => $this->getParam('personProjectId')));
+        Cache::delete("project{$project->getId()}_people", true);
+        Person::$cache = array();
+        Person::$idsCache = array();
+        Person::$namesCache = array();
+        Person::$leaderCache = array();
+        $person->isProjectLeader = null;
         Notification::addNotification($me, Person::newFromId(0), "Project Leader Changed", "The project leadership ({$project->getName()}) of <b>{$person->getNameForForms()}</b> has been changed", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
             mail("training@cfn-nce.ca", "Project Leader Changed", "The project leadership ({$project->getName()}) of <b>{$person->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
@@ -118,6 +130,12 @@ class PersonLeadershipAPI extends RESTAPI {
         MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_project_leaders',
                             array('id' => $this->getParam('personProjectId')));
+        Cache::delete("project{$project->getId()}_people", true);
+        Person::$cache = array();
+        Person::$idsCache = array();
+        Person::$namesCache = array();
+        Person::$leaderCache = array();
+        $person->isProjectLeader = null;
         Notification::addNotification($me, Person::newFromId(0), "Project Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$project->getName()}</b>", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
             mail("training@cfn-nce.ca", "Project Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$project->getName()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));

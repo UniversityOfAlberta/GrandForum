@@ -46,6 +46,7 @@ class PersonThemesAPI extends RESTAPI {
                                             'comment'     => $this->POST('comment')));
 
         $id = DBFunctions::insertId();
+        Person::$themeLeaderCache = array();
         $this->params['personThemeId'] = $id;
         
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> is a theme leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
@@ -81,6 +82,7 @@ class PersonThemesAPI extends RESTAPI {
                                             'end_date'    => $this->POST('endDate'),
                                             'comment'     => $this->POST('comment')),
                                       array('id' => $this->getParam('personThemeId')));
+        Person::$themeLeaderCache = array();
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Changed", "The theme leadership ({$theme->getAcronym()}) of <b>{$person->getNameForForms()}</b> has been changed", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
             mail("training@cfn-nce.ca", "Theme Leader Changed", "The theme leadership ({$theme->getAcronym()}) of <b>{$person->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
@@ -118,6 +120,7 @@ class PersonThemesAPI extends RESTAPI {
         MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_theme_leaders',
                             array('id' => $this->getParam('personThemeId')));
+        Person::$themeLeaderCache = array();
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
             mail("training@cfn-nce.ca", "Theme Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$theme->getAcronym()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));

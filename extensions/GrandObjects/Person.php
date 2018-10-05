@@ -1003,6 +1003,7 @@ class Person extends BackboneModel {
             Cache::delete("idsCache_{$this->getId()}");
             $person = Person::newFromName($_POST['wpName']);
             if($person->exists()){
+                MailingList::subscribeAll($person);
                 return $status;
             }
         }
@@ -1012,7 +1013,13 @@ class Person extends BackboneModel {
     function update(){
         $me = Person::newFromWgUser();
         if($me->isAllowedToEdit($this)){
+            $candidate = DBFunctions::select(array('mw_user'),
+                                             array('candidate'),
+                                             array('user_id' => $this->getId()));
+            $candidateBefore = $this->candidate;
+            $this->candidate = $candidate[0]['candidate'];
             MailingList::unsubscribeAll($this);
+            $this->candidate = $candidateBefore;
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
