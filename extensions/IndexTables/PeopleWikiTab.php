@@ -90,7 +90,7 @@ class PeopleWikiTab extends AbstractTab {
     }
     function generateBody(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;
-        $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources", "Canadian","French_Form");
+        $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources", "Canadian","Formulaires_en_français");
         if(isset($_FILES['wpUploadFile'])){
             $this->uploadFile();
         }
@@ -118,7 +118,7 @@ class PeopleWikiTab extends AbstractTab {
                                      <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
                         <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
                         <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Canadian'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/canadian.png'></a><br /><span class='en'>Canadian Resources</span><span class='fr'>les ressources Canadiennes</span></div>
-                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:Formulaires en français'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/french.png'></a><br /><span class='en'>Formulaires en français</span><span class='fr'>Formulaires en français</span></div>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Formulaires en français'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/french.png'></a><br /><span class='en'>Formulaires en français</span><span class='fr'>Formulaires en français</span></div>
                     </div>
             </div>";
 

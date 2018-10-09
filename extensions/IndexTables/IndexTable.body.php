@@ -268,9 +268,9 @@ class IndexTable {
                     $this->generatePersonTable("Canadian");
                     break;
 
-                case 'Formulaires en français':
+                case 'ALL Formulaires en français':
                     $wgOut->setPageTitle("Formulaires en français");
-                    $this->generatePersonTable("French_Form");
+                    $this->generatePersonTable("Formulaires_en_français");
                     break;
 
                 case 'ALL Organizations':
