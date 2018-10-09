@@ -261,7 +261,7 @@ class Theme {
                 $return[$project->getName()] = $project;
             }
         }
-        ksort($return);
+        knatsort($projects);
         return $return;
     }
     
