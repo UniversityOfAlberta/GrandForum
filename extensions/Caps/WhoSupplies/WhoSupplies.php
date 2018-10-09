@@ -170,11 +170,11 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
-                <li>
-                As of January 2018, Nurse Practitioners in BC may prescribe Mifegymiso® (read more). The College of Registered Nurses of British Columbia has not yet published supporting documents. 
-
-                </li>
+                    <li>
+                    As of January 2018, Nurse Practitioners in BC may prescribe Mifegymiso® (read more). The College of Registered Nurses of British Columbia has not yet published supporting documents.
+                    </li>
                     <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
+                    <li>In August 2018, the government of BC published <a href='https://www2.gov.bc.ca/assets/gov/health/practitioner-pro/bc-guidelines/ultrasound-summary.pdf' target='_blank'>Ultrasound Prioritization Guidelines</a>. Medical abortion was assigned Priority Level 2, i.e. maximum 7 calendar days.</li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
