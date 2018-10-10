@@ -26,6 +26,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
+                if($person->getId() == 243 && $dept == "Biological Sciences"){
+                    // Handle special cases
+                    continue;
+                }
                 if($person->isRole(DEAN) || $person->isSubRole("VPR")){
                     continue;
                 }
