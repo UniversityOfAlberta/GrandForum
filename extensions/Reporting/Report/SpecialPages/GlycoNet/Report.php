@@ -117,7 +117,7 @@ class Report extends AbstractReport{
         }
         if($person->isRoleAtLeast(MANAGER) || 
            $person->isRole(SD) || 
-           //$person->isRole(RMC) ||
+           $person->isRole(RMC) ||
            $person->isRoleAtLeast(STAFF) ||
            $person->getId() == 2513){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABStrategicReport")) ? "selected" : false;
