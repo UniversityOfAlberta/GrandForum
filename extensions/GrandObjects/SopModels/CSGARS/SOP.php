@@ -228,13 +228,15 @@ class SOP extends AbstractSop{
     * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
     */
     function getReviewers(){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS($this->year);
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
                         AND data != ''
-                        AND proj_id =".$gsms->id;
+                        AND year = $year
+                        AND proj_id = {$gsms->id}";
         $data = DBFunctions::execSQL($sql);
         $reviewers = array();
         if(count($data)>0){
