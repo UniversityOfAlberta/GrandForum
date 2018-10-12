@@ -26,7 +26,8 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if($excludeMe && $person->isMe()){
                     continue;
                 }
-                if($person->getId() == 243 && $dept == "Biological Sciences"){
+                if(($person->getId() == 243 && $dept == "Biological Sciences") ||
+                   ($person->getId() == 81){
                     // Handle special cases
                     continue;
                 }
