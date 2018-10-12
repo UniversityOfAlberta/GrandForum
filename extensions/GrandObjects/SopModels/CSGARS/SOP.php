@@ -56,8 +56,8 @@ class SOP extends AbstractSop{
     }
 
 
-    function getColumns($year="") {
-        $year = ($this->year != "") ? $year : YEAR;
+    function getColumns() {
+        $year = ($this->year != "") ? $this->year : YEAR;
         $moreJson = array();
         $AoS = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
         $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
@@ -169,11 +169,11 @@ class SOP extends AbstractSop{
         return false;
     }
 
-    function getGSMSUrl($year=""){
+    function getGSMSUrl(){
         global $wgServer, $wgScriptPath;
-        self::generateHasGSMSCache($year);
-        if(isset(self::$hasGsmsCache[$year][$this->user_id])){
-            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&year={$year}&user={$this->user_id}";
+        self::generateHasGSMSCache($this->year);
+        if(isset(self::$hasGsmsCache[$this->year][$this->user_id])){
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&year={$this->year}&user={$this->user_id}";
         }
 	    return "";
     }

@@ -313,7 +313,7 @@ class GsmsData extends BackboneModel{
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
         $sop = $this->getSOP();
-        $this->gsms_url = $sop->getGSMSUrl($this->year);
+        $this->gsms_url = $sop->getGSMSUrl();
         if($config->getValue('networkName') == 'CSGARS'){
             $degrees = $sop->getCSEducationalHistory(true);
         }
@@ -407,7 +407,7 @@ class GsmsData extends BackboneModel{
             $json['nationality_note'] = $nationality_note;
         }
         if($config->getValue('networkName') == 'CSGARS'){
-            $json['additional'] = array_merge($json['additional'],$sop->getColumns($this->year));
+            $json['additional'] = array_merge($json['additional'],$sop->getColumns());
         }
 
         // Needed by exportAdmittedStudents

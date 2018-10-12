@@ -402,7 +402,7 @@ abstract class AbstractSop extends BackboneModel{
                       'gsms_data' => $this->checkGSMS(),
                       'sop_check' => $this->checkSOP(),
                       'sop_url' => $this->getSopUrl(),
-                      'gsms_url' => $this->getGSMSUrl($this->year));
+                      'gsms_url' => $this->getGSMSUrl());
 
         // Get from Config which forum we are looking at to add extra columns
         $json = array_merge($json, $this->getColumns());
