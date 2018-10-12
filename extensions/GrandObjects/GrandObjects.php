@@ -123,10 +123,12 @@ $apiRequest->addAction('Hidden','course/:id', 'CourseAPI');
 $apiRequest->addAction('Hidden','courses', 'CoursesAPI');
 //GsmsData
 $apiRequest->addAction('Hidden','gsmsdata/:id', 'GsmsDataAPI');
+$apiRequest->addAction('Hidden','gsmsdata/:id/:year', 'GsmsDataAPI');
 $apiRequest->addAction('Hidden','gsmsdatas', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision', 'GsmsDataAllAPI');
+$apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision/:year', 'GsmsDataAllAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;

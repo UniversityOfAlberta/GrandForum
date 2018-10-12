@@ -262,7 +262,8 @@ SopsView = Backbone.View.extend({
         "click #showfilter" : "showFilter",
         "click #hidefilter" : "showFilter",
         "click #selectAreasBox" : "showAreasCheckboxes",
-        "click .buttons-colvis" : "recordColVis", 
+        "click .buttons-colvis" : "recordColVis",
+        "change #year": "changeYear"
     },
 
     reloadTable: function(){
@@ -675,6 +676,11 @@ SopsView = Backbone.View.extend({
             SopsView.filtersSelected['colvis'][i] = this.classList.contains("active");
             that.updateUserPrefs();
         });
+    },
+    
+    changeYear: function(){
+        var year = this.$("#year").val();
+        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + Backbone.history.fragment.split("/")[0] + "//" + year;
     },
 
     render: function(){

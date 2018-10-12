@@ -9,6 +9,7 @@ class GsmsData extends BackboneModel{
     var $user_id;
     var $gsms_id;
     var $student_id;
+    var $year;
 
 //General data
     var $status;
@@ -110,33 +111,36 @@ class GsmsData extends BackboneModel{
     * @return GsmsData The GsmsData with the given id. If no
     * gsms exists with that id, it will return an empty gsms.
     */
-    static function newFromUserId($id){
-        if(Cache::exists("gsms_user_$id")){
-            $data = Cache::fetch("gsms_user_$id");
+    static function newFromUserId($id, $year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        if(Cache::exists("gsms_user_$id{$dbyear}")){
+            $data = Cache::fetch("gsms_user_$id{$dbyear}");
         }
         else{
-            $data = DBFunctions::select(array('grand_gsms'),
+            $data = DBFunctions::select(array("grand_gsms$dbyear"),
                                         array('*'),
                                         array('user_id' => EQ($id)),
                                         array('submitted_date' => 'DESC'),
                                         array(1));
-            Cache::store("gsms_user_$id", $data);
+            Cache::store("gsms_user_$id{$dbyear}", $data);
         }
         $gsms = new GsmsData($data, $id);
+        $gsms->year = $year;
         return $gsms;
     }
 
-    static function getAllVisibleGsms(){
+    static function getAllVisibleGsms($year=""){
         global $wgRoleValues;
+        $dbyear = ($year != "") ? "_$year" : "";
         $gsms_array = array();
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(EVALUATOR)){
-            $sql = "SELECT user_id, id, max(submitted_date) as date FROM grand_gsms WHERE visible = 'true' GROUP BY user_id ORDER BY submitted_date";
+            $sql = "SELECT user_id, id, max(submitted_date) as date FROM grand_gsms{$dbyear} WHERE visible = 'true' GROUP BY user_id ORDER BY submitted_date";
             $data = DBFunctions::execSQL($sql);
         }
         if(count($data) >0){
             foreach($data as $gsms){
-                $gsms_array[] = GsmsData::newFromId($gsms['id']);
+                $gsms_array[] = GsmsData::newFromId($gsms['id'], $year);
             }
         }
         return $gsms_array;
@@ -147,17 +151,19 @@ class GsmsData extends BackboneModel{
    * @param $id
    * @return $gsms Gsms object
    */
-    static function newFromId($id){
-        if(Cache::exists("gsms_$id")){
-            $data = Cache::fetch("gsms_$id");
+    static function newFromId($id, $year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        if(Cache::exists("gsms_$id{$dbyear}")){
+            $data = Cache::fetch("gsms_$id{$dbyear}");
         }
         else{
-            $data = DBFunctions::select(array('grand_gsms'),
+            $data = DBFunctions::select(array("grand_gsms$dbyear"),
                                         array('*'),
                                         array('id' => EQ($id)));
-            Cache::store("gsms_$id", $data);
+            Cache::store("gsms_$id{$dbyear}", $data);
         }
         $gsms = new GsmsData($data);
+        $gsms->year = $year;
         return $gsms;
     }
 
@@ -289,7 +295,7 @@ class GsmsData extends BackboneModel{
     }
     
     function getSOP(){
-        return SOP::newFromUserId($this->user_id);
+        return SOP::newFromUserId($this->user_id, $this->year);
     }
 
     /**
@@ -298,9 +304,7 @@ class GsmsData extends BackboneModel{
     */
     function toArray(){
         global $wgUser, $config;
-        //if(!$wgUser->isLoggedIn()){
-          //  return array();
-       // }
+        $year = ($this->year != "") ? $this->year : YEAR;
         $student = Person::newFromId($this->user_id);
         $student_data = array('id' => $student->getId(),
                         'fname' => $student->getFirstName(),
@@ -309,7 +313,7 @@ class GsmsData extends BackboneModel{
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
         $sop = $this->getSOP();
-        $this->gsms_url = $sop->getGSMSUrl();
+        $this->gsms_url = $sop->getGSMSUrl($this->year);
         if($config->getValue('networkName') == 'CSGARS'){
             $degrees = $sop->getCSEducationalHistory(true);
         }
@@ -345,11 +349,12 @@ class GsmsData extends BackboneModel{
         //sop information needed in table
         $json['sop_id'] = $sop->getId();
         $json['sop_url'] = $sop->getUrl();
+        $json['sop_pdf'] = $sop->getSopUrl();
         $json['annotations'] = $sop->annotations;
 
         //adding reviewers array so can have on overview table
         $reviewers = array();
-        $reviewer_array = $student->getEvaluators(YEAR,"sop");
+        $reviewer_array = $student->getEvaluators($year,"sop");
         foreach($reviewer_array as $reviewer){
             $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
@@ -364,7 +369,7 @@ class GsmsData extends BackboneModel{
 
         $otherReviewers = array();
         
-        $other_array = $student->getOtherEvaluators(YEAR);
+        $other_array = $student->getOtherEvaluators($year);
         foreach($other_array as $other){
             $otherReviewers[] = array('id' => $other->getId(),
                              'name' => $other->getNameForForms(),
@@ -402,7 +407,7 @@ class GsmsData extends BackboneModel{
             $json['nationality_note'] = $nationality_note;
         }
         if($config->getValue('networkName') == 'CSGARS'){
-            $json['additional'] = array_merge($json['additional'],$sop->getColumns());
+            $json['additional'] = array_merge($json['additional'],$sop->getColumns($this->year));
         }
 
         // Needed by exportAdmittedStudents
@@ -446,12 +451,13 @@ class GsmsData extends BackboneModel{
     }
 
     function getCSColumns() {
+        $year = ($this->year != "") ? $year : YEAR;
         $moreJson = array();
-        $AoS = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
+        $AoS = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
         $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
         //var_dump($moreJson['areas_of_study']);
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
         #$moreJson['supervisors'] = @implode(";\n", explode(" ", $blob['q14'])[1]);
         $supervisors = "";
         if (isset($blob['q14'])) {
@@ -462,28 +468,28 @@ class GsmsData extends BackboneModel{
         }
         $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
         $moreJson['scholarships_held'] = @implode(", ", $blob['q16']);
 
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
         $moreJson['scholarships_applied'] = @implode(", ", $blob['q15']);
 
-        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
-        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
-        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
-        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
-        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
+        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
+        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
+        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
+        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
 
         // # of Publications
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
         $moreJson['num_publications'] = @count($blob['qResExp2']);
 
         // # of awards
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
         $moreJson['num_awards'] = @count($blob['qAwards']);
 
         // Courses (number of courses, number of areas)
-        $blob = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
         $courses = array();
         //var_dump($blob);
         //exit;
@@ -542,11 +548,13 @@ class GsmsData extends BackboneModel{
     }
 
     function getAssignedSupervisors() {
-        return $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
+        $year = ($this->year != "") ? $year : YEAR;
+        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
     }
 
     function getFunding() {
-        return $this->getBlobValue(BLOB_TEXT, YEAR, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
+        $year = ($this->year != "") ? $year : YEAR;
+        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
     }
 }
 

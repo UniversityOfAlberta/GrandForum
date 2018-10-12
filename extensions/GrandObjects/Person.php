@@ -73,8 +73,9 @@ class Person extends BackboneModel {
      * @param string $gsms_id The GSMS ID of the Person
      * @return Person The Person from the given GSMS Id
      */
-    static function newFromGSMSId($gsms_id){
-        $data = DBFunctions::select(array('grand_gsms'),
+    static function newFromGSMSId($gsms_id, $year=""){
+        $dbyear = ($year != "") ? "_$year" : "";
+        $data = DBFunctions::select(array("grand_gsms$dbyear"),
                                     array('user_id'),
                                     array('gsms_id' => $gsms_id));
         if(count($data) >0){
@@ -4515,7 +4516,7 @@ class Person extends BackboneModel {
      */
     function getOtherEvaluators($year = YEAR){
         $subs = array();
-        $gsms = $this->getGSMS();
+        $gsms = $this->getGSMS($year);
         if ($gsms != '') {
           $sql = "SELECT DISTINCT b.user_id
                   FROM grand_report_blobs b 
@@ -4651,13 +4652,14 @@ class Person extends BackboneModel {
      * Returns Sop object of person
      * @return Sop SoP object of person
    **/
-    function getSop(){
-        $data = DBFunctions::select(array('grand_sop'),
+    function getSop($year=""){
+        $dbyear = ($year != "") ? "_$year" : "";
+        $data = DBFunctions::select(array("grand_sop$dbyear"),
                                     array('id'),
                                     array('user_id' => EQ($this->getId())));
         if(count($data) > 0){
             $sop_id = $data[0]['id'];
-            return SOP::newFromId($sop_id);
+            return SOP::newFromId($sop_id, $year);
         }
         return "";
     }
@@ -4665,18 +4667,17 @@ class Person extends BackboneModel {
      * Returns url of GSMS pdf that was uploaded by Admin of person
      * @return String url of GSMS pdf (Including their resume, ref letters, etc)
    **/
-    function getGSMSPdfUrl(){
-
-        $data = DBFunctions::select(array('grand_sop'),
+    function getGSMSPdfUrl($year=""){
+        $dbyear = ($year != "") ? "_$year" : "";
+        $data = DBFunctions::select(array("grand_sop$dbyear"),
                                     array('pdf_contents', 'pdf_data'),
                                     array('user_id' => EQ($this->getId())));
         if(count($data) > 0){
             $pdf_data = $data[0]['pdf_data'];
-	    if($pdf_data != ""){
-        	global $wgServer, $wgScriptPath;
-        	return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->getId();
-	    }
-	
+            if($pdf_data != ""){
+	            global $wgServer, $wgScriptPath;
+	            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->getId();
+            }
         }
         return "";
     }
@@ -4685,17 +4686,17 @@ class Person extends BackboneModel {
      * Returns PDF stream of Statement of Purpose pdf 
      * @return text stream of SoP PDF
    **/
-    function getSopPdf(){
-      $sop=SOP::newFromUserId($this->id);
-      return $sop->getSopPdf();
+    function getSopPdf($year=""){
+        $sop=SOP::newFromUserId($this->id, $year);
+        return $sop->getSopPdf();
     }
 
     /**
      * Returns url of Statement of Purpose pdf 
      * @return String url of SoP pdf
    **/
-    function getSopPdfUrl(){
-      $sop=SOP::newFromUserId($this->id);
+    function getSopPdfUrl($year=""){
+        $sop=SOP::newFromUserId($this->id, $year);
         return $sop->getSopUrl();
     }
 
@@ -4704,16 +4705,16 @@ class Person extends BackboneModel {
      * @return String url of SoP
     **/
     function getSopUrl() {
-      $sop = $this->getSop();
-      return $sop == "" ? "" : $sop->getUrl();
+        $sop = $this->getSop();
+        return $sop == "" ? "" : $sop->getUrl();
     }
 
     /**
      * Returns GSMS information of person
      * @return array gsms array of person
    **/    
-    function getGSMS(){
-	$gsms = GsmsData::newFromUserId($this->id);
+    function getGSMS($year=""){
+        $gsms = GsmsData::newFromUserId($this->id, $year);
         return $gsms;
     }
 

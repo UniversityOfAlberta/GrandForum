@@ -12,9 +12,10 @@ class UserSopPdfAPI extends API{
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
 	    $user_id = $_GET["user"];
+	    $year = (isset($_GET["year"]) && $_GET["year"] != "") ? $_GET["year"] : "";
 	    $person = Person::newFromId($user_id);
 	
-	    $pdf = $person->getSopPdf();
+	    $pdf = $person->getSopPdf($year);
 	    header('Content-type: application/pdf');
 	    echo $pdf;
     }
