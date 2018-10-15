@@ -805,8 +805,8 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
-                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -934,8 +934,8 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
-                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -1063,8 +1063,8 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
-                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -1192,8 +1192,8 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;">{getExtra()} / {$user_name}</div>
-                                <div class="pdfnodisplay" style="float:right;">{getExtra()} / {$user_name}</div>
+                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
