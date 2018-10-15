@@ -100,7 +100,7 @@ class IncrementReportItem extends SelectReportItem {
 	    $person = Person::newFromId($this->blobSubItem);
 	    $popup = "<div id='previousIncrements{$this->blobSubItem}' title='Previous Increments' style='display:none;'>
 	                <center><b>{$person->getNameForForms()}</b></center>
-	                <table class='wikitable' frame='box' rules='all' width='100%'>
+	                <table data-fecid='{getExtra()}' class='wikitable' frame='box' rules='all' width='100%'>
 	                    <tr>
 	                        <th>FEC Year</th>
 	                        <th>Increment</th>

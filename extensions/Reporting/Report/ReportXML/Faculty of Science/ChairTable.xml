@@ -85,7 +85,7 @@
         <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
             <ReportItem id="name" type="Static">
                 <![CDATA[
-                    <tr>
+                    <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
@@ -248,28 +248,44 @@
                 </table><br />
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Year</th><th>Average<br />Increment</th>
+                        <th>Year</th>
+                        <th>Average<br />Faculty Increment</th>
+                        <th>Average<br />FSO Increment</th>
                     </tr>
                     <tr>
-                        <td><b>{$this_year}</b></td><td id='average' align='right'></td>
+                        <td><b>{$this_year}</b></td>
+                        <td id='averageFac' align='right'></td>
+                        <td id='averageFSO' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},1)}</b></td><td id='average{subtract({$this_year},1)}' align='right'></td>
+                        <td><b>{subtract({$this_year},1)}</b></td>
+                        <td id='averageFac{subtract({$this_year},1)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},1)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},2)}</b></td><td id='average{subtract({$this_year},2)}' align='right'></td>
+                        <td><b>{subtract({$this_year},2)}</b></td>
+                        <td id='averageFac{subtract({$this_year},2)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},2)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},3)}</b></td><td id='average{subtract({$this_year},3)}' align='right'></td>
+                        <td><b>{subtract({$this_year},3)}</b></td>
+                        <td id='averageFac{subtract({$this_year},3)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},3)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},4)}</b></td><td id='average{subtract({$this_year},4)}' align='right'></td>
+                        <td><b>{subtract({$this_year},4)}</b></td>
+                        <td id='averageFac{subtract({$this_year},4)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},4)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},5)}</b></td><td id='average{subtract({$this_year},5)}' align='right'></td>
+                        <td><b>{subtract({$this_year},5)}</b></td>
+                        <td id='averageFac{subtract({$this_year},5)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},5)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},6)}</b></td><td id='average{subtract({$this_year},6)}' align='right'></td>
+                        <td><b>{subtract({$this_year},6)}</b></td>
+                        <td id='averageFac{subtract({$this_year},6)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},6)}' align='right'></td>
                     </tr>
                 </table>
                 <small>Averages are based on the people currently in the table, so previous averages may differ slightly as it does not factor in people who are no longer in the department</small>
@@ -304,20 +320,39 @@
                     });
                     
                     $(".increment select").change(function(){
-                        var sum = 0;
-                        var nFaculty = 0;
+                        var fac_sum = 0;
+                        var fac_count = 0;
+                        var fso_sum = 0;
+                        var fso_count = 0;
                         $(".increment select").each(function(i, el){
+                            var tr = $(el).closest("tr");
                             if($(el).val() != ""){
-                                sum += parseFloat($(el).val());
-                                nFaculty++;
+                                if($(tr).attr('data-fecid').includes("A") ||
+                                   $(tr).attr('data-fecid').includes("B") ||
+                                   $(tr).attr('data-fecid').includes("C") ||
+                                   $(tr).attr('data-fecid').includes("N")){
+                                    fac_sum += parseFloat($(el).val());
+                                    fac_count++;
+                                }
+                                else if($(tr).attr('data-fecid').includes("D") ||
+                                        $(tr).attr('data-fecid').includes("E") ||
+                                        $(tr).attr('data-fecid').includes("F") ||
+                                        $(tr).attr('data-fecid').includes("M")){
+                                    fso_sum += parseFloat($(el).val());
+                                    fso_count++;
+                                }
                             }
                         });
-                        $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
+                        $('#averageFac').html((fac_sum/Math.max(1, fac_count)).toFixed(3));
+                        $('#averageFSO').html((fso_sum/Math.max(1, fso_count)).toFixed(3));
                     });
                     
                     var increments = new Array();
-                    var counts = new Array();
-                    var sums = new Array();
+                    var fac_counts = new Array();
+                    var fac_sums = new Array();
+
+                    var fso_counts = new Array();
+                    var fso_sums = new Array();
                     
                     increments[{subtract({$this_year},1)}] = $(".increment{subtract({$this_year},1)}");
                     increments[{subtract({$this_year},2)}] = $(".increment{subtract({$this_year},2)}");
@@ -325,17 +360,34 @@
                     increments[{subtract({$this_year},4)}] = $(".increment{subtract({$this_year},4)}");
                     increments[{subtract({$this_year},5)}] = $(".increment{subtract({$this_year},5)}");
                     increments[{subtract({$this_year},6)}] = $(".increment{subtract({$this_year},6)}");
+                    
                     _.each(increments, function(increment, i){
-                        counts[i] = 0;
-                        sums[i] = 0;
+                        fac_counts[i] = 0;
+                        fac_sums[i] = 0;
+                        fso_counts[i] = 0;
+                        fso_sums[i] = 0;
                         $(increment).each(function(j, el){
+                            var table = $(el).closest("table");
                             var val = $(el).text();
                             if(val != "N/A" && val != ""){
-                                counts[i]++;
-                                sums[i] += parseFloat(val);
+                                if($(table).attr('data-fecid').includes("A") ||
+                                   $(table).attr('data-fecid').includes("B") ||
+                                   $(table).attr('data-fecid').includes("C") ||
+                                   $(table).attr('data-fecid').includes("N")){
+                                    fac_sums[i] += parseFloat(val);
+                                    fac_counts[i]++;
+                                }
+                                else if($(table).attr('data-fecid').includes("D") ||
+                                        $(table).attr('data-fecid').includes("E") ||
+                                        $(table).attr('data-fecid').includes("F") ||
+                                        $(table).attr('data-fecid').includes("M")){
+                                    fso_sums[i] += parseFloat(val);
+                                    fso_counts[i]++;
+                                }
                             }
                         });
-                        $('#average' + i).html((sums[i]/Math.max(1, counts[i])).toFixed(3));
+                        $('#averageFac' + i).html((fac_sums[i]/Math.max(1, fac_counts[i])).toFixed(3));
+                        $('#averageFSO' + i).html((fso_sums[i]/Math.max(1, fso_counts[i])).toFixed(3));
                     });
                     $(".increment select").first().trigger('change');
                 </script>
@@ -377,7 +429,7 @@
         <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <ReportItem id="name" type="Static">
                 <![CDATA[
-                    <tr>
+                    <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
@@ -596,28 +648,44 @@
                 </table><br />
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Year</th><th>Average<br />Increment</th>
+                        <th>Year</th>
+                        <th>Average<br />Faculty Increment</th>
+                        <th>Average<br />FSO Increment</th>
                     </tr>
                     <tr>
-                        <td><b>{$this_year}</b></td><td id='average' align='right'></td>
+                        <td><b>{$this_year}</b></td>
+                        <td id='averageFac' align='right'></td>
+                        <td id='averageFSO' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},1)}</b></td><td id='average{subtract({$this_year},1)}' align='right'></td>
+                        <td><b>{subtract({$this_year},1)}</b></td>
+                        <td id='averageFac{subtract({$this_year},1)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},1)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},2)}</b></td><td id='average{subtract({$this_year},2)}' align='right'></td>
+                        <td><b>{subtract({$this_year},2)}</b></td>
+                        <td id='averageFac{subtract({$this_year},2)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},2)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},3)}</b></td><td id='average{subtract({$this_year},3)}' align='right'></td>
+                        <td><b>{subtract({$this_year},3)}</b></td>
+                        <td id='averageFac{subtract({$this_year},3)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},3)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},4)}</b></td><td id='average{subtract({$this_year},4)}' align='right'></td>
+                        <td><b>{subtract({$this_year},4)}</b></td>
+                        <td id='averageFac{subtract({$this_year},4)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},4)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},5)}</b></td><td id='average{subtract({$this_year},5)}' align='right'></td>
+                        <td><b>{subtract({$this_year},5)}</b></td>
+                        <td id='averageFac{subtract({$this_year},5)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},5)}' align='right'></td>
                     </tr>
                     <tr>
-                        <td><b>{subtract({$this_year},6)}</b></td><td id='average{subtract({$this_year},6)}' align='right'></td>
+                        <td><b>{subtract({$this_year},6)}</b></td>
+                        <td id='averageFac{subtract({$this_year},6)}' align='right'></td>
+                        <td id='averageFSO{subtract({$this_year},6)}' align='right'></td>
                     </tr>
                 </table>
                 <small>Averages are based on the people currently in the table, so previous averages may differ slightly as it does not factor in people who are no longer in the department</small>
@@ -652,20 +720,39 @@
                     });
                     
                     $(".increment select").change(function(){
-                        var sum = 0;
-                        var nFaculty = 0;
+                        var fac_sum = 0;
+                        var fac_count = 0;
+                        var fso_sum = 0;
+                        var fso_count = 0;
                         $(".increment select").each(function(i, el){
+                            var tr = $(el).closest("tr");
                             if($(el).val() != ""){
-                                sum += parseFloat($(el).val());
-                                nFaculty++;
+                                if($(tr).attr('data-fecid').includes("A") ||
+                                   $(tr).attr('data-fecid').includes("B") ||
+                                   $(tr).attr('data-fecid').includes("C") ||
+                                   $(tr).attr('data-fecid').includes("N")){
+                                    fac_sum += parseFloat($(el).val());
+                                    fac_count++;
+                                }
+                                else if($(tr).attr('data-fecid').includes("D") ||
+                                        $(tr).attr('data-fecid').includes("E") ||
+                                        $(tr).attr('data-fecid').includes("F") ||
+                                        $(tr).attr('data-fecid').includes("M")){
+                                    fso_sum += parseFloat($(el).val());
+                                    fso_count++;
+                                }
                             }
                         });
-                        $('#average').html((sum/Math.max(1, nFaculty)).toFixed(3));
+                        $('#averageFac').html((fac_sum/Math.max(1, fac_count)).toFixed(3));
+                        $('#averageFSO').html((fso_sum/Math.max(1, fso_count)).toFixed(3));
                     });
                     
                     var increments = new Array();
-                    var counts = new Array();
-                    var sums = new Array();
+                    var fac_counts = new Array();
+                    var fac_sums = new Array();
+
+                    var fso_counts = new Array();
+                    var fso_sums = new Array();
                     
                     increments[{subtract({$this_year},1)}] = $(".increment{subtract({$this_year},1)}");
                     increments[{subtract({$this_year},2)}] = $(".increment{subtract({$this_year},2)}");
@@ -673,17 +760,34 @@
                     increments[{subtract({$this_year},4)}] = $(".increment{subtract({$this_year},4)}");
                     increments[{subtract({$this_year},5)}] = $(".increment{subtract({$this_year},5)}");
                     increments[{subtract({$this_year},6)}] = $(".increment{subtract({$this_year},6)}");
+                    
                     _.each(increments, function(increment, i){
-                        counts[i] = 0;
-                        sums[i] = 0;
+                        fac_counts[i] = 0;
+                        fac_sums[i] = 0;
+                        fso_counts[i] = 0;
+                        fso_sums[i] = 0;
                         $(increment).each(function(j, el){
+                            var table = $(el).closest("table");
                             var val = $(el).text();
                             if(val != "N/A" && val != ""){
-                                counts[i]++;
-                                sums[i] += parseFloat(val);
+                                if($(table).attr('data-fecid').includes("A") ||
+                                   $(table).attr('data-fecid').includes("B") ||
+                                   $(table).attr('data-fecid').includes("C") ||
+                                   $(table).attr('data-fecid').includes("N")){
+                                    fac_sums[i] += parseFloat(val);
+                                    fac_counts[i]++;
+                                }
+                                else if($(table).attr('data-fecid').includes("D") ||
+                                        $(table).attr('data-fecid').includes("E") ||
+                                        $(table).attr('data-fecid').includes("F") ||
+                                        $(table).attr('data-fecid').includes("M")){
+                                    fso_sums[i] += parseFloat(val);
+                                    fso_counts[i]++;
+                                }
                             }
                         });
-                        $('#average' + i).html((sums[i]/Math.max(1, counts[i])).toFixed(3));
+                        $('#averageFac' + i).html((fac_sums[i]/Math.max(1, fac_counts[i])).toFixed(3));
+                        $('#averageFSO' + i).html((fso_sums[i]/Math.max(1, fso_counts[i])).toFixed(3));
                     });
                     $(".increment select").first().trigger('change');
                 </script>
