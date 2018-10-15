@@ -4,7 +4,7 @@ class IncrementReportItem extends SelectReportItem {
 
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
-	    $fecType = $person->getFECType($this->getReport()->year.CYCLE_END_MONTH);
+	    $fecType = $person->getFECType($this->getReport()->year.CYCLE_START_MONTH);
 	    switch($fecType){
 	        default:
 	        case "A1":
