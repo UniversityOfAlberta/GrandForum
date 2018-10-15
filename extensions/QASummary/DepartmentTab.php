@@ -195,7 +195,7 @@ class DepartmentTab extends AbstractTab {
         $patents = array();
         foreach($people as $person){
             foreach($person->getPapersAuthored("Patent/Spin-Off", "1900-01-01", ($year+1)."-12-31") as $patent){
-                if($patent->getType() == "Patent" && $patent->getStatus() == "Awarded"){
+                if($patent->getType() == "Patent"){
                     $patents[] = $patent;
                 }
             }
@@ -215,7 +215,8 @@ class DepartmentTab extends AbstractTab {
                             <th width='35%'>Title</th>
                             <th width='10%'>Number</th>
                             <th width='15%'>Country</th>
-                            <th width='30%'>Inventors</th>
+                            <th width='20%'>Inventors</th>
+                            <th width='10%'>Status</th>
                             <th width='10%'>Date</th>
                         </tr>
                     </thead>
@@ -225,7 +226,7 @@ class DepartmentTab extends AbstractTab {
             foreach($patent->getAuthors() as $author){
                 $authors[] = $author->getLastName();
             }
-            $html .= "<tr><td>{$patent->getTitle()}</td><td>{$patent->getData('number')}</td><td>{$patent->getData('country')}</td><td>".implode(", ", $authors)."</td><td>{$patent->getDate()}</td></tr>";
+            $html .= "<tr><td>{$patent->getTitle()}</td><td>{$patent->getData('number')}</td><td>{$patent->getData('country')}</td><td>".implode(", ", $authors)."</td><td>{$patent->getStatus()}</td><td>{$patent->getDate()}</td></tr>";
         }
         $html .= "</tbody></table>";
         $html .= "</div>";
