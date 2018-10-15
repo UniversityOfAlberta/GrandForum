@@ -14,7 +14,7 @@
         <Role role="IAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="rw" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
@@ -34,9 +34,9 @@
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="rw" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="r" />
-            <SectionPermission id="deans_decision" permissions="r" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="rw" />
+            <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
             <SectionPermission id="fec" permissions="" />
