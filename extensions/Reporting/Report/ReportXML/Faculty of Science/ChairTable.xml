@@ -1284,12 +1284,12 @@
                         <td align='center'>
                 ]]>
             </ReportItem>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Recommendation<br />
                 ]]>
             </ReportItem>
-            <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Chair's Advice<br />
                 ]]>
