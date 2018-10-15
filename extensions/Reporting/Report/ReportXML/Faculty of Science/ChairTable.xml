@@ -326,7 +326,7 @@
                         var fso_count = 0;
                         $(".increment select").each(function(i, el){
                             var tr = $(el).closest("tr");
-                            if($(el).val() != ""){
+                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)"){
                                 if($(tr).attr('data-fecid').includes("A") ||
                                    $(tr).attr('data-fecid').includes("B") ||
                                    $(tr).attr('data-fecid').includes("C") ||
@@ -369,7 +369,7 @@
                         $(increment).each(function(j, el){
                             var table = $(el).closest("table");
                             var val = $(el).text();
-                            if(val != "N/A" && val != ""){
+                            if(val != "N/A" && val != "" && val != "0.00 (PTC)"){
                                 if($(table).attr('data-fecid').includes("A") ||
                                    $(table).attr('data-fecid').includes("B") ||
                                    $(table).attr('data-fecid').includes("C") ||
@@ -726,7 +726,7 @@
                         var fso_count = 0;
                         $(".increment select").each(function(i, el){
                             var tr = $(el).closest("tr");
-                            if($(el).val() != ""){
+                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)"){
                                 if($(tr).attr('data-fecid').includes("A") ||
                                    $(tr).attr('data-fecid').includes("B") ||
                                    $(tr).attr('data-fecid').includes("C") ||
@@ -769,7 +769,7 @@
                         $(increment).each(function(j, el){
                             var table = $(el).closest("table");
                             var val = $(el).text();
-                            if(val != "N/A" && val != ""){
+                            if(val != "N/A" && val != "" && val != "0.00 (PTC)"){
                                 if($(table).attr('data-fecid').includes("A") ||
                                    $(table).attr('data-fecid').includes("B") ||
                                    $(table).attr('data-fecid').includes("C") ||
