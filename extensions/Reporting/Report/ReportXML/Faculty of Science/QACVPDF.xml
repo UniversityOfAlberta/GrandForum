@@ -341,7 +341,7 @@
                 <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="committee" type="Static">
                         <![CDATA[
-                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                            <p style='margin-left:2em;'>{$product_title} - {getProductData(organization)} (<b>{$product_scope}</b>), {$product_year_range}</p>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>

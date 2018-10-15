@@ -192,6 +192,54 @@ class DepartmentTab extends AbstractTab {
             });
         </script>";
         
+        $patents = array();
+        foreach($people as $person){
+            foreach($person->getPapersAuthored("Patent/Spin-Off", "1900-01-01", ($year+1)."-12-31") as $patent){
+                if($patent->getType() == "Patent" && $patent->getStatus() == "Awarded"){
+                    $patents[] = $patent;
+                }
+            }
+        }
+        
+        $html .= "<div class='pagebreak'></div>";
+        $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Faculty Patents</h2>";
+        $html .= "<script type='text/php'>
+                      \$GLOBALS['chapters'][] = array('title' => \"Faculty Patents\", 
+                                                      'page' => \$pdf->get_page_number(),
+                                                      'subs' => array());
+                  </script>";
+        $html .= "<div id='{$this->id}Patents'>";
+        $html .= "<table class='wikitable patents' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th width='35%'>Title</th>
+                            <th width='10%'>Number</th>
+                            <th width='15%'>Country</th>
+                            <th width='30%'>Inventors</th>
+                            <th width='10%'>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        foreach($patents as $patent){
+            $authors = array();
+            foreach($patent->getAuthors() as $author){
+                $authors[] = $author->getLastName();
+            }
+            $html .= "<tr><td>{$patent->getTitle()}</td><td>{$patent->getData('number')}</td><td>{$patent->getData('country')}</td><td>".implode(", ", $authors)."</td><td>{$patent->getDate()}</td></tr>";
+        }
+        $html .= "</tbody></table>";
+        $html .= "</div>";
+        $html .= "<script type='text/javascript'>
+            $('#{$this->id}Patents .patents').dataTable({
+                'aLengthMenu': [[-1], ['All']],
+                'iDisplayLength': -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
+                ]
+            });
+        </script>";
+        
         $gradPapers = array();
         $ugradPapers = array();
         
