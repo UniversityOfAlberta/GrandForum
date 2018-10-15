@@ -45,7 +45,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
-        if($person->isRole(DEAN) || $person->isRole(DEANEA)){
+        if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
             $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
