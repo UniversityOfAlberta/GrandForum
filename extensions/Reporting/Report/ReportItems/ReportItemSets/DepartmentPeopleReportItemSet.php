@@ -43,7 +43,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if($person->isRole(DEAN) || $person->isSubRole("VPR")){
                     continue;
                 }
-                $index = $fec[$person->getId()];
+                $index = @$fec[$person->getId()];
                 $fecType = $person->getFECType($end);
                 $tuple = self::createTuple();
                 $tuple['person_id'] = $person->getId();
