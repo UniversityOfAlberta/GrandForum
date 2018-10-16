@@ -317,8 +317,8 @@ class ReportXMLParser {
                 if(isset($attributes->role) && AbstractReport::blobConstant($attributes->role) == null){
                     $role = (string)$attributes->role;
                 }
-                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
+                $start = (isset($attributes->start)) ? $this->report->varSubstitute(AbstractReport::blobConstant($attributes->start)) : "0000-00-00";
+                $end = (isset($attributes->end)) ? $this->report->varSubstitute(AbstractReport::blobConstant($attributes->end)) : "2100-12-31";
                 if($start == null){
                     $this->errors[] = "Start time '{$attributes->start}' does not exist";
                 }

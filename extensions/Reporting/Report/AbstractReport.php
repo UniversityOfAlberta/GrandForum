@@ -1096,6 +1096,14 @@ abstract class AbstractReport extends SpecialPage {
         return true;
     }
     
+    function varSubstitute($value){
+        $item = new StaticReportItem();
+        $section = new ReportSection();
+        $item->setParent($section);
+        $section->setParent($this);
+        return $item->varSubstitute($value);
+    }
+    
     /**
      * Returns the value of the variable with the given key
      * @param string $key The key of the variable
