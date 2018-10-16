@@ -40,7 +40,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Handle special cases
                     continue;
                 }
-                if($person->isRole(DEAN) || $person->isSubRole("VPR")){
+                if($person->isRoleDuring(DEAN, $start, $end) || $person->isSubRole("VPR")){
                     continue;
                 }
                 $index = @$fec[$person->getId()];
