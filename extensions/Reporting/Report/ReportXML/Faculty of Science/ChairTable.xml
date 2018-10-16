@@ -9,7 +9,6 @@
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
             <SectionPermission id="dept_publications" permissions="rw" />
-            <SectionPermission id="fec" permissions="" />
         </Role>
         <Role role="IAC">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -19,7 +18,6 @@
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
             <SectionPermission id="dept_publications" permissions="rw" />
-            <SectionPermission id="fec" permissions="" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
@@ -29,7 +27,6 @@
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
-            <SectionPermission id="fec" permissions="rw" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
@@ -39,17 +36,6 @@
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
-            <SectionPermission id="fec" permissions="" />
-        </Role>
-        <Role role="VDEAN">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="dept_publications" permissions="" />
-            <SectionPermission id="fec" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
@@ -1346,83 +1332,6 @@
                         'buttons': [
                             'excel', 'pdf'
                         ]
-                    });
-                </script>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" type="ReportSection">
-        <ReportItem id="thead" type="Static">
-            <![CDATA[
-                <style>
-                    table#chairTable * {
-                        font-size:11px !important;
-                    }
-                </style>
-                <table id='chairTable' class='wikitable' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Case#</th>
-                            <th>Name</th>
-                            <th>Rank</th>
-                            <th>Department</th>
-                            <th width="1%">Annual Report</th>
-                            <th>Evaluation</th>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" includeDeansPeople="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
-            <ReportItem id="name" type="Static">
-                <![CDATA[
-                    <tr>
-                        <td>{getExtra()}</td>
-                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
-                        <td>{$user_dept}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        <td align='center'>{$item}</td>
-                        <td align='center'>
-                ]]>
-            </ReportItem>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Recommendation<br />
-                ]]>
-            </ReportItem>
-            <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Chair's Advice<br />
-                ]]>
-            </ReportItem>
-            <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Dean's Advice<br />
-                ]]>
-            </ReportItem>
-            <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Dean's Decision<br />
-                ]]>
-            </ReportItem>
-            <ReportItem id="row_end" type="Static">
-                <![CDATA[
-                        </td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="tfoot" type="Static">
-            <![CDATA[
-                    </tbody>
-                </table>
-                <script type='text/javascript'>
-                    $('#chairTable').dataTable({
-                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1
                     });
                 </script>
             ]]>
