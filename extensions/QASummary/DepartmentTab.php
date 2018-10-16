@@ -342,9 +342,9 @@ class DepartmentTab extends AbstractTab {
                                           AND (status = 'Completed' OR status = 'Withdrawn')
                                           AND date BETWEEN '".(($year-7).CYCLE_START_MONTH)."' AND '".($year.CYCLE_END_MONTH)."'");
             $strings = array();
-            $strings[] = '"'.implode('","', array("Supervisor", "HQP", "Date", "Present Position", "Present Organization", "Institution", "Status", "Degree")).'"';;
+            $strings[] = '"'.implode('","', array("Supervisor", "HQP", "Date", "Present Position", "Present Organization", "Institution", "Status", "Degree", "Reason")).'"';;
             foreach($data as $row){
-                $strings[] = '"'.implode('","', $row).'"';
+                $strings[] = '"'.implode('","', $row).'",""';
             }
             $strings[] = ""; // Separate CCV Entries from MovedOn entries
             foreach($hqps as $hqp){
@@ -354,6 +354,7 @@ class DepartmentTab extends AbstractTab {
                     if($mo['employer'] != "" && $mo['effective_date'] != "0000-00-00"){
                         $supervisors = $hqp->getSupervisors($mo['effective_date']);
                         $status = $mo['status'];
+                        $reason = $mo['reason'];
                         $sups = array();
                         foreach($supervisors as $sup){
                             $sups[] = $sup->getNameForForms();
@@ -376,6 +377,7 @@ class DepartmentTab extends AbstractTab {
                         $row[] = $hqp->getUni();
                         $row[] = $status;
                         $row[] = $hqp->getPosition();
+                        $row[] = $reason;
                         $strings[] = '"'.implode('","', $row).'"';
                     }
                 }
