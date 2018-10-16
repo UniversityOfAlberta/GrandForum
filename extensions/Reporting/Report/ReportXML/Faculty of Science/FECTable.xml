@@ -2,10 +2,10 @@
 <Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true">
     <Permissions>
         <Role role="DEAN">
-            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec" permissions="rw" start="{$this_year}-07-01" end="{$this_year}-07-01" />
         </Role>
         <Role role="VDEAN">
-            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec" permissions="rw" start="{$this_year}-07-01" end="{$this_year}-07-01" />
         </Role>
     </Permissions>
     <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" type="ReportSection">
