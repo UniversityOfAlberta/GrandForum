@@ -943,7 +943,20 @@ class CCVExport extends SpecialPage {
                     self::setChild($bilin, 'english');
                     $bilin->english = substr($product->getDescription(), 0, 1000);
                 }
-
+                
+                // Presentation KeyNote
+                if($product->getCategory() == "Presentation"){
+                    // Always add Keynote field...
+                    $field = $ccv_item->addChild("field");
+                    $field->addAttribute('id', "9b6d317fd53e4b6a9e2e1d9e2001f3f5");
+                    $field->addAttribute('label', "Keynote?");
+                    if($type == "Keynote"){
+                        // But only include "Yes" if the type is Keynote
+                        $val = $field->addChild('lov');
+                        $val->addAttribute('id', "00000000000000000000000000000400");
+                        self::setValue($val, "Yes");
+                    }
+                }
                 $success = 1;
             }
         }
