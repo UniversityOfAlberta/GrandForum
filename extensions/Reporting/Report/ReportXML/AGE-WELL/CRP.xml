@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL NCE CORE RESEARCH PROGRAM 2020-2025 REQUEST FOR PROPOSALS (RFP)" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" disabled="false">
+    <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="AR-Candidate">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="CI-Candidate">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External-Candidate">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part2" permissions="rw" />
+            <SectionPermission id="part3" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
+        <ReportItem id="primary" type="Select" blobItem="PRIMARY" blobType="BLOB_TEXT" options="WP1 NEEDS-OA - Understanding the Needs of Older Adults|WP2 NEEDS-CG - Understanding the Needs of Caregivers|WP3 TECH-FAI - Technology for Supporting Functional Autonomy and Independence|WP4 TECH-APS - Technology for Active Participation in Society|WP5 TECH-DD - Technology for Prevention and Reduction of Disease and Disability|WP6 TECH-MCH - Technology for Maintaining Good Mental and Cognitive Health|WP7 POLICY-TECH - Health Systems, Practice, Policy and Regulatory Issues|WP8 ETHICS-TECH - Ethical, Cultural and Social Aspects of Technology">
+            <![CDATA[
+                <h2>Selection of Primary and Secondary Challenge Areas</h2>
+                Every project must select the Challenge Areas with which they align from the list provided by AGE-WELL. It is expected that every project aligns with one primary and one secondary area.
+                <h3>What is your primary Challenge Area?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="secondary" type="Select" blobItem="SECONDARY" blobType="BLOB_TEXT" options="WP1 NEEDS-OA - Understanding the Needs of Older Adults|WP2 NEEDS-CG - Understanding the Needs of Caregivers|WP3 TECH-FAI - Technology for Supporting Functional Autonomy and Independence|WP4 TECH-APS - Technology for Active Participation in Society|WP5 TECH-DD - Technology for Prevention and Reduction of Disease and Disability|WP6 TECH-MCH - Technology for Maintaining Good Mental and Cognitive Health|WP7 POLICY-TECH - Health Systems, Practice, Policy and Regulatory Issues|WP8 ETHICS-TECH - Ethical, Cultural and Social Aspects of Technology">
+            <![CDATA[
+                <h3>What is your secondary Challenge Area?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part1" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
+        <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 1: Challenge Statement (approx. 1 page)</h2>
+                <small>In this section, we would like you to tell us how your proposed research aligns with AGE-WELL’s Challenge Areas that you have selected in the application form. Please specifically address the following:<br />
+                    Challenge Area
+                    <ul>
+                        <li>Which of AGE-WELL’s Challenge Areas is your project aligned with?</li>
+                        <li>How will your particular project contribute to the wider agenda set out in the Challenge Area?</li>
+                        <li>Describe the relevance and the importance of the project to AGE-WELL’s mission and vision.</li>
+                    </ul>
+                    What is your Challenge?
+                    <ul>
+                        <li>Describe the particular Challenge in 3-4 sentences.</li>
+                        <li>Why is this of interest to stakeholders?</li>
+                    </ul>
+                    What are the opportunities for technology and innovation to address this Challenge?
+                    <ul>
+                        <li>Potential of emerging technologies</li>
+                        <li>Potential for disruption</li>
+                    </ul>
+                    How will knowledge generated by the project be applied to address your Challenge?
+                    <ul>
+                        <li>What is the expected value and impact within the timeframe of the proposed funding cycle and beyond?</li>
+                        <li>What are the longer-term outcomes and impact for partners and end-users?</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section2" type="Textarea" blobItem="SECTION2" rich="true" limit="250">
+            <![CDATA[
+                <h2>Section 2: What is (are) your Product(s)? (approx. 1/2 page)</h2>
+                <small>Describe the real-world products that your project is expected to develop and mobilize. AGE-WELL recognizes different types of products: Technologies, Services, Policies/Practices. It is expected that core research projects will address all three product types.  Specifically, describe:
+                    <ul>
+                        <li>The potential key features of the product(s)</li>
+                        <li>What is unique about the product(s)</li>
+                        <li>Who is your target audience/market?</li>
+                        <li>What are the competitive advantages of your proposed solution?</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section3" type="Textarea" blobItem="SECTION3" rich="true" limit="250">
+            <![CDATA[
+                <h2>Section 3: Project Context and Current “State-of-the-Art” (approx. 1/2 page)</h2>
+                Define in more depth the current state-of-the art in the field with appropriate references, including gaps in knowledge, solutions, and needs to be addressed.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section4" type="Textarea" blobItem="SECTION4" rich="true" limit="1550">
+            <![CDATA[
+                <h2>Section 4: Research Plan (approx. 3 pages)</h2>
+                <small>The project plan should provide a framework for the operation of the project and should comprise an integrated research and knowledge strategy. The project plan should include the following:<br />
+                    <i><b>Overview of the research</b></i><br />
+                    <p>Provide an overview of the project’s research program plans, including the scope, focus and general objectives of the project and how the proposed research program will attain those objectives.</p>
+                    <i><b>Research questions and objectives</b></i><br />
+                    <p>Identify and describe your research questions and objectives.</p>
+                    <i><b>Research approach and methods</b></i><br />
+                    <p>This section should describe the approach and methodologies to be adopted in the project to achieve each of its research objectives. Describe in detail how stakeholders will be involved in all aspects of the research, including co-creation methods. Describe any ethical issues and how they will be addressed. Describe the novelty in the approaches and methods being proposed.</p>
+                    <i><b>Scientific outcomes and impact</b></i><br />
+                    <p>Describe in detail the anticipated scientific outcomes and impact, including how your project will ‘push the scientific envelope’ in the research field. This should include the relationship of the research program to similar work conducted elsewhere in Canada and internationally.</p>
+                    <i><b>Timelines and deliverables/milestones</b></i><br />
+                    <p>Describe in the table provided major milestones and deliverables in each year of funding.</p>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section5" type="Textarea" blobItem="SECTION5" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 5: Networking and Partnerships (approx. 1 page)</h2>
+                <small>
+                    <p>All AGE-WELL projects are expected to be joint actions by researchers and partner organizations. Partners should have a significant and active role in all aspects of the project. For example, partners may take the lead on addressing questions related to practice, policy, and/or service delivery. Partners may also take the lead on technology development, where appropriate. Partners may be drawn from various stakeholder groups (e.g. industry, government, service providers, seniors group, NGOs, etc.). Similarly, project teams will be expected to collaborate with other teams within their identified Challenge Areas and network across AGE-WELL.</p>
+
+                    <p>Research projects conducted by Quebec-based teams or having a collaboration with Quebec-based teams may receive additional funding from MEDTEQ in this application. One important criterion is the involvement of an industrial partner having operations in Quebec. Note that MEDTEQ can provide support to teams to help identify Quebec-based industrial partners during either the RFP or Catalyst phase. You will be asked to check a box to be considered for additional MEDTEQ funding.</p>
+                    Describe in this section:
+                    <ul>
+                        <li>How will stakeholders and partners be involved in setting the research agenda and developing the proposal?</li>
+                        <li>How will stakeholders be involved in all aspects of the project to address problems, challenges and opportunities?</li>
+                        <li>Key proposed partners with an explanation of their active contribution to the project and how they will lead certain parts of the project (at minimum a letter of support will be required).</li>
+                        <li>Existing linkages and the project’s proposed strategy to build new linkages among industry, receptor partners, academia, and governments across Canada and abroad.</li>
+                        <li>How will the use of resources be optimized through sharing of equipment, research facilities, databases, and personnel?</li>
+                        <li>Capacity of the team and personnel to collaborate with teams within their Challenge Areas and across the AGE-WELL network.</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1050">
+            <![CDATA[
+                <h2>Section 6: Knowledge and Technology Exchange and Exploitation (KTEE) (approx. 2 pages)</h2>
+                <small>
+                    <p>Projects are expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to receptors. It should be noted that KTEE includes both knowledge mobilization and commercialization. Your plans should consider:</p>
+                    <ul>
+                        <li>Project plans and budget should include appropriate KTEE activities and necessary resources.</li>
+                        <li>Approach to KTEE (knowledge mobilization and/or commercialization).</li>
+                        <li>How your project will encourage collaboration between the user sectors, providing concrete examples, such as the application of research to technology, market development, health systems, or public policy innovations.</li>
+                        <li>Management and protection of intellectual property for Network research.</li>
+                        <li>Strategies for disseminating Network knowledge, successes, and activities to the scientific community, stakeholders, and the general public.</li>
+                        <li>Describe communication strategy that includes social media, online presence, etc. as well as traditional academic deliverables.</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section7" type="Textarea" blobItem="SECTION7" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 7: Development of Highly Qualified Personnel (approx. 1 page)</h2>
+                <small>
+                    <p>Describe how the project will develop highly qualified personnel (HQP) beyond their typical disciplinary training (see <a href='http://agewell-nce.ca/epic-program' target='_blank'>AGE-WELL’s EPIC Program</a>). HQP development is expected to:</p>
+                    <ul>
+                        <li>Expose HQP to the full range of economic, social, and ethical implications of the Network’s research by involving them in activities from the initial research discovery to its practical application.</li>
+                        <li>Add value to training beyond their normal disciplinary training opportunities through innovative mentorship programs.</li>
+                        <li>Enhance capacity in relation to the needs of the receptors.</li>
+                        <li>Capitalize on AGE-WELL’s multidisciplinary, multisector, networked environment to develop HQP.</li>
+                    </ul>
+                    <p>Additional funding is available through Mitacs to fund internships for graduate students and post-doctoral fellows in AGE-WELL’s Core Research Program. Relevant core research projects will have expedited access to Mitacs funding for training of graduate students and post-doctoral fellows. Under Accelerate, each internship is valued at $15,000, which is cost-shared by Mitacs and the partner (for-profit and not-for-profit organizations within Canada), with larger-scale and longer-term projects possible. Under Elevate, each 2-year fellowship is valued at $120,000, which is cost-shared by Mitacs and the partner. Mitacs also dispenses the training component, valued at $15,000. Applicants are encouraged to contact their local <a href='https://www.mitacs.ca/en/contact-us/business-development' target='_blank'>Mitacs Business Development Representative</a> to evaluate the eligibility of the proposed partner organization, project, and obtain the application form for the correct program (Mitacs Accelerate or Elevate) before applying.</p>
+
+                    <p>You will be asked to check a box to be considered for Mitacs funding for graduate students and post-doctoral fellows. If you have indicated interest in being considered for Mitacs funding, please contact your local <a href='https://www.mitacs.ca/en/contact-us/business-development' target='_blank'>Mitacs Business Development Representative</a> to evaluate the eligibility of the proposed partner organization, project, and obtain the application form for the correct program (Mitacs Accelerate or Elevate) before applying.</p>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section8" type="Textarea" blobItem="SECTION8" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 8: Team and Project Management (approx. 1 page)</h2>
+                <small>
+                    <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos. This is a key priority for AGE-WELL in 2020-2025. Describe the project team:</p>
+                    <ul>
+                        <li>Identify the Project Leader(s) and Network Investigators, including non-academic partners.</li>
+                        <li>Describe how you intend to work as a transdisciplinary team.</li>
+                        <li>Describe the mix of senior and junior investigators on your team.</li>
+                        <li>Identify and describe their roles in the project, including roles in leading different research questions, development of different product types, KTEE, Networking/Partnerships, Management, Training, as well as research.</li>
+                        <li>Describe how stakeholders will be involved in all aspects of the project.</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section9" type="Textarea" blobItem="SECTION9" rich="true">
+            <![CDATA[
+                <h2>Section 9: References Cited (unlimited pages)</h2>
+                <small>
+                    Provide a bibliography of all references cited in previous sections.
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                <h2>Section 10: Appendices</h2>
+                <small>
+                    Please include the following appendices with the application:
+                    <ul>
+                        <li>Two-page bios with links to websites for each Project Lead, Co-investigator and Partner named on the application.</li>
+                        <li>Figures and Diagrams – You may include up to five figures and diagrams to help further illustrate the concepts outlined in your proposal.</li>
+                    </ul>
+                </small>
+                <h3>Bios</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="Upload" blobItem="FIGURES" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                <h3>Figures and Diagrams</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part2" tooltip="BUDGET" name="Budget" type="EditableReportSection" title="BUDGET" blobSection="PART2">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2">
+            <![CDATA[
+                <p>Provide a 3, 4 or 5 year budget using the template provided (available in the AGE-WELL Forum Research Portal). A detailed budget justification will be required for all budget categories and requests.</p>
+                <p>Applicants should review the Use of Grant Funds section of the <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-GuideAdminFinancier/index_eng.asp' target='_blank'>Tri-Agency Financial Administration Guide</a> for a complete listing and description of allowable costs and activities.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part3" tooltip="PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3">
+        <ReportItem id="letters" type="Upload" blobItem="LETTERS" fileSize="2">
+            <![CDATA[
+                <p>In the table provided, list each organization that will partner in the project (confirmed and proposed), their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. Anticipated partnerships that are not yet developed should be indicated as in progress in the application. Individuals from partnering organizations that will be participating as project team members should also be listed in Section 8: Team and Project Management.</p>
+
+                <p>Tangible committed contributions from <u>at least one</u> partner are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner must include the following:</p>
+                <ul>
+                    <li>A description of how the partner and research team will work together to achieve the objectives of the AGE-WELL project, including any history of collaboration</li>
+                    <li>Quantified contributions (cash and/or in-kind). Note that in-kind contributions must be those recognized by CIHR and quantified using published <a href='http://www.cihr-irsc.gc.ca/e/3758.html' target='_blank'>In-Kind Eligibility Table</a></li>
+                    <li>Duration of contribution or annual total</li>
+                    <li>Signature of decision-maker</li>
+                </ul>
+
+                <p>Letters of support that do not contain precise, quantified contributions will not be reviewed.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>

@@ -69,6 +69,7 @@ class TextareaReportItem extends AbstractReportItem {
                         setup: function(ed){
                             if('$limit' > 0){
                                 var updateCount = function(e){
+                                    initResizeEvent();
                                     ed.undoManager.add();
                                     var wordcount = ed.plugins.wordcount.getCount();
                                     changeColor{$this->getPostId()}(null, wordcount);
