@@ -25,7 +25,7 @@ function revertReportAnimation(){
                                  }, animationTime, animationEasingOut, function(){
                                     $("#reportMain > div > div").css('overflow-y', 'visible');
                                     $("#reportMain > div > div").css('height', '');
-                                    initResizeEvent();
+                                    _.defer(initResizeEvent);
                                  });
         $("#reportInstructions").animate({'opacity' : 1}, animationTime);
         $(".selectedReportTab").children("img").remove();
@@ -152,7 +152,7 @@ $(document).ready(function(){
                                              }, animationTime, animationEasingIn, function(){
                                                                                     $("#reportMain > div > div").css('overflow-y', 'visible');
                                                                                     $("#reportMain > div > div").css('height', '');
-                                                                                    initResizeEvent();
+                                                                                    _.defer(initResizeEvent);
                                                                                   });
                         $("#reportMain > div").animate({
                                                     'height' : height + paddingHeight + 'px'
@@ -171,7 +171,7 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn, function(){
                                                                                         $("#reportMain > div > div").css('overflow-y', 'visible');
                                                                                         $("#reportMain > div > div").css('height', '');
-                                                                                        initResizeEvent();
+                                                                                        _.defer(initResizeEvent);
                                                                                       });
                         $("#reportMain > div").animate({
                                                     'height' : height + paddingHeight + 'px'
@@ -184,7 +184,7 @@ $(document).ready(function(){
                         $("#reportMain > div").animate({
                                                     'height' : height + paddingHeight + 'px'
                                                  }, animationTime, animationEasingIn);
-                        initResizeEvent();
+                        _.defer(initResizeEvent);
                     }
                     timeout = setTimeout(function(){findAutosaves(updateProgress);}, 2500); // Make sure that there was enough time to complete the animation, then find the new autosaves
                     setUpFormSubmit();
