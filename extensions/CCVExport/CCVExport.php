@@ -885,7 +885,7 @@ class CCVExport extends SpecialPage {
                     $key = (string) $data_field;
                     if(isset($data_field['ccv_id']) && 
                        isset($product_data[$key]) && 
-                       $product_data[$key] !== '' ){
+                       $product_data[$key] !== ''){
                         $field = self::setChild($ccv_item, 'field', 'id', $data_field['ccv_id']);
                         self::setAttribute($field, 'label', $data_field['ccv_name']);
                         
@@ -897,6 +897,15 @@ class CCVExport extends SpecialPage {
                             $val = self::setChild($field, 'value', 'type', 'String');
                             $field->value = $product_data[$key];
                         }
+                    } 
+                    else if ($key == "invited" && $product->getCategory() == "Publication" && $type == "Conference Paper"){
+                        // Always add Invited field...
+                        $field = $ccv_item->addChild("field");
+                        $field->addAttribute('id', "720d2f02feaf4aacb06ce60be0c6f603");
+                        $field->addAttribute('label', "Invited?");
+                        $val = $field->addChild('lov');
+                        $val->addAttribute('id', "00000000000000000000000000000401");
+                        self::setValue($val, "No");
                     }
                 }
 
@@ -960,17 +969,6 @@ class CCVExport extends SpecialPage {
                         $val->addAttribute('id', "00000000000000000000000000000401");
                         self::setValue($val, "No");
                     }
-                }
-                
-                // Conference Paper Invited?
-                if($product->getCategory() == "Publication" && $type == "Conference Paper"){
-                    // Always add Keynote field...
-                    $field = $ccv_item->addChild("field");
-                    $field->addAttribute('id', "720d2f02feaf4aacb06ce60be0c6f603");
-                    $field->addAttribute('label', "Invited?");
-                    $val = $field->addChild('lov');
-                    $val->addAttribute('id', "00000000000000000000000000000401");
-                    self::setValue($val, "No");
                 }
                 $success = 1;
             }

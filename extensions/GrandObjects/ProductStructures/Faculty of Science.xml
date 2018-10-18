@@ -345,6 +345,7 @@
                 <field label="ISSN" bibtex="issn" type="String">issn</field>
                 <field label="DOI" bibtex="doi" type="DOI">doi</field>
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
+                <field ccv_id="720d2f02feaf4aacb06ce60be0c6f603" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
