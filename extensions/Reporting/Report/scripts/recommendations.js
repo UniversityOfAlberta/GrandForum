@@ -31,7 +31,10 @@ $(document).ready(function(){
                 var foundPTC = false;
                 var PTC = null;
                 $(".increment option", tr).each(function(){
-                    if(foundPTC){
+                    if(foundPTC && $(this).val() != "0A" && 
+                                   $(this).val() != "0B" && 
+                                   $(this).val() != "0C" && 
+                                   $(this).val() != "0D"){
                         // PTC was already found, so hide anything after it
                         $(this).hide();
                         if($(this).is(":selected")){
