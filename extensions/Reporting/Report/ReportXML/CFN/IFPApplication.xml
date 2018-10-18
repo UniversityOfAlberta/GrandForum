@@ -335,7 +335,7 @@
         <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="150">
             <![CDATA[
                 <h3>Lay Summary</h3>
-                <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for frail older Canadians.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
+                <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for older adults living with frailty and their family and friend caregivers.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). For assistance in writing a lay summary see the CFN Lay Summary Guidelines at <a href='https://na01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.cfn-nce.ca&data=02%7C01%7Cah126%40queensu.ca%7C4666049c873b4511814308d6351a8b3f%7Cd61ecb3b38b142d582c4efb2838b925c%7C1%7C0%7C636754785465372732&sdata=0ekV0PJkLHB7Q%2FaAnYWVGMUPJKVSdPpVPJYuE4FKJag%3D&reserved=0' target='_blank'>www.cfn-nce.ca</a> in the LEARNING CENTRE under <i>Talking about research</i>. (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
                 {$item}
             ]]>
         </ReportItem>
@@ -369,7 +369,7 @@
         <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="150">
             <![CDATA[
                 <h3>Project Relevance and Impact</h3>
-                <small>Describe why you feel the work you plan to carry out is important. Specifically, describe the relevance of your proposal to CFN strategic priorities and the fellowship program goals. Identify how this project will improve the care of frail older adults and support their families and caregivers.</small>
+                <small>Describe why you feel the work you plan to carry out is important. Specifically, describe the relevance of your proposal to CFN strategic priorities and the fellowship program goals. Identify how this project will improve the care of older adults living with frailty and support their families and caregivers.</small>
                 {$item}
             ]]>
         </ReportItem>
