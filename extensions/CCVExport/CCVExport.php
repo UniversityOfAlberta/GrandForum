@@ -638,14 +638,18 @@ class CCVExport extends SpecialPage {
                     $date = preg_split('/\-/', $date);
                     $date = $date[0].'/'.$date[1];
                     if ($date !== '0000/00'){
-                        $field = $ccv_item->addChild("field");
-                        $field->addAttribute('id', $item_id);
-                        $field->addAttribute('label', $item_name);
-                        $val = $field->addChild('value');
-                        $val->addAttribute('type', "YearMonth");
-                        $val->addAttribute('format', "yyyy/MM");
-                        self::setValue($val, $date);
-                    }        
+                        $ccv_date = $date;
+                    }
+                    else {
+                        $ccv_date = date('Y/m', time() + 60*60*24*365);
+                    }
+                    $field = $ccv_item->addChild("field");
+                    $field->addAttribute('id', $item_id);
+                    $field->addAttribute('label', $item_name);
+                    $val = $field->addChild('value');
+                    $val->addAttribute('type', "YearMonth");
+                    $val->addAttribute('format', "yyyy/MM");
+                    self::setValue($val, $ccv_date);
                 }        
             }
             else if($item_name == "Student Name"){
