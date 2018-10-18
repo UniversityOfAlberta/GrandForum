@@ -210,7 +210,7 @@
                 {$item}
             ]]>
         </ReportItem-->
-        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="250">
+        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="150">
             <![CDATA[
                 <h3>Project Relevance and Impact</h3>
                 {$item}
