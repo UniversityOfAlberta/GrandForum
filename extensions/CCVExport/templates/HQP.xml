@@ -14,7 +14,6 @@
 			<field lov_id="8284dbdd03aa4277b7fca7662bd1758c" lov_name="Student Degree Received Date"></field>
 			<field lov_id="ab1293e2fee8472481457d4f8493c7f1" lov_name="Student Degree Expected Date"></field>
 			<field lov_id="420e5bbd57104c3c9823b5e6850ee6f8" lov_name="Thesis/Project Title"></field>
-			<field lov_id="804797ed2fe54da88f326743e38e270e" lov_name="Project Description"></field>
 			<field lov_id="0f2f1601c24144308e0966d75b781db9" lov_name="Present Position"></field>
 		</data>
 		<!--<data lov_id="2f5d211c5adf4400809eff1e8ab60376" lov_name="Student Country of Citizenship"></data>

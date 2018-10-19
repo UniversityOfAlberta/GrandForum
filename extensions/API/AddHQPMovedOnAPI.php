@@ -9,6 +9,7 @@ class AddHQPMovedOnAPI extends API{
         $this->addPOST("employer",false,"The HQP's employer","Microsoft");
         $this->addPOST("city",false,"The city where the HQP is now","Redmond");
         $this->addPOST("country",false,"The country where the HQP is now","United States");
+        $this->addPOST("position",false,"The position that the HQP is now","Professor");
         $this->addPOST("effective_date",false,"The date when the moved on occurs","2013-03-14");
     }
 
@@ -19,6 +20,7 @@ class AddHQPMovedOnAPI extends API{
         $_POST['employer'] = str_replace("'", "&#39;", $_POST['employer']);
         $_POST['city'] = str_replace("'", "&#39;", $_POST['city']);
         $_POST['country'] = str_replace("'", "&#39;", $_POST['country']);
+        $_POST['position'] = str_replace("'", "&#39;", $_POST['position']);
         $_POST['effective_date'] = str_replace("'", "&#39;", $_POST['effective_date']);
     }
 
@@ -45,6 +47,7 @@ class AddHQPMovedOnAPI extends API{
                                           'employer' => $_POST['employer'],
                                           'city' => $_POST['city'],
                                           'country' => $_POST['country'],
+                                          'position' => $_POST['position'],
                                           'effective_date' => $_POST['effective_date'],
                                           'date_changed' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     array('id' => EQ($_POST['id'])));
@@ -56,6 +59,7 @@ class AddHQPMovedOnAPI extends API{
                                           'employer' => $_POST['employer'],
                                           'city' => $_POST['city'],
                                           'country' => $_POST['country'],
+                                          'position' => $_POST['position'],
                                           'effective_date' => $_POST['effective_date'],
                                           'date_changed' => EQ(COL('CURRENT_TIMESTAMP'))));
             }

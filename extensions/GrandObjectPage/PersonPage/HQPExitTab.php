@@ -24,6 +24,7 @@ class HQPExitTab extends AbstractEditableTab {
             $employer = $_POST['employer'];
             $city = $_POST['city'];
             $country = $_POST['country'];
+            $position = $_POST['position'];
             $thesis = @$_POST['thesis'];
             $effective_date = $_POST['effective_date'];
             foreach($_POST['reason'] as $key => $reason){
@@ -37,6 +38,7 @@ class HQPExitTab extends AbstractEditableTab {
                 $_POST['employer'] = @str_replace("'", "&#39;", $employer[$key]);
                 $_POST['city'] = @str_replace("'", "&#39;", $city[$key]);
                 $_POST['country'] = @str_replace("'", "&#39;", $country[$key]);
+                $_POST['position'] = @str_replace("'", "&#39;", $position[$key]);
                 $_POST['effective_date'] = @str_replace("'", "&#39;", $effective_date[$key]);
                 APIRequest::doAction('AddHQPMovedOn', true);
                 if($reason == "graduated"){
@@ -138,6 +140,10 @@ class HQPExitTab extends AbstractEditableTab {
                         <tr>
                             <td align='right'><b>Employed By:</b></td>
                             <td><input id='employer' type='text' name='employer[{$id}]' value='{$row['employer']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Position:</b></td>
+                            <td><input id='position' type='text' name='position[{$id}]' value='{$row['position']}' /></td>
                         </tr>
                         <tr>
                             <td align='right'><b>City:</b></td>
@@ -261,8 +267,9 @@ EOF;
                 $this->html .= $this->addEditHTML("new", array("effective_date" => date('Y-m-d'), 
                                                                "studies" => "", 
                                                                "employer" => "", 
-                                                               "city" => "", 
+                                                               "city" => "",
                                                                "country" => "",
+                                                               "position" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
                 $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' /><br />";
@@ -283,6 +290,7 @@ EOF;
                         }
                         if($row['studies'] != "") $this->html .= "<tr><td align='right'><b>Further Studies at:</b></td><td>{$row['studies']}</td></tr>";
                         if($row['employer'] != "") $this->html .= "<tr><td align='right'><b>Employed By:</b></td><td>{$row['employer']}</td></tr>";
+                        if($row['position'] != "") $this->html .= "<tr><td align='right'><b>Position:</b></td><td>{$row['position']}</td></tr>";
                         if($row['city'] != "") $this->html .= "<tr><td align='right'><b>City:</b></td><td>{$row['city']}</td></tr>";
                         if($row['country'] != "") $this->html .= "<tr><td align='right'><b>Country:</b></td><td>{$row['country']}</td></tr>";
                         $this->html .="</table>";

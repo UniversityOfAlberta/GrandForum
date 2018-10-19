@@ -1886,6 +1886,7 @@ class Person extends BackboneModel {
                          "employer" => "",
                          "city" => "",
                          "country" => "",
+                         "position" => "",
                          "effective_date" => "");
         }
     }

@@ -796,18 +796,6 @@ class CCVExport extends SpecialPage {
                     self::setValue($val, $hqp_thesis->getTitle());
                 } 
             }
-            else if($item_name == "Project Description"){
-                $hqp_proj = $hqp->getThesis();
-                if(!is_null($hqp_proj)){
-                    $field = $ccv_item->addChild("field");
-                    $field->addAttribute('id', $item_id);
-                    $field->addAttribute('label', $item_name);
-                    
-                    $bilin = $field->addChild("bilingual");
-                    $bilin->addChild("english");
-                    self::setValue($bilin->english, $hqp_proj->getTitle());
-                } 
-            }
             else if($item_name == "Present Position"){
                 $hqp_pos = $hqp->getPresentPosition();
                 if ($hqp_pos !== ''){
