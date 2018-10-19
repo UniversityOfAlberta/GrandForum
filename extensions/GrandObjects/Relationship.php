@@ -13,6 +13,7 @@ class Relationship extends BackboneModel {
     var $type;
     var $status;
     var $projects;
+    var $thesis;
     var $projectsWaiting;
     var $startDate;
     var $endDate;
@@ -32,21 +33,21 @@ class Relationship extends BackboneModel {
     }
 
     static function newFromUser1User2TypeStartDate($user1,$user2,$type,$startdate=false){
-            $sql = "SELECT *
-                  FROM grand_relations WHERE
-                  user1 = '$user1' AND
-                  user2 = '$user2' AND
-                  type = '$type'";
-	    if($startdate != false){
-	     $sql = $sql. " AND start_date = '$startdate'";
-	    }
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) >0){
-                $relation = new Relationship(array($data[0]));
-                return $relation;
-            }
-            return new Relationship(array());
+        $sql = "SELECT *
+                FROM grand_relations WHERE
+                user1 = '$user1' AND
+                user2 = '$user2' AND
+                type = '$type'";
+        if($startdate != false){
+            $sql = $sql. " AND start_date = '$startdate'";
         }
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) >0){
+            $relation = new Relationship(array($data[0]));
+            return $relation;
+        }
+        return new Relationship(array());
+    }
 
     
     // Constructor
@@ -59,6 +60,7 @@ class Relationship extends BackboneModel {
             $this->status = $data[0]['status'];
             $this->projects = $data[0]['projects'];
             $this->projectsWaiting = true;
+            $this->thesis = $data[0]['thesis'];
             $this->startDate = $data[0]['start_date'];
             $this->endDate = $data[0]['end_date'];
             $this->comment = $data[0]['comment'];
@@ -112,6 +114,10 @@ class Relationship extends BackboneModel {
         return $this->projects;
     }
     
+    function getThesis(){
+        return $this->thesis;
+    }
+    
     // Returns the startDate for this Relationship
     function getStartDate(){
         return substr($this->startDate, 0, 10);
@@ -136,6 +142,7 @@ class Relationship extends BackboneModel {
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
+                                                'thesis' => $this->getThesis(),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),true);
@@ -179,6 +186,7 @@ class Relationship extends BackboneModel {
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
+                                                'thesis' => $this->getThesis(),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),
@@ -218,6 +226,7 @@ class Relationship extends BackboneModel {
             'user2' => $this->user2,
             'type' => $this->getType(),
             'status' => $this->getStatus(),
+            'thesis' => $this->getThesis(),
             'startDate' => $this->getStartDate(),
             'endDate' => $this->getEndDate(),
             'comment' => $this->getComment()

@@ -205,6 +205,7 @@ PersonRelation = RelationModel.extend({
         user2: "",
         type: "",
         status: "",
+        thesis: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         comment: "",
