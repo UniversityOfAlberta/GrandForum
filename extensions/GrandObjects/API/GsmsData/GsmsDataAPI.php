@@ -13,13 +13,14 @@ class GsmsDataAPI extends RESTAPI {
     function doGET(){
         if($this->getParam('id') != ""){
             $me = Person::newFromWgUser();
-            $info_sheet = GsmsData::newFromUserId($this->getParam('id'));
+            $year = $this->getParam('year');
+            $info_sheet = GsmsData::newFromUserId($this->getParam('id'), $year);
             if(!$me->isLoggedIn()){
                 $this->throwError("You must be logged in to view this GSMS data.");
             }
-	    elseif($info_sheet->user_id == ""){
-		$info_sheet = new GsmsData(array());
-	    }
+            else if($info_sheet->user_id == ""){
+                $info_sheet = new GsmsData(array());
+            }
             return $info_sheet->toJSON();
         }
     }
@@ -29,8 +30,8 @@ class GsmsDataAPI extends RESTAPI {
    * @return bool
    */
     function doPOST(){
-	return false;
-	//todo
+        return false;
+        //todo
     }
 
   /**
@@ -38,15 +39,15 @@ class GsmsDataAPI extends RESTAPI {
    * @return bool
    */
     function doPUT(){
-      if($this->getParam('id') != ""){
-        $me = Person::newFromWgUser();
-        $info_sheet = GsmsData::newFromUserId($this->getParam('id'));
-        if($me->isRoleAtLeast(MANAGER)) {
-            $info_sheet->additional = (array) $this->POST('additional');
-            $info_sheet->update();
+        if($this->getParam('id') != ""){
+            $me = Person::newFromWgUser();
+            $info_sheet = GsmsData::newFromUserId($this->getParam('id'));
+            if($me->isRoleAtLeast(MANAGER)) {
+                $info_sheet->additional = (array) $this->POST('additional');
+                $info_sheet->update();
+            }
         }
-      }
-	    return $this->doGET();
+        return $this->doGET();
         //todo
     }
 

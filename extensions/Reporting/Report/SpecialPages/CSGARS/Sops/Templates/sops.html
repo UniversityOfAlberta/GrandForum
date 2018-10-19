@@ -1,18 +1,22 @@
 <div style="text-align:center;">
-    <a href="#/reviewInProgress" title="Review in Progress" class="button" <% if(this.model.folder == "Review in Progress"){ %> style="text-decoration:underline;" <% } %>>Review in Progress</a>&nbsp;
-    <a href="#/inProgress" title="In Progress" class="button" <% if(this.model.folder == "In Progress"){ %> style="text-decoration:underline;" <% } %>>In Progress</a>&nbsp;
-    <a href="#/newApplications" title="New Applications" class="button" <% if(this.model.folder == "New Applications,"){ %> style="text-decoration:underline;" <% } %>>New Applications</a>&nbsp;
-    <a href="#/admitted" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
-    <a href="#/rejected" title="Rejected Apps&#10;Ready for Decision" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
+    <a href="#/reviewInProgress<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Review in Progress" class="button" <% if(this.model.folder == "Review in Progress"){ %> style="text-decoration:underline;" <% } %>>Review in Progress</a>&nbsp;
+    <a href="#/inProgress<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="In Progress" class="button" <% if(this.model.folder == "In Progress"){ %> style="text-decoration:underline;" <% } %>>In Progress</a>&nbsp;
+    <a href="#/newApplications<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="New Applications" class="button" <% if(this.model.folder == "New Applications,"){ %> style="text-decoration:underline;" <% } %>>New Applications</a>&nbsp;
+    <a href="#/admitted<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
+    <a href="#/rejected<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Rejected Apps&#10;Ready for Decision" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
     <div style="position: absolute; right: 30px; display: inline-block;">
-        <a href="#/hidden" class="button"  <% if(this.hidden == false){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
+        <a href="#/hidden<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button"  <% if(this.hidden == false){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
-    <!--a href="#/course" class="button" <% if(this.model.program == "Master of Science (Crse)"){ %> style="text-decoration:underline;" <% } %>>Course Based</a>&nbsp;-->
-    <!--a href="#/other" class="button" <% if(this.model.folder == ""){ %> style="text-decoration:underline;" <% } %>>Other</a-->
 </div>
 <input type="button" id="showfilter" value="Show Filter Options" style="background: #079651;" />
 <input type="checkbox" id="filterMeOnly"/>My Review Assignments
-
+<div style="float: right; margin-top:4px;">
+    <b>Year:</b>
+    <select id="year" style="vertical-align: middle;">
+        <option value="" <% if(this.model.year == '') { %>selected<% } %>>2018</option>
+        <option value="2017" <% if(this.model.year == '2017') { %>selected<% } %>>2017</option>
+    </select>
+</div>
 <div id="filters" style="left: 300px; margin-top:10px; display:block;">
     <div id="filter-pane">
       <div id="filter-header">
@@ -43,7 +47,7 @@
             <td align="right"><b>Country:</b></td>
             <td>
               <input type='hidden' name='filterCountry' />
-              <select class='filter_option' style='width: 225px;' id='filterSelectCountry'  multiple>
+              <select class='filter_option' style='width: 225px;' id='filterSelectCountry' multiple>
                 <option>Canada</option>
                 <option>Afghanistan</option>
                 <option>Albania</option>

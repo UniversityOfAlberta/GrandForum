@@ -14,7 +14,8 @@ class GsmsDataAllAPI extends RESTAPI {
         $folders = explode(",", $this->getParam('folder'));
         $programs = explode(",", $this->getParam('program'));
         $decision = $this->getParam('decision');
-        $gsms = GsmsData::getAllVisibleGsms();
+        $year = $this->getParam('year');
+        $gsms = GsmsData::getAllVisibleGsms($year);
         $newGsms = array();
         foreach($gsms as $g){
             $found = false;

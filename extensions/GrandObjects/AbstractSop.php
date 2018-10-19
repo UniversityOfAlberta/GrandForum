@@ -14,6 +14,7 @@ abstract class AbstractSop extends BackboneModel{
     var $user_id;
     var $date_created;
     var $visible = false;
+    var $year;
     
     /* watson values */
     var $sentiment_val;
@@ -71,8 +72,9 @@ abstract class AbstractSop extends BackboneModel{
    * @param $id
    * @return $sop SOP object
    */
-    static function newFromId($id){
-        $data = DBFunctions::select(array('grand_sop'),
+    static function newFromId($id, $year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        $data = DBFunctions::select(array("grand_sop$dbyear"),
                                     array('id',
                                           'user_id',
                                           'content',
@@ -103,6 +105,7 @@ abstract class AbstractSop extends BackboneModel{
                                     array('id' => EQ($id)));
         if(count($data)>0){
             $sop = new SOP($data);
+            $sop->year = $year;
             return $sop;
         }
         return new SOP(array());
@@ -113,8 +116,9 @@ abstract class AbstractSop extends BackboneModel{
    * @param $id
    * @return $sop SOP object
    */
-    static function newFromUserId($id){
-        $data = DBFunctions::select(array('grand_sop'),
+    static function newFromUserId($id, $year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        $data = DBFunctions::select(array("grand_sop$dbyear"),
                                     array('id',
                                           'user_id',
                                           'content',
@@ -145,6 +149,7 @@ abstract class AbstractSop extends BackboneModel{
                                     array('user_id' => EQ($id)));
         if(count($data)>0){
             $sop = new SOP($data);
+            $sop->year = $year;
             return $sop;
         }
         return new SOP(array());
@@ -313,7 +318,7 @@ abstract class AbstractSop extends BackboneModel{
         $author = array('id' => $user->getId(),
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
-        $gsms = $user->getGSMS()->getAdditional();
+        $gsms = $user->getGSMS($this->year)->getAdditional();
         $nationality = array();
         $nationality[] = @($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
         $nationality[] = @($gsms['canadian'] == "Yes") ? "Canadian" : "";
@@ -503,7 +508,7 @@ abstract class AbstractSop extends BackboneModel{
     */
     function getFinalAdmit(){
         $hqp = Person::newFromId($this->getUser());
-        $gsms = $hqp->getGSMS();
+        $gsms = $hqp->getGSMS($this->year);
         $dec = $gsms->folder;
         if(strstr($dec, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
            strstr($dec, "Coder") !== false ||
@@ -544,9 +549,10 @@ abstract class AbstractSop extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getFinalComments(){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->getUser());
-        $gsms = $hqp->getGSMS();
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $gsms->getId());
+        $gsms = $hqp->getGSMS($year);
+        $blob = new ReportBlob(BLOB_TEXT, $year, 0, $gsms->getId());
         $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q2', $gsms->getId());
         $blob->load($blob_address);
         $data = $blob->getData();

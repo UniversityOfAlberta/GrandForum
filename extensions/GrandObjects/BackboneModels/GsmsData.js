@@ -3,7 +3,14 @@ GsmsData = Backbone.Model.extend({
     initialize: function(){ 
     },
 
-    urlRoot: 'index.php?action=api.gsmsdata',
+    urlRoot: function(){
+        var url = 'index.php?action=api.gsmsdata';
+        if(this.get('year') != ''){
+            url += '/' + this.get('year');
+        }
+        return url;
+    },
+    
     idAttribute: 'user_id',
 
     defaults: function() {
@@ -12,6 +19,7 @@ GsmsData = Backbone.Model.extend({
             review_status: null,
             applicant_number: null,
             gender: "",
+            year: "",
             data_of_birth: "",
             program_name: "",
             country_of_birth: "",
@@ -28,6 +36,8 @@ GsmsData = Backbone.Model.extend({
             epl_speaking: "",
             additional: new Array(),
             gsms_url: "",
+            sop_url: "",
+            sop_pdf: ""
         };
     }
 
@@ -43,10 +53,16 @@ GsmsDataAll = Backbone.Collection.extend({
     
     decision: 'all',
 
+    year: '',
+
     search: '',
 
     url: function(){
-        return 'index.php?action=api.gsmsdatas/' + this.folder + '/' + this.program + '/' + this.decision;
+        var url = 'index.php?action=api.gsmsdatas/' + this.folder + '/' + this.program + '/' + this.decision;
+        if(this.year != ''){
+            url += '/' + this.year;
+        }
+        return url;
     }
 
 });
