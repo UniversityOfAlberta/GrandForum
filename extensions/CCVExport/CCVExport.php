@@ -786,14 +786,14 @@ class CCVExport extends SpecialPage {
                 // Not available in the Forum 
             }
             else if($item_name == "Thesis/Project Title"){
-                $hqp_thesis = $hqp->getThesis();
+                $hqp_thesis = $rel->getThesis(); // $hqp->getThesis();
                 if(!is_null($hqp_thesis)){
                     $field = $ccv_item->addChild("field");
                     $field->addAttribute('id', $item_id);
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('value');
                     $val->addAttribute('type', "String");
-                    self::setValue($val, $hqp_thesis->getTitle());
+                    self::setValue($val, $hqp_thesis);
                 } 
             }
             else if($item_name == "Present Position"){
