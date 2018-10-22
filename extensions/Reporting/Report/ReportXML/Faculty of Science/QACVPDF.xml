@@ -257,7 +257,7 @@
         <ReportItemSet id="patents_if" type="If" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
             <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
                 <![CDATA[
-                    <h2>Patents</h2>
+                    <h2>Patents/Spin-Offs</h2>
                     <ul>
                 ]]>
             </ReportItem>
