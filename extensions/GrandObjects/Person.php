@@ -26,6 +26,7 @@ class Person extends BackboneModel {
                                                       "msee",
                                                       "msc student",
                                                       "m.sc. student",
+                                                      "master of science",
                                                       "graduate student - master's course",
                                                       "graduate student - master's thesis", 
                                                       "graduate student - master's", 
