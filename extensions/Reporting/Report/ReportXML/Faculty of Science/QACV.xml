@@ -2,6 +2,7 @@
 <Report name="2018 Quality Assurance Program Review CV" reportType="RP_QA" pdfFiles="QACVPDF" ajax="true" startYear="-7">
     <Permissions>
         <Role role="NI">
+            <SectionPermission id="introduction" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -774,7 +775,7 @@
             ]]>
          </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="submit" tooltip="PDF generation" name="PDF Generation" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>
