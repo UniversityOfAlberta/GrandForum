@@ -20,6 +20,8 @@ $wgWhitelistRead[] = "File:Canadian Resource 2 - Medical Abortion Pharmacy Refer
 $wgWhitelistRead[] = "File:Canadian Resource 2 - Medical Abortion Prescriber Reference Guide 2018-07-11.pdf";
 $wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Pharmacy Reference Guide 2018-07-11.pdf";
 $wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Prescriber Reference Guide 2018-07-11.pdf";
+$wgWhitelistRead[] = "File:Canadian Medical Abortion Pharmacy Checklist 2018-10-10.pdf";
+$wgWhitelistRead[] = "File:Canadian Medical Abortion Dispensing Guide V8 2018-10-18.pdf";
 
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
