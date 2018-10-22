@@ -23,6 +23,7 @@ class Person extends BackboneModel {
     
     static $studentPositions = array('msc'   => array("msc",
                                                       "m.sc.",
+                                                      "msee",
                                                       "msc student",
                                                       "m.sc. student",
                                                       "graduate student - master's course",
@@ -60,6 +61,7 @@ class Person extends BackboneModel {
                                                       "honor&#39;s thesis",
                                                       "bachelor of science (honours)",
                                                       "b.sc. (hons)",
+                                                      "b.sc. honours",
                                                       "undergraduate, honours",
                                                       "diplomaed engineer (dipl.ing.)",
                                                       "diplomaed engineer")
