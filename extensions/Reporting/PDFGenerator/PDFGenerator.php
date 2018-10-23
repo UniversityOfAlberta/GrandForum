@@ -777,6 +777,10 @@ EOF;
                 $headerName = "{$person->getReversedName()}";
             }
         }
+        if(strstr($headerName, "ä") || 
+           strstr($headerName, "é")){
+            $headerName = utf8_encode($headerName);
+        }
         
         $headerLines = explode("<br />", $report->name);
         $nHeaderLines = count($headerLines);
@@ -786,7 +790,7 @@ EOF;
 
         if ( isset($pdf) ) {
 
-            $font = $fontMetrics->getFont("'.$config->getValue('pdfFont').'");
+            $font = $fontMetrics->getFont("helvetica");
             $size = "10";
             $size2 = 6;
             $color = array(0,0,0);
