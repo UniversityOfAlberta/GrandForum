@@ -242,6 +242,7 @@ ManagePeopleRowView = Backbone.View.extend({
             this.$("#relationType").text(_.uniq(relations.pluck('type')).join(", "));
             this.$("#startDate").text(start.substr(0, 10));
             this.$("#endDate").text(end.substr(0, 10));
+            this.$("#status").text(relations.pluck('status').filter(function(el) { return el; }).join(", "));
             this.parent.invalidate();
         }, this));
     },
