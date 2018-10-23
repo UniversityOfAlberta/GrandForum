@@ -128,6 +128,7 @@ class PersonPage {
                     ($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00') || 
                      $person->isRoleDuring(HQP."-Candidate", '0000-00-00 00:00:00', '2030-00-00 00:00:00'))){
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                    $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
