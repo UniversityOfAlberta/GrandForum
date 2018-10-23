@@ -15,6 +15,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if($this->canEdit() && (isset($_GET['edit']) || isset($_POST['edit']))){
             $this->visibility['edit'] = 1;
         }
+        foreach($this->project->getActivities() as $activity){
+            if($activity->getName() == "Extension Milestones"){
+                // Check for "Extension Milestones" and add columns if found
+                $this->nYears += 2;
+                break;
+            }
+        }
     }
     
     function handleEdit(){
