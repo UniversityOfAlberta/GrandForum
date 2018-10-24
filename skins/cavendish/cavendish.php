@@ -685,6 +685,10 @@ class CavendishTemplate extends QuickTemplate {
                         $img = "glyphicons_social_22_youtube";
                         $text = "YouTube";
                         break;
+                    case 'intranet':
+                        $img = "glyphicons_043_group";
+                        $text = "Intranet";
+                        break;
                 }
                 echo "<a class='changeImg highlights-text-hover' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
 	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
