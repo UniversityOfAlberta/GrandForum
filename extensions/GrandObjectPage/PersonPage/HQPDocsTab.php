@@ -13,7 +13,7 @@ class HQPDocsTab extends AbstractEditableTab {
     
     function userCanView(){
         $me = Person::newFromWgUser();
-        return ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator());
+        return $me->isRoleAtLeast(STAFF);
     }
     
     function canEdit(){
