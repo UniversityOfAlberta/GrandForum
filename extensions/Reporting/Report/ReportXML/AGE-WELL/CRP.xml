@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL NCE CORE RESEARCH PROGRAM 2020-2025 REQUEST FOR PROPOSALS (RFP)" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" disabled="false">
     <Permissions>
-        <Role role="SD+">
+        <Role role="STAFF+">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -11,7 +12,8 @@
         </Role>
         <Role role="NI">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -19,7 +21,8 @@
         </Role>
         <Role role="NI-Candidate">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -27,7 +30,8 @@
         </Role>
         <Role role="AR-Candidate">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -35,7 +39,8 @@
         </Role>
         <Role role="CI-Candidate">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -43,7 +48,8 @@
         </Role>
         <Role role="External">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -51,7 +57,8 @@
         </Role>
         <Role role="External-Candidate">
             <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="part1" permissions="rw" />
+            <SectionPermission id="part1a" permissions="rw" />
+            <SectionPermission id="part1b" permissions="rw" />
             <SectionPermission id="part2" permissions="rw" />
             <SectionPermission id="part3" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -74,7 +81,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part1" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
+    <ReportSection id="part1a" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
             <![CDATA[
                 <h2>Section 1: Challenge Statement (approx. 1 page)</h2>
@@ -225,7 +232,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part1" tooltip="PART 1: NARRATIVE APPLICATION" name="Appendices" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
+    <ReportSection id="part1b" tooltip="PART 1: NARRATIVE APPLICATION" name="Appendices" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section9" type="Textarea" blobItem="SECTION9" rich="true">
             <![CDATA[
                 <h2>Section 9: References Cited (unlimited pages)</h2>
