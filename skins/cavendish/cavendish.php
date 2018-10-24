@@ -935,7 +935,7 @@ class CavendishTemplate extends QuickTemplate {
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
-	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Resources", "$wgServer$wgScriptPath/index.php/Resources");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Members' Intranet", "$wgServer$wgScriptPath/index.php/Resources");
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
