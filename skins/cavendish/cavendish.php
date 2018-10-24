@@ -686,7 +686,7 @@ class CavendishTemplate extends QuickTemplate {
                         $text = "YouTube";
                         break;
                     case 'intranet':
-                        $img = "glyphicons_043_group";
+                        $img = "share_24x24";
                         $text = "Intranet";
                         break;
                 }
