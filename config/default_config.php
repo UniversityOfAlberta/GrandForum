@@ -236,6 +236,7 @@
     $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
     $config->setConst("TC",         "TC");
+    $config->setConst("HR",         "HR");
     $config->setConst("RMC",        "RMC");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("STAFF",      "Staff");
@@ -257,6 +258,7 @@
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
+        $config->getConst('HR')             => "Human Resources",
         $config->getConst('RMC')            => "Research Management Comittee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('STAFF')          => "Staff",
