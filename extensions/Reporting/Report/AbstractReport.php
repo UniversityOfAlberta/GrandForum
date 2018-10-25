@@ -660,6 +660,16 @@ abstract class AbstractReport extends SpecialPage {
         return $complete;
     }
     
+    function getIncompleteItems(){
+        $items = array();
+        foreach($this->sections as $section){
+            if($section instanceof EditableReportSection){
+                $items = array_merge($items, $section->getIncompleteItems());
+            }
+        }
+        return $items;
+    }
+    
     // Checks the permissions of the Person with the required Permissions of the Report
     function checkPermissions(){
         global $wgUser;
