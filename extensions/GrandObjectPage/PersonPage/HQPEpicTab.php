@@ -37,6 +37,7 @@ class HQPEpicTab extends AbstractEditableTab {
             $this->person->isSubRole("Alumni HQP") ||
             $this->person->isSubRole("SIP/CAT HQP")) &&
            ($position != "graduate student - doctoral" &&
+            $position != "medical student" &&
             $position != "graduate student - master's" &&
             $position != "post-doctoral fellow")){
             $this->generateWPCC();
@@ -47,7 +48,7 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($position == "graduate student - doctoral"){
             $this->generatePhD();
         }
-        else if($position == "graduate student - master's"){
+        else if($position == "graduate student - master's" || $position == "medical student"){
             $this->generateMasters();
         }
         else if($position == "post-doctoral fellow"){
