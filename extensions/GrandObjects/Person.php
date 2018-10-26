@@ -1522,7 +1522,7 @@ class Person extends BackboneModel {
     function getOffice(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            return $this->office;
+            return "{$this->office}";
         }
         return "";
     }
