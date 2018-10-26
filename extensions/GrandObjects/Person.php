@@ -2084,7 +2084,7 @@ class Person extends BackboneModel {
             if($hqp_pos['university'] !== '')
                 $pos[] = $hqp_pos['university'];
         }
-        return html_entity_decode(implode(", ", $pos));
+        return str_replace("&#39;", "'", implode(", ", $pos));
     }
     
     /**
