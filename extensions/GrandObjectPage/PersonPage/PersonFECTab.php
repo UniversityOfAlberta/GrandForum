@@ -95,43 +95,46 @@ class PersonFECTab extends AbstractEditableTab {
         }
         $this->person->getFecPersonalInfo();
         $this->html .= "<table>";
-        $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td><input type='text' name='dateOfPhd' class='calendar' value='".substr($this->person->dateOfPhd, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td><input type='text' name='dateOfAppointment' class='calendar' value='".substr($this->person->dateOfAppointment, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Assistant:</b></td><td><input type='text' name='dateOfAssistant' class='calendar' value='".substr($this->person->dateOfAssistant, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Associate:</b></td><td><input type='text' name='dateOfAssociate' class='calendar' value='".substr($this->person->dateOfAssociate, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Professor:</b></td><td><input type='text' name='dateOfProfessor' class='calendar' value='".substr($this->person->dateOfProfessor, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of FSO II:</b></td><td><input type='text' name='dateFso2' class='calendar' value='".substr($this->person->dateFso2, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of FSO III:</b></td><td><input type='text' name='dateFso3' class='calendar' value='".substr($this->person->dateFso3, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of FSO IV:</b></td><td><input type='text' name='dateFso4' class='calendar' value='".substr($this->person->dateFso4, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Tenure:</b></td><td><input type='text' name='dateOfTenure' class='calendar' value='".substr($this->person->dateOfTenure, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Retirement:</b></td><td><input type='text' name='dateOfRetirement' class='calendar' value='".substr($this->person->dateOfRetirement, 0, 10)."' /></td></tr>";
-        $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td><input type='text' name='dateOfPhd' class='calendar' style='display:none;' value='".substr($this->person->dateOfPhd, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td><input type='text' name='dateOfAppointment' class='calendar' style='display:none;' value='".substr($this->person->dateOfAppointment, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Assistant:</b></td><td><input type='text' name='dateOfAssistant' class='calendar' style='display:none;' value='".substr($this->person->dateOfAssistant, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Associate:</b></td><td><input type='text' name='dateOfAssociate' class='calendar' style='display:none;' value='".substr($this->person->dateOfAssociate, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Professor:</b></td><td><input type='text' name='dateOfProfessor' class='calendar' style='display:none;' value='".substr($this->person->dateOfProfessor, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of FSO II:</b></td><td><input type='text' name='dateFso2' class='calendar' style='display:none;' value='".substr($this->person->dateFso2, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of FSO III:</b></td><td><input type='text' name='dateFso3' class='calendar' style='display:none;' value='".substr($this->person->dateFso3, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of FSO IV:</b></td><td><input type='text' name='dateFso4' class='calendar' style='display:none;' value='".substr($this->person->dateFso4, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Tenure:</b></td><td><input type='text' name='dateOfTenure' class='calendar' style='display:none;' value='".substr($this->person->dateOfTenure, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Retirement:</b></td><td><input type='text' name='dateOfRetirement' class='calendar' style='display:none;' value='".substr($this->person->dateOfRetirement, 0, 10)."' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' style='display:none;' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
         $this->html .= "<tr><td align='right'><b>Last Degree:</b></td><td><input type='text' name='lastDegree' value='".$this->person->lastDegree."' /></td></tr>";
         $this->html .= "</table>";
         
         $this->html .= "<script type='text/javascript'>
-            $('input.calendar').keyup(function(){ return false; });
-            $('input.calendar').keydown(function(){ return false; });
-            $('input.calendar').datepicker({dateFormat: 'yy-mm-dd', 
-                                            changeYear: true, 
-                                            changeMonth: true, 
-                                            yearRange: '1900:".(date('Y')+3)."',
-                                            onChangeMonthYear: function (year, month, inst) {
-                                                var curDate = $(this).datepicker('getDate');
-                                                if (curDate == null)
-                                                    return;
-                                                if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
-                                                    curDate.setYear(year);
-                                                    curDate.setMonth(month - 1);
-                                                    while(curDate.getMonth() != month -1){
-                                                        curDate.setDate(curDate.getDate() - 1);
+            $(document).ready(function(){
+                $('input.calendar').show();
+                $('input.calendar').keyup(function(){ return false; });
+                $('input.calendar').keydown(function(){ return false; });
+                $('input.calendar').datepicker({dateFormat: 'yy-mm-dd', 
+                                                changeYear: true, 
+                                                changeMonth: true, 
+                                                yearRange: '1900:".(date('Y')+3)."',
+                                                onChangeMonthYear: function (year, month, inst) {
+                                                    var curDate = $(this).datepicker('getDate');
+                                                    if (curDate == null)
+                                                        return;
+                                                    if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                                        curDate.setYear(year);
+                                                        curDate.setMonth(month - 1);
+                                                        while(curDate.getMonth() != month -1){
+                                                            curDate.setDate(curDate.getDate() - 1);
+                                                        }
+                                                        $(this).datepicker('setDate', curDate);
+                                                        $(this).trigger('change');
                                                     }
-                                                    $(this).datepicker('setDate', curDate);
-                                                    $(this).trigger('change');
                                                 }
-                                            }
-                                          });
-            $('<span style=\"vertical-align: middle;\" class=\"delete-icon\" title=\"Clear Date\"></span>').insertAfter('input.calendar').click(function(){ $(this).prev().val('0000-00-00'); });
+                                              });
+                $('<span style=\"vertical-align: middle;\" class=\"delete-icon\" title=\"Clear Date\"></span>').insertAfter('input.calendar').click(function(){ $(this).prev().val('0000-00-00'); });
+            });
         </script>";
     }
     
