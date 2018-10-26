@@ -190,6 +190,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
             $this->person->update();
@@ -493,6 +494,10 @@ EOF;
                             <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Office Address:</b></td>
+                                <td><input type='text' size='30' name='office' value='".str_replace("'", "&#39;", $person->getOffice())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>
