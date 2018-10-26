@@ -6,8 +6,9 @@ function initResizeEvent(){
     }
     $('#reportMain > div > div').resize(fn);
     fn();
-    _.delay(fn, 100);
 }
+
+setInterval(initResizeEvent, 50);
 
 function setAutosave(enabled){
     if(enabled){
