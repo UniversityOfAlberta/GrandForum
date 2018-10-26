@@ -60,6 +60,11 @@ class MultiTextReportItem extends AbstractReportItem {
         $orientation = $this->getAttr('orientation', 'horizontal');
         $isVertical = (strtolower($orientation) == 'vertical');
         $values = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($values === null && $default != ''){
+		    $values = unserialize($default);
+		    $values = $values[$this->id];
+		}
         if($values == null){
             $values = array();
             $max = -1;
