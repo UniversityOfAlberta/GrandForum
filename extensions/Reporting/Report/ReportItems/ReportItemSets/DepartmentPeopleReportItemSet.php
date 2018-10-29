@@ -36,6 +36,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 if(($person->getId() == 243 && $dept == "Biological Sciences") ||
+                   ($person->getId() == 68) ||
                    ($person->getId() == 81)){
                     // Handle special cases
                     continue;
