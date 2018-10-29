@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeLOI2PDF" ajax="true" allowIdProjects="true" disabled="false" year="2018">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeReport2018PDF" ajax="true" allowIdProjects="true" disabled="false" year="2018">
     <Permissions>
         <Role role="NI">
 
@@ -91,6 +91,7 @@
             ]]>
         </ReportItem>
         
+        <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
             <![CDATA[
                 <h2>Equity and Diversity</h2>
@@ -143,6 +144,7 @@
             ]]>
         </ReportItem>
         
+        <!-- Summary -->
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Project Summary</h2>
@@ -159,6 +161,7 @@
             ]]>
         </ReportItem>
 
+        <!-- Proposal -->
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="5000">
             <![CDATA[
                 <h2>Project Proposal</h2>
@@ -167,6 +170,7 @@
             ]]>
         </ReportItem>
         
+        <!-- References -->
         <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
             <![CDATA[
                 <b>References</b>
@@ -174,6 +178,7 @@
             ]]>
         </ReportItem>
         
+        <!-- KTEE -->
         <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Knowledge and Technology Exchange and Exploitation</h2>
@@ -183,6 +188,7 @@
             ]]>
         </ReportItem>
         
+        <!-- Training -->
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Training Potential</h2>
@@ -195,6 +201,7 @@
             ]]>
         </ReportItem>
         
+        <!-- Figures -->
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Figures & Schemes</h2>
@@ -275,7 +282,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="ReportSection">
+    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
                 <p>Letters from partners indicating the nature of their involvement in the project and their anticipated contribution (cash and/or in-kind) are required. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the project for the GlycoNet renewal application. <b>Projects for which there is not a written commitment of a 1:1 match to the GlycoNet request will be disqualified.</b></p>
@@ -315,6 +322,14 @@
         </ReportItem>
         <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
             <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" name="Investigator CCVs" blobSection="CAT_CCV" tooltip="Investigator CCVs" type="EditableReportSection">
+        <ReportItem id="ccv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                Please upload all investigator CCVs as a <b>.zip</b> archive.
                 {$item}
             ]]>
         </ReportItem>
