@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeReport2018PDF" ajax="true" allowIdProjects="true" disabled="false" year="2018">
     <Permissions>
-        <Role role="NI">
+        <Role role="NI" subRole="Collab2018">
 
         </Role>
-        <Role role="NI-Candidate">
+        <Role role="NI-Candidate" subRole="Collab2018">
 
         </Role>
-        <Role role="External">
+        <Role role="External" subRole="Collab2018">
 
         </Role>
-        <Role role="External-Candidate">
+        <Role role="External-Candidate" subRole="Collab2018">
 
         </Role>
         <Role role="Staff">
