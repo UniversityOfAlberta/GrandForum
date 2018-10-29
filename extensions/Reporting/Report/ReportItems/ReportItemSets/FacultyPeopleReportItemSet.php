@@ -19,6 +19,10 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
+            if($person->getId() == 68){
+                // Handle special cases
+                continue;
+            }
             if(isset($fec[$row['user_id']]) && $person->getFECType($end) != ""){
                 $index = @$fec[$person->getId()];
                 $fecType = $person->getFECType($end);
