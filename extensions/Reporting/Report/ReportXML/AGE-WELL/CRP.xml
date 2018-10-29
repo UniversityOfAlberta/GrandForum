@@ -65,10 +65,54 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
+    <ReportSection id="description" type="ReportSection" tooltip="Program Description" name="Program Description" title="AGE-WELL Core Research Program 2020-2025">
+        <ReportItem id="description" type="Static">
+            <![CDATA[
+                <p>Researchers based at Canadian institutions and working in the field of technology and aging are invited to apply for funding through <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020-2025</a>. Successful applications will be included as part of AGE-WELL’s renewal application for funding through 2020-2025.</p>
+
+                AGE-WELL will provide significant funding for 3 to 5 years to projects that:
+                <ul>
+                    <li>Are driven by real-world problems and challenge areas</li>
+                    <li>Address specific areas of interest to AGE-WELL and its partners and stakeholders</li>
+                    <li>Focus on innovative technology-based solutions to support older adults and caregivers</li>
+                    <li>Are user-centred, involving end-users and stakeholders in all stages of the research</li>
+                    <li>Deliver not only the technology but the practice, policy, and service delivery models that are needed for the solution to be effective</li>
+                    <li>Use a transdisciplinary approach</li>
+                    <li>Have the potential to lead to economic and social impact</li>
+                    <li>Help AGE-WELL to achieve its mission</li>
+                </ul>
+
+                <p>Successful applications will also receive a one-year Catalyst Grant, starting April 1, 2019, so that these selected projects can continue to develop their plans.</p> 
+
+                <p>AGE-WELL has partnered with Mitacs and MEDTEQ to provide additional funding as part of this RFP. Additional partners and collaborators may join this funding initiative over the coming months.</p>
+
+                <u>Funds Available:</u>
+                <p>AGE-WELL and partner(s) financial contributions for this initiative are subject to availability of funds. Should AGE-WELL or partner(s) funding levels not be available or become decreased due to unforeseen circumstances, AGE-WELL and partner(s) reserve the right to reduce, defer or suspend financial contributions to grants received as a result of this funding opportunity.</p>
+
+                <p>The maximum investment per Core Research Project is $200,000 per year (commencing April 1, 2020) for a minimum of 3 to a maximum of 5 years, for a maximum of $1,000,000 per grant.</p>
+
+                <u>Application Deadline:</u>
+                <p>The application deadline is <b>January 4, 2019</b>.</p>
+
+                <p>Note that the application should be submitted via Forum by the Project Lead. The application form is not collaborative; therefore, only one user can submit an application per project.</p>
+
+                <u>Contact Information:</u>
+                <p>For general inquiries about this RFP, please contact <a href='mailto:applications@agewell-nce.ca'>applications@agewell-nce.ca</a>.</p>
+
+                <p>For more information on the program, eligibility criteria and application guidelines, please visit the <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL Core Research Program 2020-2025 Request for Proposals</a> web page.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
-        <ReportItem id="leader" type="Text" blobItem="LEADER" width="250px">
+        <ReportItem id="leader" type="Static" blobItem="LEADER">
             <![CDATA[
                 <h2>Lead Investigator Name(s)</h2>
+                {$user_name}
+            ]]>
+        </ReportItem>
+        <ReportItem id="colead" type="Text" blobItem="CO-INVESTIGATOR" width="250px">
+            <![CDATA[
+                <h2>Co-Investigator Name(s)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -95,8 +139,14 @@
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="300">
             <![CDATA[
                 <h2>Summary</h2>
-                <p>Add “Provide a 300-word plain language summary that includes a problem statement, research purpose and anticipated impact(s) of the project.”</p>
+                <p>Provide a 300-word plain language summary that includes a problem statement, research purpose and anticipated impact(s) of the project.</p>
                 {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="length" type="Select" blobItem="LENGTH" options="3|4|5" inline="true">
+            <![CDATA[
+                <br />
+                <b>Length of proposed project:</b> {$item} years
             ]]>
         </ReportItem>
         <ReportItem id="total" type="Text" blobItem="TOTAL">
