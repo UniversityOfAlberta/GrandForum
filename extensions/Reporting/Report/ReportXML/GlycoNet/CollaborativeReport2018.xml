@@ -174,6 +174,7 @@
         <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
             <![CDATA[
                 <b>References</b>
+                <p>Use the following format for references (Journal of Biological Chemistry style): Stover, C. K., de la Cruz, V. F., Fuerst, T. R., Burlein, J. E., Benson, L. A., Bennett, L. T., Bansal, G. P., Young, J. F., Lee, M. H., Hatfull, G. F., Snapper, S. B., Barletta, R. G., Jacobs, W. R., Jr., and Bloom, B. R. (1991) New use of BCG for recombinant vaccines. Nature <b>351</b>, 456–460</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -206,6 +207,15 @@
             <![CDATA[
                 <h2>Figures & Schemes</h2>
                 <p>Upload a PDF document containing your application's figures & schemes (optional)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict -->
+        <ReportItem id="coi" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_COI" rich="true" height="200px">
+            <![CDATA[
+                <h2>Conflict of Interest</h2>
+                <p>Declare conflict of interest if any researchers involved on the project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research.</p>
                 {$item}
             ]]>
         </ReportItem>

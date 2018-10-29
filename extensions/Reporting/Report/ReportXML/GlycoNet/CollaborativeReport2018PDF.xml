@@ -164,6 +164,14 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        
+        <!-- Conflict -->
+        <ReportItem id="coi" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_COI" rich="true">
+            <![CDATA[
+                <h2>Conflict of Interest</h2>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
