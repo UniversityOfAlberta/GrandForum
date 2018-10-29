@@ -252,8 +252,9 @@
                  </ul>
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
+        <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>
