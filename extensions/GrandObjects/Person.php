@@ -63,6 +63,7 @@ class Person extends BackboneModel {
                                                       "bachelor of science (honours)",
                                                       "b.sc. (hons)",
                                                       "b.sc. honours",
+                                                      "bsc (honours)",
                                                       "undergraduate, honours",
                                                       "diplomaed engineer (dipl.ing.)",
                                                       "diplomaed engineer")
