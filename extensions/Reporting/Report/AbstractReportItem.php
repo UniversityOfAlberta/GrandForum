@@ -166,6 +166,18 @@ abstract class AbstractReportItem {
     //Responsible for rendering the actual widget
     abstract function render();
     
+    function getIncompleteItems(){
+        $opt = $this->getAttr('optional', '0');
+        if($opt == '1' || $opt == 'true'){
+            return null;
+        }
+        $blob = $this->getBlobValue();
+        if($blob === "" || $blob === null || (is_array($blob) && count($blob) == 0)){
+            return $this;
+        }
+        return null;
+    }
+    
     // Returns the number of completed values (usually 1, or 0)
     function getNComplete(){
         $opt = $this->getAttr('optional', '0');

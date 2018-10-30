@@ -104,6 +104,24 @@ class EditableReportSection extends AbstractReportSection {
                          </form></div>\n");
     }
     
+    function getIncompleteItems(){
+        $items = array();
+        foreach($this->items as $item){
+            if(!$item->deleted){
+                $it = $item->getIncompleteItems();
+                if($it != null){
+                    if(is_array($it)){
+                        $items = array_merge($items, $it);
+                    }
+                    else{
+                        $items[] = $it;
+                    }
+                }
+            }
+        }
+        return $items;
+    }
+    
     // Returns the percentage of completion for this section
     function getPercentComplete(){
         if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){

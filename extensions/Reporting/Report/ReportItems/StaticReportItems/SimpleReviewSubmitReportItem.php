@@ -94,7 +94,13 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		}
 		$showWarning = (strtolower($this->getAttr('showWarning', 'true')) == 'true');
 		if(!$this->getReport()->isComplete() && $showWarning){
-		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
+		    $items = $this->getReport()->getIncompleteItems();
+		    $incomplete = array();
+		    foreach($items as $item){
+		        $section = $item->getSection();
+		        $incomplete[] = "<li>{$section->name}: {$item->getAttr('idLabel', $item->id)}</li>";
+		    }
+		    $wgOut->addHTML("<div class='warning'>The following fields are incomplete: <ul>".implode("\n", $incomplete)."</ul> If they are NOT required for the program to which you are applying, you can go ahead and submit. Note that you cannot make any changes to your file after you have submitted.</div>");
 		}
 		$wgOut->addHTML("<h3>Generate a new PDF</h3>");
 		$wgOut->addHTML("<p><button id='generateButton' $disabled>Submit</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
