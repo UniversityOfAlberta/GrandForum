@@ -416,7 +416,7 @@ class DepartmentTab extends AbstractTab {
                         $row[] = implode(", ", $sups);
                         $row[] = $hqp->getNameForForms();
                         $row[] = $mo['effective_date'];
-                        $row[] = $mo['where'];
+                        $row[] = $mo['position'];
                         $row[] = $mo['employer'];
                         $row[] = $hqp->getUni();
                         $row[] = $status;
