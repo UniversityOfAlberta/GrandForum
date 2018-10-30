@@ -217,6 +217,22 @@ abstract class ReportItemSet extends AbstractReportItem{
         }
     }
     
+    function getIncompleteItems(){
+        $items = array();
+        foreach($this->items as $item){
+            $it = $item->getIncompleteItems();
+            if($it != null){
+                if(is_array($it)){
+                    $items = array_merge($items, $it);
+                }
+                else{
+                    $items[] = $it;
+                }
+            }
+        }
+        return $items;
+    }
+    
     // Returns the number of completed values (usually 1, or 0)
     function getNComplete(){
         if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
