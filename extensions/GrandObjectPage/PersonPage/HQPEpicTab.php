@@ -37,6 +37,7 @@ class HQPEpicTab extends AbstractEditableTab {
             $this->person->isSubRole("Alumni HQP") ||
             $this->person->isSubRole("SIP/CAT HQP")) &&
            ($position != "graduate student - doctoral" &&
+            $position != "medical student" &&
             $position != "graduate student - master's" &&
             $position != "post-doctoral fellow")){
             $this->generateWPCC();
@@ -47,7 +48,7 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($position == "graduate student - doctoral"){
             $this->generatePhD();
         }
-        else if($position == "graduate student - master's"){
+        else if($position == "graduate student - master's" || $position == "medical student"){
             $this->generateMasters();
         }
         else if($position == "post-doctoral fellow"){
@@ -67,7 +68,7 @@ class HQPEpicTab extends AbstractEditableTab {
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
                         <p>By completing the EPIC Program and earning the AGE-WELL Innovators of Tomorrow certificate your CV/resume will speak to the full range of economic, social, and ethical implications of developing technologies for older adults through workshops, seminar series and other events and activities that transcend the typical training offered through academia.</p>
-                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on Forum (<a href='https://forum.agewell-nce.ca/index.php/AGE-WELL_Seminars' target='_blank'>AGE-WELL Seminars</a> and <a href='https://forum.agewell-nce.ca/index.php/HQP_Wiki:HQP_Resources' target='_blank'>HQP Resources</a> tab), you are strongly encouraged to consider eligible activities available through your departments and institutions.  A collected list of these is available on Forum <a href='https://forum.agewell-nce.ca/AnnokiUploadAuth.php/e/eb/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a>.</p>
+                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on the members' intranet (<a href='http://members.agewell-nce.ca/videos/' target='_blank'>AGE-WELL recorded webinars</a>, <a href='http://members.agewell-nce.ca/events/' target='_blank'>AGE-WELL upcoming events</a>, and <a href='http://members.agewell-nce.ca/hqp-nmo-resources/' target='_blank'>HQP Resources</a>), you are strongly encouraged to consider eligible activities available through your departments and institutions. A collected list of these is available <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/02/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a> and <a href='http://www.ca.cags.ca/gdps/index.php' target='_blank'>here</a>.</p>
 <p><b>Be EPIC - Earning the AGE-WELL Innovators of Tomorrow Certificate</b></p>
 <p>HQP must complete all of their EPIC requirements in one calendar year to earn the Innovators of Tomorrow Certificate. There are four major steps as outlined below.</p>
 <p><b>INSTRUCTIONS</b></p>
@@ -100,7 +101,7 @@ class HQPEpicTab extends AbstractEditableTab {
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
             </tr>".
-            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or through Forum",
+            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or view <a href='http://members.agewell-nce.ca/age-well-hqp-orientation/' target='_blank'>recorded session</a> on members' intranet",
                                array(HQP_EPIC_ORIENTATION_DESC, HQP_EPIC_ORIENTATION_SUP, HQP_EPIC_ORIENTATION_HQP, HQP_EPIC_ORIENTATION_NMO)).
             $this->generateRow("Training Plan submitted to and approved by AGE-WELL Education and Training Administrator",
                                array(HQP_EPIC_TRAINING_DESC, HQP_EPIC_TRAINING_SUP, HQP_EPIC_TRAINING_HQP, HQP_EPIC_TRAINING_NMO)).
@@ -148,7 +149,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
                         <p>By completing the EPIC Program and earning the AGE-WELL Innovators of Tomorrow certificate your CV/resume will speak to the full range of economic, social, and ethical implications of developing technologies for older adults through workshops, seminar series and other events and activities that transcend the typical training offered through academia.</p>
-                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on Forum (<a href='https://forum.agewell-nce.ca/index.php/AGE-WELL_Seminars' target='_blank'>AGE-WELL Seminars</a> and <a href='https://forum.agewell-nce.ca/index.php/HQP_Wiki:HQP_Resources' target='_blank'>HQP Resources</a> tab), you are strongly encouraged to consider eligible activities available through your departments and institutions.  A collected list of these is available on Forum <a href='https://forum.agewell-nce.ca/AnnokiUploadAuth.php/e/eb/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a>.</p>
+                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on the members' intranet (<a href='http://members.agewell-nce.ca/videos/' target='_blank'>AGE-WELL recorded webinars</a>, <a href='http://members.agewell-nce.ca/events/' target='_blank'>AGE-WELL upcoming events</a>, and <a href='http://members.agewell-nce.ca/hqp-nmo-resources/' target='_blank'>HQP Resources</a>), you are strongly encouraged to consider eligible activities available through your departments and institutions. A collected list of these is available <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/02/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a> and <a href='http://www.ca.cags.ca/gdps/index.php' target='_blank'>here</a>.</p>
 <p><b>Be EPIC - Earning the AGE-WELL Innovators of Tomorrow Certificate</b></p>
 <p>HQP must complete all of their EPIC requirements in one calendar year to earn the Innovators of Tomorrow Certificate. There are four major steps as outlined below.</p>
 <p><b>INSTRUCTIONS</b></p>
@@ -181,7 +182,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
             </tr>".
-            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or through Forum",
+            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or view <a href='http://members.agewell-nce.ca/age-well-hqp-orientation/' target='_blank'>recorded session</a> on members' intranet",
                                array(HQP_EPIC_ORIENTATION_DESC, HQP_EPIC_ORIENTATION_SUP, HQP_EPIC_ORIENTATION_HQP, HQP_EPIC_ORIENTATION_NMO)).
             $this->generateRow("Training Plan submitted to and approved by AGE-WELL Education and Training Administrator",
                                array(HQP_EPIC_TRAINING_DESC, HQP_EPIC_TRAINING_SUP, HQP_EPIC_TRAINING_HQP, HQP_EPIC_TRAINING_NMO)).
@@ -229,7 +230,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
                         <p>By completing the EPIC Program and earning the AGE-WELL Innovators of Tomorrow certificate your CV/resume will speak to the full range of economic, social, and ethical implications of developing technologies for older adults through workshops, seminar series and other events and activities that transcend the typical training offered through academia.</p>
-                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on Forum (<a href='https://forum.agewell-nce.ca/index.php/AGE-WELL_Seminars' target='_blank'>AGE-WELL Seminars</a> and <a href='https://forum.agewell-nce.ca/index.php/HQP_Wiki:HQP_Resources' target='_blank'>HQP Resources</a> tab), you are strongly encouraged to consider eligible activities available through your departments and institutions.  A collected list of these is available on Forum <a href='https://forum.agewell-nce.ca/AnnokiUploadAuth.php/e/eb/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a>.</p>
+                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on the members' intranet (<a href='http://members.agewell-nce.ca/videos/' target='_blank'>AGE-WELL recorded webinars</a>, <a href='http://members.agewell-nce.ca/events/' target='_blank'>AGE-WELL upcoming events</a>, and <a href='http://members.agewell-nce.ca/hqp-nmo-resources/' target='_blank'>HQP Resources</a>), you are strongly encouraged to consider eligible activities available through your departments and institutions. A collected list of these is available <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/02/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a> and <a href='http://www.ca.cags.ca/gdps/index.php' target='_blank'>here</a>.</p>
 <p><b>Be EPIC - Earning the AGE-WELL Innovators of Tomorrow Certificate</b></p>
 <p>HQP must complete all of their EPIC requirements in one calendar year to earn the Innovators of Tomorrow Certificate. There are four major steps as outlined below.</p>
 <p><b>INSTRUCTIONS</b></p>
@@ -262,7 +263,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
             </tr>".
-            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or through Forum",
+            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or view <a href='http://members.agewell-nce.ca/age-well-hqp-orientation/' target='_blank'>recorded session</a> on members' intranet",
                                array(HQP_EPIC_ORIENTATION_DESC, HQP_EPIC_ORIENTATION_SUP, HQP_EPIC_ORIENTATION_HQP, HQP_EPIC_ORIENTATION_NMO)).
             $this->generateRow("Training Plan submitted to and approved by AGE-WELL Education and Training Administrator",
                                array(HQP_EPIC_TRAINING_DESC, HQP_EPIC_TRAINING_SUP, HQP_EPIC_TRAINING_HQP, HQP_EPIC_TRAINING_NMO)).
@@ -301,7 +302,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
                         <p>By completing the EPIC Program and earning the AGE-WELL Innovators of Tomorrow certificate your CV/resume will speak to the full range of economic, social, and ethical implications of developing technologies for older adults through workshops, seminar series and other events and activities that transcend the typical training offered through academia.</p>
-                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on Forum (<a href='https://forum.agewell-nce.ca/index.php/AGE-WELL_Seminars' target='_blank'>AGE-WELL Seminars</a> and <a href='https://forum.agewell-nce.ca/index.php/HQP_Wiki:HQP_Resources' target='_blank'>HQP Resources</a> tab), you are strongly encouraged to consider eligible activities available through your departments and institutions.  A collected list of these is available on Forum <a href='https://forum.agewell-nce.ca/AnnokiUploadAuth.php/e/eb/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a>.</p>
+                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on the members' intranet (<a href='http://members.agewell-nce.ca/videos/' target='_blank'>AGE-WELL recorded webinars</a>, <a href='http://members.agewell-nce.ca/events/' target='_blank'>AGE-WELL upcoming events</a>, and <a href='http://members.agewell-nce.ca/hqp-nmo-resources/' target='_blank'>HQP Resources</a>), you are strongly encouraged to consider eligible activities available through your departments and institutions. A collected list of these is available <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/02/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a> and <a href='http://www.ca.cags.ca/gdps/index.php' target='_blank'>here</a>.</p>
 <p><b>Be EPIC - Earning the AGE-WELL Innovators of Tomorrow Certificate</b></p>
 <p>HQP must complete all of their EPIC requirements in one calendar year to earn the Innovators of Tomorrow Certificate. There are four major steps as outlined below.</p>
 <p><b>INSTRUCTIONS</b></p>
@@ -333,7 +334,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
             </tr>".
-            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or through Forum",
+            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or view <a href='http://members.agewell-nce.ca/age-well-hqp-orientation/' target='_blank'>recorded session</a> on members' intranet",
                                array(HQP_EPIC_ORIENTATION_DESC, HQP_EPIC_ORIENTATION_HQP, HQP_EPIC_ORIENTATION_NMO)).
             $this->generateRow("Training Plan submitted to and approved by AGE-WELL Education and Training Administrator",
                                array(HQP_EPIC_TRAINING_DESC, HQP_EPIC_TRAINING_HQP, HQP_EPIC_TRAINING_NMO)).
@@ -373,7 +374,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                         <p><i>WP/CC HQP include AGE-WELL funded research associates, research assistants, technicians, summer students, and undergraduate students.</i></p>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
                         <p>By completing the EPIC Program and earning the AGE-WELL Innovators of Tomorrow certificate your CV/resume will speak to the full range of economic, social, and ethical implications of developing technologies for older adults through workshops, seminar series and other events and activities that transcend the typical training offered through academia.</p>
-                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on Forum (<a href='https://forum.agewell-nce.ca/index.php/AGE-WELL_Seminars' target='_blank'>AGE-WELL Seminars</a> and <a href='https://forum.agewell-nce.ca/index.php/HQP_Wiki:HQP_Resources' target='_blank'>HQP Resources</a> tab), you are strongly encouraged to consider eligible activities available through your departments and institutions.  A collected list of these is available on Forum <a href='https://forum.agewell-nce.ca/AnnokiUploadAuth.php/e/eb/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a>.</p>
+                        <p>The core of our training program revolves around “Knowledge Partnerships” between higher education and industry, service, and public sectors working together towards mutually beneficial results and outcomes. To that end, training activities are available through AGE-WELL, industry and service partners, and through your institution. While a preliminary list of these opportunities is available on the members' intranet (<a href='http://members.agewell-nce.ca/videos/' target='_blank'>AGE-WELL recorded webinars</a>, <a href='http://members.agewell-nce.ca/events/' target='_blank'>AGE-WELL upcoming events</a>, and <a href='http://members.agewell-nce.ca/hqp-nmo-resources/' target='_blank'>HQP Resources</a>), you are strongly encouraged to consider eligible activities available through your departments and institutions. A collected list of these is available <a href='http://members.agewell-nce.ca/wp-content/uploads/2016/02/Non_AGE-WELL_HQP_activities.pdf' target='_blank'>here</a> and <a href='http://www.ca.cags.ca/gdps/index.php' target='_blank'>here</a>.</p>
 <p><b>Be EPIC - Earning the AGE-WELL Innovators of Tomorrow Certificate</b></p>
 <p>HQP must complete all of their EPIC requirements in one calendar year to earn the Innovators of Tomorrow Certificate. There are four major steps as outlined below.</p>
 <p><b>INSTRUCTIONS</b></p>
@@ -405,7 +406,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
             </tr>".
-            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or through Forum",
+            $this->generateRow("Attend a 1 hour AGE-WELL Orientation Session in-person or view <a href='http://members.agewell-nce.ca/age-well-hqp-orientation/' target='_blank'>recorded session</a> on members' intranet",
                                array(HQP_EPIC_ORIENTATION_DESC, HQP_EPIC_ORIENTATION_HQP, HQP_EPIC_ORIENTATION_NMO)).
             $this->generateRow("Training Plan submitted to and approved by AGE-WELL Education and Training Administrator",
                                array(HQP_EPIC_TRAINING_DESC, HQP_EPIC_TRAINING_HQP, HQP_EPIC_TRAINING_NMO)).
@@ -465,6 +466,16 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                     $str .= "<td><div style='max-height:100px;overflow-y:auto;'>".nl2br($value)."</td>";
                 }
             }
+            else if($key == count($cells) - 1){
+                // NMO Checkboxes
+                if($this->visibility['edit'] && $me->isRoleAtLeast(STAFF)){
+                    $checked = ($value != "") ? "checked='checked'" : "";
+                    $str .= "<td align='center'><input type='hidden' name='epic_{$cell}' value='' /><input type='checkbox' name='epic_{$cell}' value='&#10003;' {$checked} /></td>";
+                }
+                else{
+                    $str .= "<td align='center'><span style='font-size:2em;'>{$value}</span></td>";
+                }
+            }
             else{
                 // Checkboxes
                 if($this->visibility['edit']){
@@ -481,6 +492,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     }
     
     function generateRow($description, $cells=array()){
+        $me = Person::newFromWgUser();
         $str = "<tr>";
         $str .= "<td><small>{$description}</small></td>";
         foreach($cells as $key => $cell){
@@ -492,6 +504,16 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 }
                 else{
                     $str .= "<td><div style='max-height:100px;overflow-y:auto;'>".nl2br($value)."</td>";
+                }
+            }
+            else if($key == count($cells) - 1){
+                // NMO Checkboxes
+                if($this->visibility['edit'] && $me->isRoleAtLeast(STAFF)){
+                    $checked = ($value != "") ? "checked='checked'" : "";
+                    $str .= "<td align='center'><input type='hidden' name='epic_{$cell}' value='' /><input type='checkbox' name='epic_{$cell}' value='&#10003;' {$checked} /></td>";
+                }
+                else{
+                    $str .= "<td align='center'><span style='font-size:2em;'>{$value}</span></td>";
                 }
             }
             else{

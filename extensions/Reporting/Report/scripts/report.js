@@ -8,6 +8,8 @@ function initResizeEvent(){
     fn();
 }
 
+setInterval(initResizeEvent, 50);
+
 function setAutosave(enabled){
     if(enabled){
         autosaveEnabled = true;

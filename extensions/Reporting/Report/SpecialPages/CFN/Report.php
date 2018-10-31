@@ -151,12 +151,12 @@ class Report extends AbstractReport{
             }
         }
         if(count($students) > 0){
-            $processedIFP2018 = false;
+            $processedIFP2019 = false;
             foreach($students as $student){
-                /*if(!$processedIFP2018 && $student->isSubRole("IFP2018Applicant")){
+                /*if(!$processedIFP2019 && $student->isSubRole("IFP2019Applicant")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
                     $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
-                    $processedIFP2018 = true;
+                    $processedIFP2019 = true;
                 }*/
             }
         }

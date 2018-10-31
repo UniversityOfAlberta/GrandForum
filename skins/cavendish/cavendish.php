@@ -687,6 +687,10 @@ class CavendishTemplate extends QuickTemplate {
                         $img = "glyphicons_social_22_youtube";
                         $text = "YouTube";
                         break;
+                    case 'intranet':
+                        $img = "share_24x24";
+                        $text = "Intranet";
+                        break;
                 }
                 echo "<a class='changeImg highlights-text-hover' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
 	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
@@ -937,7 +941,7 @@ class CavendishTemplate extends QuickTemplate {
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
-	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Resources", "$wgServer$wgScriptPath/index.php/Resources");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Members' Intranet", "$wgServer$wgScriptPath/index.php/Resources");
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");

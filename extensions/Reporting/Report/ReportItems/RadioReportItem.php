@@ -9,6 +9,10 @@ class RadioReportItem extends AbstractReportItem {
         $showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
         $orientation = $this->getAttr('orientation', 'vertical');
         $value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		}
         $items = array();
 		foreach($options as $i => $option){
 		    if(!is_array($option)){

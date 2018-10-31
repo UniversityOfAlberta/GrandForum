@@ -61,7 +61,10 @@ class PeopleTableTab extends AbstractTab {
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
             if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
-                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>";
+                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>
+                               <th style='white-space: nowrap;'>Appendix A</th>
+                               <th style='white-space: nowrap;'>COI</th>
+                               <th style='white-space: nowrap;'>NDA</th>";
             }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
@@ -177,6 +180,12 @@ class PeopleTableTab extends AbstractTab {
                 $hqpTab = new HQPEpicTab($person, array());
                 $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
                 $this->html .= "<td align='left'>{$date}</td>";
+                $doc1 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_A');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
+                $doc2 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_COI');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
+                $doc3 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_NDA');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
                 if($person->getEmail() == ""){

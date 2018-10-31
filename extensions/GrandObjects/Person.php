@@ -30,6 +30,7 @@ class Person extends BackboneModel {
     var $twitter;
     var $website;
     var $linkedin;
+    var $office;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -308,6 +309,7 @@ class Person extends BackboneModel {
                                               'user_twitter',
                                               'user_website',
                                               'user_linkedin',
+                                              'user_office',
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
@@ -842,6 +844,7 @@ class Person extends BackboneModel {
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
             $this->linkedin = @$data[0]['user_linkedin'];
+            $this->office = @$data[0]['user_office'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
@@ -914,6 +917,7 @@ class Person extends BackboneModel {
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'linkedin' => $this->getLinkedIn(),
+                      'office' => $this->getOffice(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
@@ -975,6 +979,7 @@ class Person extends BackboneModel {
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
+                                          'user_office' => $this->getOffice(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
@@ -1033,6 +1038,7 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
+                                          'user_office' => $this->getOffice(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1524,6 +1530,14 @@ class Person extends BackboneModel {
             $this->linkedin = 'http://'.$this->linkedin;
         }
         return $this->linkedin;
+    }
+    
+    function getOffice(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return "{$this->office}";
+        }
+        return "";
     }
     
     /**
@@ -3463,6 +3477,7 @@ class Person extends BackboneModel {
         return ($position == "graduate student - doctoral" ||
                 $position == "graduate student - master's" ||
                 $position == "post-doctoral fellow" ||
+                $position == "medical student" ||
                 $this->isSubRole("Affiliate HQP") || 
                 $this->isSubRole("Project Funded HQP") ||
                 $this->isSubRole("WP/CC Funded HQP") ||
