@@ -10,6 +10,9 @@
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
         </Role>
+        <Role role="INACTIVE+" subRole="FEC">
+            <SectionPermission id="fec" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" type="ReportSection">
         <ReportItem id="thead" type="Static">

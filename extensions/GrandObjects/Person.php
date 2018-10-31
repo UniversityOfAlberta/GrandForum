@@ -2970,6 +2970,9 @@ class Person extends BackboneModel {
      * @return boolean Whether or not the Person is the given role
      */
     function isRoleDuring($role, $startRange, $endRange, $project=null){
+        if($role == INACTIVE){
+            return $this->exists();
+        }
         if($role == NI){
             return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
                     $this->isRoleDuring(CI, $startRange, $endRange, $project));
@@ -3004,6 +3007,9 @@ class Person extends BackboneModel {
      */
     function isRoleAtLeastDuring($role, $startRange, $endRange){
         global $wgRoleValues;
+        if($role == INACTIVE){
+            return $this->exists();
+        }
         if($role == NI){
             return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
