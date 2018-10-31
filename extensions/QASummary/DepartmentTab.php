@@ -397,12 +397,18 @@ class DepartmentTab extends AbstractTab {
                     $mo['employer'] = ($mo['employer'] == "") ? $mo['studies'] : $mo['employer'];
                     if($mo['employer'] != "" && $mo['effective_date'] != "0000-00-00"){
                         $supervisors = $hqp->getSupervisors($mo['effective_date']);
+                        if(count($supervisors) == 0){
+                            $supervisors = $hqp->getSupervisors(true);
+                        }
                         $status = $mo['status'];
                         $reason = $mo['reason'];
                         $sups = array();
                         foreach($supervisors as $sup){
                             $sups[] = $sup->getNameForForms();
                             $relations = $sup->getRelationsDuring('all', "0000-00-00", $mo['effective_date']);
+                            if(count($relations) == 0){
+                                $relations = $sup->getRelationsDuring('all', "0000-00-00", "2100-01-01");
+                            }
                             foreach($relations as $rel){
                                 if($rel->user2 == $hqp->getId()){
                                     if($rel->status != ""){
@@ -412,6 +418,7 @@ class DepartmentTab extends AbstractTab {
                                 }
                             }
                         }
+                        $sups = array_unique($sups);
                         $row = array();
                         $row[] = implode(", ", $sups);
                         $row[] = $hqp->getNameForForms();
