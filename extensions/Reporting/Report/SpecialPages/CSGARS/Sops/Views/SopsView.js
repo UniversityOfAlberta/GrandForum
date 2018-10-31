@@ -680,7 +680,11 @@ SopsView = Backbone.View.extend({
     
     changeYear: function(){
         var year = this.$("#year").val();
-        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + Backbone.history.fragment.split("/")[0] + "//" + year;
+        var frag = Backbone.history.fragment.split("/")[0];
+        if(frag == ""){
+            frag = "reviewInProgress";
+        }
+        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + frag + "//" + year;
     },
 
     render: function(){
