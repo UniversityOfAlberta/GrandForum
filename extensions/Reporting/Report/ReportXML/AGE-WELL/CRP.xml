@@ -318,7 +318,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" fileSize="10">
+        <ReportItem id="bio1" type="Upload" blobItem="BIO1" blobType="BLOB_RAW" fileSize="2" optional="true">
             <![CDATA[
                 <h2>Section 10: Appendices</h2>
                 <small>
@@ -332,15 +332,89 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="figures" type="Upload" blobItem="FIGURES" blobType="BLOB_RAW" fileSize="10">
+        <ReportItem id="bio2" type="Upload" blobItem="BIO2" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio3" type="Upload" blobItem="BIO3" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio4" type="Upload" blobItem="BIO4" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio5" type="Upload" blobItem="BIO5" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio6" type="Upload" blobItem="BIO6" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio7" type="Upload" blobItem="BIO7" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio8" type="Upload" blobItem="BIO8" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio9" type="Upload" blobItem="BIO9" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio10" type="Upload" blobItem="BIO10" blobType="BLOB_RAW" fileSize="2" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figure1" type="Upload" blobItem="FIGURE1" blobType="BLOB_RAW" fileSize="2">
             <![CDATA[
                 <h3>Figures and Diagrams</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figure2" type="Upload" blobItem="FIGURE2" blobType="BLOB_RAW" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figure3" type="Upload" blobItem="FIGURE3" blobType="BLOB_RAW" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figure4" type="Upload" blobItem="FIGURE4" blobType="BLOB_RAW" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figure5" type="Upload" blobItem="FIGURE5" blobType="BLOB_RAW" fileSize="2">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator)|Text|Text|Text" multiple="true">
             <![CDATA[
                 <h3>Team Members</h3>
+                <small>
+                    <ul>
+                        <li>PL: Project Lead, the leader of the proposed project.</li>
+                        <li>CI: Co-investigator, a researcher who is funded on a given project.</li>
+                        <li>Partner: organizations identified by the applicants that contribute cash and/or in-kind resources to specific projects of research, according to terms negotiated by the applicants.</li>
+                        <li>HQP: Highly qualified personnel, who are trainees and research staff such as undergraduate and graduate students, postdoctoral fellows, research associates, research assistants, technicians, and summer students).</li>
+                        <li>Collaborator: an individual whose role in the proposed activities is to provide a specific service.</li>
+                    </ul>
+                </small>
                 {$item}
             ]]>
         </ReportItem>
@@ -373,9 +447,6 @@
         <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
             <![CDATA[
                 <li><b>Professional & Tech. Services/contracts</b>
-                    <ol type="a">
-                        <li>Consultants and business development services (maximum $5,000)</li>
-                    </ol>
                     {$item}
                 </li>
             ]]>
@@ -430,7 +501,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" type="Upload" blobItem="LETTERS" fileSize="5">
+        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2">
             <![CDATA[
                 <h2>Letters of Support</h2>
                 <p>Tangible committed contributions from <u>at least one</u> partner are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner must include the following:</p>
@@ -442,6 +513,51 @@
                 </ul>
 
                 <p>Letters of support that do not contain precise, quantified contributions will not be reviewed.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter3" type="Upload" blobItem="LETTER3" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter4" type="Upload" blobItem="LETTER4" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter5" type="Upload" blobItem="LETTER5" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter6" type="Upload" blobItem="LETTER6" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter7" type="Upload" blobItem="LETTER7" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter8" type="Upload" blobItem="LETTER8" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter9" type="Upload" blobItem="LETTER9" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter10" type="Upload" blobItem="LETTER10" fileSize="2">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
