@@ -63,6 +63,15 @@
     
     // Logo path
     $config->setValue("logo", "skins/logos/logo.png");
+
+    // TASHA path
+    $config->setValue("tashaUrl", "http://162.246.157.115/tasha");
+
+    // TASHA User
+    $config->setValue("tashaUser", "cmput401");
+
+    // TASHA Password
+    $config->setValue("tashaPassword", "tasha");
     
     // Icon path (gray)
     $config->setValue("iconPath", "skins/icons/gray_dark/");
