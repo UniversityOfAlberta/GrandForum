@@ -923,6 +923,9 @@ class CCVExport extends SpecialPage {
                 $product_authors = $product->getAuthors();
                 $auth_arr = array();
                 foreach($product_authors as $a){
+                    if($item->authors['ccv_name'] == "Co-Presenters" && $a->getId() == $person->getId()){
+                        continue;
+                    }
                     $authorName = trim($a->getNameForProduct("{%last} {%f}"));
                     if($product->getCategory() == "Publication" &&
                        ($person->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") ||
