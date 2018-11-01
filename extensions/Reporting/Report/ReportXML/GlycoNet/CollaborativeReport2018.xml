@@ -171,7 +171,7 @@
         </ReportItem>
         
         <!-- References -->
-        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_BIB,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <b>References</b>
                 <p>Use the following format for references (Journal of Biological Chemistry style): Stover, C. K., de la Cruz, V. F., Fuerst, T. R., Burlein, J. E., Benson, L. A., Bennett, L. T., Bansal, G. P., Young, J. F., Lee, M. H., Hatfull, G. F., Snapper, S. B., Barletta, R. G., Jacobs, W. R., Jr., and Bloom, B. R. (1991) New use of BCG for recombinant vaccines. Nature <b>351</b>, 456–460</p>
