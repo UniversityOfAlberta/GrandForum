@@ -19,6 +19,7 @@ Path.php
 Credentials.php
 phpdoc.dist.xml
 favicon.png
+maintenance/IDQ/*.csv
 maintenance/install/*.csv
 config/config.php
 config/config_grand.php
