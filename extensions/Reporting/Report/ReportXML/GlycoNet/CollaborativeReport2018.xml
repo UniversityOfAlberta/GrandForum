@@ -190,7 +190,7 @@
         </ReportItem>
         
         <!-- Training -->
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TRAINING,0,{$user_id},{$project_id})}">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TRAIN,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <h2>Training Potential</h2>
                 <p>A summary of the project’s training plan.</p>
