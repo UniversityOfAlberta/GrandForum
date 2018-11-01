@@ -145,7 +145,7 @@
         </ReportItem>
         
         <!-- Summary -->
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_SUMMARY,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <h2>Project Summary</h2>
                 <p>A project summary using <b>lay language</b> that describes the current unmet clinical need or the theme to which the proposed project applies, and that makes the case for GlycoNet to fund it.</p>
@@ -162,7 +162,7 @@
         </ReportItem>
 
         <!-- Proposal -->
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="5000">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="5000" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_PROPOSAL,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <h2>Project Proposal</h2>
                 <p>A research proposal</p>
@@ -180,7 +180,7 @@
         </ReportItem>
         
         <!-- KTEE -->
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_KNOW,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <h2>Knowledge and Technology Exchange and Exploitation</h2>
                 <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders.<br />
@@ -190,7 +190,7 @@
         </ReportItem>
         
         <!-- Training -->
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" default="{getText(RP_COLLAB_LOI_2018,CAT_DESC,CAT_DESC_TRAINING,0,{$user_id},{$project_id})}">
             <![CDATA[
                 <h2>Training Potential</h2>
                 <p>A summary of the project’s training plan.</p>
