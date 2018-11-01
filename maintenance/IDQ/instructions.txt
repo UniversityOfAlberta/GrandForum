@@ -1,0 +1,11 @@
+1. Put the raw data csvs in the directory.  They should be labeled:
+    - science_YYYY_10to35.csv
+    - science_YYYY_36to100.csv
+    - science_YYYY_36to100.csv
+
+2. 3 files will be generated, copy the contents of each into the jcr_template.xls (3 separate files)
+
+3. Run the MARK_IDQ macro
+
+4. Use the following formula to change the class size to small/medium/large
+    =IF(VALUE(D26)<=35,"small",(IF((AND(VALUE(D26)>=36,VALUE(D26)<=100)),"medium",(IF((VALUE(D26)>=101),"large","")))))
