@@ -27,26 +27,26 @@
         $csv = str_getcsv($eval);
         if(count($csv) == 1 || trim($csv[6]) == "") continue;
         $person = Person::newFromEmployeeId($csv[2]);
+        if($person->getName() == "" || !$person->isRoleDuring(NI, "1900-01-01", "2100-01-01")) continue;
         $isFEC = isset($faculty[$person->getId()]);
         $isDD = $person->isSubRole("DD");
-        $classSize = ($csv[6] > 100) ? "large" : ($csv[6] > 36) ? "medium" : "small";
         if($isFEC){
             $fac = $faculty[$person->getId()];
             if($isDD){
                 // Dean's Decision
-                $dd[] = '"'.implode('","', array($fac->extra, utf8_encode($csv[3]), $csv[5], $classSize, $csv[7], 
-                              $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
+                $dd[] = '"'.implode('","', array($fac->extra, utf8_encode($csv[3]), $csv[5], $csv[6], $csv[7], 
+                                                 $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
             }
             else{
                 // FEC
-                $fec[] = '"'.implode('","', array($fac->extra, utf8_encode($csv[3]), $csv[5], $classSize, $csv[7], 
-                               $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
+                $fec[] = '"'.implode('","', array($fac->extra, utf8_encode($csv[3]), $csv[5], $csv[6], $csv[7], 
+                                                  $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
             }
         }
         else{
             // Non-FEC
-            $nonfec[] = '"'.implode('","', array("", utf8_encode($csv[3]), $csv[5], $classSize, $csv[7], 
-                              $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
+            $nonfec[] = '"'.implode('","', array("", utf8_encode($csv[3]), $csv[5], $csv[6], $csv[7], 
+                                                 $csv[8], $csv[9], $csv[10], $csv[11], $csv[12], $csv[13], $csv[14], $csv[15], $csv[16], $csv[17])).'"';
         }
     }
     
