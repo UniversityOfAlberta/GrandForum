@@ -314,6 +314,6 @@
 
             ]]>
         </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="amanda@cfn-nce.ca" />
     </ReportSection>
 </Report>
