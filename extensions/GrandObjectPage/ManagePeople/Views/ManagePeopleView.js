@@ -53,18 +53,15 @@ ManagePeopleView = Backbone.View.extend({
         _.each(this.subViews, function(row){
             row.render();
         });
-        var end = new Date();
         this.createDataTable(order, searchStr);
     },
     
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
-	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
-	    this.table.order(order);
-	    this.table.search(searchStr);
-	    this.table.draw();
+	                                                 'aLengthMenu': [[-1], ['All']],
+	                                                 'oSearch': {"sSearch": searchStr},
+	                                                 'order': order});
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
     },
