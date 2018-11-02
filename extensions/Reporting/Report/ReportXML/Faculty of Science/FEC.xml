@@ -717,23 +717,27 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="chairTable" type="StaticReportItem">
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
-                
+            <h2>Preview</h2>
+                <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Sign &amp; Lock" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false">
+        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true" height="600px">
+            <![CDATA[
+                {$item}
+            ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Submit" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
             <![CDATA[
-                <h3>3. Sign & Lock</h3>
-                <p>Once you are satisfied with with generated PDF, you can lock your annual report.
+                <p>Once you are satisfied with the generated PDF, you can lock your annual report.<br />
+                <b style="color: red;">NOTE: You will be unable to make further changes after locking your annual report.</b>
                 <div id='lockContainer' style='display:none;'>{$item}</div>
                 <button id='lock' type="button" value="Save" name="submit" disabled>Sign & Lock</button>
                 <script type="text/javascript">
