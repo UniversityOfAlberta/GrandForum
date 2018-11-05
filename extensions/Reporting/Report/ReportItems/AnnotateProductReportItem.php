@@ -5,9 +5,8 @@ class AnnotateProductReportItem extends AbstractReportItem {
     function render(){
         global $wgOut;
         $product = Product::newFromId($this->productId);
-        
-        
-        $html = "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, false, false, false, $this->personId)}</span>";
+        $showStatus = (strtolower($this->getAttr("showStatus", "false") == "true"));
+        $html = "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
         $html .= "<textarea id='{$this->getPostId()}' name='{$this->getPostId()}' style='display:none;'>{$this->getBlobValue()}</textarea>";
         $html .= "<div id='{$this->getPostId()}_dialog' title='Author Classification' style='display:none;'></div>";
         $html .= "<script id='{$this->getPostId()}_template' type='text/template'>
@@ -140,8 +139,8 @@ class AnnotateProductReportItem extends AbstractReportItem {
     function renderForPDF(){
         global $wgOut;
         $product = Product::newFromId($this->productId);
-        
-        $html = $product->getCitation(true, false, false, false, $this->personId);
+        $showStatus = (strtolower($this->getAttr("showStatus", "false") == "true"));
+        $html = $product->getCitation(true, $showStatus, false, false, $this->personId);
         $data = (array)json_decode($this->getBlobValue());
 
         $dom = new SmartDomDocument();
