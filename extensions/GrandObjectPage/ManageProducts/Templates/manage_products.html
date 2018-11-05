@@ -38,16 +38,13 @@
     <br /><br /><input type="checkbox" id="bibtex_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<p>
-    This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase() %>.  <%= productsTerm.pluralize() %> will show up in this list if one of the following conditions is true.
-    <ul>
-        <li>You are listed as being one of the authors</li>
-        <li>One of your HQP is listed as being one of the authors (only applicable to Supervisors)</li>
-        <li>You were the person that created the <%= productsTerm.toLowerCase() %></li>
-    </ul>
-</p>
-<p>
-    If the authors cell of a <%= productsTerm.toLowerCase() %> is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.
+This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase() %>.  <%= productsTerm.pluralize() %> will show up in this list if one of the following conditions is true.
+<ul>
+    <li>You are listed as being one of the authors</li>
+    <li>One of your HQP is listed as being one of the authors (only applicable to Supervisors)</li>
+    <li>You were the person that created the <%= productsTerm.toLowerCase() %></li>
+</ul>
+<p>If the authors cell of a <%= productsTerm.toLowerCase() %> is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.
 </p>
 <% if(projectsEnabled){ %>
 <p>
