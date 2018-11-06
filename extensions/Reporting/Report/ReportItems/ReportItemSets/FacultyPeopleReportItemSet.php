@@ -19,8 +19,12 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
-            if($person->getId() == 68){
+            if($person->getId() == 68 ||
+               $person->getId() == 298){
                 // Handle special cases
+                continue;
+            }
+            if($person->isRoleDuring(DEAN, $start, $end)){
                 continue;
             }
             if(isset($fec[$row['user_id']]) && $person->getFECType($end) != ""){
