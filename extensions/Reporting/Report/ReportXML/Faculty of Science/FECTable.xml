@@ -64,16 +64,16 @@
                         {$item} Chair's Advice<br />
                 ]]>
             </ReportItem>
-            <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <!--ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Dean's Advice<br />
                 ]]>
-            </ReportItem>
-            <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            </ReportItem-->
+            <!--ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         {$item} Dean's Decision<br />
                 ]]>
-            </ReportItem>
+            </ReportItem-->
             <ReportItem id="row_end" type="Static">
                 <![CDATA[
                         </td>
