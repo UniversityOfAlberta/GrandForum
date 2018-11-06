@@ -64,8 +64,7 @@
                         {$item} Chair's Advice<br />
                 ]]>
             </ReportItem>
-            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles},ADMIN)},
+            <ReportItemSet id="if" type="If" if="{or({contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},VDEAN),
                                                      {contains({$my_roles},HR)}})}">
