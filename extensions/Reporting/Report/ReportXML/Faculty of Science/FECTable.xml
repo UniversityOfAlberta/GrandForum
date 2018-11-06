@@ -64,16 +64,22 @@
                         {$item} Chair's Advice<br />
                 ]]>
             </ReportItem>
-            <!--ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Dean's Advice<br />
-                ]]>
-            </ReportItem-->
-            <!--ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Dean's Decision<br />
-                ]]>
-            </ReportItem-->
+            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
+                                                     {contains({$my_roles},ADMIN)},
+                                                     {contains({$my_roles},DEAN)},
+                                                     {contains({$my_roles},VDEAN),
+                                                     {contains({$my_roles},HR)}})}">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            {$item} Dean's Advice<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            {$item} Dean's Decision<br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="row_end" type="Static">
                 <![CDATA[
                         </td>
