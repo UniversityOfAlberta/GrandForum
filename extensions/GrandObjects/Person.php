@@ -54,7 +54,6 @@ class Person extends BackboneModel {
     var $rolesDuring;
     var $candidate;
     var $isEvaluator = array();
-    var $relations = array();
     var $hqps;
     var $historyHqps;
     var $contributions;
@@ -2920,13 +2919,22 @@ class Person extends BackboneModel {
      * Returns the Relationships this Person has
      * @param string $type The type of Relationship
      * @param boolean $history Whether or not to include the full history of Relationships
+     * @param boolean $inverse Changes which user 'this Person' is referring to (user1/user2).  This only works when logged in at least Staff
      * @return array The Relationships this Person has
      */
-    function getRelations($type='all', $history=false){
+    function getRelations($type='all', $history=false, $inverse=false){
+        $me = Person::newFromWgUser();
+        $relations = array();
+        if($inverse && $me->isRoleAtLeast(STAFF)){
+            $where = "WHERE user2 = '{$this->id}'";
+        }
+        else{
+            $where = "WHERE user1 = '{$this->id}'";
+        }
         if($type == "all"){
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
+                    $where
                     AND user1 != user2
                     AND u1.user_id = user1
                     AND u2.user_id = user2
@@ -2937,14 +2945,14 @@ class Person extends BackboneModel {
             }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+                $relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
             }
-            return $this->relations;
+            return $relations;
         }
         else if($type == "public"){
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
+                    $where
                     AND user1 != user2
                     AND u1.user_id = user1
                     AND u2.user_id = user2
@@ -2956,30 +2964,28 @@ class Person extends BackboneModel {
             }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+                $relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
             }
-            return $this->relations;
+            return $relations;
         }
-        //if(!isset($this->relations[$type])){
-            $this->relations[$type] = array();
-            $sql = "SELECT id, type
-                    FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
-                    AND user1 != user2
-                    AND u1.user_id = user1
-                    AND u2.user_id = user2
-                    AND u1.deleted != '1'
-                    AND u2.deleted != '1'
-                    AND type = '{$type}'";
-            if(!$history){
-                $sql .= "AND start_date >= end_date";
-            }
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
-            }
-        //}
-        return $this->relations[$type];
+        $relations[$type] = array();
+        $sql = "SELECT id, type
+                FROM grand_relations, mw_user u1, mw_user u2
+                $where
+                AND user1 != user2
+                AND u1.user_id = user1
+                AND u2.user_id = user2
+                AND u1.deleted != '1'
+                AND u2.deleted != '1'
+                AND type = '{$type}'";
+        if(!$history){
+            $sql .= "AND start_date >= end_date";
+        }
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            $relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
+        }
+        return $relations[$type];
     }
 
     /**

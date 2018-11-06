@@ -171,6 +171,7 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
                                                                 person:this.model, 
                                                                 el: this.relationsDialog});
+        this.editRelations.allPeople = this.parent.allPeople;
     },
     
     openUniversitiesDialog: function(){

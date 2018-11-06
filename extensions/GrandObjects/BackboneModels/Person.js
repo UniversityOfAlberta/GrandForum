@@ -351,7 +351,7 @@ PersonThemes = RangeCollection.extend({
  */
 PersonRelation = RelationModel.extend({
     initialize: function(){
-        this.set('projects', []);
+        
     },
 
     urlRoot: function(){
@@ -368,16 +368,18 @@ PersonRelation = RelationModel.extend({
         return person;
     },
     
-    defaults: {
-        id: null,
-        user1: "",
-        user2: "",
-        startDate: new Date().toISOString().substr(0, 10),
-        endDate: "",
-        projects: null,
-        name: "",
-        comment: "",
-        deleted: false
+    defaults: function(){
+        return {
+            id: null,
+            user1: "",
+            user2: "",
+            startDate: new Date().toISOString().substr(0, 10),
+            endDate: "",
+            projects: new Array(),
+            name: "",
+            comment: "",
+            deleted: false
+        }
     }
 });
 
