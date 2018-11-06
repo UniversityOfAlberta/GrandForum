@@ -25,6 +25,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
             }
             if($person->isRoleDuring(DEAN, $start, $end)){
+                // Don't show Deans
                 continue;
             }
             if(isset($fec[$row['user_id']]) && $person->getFECType($end) != ""){
