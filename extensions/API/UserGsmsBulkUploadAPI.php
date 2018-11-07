@@ -47,6 +47,9 @@ class UserGsmsBulkUploadAPI extends API{
             if($in_data_array){
                 continue;
             }
+            foreach($row as $k => $cell){
+                $row[$k] = trim($cell);
+            }
             //set student
             $array_info = array();
             $array_info['name'] = $student_name;
