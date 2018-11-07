@@ -59,11 +59,6 @@
                         {$item} Recommendation<br />
                 ]]>
             </ReportItem>
-            <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" section="Chair Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
-                <![CDATA[
-                        {$item} Chair's Advice<br />
-                ]]>
-            </ReportItem>
             <ReportItemSet id="if" type="If" if="{or({contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},VDEAN)},
