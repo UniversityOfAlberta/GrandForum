@@ -66,8 +66,8 @@
             </ReportItem>
             <ReportItemSet id="if" type="If" if="{or({contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},VDEAN),
-                                                     {contains({$my_roles},HR)}})}">
+                                                     {contains({$my_roles},VDEAN)},
+                                                     {contains({$my_roles},HR)})}">
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             {$item} Dean's Advice<br />
