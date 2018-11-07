@@ -695,8 +695,7 @@ class WhoSupplies extends SpecialPage{
                 </ul>
                 <h3>Nurse Practitioner Regulations</h3>
                 <ul>
-
-                    <li>See information under 'National Regulations'</li>
+                    <li>On October 18th, 2018, the Registered Nurses Association of Saskatchewan became the 8th province/territory to announce their support of NP provision of mifepristone medical abortion, to read more, <a href='https://www.srna.org/rnnp/prescribe-mifegymiso/' target='_blank'>click here</a></li>
                 </ul>
                 <h3>Midwife Regulations</h3>
                 <ul>
@@ -728,7 +727,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>As of October 31st, 2018, the Government of Yukon is now offering universal coverage of Mifegymiso®, to read more, <a href='https://yukon.ca/en/news/government-yukon-decreases-barriers-accessing-medical-abortion-medication' target='_blank'>click here</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
