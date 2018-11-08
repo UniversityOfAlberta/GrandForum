@@ -187,7 +187,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 else{
                     $year = substr($product->getDate(), 0, 4);
                     $category = $product->getCategory();
-                    $citation = $product->getProperCitation();
+                    $citation = $product->getCitation();
                 }
                 if($year == "0000"){
                     $year = "";

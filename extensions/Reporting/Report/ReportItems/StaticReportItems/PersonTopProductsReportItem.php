@@ -36,7 +36,7 @@ class PersonTopProductsReportItem extends AbstractReportItem {
             $table .= "<tr>
                            <td align='center'>{$year}</td>
                            <td>{$product->getCategory()}</td>
-                           <td>{$product->getProperCitation()}</td>
+                           <td>{$product->getCitation()}</td>
                        </tr>";
             $lastYear = $year;
             $i++;
