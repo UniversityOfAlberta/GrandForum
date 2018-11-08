@@ -104,7 +104,7 @@ InflectionJS =
     */
     uncountable_words: [
         'equipment', 'information', 'rice', 'money', 'species', 'series',
-        'fish', 'sheep', 'moose', 'deer', 'news', 'presented by'
+        'fish', 'sheep', 'moose', 'deer', 'news', 'presented by', 'dean', 'vicedean'
     ],
 
     /*

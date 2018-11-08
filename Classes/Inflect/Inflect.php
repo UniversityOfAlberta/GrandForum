@@ -106,7 +106,9 @@ class Inflect
         'information',
         'equipment',
         'press',
-        'intellectual property'
+        'intellectual property',
+        'dean',
+        'vicedean',
     );
 
 	/**
