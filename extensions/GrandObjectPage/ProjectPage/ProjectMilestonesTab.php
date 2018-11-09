@@ -34,8 +34,14 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         
         $_POST['user_name'] = $me->getName();
         $_POST['project'] = $this->project->getName();
-        
         foreach($_POST['milestone_activity'] as $activityId => $activity){
+            if(isset($_POST['milestone_activity_delete'][$activityId]) && $me->isRoleAtLeast(STAFF)){
+                // Delete the Activity
+                DBFunctions::update('grand_activities',
+                                    array('deleted' => 1),
+                                    array('id' => $activityId));
+                continue;
+            }
             if(isset($_POST['milestone_title'][$activityId])){
                 foreach($_POST['milestone_title'][$activityId] as $milestoneId => $title){
                     $quarters = array();
@@ -325,7 +331,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $commentsHeader = "<th>Comments</th>";
         }
         $statusColspan++;
-        
         $header = " <tr>
                         <th colspan='1'></th>
                         {$this->showYearsHeader()}
@@ -354,6 +359,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
+            $deleteActivity = "";
+            $deleteColspan = 0;
             if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='text' name='milestone_activity[$activityId]' style='font-weight:bold;' value='$activityTitle' />";
@@ -362,8 +369,15 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' /><b>$activity</b>";
             }
+            if($this->visibility['edit'] == 1 && $me->isRoleAtLeast(STAFF)){
+                $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' />Delete?</td>";
+                $deleteColspan = 1;
+            }
+            if($this instanceof ProjectFESMilestonesTab){
+                $deleteColspan += 2;
+            }
             $this->html .= "<tr class='top_border' data-id='$activityId'>
-                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1+($this->nYears*4))."'>$activity</td>
+                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1-$deleteColspan+($this->nYears*4))."'>{$activity}</td>{$deleteActivity}
                             </tr>";
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             if(count($milestones) == 0){

@@ -19,6 +19,13 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $_POST['user_name'] = $me->getName();
         $_POST['project'] = $this->project->getName();
         foreach($_POST['milestone_activity'] as $activityId => $activity){
+            if(isset($_POST['milestone_activity_delete'][$activityId]) && $me->isRoleAtLeast(STAFF)){
+                // Delete the Activity
+                DBFunctions::update('grand_activities',
+                                    array('deleted' => 1),
+                                    array('id' => $activityId));
+                continue;
+            }
             if(!isset($_POST['milestone_title'][$activityId])){
                 // Not created yet, to continue to next
                 continue;

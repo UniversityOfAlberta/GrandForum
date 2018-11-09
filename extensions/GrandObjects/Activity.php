@@ -6,6 +6,7 @@ class Activity {
     var $name;
     var $project;
     var $order;
+    var $deleted;
     
     /**
      * Returns the Activity with the given id
@@ -50,6 +51,7 @@ class Activity {
             $this->name = $data[0]['name'];
             $this->project = Project::newFromId($data[0]['project_id']);
             $this->order = $data[0]['order'];
+            $this->deleted = $data[0]['deleted'];
         }
     }
     
@@ -83,6 +85,14 @@ class Activity {
      */
     function getOrder(){
         return $this->order;
+    }
+    
+    /**
+     * Returns whether this Activity is deleted
+     * @return boolean Whether this Activity is deleted
+     */
+    function isDeleted(){
+        return $this->deleted;
     }
     
 }

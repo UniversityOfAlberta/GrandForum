@@ -1449,7 +1449,8 @@ EOF;
         $activities = array();
         $data = DBFunctions::select(array('grand_activities'),
                                     array('id'),
-                                    array('project_id' => $this->getId()),
+                                    array('project_id' => $this->getId(),
+                                          'deleted' => EQ(0)),
                                     array('`order`' => 'ASC',
                                           'id' => 'ASC'));
         foreach($data as $row){
@@ -1499,7 +1500,8 @@ EOF;
                 continue;
             }
             $milestone = Milestone::newFromId($row['milestone_id']);
-            if($milestone->getStatus() == 'Deleted'){
+            $activity = $milestone->getActivity();
+            if($milestone->getStatus() == 'Deleted' || ($activity != null && $milestone->getActivity()->isDeleted())){
                 continue;
             }
             $milestoneIds[$milestone->getMilestoneId()] = true;
