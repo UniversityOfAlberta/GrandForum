@@ -94,7 +94,9 @@ class ReportItemCallback {
             "user_cv_grant_count" => "getUserCVGrantCount",
             "user_grant_total" => "getUserGrantTotal",
             "user_phd_year" => "getUserPhdYear",
+            "user_phd_date" => "getUserPhDDate",
             "user_appointment_year" => "getUserAppointmentYear",
+            "user_appointment_date" => "getUserAppointmentDate",
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             // ISAC
@@ -1579,6 +1581,18 @@ class ReportItemCallback {
         $fecInfo = $person->getFecPersonalInfo();
         $phd_year_array = explode("-", $fecInfo->dateOfAppointment);
         return $phd_year_array[0];
+    }
+    
+    function getUserPhdDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $fecInfo = $person->getFecPersonalInfo();
+        return substr($fecInfo->dateOfPhd, 0, 10);
+    }
+
+    function getUserAppointmentDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $fecInfo = $person->getFecPersonalInfo();
+        return substr($fecInfo->dateOfAppointment, 0, 10);
     }
 }
 
