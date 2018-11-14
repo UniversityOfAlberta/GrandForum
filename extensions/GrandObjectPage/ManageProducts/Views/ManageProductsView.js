@@ -432,6 +432,7 @@ ManageProductsView = Backbone.View.extend({
 		                y: -($("#pageTitle .clicktooltip").height()/2)
 	                }
 	            },
+	            style: {classes: "instructions-qtip"},
 	            show: 'click',
                 hide: 'click unfocus'
 	        });

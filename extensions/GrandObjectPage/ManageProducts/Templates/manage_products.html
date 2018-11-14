@@ -52,12 +52,12 @@
             <li>You were the person that created the <%= productsTerm.toLowerCase() %></li>
         </ul>
     </p>
-    <p>
-        If the authors cell of a <%= productsTerm.toLowerCase() %> is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.
-    </p>
-    <p>
-        If an entry's title is highlighted in orange, this indicate that the entry may be incomplete (for example, only contains title and the year)
-    </p>
+    <h3>Sanity Checks</h3>
+    <ul>
+        <li>If the authors cell of a <%= productsTerm.toLowerCase() %> is highlighted <b style="background: #FFD118;">yellow</b>, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.</li>
+        <li>If an entry's title is highlighted in <b style="background: #FFA500;">light orange</b>, this indicates that the entry may be incomplete (for example, only contains title and the year)</li>
+        <li>If an entry's title is highlighted in <b style="background: #FF6600;">dark orange</b>, this indicates that the <b>Publication</b> is missing a <b>Peer Reviewed</b> status</li>
+    </ul>
     <p>
         <%= productsTerm.pluralize() %> which are listed as being 'Private' will not show up anywhere else on the <%= siteName %> except for on this page.  To 'release' the <%= productsTerm.toLowerCase() %> to the rest of the <%= siteName %>, uncheck the 'Private' checkbox for a specific <%= productsTerm.toLowerCase() %>, or press the 'Release All Private' button to release all of them.  Once all of your changes are done, make sure to press the 'Save All' button.
     </p>

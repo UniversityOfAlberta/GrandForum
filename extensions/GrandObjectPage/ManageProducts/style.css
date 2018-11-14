@@ -29,3 +29,5 @@ span#infinity {
 span#infinity:hover {
     cursor: pointer;
 }
+
+.instructions-qtip { max-width: 500px !important; }

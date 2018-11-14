@@ -194,7 +194,10 @@ ManageProductsViewRow = Backbone.View.extend({
         }
         
         //Sanity Check: If there is ONLY title and year (no data), set incomplete == true;
-        var incomplete = {incomplete: true};
+        var incomplete = {
+                          incomplete: true,
+                          peerReviewedMissing: false
+                         };
         
         // $.proxy rebinds this to val to this.model.get('cat') instead of 'type'
         if(productStructure.categories[this.model.get('category')].
@@ -209,6 +212,12 @@ ManageProductsViewRow = Backbone.View.extend({
                         }
                 }, this)
             );
+        }
+
+        if(this.model.get('category') == "Publication" && 
+           (typeof(this.model.get('data')['peer_reviewed']) == 'undefined' ||
+            this.model.get('data')['peer_reviewed'].trim() == "")){
+            incomplete.peerReviewedMissing = true;
         }
         
         /*
