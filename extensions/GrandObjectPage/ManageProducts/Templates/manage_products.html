@@ -94,6 +94,9 @@
     <span title="If checked, only shows <%= productsTerm.toLowerCase().pluralize() %> published or accepted after <%= (YEAR - 6) %>-04-01" class="tooltip">
         <input style="vertical-align:middle;" id="onlyRecent" type="checkbox" <% if(this.onlyRecent){ %> checked <% } %> /> Only show recent
     </span>
+    <span style="margin-left:25px;" title="If checked, excluded publications will be hidden" class="tooltip">
+        <input style="vertical-align:middle;" id="hideExcluded" type="checkbox" <% if(this.hideExcluded){ %> checked <% } %> /> Hide Excluded
+    </span>
 </p>
 <%= subview('addProduct') %>
 <table id="listTable" frame="box" rules="all" style="display:none;">

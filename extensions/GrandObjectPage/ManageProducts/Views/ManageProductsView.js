@@ -2,6 +2,7 @@ ManageProductsView = Backbone.View.extend({
 
     category: null,
     onlyRecent: true,
+    hideExcluded: true,
     products: null,
     table: null,
     subViews: new Array(),
@@ -73,6 +74,11 @@ ManageProductsView = Backbone.View.extend({
         if(this.onlyRecent){
             products = new Products(products.filter(function(p){
                 return ((p.get('date') >= (YEAR - 6) + "-04-01") || (p.get('date') == '0000-00-00') || (p.get('acceptance_date') >= (YEAR - 6) + "-04-01"));
+            }));
+        }
+        if(this.hideExcluded){
+            products = new Products(products.filter(function(p){
+                return (!p.get('exclude'));
             }));
         }
         return products;
@@ -271,6 +277,7 @@ ManageProductsView = Backbone.View.extend({
                 this.$("#saveProducts").prop('disabled', false);
                 this.$("#listTable_length .throbber").hide();
                 this.productChanged();
+                this.addRows();
             }, this)).fail($.proxy(function(e){
                 // Failure
                 clearAllMessages();
@@ -353,6 +360,7 @@ ManageProductsView = Backbone.View.extend({
                 this.$("#saveProducts").prop('disabled', false);
                 this.$("#listTable_length .throbber").hide();
                 this.productChanged();
+                this.addRows();
             }, this)).fail($.proxy(function(e){
                 // Failure
                 clearAllMessages();
@@ -393,6 +401,13 @@ ManageProductsView = Backbone.View.extend({
         }
     },
     
+    changeHideExcluded: function(){
+        if(this.hideExcluded != $("#hideExcluded")){
+            this.hideExcluded = $("#hideExcluded").is(":checked");
+            _.defer($.proxy(this.addRows, this));
+        }
+    },
+    
     events: {
         "click #saveProducts": "saveProducts",
         "click #deletePrivate": "deletePrivate",
@@ -403,7 +418,8 @@ ManageProductsView = Backbone.View.extend({
         "click #importBibTexButton": "importBibTeX",
         "click #uploadCalendarButton": "uploadCalendar",
         "change #showOnly select": "showOnly",
-        "change #onlyRecent": "changeRecent"
+        "change #onlyRecent": "changeRecent",
+        "change #hideExcluded": "changeHideExcluded"
     },
     
     render: function(){
