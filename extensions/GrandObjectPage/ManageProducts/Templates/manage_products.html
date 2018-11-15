@@ -94,7 +94,7 @@
     <span title="If checked, only shows <%= productsTerm.toLowerCase().pluralize() %> published or accepted after <%= (YEAR - 6) %>-04-01" class="tooltip">
         <input style="vertical-align:middle;" id="onlyRecent" type="checkbox" <% if(this.onlyRecent){ %> checked <% } %> /> Only show recent
     </span>
-    <span style="margin-left:25px;" title="If checked, excluded <%= productsTerm.toLowerCase().pluralize() %> will be hidden.  If a <%= productsTerm.toLowerCase() %> has any pending changes it will show up regardless." class="tooltip">
+    <span style="margin-left:25px;" title="If checked, excluded <%= productsTerm.toLowerCase().pluralize() %> will be hidden.  If any <%= productsTerm.toLowerCase().pluralize() %> have any pending changes they will show up regardless." class="tooltip">
         <input style="vertical-align:middle;" id="hideExcluded" type="checkbox" <% if(this.hideExcluded){ %> checked <% } %> /> Hide Excluded
     </span>
 </p>
