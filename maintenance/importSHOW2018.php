@@ -83,6 +83,7 @@ foreach($contents as $line){
                                   'type' => 'RPTP_SHOW_APPLICATION',
                                   'submitted' => 1,
                                   'token' => $tok,
+                                  'len_pdf' => strlen($pdf),
                                   'hash_data' => $hdata,
                                   'hash_pdf' => $hpdf,
                                   'pdf' => $pdf));
