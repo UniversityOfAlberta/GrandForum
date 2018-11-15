@@ -78,7 +78,7 @@ ManageProductsView = Backbone.View.extend({
         }
         if(this.hideExcluded){
             products = new Products(products.filter(function(p){
-                return (!p.get('exclude'));
+                return (!p.get('exclude') || p.dirty);
             }));
         }
         return products;
