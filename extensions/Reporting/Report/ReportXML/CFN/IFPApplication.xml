@@ -49,119 +49,123 @@
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
-                <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
-                    <![CDATA[{$item}]]>
-                </ReportItem>
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP2019Applicant)}">
+                <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
+                    <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
-                <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 1 - Information about the Applicant and Supervisor</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section1_comment" type="Textarea" blobItem="SECTION1_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section2" type="Radio" blobItem="SECTION2" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 2 - Information about Applicant’s Research Project</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section2_comment" type="Textarea" blobItem="SECTION2_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section3" type="Radio" blobItem="SECTION3" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 3 - Interest and Benefit</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section3_comment" type="Textarea" blobItem="SECTION3_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section4" type="Radio" blobItem="SECTION4" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 4 - Partnership Funding</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section4_comment" type="Textarea" blobItem="SECTION4_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section5" type="Radio" blobItem="SECTION5" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 5 - Curriculum Vitae and Experience</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section5_comment" type="Textarea" blobItem="SECTION5_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section6" type="Radio" blobItem="SECTION6" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 6 - Learning Plan</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section6_comment" type="Textarea" blobItem="SECTION6_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section7" type="Radio" blobItem="SECTION7" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 8 - References</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP2019Applicant)}">
+                <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
+                    <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 1 - Information about the Applicant and Supervisor</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section1_comment" type="Textarea" blobItem="SECTION1_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section2" type="Radio" blobItem="SECTION2" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 2 - Information about Applicant’s Research Project</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section2_comment" type="Textarea" blobItem="SECTION2_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section3" type="Radio" blobItem="SECTION3" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 3 - Interest and Benefit</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section3_comment" type="Textarea" blobItem="SECTION3_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section4" type="Radio" blobItem="SECTION4" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 4 - Partnership Funding</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section4_comment" type="Textarea" blobItem="SECTION4_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section5" type="Radio" blobItem="SECTION5" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 5 - Curriculum Vitae and Experience</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section5_comment" type="Textarea" blobItem="SECTION5_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section6" type="Radio" blobItem="SECTION6" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 6 - Learning Plan</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section6_comment" type="Textarea" blobItem="SECTION6_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section7" type="Radio" blobItem="SECTION7" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 8 - References</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
