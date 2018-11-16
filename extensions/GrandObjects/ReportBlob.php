@@ -292,7 +292,7 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache){
+	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id != "%"){
 	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
@@ -347,7 +347,7 @@ class ReportBlob {
 			$ret = $this->populate($res[0]);
             break;
 		}
-		if($this->_type != BLOB_RAW){
+		if($this->_type != BLOB_RAW && $this->_owner_id != "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
 		    Cache::store($cacheId, $this->_data);
 		}

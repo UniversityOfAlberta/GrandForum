@@ -28,9 +28,9 @@ function addUserUniversity($person, $uni, $dept, $pos){
 
 foreach($contents as $line){
     $csv = str_getcsv($line);
-    if(count($csv) == 31){
+    if(count($csv) == 32){
         $fileNumber = trim($csv[0]);
-        $fundingLevel = trim(str_replace("’", "'", str_replace("Fellowship – ", $csv[1])));
+        $fundingLevel = trim(str_replace("’", "'", str_replace("Fellowship – ", "", $csv[1])));
         $firstName = trim($csv[2]);
         $lastName = trim($csv[3]);
         $gender = trim($csv[4]);
