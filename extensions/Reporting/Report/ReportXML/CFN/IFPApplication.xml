@@ -49,7 +49,7 @@
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP2019Applicant)}">
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
                         <![CDATA[{$item}]]>
@@ -60,7 +60,7 @@
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP2019Applicant)}">
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
