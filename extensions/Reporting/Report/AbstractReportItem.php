@@ -420,15 +420,12 @@ abstract class AbstractReportItem {
 
     //Function that finds all variables in CDATA (if any) and substitutes them by finding there values with the help of RI type-specific callbacks
     function varSubstitute($cdata){
-        if(defined($cdata) && strtolower($cdata) != "true" && strtolower($cdata) != "false"){
-            return constant($cdata);
-        }
         $matches = array();
         preg_match_all('/{\$(.+?)}/', $cdata, $matches);
         
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = str_replace('{$', "{\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
+                $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
                 $v = str_replace(",", "&#44;", $v);
                 $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
             }

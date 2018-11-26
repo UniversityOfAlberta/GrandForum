@@ -20,6 +20,10 @@
     <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" type="ReportSection">
         <ReportItem id="thead" type="Static">
             <![CDATA[
+                {set(sumFaculty, 0)}
+                {set(sumFSO, 0)}
+                {set(nFaculty, 0)}
+                {set(nFSO, 0)}
                 <style>
                     table#chairTable * {
                         font-size:11px !important;
@@ -74,6 +78,42 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItemSet type="If" if="{or({contains({getExtra()}, A)},
+                                             {contains({getExtra()}, B)},
+                                             {contains({getExtra()}, C)},
+                                             {contains({getExtra()}, N)}
+                                         )}">
+                <ReportItemSet type="If" if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                                                  {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                                                  {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})}
+                                             )}">
+                    
+                    <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                        <![CDATA[
+                            {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                            {set(nFaculty, {add({get(nFaculty)}, 1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+            <ReportItemSet type="If" if="{or({contains({getExtra()}, D)},
+                                             {contains({getExtra()}, E)},
+                                             {contains({getExtra()}, F)},
+                                             {contains({getExtra()}, M)}
+                                         )}">
+                <ReportItemSet type="If" if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                                                  {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                                                  {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})}
+                                             )}">
+                    
+                    <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                        <![CDATA[
+                            {set(sumFSO, {add({get(sumFSO)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                            {set(nFSO, {add({get(nFSO)}, 1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
             <ReportItem id="row_end" type="Static">
                 <![CDATA[
                         </td>
@@ -91,6 +131,21 @@
                         "iDisplayLength": -1
                     });
                 </script>
+                
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Average<br />Faculty Increment</th>
+                        <th>Average<br />FSO Increment</th>
+                        <th>Total<br />Faculty Increments</th>
+                        <th>Total<br />FSO Increments</th>
+                    </tr>
+                    <tr>
+                        <td id='averageFac' align='right'>{round({divide({get(sumFaculty)}, {get(nFaculty)})}, 2)}</td>
+                        <td id='averageFSO' align='right'>{round({divide({get(sumFSO)}, {get(nFSO)})}, 2)}</td>
+                        <td id='totalFac' align='right'>{round({get(sumFaculty)}, 2)}</td>
+                        <td id='totalFSO' align='right'>{round({get(sumFSO)}, 2)}</td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>

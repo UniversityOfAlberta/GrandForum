@@ -1126,10 +1126,12 @@ class ReportItemCallback {
     function getExtra($index=null){
         $set = $this->reportItem->extra;
         if($index == null){
-            return $set;
+            return str_replace(")", "&#41;", 
+                   str_replace("(", "&#40;", $set));
         }
         if(isset($set[$index])){
-            return $set[$index];
+            return str_replace(")", "&#41;", 
+                   str_replace("(", "&#40;", $set[$index]));
         }
         return "";
     }

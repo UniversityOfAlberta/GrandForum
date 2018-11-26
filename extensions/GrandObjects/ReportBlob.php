@@ -63,7 +63,7 @@ class ReportBlob {
 			$this->_owner_id = $owner;
 		else
 			// Bad argument, but carry on (callee maybe wants to load from database).
-			$this->_owner_id = false;
+			$this->_owner_id = str_replace("*", "%", $owner);
 
 		if ($proj instanceof Project)
 			$this->_proj_id = $proj->getId();
@@ -276,7 +276,7 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache){
+	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id != "%"){
 	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
@@ -301,10 +301,18 @@ class ReportBlob {
 		$where = implode(' AND ', $where_list);
 
 		// Load all data from database.
-		$sql = "SELECT * FROM grand_report_blobs WHERE " .
-			"user_id = {$this->_owner_id} AND " .
-			"year = {$this->_year} AND " .
-			"proj_id = {$this->_proj_id} AND {$where};";
+		if(strstr($this->_owner_id, "%") !== false){
+		    $sql = "SELECT * FROM grand_report_blobs WHERE " .
+			        "user_id LIKE '{$this->_owner_id}' AND " .
+			        "year = {$this->_year} AND " .
+			        "proj_id = {$this->_proj_id} AND {$where};";
+        }
+        else{
+            $sql = "SELECT * FROM grand_report_blobs WHERE " .
+			        "user_id = '{$this->_owner_id}' AND " .
+			        "year = {$this->_year} AND " .
+			        "proj_id = {$this->_proj_id} AND {$where};";
+        }
 		$res = DBFunctions::execSQL($sql);
         $ret = false;
 		switch (count($res)) {
@@ -321,7 +329,7 @@ class ReportBlob {
 			//echo ">>>> Offending SQL:\n{$sql}\n";
 			throw new DomainException('Address leads to ambiguous data.');
 		}
-		if($this->_type != BLOB_RAW){
+		if($this->_type != BLOB_RAW && $this->_owner_id != "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
 		    Cache::store($cacheId, $this->_data);
 		}
