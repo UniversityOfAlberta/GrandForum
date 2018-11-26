@@ -138,8 +138,8 @@
                     <tr>
                         <th>Average<br />Faculty Increment</th>
                         <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increments</th>
-                        <th>Total<br />FSO Increments</th>
+                        <th>Total<br />Faculty Increment</th>
+                        <th>Total<br />FSO Increment</th>
                     </tr>
                     <tr>
                         <td id='averageFac' align='right'>{round({divide({get(sumFaculty)}, {get(nFaculty)})}, 2)}</td>
