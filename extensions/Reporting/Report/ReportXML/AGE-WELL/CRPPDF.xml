@@ -130,8 +130,6 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="part1b" tooltip="PART 1: NARRATIVE APPLICATION" name="Appendices" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section9" type="Upload" blobItem="SECTION9" blobType="BLOB_RAW" rich="true" fileSize="5">
             <![CDATA[
                 <h2>Section 9: References Cited</h2>
@@ -158,7 +156,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part2" tooltip="BUDGET" name="Budget" type="EditableReportSection" title="BUDGET" blobSection="PART2">
+    <ReportSection id="part2" tooltip="PART 2: BUDGET" name="Budget" type="EditableReportSection" title="PART 2: BUDGET" blobSection="PART2">
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
             <![CDATA[
                 {$item}
@@ -202,7 +200,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part3" tooltip="PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3" pagebreak="false">
+    <ReportSection id="part3" tooltip="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3" pagebreak="false">
         <ReportItem id="partnerships" type="MultiText" class="wikitable" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
             <![CDATA[                
                 {$item}

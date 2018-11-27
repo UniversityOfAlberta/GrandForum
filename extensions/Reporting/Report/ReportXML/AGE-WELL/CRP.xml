@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL NCE Core Research Program 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" disabled="false">
+<Report name="AGE-WELL NCE CRP 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="cover" permissions="rw" />
@@ -364,7 +364,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part2" tooltip="BUDGET" name="Budget" type="EditableReportSection" title="BUDGET" blobSection="PART2">
+    <ReportSection id="part2" tooltip="PART 2: BUDGET" name="Budget" type="EditableReportSection" title="PART 2: BUDGET" blobSection="PART2">
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
             <![CDATA[
                 <p>Provide a 3, 4 or 5 year budget using the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL RFP Project Budget.xlsx'><b>template</b></a> provided. A detailed budget justification will be required for all budget categories and requests.</p>
@@ -419,7 +419,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="part3" tooltip="PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3">
+    <ReportSection id="part3" tooltip="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3">
         <ReportItem id="partnerships" type="MultiText" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
             <![CDATA[
                 <p>In the table provided, list each organization that will partner in the project (confirmed and proposed), their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. Anticipated partnerships that are not yet developed should be indicated as in progress in the application. Individuals from partnering organizations that will be participating as project team members should also be listed in Section 8: Team and Project Management.</p>

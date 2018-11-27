@@ -104,14 +104,14 @@ class ReportArchive extends SpecialPage {
                                     // Individual Reports, but project version
                                     $firstName = $report->person->getFirstName();
                                     $lastName = $report->person->getLastName();
-                                    $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
+                                    $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
                                 }
                             }
                             else{
                                 // Individual Reports
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
-                                $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
+                                $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}_{$date}.{$ext}";
                             }
                         }
                     }
