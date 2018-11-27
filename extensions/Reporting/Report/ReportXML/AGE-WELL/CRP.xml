@@ -106,14 +106,8 @@
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
         <ReportItem id="leader" type="Static" blobItem="LEADER">
             <![CDATA[
-                <h2>Lead Investigator Name(s)</h2>
+                <h2>Project Lead Name(s)</h2>
                 {$user_name}
-            ]]>
-        </ReportItem>
-        <ReportItem id="colead" type="Text" blobItem="CO-INVESTIGATOR" width="250px">
-            <![CDATA[
-                <h2>Co-Investigator Name(s)</h2>
-                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
@@ -159,7 +153,7 @@
     <ReportSection id="part1a" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
             <![CDATA[
-                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2025-Application-Guidelines.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.</p>
+                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2025-Application-Guidelines.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.  If you are coming in and out of the application form, please remember to hit save before you leave.</p>
                 <h2>Section 1: Challenge Statement (approx. 1 page)</h2>
                 <small>In this section, we would like you to tell us how your proposed research aligns with AGE-WELL’s Challenge Areas that you have selected in the application form. Please specifically address the following:<br />
                     Challenge Area
@@ -185,9 +179,10 @@
                     </ul>
                 </small>
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
-        <ReportItem id="section2" type="Textarea" blobItem="SECTION2" rich="true" limit="250">
+        <ReportItem id="section2" type="Textarea" blobItem="SECTION2" rich="true" limit="275">
             <![CDATA[
                 <h2>Section 2: What is (are) your Product(s)? (approx. 1/2 page)</h2>
                 <small>Describe the real-world products that your project is expected to develop and mobilize. AGE-WELL recognizes different types of products: Technologies, Services, Policies/Practices. It is expected that core research projects will address all three product types.  Specifically, describe:
@@ -199,16 +194,18 @@
                     </ul>
                 </small>
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
-        <ReportItem id="section3" type="Textarea" blobItem="SECTION3" rich="true" limit="250">
+        <ReportItem id="section3" type="Textarea" blobItem="SECTION3" rich="true" limit="275">
             <![CDATA[
                 <h2>Section 3: Project Context and Current “State-of-the-Art” (approx. 1/2 page)</h2>
                 Define in more depth the current state-of-the art in the field with appropriate references, including gaps in knowledge, solutions, and needs to be addressed.
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
-        <ReportItem id="section4" type="Textarea" blobItem="SECTION4" rich="true" limit="1550">
+        <ReportItem id="section4" type="Textarea" blobItem="SECTION4" rich="true" limit="1650">
             <![CDATA[
                 <h2>Section 4: Research Plan (approx. 3 pages)</h2>
                 <small>The project plan should provide a framework for the operation of the project and should comprise an integrated research and knowledge strategy. The project plan should include the following:<br />
@@ -224,6 +221,7 @@
                     <p>Describe in the table provided major milestones and deliverables in each year of funding.</p>
                 </small>
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
         <ReportItem id="section5" type="Textarea" blobItem="SECTION5" rich="true" limit="550">
@@ -244,6 +242,7 @@
                     </ul>
                 </small>
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
         <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ.">
@@ -251,7 +250,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1050">
+        <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1100">
             <![CDATA[
                 <h2>Section 6: Knowledge and Technology Exchange and Exploitation (KTEE) (approx. 2 pages)</h2>
                 <small>
@@ -266,6 +265,7 @@
                     </ul>
                 </small>
                 {$item}
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
         <ReportItem id="section7" type="Textarea" blobItem="SECTION7" rich="true" limit="550">
@@ -289,13 +289,23 @@
         <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form.">
             <![CDATA[
                 {$item}
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
+            <![CDATA[
+                <div style="margin-left:25px;">
+                    Please upload Part 1 of the Mitacs application form here.
+                    {$item}
+                </div>
+                <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
         <ReportItem id="section8" type="Textarea" blobItem="SECTION8" rich="true" limit="550">
             <![CDATA[
                 <h2>Section 8: Team and Project Management (approx. 1 page)</h2>
                 <small>
-                    <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos. This is a key priority for AGE-WELL in 2020-2025. In Section 10, a summary table with team members will be requested. Describe the project team:</p>
+                    <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos. This is a key priority for AGE-WELL in 2020-2025. In this section, please describe the project team and in Section 10, a summary table of team members will be requested.</p>
                     <ul>
                         <li>Identify the Project Leader(s) and Network Investigators, including non-academic partners.</li>
                         <li>Describe how you intend to work as a transdisciplinary team.</li>
@@ -318,13 +328,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="bio1" type="Upload" blobItem="BIO1" blobType="BLOB_RAW" fileSize="2" optional="true">
+        <ReportItem id="bio" type="Upload" blobItem="BIO" blobType="BLOB_RAW" fileSize="10" optional="true">
             <![CDATA[
                 <h2>Section 10: Appendices</h2>
                 <small>
                     Please include the following appendices with the application:
                     <ul>
-                        <li>Two-page bios with links to websites for each Project Lead, Co-investigator and Partner named on the application.</li>
+                        <li>Two-page bios (free-form) with links to websites for each Project Lead, Co-investigator and Partner named on the application. Please combine all documents into one file for upload.</li>
                         <li>Figures and Diagrams – You may include up to five figures and diagrams to help further illustrate the concepts outlined in your proposal.</li>
                     </ul>
                 </small>
@@ -332,74 +342,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="bio2" type="Upload" blobItem="BIO2" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio3" type="Upload" blobItem="BIO3" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio4" type="Upload" blobItem="BIO4" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio5" type="Upload" blobItem="BIO5" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio6" type="Upload" blobItem="BIO6" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio7" type="Upload" blobItem="BIO7" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio8" type="Upload" blobItem="BIO8" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio9" type="Upload" blobItem="BIO9" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bio10" type="Upload" blobItem="BIO10" blobType="BLOB_RAW" fileSize="2" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figure1" type="Upload" blobItem="FIGURE1" blobType="BLOB_RAW" fileSize="2">
+        <ReportItem id="figures" type="Upload" blobItem="FIGURES" blobType="BLOB_RAW" fileSize="10">
             <![CDATA[
                 <h3>Figures and Diagrams</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figure2" type="Upload" blobItem="FIGURE2" blobType="BLOB_RAW" fileSize="2">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figure3" type="Upload" blobItem="FIGURE3" blobType="BLOB_RAW" fileSize="2">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figure4" type="Upload" blobItem="FIGURE4" blobType="BLOB_RAW" fileSize="2">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figure5" type="Upload" blobItem="FIGURE5" blobType="BLOB_RAW" fileSize="2">
-            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
@@ -422,7 +367,7 @@
     <ReportSection id="part2" tooltip="BUDGET" name="Budget" type="EditableReportSection" title="BUDGET" blobSection="PART2">
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
             <![CDATA[
-                <p>Provide a 3, 4 or 5 year budget using the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL RFP Project Budget.xlsx'><b>template</b></a> provided (available in the AGE-WELL Forum Research Portal). A detailed budget justification will be required for all budget categories and requests.</p>
+                <p>Provide a 3, 4 or 5 year budget using the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL RFP Project Budget.xlsx'><b>template</b></a> provided. A detailed budget justification will be required for all budget categories and requests.</p>
                 <p>Applicants should review the Use of Grant Funds section of the <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-GuideAdminFinancier/index_eng.asp' target='_blank'>Tri-Agency Financial Administration Guide</a> for a complete listing and description of allowable costs and activities.</p>
                 {$item}
             ]]>
@@ -475,7 +420,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="part3" tooltip="PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3">
-        <ReportItem id="partnerships" type="MultiText" labels="Partner Organization/Research Receptor|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Select(Yes,No)|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|70|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
+        <ReportItem id="partnerships" type="MultiText" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
             <![CDATA[
                 <p>In the table provided, list each organization that will partner in the project (confirmed and proposed), their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. Anticipated partnerships that are not yet developed should be indicated as in progress in the application. Individuals from partnering organizations that will be participating as project team members should also be listed in Section 8: Team and Project Management.</p>
                 
@@ -485,7 +430,7 @@
         <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2">
             <![CDATA[
                 <h2>Letters of Support</h2>
-                <p>Tangible committed contributions from <u>at least one</u> partner are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner must include the following:</p>
+                <p>Tangible committed contributions from <u>at least one</u> non-academic partner are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner must include the following:</p>
                 <ul>
                     <li>A description of how the partner and research team will work together to achieve the objectives of the AGE-WELL project, including any history of collaboration</li>
                     <li>Quantified contributions (cash and/or in-kind). Note that in-kind contributions must be those recognized by CIHR and quantified using published <a href='http://www.cihr-irsc.gc.ca/e/3758.html' target='_blank'>In-Kind Eligibility Table</a></li>
