@@ -85,6 +85,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=sip'>SIP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cip'>CIP</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=crp'>CRP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
@@ -111,6 +112,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "cip" && $me->isRoleAtLeast(SD)){
             $this->generateCIP();
+        }
+        else if($program == "crp" && $me->isRoleAtLeast(SD)){
+            $this->generateCRP();
         }
         if($program == "access" && $me->isRoleAtLeast(SD)){
             $this->generateAccess();
@@ -161,6 +165,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_CIP', $this->nis, 2015, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCRP(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
