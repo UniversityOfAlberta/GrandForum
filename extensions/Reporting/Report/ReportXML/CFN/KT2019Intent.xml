@@ -170,7 +170,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funding" type="Checkbox" blobItem="FUNDING" options="New Brunswick Health Research Foundation (NBHRF)">
+        <ReportItem id="partner_funding" type="Checkbox" blobItem="PARTNER_FUNDING" blobType="BLOB_ARRAY" options="New Brunswick Health Research Foundation (NBHRF)">
             <![CDATA[
                 <tr>
                     <td valign="top"><b>Please indicate if your application is eligible for funding from partner organization(s)</b><br /><small>Indicate ONE strategic objective that best aligns with your KT Proposal</small></td>
