@@ -49,7 +49,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funding" type="Integer" width="55px" blobItem="FUNDING" min="0" max="100000">
+        <ReportItem id="funding" type="Integer" width="55px" blobItem="FUNDING" min="0" max="10000000">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Funding Requested from CFN</b></td>
@@ -176,7 +176,7 @@
         <ReportItem id="strategic" type="Radio" blobItem="STRATEGIC" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <tr>
-                    <td valign="top"><b>CFN Research Theme</b><br /><small>Indicate ONE research theme that best aligns with your KT Proposal</small></td>
+                    <td valign="top"><b>CFN Research Theme</b><br /><small>Indicate ONE strategic objective that best aligns with your KT Proposal</small></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
