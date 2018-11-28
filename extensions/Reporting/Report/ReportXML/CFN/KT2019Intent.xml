@@ -134,7 +134,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="100" height="100px">
+        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="300" height="175px">
             <![CDATA[
                 <b>Please describe your proposed implementation plan</b><br />
                 <small><ul>
