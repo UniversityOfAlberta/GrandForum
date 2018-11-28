@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="" year="2019" ajax="true" disabled="false">
+<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019Intent" year="2019" ajax="true" disabled="false">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="intent" permissions="rw" />
@@ -14,7 +14,7 @@
                 <ul>
                     <li>All sections of this document must be completed. The document must be written in English.</li>
                     <li>The Intent to Apply must be completed using the online platform, Forum, by <b>Monday, January 14, 2019 – 5 pm ET</b></li>
-                    <li>The Intent to Apply will be adjudicated based on the following criteria:
+                    <li><b>The Intent to Apply will be adjudicated based on the following criteria:</b>
                         <ul>
                             <li>Alignment with CFN KT competition priorities</li>
                             <li>Evidence base to support the importance of the endeavour and potential for improvement in the setting</li>
@@ -23,7 +23,7 @@
                             <li>Potential reach and significance of impact of the proposal</li>
                         </ul>
                     </li>
-                    <li>Only top-rated projects will be invited to submit a full Application. Invitations to submit a full Application will be sent by the end of January 2019.</li>
+                    <li><b>Only top-rated projects will be invited to submit a full Application.</b> Invitations to submit a full Application will be sent by the end of January 2019.</li>
                     <li>The Project Leader, other Principal Investigators and Co-Investigators cannot be changed, nor new team members added after this document has been submitted to CFN.  Visit CFN’s website for project team role definitions: <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a></li>
                 </ul>
                 <table class="wikitable" width="100%">
@@ -49,7 +49,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funding" type="Integer" width="55px" blobItem="FUNDING" min="0" max="10000000">
+        <ReportItem id="funding" type="Integer" width="100px" blobItem="FUNDING" min="0">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Funding Requested from CFN</b></td>
@@ -71,7 +71,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" orientation="vertical">
+        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="||||400|" orientation="vertical">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Secondary Contact for PL</b><br /><small>(i.e., Project Manager, Assistant etc.)</small></td>
@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" orientation="vertical" multiple="true" addText="Add Partner">
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address|Contribution Amount($)" types="Text|Text|Text|Text|Text|Integer" orientation="vertical" multiple="true" addText="Add Partner">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Partnerships</b><br /><small>List current identified and potential partners for your KT Proposal and provide the (estimated) amount of cash or in-kind contribution they will be providing.  Additional partners can be added in the final proposal.</small></td>
@@ -162,14 +162,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="partner_funding" type="Checkbox" blobItem="PARTNER_FUNDING" blobType="BLOB_ARRAY" options="New Brunswick Health Research Foundation (NBHRF)">
+        <ReportItem id="partner_funding" type="Checkbox" blobItem="PARTNER_FUNDING" blobType="BLOB_ARRAY" options="New Brunswick Health Research Foundation (NBHRF)" optional="true">
             <![CDATA[
                 <tr>
                     <td valign="top"><b>Please indicate if your application is eligible for funding from partner organization(s)</b><br /><small>Indicate ONE strategic objective that best aligns with your KT Proposal</small></td>
                     <td valign="top">
                         {$item}
                         <small style='margin-left:25px;'><i><b>NOTE:</b> To be eligible for NBHRF partnered funding, the PL of the KT proposal must be based in an eligible institution in New Brunswick AND the money for the project must be spent within New Brunswick.</i></small>
-</td>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -215,6 +215,22 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem> 
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet type="If" if="{or({&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
+                                         {&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
+            <ReportItem id="message" type="Static">
+                <![CDATA[
+                    <div class="error">You must provide 3 national and international reviewers</div>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

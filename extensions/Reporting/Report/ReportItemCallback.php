@@ -149,6 +149,7 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "getArrayCount" => "getArrayCount",
             "replace" => "replace",
             "set" => "set",
             "get" => "get",
@@ -1667,6 +1668,11 @@ class ReportItemCallback {
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
         return (float) str_replace(",", "", $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year));
+    }
+    
+    function getArrayCount($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+        $array = $this->getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index, "");
+        return count($array);
     }
     
     function concat(){
