@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="" year="2019" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="NI">
+            <SectionPermission id="intent" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="intent" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="2019 Knowledge Translation Competition Intent to Apply">
+        <ReportItem id="information" type="Static">
+            <![CDATA[
+                <ul>
+                    <li>All sections of this document must be completed. The document must be written in English.</li>
+                    <li>The Intent to Apply must be completed using the online platform, Forum, by <b>Monday, January 14, 2019 – 5 pm ET</b></li>
+                    <li>The Intent to Apply will be adjudicated based on the following criteria:
+                        <ul>
+                            <li>Alignment with CFN KT competition priorities</li>
+                            <li>Evidence base to support the importance of the endeavour and potential for improvement in the setting</li>
+                            <li>Feasibility of the implementation plan design and methods</li>
+                            <li>Involvement of appropriate stakeholders and engagement of appropriate partnerships</li>
+                            <li>Potential reach and significance of impact of the proposal</li>
+                        </ul>
+                    </li>
+                    <li>Only top-rated projects will be invited to submit a full Application. Invitations to submit a full Application will be sent by the end of January 2019.</li>
+                    <li>The Project Leader, other Principal Investigators and Co-Investigators cannot be changed, nor new team members added after this document has been submitted to CFN.  Visit CFN’s website for project team role definitions: <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a></li>
+                </ul>
+                <table class="wikitable" width="100%">
+                    <tr>
+                        <th width='1%'>Information Required</th>
+                        <th>Enter information in this column</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Title of KT Proposal</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small></td>
+                    <td><div style="width:100%;box-sizing:border-box;padding-right:12px;">{$item}</div></td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="18">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Term of KT Proposal</b><br /><small>(Maximum 18 months)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Integer" width="55px" blobItem="FUNDING" min="0" max="100000">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Funding Requested from CFN</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="||||400|" orientation="vertical">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center">
+                        Visit CFN’s website for project team role definitions<br />
+                        <a target='_blank' href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>Project Leader (PL)</b><br /><small>(i.e. Principal Investigator responsible for managing project team.  He/She will be the primary contact for CFN)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" orientation="vertical">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Secondary Contact for PL</b><br /><small>(i.e., Project Manager, Assistant etc.)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobType="BLOB_ARRAY" blobItem="PI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add PI">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Principal Investigators</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" blobType="BLOB_ARRAY" blobItem="CI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add CI">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Co-Investigators</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" orientation="vertical" multiple="true" addText="Add Partner">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Partnerships</b><br /><small>List current identified and potential partners for your KT Proposal and provide the (estimated) amount of cash or in-kind contribution they will be providing.  Additional partners can be added in the final proposal.</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" widths="100%|200|auto" labels="Keyword" orientation="horizontal" max="10" multiple="true" addText="Add Keyword">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Keywords</b><br /><small>(Max. 10 words that describe Proposal (e.g. Medline headings)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="evidence" type="Textarea" blobItem="EVIDENCE" rich="true" limit="300" height="175px">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b>Non-Confidential Project Summary</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Please describe the evidence that supports your KT Proposal</b><br />
+                    <small><ul>
+                        <li>Describe the relevant knowledge creation and synthesis that is completed to-date.</li>
+                        <li>Identify the gap(s) between evidence and implementation (e.g., care gap, quality gap).</li>
+                    </ul><small>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="100" height="100px">
+            <![CDATA[
+                <b>Please summarize the objective(s) of your KT Proposal</b><br />
+                <small><ul>
+                    <li>Include output or outcomes to be achieved.</li>
+                </ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="100" height="100px">
+            <![CDATA[
+                <b>Please describe your proposed implementation plan</b><br />
+                <small><ul>
+                    <li>Describe the proposed design and methods.</li>
+                    <li>Describe the involvement of knowledge users, decision makers, researchers, and partnering organizations. Include timeline and milestones.</li>
+                </ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <b>Please describe the potential impact of your KT Proposal</b><br />
+                <small><ul>
+                    <li>Describe how your KT Proposal will generate, transfer, and/or apply new knowledge.</li>
+                    <li>Describe the anticipated reach and significance of impact of your proposal.</li>
+                </ul></small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="priority" type="Radio" blobItem="PRIORITY" options="Enhancing integrated models of care to improve frailty outcomes.|Strategies for improving functional outcomes in older adults living with frailty.">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Please highlight only one priorities that your application will address.</b><br /><small>(Select the best fit with your application)</small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="research" type="Radio" blobItem="RESEARCH" options="Improving end-of-life care/advance care planning|Improving acute/critical care|Optimizing community/residential care|Optimizing transitions of care">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>CFN Research Theme</b><br /><small>Indicate ONE research theme that best aligns with your KT Proposal</small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Checkbox" blobItem="FUNDING" options="New Brunswick Health Research Foundation (NBHRF)">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Please indicate if your application is eligible for funding from partner organization(s)</b><br /><small>Indicate ONE strategic objective that best aligns with your KT Proposal</small></td>
+                    <td valign="top">
+                        {$item}
+                        <small style='margin-left:25px;'><i><b>NOTE:</b> To be eligible for NBHRF partnered funding, the PL of the KT proposal must be based in an eligible institution in New Brunswick AND the money for the project must be spent within New Brunswick.</i></small>
+</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="research" type="Radio" blobItem="RESEARCH" options="Improving end-of-life care/advance care planning|Improving acute/critical care|Optimizing community/residential care|Optimizing transitions of care">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>CFN Research Theme</b><br /><small>Indicate ONE research theme that best aligns with your KT Proposal</small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="national" type="MultiText" blobType="BLOB_ARRAY" blobItem="NATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>NATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>National Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="international" type="MultiText" blobType="BLOB_ARRAY" blobItem="INTERNATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>INTERNATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>International Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer" type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem> 
+    </ReportSection>
+</Report>
