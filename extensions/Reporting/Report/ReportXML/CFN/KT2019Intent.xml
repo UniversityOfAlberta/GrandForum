@@ -223,8 +223,8 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet type="If" if="{or({&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
-                                         {&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
+        <ReportItemSet id="reviewerCheck" type="If" if="{or({&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
+                                                            {&lt;({getArrayCount(RP_KT_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
             <ReportItem id="message" type="Static">
                 <![CDATA[
                     <div class="error">You must provide 3 national and international reviewers</div>
