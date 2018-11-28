@@ -282,16 +282,55 @@ ManagePeopleView = Backbone.View.extend({
         } 
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
-        var people = new Array();
-        _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
-            var fullname = p.get('reversedName');
-            if(p.get('email') != ""){
-                fullname += " (" + p.get('email').split('@')[0] + ")";
-            }
-            people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
-        }, this));
-        $("#selectExistingMember").html(people.join());
-        $("#selectExistingMember").chosen();
+        
+        $("#selectExistingMember").html("<option></option>");
+        $("#selectExistingMember").chosen({width: "99%"});
+        xhr = null;
+        var changeFn = $.proxy(function(e){
+            _.defer($.proxy(function(){
+                if(e.keyCode == 37 ||
+                   e.keyCode == 38 ||
+                   e.keyCode == 39 ||
+                   e.keyCode == 40 ||
+                   e.keyCode == 13){
+                    // Arrows/Enter key
+                    return;  
+                }
+                if(xhr != null){
+                    xhr.abort();
+                }
+                var searchStr = $("#selectExistingMember_chosen .chosen-search input").val();
+                if(searchStr == ""){
+                    // Don't search if empty string
+                    return;
+                }
+                var url = wgServer + wgScriptPath + "/index.php?action=api.globalSearch/people/" + escape(searchStr).replace(/\//g, ' ');
+                xhr = $.get(url, $.proxy(function(data){
+                    if($("#selectExistingMember_chosen .chosen-search input").val() != searchStr){
+                        // The value in the search box has changed, retry the ajax request
+                        $("#selectExistingMember_chosen .chosen-search input").trigger("change");
+                        return;
+                    }
+                    var results = data.results;
+                    var people = new Array("<option></option>");
+                    _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
+                        if(_.contains(results, parseInt(p.get('id')))){
+                            var fullname = p.get('reversedName');
+                            if(p.get('email') != ""){
+                                fullname += " (" + p.get('email').split('@')[0] + ")";
+                            }
+                            people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
+                        }
+                    }, this));
+                    $("#selectExistingMember").html(people.join());
+                    $("#selectExistingMember").trigger("chosen:updated");
+                    $("#selectExistingMember_chosen .chosen-search input").val(searchStr);
+                }, this));
+            }, this));
+        }, this);
+        $("#selectExistingMember_chosen .chosen-search input").keyup(changeFn)
+                                                              .change(changeFn)
+                                                              .on("paste", changeFn);
         this.addExistingMemberDialog.parent().css('overflow', 'visible');
     },
     
