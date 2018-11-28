@@ -121,7 +121,7 @@
                     <small><ul>
                         <li>Describe the relevant knowledge creation and synthesis that is completed to-date.</li>
                         <li>Identify the gap(s) between evidence and implementation (e.g., care gap, quality gap).</li>
-                    </ul><small>
+                    </ul></small>
                     {$item}
             ]]>
         </ReportItem>
