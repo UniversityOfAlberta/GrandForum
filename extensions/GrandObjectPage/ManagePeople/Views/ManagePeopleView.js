@@ -285,6 +285,7 @@ ManagePeopleView = Backbone.View.extend({
         
         $("#selectExistingMember").html("<option></option>");
         $("#selectExistingMember").chosen({width: "99%"});
+        $("#selectExistingMember").trigger("chosen:activate");
         xhr = null;
         var changeFn = $.proxy(function(e){
             _.defer($.proxy(function(){
