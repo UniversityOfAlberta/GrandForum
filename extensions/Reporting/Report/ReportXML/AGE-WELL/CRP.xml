@@ -492,10 +492,19 @@
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
+            <![CDATA[{$timestamp}{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+        <ReportItemSet id="if" type="If" if="{&lt;({$timestamp},2019-01-05 00:59:59 MST)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+        </ReportItemSet>
+        <ReportItemSet id="else" type="If" if="{&gt;({$timestamp},2019-01-05 00:59:59 MST)}">
+            <ReportItem id="review" type="Static">
+                <![CDATA[
+                    This application is currently closed.
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 </Report>
