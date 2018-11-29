@@ -235,7 +235,7 @@
                     <p>Research projects conducted by Quebec-based teams or having a collaboration with Quebec-based teams may receive additional funding from MEDTEQ in this application. One important criterion is the involvement of an industrial partner having operations in Quebec. Note that MEDTEQ can provide support to teams to help identify Quebec-based industrial partners during either the RFP or Catalyst phase. You will be asked to check a box to be considered for additional MEDTEQ funding.</p>
                     Describe in this section:
                     <ul>
-                        <li>How will stakeholders and partners be involved in setting the research agenda and developing the proposal?</li>
+                        <li>How will partners be involved in setting the research agenda and developing the proposal?</li>
                         <li>How will stakeholders be involved in all aspects of the project to address problems, challenges and opportunities?</li>
                         <li>Key proposed partners with an explanation of their active contribution to the project and how they will lead certain parts of the project (at minimum a letter of support will be required).</li>
                         <li>Existing linkages and the project’s proposed strategy to build new linkages among industry, receptor partners, academia, and governments across Canada and abroad.</li>
@@ -309,7 +309,7 @@
                 <small>
                     <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos. This is a key priority for AGE-WELL in 2020-2025.  AGE-WELL encourages applicants to explain their process of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.  In this section, please describe the project team and in Section 10, a summary table of team members will be requested.</p>
                     <ul>
-                        <li>Identify the Project Lead(s) and Co-Investigators, including non-academic partners.</li>
+                        <li>Identify the Project Lead(s), Co-Investigators, and Collaborators.</li>
                         <li>Describe how you intend to work as a transdisciplinary team.</li>
                         <li>Describe the mix of senior and junior investigators on your team.</li>
                         <li>Identify and describe their roles in the project, including roles in leading different research questions, development of different product types, KTEE, Networking/Partnerships, Management, Training, as well as research.</li>
@@ -336,7 +336,7 @@
                 <small>
                     Please include the following appendices with the application:
                     <ul>
-                        <li>Two-page bios (free-form) with links to websites for each Project Lead, Co-investigator and Partner named on the application. Please combine all documents into one file for upload.</li>
+                        <li>Two-page bios (free-form) with links to websites for each Project Lead, Co-investigator and Collaborator named on the application. Please combine all documents into one file for upload.</li>
                         <li>Figures and Diagrams – You may include up to five figures and diagrams to help further illustrate the concepts outlined in your proposal.</li>
                     </ul>
                 </small>
@@ -425,14 +425,13 @@
         <ReportItem id="partnerships" type="MultiText" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
             <![CDATA[
                 <p>In the table provided, list each organization that will partner in the project (confirmed and proposed), their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. Anticipated partnerships that are not yet developed should be indicated as in progress in the application. Individuals from partnering organizations that will be participating as project team members should also be listed in Section 8: Team and Project Management.</p>
-                
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2">
             <![CDATA[
                 <h2>Letters of Support</h2>
-                <p>Tangible committed contributions from <u>at least one</u> non-academic partner are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner must include the following:</p>
+                <p>Tangible committed contributions from at least one non-academic partner organization are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner organization must include the following:</p>
                 <ul>
                     <li>A description of how the partner and research team will work together to achieve the objectives of the AGE-WELL project, including any history of collaboration</li>
                     <li>Quantified contributions (cash and/or in-kind). Note that in-kind contributions must be those recognized by CIHR and quantified using published <a href='http://www.cihr-irsc.gc.ca/e/3758.html' target='_blank'>In-Kind Eligibility Table</a></li>
