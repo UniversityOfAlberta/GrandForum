@@ -502,7 +502,7 @@
         <ReportItemSet id="else" type="If" if="{&gt;({$timestamp},2019-01-05 00:59:59 MST)}">
             <ReportItem id="review" type="Static">
                 <![CDATA[
-                    This application is currently closed.
+                    <div class="info">This application is currently closed.</div>
                 ]]>
             </ReportItem>
         </ReportItemSet>
