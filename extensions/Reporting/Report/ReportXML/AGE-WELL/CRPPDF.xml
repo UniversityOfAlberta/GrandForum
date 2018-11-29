@@ -23,7 +23,7 @@
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
         <ReportItem id="leader" type="Static" blobItem="LEADER">
             <![CDATA[
-                <h2>Project Lead Name(s)</h2>
+                <h2>Project Lead Name</h2>
                 {$user_name}<br /><br />
             ]]>
         </ReportItem>

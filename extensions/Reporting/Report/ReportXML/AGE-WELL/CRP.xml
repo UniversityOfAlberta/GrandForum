@@ -106,7 +106,7 @@
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
         <ReportItem id="leader" type="Static" blobItem="LEADER">
             <![CDATA[
-                <h2>Project Lead Name(s)</h2>
+                <h2>Project Lead Name</h2>
                 {$user_name}
             ]]>
         </ReportItem>
@@ -153,7 +153,7 @@
     <ReportSection id="part1a" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
             <![CDATA[
-                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2025-Application-Guidelines.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.  If you are coming in and out of the application form, please remember to hit save before you leave.</p>
+                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2025-Application-Guidelines_v4.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.  If you are coming in and out of the application form, please remember to hit save before you leave.</p>
                 <h2>Section 1: Challenge Statement (approx. 1 page)</h2>
                 <small>In this section, we would like you to tell us how your proposed research aligns with AGE-WELL’s Challenge Areas that you have selected in the application form. Please specifically address the following:<br />
                     Challenge Area
@@ -185,7 +185,9 @@
         <ReportItem id="section2" type="Textarea" blobItem="SECTION2" rich="true" limit="275">
             <![CDATA[
                 <h2>Section 2: What is (are) your Product(s)? (approx. 1/2 page)</h2>
-                <small>Describe the real-world products that your project is expected to develop and mobilize. AGE-WELL recognizes different types of products: Technologies, Services, Policies/Practices. It is expected that core research projects will address all three product types.  Specifically, describe:
+                <small>
+                All core research projects must be holistic in their approaches and resulting products and outcomes. While it is expected that all core research projects will focus on innovative technology-based solutions, the technology on its own is not sufficient. AGE-WELL will only fund and support core research projects that deliver not only the technology, but also include key research objectives and deliverables related to the practice, policy, and service delivery models that are needed for the solution to be effective.<br />
+                Describe the real-world products that your project is expected to develop and mobilize. AGE-WELL recognizes different types of products: Technologies, Services, Policies/Practices. It is expected that core research projects will address all three product types.  Specifically, describe:
                     <ul>
                         <li>The potential key features of the product(s)</li>
                         <li>What is unique about the product(s)</li>
@@ -353,7 +355,7 @@
                 <h3>Team Members</h3>
                 <small>
                     <ul>
-                        <li>PL: Project Lead, the lead researcher of the proposed project.</li>
+                        <li>PL: Project Lead, the lead researcher of the proposed project. You may list up to 2 Project Co-Leads here.</li>
                         <li>CI: Co-investigator, a researcher who is contributing to the project.</li>
                         <li>Partner: organizations identified by the applicants that contribute cash and/or in-kind resources to specific projects of research, according to terms negotiated by the applicants.</li>
                         <li>HQP: Highly qualified personnel, who are trainees and research staff such as undergraduate and graduate students, postdoctoral fellows, research associates, research assistants, technicians, and summer students).</li>
