@@ -79,7 +79,8 @@ class Report extends AbstractReport {
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Evaluation Summary", "{$url}ProjectEvaluationSummary", $selected);
         }
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
-           $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
+           $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate' ||
+           $person->isRole(STAFF))){
             //$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2018-2") ? "selected" : false;
             //$tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2018-2", $selected);
             
