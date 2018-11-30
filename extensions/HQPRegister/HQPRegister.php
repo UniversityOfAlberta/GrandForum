@@ -29,9 +29,11 @@ class HQPRegister extends SpecialPage{
 <p><u>Partner Organizations/Start-ups:</u> Please email <a href='mailto:partnerships@agewell-nce.ca'>partnerships@agewell-nce.ca</a> for more information on how to partner with AGE-WELL.</p>
 <p><u>Researchers:</u>  A researcher must be actively engaged in an AGE-WELL project to submit an abstract to the AGE-WELL conference. Please email <a href='mailto:info@agewell-nce.ca'>info@agewell-nce.ca</a> for information on how to apply to become a project researcher.</p>";
                 }
-                else if($config->getValue('networkName') == "ADA" ||
-                        $config->getValue('networkName') == "CFN"){
+                else if($config->getValue('networkName') == "ADA"){
                     $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                }
+                else if($config->getValue('networkName') == "CFN"){
+                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the KT Intent to Apply {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
                 }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
@@ -113,11 +115,10 @@ class HQPRegister extends SpecialPage{
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
-            
         }
         if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0){
-                $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
-            }
+            $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
+        }
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
@@ -139,7 +140,7 @@ class HQPRegister extends SpecialPage{
             $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             if($config->getValue('networkName') == "ADA" || 
                $config->getValue('networkName') == "CFN"){
-                
+                // No Role
             }
             else{
                 $_POST['wpUserType'] = HQP;
