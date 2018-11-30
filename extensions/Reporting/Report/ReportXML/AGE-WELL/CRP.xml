@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL NCE CRP 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" disabled="false">
+<Report name="AGE-WELL NCE CRP 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" allowIdProjects="true" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="cover" permissions="rw" />
