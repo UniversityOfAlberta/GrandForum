@@ -7,6 +7,9 @@
         <Role role="NI-Candidate">
             <SectionPermission id="intent" permissions="rw" />
         </Role>
+        <Role role="INACTIVE">
+            <SectionPermission id="intent" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="2019 Knowledge Translation Competition Intent to Apply">
         <ReportItem id="information" type="Static">
