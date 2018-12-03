@@ -13,7 +13,7 @@ ManagePeopleView = Backbone.View.extend({
         this.allPeople.fetch();
         this.listenTo(this.allPeople, "sync", this.updateExistingMember);
         this.template = _.template($('#manage_people_template').html());
-        this.listenTo(this.model, "sync", function(){            
+        this.listenTo(this.model, "reset", function(){
             // First remove deleted models
             _.each(this.subViews, $.proxy(function(view){
                     view.remove();
@@ -65,7 +65,19 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     invalidate: _.debounce(function(){
-        this.table.rows().invalidate('dom').draw();
+        var searchStr = "";
+        var order = [3, 'asc'];
+        var order = [[5, "desc"], [4, "desc"]];
+        if(_.contains(allowedRoles, MANAGER)){
+            order = [5, 'asc'];
+        }
+        if(this.table != undefined){
+            order = this.table.order();
+            searchStr = this.table.search();
+            this.table.destroy();
+            this.table = null;
+        }
+        this.createDataTable(order, searchStr);
     }, 1),
     
     // Sanity Check 3: Check for duplicate HQP
@@ -255,7 +267,6 @@ ManagePeopleView = Backbone.View.extend({
                                                      'autoWidth': false,
                                                      'fixedHeader': true,
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();

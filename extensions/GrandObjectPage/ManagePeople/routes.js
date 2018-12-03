@@ -31,7 +31,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
     this.closeCurrentView();
     var people = new People();
     people.roles = ['managed'];
-    people.fetch();
+    people.fetch({reset: true});
     this.currentView = new ManagePeopleView({el: $("#currentView"), model: people});
 });
 

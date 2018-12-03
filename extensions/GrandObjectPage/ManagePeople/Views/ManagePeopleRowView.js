@@ -16,6 +16,7 @@ ManagePeopleRowView = Backbone.View.extend({
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
     
     initializeRolesDialog: function(){
