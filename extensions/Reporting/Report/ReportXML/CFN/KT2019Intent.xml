@@ -168,7 +168,7 @@
         <ReportItem id="partner_funding" type="Checkbox" blobItem="PARTNER_FUNDING" blobType="BLOB_ARRAY" options="New Brunswick Health Research Foundation (NBHRF)" optional="true">
             <![CDATA[
                 <tr>
-                    <td valign="top"><b>Please indicate if your application is eligible for funding from partner organization(s)</b><br /><small>Indicate ONE strategic objective that best aligns with your KT Proposal</small></td>
+                    <td valign="top"><b>Please indicate if your application is eligible for funding from partner organization(s)</b><br /><small>Select all that apply</small></td>
                     <td valign="top">
                         {$item}
                         <small style='margin-left:25px;'><i><b>NOTE:</b> To be eligible for NBHRF partnered funding, the PL of the KT proposal must be based in an eligible institution in New Brunswick AND the money for the project must be spent within New Brunswick.</i></small>
