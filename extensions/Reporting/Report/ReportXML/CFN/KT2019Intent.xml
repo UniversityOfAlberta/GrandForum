@@ -160,7 +160,7 @@
         <ReportItem id="priority" type="Radio" blobItem="PRIORITY" options="Enhancing integrated models of care to improve frailty outcomes.|Strategies for improving functional outcomes in older adults living with frailty.">
             <![CDATA[
                 <tr>
-                    <td valign="top"><b>Please highlight only one priorities that your application will address.</b><br /><small>(Select the best fit with your application)</small></td>
+                    <td valign="top"><b>Please highlight only one priority that your application will address.</b><br /><small>(Select the best fit with your application)</small></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
