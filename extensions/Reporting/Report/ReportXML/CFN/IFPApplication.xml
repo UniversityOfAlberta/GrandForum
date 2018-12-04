@@ -222,7 +222,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Applicant Current Organization and Role:</b></td>
-                    <td valign="top">{$value}</td>
+                    <td valign="top">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -294,7 +294,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Host Institution that will receive and administer CFN funds:</b></td>
-                    <td>{$value}</td>
+                    <td>{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
