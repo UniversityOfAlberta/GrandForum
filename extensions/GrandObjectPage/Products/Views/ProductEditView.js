@@ -6,10 +6,7 @@ ProductEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:projects", this.render);
-        this.listenTo(this.model, "change:category", this.render);
-        this.listenTo(this.model, "change:type", this.render);
-        this.listenTo(this.model, "change:access", this.render);
+        
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -21,10 +18,23 @@ ProductEditView = Backbone.View.extend({
         this.template = _.template($('#product_edit_template').html());
 
         if(!this.model.isNew() && !this.isDialog){
-            this.model.fetch();
+            // Model exists
+            this.model.fetch({
+                success: $.proxy(function(){
+                    this.listenTo(this.model, "change:projects", this.render);
+                    this.listenTo(this.model, "change:category", this.render);
+                    this.listenTo(this.model, "change:type", this.render);
+                    this.listenTo(this.model, "change:access", this.render);
+                }, this)
+            });
         }
         else{
+            // New Model
             _.defer(this.render);
+            this.listenTo(this.model, "change:projects", this.render);
+            this.listenTo(this.model, "change:category", this.render);
+            this.listenTo(this.model, "change:type", this.render);
+            this.listenTo(this.model, "change:access", this.render);
         }
     },
     

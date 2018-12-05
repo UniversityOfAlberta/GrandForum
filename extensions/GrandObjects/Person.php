@@ -1059,11 +1059,7 @@ class Person extends BackboneModel {
                     continue;
                 }
                 $person = Person::newFromId($row);
-                if($person->getName() != "WikiSysop"){
-                    if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                        $people[strtolower($person->getName())] = $person;
-                    }
-                }
+                $people[strtolower($person->getName())] = $person;
             }
         }
         ksort($people);
@@ -1515,11 +1511,7 @@ class Person extends BackboneModel {
      * @return string The email address of this Person
      */
     function getEmail(){
-        $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
-            return "{$this->email}";
-        }
-        return "";
+        return $this->email;
     }
     
     /**
@@ -1554,11 +1546,7 @@ class Person extends BackboneModel {
      * @return string The gender of this Person
      */
     function getGender(){
-        $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
-            return $this->gender;
-        }
-        return "";
+        return $this->gender;
     }
     
     /**
@@ -1566,11 +1554,7 @@ class Person extends BackboneModel {
      * @return string The nationality of this Person
      */
     function getNationality(){
-        $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
-            return $this->nationality;
-        }
-        return "";
+        return $this->nationality;
     }
     
     /**
