@@ -80,7 +80,7 @@ $budgetStructures[FES_BUDGET_STRUCTURE] =
           array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
           array(NA, HEAD2_ROW.('(4.1 Equipment)'),  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
           array(NA, HEAD2_ROW.('(4.2 Supplies)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(NA, HEAD1_ROW,  READ,       READ,       READ,       READ,       READ,       READ,       READ),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
