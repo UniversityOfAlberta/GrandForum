@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL NCE Core Research Program 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018">
+<Report name="AGE-WELL NCE Core Research Program 2020" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL NCE<br />Core Research Program 2020-2025</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL NCE<br />Core Research Program 2020</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -52,10 +52,10 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="length" type="Select" blobItem="LENGTH" options="3|4|5" inline="true">
+        <ReportItem id="length" type="Static">
             <![CDATA[
                 <br />
-                <b>Length of proposed project:</b> {$item} years
+                <b>Length of proposed project:</b> 3 years
             ]]>
         </ReportItem>
         <ReportItem id="total" type="Text" blobItem="TOTAL">

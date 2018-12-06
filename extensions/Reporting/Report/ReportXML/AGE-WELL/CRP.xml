@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL NCE CRP 2020-2025" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" allowIdProjects="true" disabled="false">
+<Report name="AGE-WELL NCE CRP 2020" reportType="RP_CRP" pdfType="RPTP_CRP" pdfFiles="CRPPDF" ajax="true" year="2018" allowIdProjects="true" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="cover" permissions="rw" />
@@ -68,9 +68,9 @@
     <ReportSection id="description" type="ReportSection" tooltip="Program Description" name="Program Description" title="AGE-WELL Core Research Program 2020-2025">
         <ReportItem id="description" type="Static">
             <![CDATA[
-                <p>Researchers based at Canadian institutions and working in the field of technology and aging are invited to apply for funding through <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020-2025</a>. Successful applications will be included as part of AGE-WELL’s renewal application for funding through 2020-2025.</p>
+                <p>Researchers based at Canadian institutions and working in the field of technology and aging are invited to apply for funding through <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020</a> Request for Proposals. Successful applications will be included as part of AGE-WELL’s renewal application for funding through 2020-2023.</p>
 
-                AGE-WELL will provide significant funding for 3 to 5 years to projects that:
+                AGE-WELL will provide significant funding for 3 years to projects that:
                 <ul>
                     <li>Are driven by real-world problems and challenge areas</li>
                     <li>Address specific areas of interest to AGE-WELL and its partners and stakeholders</li>
@@ -89,17 +89,17 @@
                 <u>Funds Available:</u>
                 <p>AGE-WELL and partner(s) financial contributions for this initiative are subject to availability of funds. Should AGE-WELL or partner(s) funding levels not be available or become decreased due to unforeseen circumstances, AGE-WELL and partner(s) reserve the right to reduce, defer or suspend financial contributions to grants received as a result of this funding opportunity.</p>
 
-                <p>The maximum investment per Core Research Project is $200,000 per year (commencing April 1, 2020) for a minimum of 3 to a maximum of 5 years, for a maximum of $1,000,000 per grant.</p>
+                <p>The maximum investment per Core Research Project (3 years) is $200,000 per year (commencing April 1, 2020), for a maximum of $600,000 per grant.</p>
 
                 <u>Application Deadline:</u>
-                <p>The application deadline is <b>January 4, 2019</b>.</p>
+                <p>The application deadline is <b>January 22, 2019</b>.</p>
 
                 <p>Note that the application should be submitted via Forum by the Project Lead. The application form is not collaborative; therefore, only one user can submit an application per project.</p>
 
                 <u>Contact Information:</u>
                 <p>For general inquiries about this RFP, please contact <a href='mailto:applications@agewell-nce.ca'>applications@agewell-nce.ca</a>.</p>
 
-                <p>For more information on the program, eligibility criteria and application guidelines, please visit the <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL Core Research Program 2020-2025 Request for Proposals</a> web page.</p>
+                <p>For more information on the program, eligibility criteria and application guidelines, please visit the <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020 Request for Proposals</a> web page.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -137,10 +137,10 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="length" type="Select" blobItem="LENGTH" options="3|4|5" inline="true">
+        <ReportItem id="length" type="Static">
             <![CDATA[
                 <br />
-                <b>Length of proposed project:</b> {$item} years
+                <b>Length of proposed project:</b> 3 years
             ]]>
         </ReportItem>
         <ReportItem id="total" type="Text" blobItem="TOTAL">
@@ -153,7 +153,7 @@
     <ReportSection id="part1a" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
         <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
             <![CDATA[
-                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2025-Application-Guidelines_v4.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.  If you are coming in and out of the application form, please remember to hit save before you leave.</p>
+                <p>Applicants are advised to use the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-CRP-2020-2023-Application-Guidelines_v5.pdf' target='_blank'>Application Guidelines</a> to develop their application in word processing software and then transfer to this online application form as a final step.  If you are coming in and out of the application form, please remember to hit save before you leave.</p>
                 <h2>Section 1: Challenge Statement (approx. 1 page)</h2>
                 <small>In this section, we would like you to tell us how your proposed research aligns with AGE-WELL’s Challenge Areas that you have selected in the application form. Please specifically address the following:<br />
                     Challenge Area
@@ -369,7 +369,7 @@
     <ReportSection id="part2" tooltip="PART 2: BUDGET" name="Budget" type="EditableReportSection" title="PART 2: BUDGET" blobSection="PART2">
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
             <![CDATA[
-                <p>Provide a 3, 4 or 5 year budget using the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL RFP Project Budget.xlsx'><b>template</b></a> provided. A detailed budget justification will be required for all budget categories and requests.</p>
+                <p>Provide a 3 year budget using the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL RFP Project Budget.xlsx'><b>template</b></a> provided. A detailed budget justification will be required for all budget categories and requests.</p>
                 <p>Applicants should review the Use of Grant Funds section of the <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-GuideAdminFinancier/index_eng.asp' target='_blank'>Tri-Agency Financial Administration Guide</a> for a complete listing and description of allowable costs and activities.</p>
                 {$item}
             ]]>
@@ -491,14 +491,14 @@
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$timestamp}{$item}]]>
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if" type="If" if="{&lt;({$timestamp},2019-01-05 00:59:59 MST)}">
+        <ReportItemSet id="if" type="If" if="{&lt;({$timestamp},2019-01-23 00:59:59 MST)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
         </ReportItemSet>
-        <ReportItemSet id="else" type="If" if="{&gt;({$timestamp},2019-01-05 00:59:59 MST)}">
+        <ReportItemSet id="else" type="If" if="{&gt;({$timestamp},2019-01-23 00:59:59 MST)}">
             <ReportItem id="review" type="Static">
                 <![CDATA[
                     <div class="info">This application is currently closed.</div>
