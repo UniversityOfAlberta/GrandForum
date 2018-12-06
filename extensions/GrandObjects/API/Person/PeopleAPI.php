@@ -59,11 +59,35 @@ class PeopleAPI extends RESTAPI {
             return $finalPeople->toJSON();
         }
         else{
-            $people = new Collection(Person::getAllPeople('all'));
             if($simple){
+                $peopleIds = Person::getAllPeople('all', true);
+                $people = array();
+                $data = DBFunctions::select(array('mw_user'),
+                                            array('user_id', 
+                                                  'user_name',
+                                                  'user_email',
+                                                  'user_real_name',
+                                                  'first_name',
+                                                  'last_name',
+                                                  'middle_name'),
+                                            array('user_id' => IN($peopleIds)));
+                foreach($data as $row){
+                    $person = new Person(array());
+                    $person->id = $row['user_id'];
+                    $person->realname = $row['user_real_name'];
+                    $person->firstName = $row['first_name'];
+                    $person->lastName = $row['last_name'];
+                    $person->middleName = $row['middle_name'];
+                    $person->email = $row['user_email'];
+                    $people[] = $person;
+                }
+                $people = new Collection($people);
                 return $people->toSimpleJSON();
             }
-            return $people->toJSON();
+            else{
+                $people = new Collection(Person::getAllPeople('all'));
+                return $people->toJSON();
+            }
         }
     }
     
