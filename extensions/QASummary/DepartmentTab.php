@@ -26,16 +26,16 @@ class DepartmentTab extends AbstractTab {
         $phds = array();
         $techs = array();
         $pdfs = array();
-        foreach(Person::getAllPeopleDuring(NI, ($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
-            foreach($person->getUniversitiesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
+        foreach(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
+            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
                 if(strstr($uni['department'], $this->department) !== false){
                     $people[$person->getId()] = $person;
                     break;
                 }
             }
         }
-        foreach(Person::getAllPeopleDuring(HQP, ($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
-            foreach($person->getUniversitiesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
+        foreach(Person::getAllPeopleDuring(HQP, ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
+            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
                 if(strstr($uni['department'], $this->department) !== false){
                     $hqps[$person->getId()] = $person;
                     if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad'])){
@@ -59,7 +59,7 @@ class DepartmentTab extends AbstractTab {
         $courses = array();
         $merged = array();
         foreach($people as $person){
-            foreach($person->getCoursesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
+            foreach($person->getCoursesDuring(($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
                 $merged[] = $course;
             }
         }
@@ -71,7 +71,7 @@ class DepartmentTab extends AbstractTab {
         }
         
         ksort($courses);
-        $html = "<h1 style='color:#1155cc !important;'>Department of {$this->department}. Reporting Period July 1, ".($year-7)." - June 30, $year</h1>";
+        $html = "<h1 style='color:#1155cc !important;'>Department of {$this->department}. Reporting Period July 1, ".($year-6)." - June 30, $year</h1>";
         $html .= "<h2 style='color:#1155cc !important;'>Appendix XX: Course Descriptions and Instructors</h2>";
         $html .= "<script type='text/php'>
                       \$GLOBALS['chapters'][] = array('title' => \"Course Descriptions and Instructors\", 
@@ -103,7 +103,7 @@ class DepartmentTab extends AbstractTab {
         foreach($people as $person){
             $html .= "<tr><td>{$person->getReversedName()}</td>";
             $personCourses = array();
-            foreach($person->getCoursesDuring(($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
+            foreach($person->getCoursesDuring(($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $course){
                 $personCourses["{$course->subject} {$course->catalog}"] = "{$course->subject} {$course->catalog}";
             }
             ksort($personCourses);
@@ -289,7 +289,7 @@ class DepartmentTab extends AbstractTab {
         $ugradPapers = array();
         
         foreach($hqps as $hqp){
-            $papers = $hqp->getPapersAuthored("Publication", ($year-7).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
+            $papers = $hqp->getPapersAuthored("Publication", ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
                 if($paper->getData('peer_reviewed') == "Yes"){
                     $yearAgo = strtotime("{$paper->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
@@ -384,7 +384,7 @@ class DepartmentTab extends AbstractTab {
                                           WHERE u.user_id = ccv.supervisor_id
                                           AND supervisor_id IN('".implode("','", $ids)."')
                                           AND (status = 'Completed' OR status = 'Withdrawn')
-                                          AND date BETWEEN '".(($year-7).CYCLE_START_MONTH)."' AND '".($year.CYCLE_END_MONTH)."'");
+                                          AND date BETWEEN '".(($year-6).CYCLE_START_MONTH)."' AND '".($year.CYCLE_END_MONTH)."'");
             $strings = array();
             $strings[] = '"'.implode('","', array("Supervisor", "HQP", "Date", "Present Position", "Present Organization", "Institution", "Status", "Degree", "Reason")).'"';;
             foreach($data as $row){
