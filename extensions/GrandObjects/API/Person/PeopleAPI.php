@@ -80,8 +80,9 @@ class PeopleAPI extends RESTAPI {
                     $person->lastName = $row['last_name'];
                     $person->middleName = $row['middle_name'];
                     $person->email = $row['user_email'];
-                    $people[] = $person;
+                    $people[strtolower($row['user_name'])] = $person;
                 }
+                ksort($people);
                 $people = new Collection($people);
                 return $people->toSimpleJSON();
             }
