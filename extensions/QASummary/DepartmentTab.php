@@ -79,7 +79,7 @@ class DepartmentTab extends AbstractTab {
                                                       'subs' => array());
                   </script>";
         foreach($courses as $key => $course){
-            $html .= "<h3>{$key}</h3>";
+            $html .= "<h3>{$key} - {$course[0]->descr}</h3>";
             $html .= "<p>{$course[0]->courseDescr}</p>";
             $html .= "<b>Instructors:</b> ";
             $profs = array();
