@@ -555,11 +555,12 @@ class CavendishTemplate2 extends QuickTemplate {
             <style>
             
                 html {
-                    overflow: hidden;
+                    overflow: auto;
                     background: #FFFFFF;
                 }
             
                 body {
+                    overflow: auto;
                     background:#FFFFFF;
                 }
                 
