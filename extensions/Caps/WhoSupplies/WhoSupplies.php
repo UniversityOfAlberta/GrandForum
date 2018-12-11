@@ -559,10 +559,19 @@ class WhoSupplies extends SpecialPage{
                 <h3>Billing Codes</h3>
                 <ul>
                 <li>
-                A920: Medical Management of Early Pregnancy- initial service when a physician renders an initial assessment and administration of cytotoxic medication(s) for the termination of early pregnancy or missed abortion. The cost of the drug(s) is not included in the fee for the service. Billing Amount, $161.15
+                    <b>A920: Medical Management of Early Pregnancy</b>
+                    <ul>
+                        <li>initial service when a physician renders an initial assessment and administration of cytotoxic medication(s) for the termination of early pregnancy or missed abortion. The cost of the drug(s) is not included in the fee for the service.</li>
+                        <li>Payment rules: Services described as consultations, assessments or counselling (and those procedures that are generally accepted components of this service) are not eligible for payment when rendered the same day to the same patient by the same physician as A920</li>
+                        <li>Billing Amount, $161.15</li>
+                    </ul>
                 </li>
                 <li>
-                A921: Medical Abortion Follow-Up- confirm that abortion is complete, review contraception. Billing Amount, $33.70 
+                    <b>A921: Medical Abortion Follow-Up</b>
+                    <ul>
+                        <li>confirm that abortion is complete, review contraception.</li>
+                        <li>Billing Amount, $33.70</li>
+                    </ul> 
                 </li>
                 <li>
                 Schedule of Benefits, Physician Services Under the Health Insurance Act, see page “K4”, <a href='http://www.health.gov.on.ca/en/pro/programs/ohip/sob/physserv/sob_master20160401.pdf
