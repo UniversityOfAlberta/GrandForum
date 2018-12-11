@@ -34,6 +34,8 @@ abstract class AbstractReport extends SpecialPage {
     
     var $name;
     var $year;
+    var $startDate;
+    var $endDate;
     var $xmlName;
     var $extends;
     var $reportType;
@@ -1403,6 +1405,14 @@ abstract class AbstractReport extends SpecialPage {
             return true;
         }
         return false;
+    }
+    
+    function varSubstitute($value){
+        $item = new StaticReportItem();
+        $section = new ReportSection();
+        $item->setParent($section);
+        $section->setParent($this);
+        return $item->varSubstitute($value);
     }
 }
 
