@@ -14,6 +14,7 @@ function runApplicationsTable($par) {
 class ApplicationsTable extends SpecialPage{
 
     var $nis;
+    var $inactives;
     var $fullHQPs;
     var $hqps;
     var $projects;
@@ -37,6 +38,9 @@ class ApplicationsTable extends SpecialPage{
                                  Person::getAllCandidates(NI),
                                  Person::getAllPeople(EXTERNAL),
                                  Person::getAllCandidates(EXTERNAL));
+                                 
+        $this->inactives = array_merge(Person::getAllPeople(INACTIVE),
+                                       Person::getAllCandidates(INACTIVE));
         
         $this->fullHQPs = Person::getAllPeople(HQP);
         
@@ -100,6 +104,7 @@ class ApplicationsTable extends SpecialPage{
     function generateKT(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", array_merge($this->nis, $this->inactives), 2019, "2019 Intent"));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

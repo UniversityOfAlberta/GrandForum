@@ -65,7 +65,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" type="ReportSection" tooltip="Program Description" name="Program Description" title="AGE-WELL Core Research Program 2020-2025">
+    <ReportSection id="description" type="ReportSection" tooltip="Program Description" name="Program Description" title="AGE-WELL Core Research Program 2020">
         <ReportItem id="description" type="Static">
             <![CDATA[
                 <p>Researchers based at Canadian institutions and working in the field of technology and aging are invited to apply for funding through <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020</a> Request for Proposals. Successful applications will be included as part of AGE-WELL’s renewal application for funding through 2020-2023.</p>
@@ -307,7 +307,7 @@
             <![CDATA[
                 <h2>Section 8: Team and Project Management (approx. 1 page)</h2>
                 <small>
-                    <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos. This is a key priority for AGE-WELL in 2020-2025.  AGE-WELL encourages applicants to explain their process of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.  In this section, please describe the project team and in Section 10, a summary table of team members will be requested.</p>
+                    <p>It is anticipated that core research projects will require large multidisciplinary teams that will collaborate and work together outside their traditional disciplinary silos.  AGE-WELL encourages applicants to explain their process of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.  In this section, please describe the project team and in Section 10, a summary table of team members will be requested.</p>
                     <ul>
                         <li>Identify the Project Lead(s), Co-Investigators, and Collaborators.</li>
                         <li>Describe how you intend to work as a transdisciplinary team.</li>
