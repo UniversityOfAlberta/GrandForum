@@ -227,7 +227,8 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_STRAT'), $this->stratApplicants, 2017, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->stratApplicants, 2017, "2017", array($reviewers)));
+        //$tabbedPage->addTab(new ApplicationTab(array('RP_STRAT'), $this->stratApplicants, 2017, "2017", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

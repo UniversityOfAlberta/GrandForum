@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL NCE Core Research Program 2020" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018">
+<Report name="AGE-WELL NCE Core Research Program 2020" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018" allowIdProjects="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
