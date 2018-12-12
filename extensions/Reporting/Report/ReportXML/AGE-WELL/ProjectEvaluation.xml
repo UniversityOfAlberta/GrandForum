@@ -311,9 +311,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{getNProducts({$startDate}, {$endDate}, all, Conference Paper|Conference Abstract|Proceedings Paper|Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{getNProducts({$startDate}, {$endDate}, all, Conference Paper|Conference Abstract|Proceedings Paper|Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)}">
             <![CDATA[
-                    #conference presentations (including invited expert presentations): {$item} <b title="The number of Outputs of type 'Conference Paper' or 'Conference Abstract' or 'Proceedings Paper' or 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation'">{$value}</b>
+                    #conference presentations (including invited expert presentations): {$item} <b title="The number of Outputs of type 'Conference Paper' or 'Conference Abstract' or 'Proceedings Paper' or 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster'">{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -402,25 +402,25 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$startDate}, {$endDate},Older Adult,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)},{getNStakeholderProducts({$startDate}, {$endDate},Caregiver,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}}">
+        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$startDate}, {$endDate},Older Adult,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)},{getNStakeholderProducts({$startDate}, {$endDate},Caregiver,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)}}">
             <![CDATA[
                     #presentations that involved:<br />
-                    older adult or caregiver: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
+                    older adult or caregiver: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster' with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Community Organization,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
+        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Community Organization,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)}">
             <![CDATA[
-                    community organization: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
+                    community organization: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster' with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Industry Member,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
+        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Industry Member,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)}">
             <![CDATA[
-                    industry member: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
+                    industry member: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster' with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Policymaker,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
+        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Hidden" size="3" default="{getNStakeholderProducts({$startDate}, {$endDate},Policymaker,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Poster)}">
             <![CDATA[
-                    policymaker: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
+                    policymaker: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster' with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
             ]]>
         </ReportItem>
         <ReportItem id="rev_foot" type="Static">
