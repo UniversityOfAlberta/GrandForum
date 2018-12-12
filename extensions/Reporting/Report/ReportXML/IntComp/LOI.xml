@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="UofA-Huawei JIC LOI" reportType="RP_LOI" pdfType="RPTP_LOI" pdfFiles="LOIPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+
+    </Permissions>
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" title="UofA-Huawei JIC LOI (Winter 2019)" blobSection="PROP_DESC" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
+            <![CDATA[
+                <h3>Project Title:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="duration" type="Select" blobItem="DURATION" blobType="BLOB_TEXT" options="1|2|3">
+            <![CDATA[
+                <h3>Proposed Duration:</h3>
+                <div style="display:inline-block;vertical-align:middle;">{$item}</div> years
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Integer" blobItem="BUDGET" blobType="BLOB_TEXT" min="50" max="250" width="35px">
+            <![CDATA[
+                <h3>Proposed Budget:</h3>
+                ${$item},000/year
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|E-mail">
+            <![CDATA[
+                <h3>PI:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Name|E-mail" optional="true">
+            <![CDATA[
+                <h3>Huawei Contact:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="primary" type="Select" blobItem="PRIMARY" blobType="BLOB_TEXT" options="CV/CG: trade-off between high performance chipsets and power consumption|CV/CG: machine vistion low-level computer vision problems|CV/CG: 3D realistic scene understanding complexity|CV/CG: video content analysis beyond hardware compatibility and algorithms|CV/CG: employing TOF/SL cellphone camera use for 2D to 3D conversion|CV/CG: training model compression/optimization for resource-constrained mobiles|CV/CG: video indexing/retrieval/classification|CV/CG: picture texture synthesis and style transform|CV/CG: efficient image/video compression/encoding/decoding technologies|HCI: trade-off exploration for useability vs. affordability|HCI: ubiquitous computing on small screen size and limited mobile bandwidth|HCI: frameworks for real-time data processing on edge nodes|Photo: identifying sweet spot for features to cover amateur- to pro-photograhy|Compilers: programmer productivty in multi-language environments|Compilers: models and languages for productivity/performance on heterogeneous architectures|Compilers: code generation &amp; compiler optimization for performance, energy, portability, etc.|Compilers: static, dynamic, and hybrid analysis for performance, energy, memory locality, etc.|Compilers: performance auto-tuning, Whole stack performance analysis and optimization|Compilers: AI software stack, AI enabled compiler technologies, usable AI|Compilers: Software-defined architecture, software tooling for reconfigurable architecture|Distr.Sys: distributed computation for AI algorithm training and inference|Distr.Sys: data platform/application development for training data management|Distr.Sys: data platform/application development for training meta-data management|Distr.Sys: data platform/application development for training data analysis &amp; recommendation|Distr.Sys: data platform/application development for training data processing|Distr.Sys: data platform/application development security &amp; privacy|Distr.sys: data platform/application development for auto/semi-auto labelling|Distr.Sys: permissioned Blockchain systems for enterprise applications|Distr.Sys: smart contracts and verification|Distr.sys: on-chain and off-chain complex transactions and semantics|Distr.Sys: blockchain hardware acceleration|Distr.sys: data privacy and security, and trusted execution environment|Distr.Sys: privacy-preserving transactions|Other">
+            <![CDATA[
+                <h3>Topic Alignment (primary):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="primary_other" type="Text" blobItem="PRIMARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
+            <![CDATA[
+                <span id="primary_other"><b>Other:</b>{$item}</span>
+                <script type="text/javascript">
+                    $("select[name=Description_primary]").change(function(){
+                        if($("select[name=Description_primary]").val() == "Other"){
+                            $("#primary_other").show();
+                        }
+                        else{
+                            $("#primary_other").hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="secondary" type="Select" blobItem="SECONDARY" blobType="BLOB_TEXT" options="CV/CG: trade-off between high performance chipsets and power consumption|CV/CG: machine vistion low-level computer vision problems|CV/CG: 3D realistic scene understanding complexity|CV/CG: video content analysis beyond hardware compatibility and algorithms|CV/CG: employing TOF/SL cellphone camera use for 2D to 3D conversion|CV/CG: training model compression/optimization for resource-constrained mobiles|CV/CG: video indexing/retrieval/classification|CV/CG: picture texture synthesis and style transform|CV/CG: efficient image/video compression/encoding/decoding technologies|HCI: trade-off exploration for useability vs. affordability|HCI: ubiquitous computing on small screen size and limited mobile bandwidth|HCI: frameworks for real-time data processing on edge nodes|Photo: identifying sweet spot for features to cover amateur- to pro-photograhy|Compilers: programmer productivty in multi-language environments|Compilers: models and languages for productivity/performance on heterogeneous architectures|Compilers: code generation &amp; compiler optimization for performance, energy, portability, etc.|Compilers: static, dynamic, and hybrid analysis for performance, energy, memory locality, etc.|Compilers: performance auto-tuning, Whole stack performance analysis and optimization|Compilers: AI software stack, AI enabled compiler technologies, usable AI|Compilers: Software-defined architecture, software tooling for reconfigurable architecture|Distr.Sys: distributed computation for AI algorithm training and inference|Distr.Sys: data platform/application development for training data management|Distr.Sys: data platform/application development for training meta-data management|Distr.Sys: data platform/application development for training data analysis &amp; recommendation|Distr.Sys: data platform/application development for training data processing|Distr.Sys: data platform/application development security &amp; privacy|Distr.sys: data platform/application development for auto/semi-auto labelling|Distr.Sys: permissioned Blockchain systems for enterprise applications|Distr.Sys: smart contracts and verification|Distr.sys: on-chain and off-chain complex transactions and semantics|Distr.Sys: blockchain hardware acceleration|Distr.sys: data privacy and security, and trusted execution environment|Distr.Sys: privacy-preserving transactions|Other" optional="true">
+            <![CDATA[
+                <h3>Topic Alignment (secondary):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="secondary_other" type="Text" blobItem="SECONDARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
+            <![CDATA[
+                <span id="secondary_other"><b>Other:</b>{$item}</span>
+                <script type="text/javascript">
+                    $("select[name=Description_secondary]").change(function(){
+                        if($("select[name=Description_secondary]").val() == "Other"){
+                            $("#secondary_other").show();
+                        }
+                        else{
+                            $("#secondary_other").hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Proposal Summary:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+    </ReportSection>
+</Report>
