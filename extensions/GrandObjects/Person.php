@@ -1280,6 +1280,7 @@ class Person extends BackboneModel {
                                  'title' => $role->getTitle());
             }
         }
+        $universities = $this->getUniversities();
         $university = $this->getUniversity();
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
@@ -1304,6 +1305,7 @@ class Person extends BackboneModel {
                       'start' => $university['start'],
                       'end' => $university['date'],
                       'researchArea' => $university['research_area'],
+                      'universities' => $universities,
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'profile_start_date' => $this->getProfileStartDate(),

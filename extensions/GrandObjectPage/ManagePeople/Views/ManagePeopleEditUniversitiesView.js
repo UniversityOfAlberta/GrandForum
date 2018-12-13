@@ -169,7 +169,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     },
    
     render: function(){
-	this.$el.html(this.template(this.model.toJSON()));
+	    this.$el.html(this.template(this.model.toJSON()));
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=researchArea]").css('max-width', '200px').css('width', '200px');

@@ -192,9 +192,11 @@ ManagePeopleRowView = Backbone.View.extend({
             me.getRelations();
         }
         me.relations.ready().then($.proxy(function(){
+            var universities = this.model.get('universities');
             var relations = new PersonRelations(me.relations.where({user2: this.model.get('id')}));
-            var start = this.model.get('start');
-            var end = this.model.get('end');
+            var start = ""; this.model.get('start');
+            var end = ""; this.model.get('end');
+            var position = this.model.get('position');
             
             var latestRel = null;
             if(relations.length == 0){
@@ -212,25 +214,47 @@ ManagePeopleRowView = Backbone.View.extend({
             });
             
             if(latestRel != null){
-                if((latestRel.endDate == '0000-00-00' && this.model.get('end') != '0000-00-00 00:00:00') ||
-                   (latestRel.endDate != '0000-00-00' && this.model.get('end') != '0000-00-00 00:00:00' && this.model.get('end') < latestRel.endDate)){
-                    // Relationship was not ended, but Basic Info was, use the Basic Info
-                    // or Reltionship was after the Basic Info, use the Basic Info
-                    end = this.model.get('end');
-                }
-                else{
-                    // Otherwise use the relationship date
-                    end = latestRel.endDate;
-                }
-                
-                if(latestRel.startDate <= this.model.get('start')){
-                    // Relationship was before Basic Info, use the Basic Info
-                    start = this.model.get('start');
-                }
-                else{
-                    // Otherwise use the relationship date
-                    start = latestRel.startDate;
-                }
+                _.each(universities, function(uni){
+                    var tmpStart = "";
+                    var tmpEnd = "";
+                    if(start != "" && end != ""){
+                        // Date already found, skip
+                        return;
+                    }
+                    if((latestRel.endDate == '0000-00-00' && uni.end != '0000-00-00 00:00:00') ||
+                       (latestRel.endDate != '0000-00-00' && uni.end != '0000-00-00 00:00:00' && uni.end < latestRel.endDate)){
+                        // Relationship was not ended, but Basic Info was, use the Basic Info
+                        // or Reltionship was after the Basic Info, use the Basic Info
+                        tmpEnd = uni.end;
+                    }
+                    else{
+                        // Otherwise use the relationship date
+                        tmpEnd = latestRel.endDate;
+                    }
+                    
+                    if(latestRel.startDate <= uni.start){
+                        // Relationship was before Basic Info, use the Basic Info
+                        tmpStart = uni.start;
+                    }
+                    else{
+                        // Otherwise use the relationship date
+                        tmpStart = latestRel.startDate;
+                    }
+                    if(tmpStart > tmpEnd && tmpEnd.substr(0,10) != '0000-00-00'){
+                        // Date doesn't make sense, so don't use it
+                        return;
+                    }
+                    start = tmpStart;
+                    end = tmpEnd;
+                    position = uni.position;
+                });
+            }
+            
+            if(start == ""){
+                start = this.model.get('start');
+            }
+            if(end == ""){
+                end = this.model.get('end');
             }
             
             if(start == '0000-00-00' || start == '0000-00-00 00:00:00' || start == '' || start == undefined){
@@ -244,6 +268,7 @@ ManagePeopleRowView = Backbone.View.extend({
             this.$("#startDate").text(start.substr(0, 10));
             this.$("#endDate").text(end.substr(0, 10));
             this.$("#status").text(relations.pluck('status').filter(function(el) { return el; }).join(", "));
+            this.$("#position").text(position);
             this.parent.invalidate();
         }, this));
     },
