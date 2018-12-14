@@ -16,7 +16,7 @@
     echo "\tType the id of the user to keep, or type 's' or 'skip' to skip the current set\n\n";
     foreach($data as $row){
         echo "\nDuplicates For: {$row['user_email']}\n";
-        echo "================================================================================================================================\n";
+        echo "=============================================================================================================================================================\n";
         $email = DBFunctions::escape($row['user_email']);
         $people = DBFunctions::execSQL("SELECT *
                                         FROM `mw_user`
@@ -27,10 +27,18 @@
         $ids = array();
         foreach($people as $person){
             $ids[] = $person['user_id'];
+            $sups = array();
             $p = Person::newFromId($person['user_id']);
-            printf("%6s: %-30s | %-8s | %-8s | %-30s | %-30s |\n", $p->getId(), $p->getName(), $p->getEmployeeId(), $p->getType(), $p->getDepartment(), $p->getPosition());
+            $supsData = DBFunctions::select(array('grand_relations'),
+                                            array('*'),
+                                            array('user2' => $p->getId()));
+            foreach($supsData as $supRow){
+                $sups[] = $supRow['user1'];
+            }
+            $sups = implode(", ", array_unique($sups));
+            printf("%6s: %-30s | %-8s | %-8s | %-30s | %-36s | %-20s |\n", $p->getId(), $p->getName(), $p->getEmployeeId(), $p->getType(), $p->getDepartment(), str_replace("&#39;", "'", $p->getPosition()), $sups);
         }
-        echo "================================================================================================================================\n";
+        echo "=============================================================================================================================================================\n";
         do {
             $keepId = readline("Which is the correct User Id? ");
         } while(!in_array($keepId, $ids) && ($keepId != "s" && $keepId != "skip"));
