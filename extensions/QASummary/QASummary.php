@@ -34,6 +34,8 @@ class QASummary extends SpecialPage{
             $tabbedPage->addTab(new DepartmentTab("Mathematical And Statistical Sciences", array("MATH", "STAT")));
         if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_EAS"))
             $tabbedPage->addTab(new DepartmentTab("Earth And Atmospheric Sciences", array("EAS")));
+        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_PSYCH"))
+            $tabbedPage->addTab(new DepartmentTab("Psychology", array("PSYCH")));
         
         $tabbedPage->showPage();
         
@@ -49,7 +51,8 @@ class QASummary extends SpecialPage{
                                                  $person->isSubRole('QA_BIOL') ||
                                                  $person->isSubRole('QA_CMPUT') ||
                                                  $person->isSubRole('QA_MATH') ||
-                                                 $person->isSubRole('QA_EAS'));
+                                                 $person->isSubRole('QA_EAS') ||
+                                                 $person->isSubRole('QA_PSYCH'));
     }
     
     static function createSubTabs(&$tabs){
