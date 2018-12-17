@@ -220,7 +220,7 @@
                     <i><b>Scientific outcomes and impact</b></i><br />
                     <p>Describe in detail the anticipated scientific outcomes and impact, including how your project will ‘push the scientific envelope’ in the research field. This should include the relationship of the research program to similar work conducted elsewhere in Canada and internationally.</p>
                     <i><b>Timelines and deliverables/milestones</b></i><br />
-                    <p>Describe in the table provided major milestones and deliverables in each year of funding.</p>
+                    <p>Describe the major milestones and deliverables in each year of funding.</p>
                 </small>
                 {$item}
                 <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
