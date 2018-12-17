@@ -26,8 +26,8 @@ class DepartmentTab extends AbstractTab {
         $phds = array();
         $techs = array();
         $pdfs = array();
-        foreach(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $person){
-            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH) as $uni){
+        foreach(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01") as $person){
+            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, "2100-01-01") as $uni){
                 if(strstr($uni['department'], $this->department) !== false){
                     $people[$person->getId()] = $person;
                     break;
