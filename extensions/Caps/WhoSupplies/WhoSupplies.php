@@ -762,10 +762,14 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
+                    <li>0101: Complete physical examination, $101.00</li>
+                    <li>0100: Simple office visit, $50.70</li>
+                    <li>4092: Pregnancy options counseling, $100.00</li>
                     <li>4111: Therapeutic abortion < 12 weeks/surgical, $269.00</li>
                     <li>4112: Therapeutic abortions >12 weeks/surgical, $521.00</li>
                     <li>4116: Medical abortion (includes methotrexate and mifepristone) for physicians and nurse practitioners, $207.70</li>
                     <li>Yukon Drug Formulary, <a href='http://apps.gov.yk.ca/drugs/' target='_blank'>click here</a></li>
+                    <li>Yukon Physician Resources, pay schedule, <a href='http://apps.gov.yk.ca/physicianresources' target='_blank'>click here</a></li>
                 </ul>
             </div>
         </div>
