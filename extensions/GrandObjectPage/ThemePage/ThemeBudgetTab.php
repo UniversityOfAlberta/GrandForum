@@ -113,7 +113,12 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
+            if($config->getValue('networkName') == "AGE-WELL"){
+                $endYear = date('Y', time() + (1 * 30 * 24 * 60 * 60)); // Roll-over budget in December
+            }
+            else{
+                $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over budget in April
+            }
 
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = substr($phaseDates[$theme->getPhase()], 0, 4);
@@ -214,20 +219,20 @@ class ThemeBudgetTab extends AbstractEditableTab {
                         $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".($i-$startYear+1).".</p>";
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. ** Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
+                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
                                         <h3>Budget Update</h3>
                                         <p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
                         $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
-                        $this->html .= "<p><b>Anticipated Unspent Project Funds:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                        $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, {$i}:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
                         
-                        $this->html .= "<p>Core Research Program: As stated in your Year 3 Extension Letter, there will be no permissible carry forward at the end of the $i/".substr(($i+1),2,2)." fiscal year. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        $this->html .= "<p>Core Research Program (CRP): As stated in the Year 4 CRP extension letter, the permissible carry forward of funds for fiscal year 2018/19 is 15%. If greater than 15% of total project funds (i.e. including CRP Plus funds) are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
                         
-                        $this->html .= "<p>Innovation Hubs: Innovation Hubs can carry forward 15% of their total budget into the next fiscal year without approval. If greater than 15% project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                        $this->html .= "<p>Innovation Hubs: As stated in the extension letter, the permissible carry forward of funds for fiscal year 2018/19 is 15%. If greater than 15% of project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
                         
-                        $this->html .= "<p>Workpackages/Cross-Cutting Activities: No funds can be carried forward for WPs. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.  Please project the amount of unspent funds at end of year (March 31).</p>";
+                        $this->html .= "<p>Workpackages (WP)/Cross-Cutting (CC) Activities: As stated in the WP stipend and CC extension letters, no funds can be carried forward. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.</p>";
                         
-                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end.  Innovation Hubs should use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in $i/".substr(($i+1),2,2)." once approved.</p>";
+                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end and use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in 2019/20 once approved.</p>";
                         
                         $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
