@@ -123,7 +123,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = substr($phaseDates[$theme->getPhase()], 0, 4);
             
-            for($i=$endYear+1; $i >= $startYear; $i--){
+            for($i=$endYear; $i >= $startYear; $i--){
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
