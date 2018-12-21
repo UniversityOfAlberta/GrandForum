@@ -40,7 +40,7 @@
                 <h3>RFP Description</h3>
                 <p>The funding for this request for proposals (RFP) is being provided by Alberta Innovates (AI) and seeks to support Alberta-based projects that will lead to tangible benefits to the Province. This includes intellectual property, start-up companies, processes, products, services, policies and/or clinical practice guidelines that can be developed with Partners and/or Stakeholders. Given the source of funding, only investigators located in the Province of Alberta are eligible to apply for funding through this RFP. Investigators from outside of Alberta can be involved in projects, but must support their own activities through other sources of funding.</p>
 
-                <p>A key goal of GlycoNet is to support research projects that are multi-disciplinary and preferably translational. Accordingly, this RFP seeks to fund projects that involve two or more research groups in different disciplines. Proposals that involve an investigator who is primarily funded on by one of the tri-council agencies (e.g., CIHR) working with others primarily funded by one or both of the other tri-council agencies (e.g., NSERC and/or SSHRC) will be viewed most favourably.</p>
+                <p>A key goal of GlycoNet is to support research projects that are multi-disciplinary and preferably translational. Accordingly, this RFP seeks to fund projects that involve two or more research groups in different disciplines. Proposals that involve an investigator who is primarily funded by one of the Tri-Council agencies (e.g., CIHR) working with others primarily funded by one or both of the other Tri-Council agencies (e.g., NSERC and/or SSHRC) will be viewed most favorably.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -49,7 +49,7 @@
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Diabetes and Obesity|Rare Genetic Diseases|Therapeutic Proteins &amp; Vaccines">
             <![CDATA[
                 <h3>Theme</h3>
-                Choose the GlycoNet theme that your project aligns with: antimicrobials, chronic diseases (including diabetes and obesity), neurodegenerative diseases or cancer.
+                Choose the GlycoNet theme that your project aligns with: antimicrobials, chronic diseases, diabetes and obesity, rare genetic diseases, or therapeutic proteins and vaccines.
                 {$item}
             ]]>
         </ReportItem>
@@ -72,7 +72,7 @@
                                sizes="0|150|125|150">
             <![CDATA[
                 <h2>Investigators</h2>
-                <p>Input the name, affiliation, and contact information for all investigators involved on the project. The project must include multi-disciplinary teams involving researchers as described in the instructions.</p>
+                <p>Input the name, affiliation, and contact information for all investigators involved in the project. The project must include multi-disciplinary teams involving researchers as described in the instructions.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -107,7 +107,7 @@
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Partner Name|Contact Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h2>Partners involved (Companies, agencies etc)</h2>
-                <p>List all partners involved on the project: company name, dollars requested and committed cash/in-kind contributions.</p>
+                <p>List all partners involved in the project: company name, dollars requested and committed cash/in-kind contributions.</p>
                 <ul><li>Partner involvement should be further detailed in a letter of support (see Section G).</li></ul>
                 {$item}
             ]]>
@@ -135,7 +135,7 @@
         <ReportItem id="coi" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_COI" rich="true" height="200px">
             <![CDATA[
                 <h2>Conflict of Interest</h2>
-                <p>Declare conflict of interest if any researchers involved on the project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research.</p>
+                <p>Declare a conflict of interest if any researchers involved on the project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -155,7 +155,7 @@
             <![CDATA[
                 <h2>Project Proposal</h2>
                 <p>A research proposal (5,000 words maximum, not including figure/scheme legends and references).</p>
-                <p>Identify Project Deliverables. The term “Deliverable” refers to converting knowledge arising from the research project, into tangible outcomes. Examples include: licensing, company creation, services other forms of commercialization, the developing of new clinical practices, or policies.</p>
+                <p>Identify Project Deliverables. The term “Deliverable” refers to converting knowledge arising from the research project into tangible outcomes. Examples include: licensing, company creation, services or other forms of commercialization, the development of new clinical practices, or policies.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -176,7 +176,7 @@
                 <h2>Training Potential</h2>
                 <p>A summary of the project’s training plan.</p>
                 <ul>
-                    <li>Provide information on the number and type (i.e., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project.</li>
+                    <li>Provide information on the number and type (i.e., undergraduate, graduate student, PDF, etc.) of Highly Qualified Personnel expected to be trained in each year of the project.</li>
                     <li>List the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</li>
                 </ul>
                 {$item}
@@ -219,13 +219,13 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <ReportItem id="info" type="Static">
             <![CDATA[
-                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file</i></b>. The first page also contains the budget for the use of the core services in the project. <b><i>The project leader should coordinate the core services budget for the project</i></b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate.</p>
+                <p>The front page of the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file</i></b>. The first page also contains the budget for the use of the core services in the project. <b><i>The project leader should coordinate the core services budget for the project</i></b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate.</p>
 
                 Budget Guidelines:
                 <ul>
                     <li>Projects can request up to $100,000/year for <b><i>one year</i></b> from GlycoNet.</li>
                     <li>Projects require a 1:2 match with partner funding (for every two dollars requested in the proposal from GlycoNet, at least one dollar in matching must be provided); at least 50% of the matching funds must be cash.</li>
-                    <li>Funding from provincial funding sources, excluding Alberta Innovates, industry, foundations and federal funding, including from the tri-council (e.g., CIHR, NSERC, SSHRC) and CFI, is eligible for matching. However, NSERC Discovery Grant and CIHR Project Grant and SSHRC Insight Grant are not eligible.</li>
+                    <li>Funding from provincial funding sources (excluding Alberta Innovates), industry, foundations and federal funding, including from the Tri-Council (e.g., CIHR, NSERC, SSHRC) and CFI, is eligible for matching. However, NSERC Discovery Grant and CIHR Project Grant and SSHRC Insight Grant are not eligible.</li>
                     <li>The project budget should clearly show the co-contribution of partner funds in alignment with NCE and eligible project expenses.
                         <ul>
                             <li>Projects that involve an industrial partner will be viewed most favorably.</li>
