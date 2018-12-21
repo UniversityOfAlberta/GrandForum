@@ -29,7 +29,7 @@
                     <li>Project Summary</li>
                     <li>Project Proposal and References</li>
                     <li>Figures/Schemes (a single PDF file)</li>
-                    <li>Budget (a single Excel file in the correct format and with a budget for two years only)</li>
+                    <li>Budget (a single Excel file in the correct format and with a budget for one year only)</li>
                     <li>Budget Justification</li>
                     <li>Milestones (a single Excel file)</li>
                     <li>Partner Letters of Support (as separate PDF files)</li>
@@ -264,7 +264,7 @@
         </ReportItem>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 1 year.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -283,7 +283,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
             <![CDATA[
                 <ul>
-                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones - 2 years.xls'><b>Milestones Template</b></a></li>
+                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones for 1 year.xls'><b>Milestones Template</b></a></li>
                     <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
                     <li>Add an “X” to the shaded boxes.</li>
                     <li>Names should be added in the format: First Name Last Name.</li>
