@@ -46,7 +46,7 @@
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection">
         <!-- Theme -->
-        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Neurodegenerative Diseases|Cancer">
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Diabetes and Obesity|Rare Genetic Diseases|Therapeutic Proteins &amp; Vaccines">
             <![CDATA[
                 <h3>Theme</h3>
                 Choose the GlycoNet theme that your project aligns with: antimicrobials, chronic diseases (including diabetes and obesity), neurodegenerative diseases or cancer.
