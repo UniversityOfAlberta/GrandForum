@@ -714,10 +714,13 @@ class WhoSupplies extends SpecialPage{
 
                 <h3>Billing Codes</h3>
                 <ul>
-                    <li>50P: Therapeutic abortion (includes medical and surgical abortion) in the first trimester. Billing Amount: $387.30</li>
-                    <li>250P: Therapeutic abortion (includes incomplete and missed abortion) in the second trimester. Billing Amount: $528.60</li>
-                    <li>350P: D&C for incomplete or missed abortion. Billing Amount: $387.30</li>
-                    <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a></li>
+                    <li>5P: Initial assessment, $56.00 (referred) or $44.75 (not referred)</li>
+                    <li>7P: Follow-up assessment, $31.75</li>
+                    <li>50P: Therapeutic abortion (surgical) in the first trimester. Billing Amount: $177.50</li>
+                    <li>250P: Therapeutic abortion (includes incomplete and missed abortion) surgical abortions in the second trimester. Billing Amount: $230.00 (specialist) or $207.00 (general practitioner)</li>
+                    <li>350P: D&C for incomplete or missed abortion. Billing Amount: $177.30</li>
+                    <li>Prescribing or administering pharmaceutical agents such as Mifegymiso are included in the visit service and there is no additional billing as of October 2018, <a href='https://www.ehealthsask.ca/services/resources/Resources/billing-bulletin-oct-2018.pdf' target='_blank'>read more</a> (see page 8).</li>
+                    <li>Saskatchewan Medical Abortion Fee Guide Schedule for Obstetrics and Gynecology, see ‘P4’, <a target='_blank' href='http://www.sma.sk.ca/kaizen/content/files/p(7).pdf'>click here</a> for 2017.  <a href='https://www.ehealthsask.ca/services/resources/Resources/physician-payment-schedule-oct-2018.pdf' target='_blank'>Click here</a> for 2018 and see \"page 239\".</li>
                 </ul>
                 
             </div>
