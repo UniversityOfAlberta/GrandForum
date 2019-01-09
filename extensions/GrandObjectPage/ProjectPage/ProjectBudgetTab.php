@@ -215,9 +215,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
             $this->html .= "<div id='budgetAccordion'>";
             if($config->getValue('networkName') == "AGE-WELL"){
                 $endYear = date('Y', time() + (1 * 30 * 24 * 60 * 60)); // Roll-over budget in December
+                $midYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Keep previous year open until April
             }
             else{
                 $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over budget in April
+                $midYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Keep previous year open until April
             }
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
@@ -226,7 +228,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
             $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
             
             for($i=$endYear; $i >= $startYear; $i--){
-                $firstBudget = ($i == $endYear);
+                $editable = ($i == $endYear || $i == $midYear);
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
@@ -270,7 +272,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $alloc = "\$".number_format($allocation);
                 }
                 
-                if($edit && $firstBudget){
+                if($edit && $editable){
                     if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
@@ -286,7 +288,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
                 
-                if(!$edit || !$firstBudget){
+                if(!$edit || !$editable){
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
                     if($config->getValue('networkName') == "FES"){
@@ -362,7 +364,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         </script>";
                     }
                 }
-                if($edit && $config->getValue('networkName') == "FES" && $firstBudget){
+                if($edit && $config->getValue('networkName') == "FES" && $editable){
                     $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
                     $this->html .= "<h3>Budget Justification</h3>
                                     <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
