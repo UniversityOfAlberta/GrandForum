@@ -104,7 +104,7 @@ class ApplicationsTable extends SpecialPage{
     function generateKT(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("RP_KT_INTENT", array_merge($this->nis, $this->inactives), 2019, "2019 Intent"));
+        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", array_merge($this->nis, $this->inactives), 2019, "2019 Intent"));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
