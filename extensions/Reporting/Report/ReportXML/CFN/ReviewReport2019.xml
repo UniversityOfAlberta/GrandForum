@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Review Report" ajax="true" disabled="false" personId="0" year="2019">
+    <Permissions>
+        <Role role="STAFF"></Role>
+    </Permissions>
+    <ReportSection id="kt_intent_review" name="KT Intent Review" tooltip="Review of KT Intent Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="KT_INTENT-EX">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_head" type="StaticReportItem">
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
+                    <ReportItem id="total" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)}
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="kt_intent_review_summary" name="KT Intent Summary" tooltip="KT Intent Summary" type="ReportSection">
+        <ReportItem id="table_head" type="Static">
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>KT</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="KT_INTENT-EX">
+            <ReportItem id="script_init" type="StaticReportItem">
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
+                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="table_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q4)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {round({divide({get(q5)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
