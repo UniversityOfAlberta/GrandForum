@@ -127,7 +127,7 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("class", "wikitable");
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
-        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array($pis, $cis)));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
