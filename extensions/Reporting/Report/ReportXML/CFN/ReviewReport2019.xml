@@ -8,7 +8,6 @@
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[
-                        {set(q1, 0)}
                         {set(q2, 0)}
                         {set(q3, 0)}
                         {set(q4, 0)}
@@ -17,13 +16,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
                         <![CDATA[
-                            {set(q1, {add({get(q1)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
                             {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
                             {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
                             {set(q4, {add({get(q4)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)})})}
@@ -43,7 +40,6 @@
                                     <th>Q2</th>
                                     <th>Q3</th>
                                     <th>Q4</th>
-                                    <th>Q5</th>
                                     <th>Total</th>
                                     <th width='60%'>Comments</th>
                                 </tr>
@@ -56,14 +52,12 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>
-                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},
-                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
+                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}
@@ -85,9 +79,6 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
-                                    </th>
-                                    <th>
                                         {round({divide({get(q2)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
@@ -101,8 +92,7 @@
                                     </th>
                                     <th>
                                         {set(total, 
-                                            {add({get(q1)}, 
-                                                 {get(q2)},
+                                            {add({get(q2)},
                                                  {get(q3)},
                                                  {get(q4)},
                                                  {get(q5)}
@@ -134,7 +124,6 @@
                             <th>Avg. Q2</th>
                             <th>Avg. Q3</th>
                             <th>Avg. Q4</th>
-                            <th>Avg. Q5</th>
                             <th>Avg. Total</th>
                         </tr>
                     </thead>
@@ -144,7 +133,6 @@
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="KT_INTENT-EX">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
-                    {set(q1,0)}
                     {set(q2,0)}
                     {set(q3,0)}
                     {set(q4,0)}
@@ -153,13 +141,11 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
-                        {set(q1, {add({get(q1)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
                         {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
                         {set(q4, {add({get(q4)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)})})}
@@ -172,9 +158,6 @@
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}</b></td>
-                        <td align='right'>
-                            {round({divide({get(q1)},{get(nReviewers)})},2)}
-                        </td>
                         <td align='right'>
                             {round({divide({get(q2)},{get(nReviewers)})},2)}
                         </td>
@@ -189,8 +172,7 @@
                         </td>
                         <td align='right'>
                             {set(total, 
-                                {add({get(q1)}, 
-                                     {get(q2)},
+                                {add({get(q2)},
                                      {get(q3)},
                                      {get(q4)},
                                      {get(q5)}

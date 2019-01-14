@@ -49,9 +49,10 @@
             <![CDATA[
                 <ol>
                     <li>Please score all sections.  You can use decimals in your scores.</li>
-                    <li>Competition Goal: To advance previously funded CFN research evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
-                    <li>Because of the limited overall budget and expected high interest for this competition, the budget/budget justification will be a major evaluation criterion.  Note: Increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</li>
-                    <li>Proposals that secure cash and/or in kind matching contributions beyond the minimum 1:1 match will be at an advantage.</li>
+                    <li>Overall competition goal: To advance evidence into practice thereby, ultimately strengthening Canada's healthcare system and improving care of Canadians living with frailty.</li>
+                    <li>Priority areas for this competition are: 1) Integrated models of care to improve frailty outcomes, and 2) Strategies for improving functional outcomes in older adults living with frailty</li>
+                    <li>Although these are the two priorities, the LOI should be considered even if is does not fit in one of the two.</li>
+                    <li>Adjudication based on the importance of the endeavour, feasibility of the implementation plan, and potential reach. Only top-rated projects will be invited to submit a full application.</li>
                 </ol>
             ]]>
         </Instructions>
@@ -72,7 +73,7 @@
                             <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="KT_EX_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <!--ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="KT_EX_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>1. Partnerships</h2>
                             <p>Do the applicants have the appropriate partners to carry out the study?</p>
@@ -107,11 +108,11 @@
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
-                    </ReportItem>
+                    </ReportItem-->
                     
                     <ReportItem id="ex_2" blobType="BLOB_TEXT" blobItem="KT_EX_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
-                            <h2>2. Fit with CFN research objectives and themes</h2>
+                            <h2>1. Fit with CFN research objectives and themes</h2>
                             <p>How well does the applicant describe how the study will contribute to advancing health-related knowledge, health research, health care, health systems and/or health outcomes related to the care of Canadians living with frailty?</p>
                             <table class='wikitable' width='100%'>
                                 <tr>
@@ -148,7 +149,7 @@
                     
                     <ReportItem id="ex_3" blobType="BLOB_TEXT" blobItem="KT_EX_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
-                            <h2>3. Importance of the Endeavour</h2>
+                            <h2>2. Importance of the Endeavour</h2>
                             <p>What is the evidence supporting the care or quality gap? Does it merit a KT intervention at this time? Are the outcomes described achievable, measurable and important?</p>
                             <table class='wikitable' width='100%'>
                                 <tr>
@@ -185,7 +186,7 @@
                     
                     <ReportItem id="ex_4" blobType="BLOB_TEXT" blobItem="KT_EX_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
-                            <h2>4. Feasibility of the Approach and Implementation Plan</h2>
+                            <h2>3. Feasibility of the Approach and Implementation Plan</h2>
                             <p>How well does the applicant describe the study so that it addresses the care or quality gap?  The applicant was asked to: a. describe the approaches and methods used in the study,  and b. describe the involvement of knowledge users, decision makers, researchers, and partnering organizations. Applicants were also asked to include a timeline and milestones.</p>
                             <table class='wikitable' width='100%'>
                                 <tr>
@@ -222,7 +223,7 @@
                     
                     <ReportItem id="ex_5" blobType="BLOB_TEXT" blobItem="KT_EX_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
-                            <h2>5. Budget Amount and Potential Impact</h2>
+                            <h2>4. Budget Amount and Potential Impact</h2>
                             <p>Does the potential impact of the study justify the requested total study budget?  How well will the impact of the study will be measured and evaluated? Note that there was no maximum budget amount stipulated to applicants and thus applicants were advised that increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</p>
                             <table class='wikitable' width='100%'>
                                 <tr>
@@ -261,25 +262,23 @@
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total">
-                                    {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$user_id},{$my_id},0)},
+                                    {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$user_id},{$my_id},0)}
                                     )}
-                                </b> (Score out of 20)</p>
+                                </b> (Score out of 16)</p>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total5">
                                     {round(
                                         {multiply(
                                             {divide(
-                                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$user_id},{$my_id},0)},
+                                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 20)}
+                                            , 16)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score converted out of 5)</p>
@@ -292,7 +291,7 @@
                                         }
                                     });
                                     $("#proj{$user_id}_total").html(Math.round(total*100)/100);
-                                    $("#proj{$user_id}_total5").html(Math.round((total/20)*5*100)/100 );
+                                    $("#proj{$user_id}_total5").html(Math.round((total/16)*4*100)/100 );
                                 });
                             </script>
                             </div>
