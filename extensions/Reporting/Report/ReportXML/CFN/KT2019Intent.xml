@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019IntentPDF" year="2019" ajax="true" disabled="false">
+<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019IntentPDF" year="2019" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="intent" permissions="rw" />
