@@ -420,10 +420,10 @@ SopsView = Backbone.View.extend({
 
    filterSupervisors: function(settings,data,dataIndex){
         var filtersupervisors = this.filterSelectSupervisors.chosen().val();
-        var studentsupervisors = data[11].split(", ");
+        var studentsupervisors = unaccentChars(data[11]).split(", ");
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                if ($.inArray(filtersupervisors[i], studentsupervisors) != -1) {
+                if ($.inArray(unaccentChars(filtersupervisors[i]), studentsupervisors) != -1) {
                     return true;
                 }
             }
@@ -434,10 +434,10 @@ SopsView = Backbone.View.extend({
 
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = this.filterSelectReviewers.chosen().val();
-        var reviewers = data[18];
+        var reviewers = unaccentChars(data[18]);
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
-                if (reviewers.indexOf(filterreviewers[i]) != -1) {
+                if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
                     return true;
                 }
             }
