@@ -63,26 +63,32 @@ class AssignReviewer extends SpecialPage{
         $wgOut->addHTML("<input type='hidden' name='student_id' value='$student_id'>");
         $student = Person::newFromId($student_id);
         $evaluators = $student->getEvaluators(YEAR,'sop');
-	foreach($evaluators as $evaluator){
+        foreach($evaluators as $evaluator){
             $personNames[] = $evaluator->getNameForForms();
         }
       
-                    $list = array();
-                    $allPeople = Person::getAllPeople('all');
-                    foreach($allPeople as $person){
-                        if($person->isRole(EVALUATOR) && array_search($person->getNameForForms(), $personNames) === false){
-                            $list[] = $person->getNameForForms();
-                        }
-                    }
-                    $wgOut->addHTML("<div class='switcheroo noCustom' name='Person' id='people'>
-                                        <div class='left'><span>".implode("</span>\n<span>", $personNames)."</span></div>
-                                        <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
-                                    </div>");
+        $list = array();
+        $allPeople = Person::getAllPeople('all');
+        foreach($allPeople as $person){
+            if($person->isRole(EVALUATOR) && array_search($person->getNameForForms(), $personNames) === false){
+                $list[] = $person->getNameForForms();
+            }
+        }
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='Person' id='people'>
+                            <div class='left'><span>".implode("</span>\n<span>", $personNames)."</span></div>
+                            <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
+                        </div>");
 
 
         $form = self::createForm();
         $wgOut->addHTML($form->render());
-        $wgOut->addHTML("</form>");
+        $wgOut->addHTML("</form>");                        
+        $wgOut->addHTML("<script type='text/javascript'>
+            $(document).ready(function(){
+                $('#rightpeoples').height('300px');
+                $('#leftpeoples').height('300px');
+            });
+        </script>");
     }
     
     function handleSubmit($wgOut){
