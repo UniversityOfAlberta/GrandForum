@@ -224,8 +224,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
+            
             $phaseDates = $config->getValue("projectPhaseDates");
-            $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
+            $startYear = max(substr($phaseDates[1], 0, 4), date('Y', strtotime($project->getCreated()) - (3 * 30 * 24 * 60 * 60)));
             
             for($i=$endYear; $i >= $startYear; $i--){
                 $editable = ($i == $endYear || $i == $midYear);
