@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019IntentPDF" year="2019" ajax="true" disabled="false">
+<Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019IntentPDF" year="2019" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="intent" permissions="rw" />
@@ -234,9 +234,9 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="reviewerCheck" type="If" if="{and({==({getArrayCount(RP_KT_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
-                                                             {==({getArrayCount(RP_KT_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItemSet id="reviewerCheck" type="If" if="{and({>=({getArrayCount(RP_KT_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
+                                                             {>=({getArrayCount(RP_KT_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
         </ReportItemSet>
     </ReportSection>
 </Report>

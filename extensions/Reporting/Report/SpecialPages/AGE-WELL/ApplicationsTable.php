@@ -149,6 +149,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2019', $this->nis, 2019, "Accelerator 5"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018_2', $this->nis, 2018, "Accelerator 4"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018', $this->nis, 2018, "Accelerator 3"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_09_2017', $this->nis, 2017, "Accelerator 2"));
@@ -187,6 +188,7 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', $this->fullHQPs, 2019, "04-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', $this->fullHQPs, 2019, "01-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', $this->fullHQPs, 2018, "07-2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', $this->fullHQPs, 2018, "04-2018"));

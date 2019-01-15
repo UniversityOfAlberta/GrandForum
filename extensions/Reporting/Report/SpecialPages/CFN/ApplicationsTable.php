@@ -104,7 +104,30 @@ class ApplicationsTable extends SpecialPage{
     function generateKT(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", array_merge($this->nis, $this->inactives), 2019, "2019 Intent"));
+        $pis = new MultiTextReportItem();
+        $pis->setBlobType(BLOB_ARRAY);
+        $pis->setBlobItem("PI");
+        $pis->setBlobSection("INTENT");
+        $pis->setAttr("labels", "First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization");
+        $pis->setAttr("types", "text|text|text|text|text");
+        $pis->setAttr("multiple", "true");
+        $pis->setAttr("showHeader", "false");
+        $pis->setAttr("class", "wikitable");
+        $pis->setAttr("orientation", "list");
+        $pis->setId("pi");
+        
+        $cis = new MultiTextReportItem();
+        $cis->setBlobType(BLOB_ARRAY);
+        $cis->setBlobItem("PI");
+        $cis->setBlobSection("INTENT");
+        $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
+        $cis->setAttr("types", "text|text|text|text|text");
+        $cis->setAttr("multiple", "true");
+        $cis->setAttr("showHeader", "false");
+        $cis->setAttr("class", "wikitable");
+        $cis->setAttr("orientation", "list");
+        $cis->setId("ci");
+        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
