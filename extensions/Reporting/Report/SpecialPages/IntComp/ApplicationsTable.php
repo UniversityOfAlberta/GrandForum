@@ -19,7 +19,7 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF));
+        return ($person->isRoleAtLeast(SD));
     }
 
     function execute($par){
@@ -28,6 +28,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
+        $this->allPeople = Person::getAllPeople(); 
         $this->nis = Person::getAllPeople(NI);
         $this->allNis = array_merge($this->nis, 
                                     Person::getAllCandidates(NI), 
@@ -56,6 +57,7 @@ class ApplicationsTable extends SpecialPage{
         </style>");
         
         //$links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=candidates'>Candidates</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=loi'>JIC LOIs</a>";
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
@@ -65,9 +67,9 @@ class ApplicationsTable extends SpecialPage{
         
         $this->initArrays();
         
-        /*if($program == "candidates" && $me->isRoleAtLeast(SD)){
-            $this->generateCandidates();
-        }*/
+        if($program == "loi"){
+            $this->generateLOI();
+        }
         return;
     }
     
@@ -78,23 +80,10 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
-    function generateCat(){
+    function generateLOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $reviewers = new MultiTextReportItem();
-        $reviewers->setBlobType(BLOB_ARRAY);
-        $reviewers->setBlobItem("CAT_DESC_REV");
-        $reviewers->setBlobSection(CAT_DESC);
-        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
-        $reviewers->setAttr("types", "text|text|text");
-        $reviewers->setAttr("multiple", "true");
-        $reviewers->setAttr("showHeader", "false");
-        $reviewers->setAttr("class", "wikitable");
-        $reviewers->setAttr("orientation", "list");
-        $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2017, "2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2016, "2016", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_LOI'), $this->allPeople, 2018, "Winter 2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

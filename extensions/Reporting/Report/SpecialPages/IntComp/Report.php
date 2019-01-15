@@ -27,7 +27,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
-        $tabs["Proposals"] = TabUtils::createTab("My Proposals");
+        $tabs["Proposals"] = TabUtils::createTab("Huawei");
         $tabs["Awards"] = TabUtils::createTab("My Awards");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         
@@ -39,8 +39,10 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI")) ? "selected" : false;
-        $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("LOI", "{$url}LOI", $selected);
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC LOI (Winter 2019)", "{$url}LOI", $selected);
+        }
         
         return true;
     }
