@@ -70,6 +70,18 @@
                                 <tr><td><b>Project Title:</b></td><td>{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)}</td></tr>
                             </table>
                             {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="q1" blobType="BLOB_TEXT" blobItem="Q1" blobSubItem="{$user_id}" type="Radio" options="Yes|No" optional="true">
+                        <![CDATA[
+                            <p><b>Q1: Knowledge translation (KT) is about raising knowledge users' awareness of research findings and facilitating the use of those findings. In your opinion, does this proposal describe a KT project?</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="q2" blobType="BLOB_TEXT" blobItem="Q2" blobSubItem="{$user_id}" type="Radio" options="Yes|No" optional="true">
+                        <![CDATA[
+                            <p><b>Q2: If no, would this proposal be more appropriate for a research competition?</b>
+                            {$item}</p>
                             <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                         ]]>
                     </ReportItem>
