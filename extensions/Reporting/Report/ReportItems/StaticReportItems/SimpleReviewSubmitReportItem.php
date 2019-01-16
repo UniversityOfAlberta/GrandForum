@@ -92,7 +92,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
 		}
-		$showWarning = (strtolower($this->getAttr('showWarning', 'true')) == 'true');
+		$showWarning = (strtolower($this->getAttr('showWarning', 'false')) == 'true');
 		if(!$this->getReport()->isComplete() && $showWarning){
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
