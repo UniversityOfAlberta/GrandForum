@@ -137,7 +137,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" size="10" mime=".pdf">
+        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
             <![CDATA[
                 <h3>Attachment Upload (optional)</h3>
                 <p>Use the following upload box to upload a single <b>pdf</b> file</p>
