@@ -162,7 +162,7 @@
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'><b>{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td style='white-space:nowrap;'><b>{$user_name}</b></td>
                         <td align='right'>
                             {round({divide({get(q2)},{get(nReviewers)})},2)}
                         </td>
