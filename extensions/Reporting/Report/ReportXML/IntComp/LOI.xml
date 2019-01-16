@@ -137,6 +137,13 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" size="10" mime=".pdf">
+            <![CDATA[
+                <h3>Attachment Upload (optional)</h3>
+                <p>Use the following upload box to upload a single <b>pdf</b> file</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
