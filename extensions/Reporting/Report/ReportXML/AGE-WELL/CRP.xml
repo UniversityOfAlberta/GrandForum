@@ -428,7 +428,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2">
+        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2" optional="true">
             <![CDATA[
                 <h2>Letters of Support</h2>
                 <p>Tangible committed contributions from at least one non-academic partner organization are required at the RFP stage. Support must be a measurable and impactful contribution to the project, including cash and/or in-kind contribution. A letter of support from each eligible partner organization must include the following:</p>
@@ -443,47 +443,47 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" fileSize="2">
+        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter3" type="Upload" blobItem="LETTER3" fileSize="2">
+        <ReportItem id="letter3" type="Upload" blobItem="LETTER3" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter4" type="Upload" blobItem="LETTER4" fileSize="2">
+        <ReportItem id="letter4" type="Upload" blobItem="LETTER4" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter5" type="Upload" blobItem="LETTER5" fileSize="2">
+        <ReportItem id="letter5" type="Upload" blobItem="LETTER5" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter6" type="Upload" blobItem="LETTER6" fileSize="2">
+        <ReportItem id="letter6" type="Upload" blobItem="LETTER6" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter7" type="Upload" blobItem="LETTER7" fileSize="2">
+        <ReportItem id="letter7" type="Upload" blobItem="LETTER7" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter8" type="Upload" blobItem="LETTER8" fileSize="2">
+        <ReportItem id="letter8" type="Upload" blobItem="LETTER8" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter9" type="Upload" blobItem="LETTER9" fileSize="2">
+        <ReportItem id="letter9" type="Upload" blobItem="LETTER9" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter10" type="Upload" blobItem="LETTER10" fileSize="2">
+        <ReportItem id="letter10" type="Upload" blobItem="LETTER10" fileSize="2" optional="true">
             <![CDATA[
                 {$item}
             ]]>
