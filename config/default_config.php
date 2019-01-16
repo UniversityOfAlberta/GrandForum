@@ -94,6 +94,9 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // Whether or not to show the Upload File in the sidebar
+    $config->setValue("showUploadFile", true);
+    
     // Whether to allow users to upload photos (if false, only Staff+ will be able to)
     $config->setValue("allowPhotoUpload", true);
     
