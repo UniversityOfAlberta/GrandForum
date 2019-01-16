@@ -288,13 +288,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form.">
+        <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form." optional="true">
             <![CDATA[
                 {$item}
                 
             ]]>
         </ReportItem>
-        <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
+        <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5" optional="true">
             <![CDATA[
                 <div style="margin-left:25px;">
                     Please upload Part 1 of the Mitacs application form here.
