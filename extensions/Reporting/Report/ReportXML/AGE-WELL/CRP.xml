@@ -247,7 +247,7 @@
                 <button type="submit" value="Save" name="submit">Save</button>&nbsp;<span class="autosaveSpan"></span><img id="submit_throbber" style="display:none;vertical-align:-20%;" src="../skins/Throbber.gif">
             ]]>
         </ReportItem>
-        <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ.">
+        <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ." optional="true">
             <![CDATA[
                 {$item}
             ]]>
