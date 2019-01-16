@@ -28,7 +28,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-        $this->allPeople = Person::getAllPeople(); 
+        $this->allPeople = Person::getAllCandidates(); 
         $this->nis = Person::getAllPeople(NI);
         $this->allNis = array_merge($this->nis, 
                                     Person::getAllCandidates(NI), 
