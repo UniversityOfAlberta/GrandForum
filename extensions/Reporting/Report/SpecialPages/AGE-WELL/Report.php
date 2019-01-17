@@ -81,6 +81,9 @@ class Report extends AbstractReport {
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CRP") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRP", $selected);
+           
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);
             
@@ -90,9 +93,6 @@ class Report extends AbstractReport {
             /*
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CIPApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CIP Application", "{$url}CIPApplication", $selected);*/
-            
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CRP") ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRP", $selected);
         }
         foreach($person->getProjects() as $project){
             if ($project->getType() == 'Innovation Hub') {
