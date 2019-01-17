@@ -56,7 +56,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({or({==({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+        <ReportItemSet id="if_eula" type="If" if="{or({or({or({==({getText(RP_KT_INTENT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                           {contains({$user_full_roles},ISAC)}
                                                          )},
                                                       {contains({$user_full_roles},KTC)})},
