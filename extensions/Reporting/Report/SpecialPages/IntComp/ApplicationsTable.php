@@ -83,7 +83,9 @@ class ApplicationsTable extends SpecialPage{
     function generateLOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_LOI'), $this->allPeople, 2018, "Winter 2019"));
+        $tab = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019");
+        $tab->idProjectRange = array(1,2);
+        $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
