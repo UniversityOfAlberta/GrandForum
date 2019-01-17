@@ -84,7 +84,7 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tab = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019");
-        $tab->idProjectRange = array(1,2);
+        $tab->idProjectRange = array(0,1);
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
     }
