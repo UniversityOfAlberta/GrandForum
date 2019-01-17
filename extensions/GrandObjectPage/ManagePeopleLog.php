@@ -51,12 +51,14 @@ class ManagePeopleLog extends SpecialPage{
 	                        </thead>
 	                        <tbody>");
 	    foreach($notifications as $notification){
-	        $wgOut->addHTML("<tr>
-	                            <td>{$notification->name}</td>
-	                            <td>{$notification->creator->getNameForForms()}</td>
-	                            <td>{$notification->description}</td>
-	                            <td>{$notification->time}</td>
-	                        </tr>");
+	        if($notification->creator != null){
+	            $wgOut->addHTML("<tr>
+	                                <td>{$notification->name}</td>
+	                                <td>{$notification->creator->getNameForForms()}</td>
+	                                <td>{$notification->description}</td>
+	                                <td>{$notification->time}</td>
+	                            </tr>");
+	        }
 	    }
 	    $wgOut->addHTML("   </tbody>
 	                     </table>");
