@@ -81,8 +81,8 @@ class Report extends AbstractReport {
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
-            //$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2018-2") ? "selected" : false;
-            //$tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2018-2", $selected);
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);
             
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CatalystApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst Application", "{$url}CatalystApplication", $selected);*/
