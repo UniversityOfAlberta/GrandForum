@@ -271,5 +271,30 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="letter11" type="Upload" blobItem="LETTER11" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter12" type="Upload" blobItem="LETTER12" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter13" type="Upload" blobItem="LETTER13" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter14" type="Upload" blobItem="LETTER14" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter15" type="Upload" blobItem="LETTER15" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
