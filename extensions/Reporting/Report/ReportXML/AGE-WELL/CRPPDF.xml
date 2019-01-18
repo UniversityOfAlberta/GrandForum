@@ -96,11 +96,18 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ.">
+        <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ." onlyShowIfNotEmpty="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItemSet id="section5_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION5_CHECK,0,{$my_id},{$project_id},section5_check)},)}">
+            <ReportItem id="section5_no" type="Static">
+                <![CDATA[
+                    <p><i>No, we do not wish to be considered for additional funding from MEDTEQ.</i></p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1100">
             <![CDATA[
                 <h2>Section 6: Knowledge and Technology Exchange and Exploitation (KTEE)</h2>
@@ -113,12 +120,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form.">
+        <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form." onlyShowIfNotEmpty="true">
             <![CDATA[
                 {$item}
                 
             ]]>
         </ReportItem>
+        <ReportItemSet id="section7_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION7_CHECK,0,{$my_id},{$project_id},section7_check)},)}">
+            <ReportItem id="section7_no" type="Static">
+                <![CDATA[
+                    <p><i>No, we do not wish to be considered for Mitacs funding.</i></p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
             <![CDATA[
                 {$item}
