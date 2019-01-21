@@ -56,15 +56,34 @@ class TextareaReportItem extends AbstractReportItem {
                         paste_postprocess: function(plugin, args) {
                             var imgs = $('img', args.node);
                             imgs.each(function(i, el){
+                                var uniqueId = _.uniqueId('tinymceimg_');
                                 $(el).removeAttr('style');
-                                $(el).attr('width', el.naturalWidth/$imgConst);
-                                $(el).attr('height', el.naturalHeight/$imgConst);
-                                $(el).css('width', el.naturalWidth/$imgConst);
-                                $(el).css('height', el.naturalHeight/$imgConst);
+                                $(el).attr('id', uniqueId);
+                                $(el).hide();
+                                if($(el).css('display') != 'none'){
+                                    $(el).remove();
+                                }
+                                else{
+                                    $(el).wrap('div');
+                                    $(el).parent().css('display', 'inline-block');
+                                    el.onload = function() {
+                                        // access image size here
+                                        var content = $('<div>' + tinyMCE.activeEditor.getContent() + '</div>');
+                                        $('img#' + uniqueId, content).attr('width', el.naturalWidth/$imgConst);
+                                        $('img#' + uniqueId, content).attr('height', el.naturalHeight/$imgConst);
+                                        $('img#' + uniqueId, content).css('width', el.naturalWidth/$imgConst);
+                                        $('img#' + uniqueId, content).css('height', el.naturalHeight/$imgConst);
+                                        $('img#' + uniqueId, content).show();
+                                        $('img#' + uniqueId, content).attr('id', '');
+                                        tinyMCE.activeEditor.setContent($(content).html());
+                                    };
+                                }
                             });
                         },
                         'formats' : {
-                            'aligncenter' : {block: 'center'}
+                            aligncenter : {block: 'center'},
+                            alignright: {block: 'center', styles: {float: 'right'}},
+                            alignleft: {block: 'center', styles: {float: 'left'}},
                         },
                         setup: function(ed){
                             if('$limit' > 0){
