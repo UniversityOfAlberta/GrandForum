@@ -82,8 +82,79 @@ class ApplicationsTable extends SpecialPage{
     
     function generateLOI(){
         global $wgOut;
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem("TITLE");
+        $title->setBlobSection(PROP_DESC);
+        $title->setId("title");
+        
+        $duration = new TextReportItem();
+        $duration->setBlobType(BLOB_TEXT);
+        $duration->setBlobItem("DURATION");
+        $duration->setBlobSection(PROP_DESC);
+        $duration->setId("duration");
+        
+        $budget = new TextReportItem();
+        $budget->setBlobType(BLOB_TEXT);
+        $budget->setBlobItem("BUDGET");
+        $budget->setBlobSection(PROP_DESC);
+        $budget->setId("budget");
+        
+        $pi = new MultiTextReportItem();
+        $pi->setBlobType(BLOB_ARRAY);
+        $pi->setBlobItem("PI");
+        $pi->setBlobSection(PROP_DESC);
+        $pi->attributes['labels'] = 'Name|E-mail';
+        $pi->setAttr("showHeader", "false");
+        $pi->setAttr("class", "wikitable");
+        $pi->setAttr("orientation", "list");
+        $pi->setId("pi");
+        
+        $contact = new MultiTextReportItem();
+        $contact->setBlobType(BLOB_ARRAY);
+        $contact->setBlobItem("CONTACT");
+        $contact->setBlobSection(PROP_DESC);
+        $contact->attributes['labels'] = 'Name|E-mail';
+        $contact->setAttr("showHeader", "false");
+        $contact->setAttr("class", "wikitable");
+        $contact->setAttr("orientation", "list");
+        $contact->setId("contact");
+        
+        $primary = new TextReportItem();
+        $primary->setBlobType(BLOB_TEXT);
+        $primary->setBlobItem("PRIMARY");
+        $primary->setBlobSection(PROP_DESC);
+        $primary->setId("primary");
+        
+        $primary_other = new TextReportItem();
+        $primary_other->setBlobType(BLOB_TEXT);
+        $primary_other->setBlobItem("PRIMARY_OTHER");
+        $primary_other->setBlobSection(PROP_DESC);
+        $primary_other->setId("primary_other");
+        
+        $secondary = new TextReportItem();
+        $secondary->setBlobType(BLOB_TEXT);
+        $secondary->setBlobItem("SECONDARY");
+        $secondary->setBlobSection(PROP_DESC);
+        $secondary->setId("secondary");
+        
+        $secondary_other = new TextReportItem();
+        $secondary_other->setBlobType(BLOB_TEXT);
+        $secondary_other->setBlobItem("SECONDARY_OTHER");
+        $secondary_other->setBlobSection(PROP_DESC);
+        $secondary_other->setId("secondary_other");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019");
+        $tab = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title, 
+                                                                                         'Duration' => $duration,
+                                                                                         'Budget ($K)' => $budget,
+                                                                                         'PI' => $pi,
+                                                                                         'Contact' => $contact,
+                                                                                         'Primary' => $primary,
+                                                                                         'Primary (Other)' => $primary_other,
+                                                                                         'Secondary' => $secondary,
+                                                                                         'Secondary (Other)' => $secondary_other));
         $tab->idProjectRange = array(0,1);
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
