@@ -410,7 +410,16 @@ EOF;
         if($max > -1 && $isList){
             $innerValues = array();
             foreach($values as $vals){
-                $innerValues[] = implode(", ", $vals);
+                if(count($labels) > 0 && $labels[0] != ""){
+                    $innerVals = array();
+                    foreach($indices as $index){
+                        $innerVals[] = @$vals[$index];
+                    }
+                    $innerValues[] = implode(", ", $innerVals);
+                }
+                else{
+                    $innerValues[] = implode(", ", $vals);
+                }
             }
             if(count($labels) > 1){
                 $item .= implode("<br />", $innerValues);
