@@ -201,7 +201,8 @@ class ApplicationsTable extends SpecialPage{
         $secondary->setId("secondary");
         
         $total = new TextReportItem();
-        $total->setBlobItem('TOTAL');
+        $total->setBlobType(BLOB_TEXT);
+        $total->setBlobItem(TOTAL);
         $total->setBlobSection("COVER");
         $total->setId("total");
         
