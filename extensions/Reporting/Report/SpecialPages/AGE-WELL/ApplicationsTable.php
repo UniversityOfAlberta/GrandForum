@@ -206,14 +206,14 @@ class ApplicationsTable extends SpecialPage{
         $total->setBlobSection("COVER");
         $total->setId("total");
         
-        $medteq = new RadioReportItem();
-        $medteq->setBlobType(BLOB_TEXT);
+        $medteq = new CheckboxReportItem();
+        $medteq->setBlobType(BLOB_ARRAY);
         $medteq->setBlobItem('SECTION5_CHECK');
         $medteq->setBlobSection("PART1");
         $medteq->setId("section5_check");
         
-        $mitacs = new RadioReportItem();
-        $mitacs->setBlobType(BLOB_TEXT);
+        $mitacs = new CheckboxReportItem();
+        $mitacs->setBlobType(BLOB_ARRAY);
         $mitacs->setBlobItem('SECTION7_CHECK');
         $mitacs->setBlobSection("PART1");
         $mitacs->setId("section7_check");
