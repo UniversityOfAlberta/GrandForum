@@ -71,7 +71,7 @@ class RadioReportItem extends AbstractReportItem {
             $width = 1/count($descriptions)*100;
             $output = "<table class='wikitable'>";
             $output .= "<tr><th style='width:$width%'><center>".implode("</center></th><th style='width:$width%;'><center>", $items)."</center></th></tr>";
-            $output .= "<tr><td class='small' valign='top'>".implode("</td><td class='small' valign='top'>", $descriptions)."</td></tr>";
+            $output .= "<tr><td class='small' valign='top' align='middle'>".implode("</td><td class='small' valign='top' align='middle'>", $descriptions)."</td></tr>";
             $output .= "</table>";
         }
         if($this->getBlobValue() == ""){

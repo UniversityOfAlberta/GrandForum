@@ -115,7 +115,7 @@
     <ReportSection id="review" tooltip="CRP Review" name="CRP Review" blobSection="CRP_REVIEW" type="EditableReportSection">
         <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" options="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" orientation="horizontal">
+                <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" descriptions="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" options="1|2|3|4|5" orientation="horizontal">
                     <![CDATA[
                         <b>Project Lead(s):</b> {$user_name}<br />
                         <b>Project Title:</b> {getText(RP_CRP, COVER, TITLE, 0, {$user_id}, 0}<br />
@@ -139,7 +139,7 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="excellence" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="EXCELLENCE" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                <ReportItem id="excellence" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="EXCELLENCE" blobSubItem="{$user_id}" descriptions="Poor|Marginal|Fair|Satisfactory|Good|Very Good|Excellent|Outstanding|Exceptional" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
                     <![CDATA[
                         <h2>2. Scientific Excellence</h2>
                         <small>
@@ -161,7 +161,7 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="networking" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="NETWORKING" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                <ReportItem id="networking" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="NETWORKING" blobSubItem="{$user_id}" descriptions="Poor|Marginal|Fair|Satisfactory|Good|Very Good|Excellent|Outstanding|Exceptional" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
                     <![CDATA[
                         <h2>3. Networking and Partnerships</h2>
                         <small>
@@ -184,7 +184,7 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="ktee" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="KTEE" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                <ReportItem id="ktee" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="KTEE" blobSubItem="{$user_id}" descriptions="Poor|Marginal|Fair|Satisfactory|Good|Very Good|Excellent|Outstanding|Exceptional" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
                     <![CDATA[
                         <h2>4. Knowledge and Technology Exchange and Exploitation</h2>
                         <small>
@@ -208,7 +208,7 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP" blobSubItem="{$user_id}" descriptions="Poor|Marginal|Fair|Satisfactory|Good|Very Good|Excellent|Outstanding|Exceptional" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
                     <![CDATA[
                         <h2>5. Development of Highly Qualified Personnel (HQP)</h2>
                         <small>
@@ -231,7 +231,7 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="team" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TEAM" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                <ReportItem id="team" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TEAM" blobSubItem="{$user_id}" descriptions="Poor|Marginal|Fair|Satisfactory|Good|Very Good|Excellent|Outstanding|Exceptional" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
                     <![CDATA[
                         <h2>6. Team and Project Management</h2>
                         <small>

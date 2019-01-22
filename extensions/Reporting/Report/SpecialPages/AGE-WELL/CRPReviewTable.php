@@ -62,7 +62,7 @@ class CRPReviewTable extends SpecialPage{
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='CRPReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='10' style='background: #FFFFFF;'></th>
+                    <th colspan='6' style='background: #FFFFFF;'></th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Alignment to the Request for Proposals</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Scientific Excellence</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Networking and Partnerships</th>
@@ -75,29 +75,25 @@ class CRPReviewTable extends SpecialPage{
                 <tr>
                     <th>Applicant</th>
                     <th>Title</th>
-                    <th>Leaders</th>
                     <th>Primary</th>
                     <th>Secondary</th>
-                    <th>Total</th>
-                    <th>MEDTEQ</th>
-                    <th>MITACS</th>
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                    <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
                 </tr>
             </thead>
@@ -123,14 +119,6 @@ class CRPReviewTable extends SpecialPage{
             $title = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'TITLE');
             $primary = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'PRIMARY');
             $secondary = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'SECONDARY');
-            $total = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'TOTAL');
-            $teamMembers = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_ARRAY, 'PART1', 'TEAM');
-            $MEDTEQ = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_ARRAY, 'PART1', 'SECTION5_CHECK');
-            $MITACS = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_ARRAY, 'PART1', 'SECTION7_CHECK');
-            
-            
-            $MEDTEQ = (count($MEDTEQ['section5_check']) > 0) ? "Yes" : "No";
-            $MITACS = (count($MITACS['section7_check']) > 0) ? "Yes" : "No";
             
             foreach($evaluators as $key => $eval){
                 $alignment      = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'ALIGNMENT');
@@ -153,18 +141,8 @@ class CRPReviewTable extends SpecialPage{
                 $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
                 $html .= "<td align='right'>{$candidate->getNameForForms()}</td>";
                 $html .= "<td>{$title}</td>";
-                $html .= "<td>";
-                foreach($teamMembers['team'] as $member){
-                    if($member['role'] == "PL"){
-                        $html .= $member['teammembername']."<br />";
-                    }
-                }
-                $html .= "</td>";
                 $html .= "<td>{$primary}</td>";
                 $html .= "<td>{$secondary}</td>";
-                $html .= "<td>{$total}</td>";
-                $html .= "<td>{$MEDTEQ}</td>";
-                $html .= "<td>{$MITACS}</td>";
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$alignment}</td>";
