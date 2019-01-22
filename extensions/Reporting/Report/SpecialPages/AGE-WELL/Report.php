@@ -8,6 +8,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 require_once("CCActivitiesTable.php");
 require_once("HQPRegisterTable.php");
 require_once("HQPReviewTable.php");
+require_once("CRPReviewTable.php");
 require_once("EPICTable.php");
 require_once("ApplicationsTable.php");
 

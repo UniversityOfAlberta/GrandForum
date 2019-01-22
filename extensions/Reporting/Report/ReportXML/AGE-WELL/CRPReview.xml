@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="CRP Review" reportType="RP_CRP_REVIEW" ajax="true" disabled="false" year="2018">
+    <Permissions>
+        <Role role="Evaluator">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
+        <ReportItem id="instructions" type="StaticReportItem">
+            <![CDATA[
+                <p>AGE-WELL Core Research Program projects will be reviewed to determine potential impact across seven key areas, including the NCE Program Criteria.</p>
+                <p>Review categories include:</p>
+                <ol>
+                    <li>Alignment to the Request for Proposals</li>
+                    <li>Scientific Excellence</li>
+                    <li>Networking and Partnerships</li>
+                    <li>Knowledge and Technology Exchange and Exploitation</li>
+                    <li>Development of Highly Qualified Personnel (HQP)</li>
+                    <li>Team and Project Management</li>
+                    <li>Budget</li>
+                </ol>
+                <p>Please use the following descriptors and scale to provide ratings in each category with comments to justify your decision. Additional comments / areas of improvement noted will be communicated to the project team.</p>
+                <p><b>Those projects selected to advance will be expected to demonstrate progress against noted areas for improvement during the Catalyst Phase.</b></p>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Potential Impact</th>
+                        <th>Impact Score</th>
+                        <th>Descriptor</th>
+                        <th>Additional Guidance on Strengths/Weaknesses</th>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>High</td>
+                        <td align='center'>9</td>
+                        <td align='center'>Exceptional</td>
+                        <td>Exceptionally strong with essentially no weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>8</td>
+                        <td align='center'>Outstanding</td>
+                        <td>Extremely strong with negligible weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>7</td>
+                        <td align='center'>Excellent</td>
+                        <td>Very strong with only some minor weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>Moderate</td>
+                        <td align='center'>6</td>
+                        <td align='center'>Very Good</td>
+                        <td>Strong but with numerous minor weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>5</td>
+                        <td align='center'>Good</td>
+                        <td>Strong but with at least one moderate weakness</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>4</td>
+                        <td>Satisfactory</td>
+                        <td>Some strengths but also some moderate weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>Low</td>
+                        <td align='center'>3</td>
+                        <td align='center'>Fair</td>
+                        <td>Some strengths but with at least one major weakness</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>2</td>
+                        <td align='center'>Marginal</td>
+                        <td>A few strengths and a few major weaknesses</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>1</td>
+                        <td align='center'>Poor</td>
+                        <td>Very few strengths and numerous major weaknesses</td>
+                    </tr>
+                </table>
+                <b>Definitions:</b><br />
+                Minor: easily addressable weakness that does not substantially lessen the impact of the project.<br />
+                Moderate: weakness that lessens the impact of the project.<br />
+                Major: weakness that severely limits the impact of the project.<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="materials" tooltip="Download CRP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                You can download the CRP Application PDFs for reference.
+            ]]>
+        </Instructions>
+        <ReportItem id="project_materials_head" type="StaticReportItem">
+            <![CDATA[
+            <table align="left">
+                <tr>
+                    <th style="min-width:110px;">Applicant Name</th>
+                    <th style="min-width:125px;">Application PDF</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
+            <ReportItem id="crp_pdf" type="PDFReportItem" reportType="CRP" width="100%" project="true">
+                <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="CRP Review" name="CRP Review" blobSection="CRP_REVIEW" type="EditableReportSection">
+        <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" options="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" orientation="horizontal">
+                    <![CDATA[
+                        <b>Project Lead(s):</b> {$user_name}<br />
+                        <b>Project Title:</b> {getText(RP_CRP, COVER, TITLE, 0, {$user_id}, 0}<br />
+                        <b>Primary Challenge Area:</b> {getText(RP_CRP, COVER, PRIMARY, 0, {$user_id}, 0}<br />
+                        <b>Secondary Challenge Area:</b> {getText(RP_CRP, COVER, SECONDARY, 0, {$user_id}, 0}<br />
+                        <h2>1. Alignment to the Request for Proposals</h2>
+                        <small>
+                            <ul>
+                                <li>Links the primary and secondary <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-Challenge-Areas.pdf' target='_blank'>Challenge Areas</a> in a coherent way and has the potential to contribute to the wider Challenge Area agenda(s).</li>
+                                <li>Holistic approach that addresses all three product types: Technologies, Services, Policies/Practices.</li>
+                                <li>Transdisciplinary approach with users involved in all stages of the research.</li>
+                            </ul>
+                        </small>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="alignment_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="ALIGNMENT_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Comments regarding alignment to the Request for Proposals:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="excellence" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="EXCELLENCE" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                    <![CDATA[
+                        <h2>2. Scientific Excellence</h2>
+                        <small>
+                            <ul>
+                                <li>Proposed research proposal is closely aligned with their identified Challenge Areas and addresses a clearly identified gap or need that will meaningfully contribute to addressing the Challenge Area.</li>
+                                <li>Appropriateness of the research design and methods.</li>
+                                <li>Potential for the creation of new knowledge.</li>
+                                <li>Potential for international leadership in their field.</li>
+                            </ul>
+                        </small>
+                        <b>Impact Score:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="excellence_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="EXCELLENCE_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Rationale for Impact Score:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="networking" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="NETWORKING" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                    <![CDATA[
+                        <h2>3. Networking and Partnerships</h2>
+                        <small>
+                            <ul>
+                                <li>Meaningful integration of end users (e.g. seniors, caregivers, industry, community, decision-makers etc.) in all aspects of the research, including a decision-making role.</li>
+                                <li>Transdisciplinary approaches in the research program.</li>
+                                <li>Optimization of resources through the sharing of equipment and research facilities, databases and personnel.</li>
+                                <li>Commitment to collaboration across their particular Challenge Areas and across the AGE-WELL Network as a whole.</li>
+                                <li>Presence and nature of contributions from the private sector and federal, provincial, and territorial agencies, with the prospects for increasing commitments as the work progresses (see Partner Letters of Support).</li>
+                            </ul>
+                        </small>
+                        <b>Impact Score:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="networking_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="NETWORKING_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Rationale for Impact Score:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ktee" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="KTEE" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                    <![CDATA[
+                        <h2>4. Knowledge and Technology Exchange and Exploitation</h2>
+                        <small>
+                            <ul>
+                                <li>Potential for a significant contribution to the improvement of people's quality of life, health or social participation in Canada and the world and/or to the development of more effective services and products.</li>
+                                <li>Strong ideas and plans for effective mobilization of new knowledge generated by the research (e.g. identified end-users either engaged in research or as dissemination partners).</li>
+                                <li>Prospects for new products, processes or services to be commercialized by firms operating in Canada.</li>
+                                <li>The potential to improve the impact of technology and knowledge transfer on the science and technology capabilities of private and public sector partner, and improve receptor capacity.</li>
+                                <li>Potential for the rapid flow of ideas and innovations from researchers to receptors to generate social and economic benefits.</li>
+                                <li>Commitment to an integrated knowledge mobilization approach.</li>
+                            </ul>
+                        </small>
+                        <b>Impact Score:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ktee_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="KTEE_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Rationale for Impact Score:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                    <![CDATA[
+                        <h2>5. Development of Highly Qualified Personnel (HQP)</h2>
+                        <small>
+                            <ul>
+                                <li>Training strategies that promote transdisciplinary and multi-sectoral research approaches.</li>
+                                <li>The ability to develop and retain outstanding researchers in research areas and technologies critical to Canadian productivity, economic growth, public policy and quality of life.</li>
+                                <li>Strong integration of HQPs in all aspects of the project.</li>
+                                <li>Commitment and support for HQPs to work beyond their core disciplinary training.</li>
+                                <li>Commitment for HQP to be involved in AGE-WELL Network training and activities.</li>
+                            </ul>
+                        </small>
+                        <b>Impact Score:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="hqp_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="HQP_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Rationale for Impact Score:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="team" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TEAM" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9" orientation="horizontal">
+                    <![CDATA[
+                        <h2>6. Team and Project Management</h2>
+                        <small>
+                            <p>The Core Research Program project team must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenge that it is designed to address.</p>
+                            <p>Applicants were also encouraged to explain their process of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.</p>
+                            <ul>
+                                <li>Qualifications of the applicant(s) for the proposed roles, including training, experience and independence (relative to career stage). See project team bios and team table.</li>
+                                <li>Experience of the applicant(s) in the proposed area of research and with the proposed methodology.</li>
+                                <li>Appropriateness of the team of applicants to carry out the proposed research, in terms of complementarity of expertise, the transdisciplinary makeup of the Network and synergistic potential.</li>
+                                <li>Strategies in place to allow the team to evolve – e.g. through training and capacity-building and bringing in of co-investigators and collaborators.</li>
+                            </ul>
+                        </small>
+                        <b>Impact Score:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="team_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="TEAM_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Rationale for Impact Score:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="budget" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="BUDGET" blobSubItem="{$user_id}" options="Yes|No" orientation="horizontal">
+                    <![CDATA[
+                        <h2>7. Budget</h2>
+                        <small>
+                            <p>Appropriateness of the overall budget, which includes funds requested from AGE-WELL and the cash and in-kind contributions from other sources.</p>
+                        </small>
+                        <b>Is the budget well justified?</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="budget_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="BUDGET_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Comments (e.g., areas where budget should be reduced, increased, etc.)</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="overall" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="OVERALL" blobSubItem="{$user_id}" options="Yes|No" orientation="horizontal">
+                    <![CDATA[
+                        <h2>8. Overall Comments</h2>
+                        <b>Do you recommend that AGE-WELL invest in this project?</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="overall_comment" type="Textarea" blobType="BLOB_TEXT" blobItem="OVERALL_COMMENT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p>Comments to be provided to the research team:</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
