@@ -171,8 +171,55 @@ class ApplicationsTable extends SpecialPage{
     
     function generateCRP(){
         global $wgOut;
+        
+        $team = new MultiTextReportItem();
+        $team->setBlobType(BLOB_ARRAY);
+        $team->setBlobItem('TEAM');
+        $team->setBlobSection("PART1");
+        $team->setAttr("labels", "Team Member Name|Role");
+        $team->setAttr("orientation", "list");
+        $team->setAttr("showHeader", "false");
+        $team->setAttr("multiple", "true");
+        $team->setId("title");
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('TITLE');
+        $title->setBlobSection("COVER");
+        $title->setId("title");
+        
+        $primary = new SelectReportItem();
+        $primary->setBlobType(BLOB_TEXT);
+        $primary->setBlobItem('PRIMARY');
+        $primary->setBlobSection("COVER");
+        $primary->setId("primary");
+        
+        $secondary = new SelectReportItem();
+        $secondary->setBlobType(BLOB_TEXT);
+        $secondary->setBlobItem('SECONDARY');
+        $secondary->setBlobSection("COVER");
+        $secondary->setId("secondary");
+        
+        $total = new TextReportItem();
+        $total->setBlobType(BLOB_TEXT);
+        $total->setBlobItem('TOTAL');
+        $total->setBlobSection("COVER");
+        $total->setId("total");
+        
+        $medteq = new RadioReportItem();
+        $medteq->setBlobType(BLOB_TEXT);
+        $medteq->setBlobItem('SECTION5_CHECK');
+        $medteq->setBlobSection("PART1");
+        $medteq->setId("section5_check");
+        
+        $mitacs = new RadioReportItem();
+        $mitacs->setBlobType(BLOB_TEXT);
+        $mitacs->setBlobItem('SECTION7_CHECK');
+        $mitacs->setBlobSection("PART1");
+        $mitacs->setId("section7_check");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
