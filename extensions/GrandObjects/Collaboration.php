@@ -118,6 +118,7 @@ class Collaboration extends BackboneModel{
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->title = $data[0]['organization_name'];
+            $this->year = $data[0]['year'];
             $this->sector = $data[0]['sector'];
             $this->country = $data[0]['country'];
             $this->planning = $data[0]['planning'];
