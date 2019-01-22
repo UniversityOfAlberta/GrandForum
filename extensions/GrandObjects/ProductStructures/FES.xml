@@ -19,6 +19,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field bibtex="school" label="University" type="String">university</field>
                 <field label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -48,6 +53,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -77,6 +87,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
                 <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" label="Publisher" type="String">publisher</field>
@@ -108,6 +123,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
@@ -142,6 +162,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
@@ -176,7 +201,12 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -206,7 +236,12 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -239,6 +274,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
@@ -271,6 +311,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
@@ -293,6 +338,11 @@
             <data>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration?" type="Check">collaboration</field>
+                <field label="UCalgary?" type="Check">ucalgary</field>
+                <field label="International Partner?" type="Check">partner</field>
+                <field label="HQP Led?" type="Check">hqp</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation Url" type="URL">citations_url</field>
                 <field label="Venue" type="String">venue</field>
                 <field bibtex="howpublished" label="How Published" type="String">how_published</field>
                 <field bibtex="note" label="Note" type="String">note</field>
