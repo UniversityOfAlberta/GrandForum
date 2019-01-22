@@ -180,7 +180,7 @@ class ApplicationsTable extends SpecialPage{
         $team->setAttr("orientation", "list");
         $team->setAttr("showHeader", "false");
         $team->setAttr("multiple", "true");
-        $team->setId("title");
+        $team->setId("team");
         
         $title = new TextReportItem();
         $title->setBlobType(BLOB_TEXT);
