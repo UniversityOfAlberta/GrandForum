@@ -81,9 +81,7 @@ class TextareaReportItem extends AbstractReportItem {
                             });
                         },
                         'formats' : {
-                            aligncenter : {block: 'center'},
-                            alignright: {block: 'center', styles: {float: 'right'}},
-                            alignleft: {block: 'center', styles: {float: 'left'}},
+                            aligncenter : {block: 'center'}
                         },
                         setup: function(ed){
                             if('$limit' > 0){
