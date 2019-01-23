@@ -172,6 +172,12 @@ class ApplicationsTable extends SpecialPage{
     function generateCRP(){
         global $wgOut;
         
+        $merged = new UploadReportItem();
+        $merged->setBlobType(BLOB_RAW);
+        $merged->setBlobItem('MERGED');
+        $merged->setBlobSection("PART3");
+        $merged->setId("merged");
+        
         $team = new MultiTextReportItem();
         $team->setBlobType(BLOB_ARRAY);
         $team->setBlobItem('TEAM');
@@ -219,7 +225,7 @@ class ApplicationsTable extends SpecialPage{
         $mitacs->setId("section7_check");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs)));
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
