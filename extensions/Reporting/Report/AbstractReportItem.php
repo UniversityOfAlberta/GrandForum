@@ -350,9 +350,10 @@ abstract class AbstractReportItem {
     function getMD5(){
         $report = $this->getReport();
         $section = $this->getSection();
+        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+	    $blob_address = ReportBlob::create_address($report->reportType, $sectionId, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
 	    return $md5;
