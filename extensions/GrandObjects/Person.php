@@ -4598,7 +4598,7 @@ class Person extends BackboneModel {
     static function getAllEvaluates($type, $year = YEAR, $class = "Person"){
         $type = DBFunctions::escape($type);
         
-        $sql = "SELECT DISTINCT sub_id 
+        $sql = "SELECT DISTINCT sub_id, sub2_id
                 FROM grand_eval
                 WHERE type = '$type'
                 AND year = '{$year}'";
