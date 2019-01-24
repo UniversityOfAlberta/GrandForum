@@ -143,9 +143,9 @@
                 <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" descriptions="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" options="1|2|3|4|5" orientation="horizontal">
                     <![CDATA[
                         <b>Project Lead(s):</b> {$user_name}<br />
-                        <b>Project Title:</b> {getText(RP_CRP, COVER, TITLE, 0, {$user_id}, 0}<br />
-                        <b>Primary Challenge Area:</b> {getText(RP_CRP, COVER, PRIMARY, 0, {$user_id}, 0}<br />
-                        <b>Secondary Challenge Area:</b> {getText(RP_CRP, COVER, SECONDARY, 0, {$user_id}, 0}<br />
+                        <b>Project Title:</b> {getText(RP_CRP, COVER, TITLE, 0, {$user_id}, {$project_id}}<br />
+                        <b>Primary Challenge Area:</b> {getText(RP_CRP, COVER, PRIMARY, 0, {$user_id}, {$project_id}}<br />
+                        <b>Secondary Challenge Area:</b> {getText(RP_CRP, COVER, SECONDARY, 0, {$user_id}, {$project_id}}<br />
                         <h2>1. Alignment to the Request for Proposals</h2>
                         <small>
                             <ul>

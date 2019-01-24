@@ -62,7 +62,7 @@ class CRPReviewTable extends SpecialPage{
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='CRPReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='6' style='background: #FFFFFF;'></th>
+                    <th colspan='7' style='background: #FFFFFF;'></th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Alignment to the Request for Proposals</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Scientific Excellence</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Networking and Partnerships</th>
@@ -78,6 +78,7 @@ class CRPReviewTable extends SpecialPage{
                     <th>Primary</th>
                     <th>Secondary</th>
                     <th>Application&nbsp;PDF</th>
+                    <th>Supporting Documents</th>
                     <th>Reviewer</th>
                     <th style='border-left: 2px solid #AAAAAA;'>Score</th>
                     <th>Comments</th>
@@ -107,38 +108,43 @@ class CRPReviewTable extends SpecialPage{
             else{
                 $background = "#EEEEEE";
             }
-            $evaluators = $candidate->getEvaluators($year, $evalKey);
+            $evaluators = $candidate->getEvaluators($year, $evalKey, $projectId);
             $nEval = count($evaluators);
-
-            $report = new DummyReport("CRP", $candidate, null, $year, true);
-            $check = $report->getLatestPDF();
+            $project = null;
+            if($projectId != 0){
+                $project = new Project(array());
+                $project->id = $projectId;
+            }
+            $report = new DummyReport("RP_CRP", $candidate, $project, $year, true);
+            $check = $report->getPDF();
             $button = "";
             if(isset($check[0])){
                 $pdf = PDF::newFromToken($check[0]['token']);
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
 
-            $title = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'TITLE');
-            $primary = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'PRIMARY');
-            $secondary = self::getApplicationBlobValue($year, $candidate->getId(), BLOB_TEXT, 'COVER', 'SECONDARY');
+            $title = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'TITLE');
+            $primary = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'PRIMARY');
+            $secondary = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'SECONDARY');
+            $merged = self::getApplicationBlobMD5($year, $candidate->getId(), $projectId, BLOB_RAW, 'PART3', 'MERGED');
             
             foreach($evaluators as $key => $eval){
-                $alignment      = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'ALIGNMENT');
-                $alignmentComm  = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'ALIGNMENT_COMMENT');
-                $excellence     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'EXCELLENCE');
-                $excellenceComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'EXCELLENCE_COMMENT');
-                $networking     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'NETWORKING');
-                $networkingComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'NETWORKING_COMMENT');
-                $ktee           = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'KTEE');
-                $kteeComm       = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'KTEE_COMMENT');
-                $hqp            = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP');
-                $hqpComm        = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_COMMENT');
-                $team           = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'TEAM');
-                $teamComm       = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'TEAM_COMMENT');
-                $budget         = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'BUDGET');
-                $budgetComm     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'BUDGET_COMMENT');
-                $overall        = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'OVERALL');
-                $overallComm    = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'OVERALL_COMMENT');
+                $alignment      = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'ALIGNMENT');
+                $alignmentComm  = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'ALIGNMENT_COMMENT');
+                $excellence     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'EXCELLENCE');
+                $excellenceComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'EXCELLENCE_COMMENT');
+                $networking     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'NETWORKING');
+                $networkingComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'NETWORKING_COMMENT');
+                $ktee           = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'KTEE');
+                $kteeComm       = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'KTEE_COMMENT');
+                $hqp            = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'HQP');
+                $hqpComm        = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'HQP_COMMENT');
+                $team           = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'TEAM');
+                $teamComm       = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'TEAM_COMMENT');
+                $budget         = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'BUDGET');
+                $budgetComm     = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'BUDGET_COMMENT');
+                $overall        = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'OVERALL');
+                $overallComm    = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'OVERALL_COMMENT');
                 
                 $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
                 $html .= "<td align='right'>{$candidate->getNameForForms()}</td>";
@@ -146,6 +152,7 @@ class CRPReviewTable extends SpecialPage{
                 $html .= "<td>{$primary}</td>";
                 $html .= "<td>{$secondary}</td>";
                 $html .= "<td align='center'>{$button}</td>";
+                $html .= "<td align='center'><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$merged}' class='button'>Download</a></td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$alignment}</td>";
                 $html .= "<td valign='top'>{$alignmentComm}</td>";
@@ -173,23 +180,31 @@ class CRPReviewTable extends SpecialPage{
         return $html;
     }
     
-    function getBlobValue($year, $evalId, $candidateId, $item){
+    function getBlobValue($year, $evalId, $candidateId, $projId, $item){
         $addr = ReportBlob::create_address('RP_CRP_REVIEW', 'CRP_REVIEW', $item, $candidateId);
-        $blob = new ReportBlob(BLOB_TEXT, $year, $evalId, 0);
+        $blob = new ReportBlob(BLOB_TEXT, $year, $evalId, $projId);
         $blob->load($addr);
         $value = nl2br($blob->getData());
         $value = str_replace("<br", "<br style='mso-data-placement:same-cell'", $value);
         return $value;
     }
     
-    static function getApplicationBlobValue($year, $userId, $type, $section, $item){
+    static function getApplicationBlobValue($year, $userId, $projId, $type, $section, $item){
         $addr = ReportBlob::create_address('RP_CRP', $section, $item, 0);
-        $blob = new ReportBlob($type, $year, $userId, 0);
+        $blob = new ReportBlob($type, $year, $userId, $projId);
         $blob->load($addr);
         $data = $blob->getData();
         return $data;
     }
     
+    static function getApplicationBlobMD5($year, $userId, $projId, $type, $section, $item){
+        $addr = ReportBlob::create_address('RP_CRP', $section, $item, 0);
+        $blob = new ReportBlob($type, $year, $userId, $projId);
+        $blob->load($addr);
+        $data = $blob->getMD5();
+        return $data;
+    }
+       
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();

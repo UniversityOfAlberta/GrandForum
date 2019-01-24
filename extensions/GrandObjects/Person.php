@@ -4644,13 +4644,13 @@ class Person extends BackboneModel {
             if($row['type'] == "Project" || $row['type'] == "SAB" || $class == "Project"){
                 $project = Project::newFromId($row['sub_id']);
                 if($project != null && $project->getId() != 0){
-                    $subs[$project->getName()] = array($project, $row['sub2_id']);
+                    $subs[$project->getName()."_".$row['sub2_id']] = array($project, $row['sub2_id']);
                 }
             }
             else{
                 $person = Person::newFromId($row['sub_id']);
                 if($person != null && $person->getId() != 0){
-                    $subs[$person->getReversedName()] = array($person, $row['sub2_id']);
+                    $subs[$person->getReversedName()."_".$row['sub2_id']] = array($person, $row['sub2_id']);
                 }
             }
         }
@@ -4673,15 +4673,16 @@ class Person extends BackboneModel {
      * Returns a list of the evaluators who are evaluating this Person
      * @param string $year The year of the evaluation
      * @param string $type The type of evaluation
+     * @param string $projId The id of the project (optional)
      * @return array The list of People who are evaluating this Person
      */
-    function getEvaluators($year = YEAR, $type='Researcher'){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE sub_id = '{$this->id}'
-                AND type = '{$type}'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
+    function getEvaluators($year = YEAR, $type='Researcher', $projId=0){
+        $data = DBFunctions::select(array('grand_eval'),
+                                    array('*'),
+                                    array('sub_id' => EQ($this->id),
+                                          'sub2_id' => EQ($projId),
+                                          'type' => EQ($type),
+                                          'year' => EQ($year)));
         $subs = array();
         foreach($data as $row){
             $subs[] = Person::newFromId($row['user_id']);
