@@ -4609,13 +4609,13 @@ class Person extends BackboneModel {
                $type != "SAB" && $class != "Project"){
                 $sub = Person::newFromId($row['sub_id']);
                 if($sub != null && $sub->getId() != 0){
-                    $subs[] = $sub;
+                    $subs[] = array($sub, $row['sub2_id']);
                 }
             }
             else{
                 $sub = Project::newFromId($row['sub_id']);
                 if($sub != null && $sub->getId() != 0){
-                    $subs[] = $sub;
+                    $subs[] = array($sub, $row['sub2_id']);
                 }
             }
         }
@@ -4644,13 +4644,13 @@ class Person extends BackboneModel {
             if($row['type'] == "Project" || $row['type'] == "SAB" || $class == "Project"){
                 $project = Project::newFromId($row['sub_id']);
                 if($project != null && $project->getId() != 0){
-                    $subs[$project->getName()] = $project;
+                    $subs[$project->getName()] = array($project, $row['sub2_id']);
                 }
             }
             else{
                 $person = Person::newFromId($row['sub_id']);
                 if($person != null && $person->getId() != 0){
-                    $subs[$person->getReversedName()] = $person;
+                    $subs[$person->getReversedName()] = array($person, $row['sub2_id']);
                 }
             }
         }

@@ -85,6 +85,7 @@ class HQPReviewTable extends SpecialPage{
             </thead>
             <tbody>";
         foreach($candidates as $key => $candidate){
+            $candidate = $candidate[0];
             if($key % 2 == 0){
                 $background = "#FFFFFF";
             }

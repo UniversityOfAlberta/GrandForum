@@ -99,6 +99,8 @@ class CRPReviewTable extends SpecialPage{
             </thead>
             <tbody>";
         foreach($candidates as $key => $candidate){
+            $projectId = $candidate[1];
+            $candidate = $candidate[0];
             if($key % 2 == 0){
                 $background = "#FFFFFF";
             }

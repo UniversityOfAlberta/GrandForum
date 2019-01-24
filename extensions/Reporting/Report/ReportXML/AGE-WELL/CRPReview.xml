@@ -97,13 +97,38 @@
             <table align="left">
                 <tr>
                     <th style="min-width:110px;">Applicant Name</th>
-                    <th style="min-width:125px;">Application PDF</th>
+                    <th style="min-width:125px;" align='center'>Application PDF</th>
+                    <th style="min-width:125px;" align='center'>References</th>
+                    <th style="min-width:125px;" align='center'>Bios</th>
+                    <th style="min-width:125px;" align='center'>Figures</th>
+                    <th style="min-width:125px;" align='center'>Budget</th>
+                    <th style="min-width:125px;" align='center'>Letters</th>
                 </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
             <ReportItem id="crp_pdf" type="PDFReportItem" reportType="CRP" width="100%" project="true">
-                <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td align='center'>{$item}</td>
+                        <td align='center'>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,SECTION9,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                        </td>
+                        <td align='center'>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,BIO,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                        </td>
+                        <td align='center'>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,FIGURES,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                        </td>
+                        <td align='center'>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART2,BUDGET,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                        </td>
+                        <td align='center'>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART3,MERGED_LETTERS,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                        </td>
+                    </tr>
+                ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
