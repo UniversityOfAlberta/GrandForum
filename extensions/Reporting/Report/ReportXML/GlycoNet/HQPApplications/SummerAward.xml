@@ -114,7 +114,7 @@
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
+        <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident|International" blobType="BLOB_TEXT" blobItem="RESIDENCY">
             <![CDATA[
                 <tr>
                     <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
