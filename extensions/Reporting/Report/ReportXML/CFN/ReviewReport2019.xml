@@ -61,11 +61,11 @@
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>
-                                {divide({add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
+                                {round({divide({add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}
-                                )}, 4)}
+                                )}, 4)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
