@@ -66,7 +66,7 @@ function addMilestones($data, $person, $project){
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
-        $startYear = REPORTING_YEAR+1;
+        $startYear = REPORTING_YEAR;
         foreach($cells as $rowN => $row){
             if($rowN == 0){
                 foreach($row as $colN => $cell){
@@ -166,6 +166,7 @@ function addMilestones($data, $person, $project){
                 $_POST['problem'] = "";
                 $_POST['description'] = "";
                 $_POST['assessment'] = "";
+                $_POST['modification'] = "";
                 $_POST['status'] = "New";
                 $_POST['people'] = $people;
                 $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";

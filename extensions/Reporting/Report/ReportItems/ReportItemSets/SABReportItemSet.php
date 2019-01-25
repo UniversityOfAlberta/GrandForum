@@ -8,6 +8,10 @@ class SABReportItemSet extends ReportItemSet {
         $data = array();
         if($this->projectId != 0){
             $sub = Project::newFromId($this->projectId);
+            if($sub == null){
+                // Probably a multiple submission
+                $sub = Person::newFromId($this->personId);
+            }
         }
         else{
             $sub = Person::newFromId($this->personId);
@@ -15,7 +19,7 @@ class SABReportItemSet extends ReportItemSet {
         $subType = $this->getAttr('subType', 'SAB');
         $includeSelf = (strtolower($this->getAttr('includeSelf', 'false')) == 'true');
         if($sub != null){
-            $evaluators = $sub->getEvaluators($this->getReport()->year, $subType);
+            $evaluators = $sub->getEvaluators($this->getReport()->year, $subType, $this->projectId);
             foreach($evaluators as $e){
                 if($includeSelf || $e->getId() != $me->getId()){
                     $tuple = self::createTuple();
