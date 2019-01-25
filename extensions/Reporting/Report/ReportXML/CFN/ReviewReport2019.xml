@@ -61,11 +61,11 @@
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>{getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>
-                                {add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
+                                {divide({add({getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},
                                      {getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)}
-                                )}
+                                )}, 16)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -103,7 +103,7 @@
                                                  {get(q5)}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                        {round({divide({divide({get(total)},{get(nReviewers)})}, 16)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -183,7 +183,7 @@
                                      {get(q5)}
                                 )}
                             )}
-                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                            {round({divide({divide({get(total)},{get(nReviewers)})}, 16)},2)}
                         </td>
                     </tr>
                 ]]>
