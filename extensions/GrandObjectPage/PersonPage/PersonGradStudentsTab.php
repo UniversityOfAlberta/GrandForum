@@ -142,7 +142,7 @@ class PersonGradStudentsTab extends AbstractTab {
             foreach($universities as $university){
                 if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
                    !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
-                   !($university['start'] > $endDate)){){
+                   !($university['start'] > $endDate)){
                     $found = true;
                     break;
                 }
