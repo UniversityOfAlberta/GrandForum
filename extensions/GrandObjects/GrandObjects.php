@@ -29,6 +29,7 @@ autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
+autoload_register('GrandObjects/API/Journal');
 
 global $apiRequest;
 // Person
@@ -149,6 +150,11 @@ $apiRequest->addAction('Hidden','diversity', 'DiversityAPI');
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 
+//Journals
+$apiRequest->addAction('Hidden','journal', 'JournalAPI');
+$apiRequest->addAction('Hidden','journal/:id', 'JournalAPI');
+$apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
+
 function createModels(){
 
     function addScript($file){
@@ -177,6 +183,7 @@ function createModels(){
     addScript("PDF");
     addScript("MailingList");
     addScript("Freeze");
+    addScript("Journal");
     
     return true;
 }

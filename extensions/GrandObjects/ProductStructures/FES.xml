@@ -128,6 +128,7 @@
                 <field label="HQP Led?" type="Check">hqp</field>
                 <field label="#Citations" type="String">citations</field>
                 <field label="Citation Url" type="URL">citations_url</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
@@ -167,6 +168,7 @@
                 <field label="HQP Led?" type="Check">hqp</field>
                 <field label="#Citations" type="String">citations</field>
                 <field label="Citation Url" type="URL">citations_url</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
@@ -316,6 +318,7 @@
                 <field label="HQP Led?" type="Check">hqp</field>
                 <field label="#Citations" type="String">citations</field>
                 <field label="Citation Url" type="URL">citations_url</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
