@@ -142,7 +142,8 @@ class PersonGradStudentsTab extends AbstractTab {
             foreach($universities as $university){
                 if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
                    !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
-                   !($university['start'] > $endDate)){
+                   !($university['start'] > $r->getEndDate() && $r->getEndDate() != "0000-00-00") &&
+                   !($r->getStartDate() > $university['end'] && $university['end'] != "0000-00-00 00:00:00")){
                     $found = true;
                     break;
                 }
@@ -277,8 +278,7 @@ class PersonGradStudentsTab extends AbstractTab {
             $found = false;
             foreach($universities as $university){
                 if(!isset($hqpsDone[$hqp->getId().$university['position'].$role]) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
-                   !($university['start'] > $endDate)){
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $found = true;
                     break;
                 }
