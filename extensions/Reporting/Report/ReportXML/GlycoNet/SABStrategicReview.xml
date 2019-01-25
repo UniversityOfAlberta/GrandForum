@@ -29,8 +29,8 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="true">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -41,7 +41,7 @@
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
@@ -69,7 +69,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{==({getText(RP_STRAT_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <ReportItemSet type="If" if="{==({getText(RP_STRAT_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},{$project_id})},Submitted)}">
             <ReportItem id="status" type="StaticReportItem">
                 <![CDATA[
                     <div class="success">Your review(s) have been submitted.</div>
