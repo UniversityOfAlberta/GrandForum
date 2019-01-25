@@ -142,6 +142,7 @@ class ApplicationTab extends AbstractTab {
                     $report->person = $person;
                 }
                 $first = $report;
+                $report = array($report);
             }
             if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 foreach($report as $rep){
