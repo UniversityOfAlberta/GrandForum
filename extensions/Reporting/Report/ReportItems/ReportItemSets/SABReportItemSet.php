@@ -24,7 +24,11 @@ class SABReportItemSet extends ReportItemSet {
                 if($includeSelf || $e->getId() != $me->getId()){
                     $tuple = self::createTuple();
                     $tuple['person_id'] = $e->getId();
-                    $data[$e->getReversedName()] = $tuple;
+                    $index = $e->getReversedName();
+                    if($this->projectId != 0){
+                        $index .= "_{$this->projectId}";
+                    }
+                    $data[$index] = $tuple;
                 }
             }
             ksort($data);

@@ -12,6 +12,9 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             $sorted = array();
             foreach ($subs as $s){
                 $rev_name = $s[0]->getReversedName()."_".$s[0]->getId();
+                if($s[1] != 0){
+                    $rev_name .= "_".$s[1];
+                }
                 $sorted["{$rev_name}"] = $s;
             }
             ksort($sorted);
@@ -22,6 +25,9 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             $sorted = array();
             foreach ($subs as $s){
                 $name = $s[0]->getName()."_".$s[0]->getId();
+                if($s[1] != 0){
+                    $name .= "_".$s[1];
+                }
                 $sorted["{$name}"] = $s;
             }
             ksort($sorted);
