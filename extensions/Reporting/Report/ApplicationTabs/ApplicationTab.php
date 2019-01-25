@@ -187,7 +187,7 @@ class ApplicationTab extends AbstractTab {
                             $this->html .= "</tr>";
                         }
                     }
-                    else{
+                    else if($rep instanceof AbstractReport){
                         $pdf = $rep->getPDF();
                         if($rep->hasStarted() || count($pdf) > 0){
                             $this->html .= "<tr>
