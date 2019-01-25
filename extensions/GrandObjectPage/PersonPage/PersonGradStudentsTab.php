@@ -276,7 +276,8 @@ class PersonGradStudentsTab extends AbstractTab {
             $found = false;
             foreach($universities as $university){
                 if(!isset($hqpsDone[$hqp->getId().$university['position'].$role]) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
+                   !($univeristy['start'] > $endDate)){
                     $found = true;
                     break;
                 }
