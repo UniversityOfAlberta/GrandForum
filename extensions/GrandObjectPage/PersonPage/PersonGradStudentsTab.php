@@ -141,7 +141,6 @@ class PersonGradStudentsTab extends AbstractTab {
             
             foreach($universities as $university){
                 if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
-                   !isset($hqpsDone[$hqp->getId().$university['id']]) &&
                    !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
                     $found = true;
                     break;
@@ -156,7 +155,7 @@ class PersonGradStudentsTab extends AbstractTab {
             foreach($relations as $rel){
                 // Find the best matching relation
                 // Probably slow
-                if($rel->getUser2() == $r->getUser2() && $rel->getType() == $r->getType()){
+                if($rel->getUser2() == $r->getUser2() && $rel->getType() == $r->getType() && !isset($hqpsDone["{$hqp->getId()}_{$university['id']}_{$rel->getId()}"])){
                     $start1 = new DateTime($university['start']);
                     $start2 = new DateTime($rel->getStartDate());
                     $end1   = new DateTime($university['end']);
@@ -182,10 +181,6 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             
-            if(isset($hqpsDone[$hqp->getId().$university['id']])){
-                //continue;
-            }
-            
             if($endDate1 == "0000-00-00" || (substr($university['end'], 0, 10) != "0000-00-00" && substr($university['end'], 0, 10) < $endDate1)){
                 $endDate1 = substr($university['end'], 0, 10);
             }
@@ -194,36 +189,14 @@ class PersonGradStudentsTab extends AbstractTab {
             
             $repeat_check = false;
             $check = array('name'=>$hqp_name, 'role'=>$role);
-            //TODO: Might want to remove duplicates, but probably not
 
-            /*$awards = $hqp->getPapersAuthored('Award', $startDate1, $endDate1);
-            $awardCitations = array();
-            foreach($awards as $award){
-                $awardCitations[] = "<span style='margin-left:2em;><a href='{$award->getUrl()}'>{$award->getTitle()}</a></span>";
-            }
-            $rowspan = 1;
-            if(count($awardCitations) > 0){
-                $rowspan = 2;
-            }
-            if(isset($rows[$hqp->getId()])){
-                $rows[$hqp->getId()] = preg_replace_callback("/rowspan='([0-9]*)'/", function($matches) use ($rowspan){
-                    return str_replace($matches[1], $matches[1] + $rowspan, $matches[0]);
-                }, $rows[$hqp->getId()]);
-            }
-            else{
-                $rows[$hqp->getId()][$end_date.$startDate1.$position] = "
-                    <td rowspan='$rowspan' style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>";
-            }*/
-            $rows[$hqp->getId()][$end_date.$startDate1.$position] = "
+            $rows[$hqp->getId()][$end_date.$startDate1.$position.$r->getId()] = "
                 <td style='white-space: nowrap;'>$position</td>
                 <td style='white-space: nowrap;'>$startDate1</td>
                 <td style='white-space: nowrap;'>$end_date</td>
                 <td style='white-space: nowrap;'>$status</td>
                 <td style='white-space: nowrap;'>$role</td>";
-            /*if(count($awardCitations) > 0){
-                $rows[$hqp->getId()][$end_date.$startDate1.$position."_awards"] .= "<tr><td colspan='4'><b>Awards</b><br />".implode("<br />", $awardCitations)."</td></tr>";
-            }*/
-            $hqpsDone[$hqp->getId().$university['id']] = true;
+            $hqpsDone["{$hqp->getId()}_{$university['id']}_{$r->getId()}"] = true;
         }
         //ksort($rows);
         foreach($rows as $key => $row){
