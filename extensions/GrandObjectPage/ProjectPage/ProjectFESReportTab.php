@@ -56,7 +56,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Provide a brief description of your research progress dyring FY".($y - $phaseYear + 2)."</h3>
+            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)."</h3>
                             {$q1}
                             
                             <h3>Did you change your milestones for this year and moving forward? If so, why?</h3>
@@ -107,7 +107,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Provide a brief description of your research progress dyring FY".($y - $phaseYear + 2)." <small>(please focus on scholarly and not administrative activities)(300 words)</small></h3>
+            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)." <small>(please focus on scholarly and not administrative activities)(300 words)</small></h3>
                             <textarea name='report_q1[$y]' style='height:200px;resize: vertical;'>{$q1}</textarea>
                             
                             <h3>Did you change your milestones for this year and moving forward? If so, why? <small>(up to 300 words)</small></h3>
