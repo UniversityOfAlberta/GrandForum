@@ -1466,6 +1466,14 @@ class Person extends BackboneModel {
         if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
         }
+        else{
+            // Check Project Leadership
+            foreach($this->getProjects(true) as $project){
+                if($me->leadershipOf($project)){
+                    return $this->gender;
+                }
+            }
+        }
         return "";
     }
     
