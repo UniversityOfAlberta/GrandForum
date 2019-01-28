@@ -22,6 +22,7 @@ class Collaboration extends BackboneModel{
     var $position = "";
     var $funding = 0;
     var $year = YEAR;
+    var $endYear = 0;
     var $knowledgeUser = false;
     var $accessId = 0;
     var $projects = array();
@@ -119,6 +120,7 @@ class Collaboration extends BackboneModel{
             $this->id = $data[0]['id'];
             $this->title = $data[0]['organization_name'];
             $this->year = $data[0]['year'];
+            $this->endYear = $data[0]['end_year'];
             $this->sector = $data[0]['sector'];
             $this->country = $data[0]['country'];
             $this->planning = $data[0]['planning'];
@@ -194,6 +196,10 @@ class Collaboration extends BackboneModel{
 
     function getYear() {
         return $this->year;
+    }
+    
+    function getEndYear() {
+        return $this->endYear;
     }
     
     function getAccessId(){
@@ -275,6 +281,7 @@ class Collaboration extends BackboneModel{
                                   'person_name' => $this->personName,
                                   'position' => $this->position,
                                   'year' => $this->year,
+                                  'end_year' => $this->endYear,
                                   'funding' => $this->funding,
                                   'knowledge_user' => $this->knowledgeUser,
                                   'access_id' => $me->getId()));
@@ -314,7 +321,6 @@ class Collaboration extends BackboneModel{
                 $project->id = $p->getId();
             }
         }
-
         $status = DBFunctions::update('grand_collaborations',
                             array('organization_name' => $this->title,
                                   'sector' => $this->sector,
@@ -328,6 +334,7 @@ class Collaboration extends BackboneModel{
                                   'person_name' => $this->personName,
                                   'position' => $this->position,
                                   'year' => $this->year,
+                                  'end_year' => $this->endYear,
                                   'funding' => $this->funding,
                                   'knowledge_user' => $this->knowledgeUser),
                             array('id' => EQ($this->getId())));
@@ -420,6 +427,7 @@ class Collaboration extends BackboneModel{
             'url' => $this->getUrl(),
             'funding' => $this->getFunding(),
             'year' => $this->getYear(),
+            'endYear' => $this->getEndYear(),
             'knowledgeUser' => $this->getKnowledgeUser(),
             'projects' => $projects
         );

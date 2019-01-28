@@ -16,6 +16,7 @@
             <th>Creator</th>
             <th>Projects</th>
             <th>Year</th>
+            <th>End Year</th>
             <th width="1%"></th>
         </tr>
     </thead>
@@ -58,6 +59,13 @@
                 </td>
                 <td>
                     <%= collab.get('year') - 1 %>/<%= collab.get('year').toString().substr(2, 2) %>
+                </td>
+                <td align="center">
+                    <% if(collab.get('endYear') != 0){ %>
+                        <%= collab.get('endYear') - 1 %>/<%= collab.get('endYear').toString().substr(2, 2) %>
+                    <% } else {%>
+                        Current
+                    <% } %>
                 </td>
                 <td>
                     <span id="<%= collab.get('id') %>" class="delete-icon"></span>

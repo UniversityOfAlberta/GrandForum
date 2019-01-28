@@ -23,6 +23,7 @@ class CollaborationAPI extends RESTAPI {
     function doPOST(){
         $collab = new Collaboration(array());
         $collab->title = $this->POST('title');
+        $collab->endYear = $this->POST('endYear');
         $collab->sector = $this->POST('sector');
         $collab->country = $this->POST('country');
         $collab->planning = $this->POST('planning');
@@ -46,6 +47,7 @@ class CollaborationAPI extends RESTAPI {
     function doPUT(){
         $collab = Collaboration::newFromId($this->getParam('id'));
         $collab->title = $this->POST('title');
+        $collab->endYear = $this->POST('endYear');
         $collab->sector = $this->POST('sector');
         $collab->country = $this->POST('country');
         $collab->planning = $this->POST('planning');
