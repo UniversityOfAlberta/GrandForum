@@ -98,7 +98,7 @@
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <% if (reviewers[i].rank == "-1") { %>
-            <%= reviewers[i].name %> (<span style="color: red;">-1</span>)
+            <!--%= reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
             <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
         <% } %>
@@ -129,7 +129,7 @@
 <td style="white-space: nowrap;">
   <% for(var i=0; i < other_reviewers.length;i++){ %>
         <% if (other_reviewers[i].rank == "-1") { %>
-            <%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)
+            <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
             <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
         <% } %>

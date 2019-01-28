@@ -270,7 +270,7 @@ class SOP extends AbstractSop{
         $gsms = $hqp->getGSMS($this->year);
         $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
         $uninteresting = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $gsms->id);
-        if (isset($uninteresting['q0'][1])) { 
+        if ($blob == '' && isset($uninteresting['q0'][1])) { 
             return "-1";
         }
         if($blob == ''){
