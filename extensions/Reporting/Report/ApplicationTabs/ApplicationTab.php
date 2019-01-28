@@ -185,8 +185,8 @@ class ApplicationTab extends AbstractTab {
                                 }
                                 $this->html .= "<td>{$extra->getText()}</td>";
                             }
-                            $this->html .= "</tr>";
                         }
+                        $this->html .= "</tr>";
                     }
                     else if($rep instanceof AbstractReport){
                         $pdf = $rep->getPDF();
