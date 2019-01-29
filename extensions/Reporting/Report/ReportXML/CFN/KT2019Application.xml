@@ -304,7 +304,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - KT Proposal" title="Section 3 - KT Proposal">
-        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="1100" rich="true">
+        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="900" rich="true">
             <![CDATA[
                 <h2>3.1: Concept</h2>
                 <h3>3.1.1: Quality of the Idea</h3>
