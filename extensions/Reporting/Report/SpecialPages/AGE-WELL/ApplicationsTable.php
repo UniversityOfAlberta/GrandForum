@@ -28,7 +28,7 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
+        return ($person->isRoleAtLeast(SD) || $person->isRole('BOARD-ADMIN') count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
     }
 
     function execute($par){
@@ -85,7 +85,11 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=sip'>SIP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cip'>CIP</a>";
+        }
+        if($me->isRoleAtLeast(SD) || $me->isRole('BOARD-ADMIN')){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=crp'>CRP</a>";
+        }
+        if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
@@ -113,7 +117,7 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "cip" && $me->isRoleAtLeast(SD)){
             $this->generateCIP();
         }
-        else if($program == "crp" && $me->isRoleAtLeast(SD)){
+        else if($program == "crp" && ($me->isRoleAtLeast(SD) || $me->isRole('BOARD-ADMIN'))){
             $this->generateCRP();
         }
         if($program == "access" && $me->isRoleAtLeast(SD)){

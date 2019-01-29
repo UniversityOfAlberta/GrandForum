@@ -226,7 +226,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="builds_not" type="Checkbox" blobItem="BUILDS" blobType="BLOB_ARRAY" options="Not applicable">
+        <ReportItem id="builds_not" type="Checkbox" blobItem="BUILDS_NOT" blobType="BLOB_ARRAY" options="Not applicable">
             <![CDATA[
                 <div id="builds_not">{$item}</div>
                 <script type='text/javascript'>
