@@ -28,7 +28,7 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(SD) || $person->isRole('BOARD-ADMIN') count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
+        return ($person->isRoleAtLeast(SD) || $person->isRole('BOARD-ADMIN') || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
     }
 
     function execute($par){
