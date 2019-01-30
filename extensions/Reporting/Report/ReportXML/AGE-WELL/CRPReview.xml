@@ -95,7 +95,7 @@
         </Instructions>
         <ReportItem id="project_materials_head" type="StaticReportItem">
             <![CDATA[
-            <table align="left">
+            <table align="left" class="wikitable" frame="box" rules="all">
                 <tr>
                     <th style="min-width:110px;">Applicant Name</th>
                     <th style="min-width:175px;">Project Team</th>
