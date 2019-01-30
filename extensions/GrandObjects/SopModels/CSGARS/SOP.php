@@ -278,6 +278,15 @@ class SOP extends AbstractSop{
         }
         return $blob;
     }
+    
+    function getHiddenStatus($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
+        $uninteresting = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $gsms->id);
+        return isset($uninteresting['q0'][1]);
+    }
 
     function getCSEducationalHistory($html_string=false){
         $year = ($this->year != "") ? $this->year : YEAR;

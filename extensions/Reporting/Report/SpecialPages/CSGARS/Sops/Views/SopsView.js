@@ -70,15 +70,14 @@ SopsView = Backbone.View.extend({
         var sops = new Sops(this.sops.filter($.proxy(function(sop) { 
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
-
             for (var i = 0; i < reviewers.length; i++) {
-                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
+                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1" || reviewers[i].hidden == true)) {
                     return !this.hidden;
                 }
             }
 
             for (var i = 0; i < other_reviewers.length; i++) {
-                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
+                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1" || other_reviewers[i].hidden == true)) {
                     return !this.hidden;
                 }
             }

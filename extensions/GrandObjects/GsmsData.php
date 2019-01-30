@@ -358,11 +358,12 @@ class GsmsData extends BackboneModel{
         foreach($reviewer_array as $reviewer){
             $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
-                             'name' => $person->getNameForForms(),
-                             'url' => $person->getUrl(),
-                             'decision' => $sop->getAdmitResult($reviewer->getId()),
-                             'comments' => $sop->getReviewComments($reviewer->getId()),
-                             'rank' => $sop->getReviewRanking($reviewer->getId()));
+                                 'name' => $person->getNameForForms(),
+                                 'url' => $person->getUrl(),
+                                 'decision' => $sop->getAdmitResult($reviewer->getId()),
+                                 'comments' => $sop->getReviewComments($reviewer->getId()),
+                                 'rank' => $sop->getReviewRanking($reviewer->getId()),
+                                 'hidden' => $sop->getHiddenStatus($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
 
@@ -372,10 +373,11 @@ class GsmsData extends BackboneModel{
         $other_array = $student->getOtherEvaluators($year);
         foreach($other_array as $other){
             $otherReviewers[] = array('id' => $other->getId(),
-                             'name' => $other->getNameForForms(),
-                             'url' => $other->getUrl(),
-                             'decision' => $sop->getAdmitResult($other->getId()),
-                             'rank' => $sop->getReviewRanking($other->getId()));
+                                      'name' => $other->getNameForForms(),
+                                      'url' => $other->getUrl(),
+                                      'decision' => $sop->getAdmitResult($other->getId()),
+                                      'rank' => $sop->getReviewRanking($other->getId()),
+                                      'hidden' => $sop->getHiddenStatus($other->getId()));
         }
         
         $json['other_reviewers'] = $otherReviewers;
