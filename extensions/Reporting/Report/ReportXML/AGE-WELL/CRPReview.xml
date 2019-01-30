@@ -127,6 +127,9 @@
                 <![CDATA[
                         </td>
                         <td align='center'>
+                            {$item}
+                        </td>
+                        <td align='center'>
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,SECTION9,0,{$user_id},{$project_id})}' class='button'>Download</a>
                         </td>
                         <td align='center'>
