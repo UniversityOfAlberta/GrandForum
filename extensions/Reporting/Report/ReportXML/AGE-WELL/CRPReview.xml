@@ -10,7 +10,8 @@
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <p>AGE-WELL Core Research Program projects will be reviewed to determine potential impact across seven key areas, including the NCE Program Criteria.</p>
+                <p>Prior to undertaking the reviews, please familiarize yourself with the AGE-WELL Core Research Program (CRP) 2020 Request for Proposals and the Challenge Areas document that were provided to applicants.</p>
+                <p>AGE-WELL CRP projects will be reviewed to determine potential impact across key areas, including the NCE Program Criteria.</p>
                 <p>Review categories include:</p>
                 <ol>
                     <li>Alignment to the Request for Proposals</li>

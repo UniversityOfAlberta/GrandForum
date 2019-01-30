@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Access Award" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="AccessApplication012019PDF" year="2019" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="AGE-WELL Emerging Entrepreneur Award (2019)" name="Background Information" type="ReportSection" title="AGE-WELL Emerging Entrepreneur Award (2019)">
+        <ReportItem id="description" type="Static">
+            <![CDATA[
+                <h3>About AGE-WELL</h3>
+                <p>The AGE-WELL Emerging Entrepreneur Award supports the development of emerging entrepreneurs to create and grow an innovative start-up with potential social and economic impact in Canada. The innovation must address one of <a href='https://agewell-nce.ca/wp-content/uploads/2019/01/Booklet_8_Challenges_English_5_final_PROOF_rev.pdf'>AGE-WELL’s 8 Challenge Areas</a> to shape the future of technology and aging research in Canada.</p>
+
+                <p>This $25,000 award is designed to give a new entrepreneur the financial resources to focus on making their ideas a viable business.</p>
+
+                <p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
+                
+                <h3>Eligibility</h3>
+
+                In order to be considered for the AGE-WELL Emerging Entrepreneur Award funding applicants must:
+                <ol>
+                    <li>Be students, post-doctoral fellows, or have graduated/completed a post-doctoral fellowship within the last three years seeking to turn their innovation into a viable business through an existing or planned start-up company.</li>
+                    <li>Be over the age of 18 and residents of Canada.</li>
+                    <li>Innovations previously funded by AGE-WELL (i.e. Catalyst, SIP or CIP grants) may be supported through this program. However, applicants are unable to hold funds from two 12-month AGE-WELL funding or award programs at the same time.</li>
+                    <li>Be able to commit 20+ hours per week towards developing or scaling their business.</li>
+                </ol>
+                
+                <h3>The Awards</h3>
+                <p>$25,000 (1 year award; not renewable). Award funds will flow as salary support in compliance with AGE-WELL grant administration guidelines and practices.</p>
+
+                <p>The Emerging Entrepreneur program will also provide recipients with additional mentorship and training from various members within the <a href='http://agewell-nce.ca/archives/7320'>AGE-WELL network including AGE-WELL's Chief Entrepreneur and CEO of Rakuten Kobo, Michael Tamblyn</a>. Recipients will be matched to key mentors who will work with and support the funded entrepreneur in building or growing their business.</p>
+
+                <p>Recipients will have access to AGE-WELL member benefits and specialized services from AGE-WELL partners and Core Facilities, such as legal guidance, commercialization and knowledge mobilization support, access to prototyping labs, and entrepreneurship training.</p>
+                
+                <h3>Program Requirements</h3>
+
+                <p><i>Training</i><br />
+                Recipients will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
+
+                <p><i>Mentorship</i><br />
+                Award recipients are expected to hold regular meetings with their assigned mentors to ensure ongoing progress towards project goals.</p>
+
+                <i>Reporting</i><br />
+                    <ol>
+                        <li>Recipients are required to complete a mid-term progress report in October 2019 and</li>
+                        <li>complete a final report on outcomes and impact in April 2020.</li>
+                    </ol>
+                </p>
+
+                <p><i>Acknowledging AGE-WELL</i><br />
+                Recipients will acknowledge the AGE-WELL Emerging Entrepreneur Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Recipients are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period and cooperate in the publicising of any success stories arising from this award.</p>
+                
+                <h3>Review Criteria</h3> 
+                All applications will be reviewed by a team of field experts using the following criteria:
+                <ul>
+                    <li>rationale and approach</li>
+                    <li>feasibility</li>
+                    <li>your value proposition</li>
+                    <li>fit with AGE-WELL vision and mission</li>
+                </ul>
+                
+                <h3>Required Documents</h3>
+                Award applicants must submit the following: 
+                <ol>
+                    <li>Online Application Form</li>
+                    <li>Partner Letters of Support (if applicable)</li>
+                    <li>Curriculum Vitae</li>
+                </ol>
+                
+                <h3>Important Dates </h3>
+                Applications Open: 1 February, 2019<br />
+                Completed Applications Due:  8 March, 2019<br />
+                Results Available: 27 March, 2019<br />
+                Funding Commences: April 2019<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <ReportItem id="identity_start" type="StaticReportItem">
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <th colspan="3">Background Information</th>
+                    </tr>
+                    <tr>
+                        <td colspan='2'><b>Applicant Name</b></td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="status" type="TextReportItem" blobItem="STATUS">
+            <![CDATA[
+                <tr>
+                    <td rowspan='3' width='100px'><b>Complete only if a current student or postdoctoral fellow</b></td>
+                    <td width='100px'><b>Academic status and Department</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup" type="TextReportItem" blobItem="SUP">
+            <![CDATA[
+                <tr>
+                    <td><b>Supervisor Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="TextReportItem" blobItem="UNI">
+            <![CDATA[
+                <tr>
+                    <td width='100px'><b>Institution/University</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="TextReportItem" blobItem="ADDRESS">
+            <![CDATA[
+                <tr>
+                    <td><b>Address:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="supervisor_start" type="StaticReportItem">
+            <![CDATA[
+                </table>
+                <h3>Supervisor Information</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="supervisors" type="PersonSupervisors" startDate="2018-01-15" endDate="2019-01-15">
+            <ReportItem id="supervisor" type="StaticReportItem">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Name:&nbsp;</b></td>
+                            <td>{$user_name}</td>
+                        </tr>
+                        <tr>
+                            <td><b>University/Institution:&nbsp;</b></td>
+                            <td>{$user_uni}</td>
+                        </tr>
+                        <tr>
+                            <td><b>E-mail:&nbsp;</b></td>
+                            <td>{$user_email}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="activity" type="TextReportItem" blobItem="ACTIVITY">
+            <![CDATA[
+                <h3>Activity Information</h3>
+                <table>
+                    <tr>
+                        <td><b>Activity type:&nbsp;</b><br />(e.g. conference, lab exchange, internship)</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="TextReportItem" blobItem="TITLE" width="250px">
+            <![CDATA[
+                <tr>
+                    <td><b>Title:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="date" type="CalendarReportItem" blobItem="DATE" format="dd/mm/yy">
+            <![CDATA[
+                <tr>
+                    <td><b>Date:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="location" type="TextReportItem" blobItem="LOCATION">
+            <![CDATA[
+                <tr>
+                    <td><b>Location:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY" limit="750" rich="true">
+            <![CDATA[
+                <h2>Statement</h2>
+                <p>Please provide a brief statement (750 words maximum) that describes the activity to be undertaken, how much funding is requested, and a justification of the funding request that includes the value to your career, alignment with the EPIC training program, and a budget. In particular, please describe your intended career path and how an ACCESS award and participation in the proposed activity will advance your studies and/or career.</p>
+                <p>N.B.:  A limited number of ACCESS awards are available.  Preference is given to HQP who are proposing activities toward completing the EPIC program and earning the Innovators of Tomorrow certificate.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="StaticReportItem">
+            <![CDATA[
+                <h2>Current CV</h2>
+                <p>Go to your <a target='_blank' href='{$user_url}?tab=hqp-profile'>HQP Profile</a> to upload your current CV.</p>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="cv_if" type="If" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
+            <ReportItem id="cv" type="StaticReportItem">
+                <![CDATA[
+                    {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
+                    <a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="cv_ifelse" type="If" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
+                                                     {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
+            <ReportItem id="cv" type="StaticReportItem">
+                <![CDATA[
+                    {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
+                    <a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>
