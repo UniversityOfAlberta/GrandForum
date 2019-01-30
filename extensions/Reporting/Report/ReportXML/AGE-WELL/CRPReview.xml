@@ -123,7 +123,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="crp_pdf" type="PDFReportItem" reportType="CRP" width="100%" project="true">
+            <ReportItem id="crp_pdf" type="PDFReportItem" reportType="CRP" project="true">
                 <![CDATA[
                         </td>
                         <td align='center'>
