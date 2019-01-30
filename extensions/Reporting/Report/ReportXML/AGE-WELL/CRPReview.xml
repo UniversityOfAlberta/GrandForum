@@ -155,10 +155,20 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="CRP Review" name="CRP Review" blobSection="CRP_REVIEW" type="EditableReportSection">
+        <ReportItem id="script" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    var nReviews = 0;
+                </script>
+            ]]>
+        </ReportItem>
         <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" descriptions="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" options="1|2|3|4|5" orientation="horizontal">
                     <![CDATA[
+                        <script type="text/javascript">
+                            nReviews++;
+                        </script>
                         <b>Project Lead(s):</b> {$user_name}<br />
                         <b>Project Title:</b> {getText(RP_CRP, COVER, TITLE, 0, {$user_id}, {$project_id}}<br />
                         <b>Primary Challenge Area:</b> {getText(RP_CRP, COVER, PRIMARY, 0, {$user_id}, {$project_id}}<br />
@@ -329,5 +339,24 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+        <ReportItem id="completion" type="Static">
+            <![CDATA[
+                <div id="reviewCompletion" class="warning" style="display:none;">
+                    Not all scores have been entered
+                </div>
+                <script type="text/javascript">
+                    var reviewCompletionFn = function(){
+                        if($("#reportBody input[type=radio]:checked").length < (nReviews*8)){
+                            $("div#reviewCompletion").slideDown();
+                        }
+                        else{
+                            $("div#reviewCompletion").slideUp();
+                        }
+                    }
+                    $("#reportBody input[type=radio]").change(reviewCompletionFn);
+                    reviewCompletionFn();
+                </script>
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
