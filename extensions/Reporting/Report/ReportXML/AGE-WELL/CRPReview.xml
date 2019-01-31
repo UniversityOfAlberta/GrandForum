@@ -10,7 +10,7 @@
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <p>Prior to undertaking the reviews, please familiarize yourself with the AGE-WELL Core Research Program (CRP) 2020 Request for Proposals and the Challenge Areas document that were provided to applicants.</p>
+                <p>Prior to undertaking the reviews, please familiarize yourself with the <a href='https://agewell-nce.ca/crp2020'>AGE-WELL Core Research Program (CRP) 2020 Request for Proposals</a> and the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-Challenge-Areas.pdf'>Challenge Areas document</a> that were provided to applicants.</p>
                 <p>AGE-WELL CRP projects will be reviewed to determine potential impact across key areas, including the NCE Program Criteria.</p>
                 <p>Review categories include:</p>
                 <ol>
