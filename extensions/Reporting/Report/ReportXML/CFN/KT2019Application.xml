@@ -434,7 +434,7 @@
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Required Signatures</h2>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
