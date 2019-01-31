@@ -21,32 +21,32 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" tooltip="Executive Summary" name="Executive Summary" title="1. Executive Summary" blobSection="SUMMARY" type="EditableReportSection">
-        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" limit="3600">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" limit="3600" reportLimits="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="nce" tooltip="NCE Evaluation Criteria" name="NCE Evaluation Criteria" title="2. Evaluation Criteria" blobSection="NCE" type="EditableReportSection">
-        <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" limit="3600">
+        <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" limit="3600" reportLimits="true">
             <![CDATA[
                 <h3>a) Excellence of the Research Program</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp" type="TextareaReportItem" blobItem="HQP" limit="2000">
+        <ReportItem id="hqp" type="TextareaReportItem" blobItem="HQP" limit="2000" reportLimits="true">
             <![CDATA[
                 <h3>b) Development of Highly Qualified Personnel</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="networking" type="TextareaReportItem" blobItem="NETWORKING" limit="3600">
+        <ReportItem id="networking" type="TextareaReportItem" blobItem="NETWORKING" limit="3600" reportLimits="true">
             <![CDATA[
                 <h3>c) Networking and Partnerships</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ktee" type="TextareaReportItem" blobItem="KTEE" limit="3600">
+        <ReportItem id="ktee" type="TextareaReportItem" blobItem="KTEE" limit="3600" reportLimits="true">
             <![CDATA[
                 <h3>d) Knowledge Exchange and Exploitation</h3>
                 {$item}
@@ -54,13 +54,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="additional" tooltip="Additional Information" name="Additional Information" title="3. Additional Information" blobSection="INFORMATION" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="outcomes" type="TextareaReportItem" blobItem="OUTCOMES" limit="2000">
+        <ReportItem id="outcomes" type="TextareaReportItem" blobItem="OUTCOMES" limit="2000" reportLimits="true">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" limit="2000">
+        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" limit="2000" reportLimits="true">
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
                 {$item}

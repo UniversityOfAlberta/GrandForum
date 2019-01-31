@@ -248,7 +248,7 @@ EOF;
             else{
                 $type = "recommended";
             }
-            $html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
+            //$html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
         }
         $dom = new SmartDOMDocument();
         $dom->loadHTML($blobValue);
