@@ -880,10 +880,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2015/2016 Collaborative Team Grants">
+    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants">
         <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
             <![CDATA[
-                <p>Round I and II Collaborative Team Grants (e.g. projects ending August 2018 or December 2018) may apply for a project extension by completing this section.</p>
+                <p>Round 3 and 4 Collaborative Team Grants (e.g. projects ending June 2019 or December 2019) may apply for a project extension to March 31, 2020 by completing this section.</p>
                 <p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
                 {$item}
             ]]>
@@ -942,7 +942,7 @@
         <ReportItem id="ip" type="StaticReportItem">
             <![CDATA[
                 <h2>IP development strategy/commercialization plan</h2>
-                <p>If you wish to be considered for a Translational Grant (options b or c, above), please email a commercialization plan to Elizabeth Nanak (<a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>) no later than June 1, 2018. The commercialization plan should follow these guidelines:</p>
+                <p>If you wish to be considered for a Translational Grant (options b or c, above), please email a commercialization plan to Elizabeth Nanak (<a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>) no later than June 1, 2019.</p>
                 <ul>
                     <li>Provided by the Technology Transfer Office of the Project Leader’s Institution;</li>
                     <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch;</li>
