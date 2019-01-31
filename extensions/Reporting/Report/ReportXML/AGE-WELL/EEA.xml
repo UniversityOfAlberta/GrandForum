@@ -337,7 +337,7 @@ What is the Market Size? (100 words max)</b>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" tooltip="Documents" name="Documents" type="ReportSection" blobSection="DOCS" title="Documents">
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
         <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
             <![CDATA[
                 <h3>Partner Letters of Support</h3>
