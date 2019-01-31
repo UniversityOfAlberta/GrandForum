@@ -109,7 +109,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $_POST['problem'] = "";
             $_POST['description'] = "";
             $_POST['assessment'] = "";
-            $_POST['status'] = "Pending";
+            $_POST['status'] = "New";
             $_POST['modification'] = "";
             $_POST['people'] = "";
             $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";

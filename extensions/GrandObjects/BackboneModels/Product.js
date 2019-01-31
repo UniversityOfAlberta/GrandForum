@@ -144,7 +144,7 @@ Product = Backbone.Model.extend({
             deleted: "",
             access_id: 0,
             created_by: 0,
-            access: "Forum",
+            access: productVisibility,
             bibtex: "",
         };
     },

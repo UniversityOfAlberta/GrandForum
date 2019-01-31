@@ -87,6 +87,9 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
+    // The Default productVisibility
+    $config->setValue("productVisibility", "Forum");
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
 

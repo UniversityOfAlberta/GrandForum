@@ -107,14 +107,15 @@ class ProjectFESReportTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)." <small>(please focus on scholarly and not administrative activities)(300 words)</small></h3>
+            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)." <small>(300 words)</small></h3>
+                            Please focus on scholarly and not administrative activities
                             <textarea name='report_q1[$y]' style='height:200px;resize: vertical;'>{$q1}</textarea>
                             
-                            <h3>Did you change your milestones for this year and moving forward? If so, why? <small>(up to 300 words)</small></h3>
+                            <h3>Did you change your milestones for this year and moving forward? If so, why? <small>(300 words)</small></h3>
                             <textarea name='report_q2[$y]' style='height:200px;resize: vertical;'>{$q2}</textarea>
                             
-                            <h3>What steps did you take to ensure equity, diversity and inclusion (EDI) within your team? <small>(150 words)</small></h3>
-                            <small>Suggested<br />
+                            <h3>What steps did you take to ensure equity, diversity and inclusion (EDI) within your team?</h3>
+                            <small>Suggested topics to address<br />
                                 <ul>
                                    <li>What are the EDI issues in your field?</li>
                                    <li>How are you using this project to address them?</li>
