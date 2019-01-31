@@ -406,14 +406,14 @@
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Project team Information</h2>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Budget</h2>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Budget.xlsx'>template Excel document</a> and upload a <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing a completed excel file for each Principal Investigator.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Budget.xlsx'>template Excel document</a> and upload a <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing a completed excel file for each Principal Investigator.</p>
                 {$item}
             ]]>
         </ReportItem>
