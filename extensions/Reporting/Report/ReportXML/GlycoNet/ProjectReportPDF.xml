@@ -354,7 +354,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="extension" type="HeaderReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2015/2016 Collaborative Team Grants" pagebreak="false">
+    <ReportSection id="extension" type="HeaderReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants" pagebreak="false">
         <ReportItemSet id="if" type="If" if="{!=({getText(RP_PROGRESS,EXTENSION,OBJECTIVES,0,0,{$project_id})},)}">
             <ReportItem id="pagebreak" type="PageBreak">
                 <![CDATA[
