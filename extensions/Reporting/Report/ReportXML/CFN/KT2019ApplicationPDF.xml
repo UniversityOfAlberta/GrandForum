@@ -381,7 +381,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding">
-        <ReportItem id="funding" type="MultiText" class="wikitable" types="String|String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="PI Name|Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" sizes="150|120|150|100|200|75|75" multiple="true">
+        <ReportItem id="funding" type="MultiText" class="wikitable" types="String|String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="PI Name|Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" multiple="true">
             <![CDATA[
                 <p><small><i>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</i></small></p>
                 {$item}
