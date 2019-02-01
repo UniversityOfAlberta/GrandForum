@@ -8,14 +8,14 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP">
+        <Role role="INACTIVE+">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP-Candidate">
+        <Role role="INACTIVE-Candidate+">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />

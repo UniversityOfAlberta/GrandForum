@@ -3388,8 +3388,14 @@ class Person extends BackboneModel {
             return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange));
         }
-        if($this->isCandidate()){
+        if($this->isCandidate() && strstr($role, "-Candidate") === false){
             return false;
+        }
+        else{
+            $role = str_replace("-Candidate", "", $role);
+        }
+        if($role == INACTIVE && !$this->isActive()){
+            return true;
         }
         $roles = $this->getRolesDuring($startRange, $endRange);
         if($roles != null){
@@ -3423,8 +3429,14 @@ class Person extends BackboneModel {
                     $this->isRoleAtLeast(CI.'-Candidate'));
         }
         $me = Person::newFromWgUser();
-        if($this->isCandidate()){
+        if($this->isCandidate() && strstr($role, "-Candidate") === false){
             return false;
+        }
+        else{
+            $role = str_replace("-Candidate", "", $role);
+        }
+        if($role == INACTIVE && !$this->isActive()){
+            return true;
         }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
@@ -3466,7 +3478,13 @@ class Person extends BackboneModel {
             return ($this->isRoleAtMost(AR.'-Candidate') || 
                     $this->isRoleAtMost(CI.'-Candidate'));
         }
-        if($this->isCandidate()){
+        if($this->isCandidate() && strstr($role, "-Candidate") === false){
+            return false;
+        }
+        else{
+            $role = str_replace("-Candidate", "", $role);
+        }
+        if($role == INACTIVE && !$this->isActive()){
             return true;
         }
         foreach($this->getRoles() as $r){

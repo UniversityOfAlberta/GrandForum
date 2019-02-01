@@ -55,7 +55,7 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Award 2018", "{$url}HQPApplication", $selected);
         }*/
-        if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
+        if($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEA")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Emerging Entrepreneur", "{$url}EEA", $selected);
         }

@@ -686,6 +686,9 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
+                        else if($perm['perm']['role'] == INACTIVE."-Candidate" && !$me->isActive() && $me->isCandidate()){
+                            $rResult = true;
+                        }
                         else if(strstr($perm['perm']['role'], EVALUATOR) !== false && $me->isEvaluator($this->year)){
                             $rResult = true;
                         }
@@ -753,7 +756,15 @@ abstract class AbstractReport extends SpecialPage {
                                 $rResultTmp = true;
                             }
                             else if(strstr($perm['perm']['role'], "+") !== false){
-                                $rResultTmp = $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']);
+                                $role = str_replace("+", "", $perm['perm']['role']);
+                                if(strstr($role, "-Candidate") !== false){
+                                    $role = str_replace("-Candidate", "", $role);
+                                    $role = constant($role)."-Candidate";
+                                }
+                                else{
+                                    $role = constant($role);
+                                }
+                                $rResultTmp = $me->isRoleAtLeastDuring($role, $perm['start'], $perm['end']);
                             }
                             else{
                                 $isMember = true;
