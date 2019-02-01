@@ -210,7 +210,7 @@
                         </td>
             ]]>
         </ReportItem>
-        <ReportItem id="impact" type="Radio" blobItem="IMPACT" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system">
+        <ReportItem id="focus" type="Radio" blobItem="FOCUS" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system">
             <![CDATA[
                         <td valign="top"><b>Focus of Impact - Highlight the <u>ONE</u> primary focus of impact of your KT Proposal:</b>{$item}
                         </td>

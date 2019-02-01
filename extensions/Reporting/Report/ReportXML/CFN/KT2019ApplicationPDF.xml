@@ -71,7 +71,7 @@
                             <b>First Name:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|firstname)}
                         </td>
             ]]>
         </ReportItem>
@@ -81,7 +81,7 @@
                             <b>Last Name:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|lastname)}
                         </td>
             ]]>
         </ReportItem>
@@ -91,7 +91,7 @@
                             <b>Designations:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|titleatinstitution/organization)}
                         </td>
                     </tr>
             ]]>
@@ -103,7 +103,7 @@
                             <b>Email:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|emailaddress)}
                         </td>
             ]]>
         </ReportItem>
@@ -113,7 +113,7 @@
                             <b>Daytime Phone:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|daytimephonenumber)}
                         </td>
             ]]>
         </ReportItem>
@@ -135,7 +135,7 @@
                             <b>Host Institution that will receive and administer funds:</b>
                         </td>
                         <td colspan='3'>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|institutionthatwillreceive/administerfunds)}
                         </td>
                     </tr>
             ]]>
@@ -147,7 +147,7 @@
                             <b>Secondary Contact Name:</b>
                         </td>
                         <td colspan="2">
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL_CONTACT,0,{$user_id},0,pl_contact|0|firstname)} {getArray(RP_KT_APPLICATION,INTENT,PL_CONTACT,0,{$user_id},0,pl_contact|0|lastname)}
                         </td>
             ]]>
         </ReportItem>
@@ -157,7 +157,7 @@
                             <b>Secondary Telephone Number:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL_CONTACT,0,{$user_id},0,pl_contact|0|daytimephonenumber)}
                         </td>
                     </tr>
             ]]>
@@ -170,13 +170,13 @@
                             <b>Secondary Email:</b>
                         </td>
                         <td>
-                            {$item}
+                            {getArray(RP_KT_APPLICATION,INTENT,PL_CONTACT,0,{$user_id},0,pl_contact|0|emailaddress)}
                         </td>
                     </tr>
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="objective" type="Radio" blobItem="OBJECTIVE" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum">
+        <ReportItem id="objective" type="Radio" blobItem="STRATEGIC" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <table class="wikitable" frame="box" rules="all" style="width: 100%;">
                     <tr>
@@ -184,7 +184,7 @@
                         </td>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Radio" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care">
+        <ReportItem id="theme" type="Radio" blobItem="RESEARCH" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care">
             <![CDATA[
                         <td valign="top"><b>Theme:</b>{$item}
                         </td>
@@ -198,7 +198,7 @@
                         </td>
             ]]>
         </ReportItem>
-        <ReportItem id="impact" type="Radio" blobItem="IMPACT" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system">
+        <ReportItem id="focus" type="Radio" blobItem="FOCUS" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system">
             <![CDATA[
                         <td valign="top"><b>Focus of Impact:</b>{$item}
                         </td>
@@ -225,26 +225,25 @@
         <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="350" rich="true">
             <![CDATA[
                 <h2>2.1: Lay Summary</h2>
-                <p><small><i>Provide a non-confidential summary in lay terms of the KT proposal.  A lay summary is an overview of a research project described in a way that can be easily understood by those without prior experience of the subject. It is not a slight modification of the scientific abstract or a simplification of the study; a well-written lay summary allows the public to understand research and its value, impact, and applications. Lay summaries also help juries evaluate research grant applications and facilitate use of the research by government, the public and private sectors, and the community at large. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</i></small></p>
+                <p><small><i>Provide a non-confidential summary of the KT proposal in lay terms.  A lay summary is an overview of a research project described in a way that can be easily understood by those without prior experience of the subject. It is not a slight modification of the scientific abstract or a simplification of the study; a well-written lay summary allows the public to understand research and its value, impact, and applications. Lay summaries also help juries evaluate research grant applications and facilitate use of the research by government, the public and private sectors, and the community at large. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="350" rich="true">
             <![CDATA[
                 <h2>2.2: Scientific Summary</h2>
-                <p><small><i>Provide a non-confidential scientific summary of the KT proposal, highlighting the study objectives, milestones and deliverables and potential socioeconomic impact. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</i></small></p>
+                <p><small><i>Provide a non-confidential scientific summary of the KT proposal, highlighting the study objectives, milestones, deliverables and potential socioeconomic impact. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - KT Proposal" title="Section 3 - KT Proposal">
-        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="1100" rich="true">
+        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="900" rich="true">
             <![CDATA[
                 <h2>3.1: Concept</h2>
                 <h3>3.1.1: Quality of the Idea</h3>
                 <small><i>
                 <ol type="a">
-                    <li>Please describe any success stories or real-world impacts that resulted from prior KT activities related to the prior CFN-funded research project and also discuss the relevancy of this KT proposal to the prior research project.  Note that the information you provide may be used publicly for external CFN communications (e.g., CFN website, CFN newsletter, social media).</li>
                     <li>Please clearly describe the overall goal and objectives of the study and provide distinct outputs that support advances in health-related knowledge, health research, health care, health systems, and/or health outcomes for the care of Canadians living with frailty.</li>
                     <li>Please clearly describe the hypothesis and rationale of the study and articulate why this proposal is considered to have the potential to change the care of older Canadians living with frailty.</li>
                     <li>Please clearly describe how you plan on measuring and evaluating the impact of your proposal on the care of older adults living with frailty.</li>
@@ -266,8 +265,8 @@
                 <h3>3.2.1: Approach</h3>
                 <small><i>
                 <ol type="a">
-                    <li>Please describe the approaches and methods used in this study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s). The proposal should be developed using an appropriate KT strategy based on a KT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).  In addition to the budget justification you provided in the budget template, please provide any additional budget justification as it relates to the approaches and methods.</li>
-                    <li>Please provide timelines showing when goals, objectives and outputs will be reached.  In addition to the budget justification you provided in the budget template, please provide any additional budget justification as it relates to the goals, objectives and outputs.</li>
+                    <li>Please describe the approaches and methods used in this study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s). The proposal should be developed using an appropriate KT strategy based on a KT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</li>
+                    <li>Please provide timelines showing when goals, objectives and outputs will be reached.</li>
                     <li>Please describe the potential barriers and challenges related to achieving the proposed goals and objectives and how you intend on overcoming these barriers and challenges.  What is your mitigation strategy?</li>
                 </ol>
                 </i></small>
@@ -329,7 +328,7 @@
                 <small><i>
                 <ul>
                     <li>Complete the table below.</li>
-                    <li>In a single PDF document please provide letters of support for each partner, collaborator etc. Upload this document below.  Make sure that each letter of support within the PDF is on the organization’s letterhead, detailing the partnership and specifically indicating their cash and/or in-kind contribution. The letter should specifically include reference to CFN, the proposed study, and any conditions placed on funding.  See Application Instructions for guidance on allowable expenses and eligible partners and contributions.</li>
+                    <li>In a single PDF document, please provide letters of support for each partner, collaborator etc. Upload this document.  Make sure that each letter of support within the PDF is on the organization’s letterhead, detailing the partnership and specifically indicating their cash and/or in-kind contribution. The letter should specifically include reference to CFN, the proposed study, and any conditions placed on funding.  See Application Instructions for guidance on allowable expenses and eligible partners and contributions.</li>
                     <li>Individuals from the partner organizations that will be participating as project team members must be listed in the submitted Project Team Information document.</li>
                     <li>All financial information provided in the table below must also appear in the submitted budget document.</li>
                     <li>Where a researcher has a “financial interest” (as defined by NCE Conflict of Interest Guidelines) in a partner, the potential conflict of interest should be declared in the table.  This does not preclude the partnership in any way, but provides transparency during the review process. Please see CFN Conflict of Interest Policy and Guidelines for additional guidance <a href='http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf' target='_blank'>http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf</a></li>
