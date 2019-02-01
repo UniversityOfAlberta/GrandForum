@@ -38,7 +38,7 @@
                         <td>
                             <b>CFN File Number:</b>
                         </td>
-                        <td>{$item}</td>
+                        <td>{$value}</td>
                     </tr>
             ]]>
         </ReportItem>
