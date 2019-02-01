@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2019 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KT2019ApplicationPDF" year="2019" disabled="false" ajax="true">
     <Permissions>
-        <Role role="NI" subType="KT2019Applicant">
+        <Role role="INACTIVE+" subType="KT2019Applicant">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -12,7 +12,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="NI-Candidate" subType="KT2019Applicant">
+        <Role role="INACTIVE-Candidate+" subType="KT2019Applicant">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -402,36 +402,36 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
-        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx">
             <![CDATA[
                 <h2>Project team Information</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType=".xlsx">
             <![CDATA[
                 <h2>Budget</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Budget.xlsx'>template Excel document</a> and upload a <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing a completed excel file for each Principal Investigator.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
                 <p>Please upload a single PDF document containing all PI CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Team Member CVs</h2>
                 <p>Please upload a single PDF document containing all Team Member CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Required Signatures</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2019_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.</p>

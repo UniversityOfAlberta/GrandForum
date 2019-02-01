@@ -401,19 +401,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Team Member CVs</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h2>Required Signatures</h2>
                 {$item}
