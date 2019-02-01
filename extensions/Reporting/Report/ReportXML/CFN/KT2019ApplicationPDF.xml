@@ -206,8 +206,43 @@
                 </table><br />
             ]]>
         </ReportItem>
+        
+        <ReportItemSet id="builds_if" type="If" if="{==({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
+            <ReportItem id="builds" type="MultiText" class="wikitable" blobItem="BUILDS" blobType="BLOB_ARRAY" labels="Name of Funding Agency|Grant Project Title|Grant Principal Investigator" multiple="true">
+                <![CDATA[
+                    <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="builds_else" type="If" if="{!=({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
+            <ReportItem id="builds" type="Static">
+                <![CDATA[
+                    <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
+                    Not applicable<br /><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        
+        <ReportItem id="another" type="Radio" blobItem="ANOTHER" options="No|Yes">
+            <![CDATA[
+                <h4>2. Is this KT proposal funded in part by another research or KT grant?</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="builds_if" type="If" if="{==({getText(RP_KT_APPLICATION,INTENT,ANOTHER,0,{$user_id},0)},Yes)}">
+            <ReportItem id="another_yes" type="MultiText" class="wikitable" blobItem="ANOTHER_YES" blobType="BLOB_ARRAY" labels="Name of Funding Agency|Grant Project Title|Grant Principal Investigator">
+                <![CDATA[
+                    Please provide the following information:<br />
+                    {$item}<br />
+                ]]>
+                
+            </ReportItem>
+        </ReportItemSet>
+        
         <ReportItem id="ethics" blobItem="ETHICS" type="Radio" options="Yes, I expect that this research will require an ethics review|No, I do not expect that this research will require an ethics review">
             <![CDATA[
+                <br />
                 <h2>Ethics/Environmental Assessment</h2>
                 <p><small><i>Please answer the two questions below.</i></small></p>
                 <ol>
