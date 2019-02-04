@@ -206,7 +206,18 @@
                 </table><br />
             ]]>
         </ReportItem>
-        
+        <ReportItem id="pi" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="PI" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" multiple="true" sizes="10%|10%|15%|auto|15%">
+            <![CDATA[
+                <h4>Principal Investigators</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="CI" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" multiple="true" sizes="10%|10%|15%|auto|15%">
+            <![CDATA[
+                <h4>Co-Investigators</h4>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItemSet id="builds_if" type="If" if="{==({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
             <ReportItem id="builds" type="MultiText" class="wikitable" blobItem="BUILDS" blobType="BLOB_ARRAY" labels="Name of Funding Agency|Grant Project Title|Grant Principal Investigator" multiple="true">
                 <![CDATA[

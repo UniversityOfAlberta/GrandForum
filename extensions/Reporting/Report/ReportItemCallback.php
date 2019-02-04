@@ -136,6 +136,7 @@ class ReportItemCallback {
             "name" => "getName",
             "index" => "getIndex",
             "value" => "getValue",
+            "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
             "getProjects" => "getProjects",
             "getNProducts" => "getNProducts",
@@ -1613,6 +1614,10 @@ class ReportItemCallback {
 		else{
 		    return $this->reportItem->getBlobValue();
 		}
+    }
+    
+    function getPDFHTML(){
+        return $this->reportItem->getText();
     }
     
     function getExtraIndex(){
