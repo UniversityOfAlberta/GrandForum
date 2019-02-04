@@ -76,6 +76,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
@@ -106,8 +107,11 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "trans" && $me->isRoleAtLeast(SD)){
             $this->generateTrans();
         }
-        if($program == "collab" && $me->isRoleAtLeast(SD)){
+        else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "alberta" && $me->isRoleAtLeast(SD)){
+            $this->generateAlberta();
         }
         else if($program == "strat" && $me->isRoleAtLeast(SD)){
             $this->generateStrat();
@@ -188,6 +192,13 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setId("reviewers");
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2016, "2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAlberta(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ALBERTA', $this->allNis, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
