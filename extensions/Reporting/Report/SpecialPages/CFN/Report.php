@@ -62,10 +62,10 @@ class Report extends AbstractReport{
                 }
             }
         }
-        /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("KT2017Applicant")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);
-        }*/
+        if($person->isSubRole("KT2019Applicant")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KT2019Application")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KT2019Application", $selected);
+        }
         /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("CAT2018Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CAT Application", "{$url}Catalyst2018Application", $selected);
