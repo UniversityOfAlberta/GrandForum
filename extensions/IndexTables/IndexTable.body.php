@@ -192,25 +192,21 @@ class IndexTable {
                     $wgOut->setPageTitle("Current Projects");
                     $this->generateProjectsTable('Active', 'Research');
                                 TabUtils::clearActions();
-
                     break;
                 case 'CompletedProjects':
                     $wgOut->setPageTitle("Completed Projects");
                     $this->generateProjectsTable('Ended', 'Research');
                                 TabUtils::clearActions();
-
                     break;
                 case 'AdminProjects':
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
                     $this->generateAdminTable();
                                 TabUtils::clearActions();
-
                     break;
                 case Inflect::pluralize($config->getValue('projectThemes')):
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
                     $this->generateThemesTable();
                                 TabUtils::clearActions();
-
                     break;
                 case 'ALL Stories':
                     $wgOut->setPageTitle("All Cases or Experiences");
@@ -251,7 +247,6 @@ class IndexTable {
                     }
                     $this->generatePersonTable("Curricula"); 
                     break;
-
                 case 'ALL Tools':
                     $wgOut->setPageTitle("Tools & Tips");
                     if($wgLang->getCode() == 'fr'){
@@ -259,20 +254,24 @@ class IndexTable {
                     }
                     $this->generatePersonTable("Tools");
                     break;
-
-               case 'ALL Canadian':
+                case 'ALL Canadian':
                     $wgOut->setPageTitle("Canadian Resources");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Ressources Canadiennes");
                     }
                     $this->generatePersonTable("Canadian");
                     break;
-
+                case 'ALL Nursing':
+                    $wgOut->setPageTitle("Advanced Nursing Practice Resources");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Ressources de pratique infirmière avancée");
+                    }
+                    $this->generatePersonTable("Nursing");
+                    break;
                 case 'ALL Formulaires en français':
                     $wgOut->setPageTitle("Formulaires en français");
                     $this->generatePersonTable("Formulaires_en_français");
                     break;
-
                 case 'ALL Organizations':
                     $wgOut->setPageTitle("Organizations");
                     if($wgLang->getCode() == 'fr'){
@@ -280,7 +279,6 @@ class IndexTable {
                     }
                     $this->generatePersonTable("Organizations");
                     break;
-
                 case 'ALL Articles':
                     $wgOut->setPageTitle("Articles");
                     if($wgLang->getCode() == 'fr'){
@@ -295,7 +293,7 @@ class IndexTable {
                     }
                     $this->generatePersonTable("Patients");
                     break;                    
-                           case 'ALL Resources':
+                case 'ALL Resources':
                                 $wgOut->setPageTitle("Resources");
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Ressources");
