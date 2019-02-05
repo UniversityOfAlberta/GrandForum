@@ -59,6 +59,7 @@ define('FES_NI_BUDGET_STRUCTURE', 13); // Not really NIs, it is the Equipment
 define('FES_EQUIPMENT_STRUCTURE', 14);
 define('FES_EXTERNAL_STRUCTURE', 15);
 define('AGEWELL_NI_BUDGET_STRUCTURE2', 16);
+define('HUAWEI_BUDGET', 17);
 
 $budgetStructures = array();
 
@@ -550,5 +551,21 @@ $budgetStructures[REPORT_STRUCTURE] =
           array(HEAD3,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  ROW_SUM,PERC,   PERC),
           array(HEAD3,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  ROW_SUM,PERC,   PERC),
           array(HEAD1,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  MONEY,  ROW_SUM,PERC,   PERC),
+    );
+    
+$budgetStructures[HUAWEI_BUDGET] =
+    array(array(HEAD,      HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW),
+          array(HEAD1_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW),
+          array(HEAD2,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD2,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD2,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW),
+          array(HEAD2,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD2,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1,     MONEY,    MONEY,    MONEY,    MONEY),
+          array(HEAD1,     COL_SUM,  COL_SUM,  COL_SUM,  COL_SUM),
     );
 ?>
