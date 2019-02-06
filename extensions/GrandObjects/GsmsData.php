@@ -322,6 +322,7 @@ class GsmsData extends BackboneModel{
         }
         $json = array('id' =>$this->id,
                   'user_id' =>$this->user_id,
+                  'year' => $year,
                   'status' => $this->status,
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,

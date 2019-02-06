@@ -283,9 +283,26 @@ class SOP extends AbstractSop{
         $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS($this->year);
-        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $gsms->id);
         $uninteresting = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $gsms->id);
         return isset($uninteresting['q0'][1]);
+    }
+    
+    function setHiddenStatus($user, $value=""){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $uninteresting = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $gsms->id);
+        
+        $blb = new ReportBlob(BLOB_ARRAY, $year, $user, $gsms->id);
+        $addr = ReportBlob::create_address("RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", 0);
+        if($value != ""){
+            $value = array('q0' => array(1 => $value));
+            $result = $blb->store($value, $addr);
+        }
+        else{
+            $value = array('q0' => array());
+            $result = $blb->store($value, $addr);
+        }
     }
 
     function getCSEducationalHistory($html_string=false){

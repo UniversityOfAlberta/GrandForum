@@ -67,17 +67,20 @@ SopsView = Backbone.View.extend({
         }
         
         // Filter the Sops
-        var sops = new Sops(this.sops.filter($.proxy(function(sop) { 
+        var sops = new Sops(this.sops.filter($.proxy(function(sop) {
+            sop.hidden = !this.hidden;
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
             for (var i = 0; i < reviewers.length; i++) {
                 if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1" || reviewers[i].hidden == true)) {
+                    sop.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
 
             for (var i = 0; i < other_reviewers.length; i++) {
                 if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1" || other_reviewers[i].hidden == true)) {
+                    sop.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
@@ -158,8 +161,8 @@ SopsView = Backbone.View.extend({
                                                         { 'visible': false, 'targets': invisibleColumns }
                                                       ],
                                                      'columns': [
-                                                        { 'width': '225px' }, // User email gender
-                                                        { 'width': '95px' },  // GSMS ID
+                                                        { 'width': '250px' }, // User email gender
+                                                        { 'width': '115px' },  // GSMS ID
                                                         { 'width': '30px' },  // GSMS PDF
                                                         { 'width': '55px' },  // Folder
                                                         { 'width': '70px' },  // DoB
@@ -254,7 +257,7 @@ SopsView = Backbone.View.extend({
     events: {
         "keyup .filter_option": "reloadTable",
         "change .filter_option" : "reloadTable",
-        "click input[type=checkbox]": "reloadTable",
+        "click input[type=checkbox]:not([name=hidden])": "reloadTable",
         "click #clearFiltersButton" : "clearFilters",
         "click #filterMeOnly": "reloadTable",
         "click #selectTagBox" : "showCheckboxes",
