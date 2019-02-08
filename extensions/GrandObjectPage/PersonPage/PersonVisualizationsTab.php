@@ -10,7 +10,7 @@ class PersonVisualizationsTab extends AbstractTab {
     var $visibility;
 
     function PersonVisualizationsTab($person, $visibility){
-        parent::AbstractTab("Visualizations");
+        parent::AbstractTab("Timeline");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -20,45 +20,7 @@ class PersonVisualizationsTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $this->html = "";
         if($wgUser->isLoggedIn()){
-            $wgOut->addScript("<script type='text/javascript'>
-                $(document).ready(function(){
-                    $('#personVis').tabs({selected: 0});
-                    $('#person').bind('tabsselect', function(event, ui) {
-                        if(ui.panel.id == 'visualize'){
-                            $('#personVis').tabs('option', 'selected', 0);
-                        }
-                    });
-                });
-            </script>");
-            $this->html .= 
-            "<div id='personVis'>
-	            <ul>
-		            <li><a href='#timeline'>Timeline</a></li>";
-		            //<li><a href='#chart'>Productivity Chart</a></li>";
-		    $this->html .= "<!--<li><a href='#network'>Network</a></li>-->
-	            </ul>
-	        <div id='timeline'>";
-		        $this->showTimeline($this->person, $this->visibility);
-	        /*$this->html .= "</div>
-	        <div id='chart'>";
-		        $this->showDoughnut($this->person, $this->visibility);*/
-	        $this->html.= "</div>
-    </div>
-    <script type='text/javascript'>
-        
-        var selectedTab = $('#personVis .ui-tabs-selected');
-        if(selectedTab.length > 0){
-            // If the tabs were created previously but removed from the dom, 
-            // make sure to reselect the same tab as before
-            var i = 0;
-            $.each($('#personVis li.ui-state-default'), function(index, val){
-                if($(val).hasClass('ui-tabs-selected')){
-                    i = index;
-                }
-            });
-            $('#personVis').tabs({ selected: i });
-        }
-    </script>";
+            $this->showTimeline($this->person, $this->visibility);
         }
         return $this->html;
     }
@@ -74,7 +36,7 @@ class PersonVisualizationsTab extends AbstractTab {
                                 $(document).ready(function(){
                                     var nTimesLoadedTimeline = 0;
                                     $('#person').bind('tabsselect', function(event, ui) {
-                                        if(ui.panel.id == 'visualizations'){
+                                        if(ui.panel.id == 'timeline'){
                                             if(nTimesLoadedTimeline == 0){
                                                 onLoad{$timeline->index}();
                                                 nTimesLoadedTimeline++;

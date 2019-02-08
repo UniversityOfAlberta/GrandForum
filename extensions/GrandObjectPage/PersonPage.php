@@ -149,7 +149,7 @@ class PersonPage {
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }
-                if($config->getValue('networkName') != 'Faculty of Science'){
+                if($me->isRoleAtLeast(STAFF)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
