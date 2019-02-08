@@ -143,6 +143,7 @@ class PersonVisualizationsTab extends AbstractTab {
             }
            
             if(count($person->getRelations('all', true)) > 0){
+                // My Relations
                 foreach($person->getRelations('all', true) as $type){
                     foreach($type as $relation){
                         $start = substr($relation->getStartDate(), 0, 10);
@@ -163,8 +164,35 @@ class PersonVisualizationsTab extends AbstractTab {
                     }
                 }
             }
+            if(count($person->getSupervisors(true)) > 0){
+                // Supervisors
+                foreach($person->getSupervisors(true) as $supervisor){
+                    $relations = array_merge($supervisor->getRelations(SUPERVISES, true), $supervisor->getRelations(CO_SUPERVISES, true));
+                    foreach($relations as $r){
+                        $hqp = $r->getUser2();
+                        if($hqp->getId() == $person->getId()){
+                            $start = substr($r->getStartDate(), 0, 10);
+                            $end = substr($r->getEndDate(), 0, 10);
+                            if($end == "0000-00-00"){
+                                $end = $today;
+                            }
+                            if(strcmp($start, $end) > 0){
+                                $start = $end;
+                            }
+                            $content = "<a href='{$r->getUser1()->getUrl()}' target='_blank'>{$r->getUser1()->getNameForForms()}</a> {$r->getType()} <a href='{$r->getUser2()->getUrl()}' target='_blank'>{$r->getUser2()->getNameForForms()}</a>";
+                            $items[] = array('content' => $r->getUser1()->getNameForForms(),
+                                             'description' => array('title' => $r->getUser1()->getNameForForms(),
+                                                                    'text' => "$content"),
+                                             'group' => 'relations',
+                                             'start' => $start,
+                                             'end' => $end);
+                        }
+                    }
+                }
+            }
             
-            foreach($person->getPapers('all') as $paper){
+            
+            foreach($person->getPapersAuthored('all', "1900-00-00", "2100-01-01", false, false) as $paper){
                 $start = $paper->getDate();
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
                 $items[] = array('content' => str_replace("&#39;", "'", $paper->getTitle()),
