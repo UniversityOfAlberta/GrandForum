@@ -98,11 +98,6 @@
         </ReportItem>
         
         <!-- Courses -->
-        <ReportItem id="coursespagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses">
             <![CDATA[
                 <h2>Courses</h2>
@@ -170,11 +165,6 @@
         </ReportItem>
         
         <!-- HQP Supervision -->
-        <ReportItem id="hqppagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="hqpbookmark" type="BookmarkReportItem" title="HQP Supervision">
             <![CDATA[
                 <h2>HQP Supervision</h2>
@@ -187,11 +177,6 @@
         </ReportItem>
         
         <!-- Publications -->
-        <ReportItem id="productspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
                 <h2>Publications</h2>
@@ -348,11 +333,6 @@
         </ReportItem>
         
         <!-- Grants -->
-        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
             <![CDATA[
                 <h2>Research Grants and Contracts</h2>
@@ -391,11 +371,6 @@
         </ReportItem>
         
         <!-- Services -->
-        <ReportItem id="servicespagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
             <![CDATA[
                 <h2>Service Activities</h2>
@@ -492,11 +467,6 @@
         </ReportItemSet>
         
         <!-- Additional Info -->
-        <ReportItem id="additionalpagebreak" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="spabookmark" type="BookmarkReportItem" title="Supplementary Professional Activities">
             <![CDATA[
                 <h2>Supplementary Professional Activities</h2>
