@@ -58,6 +58,7 @@ class ApplicationsTable extends SpecialPage{
         
         //$links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=candidates'>Candidates</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=loi'>JIC LOIs</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=huawei'>JIC</a>";
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
@@ -69,6 +70,9 @@ class ApplicationsTable extends SpecialPage{
         
         if($program == "loi"){
             $this->generateLOI();
+        }
+        else if($program == "huawei"){
+            $this->generateHuawei();
         }
         return;
     }
@@ -155,6 +159,22 @@ class ApplicationsTable extends SpecialPage{
                                                                                          'Primary (Other)' => $primary_other,
                                                                                          'Secondary' => $secondary,
                                                                                          'Secondary (Other)' => $secondary_other));
+        $tab->idProjectRange = array(0,1);
+        $tabbedPage->addTab($tab);
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateHuawei(){
+        global $wgOut;
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem("TITLE");
+        $title->setBlobSection(PROP_DESC);
+        $title->setId("title");
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tab = new ApplicationTab('RP_HUAWEI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title));
         $tab->idProjectRange = array(0,1);
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
