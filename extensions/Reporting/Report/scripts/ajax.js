@@ -66,8 +66,10 @@ $(document).ready(function(){
                 uploadFramesSaving = [];
                 try{
                     $('iframe.uploadFrame:visible').each(function(i, el){
-                        uploadFramesSaving[el.id] = true;
-                        el.contentWindow.$('input[name=upload]').click();
+                        if(!el.contentWindow.$('input[name=upload]').is(":disabled")){
+                            uploadFramesSaving[el.id] = true;
+                            el.contentWindow.$('input[name=upload]').click();
+                        }
                     });
                 }
                 catch(e){
@@ -219,8 +221,10 @@ $(document).ready(function(){
                 uploadFramesSaving = [];
                 try{
                     $('iframe.uploadFrame:visible').each(function(i, el){
-                        uploadFramesSaving[el.id] = true;
-                        el.contentWindow.$('input[name=upload]').click();
+                        if(!el.contentWindow.$('input[name=upload]').is(":disabled")){
+                            uploadFramesSaving[el.id] = true;
+                            el.contentWindow.$('input[name=upload]').click();
+                        }
                     });
                 }
                 catch(e){
@@ -228,6 +232,7 @@ $(document).ready(function(){
                 }
                 clearInterval(frameInterval);
                 frameInterval = setInterval(function(){
+                    conosle.log(uploadFramesSaving);
                     if(!_.reduce(_.values(uploadFramesSaving), function(memo, f) { return memo || f; }, false)){
                         clearInterval(frameInterval);
                         findAutosaves(updateProgress);
