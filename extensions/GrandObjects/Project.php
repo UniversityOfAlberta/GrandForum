@@ -410,7 +410,7 @@ class Project extends BackboneModel {
             $this->preds = false;
             $this->clear = ($data[0]['clear'] == 1);
             
-            if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
+            if((isset($data[0]['action']) && $data[0]['action'] == 'DELETE') || $this->status == "Ended"){
                 $this->deleted = true;
             }
             else{
