@@ -11,7 +11,7 @@
         <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
             <![CDATA[
                 <h3>Project Title</h3>
-                {$item}
+                <div>{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" multiple="true">
@@ -20,19 +20,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail">
+        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" class="wikitable" sizes="33%|33%|33%">
             <![CDATA[
                 <h3>UoA Lead</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true">
+        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" class="wikitable" sizes="33%|33%|33%">
             <![CDATA[
                 <h3>Huawei Contact</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators" type="MultiText" blobItem="COLLABORATORS" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" multiple="true">
+        <ReportItem id="collaborators" type="MultiText" blobItem="COLLABORATORS" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" multiple="true" class="wikitable" sizes="33%|33%|33%">
             <![CDATA[
                 <h3>Collaborators</h3>
                 {$item}
@@ -47,6 +47,12 @@
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h3>Proposal</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Upload" blobItem="MILESTONES" blobType="BLOB_RAW" template="Huawei_Milestones.xls" structure="HUAWEI_MILESTONES">
+            <![CDATA[
+                <h3>Milestones</h3>
                 {$item}
             ]]>
         </ReportItem>

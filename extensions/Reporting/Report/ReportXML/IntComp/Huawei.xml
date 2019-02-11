@@ -108,6 +108,17 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="milestones" type="Upload" blobItem="MILESTONES" blobType="BLOB_RAW" template="Huawei_Milestones.xls" structure="HUAWEI_MILESTONES">
+            <![CDATA[
+                <h3>Milestones</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/Huawei_Milestones.xls'>Milestones Template</a>
+                <ul>
+                    <li>Mark active milestone with an 'X'.</li>
+                    <li>When entering names of people, enter their full names (First Last).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h3>References (1p):</h3>
