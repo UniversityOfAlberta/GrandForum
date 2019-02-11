@@ -24,6 +24,8 @@ class PeopleTableTab extends AbstractTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
+        $start = "";
+        $end = "";
         if($this->table == "Candidate"){
             $data = Person::getAllCandidates();
             foreach($data as $key => $row){
@@ -31,15 +33,23 @@ class PeopleTableTab extends AbstractTab {
                     unset($data[$key]);
                 }
             }
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         else if(!$this->past){
             $data = Person::getAllPeople($this->table);
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         else if(is_numeric($this->past)){
             $data = Person::getAllPeopleDuring($this->table, $this->past."-04-01", ($this->past+1)."-03-31");
+            $start = $this->past."-04-01";
+            $end = ($this->past+1)."-03-31";
         }
         else{
             $data = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         $emailHeader = "";
         $idHeader = "";
@@ -105,7 +115,7 @@ class PeopleTableTab extends AbstractTab {
             }
             if($this->table == PL){
                 $skip = true;
-                foreach($person->leadership() as $project){
+                foreach($person->leadershipDuring($start, $end) as $project){
                     if($project->getStatus() != "Proposed"){
                         // Don't skip this person, they belong to atleast one project which is not proposed
                         $skip = false;
@@ -139,7 +149,7 @@ class PeopleTableTab extends AbstractTab {
 
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
                 $history = ($config->getValue('networkName') == "GlycoNet");
-                $projects = array_merge($person->leadership($history), $person->getProjects($history));
+                $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjects($history));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
