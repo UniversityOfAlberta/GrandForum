@@ -666,6 +666,18 @@ class Person extends BackboneModel {
                     if($filter == APL && !$person->isRole(APL)){
                         continue;
                     }
+                    if($filter == PL || $filter == APL){
+                        $skip = true;
+                        foreach($person->leadership(true) as $proj){
+                            if(!$proj->isDeleted()){
+                                // Don't skip if atleast 1 project is active
+                                $skip = false;
+                            }
+                        }
+                        if($skip){
+                            continue;
+                        }
+                    }
                     if($person->getName() != "WikiSysop"){
                         if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                             if($idOnly){
