@@ -232,7 +232,6 @@ $(document).ready(function(){
                 }
                 clearInterval(frameInterval);
                 frameInterval = setInterval(function(){
-                    conosle.log(uploadFramesSaving);
                     if(!_.reduce(_.values(uploadFramesSaving), function(memo, f) { return memo || f; }, false)){
                         clearInterval(frameInterval);
                         findAutosaves(updateProgress);
