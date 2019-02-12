@@ -64,8 +64,6 @@ class TextareaReportItem extends AbstractReportItem {
                                     $(el).remove();
                                 }
                                 else{
-                                    $(el).wrap('div');
-                                    $(el).parent().css('display', 'inline-block');
                                     el.onload = function() {
                                         // access image size here
                                         var content = $('<div>' + tinyMCE.activeEditor.getContent() + '</div>');
@@ -81,7 +79,6 @@ class TextareaReportItem extends AbstractReportItem {
                             });
                         },
                         'formats' : {
-                            aligncenter : {block: 'center'}
                         },
                         setup: function(ed){
                             if('$limit' > 0){
