@@ -105,7 +105,7 @@
 	                <li>Related Research and Background</li>
 	                <li>Methodology</li>
 	            </ul>
-	            If you have any figures, uploaded them as a single pdf in the optional 'Attachement Upload' and reference them in your proposal.
+	            If you have any figures, uploaded them as a single pdf in the optional 'Attachment Upload' and reference them in your proposal.
                 {$item}
             ]]>
         </ReportItem>
