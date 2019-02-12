@@ -131,7 +131,7 @@ class GsmsData extends BackboneModel{
 
     static function getAllVisibleGsms($year=""){
         global $wgRoleValues;
-        $dbyear = ($year != "") ? "_$year" : "";
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
         $gsms_array = array();
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(EVALUATOR)){

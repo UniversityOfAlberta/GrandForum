@@ -150,7 +150,7 @@ class SOP extends AbstractSop{
     }
     
     static function generateHasGSMSCache($year=""){
-        $dbyear = ($year != "") ? "_$year" : "";
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
         if(count(@self::$hasGsmsCache[$year]) == 0){
             $data = DBFunctions::execSQL("SELECT DISTINCT user_id
                                           FROM grand_sop$dbyear

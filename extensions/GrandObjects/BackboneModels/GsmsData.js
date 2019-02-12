@@ -4,7 +4,7 @@ GsmsData = Backbone.Model.extend({
     },
 
     urlRoot: function(){
-        var url = 'index.php?action=api.gsmsdata';
+        var url = 'index.php?action=api.gsmsdata/' + this.get('user_id');
         if(this.get('year') != ''){
             url += '/' + this.get('year');
         }
