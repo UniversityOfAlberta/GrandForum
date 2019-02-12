@@ -105,6 +105,14 @@
 	                <li>Related Research and Background</li>
 	                <li>Methodology</li>
 	            </ul>
+	            If you have any figures, uploaded them as a single pdf in the optional 'Attachement Upload' and reference them in your proposal.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h3>Attachment Upload (optional)</h3>
+                <p>Use the following upload box to upload a single <b>pdf</b> file</p>
                 {$item}
             ]]>
         </ReportItem>

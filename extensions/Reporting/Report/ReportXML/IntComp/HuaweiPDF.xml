@@ -81,5 +81,10 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="attachment" type="UploadPDF" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
