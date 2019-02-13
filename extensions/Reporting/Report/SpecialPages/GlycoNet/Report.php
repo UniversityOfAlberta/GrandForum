@@ -107,6 +107,10 @@ class Report extends AbstractReport{
                 }
             }
         }
+        if(count($person->getEvaluates("SAB-Alberta", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABAlbertaReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Alberta Review", "{$url}SABAlbertaReview", $selected);
+        }
         if(count($person->getEvaluates("SAB-Collaborative", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborativeReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Review", "{$url}SABCollaborativeReview", $selected);
@@ -128,6 +132,13 @@ class Report extends AbstractReport{
            $person->isRole(RMC) ||
            $person->isRoleAtLeast(STAFF) ||
            $person->getId() == 2513){
+            if($person->isRoleAtLeast(MANAGER) || 
+               $person->isRole(SD) || 
+               $person->isRoleAtLeast(STAFF)){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABAlbertaReport")) ? "selected" : false;
+                $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Alberta Report", "{$url}SABAlbertaReport", $selected);
+            }
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABStrategicReport")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Strategic Report", "{$url}SABStrategicReport", $selected);
             
