@@ -966,6 +966,11 @@ class CavendishTemplate2 extends QuickTemplate {
                 redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
             }*/
             $me = Person::newFromWgUser();
+            if(isset($_GET['hash'])){
+                $url = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+                $url = str_replace("?hash={$_GET['hash']}", "", $url);
+                redirect("$url#" . $_GET['hash']);
+            }
             if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && !$me->isRole(CI) && !$me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
                 redirect("$wgServer$wgScriptPath/index.php/Special:Sops");  
             }
