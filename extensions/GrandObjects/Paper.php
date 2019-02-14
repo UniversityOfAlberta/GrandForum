@@ -967,7 +967,7 @@ class Paper extends BackboneModel{
         $invalidate = false;
         $keyOffset = 0;
         foreach($authors as $key => $author){
-            if(isset($alreadyDone[$author->getName()])){
+            if(isset($alreadyDone[strtolower($author->getName())])){
                 $keyOffset++;
                 continue;
             }
@@ -978,7 +978,7 @@ class Paper extends BackboneModel{
                 $pastAuthor = array();
                 $invalidate = true;
             }
-            $alreadyDone[$author->getName()] = true;
+            $alreadyDone[strtolower($author->getName())] = true;
             if($author->getId() != ""){
                 if(@$pastAuthor['author'] != $author->getId()){
                     // Author has changed
