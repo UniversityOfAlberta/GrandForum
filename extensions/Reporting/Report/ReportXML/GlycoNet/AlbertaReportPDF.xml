@@ -148,129 +148,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
-        <ReportItem id="info" type="Static">
-            <![CDATA[
-                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file</i></b>. The first page also contains the budget for the use of the core services in the project. <b><i>The project leader should coordinate the core services budget for the project</i></b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate.</p>
-
-                Budget Guidelines:
-                <ul>
-                    <li>Projects can request up to $100,000/year for <b><i>one year</i></b> from GlycoNet.</li>
-                    <li>Projects require a 1:2 match with partner funding (for every two dollars requested in the proposal from GlycoNet, at least one dollar in matching must be provided); at least 50% of the matching funds must be cash.</li>
-                    <li>Funding from provincial funding sources, excluding Alberta Innovates, industry, foundations and federal funding, including from the tri-council (e.g., CIHR, NSERC, SSHRC) and CFI, is eligible for matching. However, NSERC Discovery Grant and CIHR Project Grant and SSHRC Insight Grant are not eligible.</li>
-                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with NCE and eligible project expenses.
-                        <ul>
-                            <li>Projects that involve an industrial partner will be viewed most favorably.</li>
-                            <li>Projects with a higher level of matching funds (e.g. 1:1, Partners:GlycoNet) will be viewed more favorably.</li>
-                        </ul>
-                    </li>
-                    <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
-                    <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
-                    <li>Equipment is capped at $2,000/year/project.</li>
-                    <li>Travel
-                        <ul>
-                            <li>Conference travel is capped at $1,500/year/NI/project.</li>
-                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li> 
-                            <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
-                        </ul>
-                    </li>
-                    <li>HTS Core
-                        <ul>
-                            <li>You should work with one of the Network screening partners (CDRD, McMaster HTS Lab, SPARC) to develop a budget and a plan of action (i.e. milestones). These costs should be incorporated into the project budget.</li>
-                            <li>Funding for the screen itself will go to the screening partner. The development of the assay can be done either at the screening partner, or in the lab of a NI (to be determined in your discussions with the screening partner), with the funding going to the location where the work will be carried out. Please note that all projects will need to develop not only a primary screening method but also a secondary screening method for hit validation.</li>
-                        </ul>
-                    </li>
-                    <li>Glycan Screening, Chemical Synthesis and Glycan Structure</li> Analysis Cores
-                        <ul>
-                            <li>If you have an anticipated need for these core services, contact Todd Lowary (tlowary@ualberta.ca). We will generate an estimate that can be incorporated into the budget.</li>
-                        </ul>
-                    </li>
-                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
-                        <ul>
-                            <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
-                        </ul>
-                    </li> 
-                    <li>Questions on eligibility of matching can be directed to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a>.</li>
-                 </ul>
-            ]]>
-        </ReportItem>
+    <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="justification" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUST" rich="true">
             <![CDATA[
                 <h2>Budget Justification</h2>
-                <ul>
-                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
-                    <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
-                </ul>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="EditableReportSection">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
-            <![CDATA[
-                <ul>
-                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones.xls'><b>Milestones Template</b></a></li>
-                    <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
-                    <li>Add an “X” to the shaded boxes.</li>
-                    <li>Names should be added in the format: First Name Last Name.</li>
-                    <li>The project leader is responsible for combining all milestones into a single Excel file.</li>
-                </ul>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
-            <![CDATA[
-                <p>Letters from partners indicating the nature of their involvement in the project and their contribution (cash and/or in-kind) are required.</p>
-
-                Partner letters must use the following format: 
-                <ul>
-                    <li>Name of the Partner (e.g. company, foundation, institution, etc.) on letterhead.</li>
-                    <li>Contact name and contact information.</li>
-                    <li>Amount, nature, and area of anticipated support.</li>
-                    <li>Letters must:
-                        <ul>
-                            <li>Come from a senior executive with signing authority for the contributions being committed.</li>
-                            <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
-                            <li>Be on partner letterhead, be dated and signed.</li>
-                        </ul>
-                    </li>
-                    <li>Please take into account University overhead for sponsored research when discussing funding with partners. This amount cannot be counted as matching.</li>
-                </ul>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
-            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
