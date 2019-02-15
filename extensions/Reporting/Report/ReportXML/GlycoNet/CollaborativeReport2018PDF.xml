@@ -179,6 +179,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUST" rich="true">
+            <![CDATA[
+                <h2>Budget Justification</h2>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="EditableReportSection" pagebreak="false">
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
