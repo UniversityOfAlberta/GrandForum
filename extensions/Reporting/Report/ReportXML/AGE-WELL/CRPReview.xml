@@ -136,7 +136,18 @@
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,BIO,0,{$user_id},{$project_id})}' class='button'>Download</a>
                         </td>
                         <td align='center'>
-                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,FIGURES,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                            <a id='figure_{$user_id}_{$project_id}' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART1,FIGURES,0,{$user_id},{$project_id})}' class='button'>Download</a>
+                            <span id='span_{$user_id}_{$project_id}' style='display:none;'>N/A</span>
+                            <script type='text/javascript'>
+                                if('{getBlobMD5(RP_CRP,PART1,FIGURES,0,{$user_id},{$project_id})}' == ''){
+                                    $('#figure_{$user_id}_{$project_id}').hide();
+                                    $('#span_{$user_id}_{$project_id}').show();
+                                }
+                                else{
+                                    $('#figure_{$user_id}_{$project_id}').show();
+                                    $('#span_{$user_id}_{$project_id}').hide();
+                                }
+                            </script>
                         </td>
                         <td align='center'>
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CRP,PART2,BUDGET,0,{$user_id},{$project_id})}' class='button'>Download</a>
