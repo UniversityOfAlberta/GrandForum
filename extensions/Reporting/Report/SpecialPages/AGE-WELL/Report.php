@@ -115,6 +115,7 @@ class Report extends AbstractReport {
                     $projects[$project->getName()] = $project;
                 }
             }
+            knatsort($projects);
             foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
