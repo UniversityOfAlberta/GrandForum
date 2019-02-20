@@ -241,7 +241,7 @@ class ApplicationTab extends AbstractTab {
                 ],
                 iDisplayLength: -1,
                 'columnDefs': [
-                    {'type': 'string', 'targets': 0 }
+                    {'type': 'natural', 'targets': 0 }
                 ],
                 'dom': 'Blfrtip',
                 'buttons': [

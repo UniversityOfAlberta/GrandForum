@@ -57,7 +57,7 @@ class ApplicationsTable extends SpecialPage{
         
         $this->ccs = array();
         $this->ihs = array();
-        $this->projects = Project::getAllProjects();
+        $this->projects = Project::getAllProjectsEver();
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
                 $this->ccs[] = $project;            
