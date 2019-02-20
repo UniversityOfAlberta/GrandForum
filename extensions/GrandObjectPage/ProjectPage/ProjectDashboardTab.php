@@ -236,7 +236,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             $phaseDates = $config->getValue("projectPhaseDates");
-            for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)); $i--){
+            for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)) - 1; $i--){
                 $this->html .= "<h3><a href='#'>$i/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project, "$i-04-01", ($i+1)."-03-31");
