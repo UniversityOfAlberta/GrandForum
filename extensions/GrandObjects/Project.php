@@ -386,6 +386,13 @@ class Project extends BackboneModel {
                                             array('type' => EQ('Administrative')));
         return (count($data) > 0);
     }
+
+    static function areThereNonAdminProjects(){
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                            array('id'),
+                                            array('type' => NEQ('Administrative')));
+        return (count($data) > 0);
+    }
     
     static function areThereInnovationHubs(){
         $data = $data = DBFunctions::select(array('grand_project_status'),

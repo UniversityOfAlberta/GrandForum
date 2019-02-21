@@ -53,7 +53,7 @@ class IndexTable {
                                                                 "$selected");
         }
         
-        if($config->getValue('projectsEnabled')){
+        if($config->getValue('projectsEnabled') && Project::areThereNonAdminProjects()){
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
             $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || $me->isThemeCoordinatorOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
@@ -84,9 +84,10 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         $roles[] = NI;
         sort($roles);
+        $roles = array_filter(array_unique($roles));
         foreach($roles as $role){
             if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
-                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                $selected = ($lastRole === NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
         }

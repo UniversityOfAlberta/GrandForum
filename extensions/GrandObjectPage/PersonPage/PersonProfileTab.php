@@ -374,7 +374,12 @@ EOF;
         $html = "";
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
-            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            if($config->getValue('networkName') != "CS-CAN"){
+                $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            }
+            else {
+                $html .= "<h2>Department</h2><ul>";
+            }
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";
