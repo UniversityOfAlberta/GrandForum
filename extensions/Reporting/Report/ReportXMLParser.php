@@ -249,6 +249,12 @@ class ReportXMLParser {
             if(isset($attributes->year)){
                 $this->report->year = "{$attributes->year}";
             }
+            if(isset($attributes->startDate)){
+                $this->report->startDate = $this->report->varSubstitute("{$attributes->startDate}");
+            }
+            if(isset($attributes->endDate)){
+                $this->report->endDate = $this->report->varSubstitute("{$attributes->endDate}");
+            }
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }
@@ -277,6 +283,9 @@ class ReportXMLParser {
             }
             if(isset($attributes->disabled) && strtolower($attributes->disabled) == 'true'){
                 $this->report->setDisabled(true);
+            }
+            else if(isset($attributes->disabled) && strtolower($attributes->disabled) == 'false'){
+                $this->report->setDisabled(false);
             }
             if(isset($attributes->personId)){
                 $id = "{$attributes->personId}";

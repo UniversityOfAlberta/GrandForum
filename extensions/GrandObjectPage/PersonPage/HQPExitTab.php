@@ -78,25 +78,10 @@ class HQPExitTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        global $wgUser;
-        $me = Person::newFromId($wgUser->getId());
-        $supervisors = $this->person->getSupervisors(true);
-        $found = false;
-        foreach($supervisors as $supervisor){
-            if($supervisor->getId() == $me->getId()){
-                $found = true;
-                break;
-            }
-        }
-        foreach($this->person->getProjects(true) as $project){
-            if($me->leadershipOf($project) || 
-               $me->isThemeLeaderOf($project) || 
-               $me->isThemeCoordinatorOf($project)){
-                $found = true;
-                break;
-            }
-        }
-        return ($found || $me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF));
+        $me = Person::newFromWgUser();
+        return (($this->visibility['isMe'] || 
+                 $this->visibility['isSupervisor']) ||
+                $me->isAllowedToEdit($this->person));
     }
     
     function addEditHTML($id, $row, $hidden=false){

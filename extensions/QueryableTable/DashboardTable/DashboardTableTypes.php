@@ -93,8 +93,8 @@ function initDashboardGlobals(){
         $projRow = array();
         foreach($categories as $category){
             $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
-            $persRow[] = PERSON_PRODUCTS."(".$category.")";
-            $projRow[] = PROJECT_PRODUCTS."(".$category.")";
+            $persRow[] = STRUCT(PERSON_PRODUCTS, $category);
+            $projRow[] = STRUCT(PROJECT_PRODUCTS, $category);
         }
     }
 }
@@ -164,31 +164,36 @@ $dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] = function(){
     );
 };
     
-$dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function(){
+$dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function($start="0000-00-00", $end="2100-00-00"){
     global $head, $persRow, $projRow, $config;
     initDashboardGlobals();
     if($config->getValue('contributionsEnabled')){
         $otherHead = array(HEAD."(Multimedia)", HEAD."(Contributions)");
-        $otherRow = array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS);
+        $otherRow = array(STRUCT(PROJECT_MULTIMEDIA, $start, $end), 
+                          STRUCT(PROJECT_CONTRIBUTIONS, $start, $end));
     }
     else{
         $otherHead = array(HEAD."(Multimedia)");
-        $otherRow = array(PROJECT_MULTIMEDIA);
+        $otherRow = array(STRUCT(PROJECT_MULTIMEDIA, $start, $end));
+    }
+    $specialProjRow = array();
+    foreach($projRow as $key => $row){
+        $specialProjRow[$key] = str_replace(")(", ",$start,$end)(", $row);
     }
     return 
     array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, $otherHead),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, $otherRow),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $specialProjRow, $otherRow),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
-                                                                      PROJECT_ROLES,
-                                                                      PROJECT_HQP),
-                                                                $projRow,
-                                                                $otherRow),
-          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
-                                                                      PROJECT_ROLES,
-                                                                      PROJECT_HQP),
-                                                                $projRow,
-                                                                $otherRow),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, $otherRow),
+                                                                       PROJECT_ROLES,
+                                                                       PROJECT_HQP),
+                                                                 $specialProjRow,
+                                                                 $otherRow),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, $start, $end) => array_merge(array(PROJECT_PEOPLE,
+                                                                                               PROJECT_ROLES,
+                                                                                               PROJECT_HQP),
+                                                                                         $specialProjRow,
+                                                                                         $otherRow),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $specialProjRow, $otherRow),
     );
 };
     

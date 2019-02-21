@@ -87,12 +87,21 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
+    // The Default productVisibility
+    $config->setValue("productVisibility", "Forum");
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
 
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
+    
+    // Whether or not to show the Upload File in the sidebar
+    $config->setValue("showUploadFile", true);
+    
+    // Whether to allow users to upload photos (if false, only Staff+ will be able to)
+    $config->setValue("allowPhotoUpload", true);
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
@@ -137,12 +146,12 @@
         //'Twitter',
         'MailingList',
         'AddMember',
-        'EditMember',
         //'HQPRegister',
         'Poll',
         'QueryableTable',
         'IndexTables',
         'Reporting',
+        //'DiversitySurvey',
         'NCETable',
         'EmptyEmailList',
         'GlobalSearch',
@@ -282,6 +291,7 @@
     $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
+    $config->setConst("EDI",        "EDI");
     $config->setConst("ADMIN",      "Admin");
     
     $config->setValue("roleDefs", array(
@@ -304,6 +314,7 @@
         $config->getConst('SD')             => "Scientific Director",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
+        $config->getConst('EDI')            => "EDI Office",
         $config->getConst('ADMIN')          => "Admin"));
         
     $config->setValue("subRoles", array());

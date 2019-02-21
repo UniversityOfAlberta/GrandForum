@@ -1,6 +1,9 @@
 <table class="wikitable" style="font-size: 0.80em;" frame="void" rules="all" width="100%" cellpadding="5">
     <thead>
         <tr>
+            <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
+                <th width="1%">User1</th>
+            <% } %>
             <th width="1%">Relation</th>
             <th width="1%">Projects</th>
             <th width="1%" style="white-space: nowrap;">Start Date</th>

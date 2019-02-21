@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2017" disabled="false">
+<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2019" allowIdProjects="true" disabled="false">
     <Permissions>
         <Role role="" subRole="StratApplicant">
             <SectionPermission id="instructions" permissions="rw" />
@@ -39,9 +39,6 @@
                     <li>Have a clear endpoint, successful completion of which would attract a potential partner.</li>
                     <li>Ability to demonstrate partner support is preferred. Partner matching of 1:1 (or greater) will be viewed more favorably by the committee. Partner funding must be NCE eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
                 </ul>
-                
-                <h3>Funding Available</h3>
-                <p>GlycoNet has set aside up to $2,000,000 for strategic initiatives in 2017-2018. It is anticipated that projects will be completed within 12 months; justification should be provided for longer funding periods. Continued funding for projects past the 12-month period will be considered on a case-by-case basis in consultation with the Commercialization Committee.</p>
                 
                 <h3>Eligibility</h3>
                 <p>This opportunity is open only to individuals eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
@@ -370,6 +367,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
     </ReportSection>
 </Report>

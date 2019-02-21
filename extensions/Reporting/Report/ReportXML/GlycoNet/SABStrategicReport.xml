@@ -44,8 +44,8 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="true">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -77,15 +77,15 @@
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
-                        <td title="{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
-                            {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
+                        <td title="{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
+                            {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}
                         </td>
                 ]]>
             </ReportItem>
             <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Strat" includeSelf="true">
                 <ReportItem id="default" type="Static">
                     <![CDATA[
-                        {set(rank,{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
+                        {set(rank,{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},{$project_id})})}
                         {set(highlight,)}
                     ]]>
                 </ReportItem>
@@ -126,18 +126,18 @@
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Strat">
             <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Strat" includeSelf="true">
                         <ReportItem id="review" type="StaticReportItem">
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
                                     <h3>Project Strengths</h3>
-                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_STRENGTH,{$parent_id},{$user_id},0)}</p>
+                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_STRENGTH,{$parent_id},{$user_id},{$project_id})}</p>
                                     <h3>Project Weaknesses</h3>
-                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_WEAKNESS,{$parent_id},{$user_id},0)}</p>
+                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_WEAKNESS,{$parent_id},{$user_id},{$project_id})}</p>
                                     <h3>Project Ranking</h3>
-                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)}</p>
+                                    <p>{getText(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},{$project_id})}</p>
                                 </div>
                             ]]>
                         </ReportItem>

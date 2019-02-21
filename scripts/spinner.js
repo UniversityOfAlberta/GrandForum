@@ -26,6 +26,10 @@ function spinner(holderid, R1, R2, count, stroke_width, colour) {
     }
     var tick;
     (function ticker() {
+        if($('#' + holderid).length == 0){
+            // Break the cycle
+            return;
+        }
         opacity.unshift(opacity.pop());
         for (var i = 0; i < sectorsCount; i++) {
             sectors[i].attr("opacity", opacity[i]);

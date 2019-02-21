@@ -121,6 +121,9 @@ class ProjectPage {
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }
+                if($config->getValue('networkName') == "FES"){
+                    $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();

@@ -141,12 +141,12 @@ DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`v
 DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, '".PL."')", true);
 
 //Initialize Themes
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme1', 'Theme 1', 'Theme 1 Description')", true);
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme2', 'Theme 2', 'Theme 2 Description')", true);
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme3', 'Theme 3', 'Theme 3 Description')", true);
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme4', 'Theme 4', 'Theme 4 Description')", true);
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme5', 'Theme 5', 'Theme 5 Description')", true);
-DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme6', 'Theme 6', 'Theme 6 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme1', 'Theme 1', 'Theme 1 Description', 2)", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme2', 'Theme 2', 'Theme 2 Description', 2)", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme3', 'Theme 3', 'Theme 3 Description', 2)", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme4', 'Theme 4', 'Theme 4 Description', 2)", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme5', 'Theme 5', 'Theme 5 Description', 2)", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`phase`) VALUES ('Theme6', 'Theme 6', 'Theme 6 Description', 2)", true);
 
 //Initialize Boards
 DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('General', 'General Description')", true);

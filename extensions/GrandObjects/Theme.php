@@ -67,6 +67,17 @@ class Theme {
         return $themes;
     }
     
+    static function getAllowedThemes(){
+        $return = array();
+        $themes = self::getAllThemes();
+        foreach($themes as $theme){
+            if($theme->phase != 0){
+                $return[] = $theme->acronym;
+            }
+        }
+        return $return;
+    }
+    
     function Theme($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
@@ -261,7 +272,7 @@ class Theme {
                 $return[$project->getName()] = $project;
             }
         }
-        ksort($return);
+        knatsort($projects);
         return $return;
     }
     

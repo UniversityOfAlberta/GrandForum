@@ -79,7 +79,8 @@ class ApplicationTab extends AbstractTab {
         
         $this->html .= "<table id='application_{$rpId}' frame='box' rules='all'>";
         $this->html .= "<thead>";
-        if(is_array($report)){
+        if(is_array($this->rp)){
+            // This might fail if there are both multiple reports and multiple submissions (idProjectRange)
             $colspan = ($isPerson) ? "2" : "2";
             $this->html .= "<tr><th width='50%' colspan='$colspan'></th>";
             foreach($report as $rep){
@@ -96,7 +97,8 @@ class ApplicationTab extends AbstractTab {
         else{
             $this->html .= "<th>Email</th>";
         }
-        if(is_array($report)){
+        if(is_array($this->rp)){
+            // This might fail if there are both multiple reports and multiple submissions (idProjectRange)
             foreach($report as $rep){
                 $this->html .= "<th>Generation Date</th>
                                 <th width='1%'>PDF&nbsp;Download</th>";
@@ -140,70 +142,92 @@ class ApplicationTab extends AbstractTab {
                     $report->person = $person;
                 }
                 $first = $report;
+                $report = array($report);
             }
             if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
-                $pName = $person->getName();
-                if($person instanceof Theme){
-                    $pName = "{$person->getAcronym()}: {$person->getName()}";
-                }
-                $this->html .= "<tr>
-                    <td>{$pName}</td>";
-                if($isPerson){
-                    $this->html .= "<td>{$person->getEmail()}</td>";
-                }
-                if($person instanceof Project || $person instanceof Theme){
-                    $leader = array_values($person->getLeaders());
-                    $leader = (isset($leader[0])) ? $leader[0] : null;
-                    if($leader != null){
-                        $this->html .= "<td>{$leader->getNameForForms()}</td>";
+                foreach($report as $rep){
+                    $pName = $person->getName();
+                    if($person instanceof Theme){
+                        $pName = "{$person->getAcronym()}: {$person->getName()}";
                     }
-                    else{
-                        $this->html .= "<td></td>";
-                    }
-                }
-                if(is_array($report)){
-                    foreach($report as $rep){
-                        $pdf = $rep->getPDF();
-                        $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
-                        $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
-                        $this->html .= "<td align='center'>{$pdfDate}</td>
-                                        <td>{$pdfButton}</td>";
-                        foreach($this->extraCols as $extra){
-                            $section = new EditableReportSection();
-                            $section->setParent($rep);
-                            $extra->setParent($section);
-                            $extra->setPersonId($rep->person->getId());
-                            if($rep->project != null){
-                                $extra->setProjectId($rep->project->getId());
+                    if(is_array($this->rp)){
+                        $this->html .= "<tr>
+                            <td>{$pName}</td>";
+                        if($isPerson){
+                            $this->html .= "<td>{$person->getEmail()}</td>";
+                        }
+                        if($person instanceof Project || $person instanceof Theme){
+                            $leader = array_values($person->getLeaders());
+                            $leader = (isset($leader[0])) ? $leader[0] : null;
+                            if($leader != null){
+                                $this->html .= "<td>{$leader->getNameForForms()}</td>";
                             }
                             else{
-                                $extra->setProjectId(0);
+                                $this->html .= "<td></td>";
                             }
-                            $this->html .= "<td>{$extra->getText()}</td>";
+                        }
+                        foreach($report as $rep){
+                            $pdf = $rep->getPDF();
+                            $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
+                            $this->html .= "<td align='center'>{$pdfDate}</td>
+                                            <td>{$pdfButton}</td>";
+                            foreach($this->extraCols as $extra){
+                                $section = new EditableReportSection();
+                                $section->setParent($rep);
+                                $extra->setParent($section);
+                                $extra->setPersonId($rep->person->getId());
+                                if($rep->project != null){
+                                    $extra->setProjectId($rep->project->getId());
+                                }
+                                else{
+                                    $extra->setProjectId(0);
+                                }
+                                $this->html .= "<td>{$extra->getText()}</td>";
+                            }
+                        }
+                        $this->html .= "</tr>";
+                        break;
+                    }
+                    else if($rep instanceof AbstractReport){
+                        $pdf = $rep->getPDF();
+                        if($rep->hasStarted() || count($pdf) > 0){
+                            $this->html .= "<tr>
+                            <td>{$pName}</td>";
+                            if($isPerson){
+                                $this->html .= "<td>{$person->getEmail()}</td>";
+                            }
+                            if($person instanceof Project || $person instanceof Theme){
+                                $leader = array_values($person->getLeaders());
+                                $leader = (isset($leader[0])) ? $leader[0] : null;
+                                if($leader != null){
+                                    $this->html .= "<td>{$leader->getNameForForms()}</td>";
+                                }
+                                else{
+                                    $this->html .= "<td></td>";
+                                }
+                            }
+                            $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
+                            $this->html .= "<td align='center'>{$pdfDate}</td>
+                                            <td>{$pdfButton}</td>";
+                            foreach($this->extraCols as $extra){
+                                $section = new EditableReportSection();
+                                $section->setParent($rep);
+                                $extra->setParent($section);
+                                $extra->setPersonId($rep->person->getId());
+                                if($rep->project != null){
+                                    $extra->setProjectId($rep->project->getId());
+                                }
+                                else{
+                                    $extra->setProjectId(0);
+                                }
+                                $this->html .= "<td>{$extra->getText()}</td>";
+                            }
+                            $this->html .= "</tr>";
                         }
                     }
                 }
-                else{
-                    $pdf = $first->getPDF();
-                    $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
-                    $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
-                    $this->html .= "<td align='center'>{$pdfDate}</td>
-                                    <td>{$pdfButton}</td>";
-                    foreach($this->extraCols as $extra){
-                        $section = new EditableReportSection();
-                        $section->setParent($first);
-                        $extra->setParent($section);
-                        $extra->setPersonId($first->person->getId());
-                        if($first->project != null){
-                            $extra->setProjectId($first->project->getId());
-                        }
-                        else{
-                            $extra->setProjectId(0);
-                        }
-                        $this->html .= "<td>{$extra->getText()}</td>";
-                    }
-                }  
-                $this->html .= "</tr>";
             }
         }
         $this->html .= "</tbody>
@@ -217,7 +241,7 @@ class ApplicationTab extends AbstractTab {
                 ],
                 iDisplayLength: -1,
                 'columnDefs': [
-                    {'type': 'string', 'targets': 0 }
+                    {'type': 'natural', 'targets': 0 }
                 ],
                 'dom': 'Blfrtip',
                 'buttons': [

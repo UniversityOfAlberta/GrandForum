@@ -56,19 +56,34 @@ class TextareaReportItem extends AbstractReportItem {
                         paste_postprocess: function(plugin, args) {
                             var imgs = $('img', args.node);
                             imgs.each(function(i, el){
+                                var uniqueId = _.uniqueId('tinymceimg_');
                                 $(el).removeAttr('style');
-                                $(el).attr('width', el.naturalWidth/$imgConst);
-                                $(el).attr('height', el.naturalHeight/$imgConst);
-                                $(el).css('width', el.naturalWidth/$imgConst);
-                                $(el).css('height', el.naturalHeight/$imgConst);
+                                $(el).attr('id', uniqueId);
+                                $(el).hide();
+                                if($(el).css('display') != 'none'){
+                                    $(el).remove();
+                                }
+                                else{
+                                    el.onload = function() {
+                                        // access image size here
+                                        var content = $('<div>' + tinyMCE.activeEditor.getContent() + '</div>');
+                                        $('img#' + uniqueId, content).attr('width', el.naturalWidth/$imgConst);
+                                        $('img#' + uniqueId, content).attr('height', el.naturalHeight/$imgConst);
+                                        $('img#' + uniqueId, content).css('width', el.naturalWidth/$imgConst);
+                                        $('img#' + uniqueId, content).css('height', el.naturalHeight/$imgConst);
+                                        $('img#' + uniqueId, content).show();
+                                        $('img#' + uniqueId, content).attr('id', '');
+                                        tinyMCE.activeEditor.setContent($(content).html());
+                                    };
+                                }
                             });
                         },
                         'formats' : {
-                            'aligncenter' : {block: 'center'}
                         },
                         setup: function(ed){
                             if('$limit' > 0){
                                 var updateCount = function(e){
+                                    initResizeEvent();
                                     ed.undoManager.add();
                                     var wordcount = ed.plugins.wordcount.getCount();
                                     changeColor{$this->getPostId()}(null, wordcount);
@@ -114,6 +129,12 @@ class TextareaReportItem extends AbstractReportItem {
     
     function getHTML(){
         $value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		    $value = str_replace('<br />', '', $value);
+		}
+		
         $rows = $this->getAttr('rows', 5);
         $width = $this->getAttr('width', '100%');
         $limit = $this->getLimit();
@@ -224,7 +245,7 @@ EOF;
             else{
                 $type = "recommended";
             }
-            $html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
+            //$html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
         }
         $dom = new SmartDOMDocument();
         $dom->loadHTML($blobValue);
@@ -288,13 +309,15 @@ EOF;
     
     function getBlobValue(){
         $value = parent::getBlobValue();
-        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            // Don't alter the text in any way
-        }
-        else{
-            $value = str_replace("<", "&lt;", $value);
-            $value = str_replace(">", "&gt;", $value);
-            nl2br($value);
+        if($value !== null){
+            if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+                // Don't alter the text in any way
+            }
+            else{
+                $value = str_replace("<", "&lt;", $value);
+                $value = str_replace(">", "&gt;", $value);
+                nl2br($value);
+            }
         }
         return $value;
     }

@@ -190,6 +190,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
             $this->person->update();
@@ -469,12 +470,15 @@ EOF;
     }
     
     function showEditPhoto($person, $visibility){
+        global $config;
+        $me = Person::newFromWgUser();
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' style='max-width:100px;max-height:132px;' />";
         $this->html .= "<div id=\"special_links\"></div>";
         $this->html .= "</td></tr>";
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>
-                            <tr>
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>";
+        if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
+            $this->html .= "<tr>
                                 <td align='right'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
                             </tr>
@@ -482,8 +486,9 @@ EOF;
                                 <td></td><td><small><li>For best results, the image should be 300x396</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+        }
+        $this->html .= "    <tr>
                                 <td align='right'><b>Website Url:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
@@ -494,6 +499,10 @@ EOF;
                             <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Office Address:</b></td>
+                                <td><input type='text' size='30' name='office' value='".str_replace("'", "&#39;", $person->getOffice())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>

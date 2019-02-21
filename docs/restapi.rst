@@ -91,6 +91,16 @@ person/:id/roles
     **Actions**
         **GET**
             Returns a simplified array of this Person's Roles
+            
+person/:id/subroles
+~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Person
+    **Actions**
+        **GET**
+            Returns a simplified array of this Person's Sub-Roles
         
 person/:id/relations
 ~~~~~~~~~~~~~~~~~~~~

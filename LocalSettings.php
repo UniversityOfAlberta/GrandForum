@@ -239,6 +239,7 @@ if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
 define("DEBUG", true);
 
 $wgRoleValues = array(INACTIVE => 0,
+                      EDI => 0,
                       HQP => 1,
                       PS => 1,
                       EXTERNAL => 2,
@@ -509,3 +510,5 @@ function sanitizeInput($str){
     $str = str_replace("/", "&#x2F;", $str);
     return $str;
 }
+
+function knatsort(&$arr){return uksort($arr,function($a, $b){return strnatcmp($a,$b);});}

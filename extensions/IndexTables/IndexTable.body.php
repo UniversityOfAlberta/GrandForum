@@ -240,13 +240,18 @@ class IndexTable {
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $wgOut->addHTML("
                     <tr>
                     <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>");
+                $leaders = array();
+                foreach($proj->getLeaders() as $leader){
+                    $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                }
+                $wgOut->addHTML("<td>".implode(", ", $leaders)."</td>");
                 if($type != "Administrative"){
                     $text = ($proj->getChallenge()->getAcronym() != "") ? "<a href='{$proj->getChallenge()->getUrl()}'>{$proj->getChallenge()->getName()} ({$proj->getChallenge()->getAcronym()})</a>" : "";
                     $wgOut->addHTML("<td align='left'>{$text}</td>");
@@ -262,6 +267,9 @@ class IndexTable {
                                                                             'iDisplayLength': 100, 
                                                                             'autoWidth': false,
                                                                             'dom': 'Blfrtip',
+                                                                            columnDefs: [
+                                                                               {type: 'natural', targets: 0}
+                                                                            ],
                                                                             'buttons': [
                                                                                 'excel', 'pdf'
                                                                             ]

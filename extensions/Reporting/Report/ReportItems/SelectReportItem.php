@@ -7,6 +7,7 @@ class SelectReportItem extends AbstractReportItem {
         $options = $this->parseOptions();
         $value = $this->getBlobValue();
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "";
+        $inline = (strtolower($this->getAttr("inline", "false")) == "true");
         $items = array();
         $items[] = "<option value='' style='display:none;' disabled selected hidden>---</option>";
 		foreach($options as $key => $option){
@@ -19,8 +20,12 @@ class SelectReportItem extends AbstractReportItem {
 		}
 
         $output = "<select style='text-overflow:ellipsis;width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";
-        
-        $output = $this->processCData("<div>{$output}</div>");
+        if(!$inline){
+            $output = $this->processCData("<div>{$output}</div>");
+        }
+        else{
+            $output = $this->processCData("<div style='display:inline-block;vertical-align:middle;'>{$output}</div>");
+        }
 		$wgOut->addHTML($output);
 	}
 	

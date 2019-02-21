@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2018">
+<Report name="2019 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2019">
     <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <h4 style='font-size:1.20em;'>2018 Interdisciplinary Fellowship Program<br />Application</h4>
+                <h4 style='font-size:1.20em;'>2019 Interdisciplinary Fellowship Program<br />Application</h4>
                 <br />
                 <br />
                 <br />
@@ -174,43 +174,43 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant's Research Project">
-        <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
+        <!--ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
             <![CDATA[
                 <h3>Keywords</h3>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="150">
             <![CDATA[
                 <h3>Lay Summary</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="title" type="Text" blobItem="TITLE">
+        <!--ReportItem id="title" type="Text" blobItem="TITLE">
             <![CDATA[
                 <h3>Scientific Title of Research Project</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="sci_summary" type="Textarea" blobItem="SCI_SUMMARY" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="sci_summary" type="Textarea" blobItem="SCI_SUMMARY" rich="true" limit="250">
             <![CDATA[
                 <h3>Scientific Summary</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="250">
             <![CDATA[
                 <h3>Background and Research Question(s)</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="250">
             <![CDATA[
                 <h3>Methodological Approach</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="250">
+        </ReportItem-->
+        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="150">
             <![CDATA[
                 <h3>Project Relevance and Impact</h3>
                 {$item}
@@ -219,6 +219,12 @@
         <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review." showDescription="true">
             <![CDATA[
                 <h3>Research Ethics</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics_review" type="Radio" blobItem="ETHICS_REVIEW" options="Yes|No">
+            <![CDATA[
+                <small>If yes, has the project been submitted for review, or received approval</small>
                 {$item}
             ]]>
         </ReportItem>
@@ -237,12 +243,12 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefit" type="Textarea" blobItem="BENEFIT" rich="true" limit="250">
+        <!--ReportItem id="benefit" type="Textarea" blobItem="BENEFIT" rich="true" limit="250">
             <![CDATA[
                 <h3>Benefit from Fellowship Participation</h3>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="250">
             <![CDATA[
                 <h3>Value Brought to Fellowship</h3>

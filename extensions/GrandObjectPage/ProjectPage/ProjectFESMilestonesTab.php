@@ -19,6 +19,13 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $_POST['user_name'] = $me->getName();
         $_POST['project'] = $this->project->getName();
         foreach($_POST['milestone_activity'] as $activityId => $activity){
+            if(isset($_POST['milestone_activity_delete'][$activityId]) && $me->isRoleAtLeast(STAFF)){
+                // Delete the Activity
+                DBFunctions::update('grand_activities',
+                                    array('deleted' => 1),
+                                    array('id' => $activityId));
+                continue;
+            }
             if(!isset($_POST['milestone_title'][$activityId])){
                 // Not created yet, to continue to next
                 continue;
@@ -102,7 +109,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $_POST['problem'] = "";
             $_POST['description'] = "";
             $_POST['assessment'] = "";
-            $_POST['status'] = "Pending";
+            $_POST['status'] = "New";
             $_POST['modification'] = "";
             $_POST['people'] = "";
             $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
@@ -215,7 +222,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         }
                     }
                     else{
-                        $color = "#BBBBBB";
+                        if($activityId == 0){
+                            $color = "#BBBBBB";
+                        }
                     }
                     $this->html .= "<td style='background:$color; $border; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
                 }
@@ -347,6 +356,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         }
         $milestones = array_merge($uofaMilestones, $otherMilestones);
         
+        usort($milestones, function($a, $b){
+            $aQuarters = explode(",", $a->quarters);
+            $bQuarters = explode(",", $b->quarters);
+            return ($aQuarters[count($aQuarters)-1] > $bQuarters[count($bQuarters)-1]);
+        });
+        
         $this->html .= "<style type='text/css' rel='stylesheet'>
             .left_border {
                 border-left: 2px solid #555555;
@@ -356,7 +371,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 border-top: 2px solid #555555;
             }
             
-            #milestones_table input[type=text], #milestones_table select {
+            #milestones_table_fes input[type=text], #milestones_table_fes select {
                 box-sizing: border-box;
                 margin: 0;
                 width: 100%;
@@ -421,7 +436,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                    </tr>";
                    
         $this->html .= "<input type='hidden' name='milestone_activity[0]' value='' />
-                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
+                        <table id='milestones_table_fes' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
                         <thead>{$header}</thead>
                         <tbody>";
         
@@ -572,15 +587,15 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 var colors = ".json_encode(array_merge(Milestone::$statuses, Milestone::$fesStatuses)).";
                 var colors2 = ".json_encode(Milestone::$modifications).";
                 
-                $('#milestones_table td').qtip();
-                $('#milestones_table td.comment img').qtip({
+                $('#milestones_table_fes td').qtip();
+                $('#milestones_table_fes td.comment img').qtip({
                     position: {
                         my: 'topRight',
                         at: 'bottomLeft'
                     }
                 });
                 
-                $('#milestones_table div.comment').click(function(){
+                $('#milestones_table_fes div.comment').click(function(){
                     var that = $(this);
                     $('.comment_dialog', $(this).parent()).dialog({
                         width: 'auto',
@@ -596,7 +611,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     });
                 });
                 
-                var changeColor = function(){
+                var changeColorFES = function(){
                     var checked = $(this)[0].checked;
                     var allChecks = $('input.milestone.single[type=checkbox]:checked', $(this).parent().parent());
                     if(checked){
@@ -627,8 +642,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     }
                 };
 
-                //$('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
-                $('#milestones_table td#status select').change(function(){
+                $('#milestones_table_fes td#status select').change(function(){
                     if($(this).val() == 'Pending'){
                         $('#modification select', $(this).parent().parent()).prop('disabled', false);
                     }
@@ -641,7 +655,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     var proxyFn = $.proxy(clickFn, checked.last());
                     proxyFn();
                 });
-                $('#milestones_table td#modification select').change(function(){
+                $('#milestones_table_fes td#modification select').change(function(){
                     var checked = $('input.milestone:checked', $(this).parent().parent());
                     var proxyFn = $.proxy(clickFn, checked.last());
                     proxyFn();
@@ -668,11 +682,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     else{
                         checked.not(this).prop('checked', false);
                     }
-                    $('td input.milestone.single[type=checkbox]', $(this).parent().parent()).each(changeColor);
+                    $('td input.milestone.single[type=checkbox]', $(this).parent().parent()).each(changeColorFES);
                 };
                 
                 $('input.single').click(clickFn);
-                $('#milestones_table td#status select').change();
+                $('#milestones_table_fes td#status select').change();
                 
             </script>";
         }

@@ -126,8 +126,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
 		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
-		$this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
-		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
 		
 		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');

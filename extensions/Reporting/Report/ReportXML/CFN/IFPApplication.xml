@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2018 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2018" ajax="true" disabled="true">
+<Report name="2019 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2019" ajax="true" disabled="false">
     <Permissions>
-        <Role role="HQP" subType="IFP2018Applicant">
+        <Role role="HQP" subType="IFP2019Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP-Candidate" subType="IFP2018Applicant">
+        <Role role="HQP-Candidate" subType="IFP2019Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -49,119 +49,123 @@
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
-                <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
-                    <![CDATA[{$item}]]>
-                </ReportItem>
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+                <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
+                    <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
-                <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 1 - Information about the Applicant and Supervisor</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section1_comment" type="Textarea" blobItem="SECTION1_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section2" type="Radio" blobItem="SECTION2" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 2 - Information about Applicant’s Research Project</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section2_comment" type="Textarea" blobItem="SECTION2_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section3" type="Radio" blobItem="SECTION3" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 3 - Interest and Benefit</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section3_comment" type="Textarea" blobItem="SECTION3_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section4" type="Radio" blobItem="SECTION4" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 4 - Partnership Funding</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section4_comment" type="Textarea" blobItem="SECTION4_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section5" type="Radio" blobItem="SECTION5" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 5 - Curriculum Vitae and Experience</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section5_comment" type="Textarea" blobItem="SECTION5_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section6" type="Radio" blobItem="SECTION6" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 6 - Learning Plan</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section6_comment" type="Textarea" blobItem="SECTION6_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section7" type="Radio" blobItem="SECTION7" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                
-                <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                    <![CDATA[
-                        <h3>Section 8 - References</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
-                    <![CDATA[
-                        <b>Comments for HQP:</b>
-                        {$item}
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+                <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
+                    <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 1 - Information about the Applicant and Supervisor</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section1_comment" type="Textarea" blobItem="SECTION1_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section2" type="Radio" blobItem="SECTION2" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 2 - Information about Applicant’s Research Project</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section2_comment" type="Textarea" blobItem="SECTION2_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section3" type="Radio" blobItem="SECTION3" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 3 - Interest and Benefit</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section3_comment" type="Textarea" blobItem="SECTION3_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section4" type="Radio" blobItem="SECTION4" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 4 - Partnership Funding</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section4_comment" type="Textarea" blobItem="SECTION4_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section5" type="Radio" blobItem="SECTION5" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 5 - Curriculum Vitae and Experience</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section5_comment" type="Textarea" blobItem="SECTION5_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section6" type="Radio" blobItem="SECTION6" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 6 - Learning Plan</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section6_comment" type="Textarea" blobItem="SECTION6_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section7" type="Radio" blobItem="SECTION7" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    
+                    <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                        <![CDATA[
+                            <h3>Section 8 - References</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
+                        <![CDATA[
+                            <b>Comments for HQP:</b>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
@@ -218,7 +222,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Applicant Current Organization and Role:</b></td>
-                    <td valign="top">{$value}</td>
+                    <td valign="top">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -290,7 +294,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Host Institution that will receive and administer CFN funds:</b></td>
-                    <td>{$value}</td>
+                    <td>{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -325,51 +329,51 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant's Research Project">
-        <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
+        <!--ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
             <![CDATA[
                 <h3>Keywords</h3>
                 <small>Please provide up to a maximum of five (5) specific keywords or descriptive technical terms or methodologies that best describe the research – e.g. Medline Headings.</small>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="150">
             <![CDATA[
                 <h3>Lay Summary</h3>
-                <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for frail older Canadians.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
+                <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for older adults living with frailty and their family and friend caregivers.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). For assistance in writing a lay summary see the CFN Lay Summary Guidelines at <a href='https://na01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.cfn-nce.ca&data=02%7C01%7Cah126%40queensu.ca%7C4666049c873b4511814308d6351a8b3f%7Cd61ecb3b38b142d582c4efb2838b925c%7C1%7C0%7C636754785465372732&sdata=0ekV0PJkLHB7Q%2FaAnYWVGMUPJKVSdPpVPJYuE4FKJag%3D&reserved=0' target='_blank'>www.cfn-nce.ca</a> in the LEARNING CENTRE under <i>Talking about research</i>. (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
+        <!--ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
             <![CDATA[
                 <h3>Scientific Title of Research Project</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="sci_summary" type="Textarea" blobItem="SCI_SUMMARY" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="sci_summary" type="Textarea" blobItem="SCI_SUMMARY" rich="true" limit="250">
             <![CDATA[
                 <h3>Scientific Summary</h3>
                 <small>Provide a <b><u>non-confidential scientific summary</u></b> of your research project, highlighting the hypothesis, project objectives, milestones and deliverables, and potential socioeconomic impact. (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="250">
             <![CDATA[
                 <h3>Background and Research Question(s)</h3>
                 <small>State the research question(s). Clearly articulate the context, population and intervention. Provide a review of the literature that identifies the knowledge gap or rationale for the research. Where applicable, clearly state the underlying hypothesis.</small>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="250">
+        </ReportItem-->
+        <!--ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="250">
             <![CDATA[
                 <h3>Methodological Approach</h3>
                 <small>Describe the methodological research approach, including study design, data collection, analysis plan, etc.</small>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="250">
+        </ReportItem-->
+        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="150">
             <![CDATA[
                 <h3>Project Relevance and Impact</h3>
-                <small>Describe why you feel the work you plan to carry out is important. Specifically, describe the relevance of your proposal to CFN strategic priorities and the fellowship program goals. Identify how this project will improve the care of frail older adults and support their families and caregivers.</small>
+                <small>Describe why you feel the work you plan to carry out is important. Specifically, describe the relevance of your proposal to CFN strategic priorities and the fellowship program goals. Identify how this project will improve the care of older adults living with frailty and support their families and caregivers.</small>
                 {$item}
             ]]>
         </ReportItem>
@@ -377,6 +381,12 @@
             <![CDATA[
                 <h3>Research Ethics</h3>
                 <small>If your research project involves biohazards, humans, human embryonic stem cells or animals, <b><u>and</u></b> you are selected for funding from CFN, certification of approval by the host institution certification committee must be obtained by your supervisor before funds will be released.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics_review" type="Radio" blobItem="ETHICS_REVIEW" options="Yes|No">
+            <![CDATA[
+                <small>If yes, has the project been submitted for review, or received approval</small>
                 {$item}
             ]]>
         </ReportItem>
@@ -402,13 +412,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefit" type="Textarea" blobItem="BENEFIT" rich="true" limit="250">
+        <!--ReportItem id="benefit" type="Textarea" blobItem="BENEFIT" rich="true" limit="250">
             <![CDATA[
                 <h3>Benefit from Fellowship Participation</h3>
                 <small>Describe how you believe you will benefit from each of the IFP Learning Themes (Frailty Assessment, Citizen Engagement, Interdisciplinary Collaboration, and Self-Directed Professional Development) and related activities outlined in the Program Guidelines.</small>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="250">
             <![CDATA[
                 <h3>Value Brought to Fellowship</h3>
@@ -436,7 +446,7 @@
         </ReportItem>
         <ReportItem id="sources" type="MultiText" blobItem="SOURCES" blobType="BLOB_ARRAY" labels="Funding Source|Amount|Type (cash or in-kind)|Purpose|Status" types="Text|Integer|Select(---,Cash,In-Kind)|Textarea|Select(---,planning to apply for,in process of being applied for,about to be submitted,submitted,pending,other)" sizes="200|50" multiple="true" optional="true">
             <![CDATA[
-                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2018 to August 2019 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
+                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2019 to August 2020 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
                 <u>For each funding source</u>
                 {$item}
             ]]>
@@ -510,7 +520,7 @@
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" sizes="200|||75|50" multiple="true">
             <![CDATA[
                 <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 to 12 hours per week over a 12-month period to complete fellowship activities.</p>
-                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2018 to August 2019).</p>
+                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2019 to August 2020).</p>
                 <u>For each activity</u>
                 {$item}
             ]]>

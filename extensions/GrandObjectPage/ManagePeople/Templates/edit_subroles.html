@@ -1,0 +1,5 @@
+<div style="padding:5px;">
+    <% _.each(subRoles, $.proxy(function(subRole, key){ %>
+        <div><%= HTML.CheckBox(this, 'subroles.' + key, {value: 1}) %>&nbsp;<span><%= key %> <%= subRole %></span></div>
+    <% }, this)) %>
+</div>

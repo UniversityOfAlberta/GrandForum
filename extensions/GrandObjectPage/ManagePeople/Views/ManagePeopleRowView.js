@@ -8,16 +8,23 @@ ManagePeopleRowView = Backbone.View.extend({
     editProjects: null,
     editRelations: null,
     editUniversities: null,
+    editSubRoles: null,
+    editProjectLeaders: null,
+    editThemeLeaders: null,
     // Dialogs
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
     universitiesDialog: null,
+    subRolesDialog: null,
+    projectLeadersDialog: null,
+    themeLeadersDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
+        this.listenTo(this.model, "change:candidate", this.save);
     },
     
     openRolesDialog: function(){
@@ -164,6 +171,7 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
                                                                 person:this.model, 
                                                                 el: this.relationsDialog});
+        this.editRelations.allPeople = this.parent.allPeople;
     },
     
     openUniversitiesDialog: function(){
@@ -214,11 +222,176 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                       el: this.universitiesDialog});
     },
     
+    openSubRolesDialog: function(){
+        if(this.subRolesDialog == null){
+            this.subRolesDialog = this.$("#subRolesDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: $.proxy(function(){
+	                $("html").css("overflow", "auto");
+	                this.editSubRoles.stopListening();
+	                this.editSubRoles.undelegateEvents();
+	                clearInterval(this.editSubRoles.interval);
+	                this.editSubRoles.interval = null;
+	            }, this),
+	            buttons: {
+	                "Save": $.proxy(function(e){
+	                    this.editSubRoles.model.save(null, {
+	                        success: function(){
+	                            clearAllMessages();
+	                            addSuccess("Sub-Roles saved");
+	                        },
+	                        error: function(){
+	                            clearAllMessages();
+	                            addError("Could not modify Sub-Roles");
+	                        }
+	                    });
+                        this.subRolesDialog.dialog('close');
+	                }, this),
+	                "Cancel": $.proxy(function(){
+	                    this.subRolesDialog.dialog('close');
+	                }, this)
+	            }
+	        });
+	    }
+        this.subRolesDialog.empty();
+        this.subRolesDialog.dialog('open');
+        this.editSubRoles = new ManagePeopleEditSubRolesView({model: this.model.subRoles,
+                                                              el: this.subRolesDialog});
+    },
+    
+    openProjectLeadersDialog: function(){
+        if(this.projectLeadersDialog == null){
+            this.projectLeadersDialog = this.$("#projectLeadershipDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: $.proxy(function(){
+	                $("html").css("overflow", "auto");
+	                this.editProjectLeaders.stopListening();
+	                this.editProjectLeaders.undelegateEvents();
+	                clearInterval(this.editProjectLeaders.interval);
+	                this.editProjectLeaders.interval = null;
+	            }, this),
+	            buttons: {
+	                "+": { 
+	                    text: "Add Project", 
+	                    click: $.proxy(function(e){
+	                        this.editProjectLeaders.addProject();
+	                    }, this),
+	                    disabled: (allowedProjects.length == 0),
+	                    style: "float: left;"
+	                },
+	                "Save": $.proxy(function(e){
+	                    this.editProjectLeaders.saveAll();
+                        this.projectLeadersDialog.dialog('close');
+	                }, this),
+	                "Cancel": $.proxy(function(){
+	                    this.projectLeadersDialog.dialog('close');
+	                }, this)
+	            }
+	        });
+        }
+        this.projectLeadersDialog.empty();
+        this.projectLeadersDialog.dialog('open');
+        this.editProjectLeaders = new ManagePeopleEditProjectLeadersView({model: this.model.leaderships, 
+                                                                          person:this.model, 
+                                                                          el: this.projectLeadersDialog});
+    },
+    
+    openThemeLeadersDialog: function(){
+        if(this.themeLeadersDialog == null){
+            this.themeLeadersDialog = this.$("#themeLeadershipDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: $.proxy(function(){
+	                $("html").css("overflow", "auto");
+	                this.editThemeLeaders.stopListening();
+	                this.editThemeLeaders.undelegateEvents();
+	                clearInterval(this.editThemeLeaders.interval);
+	                this.editThemeLeaders.interval = null;
+	            }, this),
+	            buttons: {
+	                "+": { 
+	                    text: "Add Theme", 
+	                    click: $.proxy(function(e){
+	                        this.editThemeLeaders.addTheme();
+	                    }, this),
+	                    disabled: (allowedThemes.length == 0),
+	                    style: "float: left;"
+	                },
+	                "Save": $.proxy(function(e){
+	                    this.editThemeLeaders.saveAll();
+                        this.themeLeadersDialog.dialog('close');
+	                }, this),
+	                "Cancel": $.proxy(function(){
+	                    this.themeLeadersDialog.dialog('close');
+	                }, this)
+	            }
+	        });
+        }
+        this.themeLeadersDialog.empty();
+        this.themeLeadersDialog.dialog('open');
+        this.editThemeLeaders = new ManagePeopleEditThemeLeadersView({model: this.model.themes, 
+                                                                      person:this.model, 
+                                                                      el: this.themeLeadersDialog});
+    },
+    
+    save: function(){
+        _.defer($.proxy(function(){
+            this.$(".throbber").show();
+        }, this));
+        this.model.save(null, {
+            success: $.proxy(function(){
+                this.$(".throbber").hide();
+            }, this),
+            error: $.proxy(function(){
+                this.$(".throbber").hide();
+            }, this),
+            silent: true
+        });
+    },
+    
     events: {
         "click #editRoles": "openRolesDialog",
         "click #editProjects": "openProjectsDialog",
         "click #editRelations": "openRelationsDialog",
-        "click #editUniversities": "openUniversitiesDialog"
+        "click #editUniversities": "openUniversitiesDialog",
+        "click #editSubRoles": "openSubRolesDialog",
+        "click #editProjectLeadership": "openProjectLeadersDialog",
+        "click #editThemeLeadership": "openThemeLeadersDialog"
     },
     
     render: function(){

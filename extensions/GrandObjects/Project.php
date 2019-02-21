@@ -306,7 +306,7 @@ class Project extends BackboneModel {
                     }
                 }
             }
-            ksort($projects);
+            knatsort($projects);
             $projects = array_values($projects);
             self::$projectCache[$subProjects[1]] = $projects;
         }
@@ -341,7 +341,7 @@ class Project extends BackboneModel {
                 }
             }
         }
-        ksort($projects);
+        knatsort($projects);
         $projects = array_values($projects);
         return $projects;
     }
@@ -368,7 +368,7 @@ class Project extends BackboneModel {
                 }
             }
         }
-        ksort($projects);
+        knatsort($projects);
         $projects = array_values($projects);
         return $projects;
     }
@@ -417,7 +417,7 @@ class Project extends BackboneModel {
             $this->preds = false;
             $this->clear = ($data[0]['clear'] == 1);
             
-            if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
+            if((isset($data[0]['action']) && $data[0]['action'] == 'DELETE') || $this->status == "Ended"){
                 $this->deleted = true;
             }
             else{
@@ -1456,7 +1456,8 @@ EOF;
         $activities = array();
         $data = DBFunctions::select(array('grand_activities'),
                                     array('id'),
-                                    array('project_id' => $this->getId()),
+                                    array('project_id' => $this->getId(),
+                                          'deleted' => EQ(0)),
                                     array('`order`' => 'ASC',
                                           'id' => 'ASC'));
         foreach($data as $row){
@@ -1506,7 +1507,8 @@ EOF;
                 continue;
             }
             $milestone = Milestone::newFromId($row['milestone_id']);
-            if($milestone->getStatus() == 'Deleted'){
+            $activity = $milestone->getActivity();
+            if($milestone->getStatus() == 'Deleted' || ($activity != null && $milestone->getActivity()->isDeleted())){
                 continue;
             }
             $milestoneIds[$milestone->getMilestoneId()] = true;

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Emerging Entrepreneur Award (2019)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2019" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="STAFF">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="INACTIVE+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="INACTIVE-Candidate+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="AGE-WELL Emerging Entrepreneur Award (2019)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2019)">
+        <ReportItem id="description" type="Static">
+            <![CDATA[
+                <h3>About AGE-WELL</h3>
+                <p>The AGE-WELL Emerging Entrepreneur Award supports the development of emerging entrepreneurs to create and grow an innovative start-up with potential social and economic impact in Canada. The innovation must address one of <a href='https://agewell-nce.ca/wp-content/uploads/2019/01/Booklet_8_Challenges_English_5_final_PROOF_rev.pdf'>AGE-WELL’s 8 Challenge Areas</a> to shape the future of technology and aging research in Canada.</p>
+
+                <p>This $25,000 award is designed to give a new entrepreneur the financial resources to focus on making their ideas a viable business.</p>
+
+                <p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
+                
+                <h3>Eligibility</h3>
+
+                In order to be considered for the AGE-WELL Emerging Entrepreneur Award funding applicants must:
+                <ol>
+                    <li>Be students, post-doctoral fellows, or have graduated/completed a post-doctoral fellowship within the last three years seeking to turn their innovation into a viable business through an existing or planned start-up company.</li>
+                    <li>Be over the age of 18 and residents of Canada.</li>
+                    <li>Innovations previously funded by AGE-WELL (i.e. Catalyst, SIP or CIP grants) may be supported through this program. However, applicants are unable to hold funds from two 12-month AGE-WELL funding or award programs at the same time.</li>
+                    <li>Be able to commit 20+ hours per week towards developing or scaling their business.</li>
+                </ol>
+                
+                <h3>The Awards</h3>
+                <p>$25,000 (1 year award; not renewable). Award funds will flow as salary support in compliance with AGE-WELL grant administration guidelines and practices.</p>
+
+                <p>The Emerging Entrepreneur program will also provide recipients with additional mentorship and training from various members within the <a href='http://agewell-nce.ca/archives/7320'>AGE-WELL network including AGE-WELL's Chief Entrepreneur and CEO of Rakuten Kobo, Michael Tamblyn</a>. Recipients will be matched to key mentors who will work with and support the funded entrepreneur in building or growing their business.</p>
+
+                <p>Recipients will have access to AGE-WELL member benefits and specialized services from AGE-WELL partners and Core Facilities, such as legal guidance, commercialization and knowledge mobilization support, access to prototyping labs, and entrepreneurship training.</p>
+                
+                <h3>Program Requirements</h3>
+
+                <p><i>Training</i><br />
+                Recipients will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
+
+                <p><i>Mentorship</i><br />
+                Award recipients are expected to hold regular meetings with their assigned mentors to ensure ongoing progress towards project goals.</p>
+
+                <i>Reporting</i><br />
+                    <ol>
+                        <li>Recipients are required to complete a mid-term progress report in October 2019 and</li>
+                        <li>complete a final report on outcomes and impact in April 2020.</li>
+                    </ol>
+                </p>
+
+                <p><i>Acknowledging AGE-WELL</i><br />
+                Recipients will acknowledge the AGE-WELL Emerging Entrepreneur Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Recipients are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period and cooperate in the publicising of any success stories arising from this award.</p>
+                
+                <h3>Review Criteria</h3> 
+                All applications will be reviewed by a team of field experts using the following criteria:
+                <ul>
+                    <li>rationale and approach</li>
+                    <li>feasibility</li>
+                    <li>your value proposition</li>
+                    <li>fit with AGE-WELL vision and mission</li>
+                </ul>
+                
+                <h3>Required Documents</h3>
+                Award applicants must submit the following: 
+                <ol>
+                    <li>Online Application Form</li>
+                    <li>Partner Letters of Support (if applicable)</li>
+                    <li>Curriculum Vitae</li>
+                </ol>
+                
+                <h3>Important Dates </h3>
+                Applications Open: 1 February, 2019<br />
+                Completed Applications Due:  8 March, 2019<br />
+                Results Available: 27 March, 2019<br />
+                Funding Commences: April 2019<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <ReportItem id="identity_start" type="StaticReportItem">
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <th colspan="3">BACKGROUND INFORMATION</th>
+                    </tr>
+                    <tr>
+                        <td colspan='2'><b>Applicant Name</b></td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="status" type="Text" blobItem="STATUS" width="400px" placeholder="e.g. PhD Year 1, Occupational therapy">
+            <![CDATA[
+                <tr>
+                    <td rowspan='3' width='100px'><b>Complete only if a current student or postdoctoral fellow</b></td>
+                    <td width='100px'><b>Academic status and Department</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup" type="Text" blobItem="SUP" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>Supervisor Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="Text" blobItem="UNI" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>Institution/University</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="degree" type="Text" blobItem="DEGREE" width="400px" placeholder="e.g. PhD, Occupational therapy, University of Toronto">
+            <![CDATA[
+                <tr>
+                    <td><b>Complete only if not a current student or postdoctoral fellow</b></td>
+                    <td><b>Terminal degree received, date (month/year), department, and institution</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><b>Project Title/Company Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="launch" type="Radio" blobItem="LAUNCH" options="Launch|Support">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><b>Are you applying to launch a start up or support an existing company?</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Text" blobItem="CHALLENGE" width="400px">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><b>AGE-WELL Challenge Area of best fit (max. 2)</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <th colspan='3'>PLAIN LANGUAGE SUMMARY</th>
+                </tr>
+                <tr>
+                    <td colspan='3'>
+                        Provide a 250-word plain language summary that includes a problem statement, description of innovation and its anticipated impact(s). This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be used for future communications if the proposal is successful.
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rationale" type="Textarea" blobItem="RATIONALE" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <th colspan='3'>RATIONALE AND APPROACH</th>
+                </tr>
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Summarize the rationale for the solution(150 words max)</b>
+                        <ul>
+                            <li>Emerging Entrepreneur funds support entrepreneurs as they look to turn or grow their solution into a business. What is the current state of this solution and to what stage do you expect to move it during the term of this award?</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="unique" type="Textarea" blobItem="UNIQUE" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>What is unique or innovative about this innovation/solution? (150 words max)</b>
+                        <ul>
+                            <li>What sets your innovation apart?</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>What is the value of the solution for older adults and/or caregivers? (200 words max)</b>
+                        <ul>
+                            <li>What problem does this project solve?</li>
+                            <li>What is the value proposition?</li>
+                            <li>How have older adults or caregivers been involved or integrated in your project’s development?</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="customers" type="Textarea" blobItem="CUSTOMERS" rich="true" limit="100">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Who are your customers? What is the Market Size? (100 words max)</b>
+                        <ul>
+                            <li>To whom will the evidence/knowledge/information/product be disseminated? Provide a sense of the size/scale of the target audience/market (in Canada and beyond).</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="competitive" type="Textarea" blobItem="COMPETITIVE" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>What are the competitive advantages of your proposed solution and who are your competitors? (200 words max)</b>
+                        <ul>
+                            <li>Please list your top 3-5 competitive advantages.</li>
+                            <li>Please list your top 3 competitors or existing/substitute solutions (bullet points).</li>
+                            <li>Please explain how your solution is different.</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="Textarea" blobItem="IP" rich="true" limit="100">
+            <![CDATA[
+                <tr>
+                    <th colspan='3'>INTELLECTUAL PROPERTY</th>
+                </tr>
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>How have you protected any intellectual property such as patents, trade secrets, copyright etc.(100 words max)</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="needs" type="Textarea" blobItem="NEEDS" rich="true" limit="100">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>What are your needs moving forward (e.g. IP or legal support, partnerships etc.) (100 words)</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="motivated" type="Textarea" blobItem="MOTIVATED" rich="true" limit="100">
+            <![CDATA[
+                <tr>
+                    <th colspan='3'>PROJECT TEAM</th>
+                </tr>
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>What motivated you to want to be an entrepreneur? (100 words max)</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="MultiText" blobType="BLOB_ARRAY" blobItem="TEAM" rich="true" labels="Name|Email|Institution" multiple="true">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Please list all team members (you will be asked to submit curriculum vitae for each member)</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Describe how the expertise of your team will contribute to the success of the proposed initiative. Identify additional skills needed to fill expertise gaps on your team, if any, and how you plan to address them (200 words max)</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <th colspan='3'>PARTNERSHIPS</th>
+                </tr>
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Industry and/or community partners (200 words max)</b>
+                        <small><p>The AGE-WELL Network unites leading Canadian private and public companies, government bodies, care providers, end-users and academic partners to develop cohesive critical mass in the technology and aging sector. All AGE-WELL researchers and trainees have access to the AGE-WELL partner network. We expect that the majority of AGE-WELL funded projects will be carried out in conjunction with a community or industrial partner, for example: a technology company, a service provider, or a government department or agency.</p>
+                        <ul>
+                            <li>Outline the partnerships involved</li>
+                            <li>Specify how your project is aligned with partner goals, their role and contribution in the project and how you will work directly with this partner(s).</li>
+                            <li>If your research does not currently involve working with a partner organization, identify the type of partner that would be appropriate for your project and how your project might benefit from partner engagement (e.g. Co-development of technology, knowledge mobilization, experiential learning). Where possible, AGE-WELL will attempt to link projects with appropriate AGE-WELL partners.</li>
+                        </ul></small>
+                    </td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Textarea" blobItem="FUNDING" rich="true">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' valign='top'>
+                        <b>Other funding obtained/applied for</b>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
+        <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                <h3>Partner Letters of Support</h3>
+                Please submit letters of support for all listed partners in a single PDF.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cvs" type="Upload" blobItem="CVS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                <h3>Team Curriculum Vitae:</h3>
+                Please submit curriculum vitae for all listed team members in a single PDF.
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

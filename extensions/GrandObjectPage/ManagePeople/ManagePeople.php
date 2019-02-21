@@ -23,10 +23,13 @@ class ManagePeople extends BackbonePage {
                      'edit_role_projects',
                      'edit_projects',
                      'edit_projects_row',
+                     'edit_themes',
+                     'edit_themes_row',
                      'edit_universities',
                      'edit_universities_row',
                      'edit_relations',
-                     'edit_relations_row');
+                     'edit_relations_row',
+                     'edit_subroles');
     }
     
     function getViews(){
@@ -53,7 +56,10 @@ class ManagePeople extends BackbonePage {
                      'ManagePeopleEditRolesView',
                      'ManagePeopleEditProjectsView',
                      'ManagePeopleEditUniversitiesView',
-                     'ManagePeopleEditRelationsView');
+                     'ManagePeopleEditRelationsView',
+                     'ManagePeopleEditSubRolesView',
+                     'ManagePeopleEditProjectLeadersView',
+                     'ManagePeopleEditThemesView');
     }
     
     function getModels(){

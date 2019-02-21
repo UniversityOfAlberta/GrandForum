@@ -24,6 +24,8 @@ class PeopleTableTab extends AbstractTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
+        $start = "";
+        $end = "";
         if($this->table == "Candidate"){
             $data = Person::getAllCandidates();
             foreach($data as $key => $row){
@@ -31,15 +33,23 @@ class PeopleTableTab extends AbstractTab {
                     unset($data[$key]);
                 }
             }
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         else if(!$this->past){
             $data = Person::getAllPeople($this->table);
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         else if(is_numeric($this->past)){
             $data = Person::getAllPeopleDuring($this->table, $this->past."-04-01", ($this->past+1)."-03-31");
+            $start = $this->past."-04-01";
+            $end = ($this->past+1)."-03-31";
         }
         else{
             $data = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
         }
         $emailHeader = "";
         $idHeader = "";
@@ -61,7 +71,10 @@ class PeopleTableTab extends AbstractTab {
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
             if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
-                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>";
+                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>
+                               <th style='white-space: nowrap;'>Appendix A</th>
+                               <th style='white-space: nowrap;'>COI</th>
+                               <th style='white-space: nowrap;'>NDA</th>";
             }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
@@ -102,7 +115,7 @@ class PeopleTableTab extends AbstractTab {
             }
             if($this->table == PL){
                 $skip = true;
-                foreach($person->leadership() as $project){
+                foreach($person->leadershipDuring($start, $end) as $project){
                     if($project->getStatus() != "Proposed"){
                         // Don't skip this person, they belong to atleast one project which is not proposed
                         $skip = false;
@@ -135,7 +148,8 @@ class PeopleTableTab extends AbstractTab {
             }
 
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                $projects = array_merge($person->leadership(), $person->getProjects());
+                $history = ($config->getValue('networkName') == "GlycoNet");
+                $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
@@ -176,6 +190,12 @@ class PeopleTableTab extends AbstractTab {
                 $hqpTab = new HQPEpicTab($person, array());
                 $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
                 $this->html .= "<td align='left'>{$date}</td>";
+                $doc1 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_A');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
+                $doc2 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_COI');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
+                $doc3 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_NDA');
+                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
                 if($person->getEmail() == ""){

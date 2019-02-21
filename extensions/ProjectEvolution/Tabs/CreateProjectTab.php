@@ -183,7 +183,7 @@ EOF;
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        $this->html = "'Create Project' will create a new project, and automatically set up the mailing list.  Once the project is completed, project leaders can be created from the EditMember page.<br />";
+        $this->html = "'Create Project' will create a new project, and automatically set up the mailing list.  Once the project is completed, project leaders can be created from the Manage People page.<br />";
         $form = self::createForm('new');
         $this->html .= $form->render();
         return $this->html;

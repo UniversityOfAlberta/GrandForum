@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL NCE Core Research Program 2020" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018" allowIdProjects="true">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL NCE<br />Core Research Program 2020</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
+        <ReportItem id="leader" type="Static" blobItem="LEADER">
+            <![CDATA[
+                <h2>Project Lead Name</h2>
+                {$user_name}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <h2>Project Title</h2>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="primary" type="Select" blobItem="PRIMARY" blobType="BLOB_TEXT" options="Supporting Homes and Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment">
+            <![CDATA[
+                <h2>Selection of Primary and Secondary Challenge Areas</h2>
+                <h3>What is your primary Challenge Area?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="secondary" type="Select" blobItem="SECONDARY" blobType="BLOB_TEXT" options="Supporting Homes and Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment">
+            <![CDATA[
+                <h3>What is your secondary Challenge Area?</h3>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="300">
+            <![CDATA[
+                <h2>Summary</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="length" type="Static">
+            <![CDATA[
+                <br />
+                <b>Length of proposed project:</b> 3 years
+            ]]>
+        </ReportItem>
+        <ReportItem id="total" type="Text" blobItem="TOTAL">
+            <![CDATA[
+                <br />
+                <b>Total value of AGE-WELL investment requested:</b> $ {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part1a" tooltip="PART 1: NARRATIVE APPLICATION" name="Narrative Application" type="EditableReportSection" title="PART 1: NARRATIVE APPLICATION" blobSection="PART1">
+        <ReportItem id="section1" type="Textarea" blobItem="SECTION1" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 1: Challenge Statement</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section2" type="Textarea" blobItem="SECTION2" rich="true" limit="275">
+            <![CDATA[
+                <h2>Section 2: What is (are) your Product(s)?</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section3" type="Textarea" blobItem="SECTION3" rich="true" limit="275">
+            <![CDATA[
+                <h2>Section 3: Project Context and Current “State-of-the-Art”</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section4" type="Textarea" blobItem="SECTION4" rich="true" limit="1650">
+            <![CDATA[
+                <h2>Section 4: Research Plan</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section5" type="Textarea" blobItem="SECTION5" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 5: Networking and Partnerships</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section5_check" type="Checkbox" blobItem="SECTION5_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for additional funding from MEDTEQ." onlyShowIfNotEmpty="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="section5_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION5_CHECK,0,{$my_id},{$project_id},section5_check)},)}">
+            <ReportItem id="section5_no" type="Static">
+                <![CDATA[
+                    <p><i>No, we do not wish to be considered for additional funding from MEDTEQ.</i></p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1100">
+            <![CDATA[
+                <h2>Section 6: Knowledge and Technology Exchange and Exploitation (KTEE)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section7" type="Textarea" blobItem="SECTION7" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 7: Development of Highly Qualified Personnel</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section7_check" type="Checkbox" blobItem="SECTION7_CHECK" blobType="BLOB_ARRAY" options="Yes, we would like to be considered for Mitacs funding and have contacted our local Mitacs representative and obtained the appropriate application form." onlyShowIfNotEmpty="true">
+            <![CDATA[
+                {$item}
+                
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="section7_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION7_CHECK,0,{$my_id},{$project_id},section7_check)},)}">
+            <ReportItem id="section7_no" type="Static">
+                <![CDATA[
+                    <p><i>No, we do not wish to be considered for Mitacs funding.</i></p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section8" type="Textarea" blobItem="SECTION8" rich="true" limit="550">
+            <![CDATA[
+                <h2>Section 8: Team and Project Management</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section9" type="Upload" blobItem="SECTION9" blobType="BLOB_RAW" rich="true" fileSize="5">
+            <![CDATA[
+                <h2>Section 9: References Cited</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio" type="Upload" blobItem="BIO" blobType="BLOB_RAW" fileSize="10" optional="true">
+            <![CDATA[
+                <h2>Section 10: Appendices</h2>
+                <h3>Bios</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="Upload" blobItem="FIGURES" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                <h3>Figures and Diagrams</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" class="wikitable" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator)|Text|Text|Text" multiple="true">
+            <![CDATA[
+                <h3>Team Members</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part2" tooltip="PART 2: BUDGET" name="Budget" type="EditableReportSection" title="PART 2: BUDGET" blobSection="PART2">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <h4>1. Salaries to students</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="just2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST2" height="100px">
+            <![CDATA[
+                <h4>2. Salaries to non-students</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
+            <![CDATA[
+                <h4>3. Professional & Tech. Services/contracts</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="just4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST4" height="100px">
+            <![CDATA[
+                <h4>4. Equipment</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="just6" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST6" height="100px">
+            <![CDATA[
+                <h4>5. Materials, Supplies & Other expenditures</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="just7" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST7" height="100px">
+            <![CDATA[
+                <h4>6. Travel</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part3" tooltip="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" name="Partnerships" type="EditableReportSection" title="PART 3: PARTNERSHIPS AND LETTERS OF SUPPORT" blobSection="PART3" pagebreak="false">
+        <ReportItem id="partnerships" type="MultiText" class="wikitable" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS">
+            <![CDATA[                
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" fileSize="2">
+            <![CDATA[
+                <h2>Letters of Support</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter3" type="Upload" blobItem="LETTER3" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter4" type="Upload" blobItem="LETTER4" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter5" type="Upload" blobItem="LETTER5" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter6" type="Upload" blobItem="LETTER6" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter7" type="Upload" blobItem="LETTER7" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter8" type="Upload" blobItem="LETTER8" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter9" type="Upload" blobItem="LETTER9" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter10" type="Upload" blobItem="LETTER10" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter11" type="Upload" blobItem="LETTER11" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter12" type="Upload" blobItem="LETTER12" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter13" type="Upload" blobItem="LETTER13" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter14" type="Upload" blobItem="LETTER14" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter15" type="Upload" blobItem="LETTER15" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter16" type="Upload" blobItem="LETTER16" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter17" type="Upload" blobItem="LETTER17" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter18" type="Upload" blobItem="LETTER18" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter19" type="Upload" blobItem="LETTER19" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter20" type="Upload" blobItem="LETTER20" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

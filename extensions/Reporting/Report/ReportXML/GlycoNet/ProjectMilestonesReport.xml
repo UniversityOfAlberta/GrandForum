@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2017" disabled="false">
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2018" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
@@ -39,6 +39,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By generating a PDF your report is automatically submitted" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="By generating a PDF your report is automatically submitted" />
     </ReportSection>
 </Report>

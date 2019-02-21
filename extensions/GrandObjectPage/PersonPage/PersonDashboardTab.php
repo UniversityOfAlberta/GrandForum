@@ -196,7 +196,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                 else{
                     $year = substr($product->getDate(), 0, 4);
                     $category = $product->getCategory();
-                    $citation = $product->getProperCitation();
+                    $citation = $product->getCitation();
                 }
                 $year = substr($product->getDate(), 0, 4);
                 if($year == "0000"){

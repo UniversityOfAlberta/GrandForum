@@ -9,6 +9,10 @@ class RadioReportItem extends AbstractReportItem {
         $showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
         $orientation = $this->getAttr('orientation', 'vertical');
         $value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		}
         $items = array();
 		foreach($options as $i => $option){
 		    if(!is_array($option)){
@@ -67,7 +71,7 @@ class RadioReportItem extends AbstractReportItem {
             $width = 1/count($descriptions)*100;
             $output = "<table class='wikitable'>";
             $output .= "<tr><th style='width:$width%'><center>".implode("</center></th><th style='width:$width%;'><center>", $items)."</center></th></tr>";
-            $output .= "<tr><td class='small' valign='top'>".implode("</td><td class='small' valign='top'>", $descriptions)."</td></tr>";
+            $output .= "<tr><td class='small' valign='top' align='middle'>".implode("</td><td class='small' valign='top' align='middle'>", $descriptions)."</td></tr>";
             $output .= "</table>";
         }
         if($this->getBlobValue() == ""){

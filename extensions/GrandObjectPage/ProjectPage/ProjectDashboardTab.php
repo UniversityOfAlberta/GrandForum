@@ -187,7 +187,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 else{
                     $year = substr($product->getDate(), 0, 4);
                     $category = $product->getCategory();
-                    $citation = $product->getProperCitation();
+                    $citation = $product->getCitation();
                 }
                 if($year == "0000"){
                     $year = "";
@@ -236,10 +236,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             $phaseDates = $config->getValue("projectPhaseDates");
-            for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)); $i--){
-                $this->html .= "<h3><a href='#'>".$i."</a></h3>";
+            for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)) - 1; $i--){
+                $this->html .= "<h3><a href='#'>$i/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
-                $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project, '2014-01-01', '2014-12-31');
+                $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project, "$i-04-01", ($i+1)."-03-31");
                 if(!$visibility['isLead']){
                     $dashboard->filterCols(HEAD, array('Contributions'));
                 }

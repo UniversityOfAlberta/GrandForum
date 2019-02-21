@@ -2,6 +2,8 @@
 
 require_once('commandLine.inc');
 
+$wgUser = User::newFromId(1);
+
 if(TESTING){
     // Only ever do this if the testing DB is being used
     $people = Person::getAllPeopleDuring(null, "0000-00-00 00:00:00", "9999-12-31 00:00:00");

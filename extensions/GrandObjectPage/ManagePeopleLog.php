@@ -34,7 +34,8 @@ class ManagePeopleLog extends SpecialPage{
 	                                       name = 'Role Added' OR
 	                                       name = 'Project Membership Changed' OR
 	                                       name = 'Project Membership Removed' OR
-	                                       name = 'Project Membership Added')
+	                                       name = 'Project Membership Added' OR
+	                                       name = 'Alumni Changed')
 	                                  ORDER BY time DESC");
 	    foreach($data as $row){
 	        $notifications[] = Notification::newFromId($row['id']);
@@ -50,12 +51,14 @@ class ManagePeopleLog extends SpecialPage{
 	                        </thead>
 	                        <tbody>");
 	    foreach($notifications as $notification){
-	        $wgOut->addHTML("<tr>
-	                            <td>{$notification->name}</td>
-	                            <td>{$notification->creator->getNameForForms()}</td>
-	                            <td>{$notification->description}</td>
-	                            <td>{$notification->time}</td>
-	                        </tr>");
+	        if($notification->creator != null){
+	            $wgOut->addHTML("<tr>
+	                                <td>{$notification->name}</td>
+	                                <td>{$notification->creator->getNameForForms()}</td>
+	                                <td>{$notification->description}</td>
+	                                <td>{$notification->time}</td>
+	                            </tr>");
+	        }
 	    }
 	    $wgOut->addHTML("   </tbody>
 	                     </table>");

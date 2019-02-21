@@ -34,6 +34,8 @@ abstract class AbstractReport extends SpecialPage {
     
     var $name;
     var $year;
+    var $startDate;
+    var $endDate;
     var $xmlName;
     var $extends;
     var $reportType;
@@ -300,7 +302,9 @@ abstract class AbstractReport extends SpecialPage {
                                    "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
-                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                        foreach(explode(",", $_GET['emails']) as $email){
+                            mail($email, "Report Submitted", $message, $headers);
+                        }
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
@@ -682,6 +686,9 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
+                        else if($perm['perm']['role'] == INACTIVE."-Candidate" && !$me->isActive() && $me->isCandidate()){
+                            $rResult = true;
+                        }
                         else if(strstr($perm['perm']['role'], EVALUATOR) !== false && $me->isEvaluator($this->year)){
                             $rResult = true;
                         }
@@ -749,7 +756,15 @@ abstract class AbstractReport extends SpecialPage {
                                 $rResultTmp = true;
                             }
                             else if(strstr($perm['perm']['role'], "+") !== false){
-                                $rResultTmp = $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']);
+                                $role = str_replace("+", "", $perm['perm']['role']);
+                                if(strstr($role, "-Candidate") !== false){
+                                    $role = str_replace("-Candidate", "", $role);
+                                    $role = constant($role)."-Candidate";
+                                }
+                                else{
+                                    $role = constant($role);
+                                }
+                                $rResultTmp = $me->isRoleAtLeastDuring($role, $perm['start'], $perm['end']);
                             }
                             else{
                                 $isMember = true;
@@ -959,7 +974,9 @@ abstract class AbstractReport extends SpecialPage {
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
-                mail($_GET['emails'], "Report Submitted", $message, $headers);
+                foreach(explode(",", $_GET['emails']) as $email){
+                    mail($email, "Report Submitted", $message, $headers);
+                }
             }
         }
         if($submit){
@@ -1399,6 +1416,14 @@ abstract class AbstractReport extends SpecialPage {
             return true;
         }
         return false;
+    }
+    
+    function varSubstitute($value){
+        $item = new StaticReportItem();
+        $section = new ReportSection();
+        $item->setParent($section);
+        $section->setParent($this);
+        return $item->varSubstitute($value);
     }
 }
 

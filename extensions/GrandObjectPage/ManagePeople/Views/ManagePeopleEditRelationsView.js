@@ -4,12 +4,19 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     person: null,
     relationViews: null,
     interval: null,
+    allPeople: new Array(),
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
         this.relationViews = new Array();
+        var extraRelationships = this.relations = new PersonRelations();
         this.template = _.template($('#edit_relations_template').html());
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+            // Person is Staff, so show all relations, not just mine
+            extraRelationships.url = this.person.urlRoot + '/' + this.person.get('id') + '/relations/inverse';
+            extraRelationships.fetch();
+        }
         this.model.ready().then($.proxy(function(){
             this.relations = this.model;
             this.listenTo(this.relations, "add", this.addRows);
@@ -17,6 +24,15 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 r.startTracking();
             });
             this.render();
+            extraRelationships.ready().then($.proxy(function(){
+                console.log(extraRelationships.models);
+                this.relations.add(extraRelationships.models);
+                this.relations.each(function(r){
+                    r.startTracking();
+                });
+                this.render();
+            }, this));
+            
         }, this));
         
         var dims = {w:0, h:0};
@@ -84,6 +100,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         relations.each($.proxy(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
+                view.allPeople = this.allPeople;
                 this.$("#relation_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -97,6 +114,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     render: function(){
+        this.relationViews = new Array();
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
@@ -110,6 +128,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     tagName: 'tr',
     owner: null,
     target: null,
+    allPeople: new Array(),
     
     initialize: function(){
         this.model.set('deleted', false);
@@ -118,6 +137,10 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         
         this.listenTo(this.model, "change", this.update);
         this.listenTo(this.model, "change:projects", this.renderProjects);
+        this.listenTo(this.model, "change:user1", $.proxy(function(){
+            this.owner = this.allPeople.get(this.model.get('user1'));
+            this.render();
+        }, this));
         this.listenTo(this.owner, "sync", this.render);
         this.listenTo(this.target, "sync", this.render);
         

@@ -15,6 +15,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if($this->canEdit() && (isset($_GET['edit']) || isset($_POST['edit']))){
             $this->visibility['edit'] = 1;
         }
+        foreach($this->project->getActivities() as $activity){
+            if($activity->getName() == "Extension Milestones"){
+                // Check for "Extension Milestones" and add columns if found
+                $this->nYears += 2;
+                break;
+            }
+        }
     }
     
     function handleEdit(){
@@ -27,46 +34,54 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         
         $_POST['user_name'] = $me->getName();
         $_POST['project'] = $this->project->getName();
-        
         foreach($_POST['milestone_activity'] as $activityId => $activity){
-            foreach($_POST['milestone_title'][$activityId] as $milestoneId => $title){
-                $quarters = array();
-                if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
-                    foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
-                        foreach($qs as $qId => $q){
-                            $quarters[] = ($year).":$qId";
+            if(isset($_POST['milestone_activity_delete'][$activityId]) && $me->isRoleAtLeast(STAFF)){
+                // Delete the Activity
+                DBFunctions::update('grand_activities',
+                                    array('deleted' => 1),
+                                    array('id' => $activityId));
+                continue;
+            }
+            if(isset($_POST['milestone_title'][$activityId])){
+                foreach($_POST['milestone_title'][$activityId] as $milestoneId => $title){
+                    $quarters = array();
+                    if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
+                        foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
+                            foreach($qs as $qId => $q){
+                                $quarters[] = ($year).":$qId";
+                            }
                         }
                     }
-                }
-                
-                if(isset($_POST['milestone_leader'])){
-                    $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
-                }
-                $_POST['activity'] = $activity;
-                $_POST['activity_id'] = $activityId;
-                $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
-                $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
-                $_POST['new_title'] = $title;
-                $_POST['problem'] = "";
-                $_POST['description'] = "";
-                $_POST['assessment'] = "";
-                $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
-                $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
-                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
-                $_POST['quarters'] = implode(",", $quarters);
-                $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
-                $_POST['id'] = $milestoneId;
-                
-                $milestoneApi = new ProjectMilestoneAPI(true);
-                $milestoneApi->doAction(true);
-                
-                if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
-                   $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
-                    $milestone = Milestone::newFromId($milestoneId);
-                    if($this->canEditMilestone($milestone)){
-                        DBFunctions::update('grand_milestones',
-                                            array('status' => 'Deleted'),
-                                            array('id' => $milestone->getId()));
+                    
+                    if(isset($_POST['milestone_leader'])){
+                        $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                    }
+                    $_POST['activity'] = $activity;
+                    $_POST['activity_id'] = $activityId;
+                    $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                    $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                    $_POST['new_title'] = $title;
+                    $_POST['problem'] = "";
+                    $_POST['description'] = "";
+                    $_POST['assessment'] = "";
+                    $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
+                    $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
+                    $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+                    $_POST['quarters'] = implode(",", $quarters);
+                    $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
+                    $_POST['id'] = $milestoneId;
+                    
+                    $milestoneApi = new ProjectMilestoneAPI(true);
+                    $milestoneApi->doAction(true);
+                    
+                    if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
+                       $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
+                        $milestone = Milestone::newFromId($milestoneId);
+                        if($this->canEditMilestone($milestone)){
+                            DBFunctions::update('grand_milestones',
+                                                array('status' => 'Deleted'),
+                                                array('id' => $milestone->getId()));
+                        }
                     }
                 }
             }
@@ -316,7 +331,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $commentsHeader = "<th>Comments</th>";
         }
         $statusColspan++;
-        
         $header = " <tr>
                         <th colspan='1'></th>
                         {$this->showYearsHeader()}
@@ -345,6 +359,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
+            $deleteActivity = "";
+            $deleteColspan = 0;
             if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='text' name='milestone_activity[$activityId]' style='font-weight:bold;' value='$activityTitle' />";
@@ -353,8 +369,15 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' /><b>$activity</b>";
             }
+            if($this->visibility['edit'] == 1 && $me->isRoleAtLeast(STAFF)){
+                $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' />Delete?</td>";
+                $deleteColspan = 1;
+            }
+            if($this instanceof ProjectFESMilestonesTab){
+                $deleteColspan += 2;
+            }
             $this->html .= "<tr class='top_border' data-id='$activityId'>
-                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1+($this->nYears*4))."'>$activity</td>
+                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1-$deleteColspan+($this->nYears*4))."'>{$activity}</td>{$deleteActivity}
                             </tr>";
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             if(count($milestones) == 0){

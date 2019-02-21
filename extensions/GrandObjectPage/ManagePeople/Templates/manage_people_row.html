@@ -10,6 +10,15 @@
 <div id="universitiesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Institutions">
     
 </div>
+<div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Sub-Roles">
+    
+</div>
+<div id="projectLeadershipDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Project Leadership">
+    
+</div>
+<div id="themeLeadershipDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Theme Leadership">
+    
+</div>
 <td align="center">
     <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
 </td>
@@ -24,6 +33,25 @@
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Institutions"></span>
 </td>
+<% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
+    <td style="border-left: 2px solid #AAAAAA;" align="center">
+        <% if(me.get('id') != id){ %>
+            <div style="position: relative; width:100%;">
+                <span style="display:none;"><%= candidate %></span><%= HTML.CheckBox(this, 'candidate', {value: 1, style: "margin: 0;vertical-align:middle;"}) %>
+                <div class="throbber" style="position:absolute; right:0;display:none"></div>
+            </div>
+        <% } %>
+    </td>
+    <td align="center">
+        <span id="editSubRoles" class="edit-icon" title="Edit Sub-Roles"></span>
+    </td>
+    <td align="center">
+        <span id="editProjectLeadership" class="edit-icon" title="Edit Project Leadership"></span>
+    </td>
+    <td align="center">
+        <span id="editThemeLeadership" class="edit-icon" title="Edit Theme Leadership"></span>
+    </td>
+<% } %>
 <td style="border-left: 2px solid #AAAAAA;" align="left">
     <a href="<%= url %>"><%= fullName %></a>
 </td>

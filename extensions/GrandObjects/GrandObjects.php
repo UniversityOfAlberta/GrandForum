@@ -27,17 +27,25 @@ autoload_register('GrandObjects/API/Wiki');
 autoload_register('GrandObjects/API/MessageBoard');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
+autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
+autoload_register('GrandObjects/API/Journal');
 
 global $apiRequest;
 // Person
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
+$apiRequest->addAction('Hidden','person/:id/leaderships', 'PersonLeadershipAPI');
+$apiRequest->addAction('Hidden','person/:id/leaderships/:personProjectId', 'PersonLeadershipAPI');
+$apiRequest->addAction('Hidden','person/:id/themes', 'PersonThemesAPI');
+$apiRequest->addAction('Hidden','person/:id/themes/:personThemeId', 'PersonThemesAPI');
 $apiRequest->addAction('Hidden','person/:id/universities', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/roles', 'PersonRolesAPI');
+$apiRequest->addAction('Hidden','person/:id/subroles', 'PersonSubRolesAPI');
 $apiRequest->addAction('Hidden','person/:id/relations', 'PersonRelationsAPI');
+$apiRequest->addAction('Hidden','person/:id/relations/inverse', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/:relId', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI');
@@ -136,30 +144,46 @@ $apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
 
+// Diversity Survey
+$apiRequest->addAction('Hidden','diversity', 'DiversityAPI');
+
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 
+//Journals
+$apiRequest->addAction('Hidden','journal', 'JournalAPI');
+$apiRequest->addAction('Hidden','journal/:id', 'JournalAPI');
+$apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
+
 function createModels(){
-    global $wgServer, $wgScriptPath, $wgOut;
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js?".filemtime("extensions/GrandObjects/BackboneModels/RelationModel.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RangeCollection.js?".filemtime("extensions/GrandObjects/BackboneModels/RangeCollection.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Thread.js?".filemtime("extensions/GrandObjects/BackboneModels/Thread.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Board.js?".filemtime("extensions/GrandObjects/BackboneModels/Board.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Post.js?".filemtime("extensions/GrandObjects/BackboneModels/Post.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Link.js?".filemtime("extensions/GrandObjects/BackboneModels/Link.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js?".filemtime("extensions/GrandObjects/BackboneModels/Person.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js?".filemtime("extensions/GrandObjects/BackboneModels/Role.js")."'></script>\n";
-	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Contribution.js?".filemtime("extensions/GrandObjects/BackboneModels/Contribution.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Bibliography.js?".filemtime("extensions/GrandObjects/BackboneModels/Bibliography.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Collaboration.js?".filemtime("extensions/GrandObjects/BackboneModels/Collaboration.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js?".filemtime("extensions/GrandObjects/BackboneModels/Virtu.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Freeze.js?".filemtime("extensions/GrandObjects/BackboneModels/Freeze.js")."'></script>\n";
+
+    function addScript($file){
+        global $wgserver, $wgScriptPath;
+        echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
+    }
+
+    addScript("RelationModel");
+    addScript("RangeCollection");
+    addScript("Thread");
+    addScript("Board");
+    addScript("Post");
+    addScript("Link");
+    addScript("Person");
+    addScript("Role");
+    addScript("SubRoles");
+    addScript("Project");
+    addScript("Product");
+    addScript("Contribution");
+    addScript("Diversity");
+    addScript("Bibliography");
+    addScript("Collaboration");
+    addScript("University");
+    addScript("Virtu");
+    addScript("WikiPage");
+    addScript("PDF");
+    addScript("MailingList");
+    addScript("Freeze");
+    addScript("Journal");
     
     return true;
 }

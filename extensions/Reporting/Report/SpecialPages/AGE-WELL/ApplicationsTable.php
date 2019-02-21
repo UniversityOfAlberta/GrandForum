@@ -28,7 +28,7 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
+        return ($person->isRoleAtLeast(SD) || $person->isRole('BOARD-ADMIN') || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
     }
 
     function execute($par){
@@ -50,11 +50,14 @@ class ApplicationsTable extends SpecialPage{
         $this->externals = array_merge(Person::getAllPeople(EXTERNAL),
                                        Person::getAllCandidates(EXTERNAL));
                                   
+        $this->everyone = array_merge(Person::getAllPeople(),
+                                      Person::getAllCandidates());
+                                  
         $this->wps = Theme::getAllThemes();
         
         $this->ccs = array();
         $this->ihs = array();
-        $this->projects = Project::getAllProjects();
+        $this->projects = Project::getAllProjectsEver();
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
                 $this->ccs[] = $project;            
@@ -85,7 +88,13 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=sip'>SIP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cip'>CIP</a>";
+        }
+        if($me->isRoleAtLeast(SD) || $me->isRole('BOARD-ADMIN')){
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=crp'>CRP</a>";
+        }
+        if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>Entrepreneur</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
@@ -112,8 +121,14 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "cip" && $me->isRoleAtLeast(SD)){
             $this->generateCIP();
         }
+        else if($program == "crp" && ($me->isRoleAtLeast(SD) || $me->isRole('BOARD-ADMIN'))){
+            $this->generateCRP();
+        }
         if($program == "access" && $me->isRoleAtLeast(SD)){
             $this->generateAccess();
+        }
+        else if($program == "eea" && $me->isRoleAtLeast(SD)){
+            $this->generateEEA();
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
@@ -145,6 +160,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2019', $this->nis, 2019, "Accelerator 5"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018_2', $this->nis, 2018, "Accelerator 4"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018', $this->nis, 2018, "Accelerator 3"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_09_2017', $this->nis, 2017, "Accelerator 2"));
@@ -164,6 +180,66 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateCRP(){
+        global $wgOut;
+        
+        $merged = new UploadReportItem();
+        $merged->setBlobType(BLOB_RAW);
+        $merged->setBlobItem('MERGED');
+        $merged->setBlobSection("PART3");
+        $merged->setId("merged");
+        
+        $team = new MultiTextReportItem();
+        $team->setBlobType(BLOB_ARRAY);
+        $team->setBlobItem('TEAM');
+        $team->setBlobSection("PART1");
+        $team->setAttr("labels", "Team Member Name|Role");
+        $team->setAttr("orientation", "list");
+        $team->setAttr("showHeader", "false");
+        $team->setAttr("multiple", "true");
+        $team->setId("team");
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('TITLE');
+        $title->setBlobSection("COVER");
+        $title->setId("title");
+        
+        $primary = new SelectReportItem();
+        $primary->setBlobType(BLOB_TEXT);
+        $primary->setBlobItem('PRIMARY');
+        $primary->setBlobSection("COVER");
+        $primary->setId("primary");
+        
+        $secondary = new SelectReportItem();
+        $secondary->setBlobType(BLOB_TEXT);
+        $secondary->setBlobItem('SECONDARY');
+        $secondary->setBlobSection("COVER");
+        $secondary->setId("secondary");
+        
+        $total = new TextReportItem();
+        $total->setBlobType(BLOB_TEXT);
+        $total->setBlobItem(TOTAL);
+        $total->setBlobSection("COVER");
+        $total->setId("total");
+        
+        $medteq = new CheckboxReportItem();
+        $medteq->setBlobType(BLOB_ARRAY);
+        $medteq->setBlobItem('SECTION5_CHECK');
+        $medteq->setBlobSection("PART1");
+        $medteq->setId("section5_check");
+        
+        $mitacs = new CheckboxReportItem();
+        $mitacs->setBlobType(BLOB_ARRAY);
+        $mitacs->setBlobItem('SECTION7_CHECK');
+        $mitacs->setBlobSection("PART1");
+        $mitacs->setId("section7_check");
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateCatalyst(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -176,6 +252,8 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', $this->fullHQPs, 2019, "04-2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', $this->fullHQPs, 2019, "01-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', $this->fullHQPs, 2018, "07-2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', $this->fullHQPs, 2018, "04-2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2018', $this->fullHQPs, 2018, "01-2018"));
@@ -264,6 +342,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_FELLOW', $this->hqps, 2018, "2018"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateEEA(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

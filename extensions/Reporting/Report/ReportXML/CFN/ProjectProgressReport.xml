@@ -614,6 +614,6 @@
 
             ]]>
         </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="perry@cfn-nce.ca,mat@cfn-nce.ca,danielle@cfn-nce.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="perry@cfn-nce.ca,mat@cfn-nce.ca,danielle@cfn-nce.ca,amanda@cfn-nce.ca" />
     </ReportSection>
 </Report>

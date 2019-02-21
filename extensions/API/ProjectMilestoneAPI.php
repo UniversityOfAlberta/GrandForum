@@ -171,7 +171,7 @@ class ProjectMilestoneAPI extends API{
 		       $milestone->getPeopleText() == $_POST['people'] &&
 		       $milestone->quarters == $_POST['quarters'] &&
 		       $milestone->getStatus() == $_POST['status'] &&
-		       $milestone->getModification() == $_POST['modification'] &&
+		       $milestone->getModification() == @$_POST['modification'] &&
 		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
 		       $milestone->getComment() == $_POST['comment'] &&
 		       $milestone->getDescription() == $_POST['description']){
@@ -197,7 +197,7 @@ class ProjectMilestoneAPI extends API{
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['new_title'],
 		                              'status'              => $_POST['status'],
-		                              'modification'        => $_POST['modification'],
+		                              'modification'        => @$_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
@@ -229,7 +229,7 @@ class ProjectMilestoneAPI extends API{
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['title'],
 		                              'status'              => $_POST['status'],
-		                              'modification'        => $_POST['modification'],
+		                              'modification'        => @$_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],

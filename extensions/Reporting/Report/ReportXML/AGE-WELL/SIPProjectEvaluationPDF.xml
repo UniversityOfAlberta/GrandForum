@@ -57,7 +57,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2" pagebreak="true">
+    <ReportSection id="narrative2" pagebreak="false">
         <ReportItem id="justification" delete="true" />
         <ReportItem id="level" delete="true" />
         <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true" position="0">
@@ -67,7 +67,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" name="Financial Report" title="Financial Report" pagebreak="false">
+    <!--ReportSection id="budget" name="Financial Report" title="Financial Report" pagebreak="false">
         <ReportItem id="budget_amount" delete="true" />
         <ReportItem id="budget" delete="true" />
         <ReportItem id="justification" delete="true" />
@@ -262,5 +262,5 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
 </Report>

@@ -1,0 +1,23 @@
+/* Any custom styles should go here */
+
+span.number {
+    display: inline-block;
+    width: 30px;
+}
+
+div.answer {
+    margin-left: 35px;
+}
+
+div#diversityMessages {
+    position: fixed; 
+    top:0; 
+    right: 40px; 
+    width: 500px;
+    opacity: 0.95;
+    z-index: 1001;
+}
+
+div#diversityMessages > div {
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}

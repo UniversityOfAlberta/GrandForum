@@ -13,11 +13,11 @@
             else{
                 if(isset($params[0])){
                     // Start
-                    $start = substr($params[0], 0, 4);
+                    $start = $params[0];
                 }
                 if(isset($params[1])){
                     // End
-                    $end = substr($params[1], 0, 4);
+                    $end = $params[1];
                 }
             }
             if(isset($params[2])){
@@ -28,7 +28,7 @@
                     $multimedia = $project->getMultimedia();
                     $values = array();
                     foreach($multimedia as $media){
-                        $year = substr($media->getDate(), 0, 4);
+                        $year = $media->getDate();
                         if($year >= $start && $year <= $end){
                             $people = $media->getPeople();
                             foreach($people as $p){

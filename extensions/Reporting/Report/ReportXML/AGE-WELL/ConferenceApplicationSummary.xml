@@ -53,6 +53,14 @@
                                         </tr>
                                         <tr>
                                             <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Structure & Format:</b>
+                                            </td>
+                                            <td>
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_STRUCTURE,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
                                                 <b>Audience:</b>
                                             </td>
                                             <td>
@@ -73,6 +81,14 @@
                                             </td>
                                             <td>
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_REQUIREMENTS,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Special Collection:</b>
+                                            </td>
+                                            <td>
+                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SPECIAL,{$extraIndex},{$user_id},0,3_special)}
                                             </td>
                                         </tr>
                                     </table>
@@ -144,6 +160,14 @@
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ABSTRACT,{$extraIndex},{$user_id},0)}
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Special Collection:</b>
+                                            </td>
+                                            <td>
+                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SPECIAL,{$extraIndex},{$user_id},0,2_special)}
+                                            </td>
+                                        </tr>
                                     </table>
                                 </td>
                             </tr>
@@ -210,6 +234,14 @@
                                             </td>
                                             <td>
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Special Collection:</b>
+                                            </td>
+                                            <td>
+                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SPECIAL,{$extraIndex},{$user_id},0,1_special)}
                                             </td>
                                         </tr>
                                     </table>
@@ -279,6 +311,14 @@
                                             </td>
                                             <td>
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Special Collection:</b>
+                                            </td>
+                                            <td>
+                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SPECIAL,{$extraIndex},{$user_id},0,4_special)}
                                             </td>
                                         </tr>
                                     </table>
@@ -355,6 +395,14 @@
                                             </td>
                                             <td>
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_REQUIREMENTS,{$extraIndex},{$user_id},0)}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="white-space:nowrap;" valign="top">
+                                                <b>Special Collection:</b>
+                                            </td>
+                                            <td>
+                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_SPECIAL,{$extraIndex},{$user_id},0,5_special)}
                                             </td>
                                         </tr>
                                     </table>

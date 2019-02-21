@@ -68,7 +68,7 @@
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>Each award is valued at $4,500 for 16 consecutive weeks of full time employment, with supervisors supplementing the award to a value of at least 25% from other sources (total of at least $5625/student/summer). Six awards will be available each year.</p>
+                <p>Each award is valued at $5,500 for 16 consecutive weeks of full time employment, with supervisors supplementing the award to a value of at least 25% from other sources (total of at least $6825/student/summer). Ten awards will be available each year.</p>
                 
                 
                 <h3>Instructions</h3>
@@ -114,7 +114,7 @@
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
+        <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident|International" blobType="BLOB_TEXT" blobItem="RESIDENCY">
             <![CDATA[
                 <tr>
                     <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
@@ -383,6 +383,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
     </ReportSection>
 </Report>

@@ -14,6 +14,7 @@ function runApplicationsTable($par) {
 class ApplicationsTable extends SpecialPage{
 
     var $nis;
+    var $inactives;
     var $fullHQPs;
     var $hqps;
     var $projects;
@@ -37,6 +38,9 @@ class ApplicationsTable extends SpecialPage{
                                  Person::getAllCandidates(NI),
                                  Person::getAllPeople(EXTERNAL),
                                  Person::getAllCandidates(EXTERNAL));
+                                 
+        $this->inactives = array_merge(Person::getAllPeople(INACTIVE),
+                                       Person::getAllCandidates(INACTIVE));
         
         $this->fullHQPs = Person::getAllPeople(HQP);
         
@@ -91,6 +95,7 @@ class ApplicationsTable extends SpecialPage{
     function generateIFP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -99,6 +104,31 @@ class ApplicationsTable extends SpecialPage{
     function generateKT(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $pis = new MultiTextReportItem();
+        $pis->setBlobType(BLOB_ARRAY);
+        $pis->setBlobItem("PI");
+        $pis->setBlobSection("INTENT");
+        $pis->setAttr("labels", "First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization");
+        $pis->setAttr("types", "text|text|text|text|text");
+        $pis->setAttr("multiple", "true");
+        $pis->setAttr("showHeader", "false");
+        $pis->setAttr("class", "wikitable");
+        $pis->setAttr("orientation", "list");
+        $pis->setId("pi");
+        
+        $cis = new MultiTextReportItem();
+        $cis->setBlobType(BLOB_ARRAY);
+        $cis->setBlobItem("PI");
+        $cis->setBlobSection("INTENT");
+        $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
+        $cis->setAttr("types", "text|text|text|text|text");
+        $cis->setAttr("multiple", "true");
+        $cis->setAttr("showHeader", "false");
+        $cis->setAttr("class", "wikitable");
+        $cis->setAttr("orientation", "list");
+        $cis->setId("ci");
+        $tabbedPage->addTab(new ApplicationTab("KT2019Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

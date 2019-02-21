@@ -116,7 +116,7 @@ abstract class PublicationCell extends DashboardCell {
         $first_author = (isset($authors[0]))? explode(' ', strip_tags($authors[0]->getNameForForms())) : array("","");
         $first_author = $first_author[count($first_author)-1];
         $first_author = str_replace('&quot;', "", $first_author);
-        $citation = $paper->getProperCitation();
+        $citation = $paper->getCitation();
         $reported = "";
         if($this->category == "Publication" || $this->category == "Artifact"){
             $rmcYears = $paper->getReportedYears('RMC');

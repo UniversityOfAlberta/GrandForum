@@ -62,18 +62,22 @@ class Report extends AbstractReport{
                 }
             }
         }
-        /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("KT2017Applicant")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);
-        }*/
+        if($person->isSubRole("KT2019Applicant")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KT2019Application")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KT2019Application", $selected);
+        }
         /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("CAT2018Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CAT Application", "{$url}Catalyst2018Application", $selected);
         }*/
-        /*if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2018Applicant")){
+        /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KT2019Intent")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Intent", "{$url}KT2019Intent", $selected);
+        }*/
+        if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2019Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
-        }*/
+        }
         foreach($projects as $project){
             if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
                 if(strstr($project->getName(), "SSA20") === false){
@@ -95,17 +99,24 @@ class Report extends AbstractReport{
             $processedIFP = false;
             $processedIFP2016 = false;
             $processedIFP2017 = false;
+            $processedIFP2018 = false;
             foreach($hqps as $hqp){
                 if($hqp->isSubRole("IFP")){
                     $ifpDeleted = false;
                     $ifp2016 = false;
                     $ifp2017 = false;
+                    $ifp2018 = false;
                     foreach($hqp->leadership() as $project){
                         $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
                         $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false);
                         $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false);
+                        $ifp2018 = ($ifp2018 || strstr($project->getName(), "IFP2018") !== false);
                     }
                     if(!$ifpDeleted){
+                        if($ifp2018 && !$processedIFP2018){
+                            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2018ProgressReport")) ? "selected" : false;
+                            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2018 Progress", "{$url}IFP2018ProgressReport", $selected);
+                        }
                         if($ifp2017 && !$processedIFP2017){
                             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2017ProgressReport")) ? "selected" : false;
                             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2017 Progress", "{$url}IFP2017ProgressReport", $selected);
@@ -114,13 +125,18 @@ class Report extends AbstractReport{
                             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2016ProgressReport")) ? "selected" : false;
                             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2016 Progress", "{$url}IFP2016ProgressReport", $selected);
                         }
-                        if(!$ifp2017 && !$ifp2016 && !$processedIFP){
+                        if(!$ifp2018 && !$ifp2017 && !$ifp2016 && !$processedIFP){
                             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
                             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFPProgressReport", $selected);
                         }
                     }
+                    if($ifp2018 && !$processedIFP2018){
+                        $processedIFP2018 = true;
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2018FinalReport")) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2018 Final", "{$url}IFP2018FinalReport", $selected);
+                    }
                     if($ifp2017 && !$processedIFP2017){
-                        $processedIFP2016 = true;
+                        $processedIFP2017 = true;
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2017FinalReport")) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2017 Final", "{$url}IFP2017FinalReport", $selected);
                     }
@@ -129,7 +145,7 @@ class Report extends AbstractReport{
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2016FinalReport")) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP2016 Final", "{$url}IFP2016FinalReport", $selected);
                     }
-                    if(!$ifp2017 && !$ifp2016 && !$processedIFP){
+                    if(!$ifp2018 && !$ifp2017 && !$ifp2016 && !$processedIFP){
                         $processedIFP = true;
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
@@ -139,25 +155,31 @@ class Report extends AbstractReport{
             }
         }
         if(count($students) > 0){
-            $processedIFP2018 = false;
+            $processedIFP2019 = false;
             foreach($students as $student){
-                /*if(!$processedIFP2018 && $student->isSubRole("IFP2018Applicant")){
+                if(!$processedIFP2019 && $student->isSubRole("IFP2019Applicant")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
                     $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
-                    $processedIFP2018 = true;
-                }*/
+                    $processedIFP2019 = true;
+                }
             }
         }
         if($person->isSubRole('IFP')){
             $ifpDeleted = false;
             $ifp2016 = false;
             $ifp2017 = false;
+            $ifp2018 = false;
             foreach($person->leadership() as $project){
                 $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
                 $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false);
                 $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false);
+                $ifp2018 = ($ifp2018 || strstr($project->getName(), "IFP2018") !== false);
             }
             if(!$ifpDeleted){
+                if($ifp2018){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2018ProgressReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFP2018ProgressReport", $selected);
+                }
                 if($ifp2017){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2017ProgressReport")) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFP2017ProgressReport", $selected);
@@ -166,10 +188,14 @@ class Report extends AbstractReport{
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2016ProgressReport")) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFP2016ProgressReport", $selected);
                 }
-                if(!$ifp2017 && !$ifp2016){
+                if(!$ifp2018 && !$ifp2017 && !$ifp2016){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFPProgressReport", $selected);
                 }
+            }
+            if($ifp2018){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2018FinalReport")) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFP2018FinalReport", $selected);
             }
             if($ifp2017){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2017FinalReport")) ? "selected" : false;
@@ -179,10 +205,18 @@ class Report extends AbstractReport{
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFP2016FinalReport")) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFP2016FinalReport", $selected);
             }
-            if(!$ifp2017 && !$ifp2016){
+            if(!$ifp2018 && !$ifp2017 && !$ifp2016){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
+        }
+        if(count($person->getEvaluates("KT_INTENT-EX", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTIntentReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Intent Review (2019)", "{$url}KTIntentReview", $selected);
+        }
+        if(count($person->getEvaluates("IFP-ETC", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP Review (2019)", "{$url}IFPReview", $selected);
         }
         if(count($person->getEvaluates("SHOW-EX", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SHOWReview")) ? "selected" : false;
@@ -193,10 +227,15 @@ class Report extends AbstractReport{
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
         }
         if($person->isRoleAtLeast(STAFF)){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2018")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2018", "{$url}ReviewReport2018", $selected);
+            
         }
         if($person->isRoleAtLeast(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2019")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2019", "{$url}ReviewReport2019", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2018")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2018", "{$url}ReviewReport2018", $selected);
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2017")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2017", "{$url}ReviewReport2017", $selected);
         }

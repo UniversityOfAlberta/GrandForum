@@ -36,7 +36,7 @@ class ApplicationsTable extends SpecialPage{
                                     Person::getAllCandidates(EXTERNAL));
         
         $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        $this->projects = Project::getAllProjects();
+        $this->projects = Project::getAllProjectsEver();
         
         $this->startUpLegal2018Applicants = array();
         $this->startUpDev2018Applicants = array();
@@ -76,6 +76,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
@@ -106,8 +107,11 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "trans" && $me->isRoleAtLeast(SD)){
             $this->generateTrans();
         }
-        if($program == "collab" && $me->isRoleAtLeast(SD)){
+        else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "alberta" && $me->isRoleAtLeast(SD)){
+            $this->generateAlberta();
         }
         else if($program == "strat" && $me->isRoleAtLeast(SD)){
             $this->generateStrat();
@@ -191,6 +195,13 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateAlberta(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ALBERTA', $this->allNis, 2019, "2019"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateCollab(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -205,6 +216,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', $this->allNis, 2018, "LOI 2018", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_04_2017'), $this->allNis, 2017, "04-2017", array($reviewers)));
@@ -226,7 +238,8 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_STRAT'), $this->stratApplicants, 2017, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->stratApplicants, 2019, "2019", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->stratApplicants, 2017, "2017", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -295,6 +308,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "2015"));
@@ -304,6 +318,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectMilestones(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

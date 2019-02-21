@@ -82,9 +82,6 @@ $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
 
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
-
-$egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
-                                          'path' => "$IP/extensions/EditMember/EditMember.php");
                                           
 $egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
                                           'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
@@ -100,6 +97,9 @@ $egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
 
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
+                                         
+$egAnnokiExtensions['DiversitySurvey'] = array('name' => 'DiversitySurvey',
+                                         'path' => "$IP/extensions/DiversitySurvey/DiversitySurvey.php");
 
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");

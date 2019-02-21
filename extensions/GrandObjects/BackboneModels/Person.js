@@ -7,8 +7,16 @@ Person = Backbone.Model.extend({
         this.projects = new PersonProjects();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
         
+        this.leaderships = new PersonLeaderships();
+        this.leaderships.url = this.urlRoot + '/' + this.get('id') + '/leaderships';
+        
+        this.themes = new PersonThemes();
+        this.themes.url = this.urlRoot + '/' + this.get('id') + '/themes';
+        
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
+        
+        this.subRoles = new SubRoles({userId: this.get('id')});
         
         this.relations = new PersonRelations();
         this.relations.url = this.urlRoot + '/' + this.get('id') + '/relations';
@@ -68,9 +76,24 @@ Person = Backbone.Model.extend({
         return this.projects;
     },
     
+    getLeaderships: function(){
+        this.leaderships.fetch();
+        return this.leaderships;
+    },
+    
+    getThemes: function(){
+        this.themes.fetch();
+        return this.themes;
+    },
+    
     getRoles: function(){
         this.roles.fetch();
         return this.roles;
+    },
+    
+    getSubRoles: function(){
+        this.subRoles.fetch();
+        return this.subRoles;
     },
     
     getRelations: function(){
@@ -152,6 +175,7 @@ Person = Backbone.Model.extend({
         twitter: '',
         website: '',
         linkedin: '',
+        office: '',
         university: '',
         position: '',
         roles: new Array(),
@@ -231,11 +255,103 @@ PersonProjects = RangeCollection.extend({
 });
 
 /**
+ * PersonLeadership RelationModel
+ */
+PersonLeadership = RelationModel.extend({
+    initialize: function(){
+        
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/leaderships'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('personId')});
+        return person;
+    },
+    
+    getTarget: function(){
+        var project = new Project({id: this.get('projectId')});
+        return project;
+    },
+    
+    defaults: {
+        id: null,
+        personId: "",
+        projectId: "",
+        type: 'leader',
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
+    }
+});
+
+/**
+ * PersonLeaderships RangeCollection
+ */
+PersonLeaderships = RangeCollection.extend({
+    model: PersonLeadership,
+    
+    newModel: function(){
+        return new Projects();
+    },
+});
+
+/**
+ * PersonThemesLeadership RelationModel
+ */
+PersonTheme = RelationModel.extend({
+    initialize: function(){
+        
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/themes'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('personId')});
+        return person;
+    },
+    
+    getTarget: function(){
+        return null;
+    },
+    
+    defaults: {
+        id: null,
+        personId: "",
+        themeId: "",
+        coLead: 'False',
+        coordinator: 'False',
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
+    }
+});
+
+/**
+ * PersonLeaderships RangeCollection
+ */
+PersonThemes = RangeCollection.extend({
+    model: PersonTheme,
+    
+    newModel: function(){
+        return null;
+    },
+});
+
+/**
  * PersonRelation RelationModel
  */
 PersonRelation = RelationModel.extend({
     initialize: function(){
-        this.set('projects', []);
+        
     },
 
     urlRoot: function(){
@@ -252,16 +368,18 @@ PersonRelation = RelationModel.extend({
         return person;
     },
     
-    defaults: {
-        id: null,
-        user1: "",
-        user2: "",
-        startDate: new Date().toISOString().substr(0, 10),
-        endDate: "",
-        projects: null,
-        name: "",
-        comment: "",
-        deleted: false
+    defaults: function(){
+        return {
+            id: null,
+            user1: "",
+            user2: "",
+            startDate: new Date().toISOString().substr(0, 10),
+            endDate: "",
+            projects: new Array(),
+            name: "",
+            comment: "",
+            deleted: false
+        }
     }
 });
 

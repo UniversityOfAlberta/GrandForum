@@ -9,9 +9,11 @@ ManagePeopleView = Backbone.View.extend({
     initialize: function(){
         this.allPeople = new People();
         this.allPeople.roles = ['all'];
+        this.allPeople.simple = true;
+        this.allPeople.comparator = 'fullName';
         this.allPeople.fetch();
         this.template = _.template($('#manage_people_template').html());
-        this.listenTo(this.model, "sync", function(){
+        this.listenToOnce(this.model, "sync", function(){
             this.people = this.model;
             this.listenTo(this.people, "add", this.addRows);
             this.listenTo(this.people, "remove", this.addRows);
@@ -22,6 +24,10 @@ ManagePeopleView = Backbone.View.extend({
     addRows: function(){
         var searchStr = "";
         var order = [4, 'asc'];
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+            order = [8, 'asc'];
+        }
+        
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
@@ -49,18 +55,15 @@ ManagePeopleView = Backbone.View.extend({
         _.each(this.subViews, function(row){
             row.render();
         });
-        var end = new Date();
         this.createDataTable(order, searchStr);
     },
     
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
-	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
-	    this.table.order(order);
-	    this.table.search(searchStr);
-	    this.table.draw();
+	                                                 'aLengthMenu': [[-1], ['All']],
+	                                                 'oSearch': {"sSearch": searchStr},
+	                                                 'order': order});
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
     },

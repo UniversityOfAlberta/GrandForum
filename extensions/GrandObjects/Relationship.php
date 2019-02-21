@@ -105,7 +105,7 @@ class Relationship extends BackboneModel {
     
     function create(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF)){
             $projects = array();
             if(is_array($this->projects)){
                 foreach($this->projects as $project){
@@ -122,20 +122,11 @@ class Relationship extends BackboneModel {
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()));
             if($status){
-                $data = DBFunctions::select(array('grand_relations'),
-                                            array('id'),
-                                            array('user1' => EQ($this->user1),
-                                                  'user2' => EQ($this->user2),
-                                                  'type'  => EQ($this->getType())),
-                                            array('id' => 'DESC'),
-                                            array(1));
-                if(count($data) > 0){
-                    $this->id = $data[0]['id'];
-                    Relationship::$cache = array();
-                    Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and <b>{$this->getUser2()->getNameForForms()}</b> are related through the <b>{$this->getType()}</b> relation", "{$this->getUser2()->getUrl()}");
-                    Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and <b>{$this->getUser1()->getNameForForms()}</b> are related through the <b>{$this->getType()}</b> relation", "{$this->getUser1()->getUrl()}");
-                    return true;
-                }
+                $this->id = DBFunctions::insertId();
+                Relationship::$cache = array();
+                Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and <b>{$this->getUser2()->getNameForForms()}</b> are related through the <b>{$this->getType()}</b> relation", "{$this->getUser2()->getUrl()}");
+                Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and <b>{$this->getUser1()->getNameForForms()}</b> are related through the <b>{$this->getType()}</b> relation", "{$this->getUser1()->getUrl()}");
+                return true;
             }
         }
         return false;
@@ -143,7 +134,7 @@ class Relationship extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF)){
             $projects = array();
             foreach($this->projects as $project){
                 $proj = Project::newFromName($project->name);
