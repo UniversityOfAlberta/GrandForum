@@ -440,6 +440,11 @@
             <![CDATA[
                 <h2>Team Member CVs</h2>
                 <p>Please upload a single PDF document containing all Team Member CVs.</p>
+                <p>A single PDF must contain CVs for all Principal Investigators, in the order they appear in the Project Team List spreadsheet. The PDF must also contain summary CVs (or resumés for non-academic team members) for other team members (i.e. not a Principal Investigator), in the order they appear in the Project Team List spreadsheet.</p>
+                <ul>
+                    <li>Principal Investigators must submit a Full Canadian Common CV in the CIHR format (Academic CV Type) - do not submit the CV online; save as a PDF.</li>
+                    <li>Co-investigators must submit a summary CV or resumé, which cannot be more than 5 pages and should highlight relevant KT, research, education, and work or volunteer related experience.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
