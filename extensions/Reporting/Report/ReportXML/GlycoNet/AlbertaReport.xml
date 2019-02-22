@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Alberta Partnership Projects RFP" reportType="RP_ALBERTA" pdfType="RPTP_ALBERTA" pdfFiles="AlbertaReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2019">
+<Report name="Alberta Partnership Projects RFP" reportType="RP_ALBERTA" pdfType="RPTP_ALBERTA" pdfFiles="AlbertaReportPDF" ajax="true" allowIdProjects="true" disabled="true" year="2019">
     <Permissions>
         <Role role="NI" subRole="Alberta2019">
 

@@ -74,15 +74,15 @@ class Report extends AbstractReport{
             
             //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeLOI")) ? "selected" : false;
             //$tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative LOI", "{$url}CollaborativeLOI", $selected);
-            if($person->isSubRole('Alberta2019')){
+            /*if($person->isSubRole('Alberta2019')){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AlbertaReport")) ? "selected" : false;
                 $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Alberta", "{$url}AlbertaReport", $selected);
-            }
+            }*/
         }
-        if($person->isSubRole('Collab2018')){
+        /*if($person->isSubRole('Collab2018')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport2018")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport2018", $selected);
-        }
+        }*/
         if($person->isSubRole('StratApplicant')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "StrategicReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Strategic", "{$url}StrategicReport", $selected);
