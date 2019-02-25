@@ -55,6 +55,7 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
+$wgHooks['UnknownAction'][] = 'deleteUser';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
@@ -92,7 +93,31 @@ $wgExtensionCredits['specialpage'][] = array(
 				       //'url' => 'http://www.mediawiki.org/wiki/User:JDoe', 
 				       'description' => 'Limits access to pages based on membership in namespaces.'
 				       );
-				       
+
+function deleteUser($action, $article){
+    if($action == "deleteUser"){
+        global $wgOut;
+        $token = @$_GET['user'];
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('*'),
+                                    array('user_token' => EQ($token),
+                                          'deleted' => EQ(0)));
+        if(count($data) > 0){
+            DBFunctions::update('mw_user',
+                                array('deleted' => 1),
+                                array('user_token' => EQ($token)));
+            $wgOut->setPageTitle("User Account Deactivation");
+            $wgOut->addHTML("<div class='success'>This user account has successfully been deactivated.</div>");
+        }
+        else{
+            $wgOut->setPageTitle("User Account Deactivation");
+            $wgOut->addHTML("<div class='error'>This user account either does not exist, or has already been deactivated.</div>");
+        }
+        return false;
+    }
+    return false;
+}
+		       
 function permissionError(){
     global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
     if($wgTitle == null){
