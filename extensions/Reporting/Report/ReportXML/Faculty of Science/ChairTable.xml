@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true">
     <Permissions>
-        <!--Role role="ISAC">
+        <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -36,8 +36,8 @@
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
-        </Role-->
-        <Role role="ISAC">
+        </Role>
+        <!--Role role="ISAC">
             <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
@@ -81,7 +81,7 @@
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
             <SectionPermission id="dept_publications" permissions="rw" />
-        </Person>
+        </Person-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="thead" type="Static">
@@ -836,8 +836,10 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
+                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <script type='text/javascript'>
+                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 100px;background:white;'>{getExtra()} / {$user_name}</div>");
+                                </script>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -848,9 +850,21 @@
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        {$item}
                     ]]>
                 </ReportItem>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>

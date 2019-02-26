@@ -3,9 +3,9 @@
 class TextareaReportItem extends AbstractReportItem {
 
     function getTinyMCE($mentions=null){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $DPI, $DPI_CONSTANT;
         $limit = $this->getLimit();
-        $imgConst = DPI_CONSTANT*72/96;
+        $imgConst = $DPI_CONSTANT*72/96;
         $mentionPlugin = "";
         $mentionSource = array();
         if(count($mentions) > 0){
@@ -193,7 +193,7 @@ EOF;
     }
     
     function getHTMLForPDF(){
-        global $config;
+        global $config, $DPI, $DPI_CONSTANT;
         $limit = $this->getLimit();
         $html = "";
         $blobValue = str_replace("\r", "", $this->getBlobValue());
@@ -235,10 +235,10 @@ EOF;
 
         $imgs = $dom->getElementsByTagName("img");
         $margins = $config->getValue('pdfMargins');
-        $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*DPI_CONSTANT;
-        $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*DPI_CONSTANT;
+        $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*$DPI_CONSTANT;
+        $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*$DPI_CONSTANT;
         foreach($imgs as $img){
-            $imgConst = DPI_CONSTANT*72/96;
+            $imgConst = $DPI_CONSTANT*72/96;
             $style = $img->getAttribute('style');
             preg_match("/width:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleWidth);
             preg_match("/height:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleHeight);
@@ -269,8 +269,8 @@ EOF;
             $width = min($maxWidth, intval($table->getAttribute('width')));
             $table->setAttribute('width', $width);
             
-            $table->setAttribute('cellspacing', ceil(1*DPI_CONSTANT));
-            $table->setAttribute('cellpadding', ceil(3*DPI_CONSTANT));
+            $table->setAttribute('cellspacing', ceil(1*$DPI_CONSTANT));
+            $table->setAttribute('cellpadding', ceil(3*$DPI_CONSTANT));
             $table->setAttribute('rules', 'all');
             $table->setAttribute('frame', 'box');
         }
