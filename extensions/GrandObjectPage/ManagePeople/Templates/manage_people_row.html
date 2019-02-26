@@ -1,7 +1,7 @@
 <div id="rolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Roles">
     
 </div>
-<div id="projectsDialog" style="display:none; max-height: 500px; overflow-y: auto" style="display:none;" title="Edit Projects">
+<div id="projectsDialog" style="display:none; max-height: 500px; overflow-y: auto" style="display:none;" title="Edit Departments">
     
 </div>
 <div id="relationsDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Relations">
@@ -30,7 +30,7 @@
         <span id="editRelations" class="edit-icon" title="Edit Relations"></span>
     <% } %>
 </td>
-<td align="center">
+<td align="center" style="display:none;">
     <span id="editUniversities" class="edit-icon" title="Edit Institutions"></span>
 </td>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>

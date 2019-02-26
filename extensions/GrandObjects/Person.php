@@ -885,6 +885,7 @@ class Person extends BackboneModel {
             $privateProfile = $this->getProfile(true);
         }
         $roles = array();
+        $projects = array();
         foreach($this->getRoles() as $role){
             if($role->getId() != -1){
                 $roles[] = array('id' => $role->getId(),
@@ -911,6 +912,11 @@ class Person extends BackboneModel {
                              'role' => TC,
                              'title' => $theme->getAcronym());
         }
+        foreach($this->getProjects() as $project){
+            $projects[] = array('id' => $project->getId(),
+                                'project' => $project->getName(),
+                                'fullName' => $project->getFullName());
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -935,6 +941,7 @@ class Person extends BackboneModel {
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
                       'roles' => $roles,
+                      'projects' => $projects,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl(),

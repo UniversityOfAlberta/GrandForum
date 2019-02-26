@@ -637,7 +637,7 @@ EOF;
         $this->html .= "</table>";
         
         // Load the scripts for Manage People so that the University editing can be used
-        $managePeople = new ManagePeople();
+        /*$managePeople = new ManagePeople();
         $managePeople->loadTemplates();
         $managePeople->loadModels();
         $managePeople->loadHelpers();
@@ -664,7 +664,7 @@ EOF;
                     });
                 }
             });
-        </script>";
+        </script>";*/
     }
     
 }
