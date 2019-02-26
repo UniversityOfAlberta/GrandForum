@@ -115,7 +115,7 @@ function deleteUser($action, $article){
         }
         return false;
     }
-    return false;
+    return true;
 }
 		       
 function permissionError(){

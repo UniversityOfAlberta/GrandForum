@@ -240,7 +240,7 @@ class IndexTable {
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr><th>Acronym</th><th>Name</th><th>Chair</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $wgOut->addHTML("
@@ -286,7 +286,7 @@ class IndexTable {
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Acronym</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
+<thead><tr><th>Acronym</th><th>Name</th><th>Chair</th><th>Coordinators</th></tr></thead><tbody>
 ");
         $themes = Theme::getAllThemes(PROJECT_PHASE);
         foreach($themes as $theme){
@@ -334,7 +334,7 @@ class IndexTable {
             $activityPlans = "<th>Activity Plans</th>";
         }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>");
+                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Chair</th>{$activityPlans}</tr></thead><tbody>");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
             if($project->getType() == 'Administrative'){
