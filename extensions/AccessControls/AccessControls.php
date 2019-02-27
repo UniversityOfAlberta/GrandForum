@@ -55,6 +55,7 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
+$wgHooks['BeforeInitialize'][] = 'onBeforeInitialize';
 $wgHooks['UnknownAction'][] = 'deleteUser';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
@@ -93,6 +94,24 @@ $wgExtensionCredits['specialpage'][] = array(
 				       //'url' => 'http://www.mediawiki.org/wiki/User:JDoe', 
 				       'description' => 'Limits access to pages based on membership in namespaces.'
 				       );
+
+function onBeforeInitialize($title, $article, $output, $user, $request, $mediaWiki) {
+    global $wgUser;
+    if(isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])){
+        // Make login work for email
+        $previousWgUser = $wgUser;
+        $wgUser = User::newFromId(1);
+        $person = Person::newFromEmail($_POST['wpEmail']);
+        if($person != null){
+            $_POST['wpName'] = sanitizeInput($person->getName());
+            $_POST['wpUsername'] = sanitizeInput($person->getName());
+            $request->setVal('wpName', $_POST['wpName']);
+            $request->setVal('wpUsername', $_POST['wpUsername']);
+        }
+        $wgUser = $previousWgUser;
+    }
+    return true;
+}
 
 function deleteUser($action, $article){
     if($action == "deleteUser"){

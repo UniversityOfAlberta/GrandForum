@@ -984,7 +984,7 @@ class CavendishTemplate extends QuickTemplate {
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
+		            $failMessage = "<p class='inlineError' style='max-width:180px;overflow-x:auto;'>There is no user by the name of <b>{$_POST['wpEmail']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
 		                $failMessage .= "<b>Password request failed</b>";
 		            }
@@ -993,7 +993,7 @@ class CavendishTemplate extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
+		            $failMessage = "<p class='inlineSuccess' style='max-width:180px;overflow-x:auto;'>A new password has been sent to the e-mail address &quot;{$_POST['wpEmail']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
 		        }
 		        else{
 		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
@@ -1018,13 +1018,6 @@ class CavendishTemplate extends QuickTemplate {
                             <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
                         </ul>
                     </li>
-                    <li>There is an account but you do not remember your ID
-                        <ul>
-                            <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
-                            <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
-                            <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
-                        </ul>
-                    </li>
                     <li>You know your ID but not your password
                         <ul>
                             <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
@@ -1036,8 +1029,8 @@ class CavendishTemplate extends QuickTemplate {
 You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
-Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
+Your login ID is your email address
+If you have forgotten your password please enter your login ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
 		    }
 		    if($_SESSION == null || 
 		       $wgRequest->getSessionData('wsLoginToken') == "" ||
@@ -1100,8 +1093,7 @@ If you have forgotten your password please enter your login and ID and request a
 		        <table>
 		            <tr>
 		                <td>
-		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-		                    <input type='hidden' name='wpEmail' value='' />
+		                    <input id='wpUsername1' type='hidden' name='wpEmail' value='' />
 		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
 		                </td>
 		            </tr>
@@ -1130,7 +1122,7 @@ If you have forgotten your password please enter your login and ID and request a
 		        </script>";
 		    }
 		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText('wpName');
+		    $name = $wgRequest->getText('wpEmail');
 		    $name = sanitizeInput($name);
 		    echo "<span class='highlights-text'>Login</span>
 			<ul class='pBody'>";
@@ -1146,8 +1138,8 @@ If you have forgotten your password please enter your login and ID and request a
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
 			<td valign='middle' align='right' style='width:1%;'>Username:</td>
 			<td class="mw-input">
-				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
-					tabindex="1" size='20' placeholder='First.Last' />
+				<input type='text' class='loginText dark' style='width:97%;' name="wpEmail" value="$name" id="wpName1"
+					tabindex="1" size='20' placeholder='Email' />
 			</td>
 		</tr>
 		<tr>
