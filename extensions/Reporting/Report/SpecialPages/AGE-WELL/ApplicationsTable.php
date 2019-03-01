@@ -239,6 +239,7 @@ class ApplicationsTable extends SpecialPage{
         $section2->setBlobType(BLOB_TEXT);
         $section2->setBlobItem('SECTION2');
         $section2->setBlobSection("PART1");
+        $section2->setAttr("rich", "true");
         $section2->setId("section2");
         
         $orgs = new MultiTextReportItem();
