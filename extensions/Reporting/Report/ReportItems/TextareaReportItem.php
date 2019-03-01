@@ -1,5 +1,8 @@
 <?php
 
+$dir = dirname(__FILE__);
+require_once($dir . '/../../../../Classes/SmartDomDocument/SmartDomDocument.php');
+
 class TextareaReportItem extends AbstractReportItem {
 
     function render(){
