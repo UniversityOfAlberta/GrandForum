@@ -88,11 +88,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="materials" tooltip="Download CRP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-                You can download the CRP Application PDFs for reference.
-            ]]>
-        </Instructions>
         <ReportItem id="project_materials_head" type="StaticReportItem">
             <![CDATA[
             <table align="left" class="wikitable" frame="box" rules="all">

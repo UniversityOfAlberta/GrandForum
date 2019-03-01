@@ -235,8 +235,24 @@ class ApplicationsTable extends SpecialPage{
         $mitacs->setBlobSection("PART1");
         $mitacs->setId("section7_check");
         
+        $section2 = new TextareaReportItem();
+        $section2->setBlobType(BLOB_TEXT);
+        $section2->setBlobItem('SECTION2');
+        $section2->setBlobSection("PART1");
+        $section2->setId("section2");
+        
+        $orgs = new MultiTextReportItem();
+        $orgs->setBlobType(BLOB_ARRAY);
+        $orgs->setBlobItem('TEAM');
+        $orgs->setBlobSection("PART1");
+        $orgs->setAttr("labels", "Institution/Organization");
+        $orgs->setAttr("orientation", "list");
+        $orgs->setAttr("showHeader", "false");
+        $orgs->setAttr("multiple", "true");
+        $orgs->setId("team");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs)));
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', $this->nis, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs, 'Product' => $section2, 'Organizations' => $orgs)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
