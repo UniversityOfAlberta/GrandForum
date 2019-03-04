@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SIP Review" reportType="RP_SIP_REVIEW" ajax="true" disabled="false" year="2019">
+<Report name="SIP Review" reportType="RP_SIP_REVIEW_2019" ajax="true" disabled="false" year="2019">
     <Permissions>
         <Role role="Evaluator">
             <SectionPermission id="materials" permissions="rw" />
@@ -44,8 +44,9 @@
                 <ReportItem id="A" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="A" blobSubItem="{$user_id}" options="Yes|No">
                     <![CDATA[
                         <div id="{$user_id}_{$project_id}">
-                        <b>Project Title:</b> {getText(RP_SIP_ACC_2019, COVER_SHEET, PROJECT, 0, {$user_id}, {$project_id}}<br />
-                        <b>Project Lead(s):</b> {$user_name}
+                        <b>Project Title:</b> {getText(RP_SIP_ACC_2019, COVER_SHEET, PROJECT, 0, {$user_id}, {$project_id})}<br />
+                        <b>Project Lead(s):</b> {$user_name}<br />
+                        <b>Project Type:</b> {getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})}
                         <p>On a scale of 1 to 5 (1 being “Poor/low”, 3 being “Average”, and 5 being “Excellent/high”), please rate the project on the criteria listed below. Note that this form is for use with both commercialization and knowledge mobilization projects. Indicate ‘N/A’ if a given criterion does not apply to the project under review.</p>
                         <table class="wikitable" frame="box" rules="all" width="100%">
                             <tr>
@@ -170,7 +171,7 @@
                             </tr>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id}}),Commercialization)}">
+                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Commercialization)}">
                     <ReportItem id="6" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="6" blobSubItem="{$user_id}" options="1|2|3|4|5">
                         <![CDATA[
                             <tr>
@@ -247,7 +248,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id}}),Knowledge Mobilization)}">
+                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Knowledge Mobilization)}">
                     <ReportItem id="11" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="11" blobSubItem="{$user_id}" options="1|2|3|4|5">
                         <![CDATA[
                             <tr>
@@ -523,80 +524,8 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="RELEVANCE" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="RELEVANCE" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="scripts" type="Static">
                     <![CDATA[
-                        <table class="wikitable" rules="all" frame="box" width="100%">
-                            <tr>
-                                <th colspan="2" style="text-align: left;">Feedback to be shared with the applicant to help to improve/clarify the application and/or project:</th>
-                            </tr>
-                            <tr>
-                                <td width="50%"><b>Relevance</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="VALUE" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="VALUE" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Value Proposition and Uniqueness</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="OPPORTUNITY" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="OPPORTUNITY" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Project Opportunity</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="IP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IP" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Intellectual Property</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="TEAM" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TEAM" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Team</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="PARTNER" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PARTNER" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Partner and Contributions</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="BUDGET" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="BUDGET" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Budget and Deliverables</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="IMPACT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IMPACT" blobSubItem="{$user_id}" height="100px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Potential Impact</b></td>
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="OVERALL" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="OVERALL" blobSubItem="{$user_id}" height="125px">
-                    <![CDATA[
-                            <tr>
-                                <td><b>Overall Comments</b></td>
-                                <td>{$item}</td>
-                            </tr>
                         </table>
                         </div>
                         <script type="text/javascript">
