@@ -9,6 +9,7 @@ require_once("CCActivitiesTable.php");
 require_once("HQPRegisterTable.php");
 require_once("HQPReviewTable.php");
 require_once("CRPReviewTable.php");
+require_once("SIPReviewTable.php");
 require_once("EPICTable.php");
 require_once("ApplicationsTable.php");
 
@@ -70,6 +71,10 @@ class Report extends AbstractReport {
         if($person->isRole(HQP)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AccessApplication042019")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ACCESS Application", "{$url}AccessApplication042019", $selected);
+        }
+        if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SummerApplication")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Application", "{$url}SummerApplication", $selected);
         }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FellowshipApplication")) ? "selected" : false;

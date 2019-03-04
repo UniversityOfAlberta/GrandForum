@@ -881,13 +881,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants">
-        <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
+        <!--ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
             <![CDATA[
                 <p>Round 3 and 4 Collaborative Team Grants (e.g. projects ending June 2019 or December 2019) may apply for a project extension to March 31, 2020 by completing this section.</p>
                 <p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" recommended="true" optional="true">
             <![CDATA[
                 <h2>Objectives during the renewal period and justification based on progress to date</h2>
@@ -939,7 +939,7 @@
                 <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
             ]]>
         </ReportItem>
-        <ReportItem id="ip" type="StaticReportItem">
+        <!--ReportItem id="ip" type="StaticReportItem">
             <![CDATA[
                 <h2>IP development strategy/commercialization plan</h2>
                 <p>If you wish to be considered for a Translational Grant (options b or c, above), please email a commercialization plan to Elizabeth Nanak (<a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>) no later than June 1, 2019.</p>
@@ -960,7 +960,7 @@
                     </li>
                 </ul>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

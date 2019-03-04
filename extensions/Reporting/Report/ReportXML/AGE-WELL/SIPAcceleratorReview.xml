@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SIP Review" reportType="RP_SIP_REVIEW" ajax="true" disabled="false" year="2019">
+    <Permissions>
+        <Role role="Evaluator">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="materials" tooltip="Download CRP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="project_materials_head" type="StaticReportItem">
+            <![CDATA[
+            <table align="left" class="wikitable" frame="box" rules="all">
+                <tr>
+                    <th style="min-width:110px;">Applicant Name</th>
+                    <th style="min-width:125px;" align='center'>Application PDF</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="SIP-2019">
+            <ReportItem id="table_row" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="crp_pdf" type="PDFReportItem" reportType="SIPAccelerator2019" project="true">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="SIP Review" name="SIP Review" blobSection="SIP_REVIEW" type="EditableReportSection">
+        <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="SIP-2019">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="A" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="A" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <div id="{$user_id}_{$project_id}">
+                        <b>Project Title:</b> {getText(RP_SIP_ACC_2019, COVER_SHEET, PROJECT, 0, {$user_id}, {$project_id}}<br />
+                        <b>Project Lead(s):</b> {$user_name}
+                        <p>On a scale of 1 to 5 (1 being “Poor/low”, 3 being “Average”, and 5 being “Excellent/high”), please rate the project on the criteria listed below. Note that this form is for use with both commercialization and knowledge mobilization projects. Indicate ‘N/A’ if a given criterion does not apply to the project under review.</p>
+                        <table class="wikitable" frame="box" rules="all" width="100%">
+                            <tr>
+                                <th width="50%">CRITERIA</th>
+                                <th>SCORE<br />1 to 5</th>
+                                <th>COMMENTS/FEEDBACK</th>
+                            </tr>
+                            <tr>
+                                <th>Projects Applying for Renewal</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Did this project meet the objectives of their previous award?</td>
+                                <td align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="A_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="A_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="B" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="B" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td>Did the outcomes of the project have real or potential impact on older adults and caregivers, communities, industry and/or policies?</td>
+                            <td align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="B_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="B_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="C" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="C" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td>Does this new project build on the activities, findings and partnerships from the previously funded work?</td>
+                            <td align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="C_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="C_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="1" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <th>Relevance</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Is the project a good fit with the vision and mission of AGE-WELL?</td>
+                            <td align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="1_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="2" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td>Is it a post-discovery project?</td>
+                            <td align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="2_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="3" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <th>Value Proposition and Uniqueness</th>
+                            <th><span id="total1"></span>/15</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Is the research/project a priority for AGE-WELL?</td>
+                            <td id="q3" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="3_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="4" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="4" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>How would you rate the uniqueness or novelty of the proposed project/activity?</td>
+                            <td id="q4" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="4_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="4_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="5" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Is the value proposition for the aging population and/or caregivers obvious?</td>
+                            <td id="q5" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="5_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="5_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id}}),Commercialization)}">
+                    <ReportItem id="6" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="6" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <th>Project Opportunity</th>
+                                <th><span id="total2"></span>/15</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Is the market size significant?</td>
+                                <td id="q6" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="6_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="6_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="7" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="7" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Are the competitive advantages obvious and sustainable (if applicable)?</td>
+                                <td id="q7" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="7_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="7_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="8" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="8" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Did the team well differentiate their solution with their potential competitors?</td>
+                                <td id="q8" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="8_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="8_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="9" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="9" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <th>Intellectual Property</th>
+                                <th><span id="total3"></span>/10</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Is there an adequate strategy in place to protect intellectual property (if applicable)?</td>
+                                <td id="q9" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="9_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="9_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="10" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="10" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Is intellectual property protected (if applicable)? (IP protected with Trademark, copyright = 2-3; IP protected with Patent, PCT = 5)</td>
+                                <td id="q10" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="10_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="10_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id}}),Knowledge Mobilization)}">
+                    <ReportItem id="11" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="11" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <th>Project Opportunity</th>
+                                <th><span id="total4"></span>/25</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Is the audience identified and applicability of the findings well described?</td>
+                                <td id="q11" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="11_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="11_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="12" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="12" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Are the knowledge mobilization goals well described and feasible? (beyond the research production stage)</td>
+                                <td id="q12" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="12_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="12_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="13" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="13" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Is the strategy regarding the uptake of the findings by key stakeholders strong? e.g. paper, patent license, policy brief, educational materials, workshop, event, champion, media release, social media, blog, video, etc.</td>
+                                <td id="q13" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="13_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="13_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="14" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="14" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>How would you evaluate the effectiveness of the knowledge mobilization strategies to achieve real-world impact (beyond traditional research)? e.g. reach indicators (number of views, downloads), usefulness indicators (knowledge gained, perspectives changed), partnership indicators (number of products disseminated with partners), practice change indicators (observed or reported change), etc.</td>
+                                <td id="q14" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="14_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="14_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="15" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="15" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                        <![CDATA[
+                            <tr>
+                                <td>Is there an adequate strategy in place to protect intellectual property? Including new knowledge, information, etc.</td>
+                                <td id="q15" align="center">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="15_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="15_COMMENT" blobSubItem="{$user_id}" height="100px">
+                        <![CDATA[
+                                    <td>{$item}</td>
+                                </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="16" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="16" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <th>Team</th>
+                            <th><span id="total5"></span>/10</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Does the team have the right expertise to complete this project?</td>
+                            <td id="q16" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="16_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="16_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="17" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="17" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Does the team have a proven track record related to knowledge mobilization and commercialization?</td>
+                            <td id="q17" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="17_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="17_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="18" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="18" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <th>Partner and Contributions</th>
+                            <th><span id="total6"></span>/15</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Is the partner committed to the dissemination, uptake and/or commercialization the solution/findings?</td>
+                            <td id="q18" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="18_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="18_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="19" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="19" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Is the partner contribution significant?<br />(Under $20K = 2; $20-24,999K = 3; $25-35K = 4; above $35K = 5)</td>
+                            <td id="q19" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="19_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="19_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="20" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="20" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Is the partner providing a significant cash contribution?<br />(Under $5K = 2; $5-15K = 3; above $15K = 5)</td>
+                            <td id="q20" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="20_COMMENT" type="TextReportItem" blobType="BLOB_TEXT" blobItem="20_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>Amount: {$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="21" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="21" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <th>Budget, Feasibility and Deliverables</th>
+                            <th><span id="total7"></span>/15</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Is the budget coherent and well justified?</td>
+                            <td id="q21" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="21_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="21_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="22" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="22" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Does the budget include items that will directly enable knowledge mobilization and/or commercialization?</td>
+                            <td id="q22" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="22_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="22_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="23" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="23" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Are the deliverables well described and coherent according to the budget requested?</td>
+                            <td id="q23" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="23_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="23_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="24" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="24" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <th>Potential Impact</th>
+                            <th><span id="total8"></span>/20</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Is the real life impact strategy well defined and strong?</td>
+                            <td id="q24" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="24_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="24_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="25" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="25" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>Does the solution have the potential to positively impact a lot of older adults and/or caregivers?</td>
+                            <td id="q25" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="25_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="25_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="26" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="26" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td>How would you rate the potential for successful knowledge mobilization or commercialization?</td>
+                            <td id="q26" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="26_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="26_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="27" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="27" blobSubItem="{$user_id}" options="1|2|3|4|5">
+                    <![CDATA[
+                        <tr>
+                            <td><i>Bonus: 5 points if the applicant already sucessfully completed a project and demonstrated impact (KMob and/or commercializion) with AGE-WELL</i></td>
+                            <td id="q27" align="center">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="27_COMMENT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="27_COMMENT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="TOTAL" type="TextareaReportItem">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:right;">Total score</th>
+                                <th><span id="total"></span></th>
+                                <th></th>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="RECOMMEND" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="RECOMMEND" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <th style="text-align:right;">Would you recommend that AGE-WELL invest in this project?</th>
+                            <th>{$item}</th>
+                            <th></th>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="FUNDING" type="TextReportItem" blobType="BLOB_TEXT" blobItem="FUNDING" blobSubItem="{$user_id}" width="100px">
+                    <![CDATA[
+                        <tr>
+                            <th style="text-align:right;">Recommended Funding (maximum $40K):</th>
+                            <th>${$item}</th>
+                            <th></th>
+                        </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="RELEVANCE" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="RELEVANCE" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                        <table class="wikitable" rules="all" frame="box" width="100%">
+                            <tr>
+                                <th colspan="2" style="text-align: left;">Feedback to be shared with the applicant to help to improve/clarify the application and/or project:</th>
+                            </tr>
+                            <tr>
+                                <td width="50%"><b>Relevance</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="VALUE" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="VALUE" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Value Proposition and Uniqueness</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="OPPORTUNITY" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="OPPORTUNITY" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Project Opportunity</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="IP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IP" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Intellectual Property</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="TEAM" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TEAM" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Team</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="PARTNER" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PARTNER" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Partner and Contributions</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="BUDGET" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="BUDGET" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Budget and Deliverables</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="IMPACT" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IMPACT" blobSubItem="{$user_id}" height="100px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Potential Impact</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="OVERALL" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="OVERALL" blobSubItem="{$user_id}" height="125px">
+                    <![CDATA[
+                            <tr>
+                                <td><b>Overall Comments</b></td>
+                                <td>{$item}</td>
+                            </tr>
+                        </table>
+                        </div>
+                        <script type="text/javascript">
+                            $('div#{$user_id}_{$project_id} select').change(function(e){
+                                var total1 = (parseInt($('div#{$user_id}_{$project_id} #q3 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q4 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q5 select').val()) || 0);
+                                             
+                                var total2 = (parseInt($('div#{$user_id}_{$project_id} #q6 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q7 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q8 select').val()) || 0);
+                                
+                                var total3 = (parseInt($('div#{$user_id}_{$project_id} #q9 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q10 select').val()) || 0);
+                                             
+                                var total4 = (parseInt($('div#{$user_id}_{$project_id} #q11 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q12 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q13 select').val()) || 0) + 
+                                             (parseInt($('div#{$user_id}_{$project_id} #q14 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q15 select').val()) || 0);
+                                             
+                                var total5 = (parseInt($('div#{$user_id}_{$project_id} #q16 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q17 select').val()) || 0);
+                                
+                                var total6 = (parseInt($('div#{$user_id}_{$project_id} #q18 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q19 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q20 select').val()) || 0);
+                                             
+                                var total7 = (parseInt($('div#{$user_id}_{$project_id} #q21 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q22 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q23 select').val()) || 0);
+                                             
+                                var total8 = (parseInt($('div#{$user_id}_{$project_id} #q24 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q25 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q26 select').val()) || 0) +
+                                             (parseInt($('div#{$user_id}_{$project_id} #q27 select').val()) || 0);
+                                $('div#{$user_id}_{$project_id} #total1').text(total1);
+                                $('div#{$user_id}_{$project_id} #total2').text(total2);
+                                $('div#{$user_id}_{$project_id} #total3').text(total3);
+                                $('div#{$user_id}_{$project_id} #total4').text(total4);
+                                $('div#{$user_id}_{$project_id} #total5').text(total5);
+                                $('div#{$user_id}_{$project_id} #total6').text(total6);
+                                $('div#{$user_id}_{$project_id} #total7').text(total7);
+                                $('div#{$user_id}_{$project_id} #total8').text(total8);
+                                
+                                $('div#{$user_id}_{$project_id} #total').text(total1 + total2 + total3 + total4 + total5 + total6 + total7 + total8);
+                            });
+                            $('div#{$user_id}_{$project_id} select').change();
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
