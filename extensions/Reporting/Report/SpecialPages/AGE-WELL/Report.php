@@ -86,8 +86,8 @@ class Report extends AbstractReport {
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CRP") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRP", $selected);*/
            
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);*/
             
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CatalystApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst Application", "{$url}CatalystApplication", $selected);*/
