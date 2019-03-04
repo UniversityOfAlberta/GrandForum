@@ -66,7 +66,7 @@
                         <![CDATA[
                             <div id="proj{$user_id}">
                             <table class='wikitable'>
-                                <tr><td><b>Project Leader:</b></td><td>{getText(RP_KT_APPLICATION,INTENT,CFN_PL,0,{$user_id},0)}</td></tr>
+                                <tr><td><b>Project Leader:</b></td><td>{getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|firstname)} {getArray(RP_KT_APPLICATION,INTENT,PL,0,{$user_id},0,pl|0|lastname)}</td></tr>
                                 <tr><td><b>Project ID:</b></td><td>{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)}</td></tr>
                                 <tr><td><b>Project Title:</b></td><td>{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)}</td></tr>
                             </table>
