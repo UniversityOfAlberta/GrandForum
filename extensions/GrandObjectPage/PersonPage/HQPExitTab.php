@@ -19,6 +19,13 @@ class HQPExitTab extends AbstractEditableTab {
     function handleEdit(){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
+        DBFunctions::delete('grand_acknowledgements',
+                            array('user_id' => $this->person->getId()));
+        if(isset($_POST['acknowledged'])){
+            DBFunctions::insert('grand_acknowledgements',
+                                array('user_id' => $this->person->getId()));
+        }
+        DBFunctions::commit();
         if(isset($_POST['reason'])){
             $studies = $_POST['studies'];
             $employer = $_POST['employer'];
@@ -194,7 +201,7 @@ EOF;
     }
     
     function generateInactiveHQPHTML($person, $edit){
-        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $wgOut;
+        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $wgOut, $config;
         $user = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $person->getName()));
         $boxes = "";
@@ -252,7 +259,14 @@ EOF;
                                                                "country" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
-                $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' /><br />";
+                if($config->getValue('networkName') == 'FES'){
+                    $acks = DBFunctions::select(array('grand_acknowledgements'),
+                                                array('*'),
+                                                array('user_id' => EQ($this->person->getId())));
+                    $checked = (count($acks) > 0) ? "checked='checked'" : "";
+                    $this->html .= "<br /><input type='checkbox' value='Yes' name='acknowledged' $checked /> Check this box to confirm that the HQP has consented to share their employment information with FES";
+                }
+                $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' />";
             }
             else{
                 if(count($movedOn) > 0){
