@@ -33,7 +33,7 @@ class ApplicationTab extends AbstractTab {
             parent::AbstractTab($title);
         }
         if($idProjectRange != null){
-            $this->isProjectRange = $idProjectRange;
+            $this->idProjectRange = $idProjectRange;
         }
         $this->html = "";
     }
