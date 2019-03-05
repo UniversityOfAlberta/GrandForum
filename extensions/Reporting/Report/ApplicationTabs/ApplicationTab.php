@@ -9,7 +9,7 @@ class ApplicationTab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
+    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
@@ -31,6 +31,9 @@ class ApplicationTab extends AbstractTab {
         }
         else{
             parent::AbstractTab($title);
+        }
+        if($idProjectRange != null){
+            $this->isProjectRange = $idProjectRange;
         }
         $this->html = "";
     }

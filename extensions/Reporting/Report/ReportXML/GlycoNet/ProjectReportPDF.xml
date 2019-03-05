@@ -366,13 +366,13 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <!--ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
-            <![CDATA[
-                <h1><center>Request for Extension - 2015/2016 Collaborative Team Grants</center></h1>
-                <p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
-                {$item}
-            ]]>
-            </ReportItem-->
+            <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
+                <![CDATA[
+                    <h1><center>Request for Extension - 2015/2016 Collaborative Team Grants</center></h1>
+                    <!--p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
+                    {$item}-->
+                ]]>
+            </ReportItem>
             <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" recommended="true" optional="true">
                 <![CDATA[
                     <h2>Objectives during the renewal period and justification based on progress to date</h2>
