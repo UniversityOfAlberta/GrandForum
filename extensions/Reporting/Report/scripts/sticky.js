@@ -15,7 +15,7 @@ function sticky(response, postId, stickies){
             wrap(this);
           // and `3` respectively
           } else if (this.nodeType === Node.TEXT_NODE && !this.nodeValue.match(/^\s+$/)) {
-            if($(this).closest('a').length == 0 && $(this).closest('h1,h2,h3,h4,h5,h6,h7').length > 0){
+            if($(this).closest('a').length == 0 && $(this).closest('h1,h2,h3,h4,h5,h6,h7,.header').length > 0){
                 $(this).replaceWith($.map(this.nodeValue.split(/(\S+)/), function (w) {
                   return w.match(/^\s*$/) ? document.createTextNode(w) : $('<span>', {id: count = count + 1, text: w, class: 'word'}).get();
                 }));
