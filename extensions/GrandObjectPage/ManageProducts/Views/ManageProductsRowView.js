@@ -207,7 +207,7 @@ ManageProductsViewRow = Backbone.View.extend({
         else{
             _.each(productStructure.categories[this.model.get('category')].
                    types[this.model.getType()].data, $.proxy(function(val, key){        
-                        if(this.model.get('data')[key] != undefined &&  this.model.get('data')[key].trim() != ""){
+                        if(this.model.get('data')[key] != undefined && this.model.get('data')[key].trim() != ""){
                             incomplete.incomplete = false;
                         }
                 }, this)
@@ -218,6 +218,13 @@ ManageProductsViewRow = Backbone.View.extend({
            (typeof(this.model.get('data')['peer_reviewed']) == 'undefined' ||
             this.model.get('data')['peer_reviewed'].trim() == "")){
             incomplete.peerReviewedMissing = true;
+        }
+        
+        if(this.model.get('category') == "Publication" &&
+           productStructure.categories[this.model.get('category')].types[this.model.getType()].data['impact_factor'] != undefined &&
+           (typeof(this.model.get('data')['impact_factor']) == 'undefined' ||
+            this.model.get('data')['impact_factor'].trim() == "")){
+            incomplete.incomplete = true;
         }
         
         /*
