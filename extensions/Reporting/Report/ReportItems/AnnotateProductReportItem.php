@@ -37,13 +37,27 @@ class AnnotateProductReportItem extends AbstractReportItem {
             $impactFactorMissing = true;
         }
         $html = "";
-        if($incomplete){
+        if($incomplete || $peerReviewedMissing || $impactFactorMissing){
             $html .= "<span style='background:orange;'>";
         }
         else{
             $html .= "<span>";
         }
-        $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span></span>";
+        $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
+        if($incomplete || $peerReviewedMissing || $impactFactorMissing){
+            $html .= "<ul style='float: left; color: #FF6600;'>";
+            if($incomplete){
+                $html .= "<li>This entry may be incomplete</li>";
+            }
+            if($peerReviewedMissing){
+                $html .= "<li>This entry is missing a Peer Reviewed status</li>";
+            }
+            if($impactFactorMissing){
+                $html .= "<li>This entry is missing impact factor information</li>";
+            }
+            $html .= "</ul>";
+        }
+        $html .= "</span>";
         $html .= "<textarea id='{$this->getPostId()}' name='{$this->getPostId()}' style='display:none;'>{$this->getBlobValue()}</textarea>";
         $html .= "<div id='{$this->getPostId()}_dialog' title='Author Classification' style='display:none;'></div>";
         $html .= "<script id='{$this->getPostId()}_template' type='text/template'>
