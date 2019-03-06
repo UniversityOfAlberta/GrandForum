@@ -17,7 +17,7 @@
             <SectionPermission id="fec" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" type="ReportSection">
+    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
         <ReportItem id="thead" type="Static">
             <![CDATA[
                 {set(sumFaculty, 0)}
@@ -38,6 +38,7 @@
                             <th>Department</th>
                             <th width="1%">Annual Report</th>
                             <th>Evaluation</th>
+                            <th>Comments</th>
                     </thead>
                     <tbody>
             ]]>
@@ -116,6 +117,36 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
+            <ReportItem id="comments_start" type="Static">
+                <![CDATA[
+                        </td>
+                        <td>
+                ]]>
+            </ReportItem>
+            <ReportItemSet type="If" if="{contains({$my_roles},ViceDean)}">
+                <ReportItemSet id="fec_comments" type="FECReportItemSet">
+                    <ReportItem id="vars" type="Static">
+                        <![CDATA[
+                            {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
+                        ]]>
+                    </ReportItem>
+                    <ReportItemSet id="comment_if" type="If" if="{!=({getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)},)}">
+                        <ReportItem id="fec_comment" type="Static">
+                            <![CDATA[
+                                <b>{$user_name}:</b> {get(comment)}
+                                <hr />
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+            </ReportItemSet>
+            <ReportItemSet type="If" if="{contains({$my_sub_roles},Faculty Evaluation Committee)}">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="row_end" type="Static">
                 <![CDATA[
                         </td>
@@ -133,7 +164,6 @@
                         "iDisplayLength": -1
                     });
                 </script>
-                
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
                         <th>Average<br />Faculty Increment</th>
