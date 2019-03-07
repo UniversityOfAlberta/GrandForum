@@ -38,7 +38,7 @@
                             <th>Department</th>
                             <th width="1%">Annual Report</th>
                             <th>Evaluation</th>
-                            <th>Comments</th>
+                            <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
                     </thead>
                     <tbody>
             ]]>
