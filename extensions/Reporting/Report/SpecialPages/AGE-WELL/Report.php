@@ -181,6 +181,10 @@ class Report extends AbstractReport {
                 }
             }
         }
+        if(count($person->getEvaluates("SIP-2019", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPAcceleratorReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("SIP Review", "{$url}SIPAcceleratorReview", $selected);
+        }
         if(count($person->getEvaluates("CRP-2018", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CRPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CRP Review", "{$url}CRPReview", $selected);
