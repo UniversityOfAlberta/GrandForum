@@ -212,5 +212,7 @@
         </ReportItem>
         <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
         </ReportItem>
+        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+        </ReportItem>
     </ReportSection>
 </Report>

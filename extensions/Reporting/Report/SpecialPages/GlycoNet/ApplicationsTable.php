@@ -40,10 +40,14 @@ class ApplicationsTable extends SpecialPage{
         
         $this->startUpLegal2018Applicants = array();
         $this->startUpDev2018Applicants = array();
-        $this->stratApplicants = array();
+        $this->strat2017 = array();
+        $this->strat2019 = array();
         foreach(Person::getAllCandidates() as $person){
-            if($person->isSubRole('StratApplicant')){
-                $this->stratApplicants[] = $person;
+            if($person->isSubRole('Strat2017')){
+                $this->strat2017[] = $person;
+            }
+            if($person->isSubRole('Strat2019')){
+                $this->strat2019[] = $person;
             }
             if($person->isSubRole('StartUpLegal2018')){
                 $this->startUpLegal2018Applicants[] = $person;
@@ -238,8 +242,8 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->stratApplicants, 2019, "2019", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->stratApplicants, 2017, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2019, 2019, "2019", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2017, 2017, "2017-18", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

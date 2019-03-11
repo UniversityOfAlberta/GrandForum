@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2019" allowIdProjects="true" disabled="false">
     <Permissions>
-        <Role role="" subRole="StratApplicant">
+        <Role role="" subRole="Strat2019">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />

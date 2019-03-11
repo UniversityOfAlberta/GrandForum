@@ -294,7 +294,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <p>Letters from partners indicating the nature of their involvement in the project and their anticipated contribution (cash and/or in-kind) are required. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the project for the GlycoNet renewal application. <b>Projects for which there is not a written commitment of a 1:1 match to the GlycoNet request will be disqualified.</b></p>
 
@@ -316,22 +316,27 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
