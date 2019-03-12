@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Emerging Entrepreneur Award" reportType="RP_EEA_REVIEW" ajax="true" disabled="false" year="2019">
+    <Permissions>
+        <Role role="Evaluator">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
+        <ReportItem id="instructions" type="StaticReportItem">
+            <![CDATA[
+                <h3>Review Form and Instructions</h3>
+                <p>All applications will be reviewed by the HQP Advisory Committee based on the following criteria:</p>
+                <ol>
+                    <li>Rationale and Approach (20%)
+                        <ul>
+                            <li>What problem does this project solve?</li>
+                            <li>What sets this innovation apart?</li>
+                        </ul>
+                    </li>
+                    <li>Feasibility (30%)
+                        <ul>
+                            <li>What is the current state of this solution?</li>
+                            <li>Are the timelines/objectives reasonable?</li>
+                        </ul>
+                    </li>
+                    <li>Value Proposition (25%)
+                        <ul>
+                            <li>Size/scale of the target audience/market (in Canada and beyond) provided and accurate.</li>
+                            <li>Does the application explain the innovation’s top competitive advantages?</li>
+                            <li>Partnerships?</li>
+                        </ul>
+                    </li>
+                    <li>Fit with AGE-WELL Goals and Priorities (20%)
+                        <ul>
+                            <li>Which Challenge Area does this address?</li>
+                            <li>Biography & CVs</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>To make the review process as simple as possible, provide a single overall score for each criterion using the following scale:</p>
+
+                <p>Please use the following scale to provide an overall assessment on each of the three criteria</p>
+
+<table frame='box' rules='all'>
+    <tr>
+        <th>Potential Impact</th><th>Impact Score</th><th>Descriptor</th><th>Additional Guidance on Strengths/Weaknesses</th>
+    </tr>
+    <tr><td rowspan='3'>High</td><td>9</td><td>Exceptional</td><td>Exceptionally strong with essentially no weaknesses</td></tr>
+    <tr><td>8</td><td>Outstanding</td><td>Extremely strong with negligible weaknesses</td></tr>
+    <tr><td>7</td><td>Excellent</td><td>Very strong with only some minor weaknesses</td></tr>
+    <tr><td rowspan='3'>Moderate</td><td>6</td><td>Very Good</td><td>Strong but with numerous minor weaknesses</td></tr>
+    <tr><td>5</td><td>Good</td><td>Strong but with at least one moderate weakness</td></tr>
+    <tr><td>4</td><td>Satisfactory</td><td>Some strengths but also some moderate weaknesses</td></tr>
+    <tr><td rowspan='3'>Low</td><td>3</td><td>Fair</td><td>Some strengths but with at least one major weakness</td></tr>
+    <tr><td>2</td><td>Marginal</td><td>A few strengths and a few major weaknesses</td></tr>
+    <tr><td>1</td><td>Poor</td><td>Very few strengths and numerous major weaknesses</td></tr>
+    <tr><td colspan='4'><b>Definitions</b></td></tr>
+    <tr><td colspan='4'>Minor: weakness that does not substantially lessen the quality of the proposal or potential of the candidate.<br />
+Moderate: weakness that lessens the quality of the proposal or potential of the candidate<br />
+Major: weakness that severely limits the quality of the proposal or potential of the candidate</td></tr>
+</table>
+<p>Please use the comment boxes to justify your score. We have provided some questions to guide scoring on each criterion. Please bear these in mind, but use your own judgment if you think other factors are relevant.</p>
+
+<p>There is also an overall comments box where you can highlight the key attributes of the applicant.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="materials" tooltip="Download HQP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="project_materials_head" type="StaticReportItem">
+            <![CDATA[
+            <table align="left">
+                <tr>
+                    <th style="min-width:110px;">HQP Name</th>
+                    <th style="min-width:125px;">Application PDF</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EEA-2019">
+            <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EEA" width="100%" project="true">
+                <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="HQP Review" name="HQP Review" blobSection="EEA_REVIEW" type="EditableReportSection">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EEA-2019">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="1" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_1" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>1. Rationale and Approach (20%)</h2>
+                        <small>
+                            <ul>
+                                <li>What problem does this project solve?</li>
+                                <li>What sets this innovation apart?</li>
+                            </ul>
+                        </small>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_1_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="2" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_2" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>2. Feasibility (30%)</h2>
+                        <small>
+                            <ul>
+                                <li>What is the current state of this solution?</li>
+                                <li>Are the timelines/objectives reasonable?</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_2_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="3" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_3" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>3. Value Proposition (25%)</h2>
+                        <small>
+                            <ul>
+                                <li>Size/scale of the target audience/market (in Canada and beyond) provided and accurate.</li>
+                                <li>Does the application explain the innovation’s top competitive advantages?</li>
+                                <li>Partnerships?</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_3_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="4" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_4" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>4. Fit with AGE-WELL Goals and Priorities (20%)</h2>
+                        <small>
+                            <ul>
+                                <li>Which Challenge Area does this address?</li>
+                                <li>Biography & CVs</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="4_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_4_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="overall" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="EEA_OVERALL_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Overall comments</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
