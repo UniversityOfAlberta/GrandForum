@@ -97,12 +97,20 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
-            DBFunctions::update('grand_project_status',
-                                array('status' => $_POST['status']),
-                                array('evolution_id' => EQ($this->project->getEvolutionId()),
-                                      'project_id' => EQ($this->project->getId())));
-            Project::$cache = array();
-            $this->project = Project::newFromId($this->project->getId());
+            if($_POST['status'] == "Ended"){
+                $_POST['project'] = $this->project->getName();
+                APIRequest::doAction('DeleteProject', true);
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
+            }
+            else{
+                DBFunctions::update('grand_project_status',
+                                    array('status' => $_POST['status']),
+                                    array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                          'project_id' => EQ($this->project->getId())));
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
+            }
         }
         
         if(isset($_POST['acronym'])){
