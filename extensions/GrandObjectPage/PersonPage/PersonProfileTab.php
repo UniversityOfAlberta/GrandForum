@@ -190,6 +190,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->facebook = @$_POST['facebook'];
             $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
@@ -472,6 +473,7 @@ EOF;
     function showEditPhoto($person, $visibility){
         global $config;
         $me = Person::newFromWgUser();
+        $address = $person->getMailingAddress();
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' style='max-width:100px;max-height:132px;' />";
         $this->html .= "<div id=\"special_links\"></div>";
@@ -497,12 +499,31 @@ EOF;
                                 <td><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
                             </tr>
                             <tr>
+                                <td align='right'><b>Facebook Url:</b></td>
+                                <td><input type='text' size='30' name='facebook' value='".str_replace("'", "&#39;", $person->getFacebook())."' /></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Office Address:</b></td>
-                                <td><input type='text' size='30' name='office' value='".str_replace("'", "&#39;", $person->getOffice())."' /></td>
+                                <td align='right' colspan='2'>
+                                    <b>Mailing Address:</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right' colspan='2'>
+                                    <b>Line 1:</b><br />
+                                    <b>Line 2:</b><br />
+                                    <b>Line 3:</b><br />
+                                    <b>Line 4:</b>
+                                </td>
+                                <td>
+                                    <input type='text' size='30' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                    <input type='text' size='30' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                    <input type='text' size='30' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                    <input type='text' size='30' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' />
+                                </td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>
