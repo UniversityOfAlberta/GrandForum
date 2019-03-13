@@ -99,6 +99,7 @@ class ProjectMainTab extends AbstractEditableTab {
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
             if($_POST['status'] == "Ended"){
                 $_POST['project'] = $this->project->getName();
+                $_POST['effective_date'] = date('Y-m-d');
                 APIRequest::doAction('DeleteProject', true);
                 Project::$cache = array();
                 $this->project = Project::newFromId($this->project->getId());
