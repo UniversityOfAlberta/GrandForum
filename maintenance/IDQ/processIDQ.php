@@ -10,6 +10,8 @@
     $evals = array_merge($small, $medium, $large);
     
     $facultyPeople = new FacultyPeopleReportItemSet();
+    $facultyPeople->attributes['start'] = (YEAR-1)."-07-01";
+    $facultyPeople->attributes['end'] = (YEAR)."-07-01";
     
     $faculty = array();
     

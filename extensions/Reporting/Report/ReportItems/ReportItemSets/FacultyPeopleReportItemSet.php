@@ -7,6 +7,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
         
         $data = DBFunctions::select(array('grand_personal_fec_info'),
                                     array('user_id'),
@@ -39,7 +40,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Handle special cases
                 continue;
             }
-            if($person->isRoleDuring(DEAN, $start, $end)){
+            if(!$includeDean && $person->isRoleDuring(DEAN, $start, $end)){
                 // Don't show Deans
                 continue;
             }
@@ -57,7 +58,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Handle special cases
                 continue;
             }
-            if($person->isRoleDuring(DEAN, $start, $end)){
+            if(!$includeDean && $person->isRoleDuring(DEAN, $start, $end)){
                 // Don't show Deans
                 continue;
             }
