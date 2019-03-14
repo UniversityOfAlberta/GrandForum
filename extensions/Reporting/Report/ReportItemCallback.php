@@ -137,6 +137,7 @@ class ReportItemCallback {
             "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
+            "time2date" => "time2date",
             "name" => "getName",
             "index" => "getIndex",
             "value" => "getValue",
@@ -875,6 +876,10 @@ class ReportItemCallback {
         else if($productId != 0){
             return $productId;
         }
+    }
+    
+    function time2date($time, $format='F j, Y'){
+        return time2date($time, $format);
     }
     
     function getName(){
