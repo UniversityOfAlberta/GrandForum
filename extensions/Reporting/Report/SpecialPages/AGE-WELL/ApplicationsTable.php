@@ -373,6 +373,7 @@ class ApplicationsTable extends SpecialPage{
     function generateWP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015-16"));
@@ -382,6 +383,7 @@ class ApplicationsTable extends SpecialPage{
     function generateCC(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2016, "2016-17"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -390,6 +392,7 @@ class ApplicationsTable extends SpecialPage{
     function generateIH(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
