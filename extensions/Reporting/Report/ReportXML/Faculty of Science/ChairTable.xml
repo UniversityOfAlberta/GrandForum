@@ -73,7 +73,8 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
         </Role>
-        <Person id="20">
+        <!-- Chemistry -->
+        <!--Person id="352">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -82,6 +83,91 @@
             <SectionPermission id="chairs_advice" permissions="rw" />
             <SectionPermission id="dept_publications" permissions="rw" />
         </Person>
+        <Person id="12146">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person-->
+        <!-- Physics -->
+        <!--Person id="252">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person>
+        <Person id="12570">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person-->
+        <!-- Math -->
+        <!--Person id="20">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person>
+        <Person id="12599">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person-->
+        <!-- Computing Science -->
+        <!--Person id="248">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person>
+        <Person id="13029">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person-->
+        <!-- Psychology -->
+        <!--Person id="64">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person>
+        <Person id="13030">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="dept_publications" permissions="rw" />
+        </Person-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="thead" type="Static">
