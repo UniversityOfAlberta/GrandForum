@@ -920,6 +920,16 @@ class Person extends BackboneModel {
                                 'project' => $project->getName(),
                                 'fullName' => $project->getFullName());
         }
+        $addr = $this->getMailingAddress();
+        $address = array(
+            'line1' => $addr->getLine1(),
+            'line2' => $addr->getLine2(),
+            'line3' => $addr->getLine3(),
+            'line4' => $addr->getLine4(),
+            'city' => $addr->getCity(),
+            'province' => $addr->getProvince(),
+            'country' => $addr->getCountry()
+        );
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -944,6 +954,7 @@ class Person extends BackboneModel {
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
+                      'address' => $address,
                       'roles' => $roles,
                       'projects' => $projects,
                       'publicProfile' => $publicProfile,
@@ -1757,6 +1768,25 @@ class Person extends BackboneModel {
             return $address;
         }
         return new Address(array());
+    }
+    
+    function updateMailingAddress($address){
+        DBFunctions::delete('grand_user_addresses',
+                            array('user_id' => EQ($this->getId())));
+        DBFunctions::insert('grand_user_addresses',
+                            array(
+                                'type' => $address->getType(),
+                                'line1' => $address->getLine1(),
+                                'line2' => $address->getLine2(),
+                                'line3' => $address->getLine3(),
+                                'line4' => $address->getLine4(),
+                                'line5' => $address->getLine5(),
+                                'city' => $address->getCity(),
+                                'province' => $address->getProvince(),
+                                'country' => $address->getCountry(),
+                                'code' => $address->getPostalCode(),
+                                'user_id' => $this->getId()
+                            ));
     }
     
     /**

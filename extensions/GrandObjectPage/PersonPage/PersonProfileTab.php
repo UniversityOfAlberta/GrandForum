@@ -196,6 +196,18 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->stakeholder = @$_POST['stakeholder'];
             $this->person->update();
 
+            $address = $this->person->getMailingAddress();
+            $address->type = 'Mailing';
+            $address->line1 = @$_POST['address_line1'];
+            $address->line2 = @$_POST['address_line2'];
+            $address->line3 = @$_POST['address_line3'];
+            $address->line4 = @$_POST['address_line4'];
+            $address->city = @$_POST['address_city'];
+            $address->province = @$_POST['address_province'];
+            $address->country = @$_POST['address_country'];
+            $address->code = @$_POST['address_code'];
+            $this->person->updateMailingAddress($address);
+
             $api = new UserEmailAPI();
             $api->doAction(true);
         }
@@ -507,27 +519,25 @@ EOF;
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right' colspan='2'>
-                                    <b>Mailing Address:</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right' colspan='2'>
-                                    <b>Line 1:</b><br />
-                                    <b>Line 2:</b><br />
-                                    <b>Line 3:</b><br />
-                                    <b>Line 4:</b>
-                                </td>
-                                <td>
-                                    <input type='text' size='30' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
-                                    <input type='text' size='30' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
-                                    <input type='text' size='30' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
-                                    <input type='text' size='30' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' />
-                                </td>
-                            </tr>
-                            <tr>
                                 <td align='right'><b>Phone Number:</b></td>
                                 <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Mailing Address:</b>
+                                </td>
+                                <td align='right'>
+                                    <small>
+                                        <b>Line 1:</b><input type='text' size='28' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                        <b>Line 2:</b><input type='text' size='28' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                        <b>Line 3:</b><input type='text' size='28' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                        <b>Line 4:</b><input type='text' size='28' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
+                                        <b>Postal Code:</b><input type='text' size='28' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
+                                        <b>City:</b><input type='text' size='28' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
+                                        <b>Province:</b><input type='text' size='28' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
+                                        <b>Country:</b><input type='text' size='28' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
+                                    </small>
+                                </td>
                             </tr>
                         </table></td>";
     }
