@@ -288,7 +288,8 @@ HTML.Select = function(view, attr, options){
     var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";
-        if(val.split(":")[0] == opt || (typeof opt == 'object' && val.split(":")[0] == opt.value)){
+        if(val.split(":")[0] == opt || val == opt || 
+           (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
             selected = "selected='selected'";
             foundSelected = true;
         }

@@ -62,7 +62,7 @@ class SIPReviewTable extends SpecialPage{
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='SIPReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='6' style='background: #FFFFFF;'></th>
+                    <th colspan='11' style='background: #FFFFFF;'></th>
                     <th colspan='6' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Projects Applying for Renewal</th>
                     <th colspan='4' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Relevance</th>
                     <th colspan='6' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Value Proposition and Uniqueness</th>
@@ -77,9 +77,14 @@ class SIPReviewTable extends SpecialPage{
                 </tr>
                 <tr>
                     <th>Applicant</th>
+                    <th>Institution</th>
                     <th>Title</th>
                     <th>Type</th>
                     <th>Theme</th>
+                    <th>Partners</th>
+                    <th>Cash</th>
+                    <th>In-Kind</th>
+                    <th>Related AGE-WELL project</th>
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
                     <th style='border-left: 2px solid #AAAAAA;'>QA</th>
@@ -164,7 +169,7 @@ class SIPReviewTable extends SpecialPage{
                 $project = new Project(array());
                 $project->id = $projectId;
             }
-            $report = new DummyReport("RP_SIP", $candidate, $project, $year, true);
+            $report = new DummyReport('RP_SIP_ACC_'.str_replace("SIP-", "", $evalKey), $candidate, $project, $year, true);
             $check = $report->getPDF();
             $button = "";
             if(isset($check[0])){
@@ -172,10 +177,13 @@ class SIPReviewTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
 
-            $title = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'TITLE');
-            $primary = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'PRIMARY');
-            $secondary = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER', 'SECONDARY');
-            $merged = self::getApplicationBlobMD5($year, $candidate->getId(), $projectId, BLOB_RAW, 'PART3', 'MERGED');
+            $title = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'PROJECT', str_replace("SIP-", "", $evalKey));
+            $type = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'TYPE', str_replace("SIP-", "", $evalKey));
+            $theme = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'WP', str_replace("SIP-", "", $evalKey));
+            $partners = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'PARTNERS', str_replace("SIP-", "", $evalKey));
+            $cash = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'CASH', str_replace("SIP-", "", $evalKey));
+            $inki = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'INKI', str_replace("SIP-", "", $evalKey));
+            $previous = self::getApplicationBlobValue($year, $candidate->getId(), $projectId, BLOB_TEXT, 'COVER_SHEET', 'PREVIOUS', str_replace("SIP-", "", $evalKey));
             
             foreach($evaluators as $key => $eval){
                 $qA             = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), $projectId, 'A', str_replace("SIP-", "", $evalKey));
@@ -199,10 +207,15 @@ class SIPReviewTable extends SpecialPage{
                 
                 $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
                 $html .= "<td align='right'>{$candidate->getNameForForms()}</td>";
+                $html .= "<td>{$candidate->getUni()}</td>";
                 $html .= "<td>{$title}</td>";
-                $html .= "<td>{$primary}</td>";
+                $html .= "<td>{$type}</td>";
+                $html .= "<td align='center'>{$theme}</td>";
+                $html .= "<td align='center'>{$partners}</td>";
+                $html .= "<td align='center'>\${$cash}</td>";
+                $html .= "<td align='center'>\${$inki}</td>";
+                $html .= "<td align='center'>{$previous}</td>";
                 $html .= "<td align='center'>{$button}</td>";
-                $html .= "<td align='center'><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$merged}' class='button'>Download</a></td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>$qA</td>";
                 $html .= "<td valign='top'>$qAComm</td>";
@@ -289,8 +302,11 @@ class SIPReviewTable extends SpecialPage{
         return $value;
     }
     
-    static function getApplicationBlobValue($year, $userId, $projId, $type, $section, $item){
-        $addr = ReportBlob::create_address('RP_SIP', $section, $item, 0);
+    static function getApplicationBlobValue($year, $userId, $projId, $type, $section, $item, $suffix=""){
+        if($suffix != ""){
+            $suffix = "_".$suffix;
+        }
+        $addr = ReportBlob::create_address('RP_SIP_ACC'.$suffix, $section, $item, 0);
         $blob = new ReportBlob($type, $year, $userId, $projId);
         $blob->load($addr);
         $data = $blob->getData();

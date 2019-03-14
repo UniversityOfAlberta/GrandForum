@@ -32,7 +32,7 @@
                 <table id="partner<%= i %>">
                     <tr>
                         <td align="right"><b>Partner:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50'}) %></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50', class: 'partner_name'}) %></td>
                     </tr>
                     <tr>
                         <td valign="top" style="padding-top:11px;width:100px;" align="right"><b>Contact:</b><br /><small style="line-height: 1em;">This information is for reporting purposes only. Partners will not be contacted.</small></td>
@@ -83,7 +83,8 @@
                                                                                         'Research Chair',
                                                                                         'Scholarship',
                                                                                         'Fellowship',
-                                                                                        'Contract']}) %></td>
+                                                                                        'Contract'],
+                                                                              class: 'partner_type'}) %></td>
                     </tr>
                     <tr id="subtype_inkind">
                         <td align="right"><b>Sub-Type:</b></td>
@@ -98,7 +99,8 @@
                                                                                            'Salaries of Managerial and Administrative Staff',
                                                                                            'Project-related Travel',
                                                                                            'Other'],
-                                                                                 id: 'partners_' + i + '_subtype_inkind'}) %>
+                                                                                 id: 'partners_' + i + '_subtype_inkind',
+                                                                                 class: 'partner_subtype'}) %>
                             <span id="other_subtype"><%= HTML.TextBox(this, 'partners.' + i + '.other_subtype') %></span>
                         </td>
                     </tr>
@@ -121,7 +123,8 @@
                                                                                            'Materials, supplies and other expenditures',
                                                                                            'Travel',
                                                                                            'Other expenditures'],
-                                                                                 id: 'partners_' + i + '_subtype_cash'}) %>
+                                                                                 id: 'partners_' + i + '_subtype_cash',
+                                                                                 class: 'partner_subtype'}) %>
                         </td>
                     </tr>
                     <tr id="cash">
