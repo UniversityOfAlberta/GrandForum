@@ -50,7 +50,7 @@ class PersonPage {
             }
             $person = Person::newFromName($name);
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
-                                                           $role == PL || $role == 'PL' || $role == TC || $role == TL) && 
+                                                           $role == PL || $role == PA || $role == 'PL' || $role == TC || $role == TL) && 
                $person->getName() != null && 
                $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
                 TabUtils::clearActions();
@@ -143,7 +143,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
                 $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);

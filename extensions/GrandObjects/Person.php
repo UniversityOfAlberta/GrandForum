@@ -4298,11 +4298,12 @@ class Person extends BackboneModel {
         if($type != null){
             $extra = "AND l.type = '$type'";
         }
+        $projectName = DBFunctions::escape($p->getName());
         $data = DBFunctions::execSQL("SELECT 1
                                      FROM grand_project_leaders l, grand_project p 
                                      WHERE l.project_id = p.id
                                      AND l.user_id = '{$this->id}'
-                                     AND p.name = '{$p->getName()}'
+                                     AND p.name = '{$projectName}'
                                      AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)
                                      $extra");

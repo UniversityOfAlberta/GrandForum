@@ -1135,7 +1135,7 @@ If you have forgotten your password please enter your login ID and request a new
 	        </td>
 	    </tr>
 	    $message
-		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
+		<tr class='tooltip' title="Your username is your email address">
 			<td valign='middle' align='right' style='width:1%;'>Username:</td>
 			<td class="mw-input">
 				<input type='text' class='loginText dark' style='width:97%;' name="wpEmail" value="$name" id="wpName1"
