@@ -713,6 +713,14 @@ abstract class AbstractReport extends SpecialPage {
                 $report->renderForPDF();
                 $data = "";
                 $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report);
+                if(!$preview){
+                    $_GET['preview'] = true;
+                    $_GET['dpi'] = 120;
+                    calculateDPI();
+                    $html = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, true, $this, false, true);
+                    $_GET['preview'] = false;
+                    calculateDPI();
+                }
                 if($preview){
                     exit;
                 }
@@ -721,7 +729,7 @@ abstract class AbstractReport extends SpecialPage {
                     $this_person = Person::newFromId($_GET['userId']);
                 }
                 $sto = new ReportStorage($this_person);
-                @$sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
+                @$sto->store_report($data, $html,$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
                 if($report->project != null){
                     $ind = new ReportIndex($this_person);
                     $rid = $sto->metadata('report_id');
@@ -819,6 +827,7 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/report.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/instructions.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/progress.js'></script>");
+        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/sticky.js'></script>");
         if($this->ajax){
             $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/ajax.js'></script>");
         }
@@ -1071,6 +1080,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     static function tinyMCEUpload($action){
+        global $DPI, $DPI_CONSTANT;
         $me = Person::newFromWgUser();
         if($action == "tinyMCEUpload"){
             if(!$me->isLoggedIn() || 
@@ -1082,7 +1092,7 @@ abstract class AbstractReport extends SpecialPage {
             $hash = md5($src);
             system("convert +antialias -background transparent $src /tmp/$hash.png");
             list($width, $height) = getimagesize("/tmp/$hash.png");
-            $imgConst = DPI_CONSTANT*72/96;
+            $imgConst = $DPI_CONSTANT*72/96;
             $width = $width/$imgConst;
             $height = $height/$imgConst;
             $png = file_get_contents("/tmp/$hash.png");

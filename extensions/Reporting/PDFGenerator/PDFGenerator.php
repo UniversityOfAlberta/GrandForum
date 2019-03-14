@@ -12,18 +12,23 @@ $GLOBALS['footnotes'] = array();
 $GLOBALS['nFootnotes'] = 0;
 $GLOBALS['nFootnotesProcessed'] = 0;
 $GLOBALS['section'] = 0;
-if(isset($_GET['dpi'])){
-    define('DPI', $_GET['dpi']);
-}
-else if(isset($_GET['preview'])){
-    define('DPI', 150);
-}
-else{
-    define('DPI', 300);
-}
-define('DPI_CONSTANT', DPI/72);
 
-PDFGenerator::$preview = isset($_GET['preview']);
+function calculateDPI(){
+    if(isset($_GET['dpi'])){
+        $GLOBALS['DPI'] = $_GET['dpi'];
+    }
+    else if(isset($_GET['preview'])){
+        $GLOBALS['DPI'] = 150;
+    }
+    else{
+        $GLOBALS['DPI'] = 300;
+    }
+    $GLOBALS['DPI_CONSTANT'] = $GLOBALS['DPI']/72;
+
+    PDFGenerator::$preview = isset($_GET['preview']);
+}
+
+calculateDPI();
 
 /**
  * This class helps with the generation of a PDF document.
@@ -219,8 +224,8 @@ abstract class PDFGenerator {
      * @param AbstractReport $report The report that this PDF is for (optionally used to add extra information)
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
-        global $wgServer, $wgScriptPath, $wgUser, $config;
+    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false, $return=false){
+        global $wgServer, $wgScriptPath, $wgUser, $config, $DPI, $DPI_CONSTANT;
         
         if(self::$preview){
             $preview = true;
@@ -362,7 +367,7 @@ abstract class PDFGenerator {
 		<title>$name</title>
         <style type='text/css'>
 EOF;
-        $fontSize = ($config->getValue('pdfFontSize')*DPI_CONSTANT);
+        $fontSize = ($config->getValue('pdfFontSize')*$DPI_CONSTANT);
         if($preview){
             $header .= "
             body, html {
@@ -371,11 +376,11 @@ EOF;
             }
             
             #pdfBody .pagebreak {
-		        border-width: 0 0 ".max(1, (0.5*DPI_CONSTANT))."px 0;
+		        border-width: 0 0 ".max(1, (0.5*$DPI_CONSTANT))."px 0;
 		        border-style: dashed;
 		        border-color: #000000;
-		        margin-bottom: ".(5*DPI_CONSTANT)."px;
-		        margin-top:".(5*DPI_CONSTANT)."px;
+		        margin-bottom: ".(5*$DPI_CONSTANT)."px;
+		        margin-top:".(5*$DPI_CONSTANT)."px;
 		    }
 		    
 		    /*#pdfBody .logo {
@@ -385,12 +390,12 @@ EOF;
 		    }*/
 		    
 		    #pdfBody .report_name {
-		        margin-top:".(17*DPI_CONSTANT)."px;
+		        margin-top:".(17*$DPI_CONSTANT)."px;
 		        margin-right: 100px;
 		    }
 		    
 		    #pdfBody .report_info {
-		        margin-top:".(12*DPI_CONSTANT)."px;
+		        margin-top:".(12*$DPI_CONSTANT)."px;
 		        margin-right: 100px;
 		    }
 		    
@@ -401,12 +406,12 @@ EOF;
 		    #pdfBody #page_header {
 		        width:100%;
 		        text-align:right;
-		        margin-top:-".(15*DPI_CONSTANT)."px;
+		        margin-top:-".(15*$DPI_CONSTANT)."px;
 		        font-size:smaller;
 		    }
 		    
 		    #pdfBody .belowLine {
-		        margin-bottom:".(15*DPI_CONSTANT)."px;
+		        margin-bottom:".(15*$DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody {
@@ -475,12 +480,12 @@ EOF;
 		    
 		    #pdfBody .wikitable th {
 		        background: #EEEEEE;
-		        padding: ".(1*DPI_CONSTANT)."px;
+		        padding: ".(1*$DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody .wikitable td {
 		        background: #FFFFFF;
-		        padding: ".(1*DPI_CONSTANT)."px;
+		        padding: ".(1*$DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody th {
@@ -491,7 +496,7 @@ EOF;
 		    
             #pdfBody .inlineError, #pdfBody .inlineWarning, #pdfBody .inlineSuccess, #pdfBody .inlineInfo {
                 margin: 0 0;
-                padding: 0 ".(2*DPI_CONSTANT)."px;
+                padding: 0 ".(2*$DPI_CONSTANT)."px;
             }
 
             #pdfBody .inlineError {
@@ -545,8 +550,8 @@ EOF;
 		    
 		    #pdfBody .report_info {
 		        width: 100%;
-		        height: ".(($fontSize+4)*($nInfo) + (20*DPI_CONSTANT))."px;
-		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (20*$DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(-3*$DPI_CONSTANT))."px;
 		        top:0;
 		        margin-right:0 !important;
 		    }
@@ -557,19 +562,19 @@ EOF;
 		    
 		    #pdfBody .progress_table {
 		        white-space: nowrap;
-		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;
-		        border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;
-		        border-width:".max(1, (0.5*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(-3*$DPI_CONSTANT))."px;
+		        border-spacing:".max(1, (0.5*$DPI_CONSTANT))."px;
+		        border-width:".max(1, (0.5*$DPI_CONSTANT))."px;
 		        border-color: #000000;
-		        margin-top:".(5*DPI_CONSTANT)."px;
+		        margin-top:".(5*$DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody .report_info > table {
-		        height: ".(($fontSize+4)*($nInfo) + (20*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (20*$DPI_CONSTANT))."px;
 		    }
 		    
 		    #pdfBody hr {
-		        border-width: ".max(1, (0.5*DPI_CONSTANT))."px 0 0 0;
+		        border-width: ".max(1, (0.5*$DPI_CONSTANT))."px 0 0 0;
 		        border-style: solid;
 		        border-color: #000000;
 		    }
@@ -577,35 +582,35 @@ EOF;
 		    #pdfBody h1 {
 		        margin-top:0;
 		        margin-bottom: 0.25em;
-		        font-size: ".($fontSize+(6*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(6*$DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
+		        padding: ".max(1, (0.5*$DPI_CONSTANT))."px 0 ".(2*$DPI_CONSTANT)."px 0;
 		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h2 {
 		        color: #00713B !important;
-		        font-size: ".($fontSize+(4*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(4*$DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        padding: ".max(2, (2*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
-		        margin-bottom: ".(2*DPI_CONSTANT)."px;
-		        margin-top: ".(2*DPI_CONSTANT)."px;
+		        padding: ".max(2, (2*$DPI_CONSTANT))."px 0 ".(2*$DPI_CONSTANT)."px 0;
+		        margin-bottom: ".(2*$DPI_CONSTANT)."px;
+		        margin-top: ".(2*$DPI_CONSTANT)."px;
 		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h3 {
-		        font-size: ".($fontSize+(3*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(3*$DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
-		        margin-bottom: ".(2*DPI_CONSTANT)."px;
-		        margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
+		        padding: ".max(1, (0.5*$DPI_CONSTANT))."px 0 ".(2*$DPI_CONSTANT)."px 0;
+		        margin-bottom: ".(2*$DPI_CONSTANT)."px;
+		        margin-top: ".($config->getValue('pdfFontSize')*$DPI_CONSTANT)."px;
 		        border-bottom: 0 !important;
 		    }
 		    
 		    #pdfBody h4 {
 		        margin-top:0;
 		        margin-bottom:0;
-		        font-size: ".($fontSize+(1*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(1*$DPI_CONSTANT))."px;
 		        border-bottom: 0 !important;
 		    }
 		    
@@ -630,31 +635,31 @@ EOF;
 		    }
 		    
 		    #pdfBody small, #pdfBody .small {
-		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        font-size: ".max(10, ($fontSize+(-3*$DPI_CONSTANT)))."px;
 		        display:inline;
 		    }
 		    
 		    #pdfBody table.small {
-		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        font-size: ".max(10, ($fontSize+(-3*$DPI_CONSTANT)))."px;
 		        display: table;
 		    }
 		    
 		    #pdfBody td.small {
-		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        font-size: ".max(10, ($fontSize+(-3*$DPI_CONSTANT)))."px;
 		        display:table-cell;
 		    }
 		    
 		    #pdfBody .smaller {
-		        font-size: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        font-size: ".max(9, ($fontSize+(-4*$DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody .smallest {
-		        font-size: ".max(8, ($fontSize+(-6*DPI_CONSTANT)))."px;
+		        font-size: ".max(8, ($fontSize+(-6*$DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody ul {
-		        margin-top: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
-		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        margin-top: ".max(9, ($fontSize+(-4*$DPI_CONSTANT)))."px;
+		        margin-bottom: ".max(9, ($fontSize+(-4*$DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody ul ul {
@@ -673,7 +678,7 @@ EOF;
 		    
 		    #pdfBody .tinymce ul {
 		        margin-top: 0;
-		        margin-bottom: ".max(9, ($fontSize+(DPI_CONSTANT)))."px;
+		        margin-bottom: ".max(9, ($fontSize+($DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody .tinymce ul ul {
@@ -710,15 +715,15 @@ EOF;
             }
             
             #pdfBody .logo {
-                width:".(198.333*DPI_CONSTANT)."px;
-                height:".(68*DPI_CONSTANT)."px;
+                width:".(198.333*$DPI_CONSTANT)."px;
+                height:".(68*$DPI_CONSTANT)."px;
                 position:absolute;
-                margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
+                margin-top: ".($config->getValue('pdfFontSize')*$DPI_CONSTANT)."px;
             }
             
             #pdfBody .logo_div {
-                margin-bottom: ".DPI_CONSTANT."px;
-                height: ".(($fontSize+4)*$nInfo + (20*DPI_CONSTANT))."px;
+                margin-bottom: ".$DPI_CONSTANT."px;
+                height: ".(($fontSize+4)*$nInfo + (20*$DPI_CONSTANT))."px;
             }
             
             #pdfBody br {
@@ -847,11 +852,17 @@ EOF;
         $html = str_replace("line-height: inherit", "", $html);
         if($preview){
             $html = PDFGenerator::replaceSpecial($html);
-            $headerTop = -($nHeaderLines - 1)*5*DPI_CONSTANT;
-            $pageHeader = (trim($headerName) != "") ? "<div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' />" : "";
+            $headerTop = -($nHeaderLines - 1)*5*$DPI_CONSTANT;
+            $pageHeader = (trim($headerName) != "") ? "<div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*$DPI_CONSTANT)."px;right:".(0*$DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*$DPI_CONSTANT)."px;' />" : "";
             $belowLine = (trim($headerName) != "") ? "<div class='belowLine'></div>" : "";
-            echo $header."<body><div id='pdfBody'>{$pageHeader}<div style='position:absolute;top:{$headerTop}px;font-size:smaller;'><i>{$report->name}</i></div>{$belowLine}{$html}</div></body></html>";
-            return;
+            $document = $header."<body><div id='pdfBody'>{$pageHeader}<div style='position:absolute;top:{$headerTop}px;font-size:smaller;'><i>{$report->name}</i></div>{$belowLine}{$html}</div></body></html>";
+            if($return){
+                return $document;
+            }
+            else {
+                echo $document;
+                return;
+            }
         }
         
         $html = str_replace("–", '-', $html);

@@ -28,6 +28,8 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
             $userId = "&userId={$userId}";
         }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
+		    $startYearGet = (isset($_GET['startYear'])) ? "&startYear={$_GET['startYear']}" : "";
+		    $yearGet = (isset($_GET['year'])) ? "&year={$_GET['year']}" : "";
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
 		            $('#generateButton{$this->getPostId()}').click(function(){
@@ -39,7 +41,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_throbber{$this->getPostId()}').css('display', 'inline-block');
 		                saveAll(function(){
 		                    $.ajax({
-		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}{$section}{$userId}&generatePDF', 
+		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}{$section}{$userId}{$startYearGet}{$yearGet}&generatePDF', 
 		                            success : function(data){
 		                                            //var data = jQuery.parseJSON(response);
 		                                            for(index in data){

@@ -51,6 +51,11 @@ class ReportArchive extends SpecialPage {
             $sto = new ReportStorage($person);
             if (! empty($tok)) {
                 $pdf = $sto->fetch_pdf($tok, false);
+                if(isset($_GET['html'])){
+                    $html = $sto->fetch_html($tok);
+                    echo $html;
+                    exit;
+                }
                 $len = $sto->metadata('len_pdf');
                 $user_id = $sto->metadata('user_id');
                 $type = $sto->metadata('type');
@@ -70,7 +75,6 @@ class ReportArchive extends SpecialPage {
                     if($wgTitle->getText() == "ReportArchive"){
                         if(strstr($type, "RPTP_QACVS") !== false){
                             $name = str_replace("RPTP_", "", $type);
-                            
                             $name = "{$name}.zip";
                         }
                         else{

@@ -5,6 +5,7 @@ class AllPeopleReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $roles = explode(",",$this->getAttr("roles", ""));
+        $subRoles = explode(",", $this->getAttr("subRoles", ""));
         $sort_reversed = $this->getAttr("sort_reversed", "false");
         $dept = $this->getAttr("department", "false");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
@@ -25,6 +26,12 @@ class AllPeopleReportItemSet extends ReportItemSet {
             $found = true;
             foreach($roles as $role){
                 if($role != "" && !$person->isRoleDuring($role, $start, $end)){
+                    $found = false;
+                    break;
+                }
+            }
+            foreach($subRoles as $role){
+                if($role != "" && !$person->isSubRole($role)){
                     $found = false;
                     break;
                 }

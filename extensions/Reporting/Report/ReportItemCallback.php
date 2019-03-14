@@ -59,6 +59,7 @@ class ReportItemCallback {
             "my_last_name" => "getMyLastName",
             "my_dept" => "getMyDept",
             "my_roles" => "getMyRoles",
+            "my_sub_roles" => "getMySubRoles",
             "parent_id" => "getParentId",
             "parent_name" => "getParentName",
             "parent_uni" => "getParentUni",
@@ -423,6 +424,16 @@ class ReportItemCallback {
             $roleNames[$role->getRole()] = $role->getRole();
         }
         return implode(", ", $roleNames);
+    }
+    
+    function getMySubRoles(){
+        global $config;
+        $person = Person::newFromWgUser();
+        $roles = array();
+        foreach(@$person->getSubRoles() as $subRole){
+            $roles[] = $config->getValue('subRoles', $subRole);
+        }
+        return implode(", ", $roles);
     }
     
     function getUserUrl(){

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true">
     <Permissions>
-        <!--Role role="ISAC">
+        <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -9,6 +9,7 @@
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
             <SectionPermission id="dept_publications" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="IAC">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -18,6 +19,7 @@
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
             <SectionPermission id="dept_publications" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
@@ -27,6 +29,7 @@
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
+            <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
@@ -36,42 +39,7 @@
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
-        </Role-->
-        <Role role="ISAC">
-            <SectionPermission id="evaluations" permissions="r" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="dept_publications" permissions="r" />
-        </Role>
-        <Role role="IAC">
-            <SectionPermission id="evaluations" permissions="r" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="dept_publications" permissions="r" />
-        </Role>
-        <Role role="DEAN">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="r" />
-            <SectionPermission id="deans_decision" permissions="r" />
-            <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="dept_publications" permissions="" />
-        </Role>
-        <Role role="DEANEA">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="r" />
-            <SectionPermission id="deans_decision" permissions="r" />
-            <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="dept_publications" permissions="" />
+            <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <!-- Chemistry -->
         <!--Person id="352">
@@ -922,8 +890,10 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
+                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <script type='text/javascript'>
+                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 100px;background:white;'>{getExtra()} / {$user_name}</div>");
+                                </script>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -934,9 +904,21 @@
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        {$item}
                     ]]>
                 </ReportItem>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
@@ -1426,6 +1408,24 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="dept_hqp" tooltip="HQP Inconsistencies" name="HQP Inconsistencies" title="{$my_dept} HQP Inconsistencies" blobSection="BLOB_NONE" type="ReportSection">
+        <ReportItem id="header" type="Static">
+            <![CDATA[
+                <p>
+                    Some inconsistencies related to HQP relations will be shown below<br />
+                    <i><b>Note:</b> Because of how some relations may overlap, there could be some false positives.</i>
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+            <ReportItem id="hqp" type="HQPInconsistencies" start="{$last_year}-07-01" end="{$this_year}-07-01">
+                <![CDATA[
+                    <h2>{$user_name}</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="dept_publications" tooltip="Publications" name="Publications" title="{$my_dept} Publications" blobSection="BLOB_NONE" type="ReportSection">
