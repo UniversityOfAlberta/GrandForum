@@ -62,7 +62,7 @@
                                                   {contains({$user_full_roles},KTC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
-                    <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
+                    <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
                         <![CDATA[
                             <div id="proj{$user_id}">
                             <table class='wikitable'>
@@ -507,7 +507,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-KTC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
-                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
+                <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
                     <![CDATA[
                         <div id="proj{$user_id}">
                         <table class='wikitable'>
