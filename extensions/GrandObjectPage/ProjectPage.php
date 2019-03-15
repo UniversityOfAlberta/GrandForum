@@ -182,7 +182,7 @@ class ProjectPage {
     static function createTab(&$tabs){
         global $config;
         if($config->getValue('projectsEnabled')){
-            $tabs["Projects"] = TabUtils::createTab("My Projects");
+            $tabs["Projects"] = TabUtils::createTab("My Departments");
         }
         return true;
     }
