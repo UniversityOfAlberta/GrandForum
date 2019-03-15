@@ -210,6 +210,10 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
+        if(count($person->getEvaluates("KT-EX", 2019)) > 0 || count($person->getEvaluates("KT-KTC", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTReview2019")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Review (2019)", "{$url}KTReview2019", $selected);
+        }
         if(count($person->getEvaluates("KT_INTENT-EX", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTIntentReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Intent Review (2019)", "{$url}KTIntentReview", $selected);
