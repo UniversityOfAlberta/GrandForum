@@ -102,7 +102,7 @@ class ProjectMainTab extends AbstractEditableTab {
      * Displays the photo for this person
      */
     function showPhoto($project, $visibility){
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top'>";
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         if($project->getPhoto() != ""){
             $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         }
