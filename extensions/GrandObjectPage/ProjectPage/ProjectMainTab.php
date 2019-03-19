@@ -26,6 +26,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $website = $this->project->getWebsite();
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
+        
         if($edit){
             if($project->isSubProject()){
                 $acronymField = new TextField("acronym", "New Acronym", $this->project->getName());
@@ -34,8 +35,17 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
             $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
-        $this->html .= "<table>
-                            $title";
+        else{
+            
+        }
+        $this->html .= "<table>";
+        if($edit){
+            $this->showEditPhoto($this->project, $this->visibility);
+        }
+        else{
+            $this->showPhoto($this->project, $this->visibility);
+        }
+        $this->html .= "$title";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
         }
@@ -88,70 +98,156 @@ class ProjectMainTab extends AbstractEditableTab {
         return $this->html;
     }
     
+    /**
+     * Displays the photo for this person
+     */
+    function showPhoto($project, $visibility){
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top'>";
+        if($project->getPhoto() != ""){
+            $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
+        }
+        $this->html .= "</td></tr>";
+    }
+    
+    function showEditPhoto($project, $visibility){
+        global $config;
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
+        $this->html .= "<img src='{$project->getPhoto()}' style='max-width:100px;max-height:132px;' />";
+        $this->html .= "</td></tr>";
+        if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
+            $this->html .= "<tr>
+                                <td align='right'><b>Upload new Photo:</b></td>
+                                <td><input type='file' name='photo' /></td>
+                            </tr>
+                            <tr>
+                                <td></td><td><small><li>Max file size is 20MB</li>
+                                                    <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
+                            </tr>";
+        }
+    }
+    
     function handleEdit(){
         global $wgOut, $wgMessage;
         $me = Person::newFromWgUser();
-        $_POST['project'] = $this->project->getName();
-        $_POST['fullName'] = @$_POST['fullName'];
-        $_POST['description'] = @$_POST['description'];
-        $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
-        $_POST['long_description'] = $this->project->getLongDescription();
-        if($_POST['description'] != $this->project->getDescription() ||
-           $_POST['fullName'] != $this->project->getFullName() ||
-           $_POST['website'] != $this->project->getWebsite()){
-            $error = APIRequest::doAction('ProjectDescription', true);
-            if($error != ""){
-                return $error;
-            }
-            Project::$cache = array();
-            $this->project = Project::newFromId($this->project->getId());
-            $wgOut->setPageTitle($this->project->getFullName());
-        }
-
-        if(isset($_POST['challenge_id'])){
-            $theme = Theme::newFromId($_POST['challenge_id']);
-            $this->project->theme = $theme;
-        }
-        $this->project->update();
-        
-        $address = $this->project->getMailingAddress();
-        $address->type = 'Mailing';
-        $address->line1 = @$_POST['address_line1'];
-        $address->line2 = @$_POST['address_line2'];
-        $address->line3 = @$_POST['address_line3'];
-        $address->line4 = @$_POST['address_line4'];
-        $address->city = @$_POST['address_city'];
-        $address->province = @$_POST['address_province'];
-        $address->country = @$_POST['address_country'];
-        $address->code = @$_POST['address_code'];
-        $this->project->updateMailingAddress($address);
-        
-        if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
-            DBFunctions::update('grand_project_status',
-                                array('status' => $_POST['status']),
-                                array('evolution_id' => EQ($this->project->getEvolutionId()),
-                                      'project_id' => EQ($this->project->getId())));
-            Project::$cache = array();
-            $this->project = Project::newFromId($this->project->getId());
-        }
-        
-        if(isset($_POST['acronym'])){
-            if($this->project->getName() != $_POST['acronym']){
-                $testProj = Project::newFromName($_POST['acronym']);
-                if($testProj != null && $testProj->getId() != 0){
-                    $wgMessage->addError("A project with the name '{$_POST['acronym']}' already exists");
-                }
-                if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['acronym'])){
-                    $wgMessage->addError("The project acronym cannot contain any special characters");
+        $error = "";
+        if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != ""){
+            $type = $_FILES['photo']['type'];
+            $size = $_FILES['photo']['size'];
+            $tmp = $_FILES['photo']['tmp_name'];
+            if($type == "image/jpeg" ||
+               $type == "image/pjpeg" ||
+               $type == "image/gif" || 
+               $type == "image/png"){
+                if($size <= 1024*1024*20){
+                    //File is OK to upload
+                    $fileName = "Photos/{$this->project->getName()}_{$this->project->getId()}.jpg";
+                    move_uploaded_file($tmp, $fileName);
+                    
+                    if($type == "image/jpeg" || $type == "image/pjpeg"){
+                        $src_image = @imagecreatefromjpeg($fileName);
+                    }
+                    else if($type == "image/png"){
+                        $src_image = @imagecreatefrompng($fileName);
+                    }
+                    else if($type == "image/gif"){
+                        $src_image = @imagecreatefromgif($fileName);
+                    }
+                    if($src_image != false){
+                        imagealphablending($src_image, true);
+                        imagesavealpha($src_image, true);
+                        $src_width = imagesx($src_image);
+                        $src_height = imagesy($src_image);
+                        $dst_width = $src_width;
+                        $dst_height = $src_height;
+                        $dst_image = imagecreatetruecolor($dst_width, $dst_height);
+                        imagealphablending($dst_image, true);
+                        
+                        imagesavealpha($dst_image, true);
+                        imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+                        imagedestroy($src_image);
+                        
+                        imagejpeg($dst_image, $fileName, 100);
+                        imagedestroy($dst_image);
+                    }
+                    else{
+                        //File is not an ok filetype
+                        $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg";
+                    }
                 }
                 else{
-                    $this->project->name = $_POST['acronym'];
-                    $this->project->update();
-                    $wgMessage->addSuccess("The project acronym was changed to '{$_POST['acronym']}'");
-                    redirect($this->project->getUrl());
+                    //File size is too large
+                    $error .= "The file you uploaded is too large.  It should be smaller than 20MB.<br />";
+                }
+            }
+            else{
+                //File is not an ok filetype
+                $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg.<br />";
+            }
+        }
+        if($error == ""){
+            $_POST['project'] = $this->project->getName();
+            $_POST['fullName'] = @$_POST['fullName'];
+            $_POST['description'] = @$_POST['description'];
+            $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
+            $_POST['long_description'] = $this->project->getLongDescription();
+            if($_POST['description'] != $this->project->getDescription() ||
+               $_POST['fullName'] != $this->project->getFullName() ||
+               $_POST['website'] != $this->project->getWebsite()){
+                $error = APIRequest::doAction('ProjectDescription', true);
+                if($error != ""){
+                    return $error;
+                }
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
+                $wgOut->setPageTitle($this->project->getFullName());
+            }
+
+            if(isset($_POST['challenge_id'])){
+                $theme = Theme::newFromId($_POST['challenge_id']);
+                $this->project->theme = $theme;
+            }
+            $this->project->update();
+            
+            $address = $this->project->getMailingAddress();
+            $address->type = 'Mailing';
+            $address->line1 = @$_POST['address_line1'];
+            $address->line2 = @$_POST['address_line2'];
+            $address->line3 = @$_POST['address_line3'];
+            $address->line4 = @$_POST['address_line4'];
+            $address->city = @$_POST['address_city'];
+            $address->province = @$_POST['address_province'];
+            $address->country = @$_POST['address_country'];
+            $address->code = @$_POST['address_code'];
+            $this->project->updateMailingAddress($address);
+            
+            if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
+                DBFunctions::update('grand_project_status',
+                                    array('status' => $_POST['status']),
+                                    array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                          'project_id' => EQ($this->project->getId())));
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
+            }
+            
+            if(isset($_POST['acronym'])){
+                if($this->project->getName() != $_POST['acronym']){
+                    $testProj = Project::newFromName($_POST['acronym']);
+                    if($testProj != null && $testProj->getId() != 0){
+                        $wgMessage->addError("A project with the name '{$_POST['acronym']}' already exists");
+                    }
+                    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['acronym'])){
+                        $wgMessage->addError("The project acronym cannot contain any special characters");
+                    }
+                    else{
+                        $this->project->name = $_POST['acronym'];
+                        $this->project->update();
+                        $wgMessage->addSuccess("The project acronym was changed to '{$_POST['acronym']}'");
+                        redirect($this->project->getUrl());
+                    }
                 }
             }
         }
+        return $error;
     }
     
     function generatePDFBody(){
