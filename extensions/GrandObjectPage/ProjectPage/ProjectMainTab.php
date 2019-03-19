@@ -112,7 +112,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showEditPhoto($project, $visibility){
         global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
-        $this->html .= "<img src='{$project->getPhoto()}' style='max-width:100px;max-height:132px;' />";
+        $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
             $this->html .= "<tr>
