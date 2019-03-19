@@ -22,7 +22,7 @@ class ProjectMainTab extends AbstractEditableTab {
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
-        
+        $address = $this->project->getMailingAddress();
         $website = $this->project->getWebsite();
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
@@ -59,6 +59,23 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
+            $this->html .= "<tr>
+                                <td align='right' valign='top'>
+                                    <b>Mailing Address:</b>
+                                </td>
+                                <td align='right'>
+                                    <small>
+                                        <b>Line 1:</b><input type='text' size='28' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                        <b>Line 2:</b><input type='text' size='28' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                        <b>Line 3:</b><input type='text' size='28' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                        <b>Line 4:</b><input type='text' size='28' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
+                                        <b>Postal Code:</b><input type='text' size='28' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
+                                        <b>City:</b><input type='text' size='28' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
+                                        <b>Province:</b><input type='text' size='28' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
+                                        <b>Country:</b><input type='text' size='28' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
+                                    </small>
+                                </td>
+                            </tr>";
         }
         $this->html .= "</table>";
 
@@ -96,6 +113,19 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->project->theme = $theme;
         }
         $this->project->update();
+        
+        $address = $this->project->getMailingAddress();
+        $address->type = 'Mailing';
+        $address->line1 = @$_POST['address_line1'];
+        $address->line2 = @$_POST['address_line2'];
+        $address->line3 = @$_POST['address_line3'];
+        $address->line4 = @$_POST['address_line4'];
+        $address->city = @$_POST['address_city'];
+        $address->province = @$_POST['address_province'];
+        $address->country = @$_POST['address_country'];
+        $address->code = @$_POST['address_code'];
+        $this->project->updateMailingAddress($address);
+        
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
             DBFunctions::update('grand_project_status',
                                 array('status' => $_POST['status']),
