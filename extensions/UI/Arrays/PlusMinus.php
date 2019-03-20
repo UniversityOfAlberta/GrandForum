@@ -2,6 +2,8 @@
 
 class PlusMinus extends UIElementArray {
     
+    var $values = array();
+    
     function FieldSet($id){
         parent::UIElementArray($id);
     }
@@ -21,6 +23,7 @@ class PlusMinus extends UIElementArray {
         </div>";
         $html .= "<script type='text/javascript'>
             _.defer(function(){
+                var values = ".json_encode($this->values).";
                 var contents = $('.{$this->id}_contents_template').detach();
                 $('#{$this->id} .plusminus_contents').append(contents.html());
                 $('#{$this->id}add').click(function(){
@@ -37,8 +40,20 @@ class PlusMinus extends UIElementArray {
                     }
                     return false;
                 });
+                for(var i = 0; i < values.length; i++){
+                    var value = values[i];
+                    if(i > 0){
+                        $('#{$this->id}add').click();
+                    }
+                    for(key in value){
+                        var val = value[key];
+                        $('[name=\"' + key + '[]\"]').last().val(val);
+                    }
+                }
             });
         </script>";
+        
+        
         return $html;
     }
 }

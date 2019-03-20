@@ -461,6 +461,7 @@ class Project extends BackboneModel {
             'province' => $addr->getProvince(),
             'country' => $addr->getCountry()
         );
+        
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -473,6 +474,7 @@ class Project extends BackboneModel {
                        'type' => $this->getType(),
                        'theme' => $theme,
                        'address' => $address,
+                       'programs' => $this->getPrograms(),
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
@@ -980,6 +982,34 @@ EOF;
             $addresses[$address->getId()] = $address;
         }
         return $addresses;
+    }
+    
+    function updatePrograms($programs){
+        DBFunctions::delete('grand_project_programs',
+                            array('proj_id' => EQ($this->getId())));
+        foreach($programs as $program){
+            DBFunctions::insert('grand_project_programs',
+                                array(
+                                    'proj_id' => $this->getId(),
+                                    'name' => $program['name'],
+                                    'url' => $program['url']
+                                ));
+        }
+    }
+    
+    /**
+     * Returns an array of Program objects that this Person is from
+     * @return array The Program objects that this Person is from
+     */
+    function getPrograms(){
+        $data = DBFunctions::select(array('grand_project_programs'),
+                                    array('name', 'url'),
+                                    array('proj_id' => EQ($this->getId())));
+        $programs = array();
+        foreach($data as $row){
+            $programs[] = $row;
+        }
+        return $programs;
     }
     
     // Returns the contributions this relevant to this project

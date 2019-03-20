@@ -33,18 +33,23 @@ class ProjectMainTab extends AbstractEditableTab {
                 $title .= "<tr><td><b>New Acronym:</b></td><td>{$acronymField->render()}</td></tr>";
             }
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
-            $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
+            $fullNameField->attr('size', 30);
+            $title .= "<tr><td align='right'><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
         else{
             
         }
-        $this->html .= "<table>";
+        $this->html .= "<table><tr>";
+        
+        // Column 1
+        $this->html .= "<td><table>";
         if($edit){
             $this->showEditPhoto($this->project, $this->visibility);
         }
         else{
             $this->showPhoto($this->project, $this->visibility);
         }
+        $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'><table>";
         $this->html .= "$title";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
@@ -61,14 +66,15 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $this->html .= "<tr><td align='right'><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
             }
         }
+        
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
             $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
         }
         else if($edit){
-            $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
+            $this->html .= "<tr><td align='right'><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='30' /></td></tr>";
             $this->html .= "<tr>
                                 <td align='right' valign='top'>
                                     <b>Mailing Address:</b>
@@ -87,7 +93,38 @@ class ProjectMainTab extends AbstractEditableTab {
                                 </td>
                             </tr>";
         }
-        $this->html .= "</table>";
+        
+        // Column 2
+        $this->html .= "</table></td><td valign='top'>";
+        if($edit){
+            $values = array();
+            $programs = $this->project->getPrograms();
+            foreach($programs as $program){
+                $values[] = array("programs" => $program['name'],
+                                  "urls" => $program['url']);
+            }
+            
+            $programPlusMinus = new PlusMinus("program_plusminus");
+            $programTable = new FormTable("program_table");
+            $programRow = new FormTableRow("programs_row");
+            
+            $programName = new TextField("programs[]", "Name", "", VALIDATE_NOTHING);
+            $programUrl = new TextField("urls[]", "Url", "", VALIDATE_NOTHING);
+            $programName->attr('size', 21);
+            $programUrl->attr('size', 21);
+            
+            $programRow->append($programName);
+            $programRow->append($programUrl);
+            
+            $programTable->append($programRow);
+            $programPlusMinus->append($programTable);
+            $programPlusMinus->values = $values;
+            
+            $this->html .= "<table><tr>
+                                <td valign='top' colspan='2'><table width='100%'><tr><th width='50%'>Program Name</th><th width='50%'>Url</th></tr></table>{$programPlusMinus->render()}</td>
+                            </tr></table>";
+        }
+        $this->html .= "</table></td></tr></table>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -220,6 +257,18 @@ class ProjectMainTab extends AbstractEditableTab {
             $address->code = @$_POST['address_code'];
             $this->project->updateMailingAddress($address);
             
+            $programs = array();
+            foreach($_POST['programs'] as $key => $program){
+                $name = $program;
+                $url = $_POST['urls'][$key];
+                $programs[] = array(
+                    'proj_id' => $this->project->getId(),
+                    'name' => $name,
+                    'url' => $url
+                );
+            }
+            $this->project->updatePrograms($programs);
+            
             if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
                 DBFunctions::update('grand_project_status',
                                     array('status' => $_POST['status']),
@@ -269,7 +318,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
+        $this->html .= "<tr><td align='right'><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenge = $this->project->getChallenge();
         
         $challenges = Theme::getAllThemes();
