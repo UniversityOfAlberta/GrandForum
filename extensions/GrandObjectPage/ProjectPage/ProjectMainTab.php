@@ -258,14 +258,16 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->project->updateMailingAddress($address);
             
             $programs = array();
-            foreach($_POST['programs'] as $key => $program){
-                $name = $program;
-                $url = $_POST['urls'][$key];
-                $programs[] = array(
-                    'proj_id' => $this->project->getId(),
-                    'name' => $name,
-                    'url' => $url
-                );
+            if(isset($_POST['programs'])){
+                foreach(@$_POST['programs'] as $key => $program){
+                    $name = $program;
+                    $url = $_POST['urls'][$key];
+                    $programs[] = array(
+                        'proj_id' => $this->project->getId(),
+                        'name' => $name,
+                        'url' => $url
+                    );
+                }
             }
             $this->project->updatePrograms($programs);
             
