@@ -938,7 +938,7 @@ EOF;
     }
     
     function getMailingAddress(){
-        $data = DBFunctions::select(array('grand_project_addresses'),
+        $data = DBFunctions::select(array('grand_project_contact'),
                                     array('id'),
                                     array('proj_id' => EQ($this->getId()),
                                           'type' => "Mailing"));
@@ -950,9 +950,9 @@ EOF;
     }
     
     function updateMailingAddress($address){
-        DBFunctions::delete('grand_project_addresses',
+        DBFunctions::delete('grand_project_contact',
                             array('proj_id' => EQ($this->getId())));
-        DBFunctions::insert('grand_project_addresses',
+        DBFunctions::insert('grand_project_contact',
                             array(
                                 'type' => $address->getType(),
                                 'line1' => $address->getLine1(),
@@ -973,7 +973,7 @@ EOF;
      * @return array The Address objects that this Person is from
      */
     function getAddresses(){
-        $data = DBFunctions::select(array('grand_project_addresses'),
+        $data = DBFunctions::select(array('grand_project_contact'),
                                     array('id'),
                                     array('proj_id' => EQ($this->getId())));
         $addresses = array();

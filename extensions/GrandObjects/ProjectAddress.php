@@ -10,7 +10,7 @@ class ProjectAddress extends Address {
      * @return Address The Address from the given id
      */
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_project_addresses'),
+        $data = DBFunctions::select(array('grand_project_contact'),
                                     array('*'),
                                     array('id' => EQ($id)));
         return new ProjectAddress($data);
