@@ -666,34 +666,38 @@ EOF;
         $this->html .= "</table>";
         
         // Load the scripts for Manage People so that the University editing can be used
-        /*$managePeople = new ManagePeople();
+        $managePeople = new ManagePeople();
         $managePeople->loadTemplates();
         $managePeople->loadModels();
         $managePeople->loadHelpers();
         $managePeople->loadViews();
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
-        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add Institution' />
-        <script type='text/javascript'>
-            var model = new Person({id: {$this->person->getId()}});
-            var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
-            $('#addUniversity').click(function(){
-                view.addUniversity();
-            });
-            $('form').on('submit', function(e){
-                if($('input[value=\"Save {$this->name}\"]').is(':visible')){
-                    var requests = view.saveAll();
-                    e.preventDefault();
-                    $('input[value=\"Save {$this->name}\"]').prop('disabled', true);
-                    $.when.apply($, requests).then(function(){
-                        $('form').off('submit');
-                        $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
-                        _.delay(function(){
-                            $('input[value=\"Save {$this->name}\"]').click();
-                        }, 10);
+        $this->html .= "</td></tr>
+        <tr>
+            <td colspan='2'>
+                <h3>Work History</h3>
+                <div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add Institution' />
+                <script type='text/javascript'>
+                    var model = new Person({id: {$this->person->getId()}});
+                    var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
+                    $('#addUniversity').click(function(){
+                        view.addUniversity();
                     });
-                }
-            });
-        </script>";*/
+                    $('form').on('submit', function(e){
+                        if($('input[value=\"Save {$this->name}\"]').is(':visible')){
+                            var requests = view.saveAll();
+                            e.preventDefault();
+                            $('input[value=\"Save {$this->name}\"]').prop('disabled', true);
+                            $.when.apply($, requests).then(function(){
+                                $('form').off('submit');
+                                $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
+                                _.delay(function(){
+                                    $('input[value=\"Save {$this->name}\"]').click();
+                                }, 10);
+                            });
+                        }
+                    });
+                </script>";
     }
     
 }
