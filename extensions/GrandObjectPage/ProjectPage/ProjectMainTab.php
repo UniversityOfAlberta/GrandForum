@@ -84,14 +84,14 @@ class ProjectMainTab extends AbstractEditableTab {
                                 <td valign='top' colspan='2'>
                                     <b>Contact:</b>
                                     <div style='margin-left:25px; white-space: nowrap; max-width: 500px; overflow-x: hidden; text-overflow: ellipsis;'>
-                                        <b style='display:inline-block; width:100px;'>Phone:</b>    {$address->getPhone()}<br />
-                                        <b style='display:inline-block; width:100px;'>Fax:</b>      {$address->getFax()}<br />
-                                        <b style='display:inline-block; width:100px;'>Email:</b>    {$email}<br />
-                                        <b style='display:inline-block; width:100px;'>Website:</b>  {$website}<br />
-                                        <b style='display:inline-block; width:100px;'>Twitter:</b>  {$twitter}<br />
-                                        <b style='display:inline-block; width:100px;'>Facebook:</b> {$facebook}<br />
-                                        <b style='display:inline-block; width:100px;'>LinkedIn:</b> {$linkedin}<br />
-                                        <b style='display:inline-block; width:100px;'>Youtube:</b>  {$youtube}
+                                        <span style='display:inline-block; width:80px; color: #555;'>Phone</span>    {$address->getPhone()}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Fax</span>      {$address->getFax()}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Email</span>    {$email}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Website</span>  {$website}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Twitter</span>  {$twitter}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Facebook</span> {$facebook}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>LinkedIn</span> {$linkedin}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Youtube</span>  {$youtube}
                                     </div>
                                 </td>
                             </tr>
