@@ -23,8 +23,6 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
         $address = $this->project->getMailingAddress();
-        $website = $this->project->getWebsite();
-        $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
 
         $this->html .= "<table><tr>";
@@ -41,9 +39,6 @@ class ProjectMainTab extends AbstractEditableTab {
         if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
-        if($config->getValue("bigBetProjects") && !$this->project->isSubProject()){
-            $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
-        }
         if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
                 $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
@@ -54,18 +49,70 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         
-        if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
-            $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
+        if(!$edit){
+            $addressLine1 = implode("<br />", array_filter(array($address->getLine1(), $address->getLine2(), $address->getLine3(), $address->getLine4())));
+            $addressLine2 = implode(", ", array_filter(array($address->getCity(), $address->getProvince(), $address->getPostalCode(), $address->getCountry())));
+            $programsLine = array();
+            foreach($this->project->getPrograms() as $program){
+                if($program['name'] != "" && $program['url'] != ""){
+                    $programsLine[] = "<a href='{$program['url']}' target='_blank'>{$program['name']}</a>";
+                }
+            }
+            $programsLine = implode("<br />", $programsLine);
+            $email    = ($address->getEmail() != "") ? 
+                        "<a href='mailto:{$address->getEmail()}'>{$address->getEmail()}</a>" : "";
+            $website  = ($this->project->getWebsite() != "" && $this->project->getWebsite() != "http://" && $this->project->getWebsite() != "https://") ? 
+                        "<a href='{$this->project->getWebsite()}' target='_blank'>{$this->project->getWebsite()}</a>" : "";
+            $twitter  = ($address->getTwitter() != "" && $address->getTwitter() != "http://" && $address->getTwitter() != "https://") ? 
+                        "<a href='{$address->getTwitter()}' target='_blank'>{$address->getTwitter()}</a>" : "";
+            $facebook = ($address->getFacebook() != "" && $address->getFacebook() != "http://" && $address->getFacebook() != "https://") ? 
+                        "<a href='{$address->getFacebook()}' target='_blank'>{$address->getFacebook()}</a>" : "";
+            $linkedin = ($address->getLinkedIn() != "" && $address->getLinkedIn() != "http://" && $address->getLinkedIn() != "https://") ? 
+                        "<a href='{$address->getLinkedIn()}' target='_blank'>{$address->getLinkedIn()}</a>" : "";
+            $youtube  = ($address->getYoutube() != "" && $address->getYoutube() != "http://" && $address->getYoutube() != "https://") ? 
+                        "<a href='{$address->getYoutube()}' target='_blank'>{$address->getYoutube()}</a>" : "";
+            $this->html .= "<tr>
+                                <td valign='top' colspan='2'>
+                                    <b>Mailing Address:</b>
+                                    <div style='margin-left:25px;'>
+                                        {$addressLine1}<br />
+                                        {$addressLine2}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign='top' colspan='2'>
+                                    <b>Contact:</b>
+                                    <div style='margin-left:25px; white-space: nowrap; max-width: 500px; overflow-x: hidden; text-overflow: ellipsis;'>
+                                        <b style='display:inline-block; width:100px;'>Phone:</b>    {$address->getPhone()}<br />
+                                        <b style='display:inline-block; width:100px;'>Fax:</b>      {$address->getFax()}<br />
+                                        <b style='display:inline-block; width:100px;'>Email:</b>    {$email}<br />
+                                        <b style='display:inline-block; width:100px;'>Website:</b>  {$website}<br />
+                                        <b style='display:inline-block; width:100px;'>Twitter:</b>  {$twitter}<br />
+                                        <b style='display:inline-block; width:100px;'>Facebook:</b> {$facebook}<br />
+                                        <b style='display:inline-block; width:100px;'>LinkedIn:</b> {$linkedin}<br />
+                                        <b style='display:inline-block; width:100px;'>Youtube:</b>  {$youtube}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign='top' colspan='2'>
+                                    <b>Programs:</b>
+                                    <div style='margin-left:25px;'>
+                                        {$programsLine}
+                                    </div>
+                                </td>
+                            </tr>";
         }
         else if($edit){
             $this->html .= "<tr>
                                 <td align='right' valign='top' colspan='2'>
                                     <fieldset>
                                         <legend>Mailing Address</legend>
-                                        <b>Line 1:</b><input type='text' size='35' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
-                                        <b>Line 2:</b><input type='text' size='35' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
-                                        <b>Line 3:</b><input type='text' size='35' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
-                                        <b>Line 4:</b><input type='text' size='35' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
+                                        <b>Line 1:</b><input type='text' size='35' name='address_line1' placeholder='Department of Computing Science' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                        <b>Line 2:</b><input type='text' size='35' name='address_line2' placeholder='Room 1234' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                        <b>Line 3:</b><input type='text' size='35' name='address_line3' placeholder='Building Main' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                        <b>Line 4:</b><input type='text' size='35' name='address_line4' placeholder='200 Louis Paster Street' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
                                         <b>Postal Code:</b><input type='text' size='35' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
                                         <b>City:</b><input type='text' size='35' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
                                         <b>Province:</b><input type='text' size='35' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
@@ -80,7 +127,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
                                         <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
                                         <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
-                                        <b>Website:</b><input type='text' name='website' value='{$website}' size='35' /><br />
+                                        <b>Website:</b><input type='text' name='website' value='{$this->project->getWebsite()}' size='35' /><br />
                                         <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
                                         <b>Facebook:</b><input type='text' size='35' name='address_facebook' placeholder='https://www.facebook.com/*****/' value='".str_replace("'", "&#39;", $address->getFacebook())."' /><br />
                                         <b>LinkedIn:</b><input type='text' size='35' name='address_linkedin' placeholder='https://www.linkedin.com/school/*****/' value='".str_replace("'", "&#39;", $address->getLinkedIn())."' /><br />
