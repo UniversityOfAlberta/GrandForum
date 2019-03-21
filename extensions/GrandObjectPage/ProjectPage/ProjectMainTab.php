@@ -26,23 +26,11 @@ class ProjectMainTab extends AbstractEditableTab {
         $website = $this->project->getWebsite();
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
-        
-        if($edit){
-            if($project->isSubProject()){
-                $acronymField = new TextField("acronym", "New Acronym", $this->project->getName());
-                $title .= "<tr><td><b>New Acronym:</b></td><td>{$acronymField->render()}</td></tr>";
-            }
-            $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
-            $fullNameField->attr('size', 35);
-            $title .= "<tr><td align='right'><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
-        }
-        else{
-            
-        }
+
         $this->html .= "<table><tr>";
         
         // Column 1
-        $this->html .= "<td><table>";
+        $this->html .= "<td colspan='2'><table>";
         if($edit){
             $this->showEditPhoto($this->project, $this->visibility);
         }
@@ -50,10 +38,6 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->showPhoto($this->project, $this->visibility);
         }
         $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'><table>";
-        $this->html .= "$title";
-        if($project->getType() != "Administrative"){
-            $this->showChallenge();
-        }
         if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
@@ -74,13 +58,10 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
         }
         else if($edit){
-            $this->html .= "<tr><td align='right'><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='35' /></td></tr>";
             $this->html .= "<tr>
-                                <td align='right' valign='top'>
-                                    <b>Mailing<br />Address:</b>
-                                </td>
-                                <td align='right'>
-                                    <small>
+                                <td align='right' valign='top' colspan='2'>
+                                    <fieldset>
+                                        <legend>Mailing Address</legend>
                                         <b>Line 1:</b><input type='text' size='35' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
                                         <b>Line 2:</b><input type='text' size='35' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
                                         <b>Line 3:</b><input type='text' size='35' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
@@ -89,23 +70,22 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>City:</b><input type='text' size='35' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
                                         <b>Province:</b><input type='text' size='35' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
                                         <b>Country:</b><input type='text' size='35' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
-                                    </small>
+                                    </fieldset>
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right' valign='top'>
-                                    <b>Contact:</b>
-                                </td>
-                                <td align='right'>
-                                    <small>
+                                <td align='right' valign='top' colspan='2'>
+                                    <fieldset>
+                                        <legend>Contact</legend>
                                         <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
                                         <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
                                         <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
+                                        <b>Website:</b><input type='text' name='website' value='{$website}' size='35' /><br />
                                         <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
                                         <b>Facebook:</b><input type='text' size='35' name='address_facebook' placeholder='https://www.facebook.com/*****/' value='".str_replace("'", "&#39;", $address->getFacebook())."' /><br />
                                         <b>LinkedIn:</b><input type='text' size='35' name='address_linkedin' placeholder='https://www.linkedin.com/school/*****/' value='".str_replace("'", "&#39;", $address->getLinkedIn())."' /><br />
                                         <b>Youtube:</b><input type='text' size='35' name='address_youtube' placeholder='https://www.youtube.com/channel/*****' value='".str_replace("'", "&#39;", $address->getYoutube())."' />
-                                    </small>
+                                    </fieldset>
                                 </td>
                             </tr>";
         }
@@ -137,7 +117,12 @@ class ProjectMainTab extends AbstractEditableTab {
             $programPlusMinus->values = $values;
             
             $this->html .= "<table><tr>
-                                <td valign='top' colspan='2'><table width='100%'><tr><th width='50%'>Program Name</th><th width='50%'>Url</th></tr></table>{$programPlusMinus->render()}</td>
+                                <td valign='top' colspan='2'>
+                                    <fieldset>
+                                        <legend>Programs</legend>
+                                        <table width='100%' style='min-width: 400px;'><tr><th width='50%'>Program Name</th><th width='50%'>Url</th></tr></table>{$programPlusMinus->render()}
+                                    </fieldset>
+                                </td>
                             </tr></table>";
         }
         $this->html .= "</table></td></tr></table>";
@@ -164,18 +149,28 @@ class ProjectMainTab extends AbstractEditableTab {
     
     function showEditPhoto($project, $visibility){
         global $config;
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
+        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='4'>";
         $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
+            $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
+            $fullNameField->attr('size', 35);
+            
             $this->html .= "<tr>
-                                <td align='right'><b>Upload new Photo:</b></td>
+                                <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
+                                <td align='right' ><b>New Title:</b></td><td>{$fullNameField->render()}</td>
                             </tr>
                             <tr>
-                                <td></td><td><small><li>Max file size is 20MB</li>
-                                                    <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
-                            </tr>";
+                                <td></td>
+                                <td><small>
+                                    <li>Max file size is 20MB</li>
+                                    <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small>
+                                </td>";
+            if($project->getType() != "Administrative"){
+                $this->showChallenge();
+            }
+            $this->html .= "</tr>";
         }
     }
     
@@ -343,7 +338,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $this->html .= "<tr><td align='right'><b>{$config->getValue("projectThemes")}:</b></td><td>";
+        $this->html .= "<td align='right'><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenge = $this->project->getChallenge();
         
         $challenges = Theme::getAllThemes();
@@ -362,7 +357,7 @@ EOF;
         else{
             $this->html .= "{$challenge->getName()} ({$challenge->getAcronym()})";
         }
-        $this->html .= "</td></tr>";
+        $this->html .= "</td>";
     }
 
     function showPeople(){
