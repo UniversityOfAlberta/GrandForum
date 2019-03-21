@@ -523,20 +523,18 @@ EOF;
                                 <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right' valign='top'>
-                                    <b>Mailing Address:</b>
-                                </td>
-                                <td align='right'>
-                                    <small>
-                                        <b>Line 1:</b><input type='text' size='28' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
-                                        <b>Line 2:</b><input type='text' size='28' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
-                                        <b>Line 3:</b><input type='text' size='28' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
-                                        <b>Line 4:</b><input type='text' size='28' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
+                                <td align='right' valign='top' colspan='2'>
+                                    <fieldset>
+                                        <legend>Mailing Address</legend>
+                                        <b>Line 1:</b><input type='text' size='28' name='address_line1' placeholder='Department of Computing Science' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                        <b>Line 2:</b><input type='text' size='28' name='address_line2' placeholder='Room 1234' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                        <b>Line 3:</b><input type='text' size='28' name='address_line3' placeholder='Building Main' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                        <b>Line 4:</b><input type='text' size='28' name='address_line4' placeholder='200 Main Street' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
                                         <b>Postal Code:</b><input type='text' size='28' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
                                         <b>City:</b><input type='text' size='28' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
                                         <b>Province:</b><input type='text' size='28' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
                                         <b>Country:</b><input type='text' size='28' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
-                                    </small>
+                                    </fieldset>
                                 </td>
                             </tr>
                         </table></td>";
