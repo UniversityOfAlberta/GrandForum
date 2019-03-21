@@ -33,7 +33,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $title .= "<tr><td><b>New Acronym:</b></td><td>{$acronymField->render()}</td></tr>";
             }
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
-            $fullNameField->attr('size', 30);
+            $fullNameField->attr('size', 35);
             $title .= "<tr><td align='right'><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
         else{
@@ -74,21 +74,37 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
         }
         else if($edit){
-            $this->html .= "<tr><td align='right'><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='30' /></td></tr>";
+            $this->html .= "<tr><td align='right'><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='35' /></td></tr>";
             $this->html .= "<tr>
                                 <td align='right' valign='top'>
-                                    <b>Mailing Address:</b>
+                                    <b>Mailing<br />Address:</b>
                                 </td>
                                 <td align='right'>
                                     <small>
-                                        <b>Line 1:</b><input type='text' size='28' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
-                                        <b>Line 2:</b><input type='text' size='28' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
-                                        <b>Line 3:</b><input type='text' size='28' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
-                                        <b>Line 4:</b><input type='text' size='28' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
-                                        <b>Postal Code:</b><input type='text' size='28' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
-                                        <b>City:</b><input type='text' size='28' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
-                                        <b>Province:</b><input type='text' size='28' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
-                                        <b>Country:</b><input type='text' size='28' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
+                                        <b>Line 1:</b><input type='text' size='35' name='address_line1' value='".str_replace("'", "&#39;", $address->getLine1())."' /><br />
+                                        <b>Line 2:</b><input type='text' size='35' name='address_line2' value='".str_replace("'", "&#39;", $address->getLine2())."' /><br />
+                                        <b>Line 3:</b><input type='text' size='35' name='address_line3' value='".str_replace("'", "&#39;", $address->getLine3())."' /><br />
+                                        <b>Line 4:</b><input type='text' size='35' name='address_line4' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
+                                        <b>Postal Code:</b><input type='text' size='35' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
+                                        <b>City:</b><input type='text' size='35' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
+                                        <b>Province:</b><input type='text' size='35' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
+                                        <b>Country:</b><input type='text' size='35' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
+                                    </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Contact:</b>
+                                </td>
+                                <td align='right'>
+                                    <small>
+                                        <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
+                                        <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
+                                        <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
+                                        <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
+                                        <b>Facebook:</b><input type='text' size='35' name='address_facebook' placeholder='https://www.facebook.com/*****/' value='".str_replace("'", "&#39;", $address->getFacebook())."' /><br />
+                                        <b>LinkedIn:</b><input type='text' size='35' name='address_linkedin' placeholder='https://www.linkedin.com/school/*****/' value='".str_replace("'", "&#39;", $address->getLinkedIn())."' /><br />
+                                        <b>Youtube:</b><input type='text' size='35' name='address_youtube' placeholder='https://www.youtube.com/channel/*****' value='".str_replace("'", "&#39;", $address->getYoutube())."' />
                                     </small>
                                 </td>
                             </tr>";
@@ -255,6 +271,13 @@ class ProjectMainTab extends AbstractEditableTab {
             $address->province = @$_POST['address_province'];
             $address->country = @$_POST['address_country'];
             $address->code = @$_POST['address_code'];
+            $address->phone = @$_POST['address_phone'];
+            $address->fax = @$_POST['address_fax'];
+            $address->email = @$_POST['address_email'];
+            $address->twitter = @$_POST['address_twitter'];
+            $address->facebook = @$_POST['address_facebook'];
+            $address->linkedin = @$_POST['address_linkedin'];
+            $address->youtube = @$_POST['address_youtube'];
             $this->project->updateMailingAddress($address);
             
             $programs = array();

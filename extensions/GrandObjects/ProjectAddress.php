@@ -3,6 +3,13 @@
 class ProjectAddress extends Address {
 
     var $project;
+    var $phone;
+    var $fax;
+    var $email;
+    var $twitter;
+    var $facebook;
+    var $linkedin;
+    var $youtube;
 
     /**
      * Returns a new Address from the given id
@@ -33,6 +40,13 @@ class ProjectAddress extends Address {
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
             $this->primary = $data[0]['primary_indicator'];
+            $this->phone = $data[0]['phone'];
+            $this->fax = $data[0]['fax'];
+            $this->email = $data[0]['email'];
+            $this->twitter = $data[0]['twitter'];
+            $this->facebook = $data[0]['facebook'];
+            $this->linkedin = $data[0]['linkedin'];
+            $this->youtube = $data[0]['youtube'];
         }
     }
 
@@ -42,6 +56,34 @@ class ProjectAddress extends Address {
      */
     function getProject(){
         return $this->project;
+    }
+    
+    function getPhone(){
+        return $this->phone;
+    }
+    
+    function getFax(){
+        return $this->fax;
+    }
+    
+    function getEmail(){
+        return $this->email;
+    }
+    
+    function getTwitter(){
+        return $this->twitter;
+    }
+    
+    function getFacebook(){
+        return $this->facebook;
+    }
+    
+    function getLinkedIn(){
+        return $this->linkedin;
+    }
+    
+    function getYoutube(){
+        return $this->youtube;
     }
     
 }

@@ -452,14 +452,21 @@ class Project extends BackboneModel {
         $challenge = $this->getChallenge();
         $theme = $challenge->getAcronym();
         $addr = $this->getMailingAddress();
-        $address = array(
+        $contact = array(
             'line1' => $addr->getLine1(),
             'line2' => $addr->getLine2(),
             'line3' => $addr->getLine3(),
             'line4' => $addr->getLine4(),
             'city' => $addr->getCity(),
             'province' => $addr->getProvince(),
-            'country' => $addr->getCountry()
+            'country' => $addr->getCountry(),
+            'phone' => $addr->getPhone(),
+            'fax' => $addr->getFax(),
+            'email' => $addr->getEmail(),
+            'twitter' => $addr->getTwitter(),
+            'facebook' => $addr->getFacebook(),
+            'linkedin' => $addr->getLinkedIn(),
+            'youtube' => $addr->getYoutube()
         );
         
         $array = array('id' => $this->getId(),
@@ -473,7 +480,7 @@ class Project extends BackboneModel {
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
-                       'address' => $address,
+                       'contact' => $contact,
                        'programs' => $this->getPrograms(),
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
@@ -954,6 +961,7 @@ EOF;
                             array('proj_id' => EQ($this->getId())));
         DBFunctions::insert('grand_project_contact',
                             array(
+                                'proj_id' => $this->getId(),
                                 'type' => $address->getType(),
                                 'line1' => $address->getLine1(),
                                 'line2' => $address->getLine2(),
@@ -964,7 +972,13 @@ EOF;
                                 'province' => $address->getProvince(),
                                 'country' => $address->getCountry(),
                                 'code' => $address->getPostalCode(),
-                                'proj_id' => $this->getId()
+                                'phone' => $address->getPhone(),
+                                'fax' => $address->getFax(),
+                                'email' => $address->getEmail(),
+                                'twitter' => $address->getTwitter(),
+                                'facebook' => $address->getFacebook(),
+                                'linkedin' => $address->getLinkedIn(),
+                                'youtube' => $address->getYoutube()
                             ));
     }
     
