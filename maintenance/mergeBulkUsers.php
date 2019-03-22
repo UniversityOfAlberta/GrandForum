@@ -47,6 +47,7 @@
             if(($varDepartment == "" || strtolower($p->getDepartment()) == strtolower($varDepartment)) &&
                ($varPosition == "" || in_array(strtolower($p->getPosition()), Person::$studentPositions[$varPosition]))){
                 $finalData[] = $row;
+                break;
             }
         }
     }
