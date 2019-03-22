@@ -206,7 +206,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
-                                <td align='right' ><b>New Title:</b></td><td>{$fullNameField->render()}</td>
+                                <td align='right'><b>New Title:</b></td><td>{$fullNameField->render()}</td>
                             </tr>
                             <tr>
                                 <td></td>
