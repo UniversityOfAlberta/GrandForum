@@ -45,7 +45,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         }
         $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
         if($incomplete || $peerReviewedMissing || $impactFactorMissing){
-            $html .= "<ul style='float: left; color: #FF6600;'>";
+            $html .= "<ul style='color: #FF6600;'>";
             if($incomplete){
                 $html .= "<li>This entry may be incomplete</li>";
             }
