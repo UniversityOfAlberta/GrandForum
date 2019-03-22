@@ -3,6 +3,23 @@
     require_once('commandLine.inc');
     $wgUser = User::newFromId(1);
     
+    $opts = getopt('d:p:', array('department:', 'position:'));
+    $varDepartment = "";
+    $varPosition = "";
+    if(isset($opts['d'])){
+        $varDepartment = $opts['d'];
+    }
+    else if(isset($opts['department'])){
+        $varDepartment = $opts['department'];
+    }
+    
+    if(isset($opts['p'])){
+        $varPosition = $opts['p'];
+    }
+    else if(isset($ops['position'])){
+        $varPosition = $opts['position'];
+    }
+    
     $data = DBFunctions::execSQL("SELECT user_email, COUNT(*) as count
                                   FROM `mw_user` 
                                   WHERE deleted = 0 
@@ -12,6 +29,29 @@
                                   GROUP BY user_email 
                                   HAVING COUNT(*) > 1
                                   ORDER BY COUNT(*) DESC");
+    
+    $finalData = array();
+    foreach($data as $key => $row){
+        // Filter People
+        $email = DBFunctions::escape($row['user_email']);
+        $people = DBFunctions::execSQL("SELECT *
+                                        FROM `mw_user`
+                                        WHERE deleted = 0
+                                        AND candidate = 0
+                                        AND user_email = '{$email}'
+                                        AND user_name != 'Admin'");
+        $ids = array();
+        
+        foreach($people as $person){
+            $p = Person::newFromId($person['user_id']);
+            if(($varDepartment == "" || strtolower($p->getDepartment()) == strtolower($varDepartment)) &&
+               ($varPosition == "" || in_array(strtolower($p->getPosition()), Person::$studentPositions[$varPosition]))){
+                $finalData[] = $row;
+            }
+        }
+    }
+    $data = $finalData;
+    
     $count = count($data);
     $sum = 0;
     foreach($data as $row){
@@ -40,7 +80,8 @@
                                             array('*'),
                                             array('user2' => $p->getId()));
             foreach($supsData as $supRow){
-                $sups[] = $supRow['user1'];
+                $sup = Person::newFromId($supRow['user1']);
+                $sups[] = $sup->getLastName();
             }
             $sups = implode(", ", array_unique($sups));
             printf("%6s: %-30s | %-8s | %-8s | %-30s | %-36s | %-20s |\n", $p->getId(), $p->getName(), $p->getEmployeeId(), $p->getType(), $p->getDepartment(), str_replace("&#39;", "'", $p->getPosition()), $sups);
