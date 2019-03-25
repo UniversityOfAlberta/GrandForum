@@ -3897,7 +3897,15 @@ class Person extends BackboneModel {
                                         array('course_id' => $course_id,
                                               'user_id' => $this->getId()));
             if(count($data)>0){
-                return $data[0]['percentage'];
+                if($data[0]['percentage'] != ""){
+                    return $data[0]['percentage'];
+                }
+                else {
+                    return 100;
+                }
+            }
+            else{
+                return 100;
             }
         }
         return "";

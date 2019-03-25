@@ -76,7 +76,7 @@ class TabbedPage {
         $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab){
-                if($tab->canEdit() && isset($_POST['edit'])){
+                if($tab->canEdit() && isset($_POST['edit']) && $tab->id == $activeTabIndex){
                     $tab->generateEditBody();
                     $tab->showSaveButton();
                     $tab->showCancelButton();

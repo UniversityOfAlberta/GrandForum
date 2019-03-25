@@ -1,6 +1,6 @@
 <?php
 
-class PersonCoursesTab extends AbstractTab {
+class PersonCoursesTab extends AbstractEditableTab {
 
     var $person;
     var $visibility;
@@ -17,7 +17,25 @@ class PersonCoursesTab extends AbstractTab {
         $this->tooltip = "Contains a list of courses (and their corresponding student enrolments) that the faculty member has taught between the specified start and end dates.";
     }
     
-    function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false){
+    function canEdit(){
+        $me = Person::newFromWgUser();
+        return ($this->person->isMe() || $me->isRoleAtLeast(MANAGER));
+    }
+    
+    function handleEdit(){
+        foreach(@$_POST['percentages'] as $key => $percent){
+            if(!is_numeric($percent)){
+                $percent = 100;
+            }
+            $percent = max(0, min(100, $percent));
+            DBFunctions::update('grand_user_courses',
+                                array('percentage' => $percent),
+                                array('user_id' => $this->person->getId(),
+                                      'course_id' => $key));
+        }
+    }
+    
+    function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false, $editing=false){
         if($start == null || $end == null){
             $courses = $this->person->getCourses();
         }
@@ -66,7 +84,7 @@ class PersonCoursesTab extends AbstractTab {
                         $counts[$component][] = $totEnrls[$key];
                         $percent = $this->person->getCoursePercent($ids[$key]);
                         if($percent != ""){
-                            $percents[$component][] = "{$percent}%";
+                            $percents[$component][$ids[$key]] = "{$percent}%";
                         }
                         switch($component){
                             case "LEC":
@@ -84,7 +102,17 @@ class PersonCoursesTab extends AbstractTab {
                         $percentages = "";
                         if($showPercentages && isset($percents[$component])){
                             $percentages .= " [";
-                            $percentages .= @implode(",", $percents[$component]);
+                            if($editing){
+                                $inputs = array();
+                                foreach($percents[$component] as $key => $percent){
+                                    $percent = str_replace("%", "", $percent);
+                                    $inputs[] = "<input type='text' style='height:10px; width: 25px; vertical-align: middle;' name='percentages[$key]' value='{$percent}' />%";
+                                }
+                                $percentages .= @implode(",", $inputs);
+                            }
+                            else{
+                                $percentages .= @implode(",", $percents[$component]);
+                            }
                             $percentages .= "]";
                         }
                         $inner[] = count($count)." {$component}{$percentages} (".array_sum($count).")";
@@ -189,82 +217,52 @@ class PersonCoursesTab extends AbstractTab {
                         </script>
                         </div>";
         $this->html .= $this->getHTML($this->startRange, $this->endRange, true);
-        return;
-        $courses = $this->person->getCourses();
-        $this->html .= "<table id='courses_table' frame='box' rules='all'>
-                        <thead><tr>
-                            <th style='white-space:nowrap;'>Title</th>
-                            <th>Term</th>
-                            <th style='white-space:nowrap;'>Title</th>
-                            <th style='white-space:nowrap;'>Catalog Description</th>
-                            <th style='white-space:nowrap;'>USRIs</th>
-                            <th style='white-space:nowrap;'>Enrolled</th>
-                            <th style='white-space:nowrap;'>Start Date</th>
-                            <th style='white-space:nowrap;'>End Date</th>
-                        </tr></thead><tbody>";
-        foreach($courses as $course){
-            $courseEval = $this->person->getCourseEval($course->id);
-            $this->html .= "<tr>";
-            $this->html .= "<td style='white-space:nowrap;'>{$course->subject} {$course->catalog} ({$course->component})</td>";
-            $this->html .= "<td>{$course->getTerm()}</td>";
-            $this->html .= "<td>{$course->descr}</td>";
-            $this->html .= "<td>{$course->courseDescr}</td>";
-            $this->html .= "<td style='white-space:nowrap;'>";
-            if(isset($courseEval['evaluation'])){
-                $month = $course->getStartMonth();
-                $year = $course->getStartYear();
-                $term = $course->getTermUsingStartMonth($month);
-                $this->html .= "<a href='#!' onclick='$(\"#dialog{$course->id}\").dialog({width:\"1100px\",position: { my: \"center\", at: \"center\", of: window }})'>Course Evaluation</a>
-                                <div id='dialog{$course->id}' title='Course Evaluation for {$course->subject} {$course->catalog} {$term} {$year}' style='display:none;'>";
-                $this->html .= "Processed on <i>{$courseEval['month']} {$courseEval['day']}, {$courseEval['year']}</i>
-                <br /><br /><table class='dashboard wikitable'><thead>
-                    <tr>
-                    <th rowspan=2>Question</th>
-                    <th rowspan=2>Strongly Disagree</th>
-                    <th rowspan=2>Disagree</th>
-                    <th rowspan=2>Neither D or A</th>
-                    <th rowspan=2>Agree</th>
-                    <th rowspan=2>Strongly Agree</th>
-                    <th rowspan=2>Median</th>
-                    <th rowspan=2>Tukey Fence</th>
-                    <th colspan=3>Reference Data</th>
-                    </tr>
-                    <tr><th>25%</th>
-                    <th>50%</th>
-                    <th>75%</th>
-                    </tr>
-                    </thead>
-                    <tbody>";
-                foreach($courseEval['evaluation'] as $question){
-                    $this->html .= "<tr>
-                            <td style='white-space:nowrap;'>{$question['question']}</td>
-                            <td align=center>{$question['strongly disagree']}</td>
-                            <td align=center>{$question['disagree']}</td>
-                            <td align=center>{$question['neither d or a']}</td>
-                            <td align=center>{$question['agree']}</td>
-                            <td align=center>{$question['strongly agree']}</td>
-                            <td align=center>{$question['median']}</td>
-                            <td align=center>{$question['tukey fence']}</td>
-                            <td align=center>{$question['25%']}</td>
-                            <td align=center>{$question['50%']}</td>
-                            <td align=center>{$question['75%']}</td>
-                            </tr> ";
-
-                }
-                $this->html .= "</tbody></table></div>";
-            }
-            else{
-                $this->html .= "No Current Data";
-            }
-            $this->html .= "</td>";
-            $this->html .= "<td>{$course->totEnrl}</td>";
-            $this->html .= "<td style='white-space:nowrap;'>{$course->getStartDate()}</td>";
-            $this->html .= "<td style='white-space:nowrap;'>{$course->getEndDate()}</td>";
-
-        }
-        $this->html .= "</table></tbody><script type='text/javascript'>
-                        $('#courses_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'aaSorting':[[0, 'asc'],[1,'asc'],[4,'desc']]});
-        </script>";
+    }
+    
+    function generateEditBody(){
+        global $wgUser;
+        $this->html .= "<div id='{$this->id}'>
+                        <table>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><input type='datepicker' name='startRange' value='{$this->startRange}' size='10' /></td>
+                                <td><input type='datepicker' name='endRange' value='{$this->endRange}' size='10' /></td>
+                                <td><input type='button' value='Update' /></td>
+                            </tr>
+                        </table>
+                        <script type='text/javascript'>
+                            $('div#{$this->id} input[type=datepicker]').datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: '1900:".(date('Y')+3)."',
+                                onChangeMonthYear: function (year, month, inst) {
+                                    var curDate = $(this).datepicker('getDate');
+                                    if (curDate == null)
+                                        return;
+                                    if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
+                                        curDate.setYear(year);
+                                        curDate.setMonth(month - 1);
+                                        while(curDate.getMonth() != month -1){
+                                            curDate.setDate(curDate.getDate() - 1);
+                                        }
+                                        $(this).datepicker('setDate', curDate);
+                                        $(this).trigger('change');
+                                    }
+                                }
+                            });
+                            $('div#{$this->id} input[type=button]').click(function(){
+                                var startRange = $('div#{$this->id} input[name=startRange]').val();
+                                var endRange = $('div#{$this->id} input[name=endRange]').val();
+                                document.location = '{$this->person->getUrl()}?tab={$this->id}&startRange=' + startRange + '&endRange=' + endRange;
+                            });
+                        </script>
+                        </div>";
+        $this->html .= $this->getHTML($this->startRange, $this->endRange, true, false, true);
     }
 }
 ?>
