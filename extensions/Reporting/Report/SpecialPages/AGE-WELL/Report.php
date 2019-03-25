@@ -8,6 +8,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 require_once("CCActivitiesTable.php");
 require_once("HQPRegisterTable.php");
 require_once("HQPReviewTable.php");
+require_once("EEAReviewTable.php");
 require_once("CRPReviewTable.php");
 require_once("SIPReviewTable.php");
 require_once("EPICTable.php");
@@ -56,10 +57,10 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Award 2018", "{$url}HQPApplication", $selected);
         }*/
-        if($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate')){
+        /*if($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEA")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Emerging Entrepreneur", "{$url}EEA", $selected);
-        }
+        }*/
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AffiliateApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Affiliate", "{$url}AffiliateApplication", $selected);
@@ -91,8 +92,8 @@ class Report extends AbstractReport {
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CRP") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRP", $selected);*/
            
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPAccelerator2019") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Accelerator", "{$url}SIPAccelerator2019", $selected);*/
             
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CatalystApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst Application", "{$url}CatalystApplication", $selected);*/
@@ -180,6 +181,10 @@ class Report extends AbstractReport {
                     $alreadyDone[$cc->getId()] = true;
                 }
             }
+        }
+        if(count($person->getEvaluates("EEA-2019", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA Review", "{$url}EEAReview", $selected);
         }
         if(count($person->getEvaluates("SIP-2019", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPAcceleratorReview")) ? "selected" : false;

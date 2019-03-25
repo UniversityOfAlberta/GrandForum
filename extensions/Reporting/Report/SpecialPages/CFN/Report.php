@@ -62,10 +62,10 @@ class Report extends AbstractReport{
                 }
             }
         }
-        if($person->isSubRole("KT2019Applicant")){
+        /*if($person->isSubRole("KT2019Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KT2019Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KT2019Application", $selected);
-        }
+        }*/
         /*if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("CAT2018Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CAT Application", "{$url}Catalyst2018Application", $selected);
@@ -209,6 +209,10 @@ class Report extends AbstractReport{
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
+        }
+        if(count($person->getEvaluates("KT-EX", 2019)) > 0 || count($person->getEvaluates("KT-KTC", 2019)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTReview2019")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Review (2019)", "{$url}KTReview2019", $selected);
         }
         if(count($person->getEvaluates("KT_INTENT-EX", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTIntentReview")) ? "selected" : false;

@@ -62,7 +62,7 @@
                                                   {contains({$user_full_roles},KTC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
-                    <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
+                    <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
                         <![CDATA[
                             <div id="proj{$user_id}">
                             <table class='wikitable'>
@@ -423,7 +423,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                                          {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)}
                                     )}
-                                </b> (Score out of 32)</p>
+                                </b> (Score out of 34)</p>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total5">
                                     {round(
@@ -439,7 +439,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                                                      {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 32)}
+                                            , 34)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score converted out of 5)</p>
@@ -452,7 +452,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                                         }
                                     });
                                     $("#proj{$user_id}_total").html(Math.round(total*100)/100);
-                                    $("#proj{$user_id}_total5").html(Math.round((total/32)*5*100)/100 );
+                                    $("#proj{$user_id}_total5").html(Math.round((total/34)*5*100)/100 );
                                 });
                             </script>
                             </div>
@@ -507,7 +507,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-KTC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
-                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
+                <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
                     <![CDATA[
                         <div id="proj{$user_id}">
                         <table class='wikitable'>

@@ -30,7 +30,16 @@ ContributionEditView = Backbone.View.extend({
         "click #saveContribution": "saveContribution",
         "click #cancel": "cancel",
         "click button#addPartner": "addPartner",
-        "click button.deletePartner": "deletePartner"
+        "click button.deletePartner": "deletePartner",
+        "change .partner_name": function(){
+            _.defer(this.render);
+        },
+        "change .partner_type": function(){
+            _.defer(this.render);
+        },
+        "change .partner_subtype": function(){
+            _.defer(this.render);
+        },
     },
     
     deletePartner: function(e){

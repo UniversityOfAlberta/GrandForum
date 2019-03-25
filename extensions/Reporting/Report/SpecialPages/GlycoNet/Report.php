@@ -138,6 +138,7 @@ class Report extends AbstractReport{
            $person->getId() == 2513){
             if($person->isRoleAtLeast(MANAGER) || 
                $person->isRole(SD) || 
+               $person->isRole(RMC) ||
                $person->isRoleAtLeast(STAFF)){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABAlbertaReport")) ? "selected" : false;
                 $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Alberta Report", "{$url}SABAlbertaReport", $selected);

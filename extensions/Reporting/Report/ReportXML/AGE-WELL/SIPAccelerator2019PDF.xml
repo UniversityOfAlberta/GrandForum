@@ -91,7 +91,7 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{==({getText(RP_SIP_ACC_2018_2, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
+        <ReportItemSet type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
             <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
                 <![CDATA[
                     <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
