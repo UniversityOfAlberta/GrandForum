@@ -146,9 +146,11 @@
                                 </tr>
                             </thead>
                             <% for(var i=0; i < reviewers.length;i++){ %>
-                                <tr>
-                                    <td><%= reviewers[i].name %>:</td><td align="right"><%= reviewers[i].rank %></td>
-                                </tr>
+                                <% if((reviewers[i].rank != '--') && (reviewers[i].rank != "-1")){ %>
+                                    <tr>
+                                        <td><%= reviewers[i].name %>:</td><td align="right"><%= reviewers[i].rank %></td>
+                                    </tr>
+                                <% } %>
                             <% } %>
                             <tr style="background-color: #F5F5F5;">
                             <td><b>Average Rank:</b></td>
@@ -183,9 +185,11 @@
                                 </tr>
                             </thead>
                             <% for(var i=0; i < other_reviewers.length;i++){ %>
-                                <tr>
-                                    <td><%= other_reviewers[i].name %></td><td align="right"><%= other_reviewers[i].rank %></td>
-                                </tr>
+                                <% if (other_reviewers[i].rank != "-1") { %>
+                                    <tr>
+                                        <td><%= other_reviewers[i].name %></td><td align="right"><%= other_reviewers[i].rank %></td>
+                                    </tr>
+                                <% } %>
                             <% } %>
                             <tr style="background-color: #F5F5F5;">
                                 <td><b>Average Rank:</b></td>
