@@ -45,6 +45,15 @@
         </If>
     </Permissions>
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Responsibilities Variation</h3>
+                <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
+                
+                <h3>Reasons For Reduced Teaching</h3>
+                <p>The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <div style='display:inline-block;width:59%;'>
@@ -178,6 +187,30 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Undergraduate</h3>
+                <p>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses. Teaching percentages in square brackets.</p>
+                
+                <h3>Graduate</h3>
+                <p>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses. Teaching percentages in square brackets.</p>
+                
+                <h3>Project Courses</h3>
+                <p>This section should be used for project courses, not individually recorded in Beartracks.</p>
+                <p>If you have taught such a course, and it does not appear above, please enter it below.</p>
+                <p>Click 'Add New' to add a line for each such course.</p>
+                
+                <h3>Teaching Development and Innovation</h3>
+                <p>Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.</p>
+                <p>Add a new teaching development entry to create a new paragraph.</p>
+                <p>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</p>
+                
+                <h3>Other Teaching</h3>
+                <p>Enter information related to guest lectures, student projects, graduate instruction, courses taught outside the University, etc.</p>
+                <p>Add a new other teaching entry to create a new paragraph.</p>
+                <p>(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)</p>
+            ]]>
+        </Instructions>
         <ReportItem id="ugrad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="1,2,3,4" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 <h3>Undergraduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
@@ -280,6 +313,21 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Publications</h3>
+                <p>(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)</p>
+                <p>If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. Note that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+                
+                <h3>Presentations</h3>
+                <p>The Presentations section lists any presentations given by the user during the reporting year.</p>
+                <p>(Do not include presentations given by your students or by others. HQP presentations are included on the Additional Info section.)</p>
+                
+                <h3>Patents/Spin-Offs</h3>
+                <p>(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)</p>
+                <p>If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. Note that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
                 <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
@@ -413,6 +461,11 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>(Do not include awards given to students.)</p>
+            ]]>
+        </Instructions>
         <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
                 <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
@@ -448,6 +501,11 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='clicktooltip' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)</p>
+            ]]>
+        </Instructions>
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
                 <a class="button" style="position:absolute; top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
@@ -494,6 +552,28 @@ Add a new other teaching entry to create a new paragraph.<br />
 &lt;b>Scientific&lt;/b>: Enter any relevant information for this subsection.&lt;br />
 &lt;b>Community Outreach&lt;/b> (Including academic service to the general public): Enter any relevant information for this subsection.&lt;br />
 &lt;b>Other&lt;/b>: Enter any other relevant information.'>&#9432;&lt;/span>" type="ReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Provide information for any of the subsections below.</p>
+                <h3>Departmental</h3>
+                <p>(Excluding Graduate Student Committees)<br />Enter any relevant information for this subsection.</p>
+                
+                <h3>Faculty</h3>
+                <p>Enter any relevant information for this subsection.</p>
+
+                <h3>University</h3>
+                <p>Enter any relevant information for this subsection.</p>
+                
+                <h3>Scientific</h3>
+                <p>Enter any relevant information for this subsection.</p>
+                
+                <h3>Community Outreach</h3>
+                <p>(Including academic service to the general public): Enter any relevant information for this subsection.</p>
+                
+                <h3>Other</h3>
+                <p>Enter any other relevant information.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
@@ -591,6 +671,11 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-agreement.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-service-officer-agreement.pdf&quot;>FSO Agreement&lt;/a> and to the &lt;a target=&quot;_blank&quot; href=&quot;https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view&quot;>SPA Guidelines&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a href='https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-agreement.pdf' target='_blank'>Faculty Agreement</a> or to Article 8 of the <a href='https://cloudfront.ualberta.ca/-/media/hrs/my-employment/agreements/faculty-service-officer-agreement.pdf' target='_blank'>FSO Agreement</a> and to the <a href='https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view' target='_blank'>SPA Guidelines</a>.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
             <![CDATA[
                 <script type="text/javascript">
@@ -648,6 +733,19 @@ Add a new other teaching entry to create a new paragraph.<br />
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
 &lt;br />
 (Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Additional Info</h3>
+                <p>Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.</p>
+                <p>(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)</p>
+                
+                <h3>HQP Publications</h3>
+                <p>If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. <b>Note</b> that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+                
+                <h3>HQP Presentations</h3>
+                <p>The Presentations section lists any presentations given by the user's hqp during the reporting year.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
             <![CDATA[
                 {$item}

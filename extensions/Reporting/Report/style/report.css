@@ -231,7 +231,6 @@
 
 #reportInstructions > div {
     overflow: auto;
-    position:absolute;
     max-height:550px;
     min-width: 210px;
 }
