@@ -562,16 +562,16 @@
                                              (parseInt($('div#{$user_id}_{$project_id} #q25 select').val()) || 0) +
                                              (parseInt($('div#{$user_id}_{$project_id} #q26 select').val()) || 0) +
                                              (parseInt($('div#{$user_id}_{$project_id} #q27 select').val()) || 0);
-                                $('div#{$user_id}_{$project_id} #total1').text(total1);
-                                $('div#{$user_id}_{$project_id} #total2').text(total2);
-                                $('div#{$user_id}_{$project_id} #total3').text(total3);
-                                $('div#{$user_id}_{$project_id} #total4').text(total4);
-                                $('div#{$user_id}_{$project_id} #total5').text(total5);
-                                $('div#{$user_id}_{$project_id} #total6').text(total6);
-                                $('div#{$user_id}_{$project_id} #total7').text(total7);
-                                $('div#{$user_id}_{$project_id} #total8').text(total8);
+                                $('#total1', $('div#{$user_id}_{$project_id}')).text(total1);
+                                $('#total2', $('div#{$user_id}_{$project_id}')).text(total2);
+                                $('#total3', $('div#{$user_id}_{$project_id}')).text(total3);
+                                $('#total4', $('div#{$user_id}_{$project_id}')).text(total4);
+                                $('#total5', $('div#{$user_id}_{$project_id}')).text(total5);
+                                $('#total6', $('div#{$user_id}_{$project_id}')).text(total6);
+                                $('#total7', $('div#{$user_id}_{$project_id}')).text(total7);
+                                $('#total8', $('div#{$user_id}_{$project_id}')).text(total8);
                                 
-                                $('div#{$user_id}_{$project_id} #total').text(total1 + total2 + total3 + total4 + total5 + total6 + total7 + total8);
+                                $('#total', $('div#{$user_id}_{$project_id}')).text(total1 + total2 + total3 + total4 + total5 + total6 + total7 + total8);
                             });
                             $('div#{$user_id}_{$project_id} select').change();
                         </script>
