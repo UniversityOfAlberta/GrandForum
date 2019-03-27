@@ -44,10 +44,43 @@ class PersonVisualizationsTab extends AbstractTab {
                                         }
                                     });
                                 });
-                              </script>";
+                                
+                                $.get('$dataUrl', function(response){
+                                    var groups = response.groups;
+                                    var data = _.map(response.items, function(item){
+                                        var date = '';
+                                        if(item.end != undefined){
+                                            date = item.start + ' - ' + item.end;
+                                        }
+                                        else{
+                                            date = item.start;
+                                        }
+                                        var group = _.findWhere(groups, {id: item.group});
+                                        return ['<span class=' + group.className + '>' + item.content + '</span>', 
+                                                '<span class=' + group.className + '>' + group.content  + '</span>', 
+                                                '<span class=' + group.className + '>' + date  + '</span>'];
+                                    });
+                                    $('#timelineTable').DataTable({
+                                        data: data,
+                                        autoWidth: false,
+                                        pageLength: 100
+                                    });
+                                });
+                           </script>";
             $this->html .= "<div id='outerTimeline'>";
             $this->html .= $timeline->show();
-            $this->html .= "</div>";
+            $this->html .= "</div><br />";
+            $this->html .= "<table id='timelineTable' class='wikitable' frame='box' rules='all' width='100%'>
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Event Type</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
+
+            $this->html .= "</tbody></table>";
         }
     }
     
@@ -87,7 +120,7 @@ class PersonVisualizationsTab extends AbstractTab {
                                   'content' => 'Roles',
                                   'className' => 'visRed'),
                             array('id' => 'locations',
-                                  'content' => 'Locations',
+                                  'content' => 'Positions',
                                   'className' => 'visPurple'),
                             array('id' => 'relations',
                                   'content' => 'Relations',
@@ -127,11 +160,14 @@ class PersonVisualizationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                $items[] = array('content' => $university['university'],
-                                 'description' => array('title' => $university['university'],
+                $items[] = array('content' => $university['position'],
+                                 'description' => array('title' => $university['position'],
                                                         'text' => "<table>
                                                                     <tr>
-                                                                        <td><b>Title:</b></td><td>{$university['position']}</td>
+                                                                        <td><b>University:</b></td><td>{$university['university']}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Position:</b></td><td>{$university['position']}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>Department:</b></td><td>{$university['department']}</td>
@@ -194,6 +230,9 @@ class PersonVisualizationsTab extends AbstractTab {
             
             foreach($person->getPapersAuthored('all', "1900-00-00", "2100-01-01", false, false) as $paper){
                 $start = $paper->getDate();
+                if($start == "0000-00-00"){
+                    $start = $paper->getAcceptanceDate();
+                }
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
                 $items[] = array('content' => str_replace("&#39;", "'", $paper->getTitle()),
                                  'description' => array('title' => str_replace("&#39;", "'", $paper->getTitle()),
