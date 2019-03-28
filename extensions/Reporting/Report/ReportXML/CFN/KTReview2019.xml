@@ -105,7 +105,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_1_comments" type="Textarea" blobItem="KT_EX_1_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_1_comments" type="Textarea" blobItem="KT_EX_1_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -142,7 +142,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_2_comments" type="Textarea" blobItem="KT_EX_2_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_2_comments" type="Textarea" blobItem="KT_EX_2_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -179,7 +179,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_3_comments" type="Textarea" blobItem="KT_EX_3_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_3_comments" type="Textarea" blobItem="KT_EX_3_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -216,7 +216,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_4_comments" type="Textarea" blobItem="KT_EX_4_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_4_comments" type="Textarea" blobItem="KT_EX_4_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -254,7 +254,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_5_comments" type="Textarea" blobItem="KT_EX_5_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_5_comments" type="Textarea" blobItem="KT_EX_5_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -291,7 +291,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_6_comments" type="Textarea" blobItem="KT_EX_6_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_6_comments" type="Textarea" blobItem="KT_EX_6_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -328,7 +328,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_7_comments" type="Textarea" blobItem="KT_EX_7_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_7_comments" type="Textarea" blobItem="KT_EX_7_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -365,7 +365,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_8_comments" type="Textarea" blobItem="KT_EX_8_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_8_comments" type="Textarea" blobItem="KT_EX_8_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -403,7 +403,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="ex_9_comments" type="Textarea" blobItem="KT_EX_9_COMMENTS" blobSubItem="{$user_id}">
+                    <ReportItem id="ex_9_comments" type="Textarea" blobItem="KT_EX_9_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments: Please provide comments to justify your score:</b> {$item}
                         ]]>
@@ -474,7 +474,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
+        <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review." emails="{$my_email},research@cfn-nce.ca">
             <![CDATA[
                 {$item}
             ]]>
@@ -550,7 +550,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_1_comments" type="Textarea" blobItem="KT_KTC_1_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_1_comments" type="Textarea" blobItem="KT_KTC_1_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -587,7 +587,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_2_comments" type="Textarea" blobItem="KT_KTC_2_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_2_comments" type="Textarea" blobItem="KT_KTC_2_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -624,7 +624,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_3_comments" type="Textarea" blobItem="KT_KTC_3_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_3_comments" type="Textarea" blobItem="KT_KTC_3_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -661,7 +661,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_4_comments" type="Textarea" blobItem="KT_KTC_4_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_4_comments" type="Textarea" blobItem="KT_KTC_4_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -699,7 +699,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_5_comments" type="Textarea" blobItem="KT_KTC_5_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_5_comments" type="Textarea" blobItem="KT_KTC_5_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -736,7 +736,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_6_comments" type="Textarea" blobItem="KT_KTC_6_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_6_comments" type="Textarea" blobItem="KT_KTC_6_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -773,7 +773,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_7_comments" type="Textarea" blobItem="KT_KTC_7_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_7_comments" type="Textarea" blobItem="KT_KTC_7_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -810,7 +810,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_8_comments" type="Textarea" blobItem="KT_KTC_8_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_8_comments" type="Textarea" blobItem="KT_KTC_8_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -848,7 +848,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_9_comments" type="Textarea" blobItem="KT_KTC_9_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_9_comments" type="Textarea" blobItem="KT_KTC_9_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
@@ -885,7 +885,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ktc_10_comments" type="Textarea" blobItem="KT_KTC_10_COMMENTS" blobSubItem="{$user_id}">
+                <ReportItem id="ktc_10_comments" type="Textarea" blobItem="KT_KTC_10_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>

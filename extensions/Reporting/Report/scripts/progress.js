@@ -11,6 +11,7 @@ function setProgress(id, percent){
                     }
                 }
             });
+            $.get(currentSectionHref + '&saveDialogSubmit');
         }
     }
 }
