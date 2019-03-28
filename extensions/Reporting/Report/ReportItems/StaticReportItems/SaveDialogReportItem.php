@@ -3,7 +3,7 @@
 class SaveDialogReportItem extends StaticReportItem {
 
 	function render(){
-		global $wgOut, $config;
+		global $wgOut, $wgServer, $wgScriptPath, $config;
 		$message = $this->getAttr("message", "");
 		$emails = $this->getAttr('emails', '');
 		$item = $this->processCData("<div title='Section Complete' id='saveDialog' style='display:none;'>
