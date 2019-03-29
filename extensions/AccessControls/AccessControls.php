@@ -97,7 +97,7 @@ $wgExtensionCredits['specialpage'][] = array(
 
 function onBeforeInitialize($title, $article, $output, $user, $request, $mediaWiki) {
     global $wgUser;
-    if(isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])){
+    if((isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])) && $_POST['wpEmail'] != ""){
         // Make login work for email
         $previousWgUser = $wgUser;
         $wgUser = User::newFromId(1);
