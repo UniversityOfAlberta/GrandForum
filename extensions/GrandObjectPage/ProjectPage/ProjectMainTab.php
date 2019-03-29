@@ -200,13 +200,13 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
-            $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
+            $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
             $fullNameField->attr('size', 35);
             
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
-                                <td align='right'><b>New Title:</b></td><td>{$fullNameField->render()}</td>
+                                <td align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>
                             </tr>
                             <tr>
                                 <td></td>
