@@ -261,7 +261,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the alis table for superfast access
      */
     static function generateAliasCache(){
-        if(count(self::$aliasCache) == 0){
+        if(empty(self::$aliasCache)){
             $data = DBFunctions::select(array('mw_user_aliases' => 'ua',
                                               'mw_user' => 'u'),
                                         array('ua.alias',
@@ -278,7 +278,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the user table for superfast access
      */
     static function generateNamesCache(){
-        if(count(self::$namesCache) == 0){
+        if(empty(self::$namesCache)){
             $phoneNumbers = array();
             $phoneData = DBFunctions::select(array('grand_user_telephone'),
                                              array('user_id',
@@ -369,7 +369,7 @@ class Person extends BackboneModel {
      * NOTE: This only caches the current roles, not the history
      */
     static function generateRolesCache(){
-        if(count(self::$rolesCache) == 0){
+        if(empty(self::$rolesCache)){
             if(Cache::exists("rolesCache")){
                 self::$rolesCache = Cache::fetch("rolesCache");
             }
@@ -397,7 +397,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the leaders
      */
     static function generateLeaderCache(){
-        if(count(self::$leaderCache) == 0){
+        if(empty(self::$leaderCache)){
             $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
                     FROM grand_project_leaders l, grand_project p, grand_project_status s
                     WHERE l.type = 'leader'
@@ -418,7 +418,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the theme leaders
      */
     static function generateThemeLeaderCache(){
-        if(count(self::$themeLeaderCache) == 0){
+        if(empty(self::$themeLeaderCache)){
             $sql = "SELECT *
                     FROM grand_theme_leaders
                     WHERE co_lead = 'False'
@@ -438,7 +438,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the user universities
      */
     static function generateUniversityCache(){
-        if(count(self::$universityCache) == 0){
+        if(empty(self::$universityCache)){
             $sql = "SELECT user_id, university_name, department, position, end_date
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
@@ -461,7 +461,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the disciplines map
      */
     static function generateDisciplineMap(){
-        if(count(self::$disciplineMap) == 0){
+        if(empty(self::$disciplineMap)){
             $sql = "SELECT m.department, d.discipline
                     FROM `grand_disciplines_map` m, `grand_disciplines` d
                     WHERE m.discipline = d.id";
@@ -476,7 +476,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the product authors
      */
     static function generateAuthorshipCache(){
-        if(count(self::$authorshipCache) == 0){
+        if(empty(self::$authorshipCache)){
              $data = DBFunctions::select(array('grand_product_authors'),
                                         array('author', 'product_id'));
             foreach($data as $row){
@@ -491,7 +491,7 @@ class Person extends BackboneModel {
      * Caches the partial resultset of the mw_user table
      */
     static function generateAllPeopleCache(){
-        if(count(self::$allPeopleCache) == 0){
+        if(empty(self::$allPeopleCache)){
             $me = Person::newFromWgUser();
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id'),

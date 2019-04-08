@@ -450,7 +450,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateIllegalAuthorsCache(){
-        if(count(self::$illegalAuthorsCache) == 0){
+        if(empty(self::$illegalAuthorsCache)){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
             self::$illegalAuthorsCache[""] = "";
@@ -461,7 +461,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateProductProjectsCache(){
-        if(count(self::$productProjectsCache) == 0){
+        if(empty(self::$productProjectsCache)){
             $data = DBFunctions::select(array('grand_product_projects'),
                                         array('product_id', 'project_id'));
             foreach($data as $row){
@@ -471,7 +471,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateProductTagsCache(){
-        if(count(self::$productTagsCache) == 0){
+        if(empty(self::$productTagsCache)){
             $data = DBFunctions::select(array('grand_product_tags'),
                                         array('tag', 'product_id'));
             foreach($data as $row){
@@ -491,7 +491,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateTopProductsCache(){
-        if(count(self::$topProductsCache) == 0){
+        if(empty(self::$topProductsCache)){
             $data = DBFunctions::select(array('grand_top_products'),
                                         array('obj_id', 'product_id'),
                                         array('type' => EQ('PROJECT'),
@@ -932,7 +932,7 @@ class Paper extends BackboneModel{
      * it knows what the previous state was
      */
     function generateOldSyncCache(){
-        if(count(self::$oldSyncCache) == 0){
+        if(empty(self::$oldSyncCache)){
             $sql = "SELECT *
                     FROM `grand_product_authors`";
             $data = DBFunctions::execSQL($sql);
