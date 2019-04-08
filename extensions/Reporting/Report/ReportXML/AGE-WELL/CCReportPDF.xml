@@ -21,32 +21,32 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary">
-        <ReportItem id="summary">
+        <ReportItem id="summary" limit="" reportLimits="false">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="nce">
-        <ReportItem id="excellence">
+        <ReportItem id="excellence" limit="" reportLimits="false">
             <![CDATA[
                 <h3>a) Excellence of the Research Program</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp">
+        <ReportItem id="hqp" limit="" reportLimits="false">
             <![CDATA[
                 <h3>b) Development of Highly Qualified Personnel</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="networking">
+        <ReportItem id="networking" limit="" reportLimits="false">
             <![CDATA[
                 <h3>c) Networking and Partnerships</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ktee">
+        <ReportItem id="ktee" limit="" reportLimits="false">
             <![CDATA[
                 <h3>d) Knowledge Exchange and Exploitation</h3>
                 {$item}
@@ -54,9 +54,15 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="additional">
-        <ReportItem id="outcomes">
+        <ReportItem id="outcomes" limit="" reportLimits="false">
             <![CDATA[
                 <h3>a) Other Activities and Outcomes</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="benefits" limit="" reportLimits="false">
+            <![CDATA[
+                <h3>b) Benefits of Network Involvement</h3>
                 {$item}
             ]]>
         </ReportItem>
