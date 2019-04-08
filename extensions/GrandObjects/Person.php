@@ -928,7 +928,8 @@ class Person extends BackboneModel {
             'line4' => $addr->getLine4(),
             'city' => $addr->getCity(),
             'province' => $addr->getProvince(),
-            'country' => $addr->getCountry()
+            'country' => $addr->getCountry(),
+            'code' => $addr->getPostalCode()
         );
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),

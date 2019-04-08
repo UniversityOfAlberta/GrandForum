@@ -460,6 +460,7 @@ class Project extends BackboneModel {
             'city' => $addr->getCity(),
             'province' => $addr->getProvince(),
             'country' => $addr->getCountry(),
+            'code' => $addr->getPostalCode(),
             'phone' => $addr->getPhone(),
             'fax' => $addr->getFax(),
             'email' => $addr->getEmail(),
