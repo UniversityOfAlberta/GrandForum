@@ -192,16 +192,16 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
+            $shortNameField = new TextField("shortName", "University Abbreviation", $this->project->getShortName());
+            $shortNameField->attr('size', 35);
+            
             $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
             $fullNameField->attr('size', 35);
-            
-            $shortNameField = new TextField("shortName", "Short Name", $this->project->getShortName());
-            $shortNameField->attr('size', 35);
             
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
-                                <td align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>
+                                <td align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -209,7 +209,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                     <li>Max file size is 20MB</li>
                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small>
                                 </td>
-                                <td align='right'><b>Short Name:</b></td><td>{$shortNameField->render()}</td>";
+                                <td align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>";
             $this->html .= "</tr>";
         }
     }
