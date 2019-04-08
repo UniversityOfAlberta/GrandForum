@@ -32,6 +32,7 @@ class Project extends BackboneModel {
     var $theme;
     var $subProjects;
     var $photo;
+    var $logo;
     private $succ;
     private $preds;
     private $peopleCache = null;
@@ -480,6 +481,8 @@ class Project extends BackboneModel {
                        'longDescription' => $this->getLongDescription(),
                        'photo' => $this->getPhoto(),
                        'cachedPhoto' => $this->getPhoto(true),
+                       'logo' => $this->getLogo(),
+                       'cachedLogo' => $this->getLogo(true),
                        'website' => $this->getWebsite(),
                        'dept_website' => $this->getDeptWebsite(),
                        'status' => $this->getStatus(),
@@ -970,6 +973,24 @@ EOF;
             }
         }
         return $this->photo;
+    }
+    
+    /**
+     * Returns the path to a logo of this Project if it exists
+     * @param boolen $cached Whether or not to use a cached version
+     * @return string The path to a logo of this Project
+     */
+    function getLogo($cached=false){
+        global $wgServer, $wgScriptPath;
+        if($this->logo == null || !$cached){
+            if(file_exists("Photos/{$this->getName()}_Logo_{$this->getId()}.jpg")){
+                $this->logo = "$wgServer$wgScriptPath/Photos/{$this->getName()}_Logo_{$this->getId()}.jpg";
+                if(!$cached){
+                    return $this->logo."?".microtime(true);
+                }
+            }
+        }
+        return $this->logo;
     }
     
     function getMailingAddress(){

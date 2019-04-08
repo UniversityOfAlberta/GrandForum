@@ -25,7 +25,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $address = $this->project->getMailingAddress();
         $title = "";
 
-        $this->html .= "<table><tr>";
+        $this->html .= "<table style='width:100%;'><tr>";
         
         // Column 1
         $this->html .= "<td colspan='2'><table>";
@@ -35,8 +35,9 @@ class ProjectMainTab extends AbstractEditableTab {
         else{
             $this->showPhoto($this->project, $this->visibility);
         }
-        $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'><table>";
+        $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'>";
         
+        $this->html .= "<table style='width:50%; display: inline-block;'>";
         if(!$edit){
             $addressLine1 = implode("<br />", array_filter(array($address->getLine1(), $address->getLine2(), $address->getLine3(), $address->getLine4())));
             $addressLine2 = implode(", ", array_filter(array($address->getCity(), $address->getProvince(), $address->getPostalCode(), $address->getCountry())));
@@ -130,7 +131,11 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         // Column 2
-        $this->html .= "</table></td><td valign='top'>";
+        $this->html .= "</table>";
+        if($project->getPhoto() != ""){
+            $this->html .= "<img src='{$project->getPhoto()}' style='max-height:300px;max-width:50%;vertical-align: top;' />";
+        }
+        $this->html .= "</td><td valign='top'>";
         if($edit){
             $values = array();
             $programs = $this->project->getPrograms();
@@ -180,8 +185,8 @@ class ProjectMainTab extends AbstractEditableTab {
      */
     function showPhoto($project, $visibility){
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
-        if($project->getPhoto() != ""){
-            $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
+        if($project->getLogo() != ""){
+            $this->html .= "<img src='{$project->getLogo()}' style='max-height:120px;' />";
         }
         $this->html .= "</td></tr>";
     }
@@ -189,7 +194,6 @@ class ProjectMainTab extends AbstractEditableTab {
     function showEditPhoto($project, $visibility){
         global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='4'>";
-        $this->html .= "<img src='{$project->getPhoto()}' style='max-height:120px;' />";
         $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
             $shortNameField = new TextField("shortName", "University Abbreviation", $this->project->getShortName());
@@ -204,15 +208,21 @@ class ProjectMainTab extends AbstractEditableTab {
                                 <td align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td><small>
-                                    <li>Max file size is 20MB</li>
-                                    <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small>
-                                </td>
+                                <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Logo:</b></td>
+                                <td><input type='file' name='logo' /></td>
                                 <td align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>";
-            $this->html .= "</tr>";
+            $this->html .= "</tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <small>
+                                        <li>Max file size is 20MB</li>
+                                        <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li>
+                                    </small>
+                                </td>
+                            </tr>";
         }
-    }
+    }                                
     
     function handleEdit(){
         global $wgOut, $wgMessage;
@@ -272,6 +282,62 @@ class ProjectMainTab extends AbstractEditableTab {
                 $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg.<br />";
             }
         }
+        
+        if(isset($_FILES['logo']) && $_FILES['logo']['tmp_name'] != ""){
+            $type = $_FILES['logo']['type'];
+            $size = $_FILES['logo']['size'];
+            $tmp = $_FILES['logo']['tmp_name'];
+            if($type == "image/jpeg" ||
+               $type == "image/pjpeg" ||
+               $type == "image/gif" || 
+               $type == "image/png"){
+                if($size <= 1024*1024*20){
+                    //File is OK to upload
+                    $fileName = "Photos/{$this->project->getName()}_Logo_{$this->project->getId()}.jpg";
+                    move_uploaded_file($tmp, $fileName);
+                    
+                    if($type == "image/jpeg" || $type == "image/pjpeg"){
+                        $src_image = @imagecreatefromjpeg($fileName);
+                    }
+                    else if($type == "image/png"){
+                        $src_image = @imagecreatefrompng($fileName);
+                    }
+                    else if($type == "image/gif"){
+                        $src_image = @imagecreatefromgif($fileName);
+                    }
+                    if($src_image != false){
+                        imagealphablending($src_image, true);
+                        imagesavealpha($src_image, true);
+                        $src_width = imagesx($src_image);
+                        $src_height = imagesy($src_image);
+                        $dst_width = $src_width;
+                        $dst_height = $src_height;
+                        $dst_image = imagecreatetruecolor($dst_width, $dst_height);
+                        imagealphablending($dst_image, true);
+                        
+                        imagesavealpha($dst_image, true);
+                        imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+                        imagedestroy($src_image);
+                        
+                        imagejpeg($dst_image, $fileName, 100);
+                        imagedestroy($dst_image);
+                    }
+                    else{
+                        //File is not an ok filetype
+                        $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg";
+                    }
+                }
+                else{
+                    //File size is too large
+                    $error .= "The file you uploaded is too large.  It should be smaller than 20MB.<br />";
+                }
+            }
+            else{
+                //File is not an ok filetype
+                $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg.<br />";
+            }
+        }
+        
         if($error == ""){
             $_POST['project'] = $this->project->getName();
             $_POST['fullName'] = @$_POST['fullName'];
