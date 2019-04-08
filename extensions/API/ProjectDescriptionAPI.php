@@ -7,7 +7,9 @@ class ProjectDescriptionAPI extends API{
 	    $this->addPOST("description",true,"The short overview for this project","MEOW is great");
 	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");
 	    $this->addPOST("website",true,"The website url","http://agewell-nce.ca/");
+	    $this->addPOST("dept_website",true,"The department website url","http://agewell-nce.ca/");
 	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
+	    $this->addPOST("shortName",false,"The short name of the project", "MEOW");
     }
 
     function processParams($params){
@@ -20,11 +22,17 @@ class ProjectDescriptionAPI extends API{
         if(isset($_POST['website']) && $_POST['website'] != ""){
             $_POST['website'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['website']));
         }
+        if(isset($_POST['dept_website']) && $_POST['dept_website'] != ""){
+            $_POST['dept_website'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['dept_website']));
+        }
         if(isset($_POST['project']) && $_POST['project'] != ""){
             $_POST['project'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project']));
         }
         if(isset($_POST['fullName']) && $_POST['fullName'] != ""){
             $_POST['fullName'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
+        }
+        if(isset($_POST['shortName']) && $_POST['shortName'] != ""){
+            $_POST['shortName'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['shortName']));
         }
     }
 
@@ -52,6 +60,12 @@ class ProjectDescriptionAPI extends API{
 		else{
 		    $fullName = $project->getFullName();
 		}
+		if(isset($_POST['shortName'])){
+		    $shortName = $_POST['shortName'];
+		}
+		else{
+		    $shortName = $project->getShortName();
+		}
         DBFunctions::begin();
         DBFunctions::update('grand_project_descriptions',
                             array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
@@ -63,9 +77,11 @@ class ProjectDescriptionAPI extends API{
                             array('project_id' => $project->getId(),
                                   'evolution_id' => $project->evolutionId,
                                   'full_name' => $fullName,
+                                  'short_name' => $shortName,
                                   'description' => $_POST['description'],
                                   'long_description' => @$_POST['long_description'],
                                   'website' => @$_POST['website'],
+                                  'dept_website' => @$_POST['dept_website'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();

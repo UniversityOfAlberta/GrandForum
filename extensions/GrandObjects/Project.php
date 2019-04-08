@@ -12,6 +12,7 @@ class Project extends BackboneModel {
     var $id;
     var $evolutionId;
     var $fullName;
+    var $shortName;
     var $name;
     var $status;
     var $type;
@@ -431,6 +432,7 @@ class Project extends BackboneModel {
                 $this->effectiveDate = "0000-00-00 00:00:00";
             }
             $this->fullName = false;
+            $this->shortName = false;
         }
     }
     
@@ -472,11 +474,13 @@ class Project extends BackboneModel {
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
+                       'shortname' => $this->getShortName(),
                        'description' => $this->getDescription(),
                        'longDescription' => $this->getLongDescription(),
                        'photo' => $this->getPhoto(),
                        'cachedPhoto' => $this->getPhoto(true),
                        'website' => $this->getWebsite(),
+                       'dept_website' => $this->getDeptWebsite(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -621,6 +625,29 @@ EOF;
             }
         }
         return $this->fullName;
+    }
+    
+    // Returns the short name of this Project
+    function getShortName(){
+        if($this->shortName === false){
+            $sql = "(SELECT d.short_name
+                     FROM `grand_project_descriptions` d
+                     WHERE d.evolution_id = '{$this->evolutionId}'
+                     ORDER BY d.id DESC LIMIT 1)
+                    UNION
+                    (SELECT d.short_name
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'
+                     ORDER BY d.evolution_id LIMIT 1)";
+            $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                $this->shortName = $data[0]['short_name'];
+            }
+            else{
+                $this->shortName = $this->name;
+            }
+        }
+        return $this->shortName;
     }
     
     // Returns the status of this Project
@@ -1346,6 +1373,31 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             $website = $data[0]['website'];
+        }
+        if (preg_match("#https?://#", $website) === 0) {
+            $website = 'http://'.$website;
+        }
+        return $website;
+    }
+    
+    function getDeptWebsite($history=false){
+        $website = "";
+        $sql = "(SELECT dept_website 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT long_description
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            $website = $data[0]['dept_website'];
         }
         if (preg_match("#https?://#", $website) === 0) {
             $website = 'http://'.$website;

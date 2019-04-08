@@ -36,18 +36,6 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->showPhoto($this->project, $this->visibility);
         }
         $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'><table>";
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectTypes")){
-            $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
-        }
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectStatus")){
-            if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
-            }
-            else{
-                $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $this->html .= "<tr><td align='right'><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
-            }
-        }
         
         if(!$edit){
             $addressLine1 = implode("<br />", array_filter(array($address->getLine1(), $address->getLine2(), $address->getLine3(), $address->getLine4())));
@@ -63,6 +51,8 @@ class ProjectMainTab extends AbstractEditableTab {
                         "<a href='mailto:{$address->getEmail()}'>{$address->getEmail()}</a>" : "";
             $website  = ($this->project->getWebsite() != "" && $this->project->getWebsite() != "http://" && $this->project->getWebsite() != "https://") ? 
                         "<a href='{$this->project->getWebsite()}' target='_blank'>{$this->project->getWebsite()}</a>" : "";
+            $deptWebsite  = ($this->project->getDeptWebsite() != "" && $this->project->getDeptWebsite() != "http://" && $this->project->getDeptWebsite() != "https://") ? 
+                        "<a href='{$this->project->getDeptWebsite()}' target='_blank'>{$this->project->getDeptWebsite()}</a>" : "";
             $twitter  = ($address->getTwitter() != "" && $address->getTwitter() != "http://" && $address->getTwitter() != "https://") ? 
                         "<a href='{$address->getTwitter()}' target='_blank'>{$address->getTwitter()}</a>" : "";
             $facebook = ($address->getFacebook() != "" && $address->getFacebook() != "http://" && $address->getFacebook() != "https://") ? 
@@ -87,7 +77,8 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <span style='display:inline-block; width:80px; color: #555;'>Phone</span>    {$address->getPhone()}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Fax</span>      {$address->getFax()}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Email</span>    {$email}<br />
-                                        <span style='display:inline-block; width:80px; color: #555;'>Website</span>  {$website}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Dept Website</span>  {$deptWebsite}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Uni Website</span>  {$website}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Twitter</span>  {$twitter}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Facebook</span> {$facebook}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>LinkedIn</span> {$linkedin}<br />
@@ -127,7 +118,8 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
                                         <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
                                         <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
-                                        <b>Website:</b><input type='text' name='website' value='{$this->project->getWebsite()}' size='35' /><br />
+                                        <b>Dept Website:</b><input type='text' name='dept_website' value='{$this->project->getDeptWebsite()}' size='35' /><br />
+                                        <b>Uni Website:</b><input type='text' name='website' value='{$this->project->getWebsite()}' size='35' /><br />
                                         <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
                                         <b>Facebook:</b><input type='text' size='35' name='address_facebook' placeholder='https://www.facebook.com/*****/' value='".str_replace("'", "&#39;", $address->getFacebook())."' /><br />
                                         <b>LinkedIn:</b><input type='text' size='35' name='address_linkedin' placeholder='https://www.linkedin.com/school/*****/' value='".str_replace("'", "&#39;", $address->getLinkedIn())."' /><br />
@@ -203,6 +195,9 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
             $fullNameField->attr('size', 35);
             
+            $shortNameField = new TextField("shortName", "Short Name", $this->project->getShortName());
+            $shortNameField->attr('size', 35);
+            
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' name='photo' /></td>
@@ -213,10 +208,8 @@ class ProjectMainTab extends AbstractEditableTab {
                                 <td><small>
                                     <li>Max file size is 20MB</li>
                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small>
-                                </td>";
-            if($project->getType() != "Administrative"){
-                $this->showChallenge();
-            }
+                                </td>
+                                <td align='right'><b>Short Name:</b></td><td>{$shortNameField->render()}</td>";
             $this->html .= "</tr>";
         }
     }
@@ -282,12 +275,16 @@ class ProjectMainTab extends AbstractEditableTab {
         if($error == ""){
             $_POST['project'] = $this->project->getName();
             $_POST['fullName'] = @$_POST['fullName'];
+            $_POST['shortName'] = @$_POST['shortName'];
             $_POST['description'] = @$_POST['description'];
             $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
+            $_POST['dept_website'] = @str_replace("'", "&#39;", $_POST['dept_website']);
             $_POST['long_description'] = $this->project->getLongDescription();
             if($_POST['description'] != $this->project->getDescription() ||
                $_POST['fullName'] != $this->project->getFullName() ||
-               $_POST['website'] != $this->project->getWebsite()){
+               $_POST['shortName'] != $this->project->getShortName() ||
+               $_POST['website'] != $this->project->getWebsite() ||
+               $_POST['dept_website'] != $this->project->getDeptWebsite()){
                 $error = APIRequest::doAction('ProjectDescription', true);
                 if($error != ""){
                     return $error;
