@@ -24,8 +24,13 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $address = $this->project->getMailingAddress();
         $title = "";
-
-        $this->html .= "<table style='width:100%;'><tr>";
+        
+        if($edit){
+            $this->html .= "<table><tr>";
+        }
+        else{
+            $this->html .= "<table style='width:100%;'><tr>";
+        }
         
         // Column 1
         $this->html .= "<td colspan='2'><table>";
@@ -37,8 +42,8 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "</table></td></tr><tr><td valign='top' style='padding-right:25px;'>";
         
-        $this->html .= "<table style='width:50%; display: inline-block;'>";
         if(!$edit){
+            $this->html .= "<table style='width:50%; display: inline-block;'>";
             $addressLine1 = implode("<br />", array_filter(array($address->getLine1(), $address->getLine2(), $address->getLine3(), $address->getLine4())));
             $addressLine2 = implode(", ", array_filter(array($address->getCity(), $address->getProvince(), $address->getPostalCode(), $address->getCountry())));
             $programsLine = array();
@@ -97,6 +102,7 @@ class ProjectMainTab extends AbstractEditableTab {
                             </tr>";
         }
         else if($edit){
+            $this->html .= "<table>";
             $this->html .= "<tr>
                                 <td align='right' valign='top' colspan='2'>
                                     <fieldset>
@@ -132,7 +138,7 @@ class ProjectMainTab extends AbstractEditableTab {
         
         // Column 2
         $this->html .= "</table>";
-        if($project->getPhoto() != ""){
+        if($project->getPhoto() != "" && !$edit){
             $this->html .= "<img src='{$project->getPhoto()}' style='max-height:300px;max-width:50%;vertical-align: top;' />";
         }
         $this->html .= "</td><td valign='top'>";
