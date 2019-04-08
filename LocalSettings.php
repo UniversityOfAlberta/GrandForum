@@ -266,11 +266,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, PA, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, PS, STUDENT, EXTERNAL, AR, CI, PA, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, PA, STUDENT, EXTERNAL, AR, CI, PA, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 foreach($config->getValue('committees') as $role => $roleDef){
     define($role, $role);
