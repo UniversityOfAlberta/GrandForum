@@ -983,8 +983,8 @@ EOF;
     function getLogo($cached=false){
         global $wgServer, $wgScriptPath;
         if($this->logo == null || !$cached){
-            if(file_exists("Photos/{$this->getName()}_Logo_{$this->getId()}.jpg")){
-                $this->logo = "$wgServer$wgScriptPath/Photos/{$this->getName()}_Logo_{$this->getId()}.jpg";
+            if(file_exists("Photos/{$this->getName()}_Logo_{$this->getId()}.png")){
+                $this->logo = "$wgServer$wgScriptPath/Photos/{$this->getName()}_Logo_{$this->getId()}.png";
                 if(!$cached){
                     return $this->logo."?".microtime(true);
                 }

@@ -116,18 +116,41 @@ class PersonProfileTab extends AbstractEditableTab {
     function handleContactEdit(){
         global $wgImpersonating;
         $error = "";
-        if(!$wgImpersonating && isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != ""){
-            $type = $_FILES['photo']['type'];
-            $size = $_FILES['photo']['size'];
-            $tmp = $_FILES['photo']['tmp_name'];
+        if((isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "") ||
+           (isset($_POST['photo_url']) && $_POST['photo_url'] != "")){
+            $fileName = "Photos/".str_replace(".", "_", $this->person->getName()).".jpg";
+            if(isset($_POST['photo_url']) && $_POST['photo_url'] != ""){
+                $type = "";
+                if(strstr(@$_POST['photo_url'], ".gif") !== false){
+                    $type = "image/gif";
+                }
+                else if(strstr(@$_POST['photo_url'], ".png") !== false){
+                    $type = "image/png";
+                }
+                else if(strstr(@$_POST['photo_url'], ".jpg") !== false ||
+                        strstr(@$_POST['photo_url'], ".jpeg") !== false){
+                    $type = "image/jpeg";
+                }
+                $file = @file_get_contents($_POST['photo_url']);
+                $size = strlen($file);
+            }
+            else{
+                $type = $_FILES['photo']['type'];
+                $size = $_FILES['photo']['size'];
+                $tmp = $_FILES['photo']['tmp_name'];
+            }
             if($type == "image/jpeg" ||
                $type == "image/pjpeg" ||
                $type == "image/gif" || 
                $type == "image/png"){
                 if($size <= 1024*1024*5){
                     //File is OK to upload
-                    $fileName = "Photos/".str_replace(".", "_", $this->person->getName()).".jpg";
-                    move_uploaded_file($tmp, $fileName);
+                    if(isset($_POST['photo_url']) && $_POST['photo_url'] != ""){
+                        file_put_contents($fileName, $file);
+                    }
+                    else{
+                        move_uploaded_file($tmp, $fileName);
+                    }
                     
                     if($type == "image/jpeg" || $type == "image/pjpeg"){
                         $src_image = @imagecreatefromjpeg($fileName);
@@ -494,7 +517,11 @@ EOF;
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
             $this->html .= "<tr>
                                 <td align='right'><b>Upload new Photo:</b></td>
-                                <td><input type='file' name='photo' /></td>
+                                <td><input type='file' name='photo' style='width:269px;' /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type='text' name='photo_url' style='width:269px;' placeholder='Enter photo URL here instead of file upload' /></td>
                             </tr>
                             <tr>
                                 <td></td><td><small><li>For best results, the image should be 300x396</li>

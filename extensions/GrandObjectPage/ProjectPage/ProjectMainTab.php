@@ -199,33 +199,31 @@ class ProjectMainTab extends AbstractEditableTab {
     
     function showEditPhoto($project, $visibility){
         global $config;
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='4'>";
-        $this->html .= "</td></tr>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
             $shortNameField = new TextField("shortName", "University Abbreviation", $this->project->getShortName());
-            $shortNameField->attr('size', 35);
+            $shortNameField->attr('size', 27);
             
             $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
-            $fullNameField->attr('size', 35);
+            $fullNameField->attr('size', 27);
             
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
-                                <td><input type='file' name='photo' /></td>
-                                <td align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
+                                <td><input type='file' style='width:269px;' name='photo' /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type='text' name='photo_url' style='width:269px;' placeholder='Enter photo URL here instead of file upload' /></td>
                             </tr>
                             <tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Logo:</b></td>
-                                <td><input type='file' name='logo' /></td>
-                                <td align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>";
-            $this->html .= "</tr>
+                                <td><input type='file' style='width:269px;' name='logo' /></td>
+                                <td style='white-space: nowrap;' align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
+                            </tr>
                             <tr>
                                 <td></td>
-                                <td>
-                                    <small>
-                                        <li>Max file size is 20MB</li>
-                                        <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li>
-                                    </small>
-                                </td>
+                                <td><input type='text' name='logo_url' style='width:269px;' placeholder='Enter logo URL here instead of file upload' /></td>
+                                <td style='white-space: nowrap;' align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>
+                                
                             </tr>";
         }
     }                                
@@ -234,18 +232,41 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgOut, $wgMessage;
         $me = Person::newFromWgUser();
         $error = "";
-        if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != ""){
-            $type = $_FILES['photo']['type'];
-            $size = $_FILES['photo']['size'];
-            $tmp = $_FILES['photo']['tmp_name'];
+        if((isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "") ||
+           (isset($_POST['photo_url']) && $_POST['photo_url'] != "")){
+            $fileName = "Photos/{$this->project->getName()}_{$this->project->getId()}.jpg";
+            if(isset($_POST['photo_url']) && $_POST['photo_url'] != ""){
+                $type = "";
+                if(strstr(@$_POST['photo_url'], ".gif") !== false){
+                    $type = "image/gif";
+                }
+                else if(strstr(@$_POST['photo_url'], ".png") !== false){
+                    $type = "image/png";
+                }
+                else if(strstr(@$_POST['photo_url'], ".jpg") !== false ||
+                        strstr(@$_POST['photo_url'], ".jpeg") !== false){
+                    $type = "image/jpeg";
+                }
+                $file = @file_get_contents($_POST['photo_url']);
+                $size = strlen($file);
+            }
+            else{
+                $type = $_FILES['photo']['type'];
+                $size = $_FILES['photo']['size'];
+                $tmp = $_FILES['photo']['tmp_name'];
+            }
             if($type == "image/jpeg" ||
                $type == "image/pjpeg" ||
                $type == "image/gif" || 
                $type == "image/png"){
                 if($size <= 1024*1024*20){
                     //File is OK to upload
-                    $fileName = "Photos/{$this->project->getName()}_{$this->project->getId()}.jpg";
-                    move_uploaded_file($tmp, $fileName);
+                    if(isset($_POST['photo_url']) && $_POST['photo_url'] != ""){
+                        file_put_contents($fileName, $file);
+                    }
+                    else{
+                        move_uploaded_file($tmp, $fileName);
+                    }
                     
                     if($type == "image/jpeg" || $type == "image/pjpeg"){
                         $src_image = @imagecreatefromjpeg($fileName);
@@ -289,18 +310,41 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         
-        if(isset($_FILES['logo']) && $_FILES['logo']['tmp_name'] != ""){
-            $type = $_FILES['logo']['type'];
-            $size = $_FILES['logo']['size'];
-            $tmp = $_FILES['logo']['tmp_name'];
+        if((isset($_FILES['logo']) && $_FILES['logo']['tmp_name'] != "") ||
+           (isset($_POST['logo_url']) && $_POST['logo_url'] != "")){
+            $fileName = "Photos/{$this->project->getName()}_Logo_{$this->project->getId()}.png";
+            if(isset($_POST['logo_url']) && $_POST['logo_url'] != ""){
+                $type = "";
+                if(strstr(@$_POST['logo_url'], ".gif") !== false){
+                    $type = "image/gif";
+                }
+                else if(strstr(@$_POST['logo_url'], ".png") !== false){
+                    $type = "image/png";
+                }
+                else if(strstr(@$_POST['logo_url'], ".jpg") !== false ||
+                        strstr(@$_POST['logo_url'], ".jpeg") !== false){
+                    $type = "image/jpeg";
+                }
+                $file = @file_get_contents($_POST['logo_url']);
+                $size = strlen($file);
+            }
+            else{
+                $type = $_FILES['logo']['type'];
+                $size = $_FILES['logo']['size'];
+                $tmp = $_FILES['logo']['tmp_name'];
+            }
             if($type == "image/jpeg" ||
                $type == "image/pjpeg" ||
                $type == "image/gif" || 
                $type == "image/png"){
                 if($size <= 1024*1024*20){
                     //File is OK to upload
-                    $fileName = "Photos/{$this->project->getName()}_Logo_{$this->project->getId()}.jpg";
-                    move_uploaded_file($tmp, $fileName);
+                    if(isset($_POST['logo_url']) && $_POST['logo_url'] != ""){
+                        file_put_contents($fileName, $file);
+                    }
+                    else{
+                        move_uploaded_file($tmp, $fileName);
+                    }
                     
                     if($type == "image/jpeg" || $type == "image/pjpeg"){
                         $src_image = @imagecreatefromjpeg($fileName);
@@ -312,20 +356,20 @@ class ProjectMainTab extends AbstractEditableTab {
                         $src_image = @imagecreatefromgif($fileName);
                     }
                     if($src_image != false){
-                        imagealphablending($src_image, true);
+                        imagealphablending($src_image, false);
                         imagesavealpha($src_image, true);
                         $src_width = imagesx($src_image);
                         $src_height = imagesy($src_image);
                         $dst_width = $src_width;
                         $dst_height = $src_height;
                         $dst_image = imagecreatetruecolor($dst_width, $dst_height);
-                        imagealphablending($dst_image, true);
+                        imagealphablending($dst_image, false);
                         
                         imagesavealpha($dst_image, true);
                         imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
                         imagedestroy($src_image);
                         
-                        imagejpeg($dst_image, $fileName, 100);
+                        imagepng($dst_image, $fileName);
                         imagedestroy($dst_image);
                     }
                     else{
