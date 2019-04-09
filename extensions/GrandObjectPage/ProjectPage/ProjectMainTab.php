@@ -247,7 +247,21 @@ class ProjectMainTab extends AbstractEditableTab {
                         strstr(@$_POST['photo_url'], ".jpeg") !== false){
                     $type = "image/jpeg";
                 }
-                $file = @file_get_contents($_POST['photo_url']);
+                // create curl resource
+                $ch = curl_init();
+
+                // set url
+                curl_setopt($ch, CURLOPT_URL, $_POST['photo_url']);
+
+                //return the transfer as a string
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+                // $output contains the output string
+                $file = curl_exec($ch);
+
+                // close curl resource to free up system resources
+                curl_close($ch);
                 $size = strlen($file);
             }
             else{
@@ -325,7 +339,21 @@ class ProjectMainTab extends AbstractEditableTab {
                         strstr(@$_POST['logo_url'], ".jpeg") !== false){
                     $type = "image/jpeg";
                 }
-                $file = @file_get_contents($_POST['logo_url']);
+                // create curl resource
+                $ch = curl_init();
+
+                // set url
+                curl_setopt($ch, CURLOPT_URL, $_POST['logo_url']);
+
+                //return the transfer as a string
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+                // $output contains the output string
+                $file = curl_exec($ch);
+
+                // close curl resource to free up system resources
+                curl_close($ch);
                 $size = strlen($file);
             }
             else{
