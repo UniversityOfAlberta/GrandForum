@@ -10,6 +10,7 @@ behat/output
 behat/screenshots
 behat/vendor
 Photos/*.jpg
+Photos/*.png
 images/*
 Classes/dompdf/lib/fonts/log.htm
 Classes/dompdf/lib/fonts/*.afm.php
