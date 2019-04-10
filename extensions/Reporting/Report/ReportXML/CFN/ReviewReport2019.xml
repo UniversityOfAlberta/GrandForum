@@ -672,7 +672,7 @@
                             {round({divide({get(q9)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
-                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -819,7 +819,7 @@
                             {round({divide({get(q10)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
-                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
