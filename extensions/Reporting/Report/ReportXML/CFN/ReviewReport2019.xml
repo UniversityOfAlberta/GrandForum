@@ -612,6 +612,34 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)},
+                             {get(q4)},
+                             {get(q5)},
+                             {get(q6)},
+                             {get(q7)},
+                             {get(q8)},
+                             {get(q9)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},34)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -643,19 +671,7 @@
                         <td align='right'>
                             {round({divide({get(q9)},{get(nReviewers)})},2)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(q1)}, 
-                                     {get(q2)},
-                                     {get(q3)},
-                                     {get(q4)},
-                                     {get(q5)},
-                                     {get(q6)},
-                                     {get(q7)},
-                                     {get(q8)},
-                                     {get(q9)}
-                                )}
-                            )}
+                        <td align='right' style='{get(highlight)}'>
                             {round({divide({get(total)},{get(nReviewers)})},2)}
                         </td>
                     </tr>
@@ -739,6 +755,35 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)},
+                             {get(q2)},
+                             {get(q3)},
+                             {get(q4)},
+                             {get(q5)},
+                             {get(q6)},
+                             {get(q7)},
+                             {get(q8)},
+                             {get(q9)},
+                             {get(q10)}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},38)},5)},2)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#008800)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+                <![CDATA[
+                    {set(highlight,background:#FF0000)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -773,20 +818,7 @@
                         <td align='right'>
                             {round({divide({get(q10)},{get(nReviewers)})},2)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(q1)}, 
-                                     {get(q2)},
-                                     {get(q3)},
-                                     {get(q4)},
-                                     {get(q5)},
-                                     {get(q6)},
-                                     {get(q7)},
-                                     {get(q8)},
-                                     {get(q9)},
-                                     {get(q10)}
-                                )}
-                            )}
+                        <td align='right' style='{get(highlight)}'>
                             {round({divide({get(total)},{get(nReviewers)})},2)}
                         </td>
                     </tr>
