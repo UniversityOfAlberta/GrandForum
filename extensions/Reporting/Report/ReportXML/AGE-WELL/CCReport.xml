@@ -25,7 +25,7 @@
         <Person id="1567" />
     </Permissions>
     <ReportSection id="summary">
-        <ReportItem id="summary" limit="">
+        <ReportItem id="summary">
             <![CDATA[
                 <h3>Report Description</h3>
                 <p>Each CC is asked to collect information and examples from across its constituent members/projects in order to complete a 2-3 page CC Report. Responses will be used to help the Network Management Office to construct the 2018/19 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. CCs are not individually evaluated on the content of these reports.</p>
@@ -38,7 +38,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="nce">
-        <ReportItem id="excellence" limit="">
+        <ReportItem id="excellence">
             <![CDATA[
                 <h3>a) Excellence of the Research Program (2000 characters / ½ pg)</h3>
                 <p><i>AGE-WELL’s research program is driven to address Canadian needs and problems, and is therefore expected to be multidisciplinary and multisectoral.  We are evaluated on the excellence, focus and coherence of the research program. For your CC, please comment on the follow providing concrete examples where possible.</i></p>
@@ -54,7 +54,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp" limit="">
+        <ReportItem id="hqp">
             <![CDATA[
                 <h3>b) Development of Highly Qualified Personnel (2000 characters ½ pg)</h3>
                 <p><i>The training and retention of HQP is imperative to maximize the effectiveness of the Networks’ contribution to the wealth, wellness and well-being of Canadians. The multidisciplinary and multisectoral nature of a network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</i></p>
@@ -66,7 +66,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="networking" limit="">
+        <ReportItem id="networking">
             <![CDATA[
                 <h3>c) Networking and Partnerships (2000 characters/ ½ pg)</h3>
                 <p><i>AGE-WELL must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex Canadian challenges it is designed to address.</i></p>
@@ -78,7 +78,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ktee" limit="">
+        <ReportItem id="ktee">
             <![CDATA[
                 <h3>d) Knowledge Exchange and Exploitation (2000 characters / ½ pg)</h3>
                 <p><i>NCE networks are expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to Canadian receptors.</i></p>
@@ -89,15 +89,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="additional" >
-        <ReportItem id="outcomes" limit="">
+    <ReportSection id="additional">
+        <ReportItem id="outcomes">
             <![CDATA[
                 <h3>a) Other Activities and Outcomes</h3>
                 <p>While it is important that we demonstrate achievement in the NCE Program areas above, we realize that there are other ways to define success and achievement relevant to AGE-WELL’s mission and vision. In this section, please describe any success or achievements that you would like to highlight that have not been covered in the sections above.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefits" limit="">
+        <ReportItem id="benefits">
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
                 <p>NCEs ideally provide its members with benefits and opportunities that are realizable through a multisectoral networked approach. Please describe any benefits accrued by your team(s) resulting from your specific involvement in AGE-WELL (e.g. team cohesion, access to new partners etc.)</p>
