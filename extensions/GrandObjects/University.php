@@ -27,7 +27,7 @@ class University extends BackboneModel {
                                     array('u.*', 'p.province', 'p.color' => 'col'),
                                     array('university_id' => EQ($id),
                                           'province_id' => EQ(COL('p.id'))));
-        if(count($data) == 0){
+        if(empty($data)){
             $data = DBFunctions::select(array('grand_universities' => 'u', 
                                               'grand_provinces' => 'p'),
                                         array('u.*', 'p.province', 'p.color' => 'col'),
@@ -49,7 +49,7 @@ class University extends BackboneModel {
                                     array('u.*', 'p.province', 'p.color' => 'col'),
                                     array('university_name' => EQ($name),
                                           'province_id' => EQ(COL('p.id'))));
-        if(count($data) == 0){
+        if(empty($data)){
             $data = DBFunctions::select(array('grand_universities' => 'u', 
                                               'grand_provinces' => 'p'),
                                         array('u.*', 'p.province', 'p.color' => 'col'),
@@ -79,7 +79,7 @@ class University extends BackboneModel {
     }
     
     function University($data){
-        if(count($data) > 0){
+        if(!empty($data)){
             $row = $data[0];
             $this->id = $row['university_id'];
             $this->name = $row['university_name'];

@@ -62,13 +62,9 @@ class UploadCCVAPI extends API{
             return null;
         }
         if(!$checkProduct->exists()){
-            $checkProduct = Product::newFromTitle($paper['title']);
+            $checkProduct = Product::newFromTitle($paper['title'], $category, $type);
         }
-        if($checkProduct->getId() != 0 && 
-           ($checkProduct->getCategory() == $category || $category == null) &&
-           $checkProduct->getType() == $type && 
-           !$overwrite){
-            // Make sure that a product with the same title/category/type does not already exist
+        if(!$overwrite && $checkProduct->exists()){
             return null;
         }
         
@@ -163,11 +159,11 @@ class UploadCCVAPI extends API{
         }
         
         if(!$product->exists()){
-            $status = $product->create();
+            $status = $product->create(false);
         }
         else{
             $product->deleted = 0;
-            $status = $product->update();
+            $status = $product->update(false);
         }
         if($status){
             $product = Product::newFromId($product->getId());
@@ -759,11 +755,11 @@ class UploadCCVAPI extends API{
                     $reviewedConferencePapers = $cv->getReviewedConferencePapers();
                     $reviewedJournalPapers = $cv->getReviewedJournalPapers();
                     $presentations = $cv->getPresentations();
-                    $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
+                    $overwrite = (isset($_POST['ccv_overwrite']) && strtolower($_POST['ccv_overwrite']) == "yes") ? true : false;
                     foreach($conferencePapers as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id, $overwrite);
                         if($product != null){
-                            $createdProducts[] = $product;
+                            $createdProducts[$product->getId()] = $product;
                         }
                         else{
                             $errorProducts[] = $paper;
@@ -772,7 +768,7 @@ class UploadCCVAPI extends API{
                     foreach($journalPapers as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Publication", "Journal Paper", $ccv_id, $overwrite);
                         if($product != null){
-                            $createdProducts[] = $product;
+                            $createdProducts[$product->getId()] = $product;
                         }
                         else{
                             $errorProducts[] = $paper;
@@ -781,7 +777,7 @@ class UploadCCVAPI extends API{
                     foreach($bookChapters as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id, $overwrite);
                         if($product != null){
-                            $createdProducts[] = $product;
+                            $createdProducts[$product->getId()] = $product;
                         }
                         else{
                             $errorProducts[] = $paper;
@@ -790,12 +786,30 @@ class UploadCCVAPI extends API{
                     foreach($presentations as $ccv_id => $paper){
                         $product = $this->createProduct($person, $paper, "Presentation", "Other", $ccv_id, $overwrite);
                         if($product != null){
-                            $createdProducts[] = $product;
+                            $createdProducts[$product->getId()] = $product;
                         }
                         else{
                             $errorProducts[] = $paper;
                         }
                     }
+                    
+                    $syncInserts = array();
+                    $syncDeletes = array();
+                    foreach($createdProducts as $product){
+                        $sqls = $product->syncAuthors(true);
+                        foreach($sqls[1] as $s){
+                            $syncInserts[] = $s;
+                        }
+                        $syncDeletes[] = $product->getId();
+                    }
+                    
+                    if(count($syncInserts) > 0){
+                        DBFunctions::begin();
+                        DBFunctions::execSQL("DELETE FROM `grand_product_authors` WHERE product_id IN (".implode(",", $syncDeletes).")", true, true);
+                        DBFunctions::execSQL("INSERT INTO `grand_product_authors` (`author`, `product_id`, `order`)
+	                                          VALUES\n".implode(",\n",$syncInserts), true, true);
+	                    DBFunctions::commit();
+	                }
                 }
                 if(isset($_POST['supervises'])){
                     $supervises = $cv->getStudentsSupervised();

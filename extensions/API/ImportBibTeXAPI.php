@@ -55,24 +55,22 @@ class ImportBibTeXAPI extends API{
         return $month;
     }
     
-    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false){
+    function createProduct($paper, $category, $type, $overwrite=false){
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
         }
-        $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
-        $checkProduct = Product::newFromTitle($paper['title']);
-        if(!$overwrite && ($checkBibProduct->exists() || 
-           ($checkProduct->exists() && $checkProduct->getCategory() == $category && $checkProduct->getType() == $type))){
+        $checkBibProduct = Product::newFromBibTeXId(@$paper['doi']);
+        $checkProduct = Product::newFromTitle($paper['title'], $category, $type);
+        if((!$overwrite && $checkProduct->exists()) ||
+           (!$overwrite && $checkBibProduct->exists())){
             return null;
         }
-        if($bibtex_id != "" && $checkBibProduct->getId() != 0){
+        if(@trim($paper['doi']) != "" && $checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
         }
-        else if($checkProduct->getId() != 0 && 
-           ($checkProduct->getCategory() == $category || $category == null) &&
-           $checkProduct->getType() == $type){
+        else if($checkProduct->getId() != 0){
             // Make sure that a product with the same title/category/type does not already exist
             $product = $checkProduct;
         }
@@ -117,10 +115,9 @@ class ImportBibTeXAPI extends API{
         if(!is_array($product->authors)){ $product->authors = array(); }
         if(!$product->exists()){
             $product->access_id = $me->getId();
-            $product->bibtex_id = $bibtex_id;
         }
         $product->access = "Public";
-        if(count($product->authors) == 0){
+        if(empty($product->authors)){
             if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
                 // Must be using ',' as a delimiter...
                 $count = null;
@@ -169,11 +166,11 @@ class ImportBibTeXAPI extends API{
             }
         }
         if(!$product->exists()){
-            $status = $product->create();
+            $status = $product->create(false);
         }
         else{
             $product->deleted = 0;
-            $status = $product->update();
+            $status = $product->update(false);
         }
         if($status){
             $product = Product::newFromId($product->getId());
@@ -199,10 +196,7 @@ class ImportBibTeXAPI extends API{
                 require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
                 $md5 = md5($_POST['bibtex']);
                 $fileName = "/tmp/".$md5;
-                //echo nl2br($_POST['bibtex']);
                 $_POST['bibtex'] = preg_replace('/((\w+?)\s*=\s*\{(.*?)\},*)([\s|}])/ms', "\n$1\n$4", $_POST['bibtex']);
-                //echo nl2br($_POST['bibtex']);
-                //exit;
                 file_put_contents($fileName, $_POST['bibtex']);
                 $bib = new Bibliography($fileName);
                 unlink($fileName);
@@ -211,19 +205,33 @@ class ImportBibTeXAPI extends API{
             $errorProducts = array();
             $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
-                foreach($bib->m_entries as $bibtex_id => $paper){
+                foreach($bib->m_entries as $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    if(isset($_POST['fec'])){
-                        $bibtex_id = "";
-                    }
-                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id, $overwrite);
+                    $product = $this->createProduct($paper, "Publication", $type, $overwrite);
                     if($product != null){
-                        $createdProducts[] = $product;
+                        $createdProducts[$product->getId()] = $product;
                     }
                     else{
                         $errorProducts[] = $paper;
                     }
                 }
+                $syncInserts = array();
+                $syncDeletes = array();
+                foreach($createdProducts as $product){
+                    $sqls = $product->syncAuthors(true);
+                    foreach($sqls[1] as $s){
+                        $syncInserts[] = $s;
+                    }
+                    $syncDeletes[] = $product->getId();
+                }
+                
+                if(count($syncInserts) > 0){
+                    DBFunctions::begin();
+                    DBFunctions::execSQL("DELETE FROM `grand_product_authors` WHERE product_id IN (".implode(",", $syncDeletes).")", true, true);
+                    DBFunctions::execSQL("INSERT INTO `grand_product_authors` (`author`, `product_id`, `order`)
+	                                      VALUES\n".implode(",\n",$syncInserts), true, true);
+	                DBFunctions::commit();
+	            }
             }
             else{
                 // Error
@@ -243,7 +251,7 @@ class ImportBibTeXAPI extends API{
                     $this->addError("A publication was missing an authors list");
                 }
                 else{
-                    $this->addMessage("Duplicate");
+                    $this->addMessage("{$product['title']}");
                 }
             }
             $this->data = $json;

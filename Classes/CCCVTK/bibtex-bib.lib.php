@@ -428,7 +428,8 @@ class Bibliography // {{{
           Bibliography::replaceAccents(Bibliography::unspace($v)));
       }
       $params["bibtex_type"] = $bibtex_type;
-      $this->m_entries[$bibtex_name] = $params;
+      $params["bibtex_id"] = $bibtex_name;
+      $this->m_entries[] = $params;
     }
   } // }}}
   

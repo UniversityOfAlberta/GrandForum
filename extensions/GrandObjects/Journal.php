@@ -21,7 +21,7 @@ class Journal extends BackboneModel {
     var $eigenfactor;
 
     function Journal($data){
-        if (count($data) > 0){
+        if (!empty($data)){
             $row = $data[0]; // since we're passing the entire result set
             $this->id = $row['id'];
             $this->year = $row['year'];
@@ -116,7 +116,7 @@ class Journal extends BackboneModel {
                 $issn = $row['issn'];
                 $eissn = $row['eissn'];
                 $results = preg_grep("/".preg_quote($string)."/", array($title, $year, $description, $short_title, $iso_abbrev, $issn, $eissn));
-                if(count($results) == 0){ // everything must match
+                if(empty($results)){ // everything must match
                     $found = false;
                     break;
                 }

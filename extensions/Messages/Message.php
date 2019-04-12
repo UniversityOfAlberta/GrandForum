@@ -29,7 +29,7 @@ class Messages {
             $this->info = unserialize($_COOKIE['info']);
         }
         if(isset($_COOKIE['purpleInfo'])){
-            $this->info = unserialize($_COOKIE['purpleInfo']);
+            $this->purpleInfo = unserialize($_COOKIE['purpleInfo']);
         }
         $this->clearCookies();
     }
@@ -74,6 +74,7 @@ class Messages {
         else{
             $this->info[$this->infoIndex++] = $message;
         }
+        @setcookie('info', serialize($this->info), time()+3600);
     }
     
     // Adds a (purple) info message
@@ -84,6 +85,7 @@ class Messages {
         else{
             $this->purpleInfo[$this->purpleIndex++] = $message;
         }
+        @setcookie('purpleInfo', serialize($this->purpleInfo), time()+3600);
     }
     
     // Clears the message cookies
@@ -137,19 +139,19 @@ class Messages {
         $info = implode("<br />\n", $this->info);
         $purpleInfo = implode("<br />\n", $this->purpleInfo);
         if($errors != ""){
-            $errors = "<div class='error'><span style='display:inline-block;'>$errors</span></div>\n";
+            $errors = "<div class='error'><span style='display:inline-block;width:100%;'>$errors</span></div>\n";
         }
         if($warnings != ""){
-            $warnings = "<div class='warning'><span style='display:inline-block;'>$warnings</span></div>\n";
+            $warnings = "<div class='warning'><span style='display:inline-block;width:100%;'>$warnings</span></div>\n";
         }
         if($success != ""){
-            $success = "<div class='success'><span style='display:inline-block;'>$success</span></div>\n";
+            $success = "<div class='success'><span style='display:inline-block;width:100%;'>$success</span></div>\n";
         }
         if($info != ""){
-            $info = "<div class='info'><span style='display:inline-block;'>$info</span></div>\n";
+            $info = "<div class='info'><span style='display:inline-block;width:100%;'>$info</span></div>\n";
         }
         if($purpleInfo != ""){
-            $purpleInfo = "<div class='purpleInfo'><span style='display:inline-block;'>$purpleInfo</span></div>\n";
+            $purpleInfo = "<div class='purpleInfo'><span style='display:inline-block;width:100%;'>$purpleInfo</span></div>\n";
         }
         echo $errors.$warnings.$success.$info.$purpleInfo;
     }

@@ -33,6 +33,12 @@
     
     // DB Password
     $config->setValue("dbPassword", "");
+
+    // ORCID Client ID
+    $config->setValue("orcidId", "");
+    
+    // ORCID Secret Key
+    $config->setValue("orcidSecret", "");
     
     // Localization Cache Directory
     $config->setValue("localizationCache", "");

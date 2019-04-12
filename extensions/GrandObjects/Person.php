@@ -348,7 +348,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the alis table for superfast access
      */
     static function generateAliasCache(){
-        if(count(self::$aliasCache) == 0){
+        if(empty(self::$aliasCache)){
             $data = DBFunctions::select(array('mw_user_aliases' => 'ua',
                                               'mw_user' => 'u'),
                                         array('ua.alias',
@@ -412,7 +412,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the user table for superfast access
      */
     static function generateEmployeeIdCache(){
-        if(count(self::$employeeIdCache) == 0){
+        if(empty(self::$employeeIdCache)){
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id', 'employee_id'),
                                         array('deleted' => NEQ(1)));
@@ -476,7 +476,7 @@ class Person extends BackboneModel {
      * NOTE: This only caches the current roles, not the history
      */
     static function generateRolesCache(){
-        if(count(self::$rolesCache) == 0){
+        if(empty(self::$rolesCache)){
             if(Cache::exists("rolesCache")){
                 self::$rolesCache = Cache::fetch("rolesCache");
             }
@@ -504,7 +504,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the user universities
      */
     static function generateUniversityCache(){
-        if(count(self::$universityCache) == 0){
+        if(empty(self::$universityCache)){
             $sql = "SELECT id, user_id, university_name, department, position, start_date, end_date, research_area, `primary`
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
@@ -531,7 +531,7 @@ class Person extends BackboneModel {
      * Caches the resultset of the disciplines map
      */
     static function generateDisciplineMap(){
-        if(count(self::$disciplineMap) == 0){
+        if(empty(self::$disciplineMap)){
             $sql = "SELECT m.department, d.discipline
                     FROM `grand_disciplines_map` m, `grand_disciplines` d
                     WHERE m.discipline = d.id";
@@ -562,7 +562,7 @@ class Person extends BackboneModel {
      * Caches the partial resultset of the mw_user table
      */
     static function generateAllPeopleCache(){
-        if(count(self::$allPeopleCache) == 0){
+        if(empty(self::$allPeopleCache)){
             if(Cache::exists("allPeopleCache")){
                 self::$allPeopleCache = Cache::fetch("allPeopleCache");
             }
@@ -1225,7 +1225,7 @@ class Person extends BackboneModel {
     // Takes in a resultset containing the 'user id' and 'user name'
     function Person($data){
         global $wgUser;
-        if(count($data) > 0){
+        if(!empty($data)){
             if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
                 return;
             }
@@ -1638,7 +1638,7 @@ class Person extends BackboneModel {
      * @return array An array containing the first and last names
      */
     function splitName(){
-        if(count($this->splitName) == 0){
+        if(empty($this->splitName)){
             if(!empty($this->realname) && strstr($this->realname, ",") !== false){
                  $names = explode(",", $this->realname, 2);
                  $lastname = trim($names[0]);
@@ -2479,7 +2479,7 @@ class Person extends BackboneModel {
     }
     
     static function generateSubRoleCache(){
-        if(count(self::$subRoleCache) == 0){
+        if(empty(self::$subRoleCache)){
             self::$subRoleCache[-1] = array();
             $data = DBFunctions::select(array('grand_role_subtype'),
                                         array('user_id', 'sub_role'));
@@ -2917,7 +2917,7 @@ class Person extends BackboneModel {
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
         }
-        if(count($roles) == 0){
+        if(empty($roles)){
             return false;
         }
         if($this->isCandidate()){
@@ -2954,7 +2954,7 @@ class Person extends BackboneModel {
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
         }
-        if(count($roles) == 0){
+        if(empty($roles)){
             return false;
         }
         if($this->isCandidate()){

@@ -292,6 +292,7 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		    ?>
 		    
+		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
             singleUniversity = <?php var_export($config->getValue('singleUniversity')); ?>;		    

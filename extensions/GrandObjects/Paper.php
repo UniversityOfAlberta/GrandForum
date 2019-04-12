@@ -97,6 +97,9 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given bibtex_id
      */
     static function newFromBibTeXId($bibtex_id){
+        if(trim($bibtex_id) == ""){
+            return new Paper(array()); 
+        }
         if(isset(self::$cache[$bibtex_id])){
             return self::$cache[$bibtex_id];
         }
@@ -106,7 +109,8 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         
@@ -127,7 +131,7 @@ class Paper extends BackboneModel{
      * @return array The array of Papers
      */
     static function newFromIds($ids, $onlyPublic=true){
-        if(count($ids) == 0){
+        if(empty($ids)){
             return array();
         }
         $me = Person::newFromWgUser();
@@ -200,7 +204,7 @@ class Paper extends BackboneModel{
      * @return array The array of Products
      */
     static function getByIds($ids){
-        if(count($ids) == 0){
+        if(empty($ids)){
             return array();
         }
         $papers = array();
@@ -414,7 +418,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateIllegalAuthorsCache(){
-        if(count(self::$illegalAuthorsCache) == 0){
+        if(empty(self::$illegalAuthorsCache)){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
             self::$illegalAuthorsCache[""] = "";
@@ -550,7 +554,7 @@ class Paper extends BackboneModel{
     
     // Constructor
     function Paper($data){
-        if(count($data) > 0){
+        if(!empty($data)){
             $me = Person::newFromWgUser();
             $this->id = $data[0]['id'];
             $this->category = $data[0]['category'];
@@ -572,7 +576,6 @@ class Paper extends BackboneModel{
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
-            //$this->exclude = false;
             foreach($this->getExclusions() as $exclusion){
                 if($exclusion->getId() == $me->getId()){
                     $this->exclude = true;
@@ -683,14 +686,14 @@ class Paper extends BackboneModel{
      */
     function canView(){
         $me = Person::newFromWgUser();
-        if(($me->isRoleAtLeast(ISAC) || $me->isRoleAtLeast(IAC)) && $this->getAccessId() == 0){
-            return true; // ISAC+ (Chairs) Should have access to everything as long as the Product is not 'Private'
-        }
         if($this->getCategory() == "Publication" && ($this->getAccessId() == $me->getId() || $this->getAccessId() == 0)){
             return true; // Product is a publication and is either Public or is marked Private by the logged in user
         }
         else if($this->getCreatedBy() == $me->getId() || $this->getAccessId() == $me->getId()){ 
             return true; // Person created the Product
+        }
+        else if(($me->isRoleAtLeast(ISAC) || $me->isRoleAtLeast(IAC)) && $this->getAccessId() == 0){
+            return true; // ISAC+ (Chairs) Should have access to everything as long as the Product is not 'Private'
         }
         else if($me->isAuthorOf($this)){
             return true; // Person is an author of this publication
@@ -795,7 +798,7 @@ class Paper extends BackboneModel{
                                   array('citation_count'),
                                   array('type'=>$type,
                                         'product_id'=>$paperId));
-      if(count($data) == 0){
+      if(empty($data)){
           return 0;
       } 
       return $data[0]['citation_count'];
@@ -878,6 +881,7 @@ class Paper extends BackboneModel{
         if($unserialized == null){
             return array();
         }
+        
         foreach(@$unserialized as $author){
             if($author == ""){
                 continue;
@@ -893,24 +897,29 @@ class Paper extends BackboneModel{
                 else{
                     $people = Person::newFromNameLike($author, true);
                     $maxScore = 0;
-                    foreach($people as $p){
-                        $score = 1;
-                        if($p->isMe()){
-                            // Author matches themselves
-                            $score += 1000;
+                    if(count($people) > 1){
+                        foreach($people as $p){
+                            $score = 1;
+                            if($p->isMe()){
+                                // Author matches themselves
+                                $score += 1000;
+                            }
+                            if($me->isRelatedToDuring($p, "all", "0000-00-00", "2100-00-00")){
+                                // Author is related to user
+                                $score += 100;
+                            }
+                            if($me->getDepartment() == $p->getDepartment()){
+                                // Author is in same department as user
+                                $score += 10;
+                            }
+                            if($score > $maxScore){
+                                $person = $p;
+                            }
+                            $maxScore = max($maxScore, $score);
                         }
-                        if($me->isRelatedToDuring($p, "all", "0000-00-00", "2100-00-00")){
-                            // Author is related to user
-                            $score += 100;
-                        }
-                        if($me->getDepartment() == $p->getDepartment()){
-                            // Author is in same department as user
-                            $score += 10;
-                        }
-                        if($score > $maxScore){
-                            $person = $p;
-                        }
-                        $maxScore = max($maxScore, $score);
+                    }
+                    else{
+                        $person = @$people[0];
                     }
                 }
                 if($person == null || $person->getName() == null || $person->getName() == ""){
@@ -1007,7 +1016,7 @@ class Paper extends BackboneModel{
      * it knows what the previous state was
      */
     function generateOldSyncCache(){
-        if(count(self::$oldSyncCache) == 0){
+        if(empty(self::$oldSyncCache)){
             $sql = "SELECT *
                     FROM `grand_product_authors`";
             $data = DBFunctions::execSQL($sql);
@@ -1033,7 +1042,9 @@ class Paper extends BackboneModel{
         $order = 0;
         $insertSQL = "INSERT INTO `grand_product_authors`
                       (`author`, `product_id`, `order`) VALUES\n";
+        
         $authors = $this->getAuthors();
+        
         if(!is_array($authors)){
             $authors = array();
         }
@@ -1067,8 +1078,13 @@ class Paper extends BackboneModel{
                                         array('id' => $this->getId()));
                 }
             }
-            if(isset($alreadyDone[unaccentChars($author->getName())]) || 
-               (isset($author->newName) && $alreadyDone[unaccentChars($author->newName)])){
+            $authorName = unaccentChars($author->getName());
+            if(isset($alreadyDone[$authorName])){
+                $keyOffset++;
+                continue;
+            }
+            $newName = isset($author->newName) ? unaccentChars($author->newName) : "";
+            if(isset($author->newName) && $alreadyDone[$newName]){
                 $keyOffset++;
                 continue;
             }
@@ -1080,10 +1096,10 @@ class Paper extends BackboneModel{
                 $invalidate = true;
             }
             if(isset($author->newName)){
-                $alreadyDone[unaccentChars($author->newName)] = true;
+                $alreadyDone[$newName] = true;
             }
             else{
-                $alreadyDone[unaccentChars($author->getName())] = true;
+                $alreadyDone[$authorName] = true;
             }
             
             if($author->getId() != ""){
@@ -1721,6 +1737,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
@@ -1816,6 +1833,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
@@ -1829,7 +1847,8 @@ class Paper extends BackboneModel{
                                                 'data' => serialize($this->data),
                                                 'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
-                                                'access' => $this->access),
+                                                'access' => $this->access,
+                                                'bibtex_id' => $this->bibtex_id),
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);
@@ -1949,7 +1968,7 @@ class Paper extends BackboneModel{
                                    'url' => $contributor->getUrl());
             }
             $data = $this->getData();
-            if(count($data) == 0){
+            if(empty($data)){
                 $data = new stdClass();
             }
             $json = array('id' => $this->getId(),
