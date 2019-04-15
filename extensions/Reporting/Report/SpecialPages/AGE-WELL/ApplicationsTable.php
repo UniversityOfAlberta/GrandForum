@@ -269,6 +269,7 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', $this->fullHQPs, 2019, "07-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', $this->fullHQPs, 2019, "04-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', $this->fullHQPs, 2019, "01-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', $this->fullHQPs, 2018, "07-2018"));
