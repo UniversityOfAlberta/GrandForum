@@ -31,6 +31,7 @@ class Person extends BackboneModel {
     var $website;
     var $linkedin;
     var $facebook;
+    var $googleScholar;
     var $office;
     var $publicProfile;
     var $privateProfile;
@@ -310,6 +311,7 @@ class Person extends BackboneModel {
                                               'user_website',
                                               'user_linkedin',
                                               'user_facebook',
+                                              'user_google_scholar',
                                               'user_office',
                                               'user_public_profile',
                                               'user_private_profile',
@@ -858,6 +860,7 @@ class Person extends BackboneModel {
             $this->website = @$data[0]['user_website'];
             $this->linkedin = @$data[0]['user_linkedin'];
             $this->facebook = @$data[0]['user_facebook'];
+            $this->googleScholar = @$data[0]['user_google_scholar'];
             $this->office = @$data[0]['user_office'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
@@ -949,6 +952,7 @@ class Person extends BackboneModel {
                       'website' => $this->getWebsite(),
                       'linkedin' => $this->getLinkedIn(),
                       'facebook' => $this->getFacebook(),
+                      'googleScholar' => $this->getGoogleScholar(),
                       'office' => $this->getOffice(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
@@ -1013,7 +1017,8 @@ class Person extends BackboneModel {
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
-                                          'user_linkedin' => $this->getFacebook(),
+                                          'user_facebook' => $this->getFacebook(),
+                                          'user_google_scholar' => $this->getGoogleScholar(),
                                           'user_office' => $this->getOffice(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1074,6 +1079,7 @@ class Person extends BackboneModel {
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
                                           'user_facebook' => $this->getFacebook(),
+                                          'user_google_scholar' => $this->getGoogleScholar(),
                                           'user_office' => $this->getOffice(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
@@ -1571,20 +1577,31 @@ class Person extends BackboneModel {
      */
     function getLinkedIn(){
         if (preg_match("#https?://#", $this->linkedin) === 0) {
-            $this->linkedin = 'http://'.$this->linkedin;
+            $this->linkedin = 'https://'.$this->linkedin;
         }
         return $this->linkedin;
     }
     
     /**
-     * Returns the url of this Person's website
-     * @return string The url of this Person's website
+     * Returns the url of this Person's facebook
+     * @return string The url of this Person's facebook
      */
     function getFacebook(){
         if (preg_match("#https?://#", $this->facebook) === 0) {
-            $this->facebook = 'http://'.$this->facebook;
+            $this->facebook = 'https://'.$this->facebook;
         }
         return $this->facebook;
+    }
+    
+    /**
+     * Returns the url of this Person's google scholar
+     * @return string The url of this Person's google scholar
+     */
+    function getGoogleScholar(){
+        if (preg_match("#https?://#", $this->googleScholar) === 0) {
+            $this->googleScholar = 'https://'.$this->googleScholar;
+        }
+        return $this->googleScholar;
     }
     
     function getOffice(){
