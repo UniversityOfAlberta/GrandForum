@@ -701,19 +701,19 @@ EOF;
                 if($role->getId() > 0){
                     switch($role->getRole()){
                         case PA: // (AdminSupport)
-                            $titles = array("Administrative", "Technical");
+                            $titles = array("", "Administrative", "Technical");
                             break;
                         case ADMIN: // Admin
-                            $titles = array("Primary", "Secondary");
+                            $titles = array("", "Primary", "Secondary");
                             break;
                         case "BOD": // Board of Directors
-                            $titles = array("President", "Past Presidence Vice President", "Secretary", "Treasurer", "Director", "Observer");
+                            $titles = array("", "President", "Past Presidence Vice President", "Secretary", "Treasurer", "Director", "Observer");
                             break;
                         case CI: // Faculty
-                            $titles = array("Professor", "Association Professor", "Assistant Professor", "Instructor", "Lecturer", "Other");
+                            $titles = array("", "Professor", "Association Professor", "Assistant Professor", "Instructor", "Lecturer", "Other");
                             break;
                         case HQP: // Student
-                            $titles = array("Postdoctoral", "Doctoral", "Masters", "Bachelors", "Other");
+                            $titles = array("", "Postdoctoral", "Doctoral", "Masters", "Bachelors", "Other");
                             break;
                         default:
                             $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
