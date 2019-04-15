@@ -710,7 +710,7 @@ EOF;
                             $titles = array("", "President", "Past Presidence Vice President", "Secretary", "Treasurer", "Director", "Observer");
                             break;
                         case CI: // Faculty
-                            $titles = array("", "Professor", "Association Professor", "Assistant Professor", "Instructor", "Lecturer", "Other");
+                            $titles = array("", "Professor", "Associate Professor", "Assistant Professor", "Instructor", "Lecturer", "Other");
                             break;
                         case HQP: // Student
                             $titles = array("", "Postdoctoral", "Doctoral", "Masters", "Bachelors", "Other");
