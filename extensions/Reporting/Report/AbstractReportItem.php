@@ -297,6 +297,7 @@ abstract class AbstractReportItem {
         $value = str_replace("⟨", "&lang;", $value);
         $value = str_replace("⟩", "&rang;", $value);
         $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
+        $value = preg_replace("/&(?!amp)([a-zA-Z]*;)/", '&amp;$1', $value); // In-case an invalid html code is used (ie. &asdf;)
         return $value;
     }
 

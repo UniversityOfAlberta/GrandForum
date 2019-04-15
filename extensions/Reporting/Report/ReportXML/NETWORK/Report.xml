@@ -3,7 +3,8 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="section1" permissions="rw" />
-             <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="section2" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="section1" type="EditableReportSection" blobSection="SEC1" name="Section 1" title="Section 1">
@@ -16,6 +17,22 @@
         <ReportItem id="textarea" type="Textarea" blobItem="TEXT2" rich="true" limit="10">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="section2" type="EditableReportSection" blobSection="SEC2" name="Section 2" title="Section 2">
+        <ReportItem id="textarea" type="Textarea" blobItem="TEXT2" rich="true" limit="10">
+            <![CDATA[
+                {$item}
+                Value: {getText(RP_TEST,SEC2,TEXT2,0,{$user_id},0}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="section3" type="EditableReportSection" blobSection="SEC3" name="Section 3" title="Section 3">
+        <ReportItem id="textarea" type="Textarea" blobItem="TEXT2" rich="false" limit="10">
+            <![CDATA[
+                {$item}
+                Value: {getText(RP_TEST,SEC3,TEXT2,0,{$user_id},0}<br />
             ]]>
         </ReportItem>
     </ReportSection>
