@@ -233,9 +233,6 @@ class Report extends AbstractReport{
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
         }
         if($person->isRoleAtLeast(STAFF)){
-            
-        }
-        if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2019")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2019", "{$url}ReviewReport2019", $selected);
             
