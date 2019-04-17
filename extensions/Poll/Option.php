@@ -51,5 +51,13 @@ class Option {
 	function getTotalVotes(){
 		return count($this->votes);
 	}
+	
+	function getVoters(){
+	    $users = array();
+	    foreach($this->votes as $vote){
+	        $users[$vote->user->getId()] = $vote->user;
+	    }
+	    return $users;
+	}
 }
 ?>

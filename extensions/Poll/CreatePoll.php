@@ -32,6 +32,10 @@ $FORM_TEXT = "<fieldset id='q1'>
 			</p>
 		</td>
 	</tr>
+	<tr>
+	    <td><b>Number of choices:</b></td>
+	    <td><input type='number' name='nChoices_1' min='1' max='8' value='1' style='width:30px;' /></td>
+	</tr>
 </table>
 </fieldset>";
 
@@ -103,6 +107,7 @@ class CreatePoll extends SpecialPage{
 					    $options = array();
 			
 					    $question = $_POST["question_$j"];
+					    $choices = $_POST["nChoices_$j"];
 			
 					    while(isset($_POST["op{$i}_$j"])){
 						    if($_POST["op{$i}_$j"] != null){
@@ -112,7 +117,8 @@ class CreatePoll extends SpecialPage{
 					    }
 			            DBFunctions::insert('grand_poll',
 			                                array('collection_id' => $collection_id,
-			                                      'poll_name' => $question));
+			                                      'poll_name' => $question,
+			                                      'choices' => $choices));
 
 			            $rows = DBFunctions::select(array('grand_poll'),
 			                                        array('poll_id'),
@@ -194,75 +200,45 @@ class CreatePoll extends SpecialPage{
 					
 					function addQuestion() {
 						opID[qID] = 1;
-						var o = document.createElement('p');
- 						o.id='op'.concat(opID);
- 						var addQ = document.getElementById('addQ');
- 						var fieldset = document.createElement('fieldset');
- 						fieldset.id = 'q' + qID;
- 						var legend = document.createElement('legend');
- 						legend.appendChild(document.createTextNode('Question ' + qID));
- 						var table = document.createElement('table');
- 						var tr1 = document.createElement('tr');
- 						var td1 = document.createElement('td');
- 						td1.align='right';
- 						var b1 = document.createElement('b');
- 						b1.appendChild(document.createTextNode('Question:'));
- 						var td2 = document.createElement('td');
- 						var input = document.createElement('input');
- 						input.type='text';
- 						input.name='question'.concat('_' + qID);
- 						input.size='50';
- 						td2.appendChild(input);
- 						td1.appendChild(b1);
- 						tr1.appendChild(td1);
- 						tr1.appendChild(td2);
- 						var tr2 = document.createElement('tr');
- 						var td3 = document.createElement('td');
- 						td3.align='right';
- 						td3.vAlign='top';
- 						td3.appendChild(document.createElement('br'));
- 						var b2 = document.createElement('b');
- 						b2.appendChild(document.createTextNode('Options:'));
- 						td3.appendChild(b2);
- 						var td4 = document.createElement('td');
- 						td4.appendChild(document.createElement('br'));
- 						var input2 = document.createElement('input');
- 						input2.type='text';
- 						input2.name='op'.concat(0).concat('_' + qID);
- 						td4.appendChild(input2);
- 						td4.appendChild(document.createElement('br'));
- 						var p = document.createElement('p');
- 						p.id='add' + qID;
- 						var addOption = document.createElement('a');
- 						addOption.href='javascript:addOption(' + qID + ')';
- 						addOption.appendChild(document.createTextNode('[Add Option]'));
- 						var removeOption = document.createElement('a');
- 						removeOption.href='javascript:removeOption(' + qID + ')';
- 						removeOption.appendChild(document.createTextNode('[Remove Option]'));
- 						td4.appendChild(p);
- 						tr2.appendChild(td3);
- 						tr2.appendChild(td4);
- 						
- 						p.appendChild(addOption);
- 						p.appendChild(document.createTextNode('   '));
- 						p.appendChild(removeOption);
- 						
- 						table.appendChild(tr1);
- 						table.appendChild(tr2);
-
-						fieldset.appendChild(legend);
-						fieldset.appendChild(table);
-
- 						o.appendChild(fieldset);
- 						addQ.parentNode.insertBefore(o, addQ);
+						var template = 
+						    \"<fieldset id='q\" + qID + \"'>\" + 
+                                \"<legend>Question \" + qID + \"</legend>\" +
+                                \"<table>\" + 
+	                                \"<tr>\" + 
+		                                \"<td valign='top' align='right'>\" +
+			                                \"<b>Question:</b>\" +
+		                                \"</td>\" +
+		                                \"<td>\" +
+			                                \"<input type='text' name='question_\" + qID + \"' size='50'>\" +
+		                                \"</td>\" +
+	                                \"</tr>\" +
+	                                \"<tr>\" +
+		                                \"<td valign='top' align='right'>\" +
+			                                \"<br>\" +
+			                                \"<b>Options:</b>\" +
+		                                \"</td>\" +
+		                                \"<td>\" +
+			                                \"<br>\" +
+			                                \"<input type='text' name='op0_\" + qID + \"'><br>\" +
+			                                \"<p id='add\" + qID + \"'>\" +
+				                                \"<a href='javascript:addOption(\" + qID + \");'>[Add Option]</a>&nbsp;&nbsp;&nbsp;<a href='javascript:removeOption(\" + qID + \");'>[Remove Option]</a>\" +
+			                                \"</p>\" +
+		                                \"</td>\" +
+	                                \"</tr>\" +
+	                                \"<tr>\" +
+	                                    \"<td><b>Number of choices:</b></td>\" +
+	                                    \"<td><input type='number' name='nChoices_\" + qID + \"' min='1' max='8' value='1' style='width:30px;' />\" +
+	                                \"</tr>\" +
+                                \"</table>\" +
+                            \"</fieldset>\";
+ 						$(template).insertBefore(addQ).parent();
  						qID++;
 					}
 					
 					function removeQuestion() {
 						if(qID > 2){
 							qID--;
-							var o = document.getElementById('q' + qID);
-	 						o.parentNode.removeChild(o);
+							$('#q' + qID).remove();
 	 					}
 					}
 				</script>");

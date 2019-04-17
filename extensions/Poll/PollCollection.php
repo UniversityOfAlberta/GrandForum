@@ -121,6 +121,12 @@ class PollCollection {
 		return $total;
 	}
 	
+	function getTotalVoters(){
+	    $this->getPolls();
+	    $total = $this->polls[0]->getTotalVoters();
+	    return $total;
+	}
+	
 	function getTotalPotentialVoters(){
 		$users = $this->getPotentialVoters();
 		return count($users);

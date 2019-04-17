@@ -63,8 +63,7 @@ class PollView {
 				if($isOwner){
 					$this->sendEmails();
 				}
-				
-				$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
+
 				$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
 			
 				if($notVotedYet){
@@ -86,7 +85,7 @@ class PollView {
 					}
 				}
 				if($notVotedYet){
-					$wgOut->addHTML("<input type='submit' name='submit' value='Submit' />");
+					$wgOut->addHTML("<br /><input type='submit' name='submit' value='Submit' />");
 					$wgOut->addHTML("</form>");
 				}
 				else if($isOwner){
@@ -161,8 +160,18 @@ class PollView {
 			$this->resultsHTML($wgOut, $poll);
 		}
 		else if($submitted){
-			$option = $poll->getOption($_POST["choice{$poll->id}"]);
-			$option->addVote($wgUser->getId());
+		    if($poll->choices > 1){
+		        foreach($_POST["choice{$poll->id}"] as $key => $option){
+		            if($key < $poll->choices){
+		                $option = $poll->getOption($option);
+			            $option->addVote($wgUser->getId());
+			        }
+		        }
+		    }
+		    else{
+			    $option = $poll->getOption($_POST["choice{$poll->id}"]);
+			    $option->addVote($wgUser->getId());
+			}
 			$wgOut->addHTML("Vote added<br />");
 			$this->resultsHTML($wgOut, $poll);
 		}
@@ -179,8 +188,18 @@ class PollView {
 			$wgOut->addHTML("Thank you for your submission");
 		}
 		else if($submitted){
-			$option = Option::newFromId($_POST["choice{$poll->id}"]);
-			$option->addVote($wgUser->getId());
+			if($poll->choices > 1){
+		        foreach($_POST["choice{$poll->id}"] as $key => $option){
+		            if($key < $poll->choices){
+		                $option = $poll->getOption($option);
+			            $option->addVote($wgUser->getId());
+			        }
+		        }
+		    }
+		    else{
+			    $option = $poll->getOption($_POST["choice{$poll->id}"]);
+			    $option->addVote($wgUser->getId());
+			}
 			$wgOut->addHTML("Vote added<br />");
 		}
 		else{
@@ -190,6 +209,7 @@ class PollView {
 	
 	function aggregateTable(){
 		global $wgOut;
+		$totalVoters = $this->pollCollection->getTotalVoters();
 		$totalVotes = $this->pollCollection->getTotalVotes();
 		$potentialVoters = $this->pollCollection->getTotalPotentialVoters();
 		$wgOut->addHTML("</table>
@@ -199,13 +219,16 @@ class PollView {
 						<th>Stat</th> <th>Value</th>
 					</tr>
 					<tr style='background:#FFFFFF;'>
+						<td><b>Total Voters:</b></td><td>$totalVoters</td>
+					</tr>
+					<tr style='background:#FFFFFF;'>
 						<td><b>Total Votes:</b></td><td>$totalVotes</td>
 					</tr>
 					<tr style='background:#FFFFFF;'>
 						<td><b>Potential Voters:</b></td><td>$potentialVoters</td>
 					</tr>
 					<tr style='background:#FFFFFF;'>
-						<td><b>Users who have not voted:</b></td><td>".($potentialVoters - $totalVotes));
+						<td><b>Users who have not voted:</b></td><td>".($potentialVoters - $totalVoters));
 		if(!$this->pollCollection->isPollExpired()){
 			//$wgOut->addHTML("<a href='index.php?action=viewPoll&id={$this->pollCollection->id}&email=true'>[Email]</a>");
 		}
@@ -217,13 +240,29 @@ class PollView {
 	function pollCollectionHTML($wgOut, $poll){
 		$wgOut->addHTML("<fieldset>
 				<legend><b>Q:</b> {$poll->name}</legend>
-				<table cellpadding='5'>\n");
-		foreach($poll->options as $option){
-			$wgOut->addHTML("<tr><td><input type='radio' name='choice{$poll->id}' value='{$option->id}' /></td><td>{$option->name}</td></tr>");
+				    <table cellpadding='5'>\n");
+	    if($poll->choices == 1){
+		    foreach($poll->options as $option){
+			    $wgOut->addHTML("<tr><td><input type='radio' name='choice{$poll->id}' value='{$option->id}' /></td><td>{$option->name}</td></tr>");
+		    }
 		}
-		$wgOut->addHTML("<tr><td colspan='2'></td></tr>
-				</table>
-				</fieldset>");
+		else{
+		    foreach($poll->options as $option){
+			    $wgOut->addHTML("<tr><td><input type='checkbox' name='choice{$poll->id}[]' value='{$option->id}' /></td><td>{$option->name}</td></tr>");
+		    }
+		}
+		$wgOut->addHTML("</table>");
+	    if($poll->choices > 1){
+		    $wgOut->addHTML("You can select up to {$poll->choices} choices");
+		    $wgOut->addHTML("<script type='text/javascript'>
+		        $('input[name=choice{$poll->id}\\\\[\\\\]]').on('click', function (evt) {
+                    if ($('input[name=choice{$poll->id}\\\\[\\\\]]:checked').length > {$poll->choices}) {
+                        this.checked = false;
+                    }
+                });
+		    </script>");
+		}
+		$wgOut->addHTML("</fieldset>");
 	}
 	
 	function resultsHTML($wgOut, $poll){

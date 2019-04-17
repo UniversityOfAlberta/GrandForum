@@ -5,6 +5,7 @@ class Poll {
 	var $id;
 	var $name;
 	var $options;
+	var $choices;
 	
 	static function newFromId($id){
 		$rows = DBFunctions::select(array('grand_poll'),
@@ -20,8 +21,8 @@ class Poll {
 			foreach($rows1 as $row1){
 				$options[] = Option::newFromId($row1['option_id']);
 			}
-			
-			$poll = new Poll($id, $name, $options);
+			$choices = $row['choices'];
+			$poll = new Poll($id, $name, $options, $choices);
 			return $poll;
 		}
 		else {
@@ -29,10 +30,11 @@ class Poll {
 		}
 	}
 	
-	function Poll($id, $name, $options){
+	function Poll($id, $name, $options, $choices){
 		$this->id = $id;
 		$this->name = $name;
 		$this->options = $options;
+		$this->choices = $choices;
 	}
 	
 	function getOption($id){
@@ -50,6 +52,16 @@ class Poll {
 			$total += $option->getTotalVotes();
 		}
 		return $total;
+	}
+	
+	function getTotalVoters(){
+	    $users = array();
+		foreach($this->options as $option){
+			foreach($option->getVoters() as $voter){
+			    $users[$voter->getId()] = $voter;
+			}
+		}
+		return count($users);
 	}
 	
 	function getTotalOptions(){
