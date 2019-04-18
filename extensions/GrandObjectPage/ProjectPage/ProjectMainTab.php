@@ -569,9 +569,6 @@ EOF;
                 $this->showRole(CI);
                 $this->showRole(AR);
                 $this->html .= "</td><td width='50%' valign='top'>";
-                if($wgUser->isLoggedIn()){
-                    $this->showRole(HQP);
-                }
                 $this->html .= "</td></tr>";
                 $this->html .= "<tr><td valign='top' width='50%'>";
                 $this->showRole(CHAMP);
