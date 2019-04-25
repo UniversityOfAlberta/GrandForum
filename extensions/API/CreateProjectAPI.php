@@ -44,7 +44,7 @@ class CreateProjectAPI extends API{
 	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
 	    $parentProj = Project::newFromId($parent_id);
 	    $_POST['acronym'] = @$_POST['acronym'];
-	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['acronym'])){
+	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\(\)\-\. ]+$/", $_POST['acronym'])){
 	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
 	    }

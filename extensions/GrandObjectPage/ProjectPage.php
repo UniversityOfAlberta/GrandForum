@@ -75,7 +75,8 @@ class ProjectPage {
             if($project != null && $project->getName() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle("{$project->getFullName()} ({$project->getName()})");
+                $name = trim(preg_replace("/\(.*\)/", "", $project->getName()));
+                $wgOut->setPageTitle("{$project->getFullName()} ({$name})");
                 
                 $visibility = array();
                 if(!$project->isDeleted()){

@@ -435,7 +435,8 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
                 Project::$cache = array();
                 $this->project = Project::newFromId($this->project->getId());
-                $wgOut->setPageTitle($this->project->getFullName());
+                $name = trim(preg_replace("/\(.*\)/", "", $this->project->getName()));
+                $wgOut->setPageTitle("{$this->project->getFullName()} ({$name})");
             }
 
             if(isset($_POST['challenge_id'])){
