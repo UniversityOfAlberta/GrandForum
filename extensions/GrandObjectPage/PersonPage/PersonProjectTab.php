@@ -52,7 +52,8 @@ class PersonProjectTab extends AbstractTab {
 				        $subprojects = "<ul><li>".implode("</li><li>", $subprojs)."</li></ul>";
 				    }
 				    $role = $person->getRoleOn($project);
-				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a> ({$role}) $subprojects</li>";
+				    $name = trim(preg_replace("/\(.*\)/", "", $project->getName()));
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getFullName()} ({$name})</a> ({$role}) $subprojects</li>";
 				}
 			}
 			if(count($projs) > 0){

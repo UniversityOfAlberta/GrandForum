@@ -434,7 +434,8 @@ EOF;
             }
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
-                $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";
+                $name = trim(preg_replace("/\(.*\)/", "", $project->getName()));
+                $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$name})</a>{$completed}</li>";
             }
             $html .= "</ul>";
         }
