@@ -42,7 +42,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "QACV")) ? "selected" : false;
             $tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
         }
-        if($person->isRole(ISAC) || $person->isRole(IAC)){
+        /*if($person->isRole(ISAC) || $person->isRole(IAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
@@ -53,7 +53,7 @@ class Report extends AbstractReport{
         if($person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isSubRole("FEC")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
             $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
-        }
+        }*/
         return true;
     }
 }
