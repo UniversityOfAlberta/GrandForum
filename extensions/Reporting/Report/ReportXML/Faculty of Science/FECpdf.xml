@@ -512,7 +512,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" showHeader="false" optional="true">
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" showHeader="false" orientation="plain" optional="true">
             <![CDATA[
                 {$item}
             ]]>

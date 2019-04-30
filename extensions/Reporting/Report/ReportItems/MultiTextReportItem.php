@@ -407,6 +407,7 @@ EOF;
         $orientation = $this->getAttr('orientation', 'horizontal');
         $isVertical = (strtolower($orientation) == 'vertical');
         $isList = (strtolower($orientation) == 'list');
+        $isPlain = (strtolower($orientation) == 'plain');
         $pagebreak = (strtolower($this->getAttr('pagebreak', 'false')) == 'true'); 
         $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
         $rules = "";
@@ -425,7 +426,18 @@ EOF;
             $max = max(array_keys($values));
         }
         $item = "";
-        if($max > -1 && $isList){
+        
+        if($max > -1 && $isPlain){
+            $innerValues = array();
+            $delimiter = $this->getAttr("delimiter", ", ");
+            $showLabels = (strtolower($this->getAttr("showLabels", "false")) == "true");
+            foreach($values as $vals){
+                $innerVals = $vals;
+                $innerValues[] = nl2br(implode(", ", $innerVals));
+            }
+            $item .= implode("<br /><br />", $innerValues);
+        }
+        else if($max > -1 && $isList){
             $innerValues = array();
             $delimiter = $this->getAttr("delimiter", ", ");
             $showLabels = (strtolower($this->getAttr("showLabels", "false")) == "true");
