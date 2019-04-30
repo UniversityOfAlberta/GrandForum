@@ -187,5 +187,7 @@
         </ReportItem>
         <ReportItem id="cv" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
         </ReportItem>
+        <ReportItem id="michael" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
     </ReportSection>
 </Report>

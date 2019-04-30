@@ -62,7 +62,7 @@
 <p>We expect to offer the following awards in this 2019 call:</p>
 <ul>
     <li><b>3</b> Master’s level awards at $10,000</li>
-    <li><b>4</b> PhD level awards at $15,000 per year</li>
+    <li><b>4</b> PhD level awards at $15,000</li>
     <li><b>3</b> Postdoctoral level awards at $20,000</li>
 </ul>
 <p>If successful, trainee funding will be held and disbursed by the trainee’s supervisor in a new account that must be established at the supervisor’s home institution.</p>
@@ -79,9 +79,6 @@
 </ul>
 <i>Acknowledging AGE-WELL</i>
 <p>AGE-WELL funded trainees will acknowledge the AGE-WELL Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Funded trainees are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period.</p>
-
-<h3>Renewal</h3>
-<p>Funded doctoral and postdoctoral applicants may submit one-year renewal applications for a third year of doctoral funding and a second year of postdoctoral funding. Ongoing funding is dependent on performance and achieving milestones outlined in the original application. Funded trainees are expected to submit an annual report through the AGE-WELL Forum Research Portal reporting system each year. This report is required whether or not the trainee is applying for renewal of funding.</p>
 
 <h3>Admission Criteria</h3> 
 <p>All applications will be reviewed by a team of field experts using the following criteria:</p>
@@ -137,7 +134,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
     <li>1 Postdoctoral level award (PhD) at $40,000</li>
     <li>1 Postdoctoral level award (MD or Pharm. D) at $56,500</li>
 </ul>
-<p>Funding will commence on 1 September 2019 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding will commence on 1 September 2019 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds (AGE-WELL 1 September 2019-31 March 31; NBHRF 1 April 2020 – 31 August 2020). This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
 <h3>AGE-WELL-TRP Awards</h3>
 <p>AGE-WELL NCE and the <u>Translational Research Program</u>, University of Toronto are pleased to offer a co-funded Master’s scholarship to an outstanding graduate student enrolled at the University of Toronto who wishes to commence, pursue or sustain their research training or program in the technology and aging field in the Translational Research Program in Health Science.</p>
@@ -427,7 +424,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
         <ReportItem id="support1" type="StaticReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Two Confidential Letters of Support (one must be from your proposed supervisor)</h2>
-                <p>Letters must be sent via email (<a href='mailto:Stephanie.Markowitz@uhn.ca'>Stephanie.Markowitz@uhn.ca</a>) directly by the referee using their department letterhead. Electronic signature or scanned signed documents are accepted. </p> 
+                <p>Letters must be sent via email (<a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>) directly by the referee using their department letterhead. Electronic signature or scanned signed documents are accepted. </p> 
 
 <p>You need two confidential letters of support:</p>
 <ul>
@@ -465,6 +462,13 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
         <ReportItem id="cv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Curriculum Vitae</h2>
+                <p>Please prepare the document and submit as a PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="michael" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2" optional="true">
+            <![CDATA[
+                <h2>Michael F. Harcourt Policy Fellowship Policy Engagement Plan (maximum 1 page, for Harcourt applicants only)</h2>
                 <p>Please prepare the document and submit as a PDF.</p>
                 {$item}
             ]]>
