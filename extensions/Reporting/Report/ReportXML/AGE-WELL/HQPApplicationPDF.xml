@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Award 2018" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" ajax="true" disabled="false" year="2018">
+<Report name="Award 2019" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" ajax="true" disabled="false" year="2019">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -32,13 +32,7 @@
         </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI">
             <![CDATA[
-                <h4>University</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="prog" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROGRAM">
-            <![CDATA[
-                <h4>Program</h4>
+                <h4>Institution/University</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
@@ -68,30 +62,23 @@
             </ReportItem>
         </ReportItemSet>
         
-        <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
+        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[
-                <h4>AGE-WELL-UC BME Grad Awards</h4>
+                <h4>AGE-WELL-NBHRF Awards</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
-            <![CDATA[
-                <h4>AGE-WELL-WBHI Post-Doctoral Award</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($36,000 for 2 years)|Postdoctoral ($100,000 for 2 years)" optional="true">
+        <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($18,000)|Postdoctoral ($50,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-MIRA Awards</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000 per year for 2 years)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500 for 2 years)" optional="true">
+        <ReportItem id="TRP" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_TRP" orientation="vertical" options="Master's ($10,000)" optional="true">
             <![CDATA[
-                <h4>AGE-WELL-NBHRF Awards</h4>
+                <h4>AGE-WELL-TRP Awards</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
@@ -106,17 +93,6 @@
             <![CDATA[
                 <h4>Keywords</h4>
                 <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September|January|Other">
-            <![CDATA[
-                <h4>Start Date</h4>
-                <p>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTHER">
-            <![CDATA[
-                &nbsp;{$item}</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -205,18 +181,10 @@
     </ReportSection>
     <ReportSection id="documents" type="HeaderReportSection" name="Required Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
-        <!--ReportItem id="support1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT1" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
-        <ReportItem id="support2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
-        </ReportItem-->
         <ReportItem id="admission" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="evidence" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
         </ReportItem>
-        <!--ReportItem id="transcript1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_TRANS1" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
-        <ReportItem id="transcript2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_TRANS2" mimeType="application/pdf" fileSize="2">
-        </ReportItem-->
         <ReportItem id="cv" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>
