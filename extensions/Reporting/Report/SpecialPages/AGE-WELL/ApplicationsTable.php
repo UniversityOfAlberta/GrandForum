@@ -323,6 +323,18 @@ class ApplicationsTable extends SpecialPage{
         $nbhrf->setBlobSection(HQP_APPLICATION_FORM);
         $nbhrf->setId("NBHRF");
         
+        $trp = new CheckboxReportItem();
+        $trp->setBlobType(BLOB_ARRAY);
+        $trp->setBlobItem("HQP_APPLICATION_TRP");
+        $trp->setBlobSection(HQP_APPLICATION_FORM);
+        $trp->setId("TRP");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2019, "2019", array("Level" => $level,
+                                                                                                                                   "Michael F. Harcourt" => $michael,
+                                                                                                                                   "MIRA" => $mira,
+                                                                                                                                   "NBHRF" => $nbhrf,
+                                                                                                                                   "TRP" => $trp)));
+        
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2018, "2018", array("Level" => $level,
                                                                                                                                    "Michael F. Harcourt" => $michael,
                                                                                                                                    "BME" => $bme,
