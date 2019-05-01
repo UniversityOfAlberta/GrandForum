@@ -191,6 +191,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->googleScholar = @$_POST['googleScholarUrl'];
             $this->person->sciverseId = @$_POST['sciverseId'];
             $this->person->orcId = @$_POST['orcId'];
+            $this->person->wos = @$_POST['wos'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->publicProfile = @$_POST['public_profile'];
             $this->person->privateProfile = @$_POST['private_profile'];
@@ -433,6 +434,10 @@ EOF;
                 $this->html .= "<tr>
                                 <td align='right'><b>ORCID:</b></td>
                                 <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
+                            </tr>";
+                $this->html .= "<tr>
+                                <td align='right'><b>WOS:</b></td>
+                                <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
                             </tr>";
         }
         $this->html .=  "<tr>

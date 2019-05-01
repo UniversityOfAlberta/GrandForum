@@ -130,6 +130,7 @@ Person = Backbone.Model.extend({
         googleScholar: '',
         sciverseId: '',
         orcId: '',
+        wos: '',
         university: '',
         position: '',
         start: '',

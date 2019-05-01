@@ -83,6 +83,7 @@ class Person extends BackboneModel {
     var $googleScholar;
     var $sciverseId;
     var $orcId;
+    var $wos;
     var $publicProfile;
     var $profileStartDate;
     var $profileEndDate;
@@ -393,6 +394,7 @@ class Person extends BackboneModel {
                                               'google_scholar_url',
                                               'sciverse_id',
                                               'orcid',
+                                              'wos',
                                               'user_public_profile',
                                               'profile_start_date',
                                               'profile_end_date',
@@ -1246,6 +1248,7 @@ class Person extends BackboneModel {
             $this->googleScholar = @$data[0]['google_scholar_url'];
             $this->sciverseId = @$data[0]['sciverse_id'];
             $this->orcId = @$data[0]['orcid'];
+            $this->wos = @$data[0]['wos'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->profileStartDate = @$data[0]['profile_start_date'];
             $this->profileEndDate = @$data[0]['profile_end_date'];
@@ -1297,6 +1300,7 @@ class Person extends BackboneModel {
                       'googleScholarId' => $this->getGoogleScholar(),
                       'sciverseId' => $this->getSciverseId(),
                       'orcId' => $this->getOrcId(),
+                      'wos' => $this->getWOS(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $university['university'],
@@ -1330,6 +1334,7 @@ class Person extends BackboneModel {
                                           'google_scholar_url' => $this->getGoogleScholar(),
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
+                                          'wos' => $this->getWOS(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1366,6 +1371,7 @@ class Person extends BackboneModel {
                                           'google_scholar_url' => $this->getGoogleScholar(),
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
+                                          'wos' => $this->getWOS(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false)
@@ -1585,6 +1591,10 @@ class Person extends BackboneModel {
     
     function getOrcId(){
         return $this->orcId;
+    }
+    
+    function getWOS(){
+        return $this->wos;
     }
     
     /**
