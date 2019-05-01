@@ -436,7 +436,7 @@ EOF;
                                 <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
                             </tr>";
                 $this->html .= "<tr>
-                                <td align='right'><b>WOS:</b></td>
+                                <td align='right'><b>ResearcherID:</b></td>
                                 <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
                             </tr>";
         }
