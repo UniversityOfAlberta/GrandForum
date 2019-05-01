@@ -33,7 +33,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         
         if($product->getCategory() == "Publication" &&
            isset($structure['data']['impact_factor']) &&
-           $product->getData('impact_factor')){
+           $product->getData('impact_factor') == ""){
             $impactFactorMissing = true;
         }
         $html = "";
