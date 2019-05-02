@@ -395,6 +395,16 @@
     <ReportSection id="budget" title="Financial Report" type="ReportSection" blobSection="FINAL_BUDGET" pagebreak="true">
         <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" budgetText="Financial Report" downloadOnly="true">
             <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload1" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD1" budgetText="Financial Report" downloadOnly="true">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD2" budgetText="Financial Report" downloadOnly="true">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>

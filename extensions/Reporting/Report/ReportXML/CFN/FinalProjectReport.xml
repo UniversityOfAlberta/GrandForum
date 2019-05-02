@@ -519,6 +519,23 @@
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItemSet id="additional" type="ToggleHeader" title="Additional Leader Financial Reports">
+                <ReportItem id="additional_text" type="Static">
+                    <![CDATA[
+                        <p>If there are multiple leaders for this project, you can upload those budgets here.</p>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="upload1" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD1" template="" budgetText="Financial Report">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="upload2" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD2" template="" budgetText="Financial Report">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="nis_title" type="StaticReportItem">
                 <![CDATA[
                     <h2>PI Financial Reports</h2>
