@@ -71,11 +71,10 @@ function addUserUniversity($name, $uni, $dept, $pos){
 }
 
 function addProjectLeader($name, $project, $coLead='False', $manager='False'){
-    $_POST['user'] = $name;
-    $_POST['role'] = $project;
-    $_POST['co_lead'] = $coLead;
-    $_POST['manager'] = $manager;
-    APIRequest::doAction('AddProjectLeader', true);
+    $x = new stdClass();
+    $x->name = $project;
+    $_POST['projects'] = array($x);
+    addUserRole($name, PL);
 }
 
 function addThemeLeader($name, $theme, $coLead='False', $coord='False'){

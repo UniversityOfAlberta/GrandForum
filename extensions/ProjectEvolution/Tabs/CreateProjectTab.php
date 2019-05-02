@@ -213,10 +213,16 @@ EOF;
             }
             else{
                 if($_POST['pl'] != ""){
-                    $_POST['co_lead'] = "False";
                     $_POST['role'] = $_POST['acronym'];
-                    $_POST['user'] = $_POST['pl'];
-                    APIRequest::doAction('AddProjectLeader', true);
+                    $person = Person::newFromName($_POST['pl']);
+                    $_POST['userId'] = $person->getId();
+                    $_POST['name'] = PL;
+                    $x = new stdClass();
+                    $x->name = $_POST['acronym'];
+                    $_POST['projects'] = array($x);
+                    
+                    $api = new RoleAPI();
+                    $api->doPOST();
                 }
                 // Adding New Champions
                 if(isset($_POST['new_champ_name'])){

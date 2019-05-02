@@ -398,14 +398,15 @@ class Person extends BackboneModel {
      */
     static function generateLeaderCache(){
         if(empty(self::$leaderCache)){
-            $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
-                    FROM grand_project_leaders l, grand_project p, grand_project_status s
-                    WHERE l.type = 'leader'
-                    AND p.id = l.project_id
-                    AND p.id = s.project_id
-                    AND (l.end_date = '0000-00-00 00:00:00'
-                         OR l.end_date > CURRENT_TIMESTAMP)
-                    GROUP BY s.project_id, l.user_id";
+            $sql = "SELECT r.user_id, p.id, p.name, s.type, s.status
+                    FROM grand_roles r, grand_role_projects rp, grand_project p, grand_project_status s
+                    WHERE rp.role_id = r.id
+                    AND rp.project_id = p.id
+                    AND rp.project_id = s.project_id
+                    AND r.role = '".PL."'
+                    AND (r.end_date = '0000-00-00 00:00:00'
+                         OR r.end_date > CURRENT_TIMESTAMP)
+                    GROUP BY s.project_id, r.user_id";
             $data = DBFunctions::execSQL($sql);
             self::$leaderCache[-1][] = array();
             foreach($data as $row){
@@ -2421,9 +2422,6 @@ class Person extends BackboneModel {
         foreach($this->getRoles() as $role){
             $roleNames[] = $role->getRole();
         }
-        if($this->isProjectLeader()){
-            $roleNames[] = "PL";
-        }
         if($this->isThemeLeader()){
             $roleNames[] = TL;
         }
@@ -2439,6 +2437,9 @@ class Person extends BackboneModel {
                     $roles[$role] = $role;
                 }
             }
+        }
+        if(!$this->isRoleAtLeast(STAFF) && isset($roles[PL])){
+            unset($roles[PL]);
         }
         sort($roles);
         return $roles;
@@ -2466,7 +2467,7 @@ class Person extends BackboneModel {
             }
         }
         if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjects() as $project){
+            foreach(Project::getAllProjectsEver() as $project){
                 if(!$project->isSubProject()){
                     $projects[$project->getId()] = $project->getName();
                 }
@@ -2705,34 +2706,6 @@ class Person extends BackboneModel {
                     'id' => $row['id'],
                     'projectId' => $project->getId(),
                     'personId' => $this->getId(),
-                    'startDate' => $row['start_date'],
-                    'endDate' => $row['end_date'],
-                    'name' => $project->getName(),
-                    'comment' => $row['comment']
-                );
-            }
-        }
-        return $projects;
-    }
-    
-    /*
-     * Returns an array of 'PersonLeaderships' (used for Backbone API)
-     * @return array
-     */
-    function getPersonLeaderships(){
-        $projects = array();
-        $data = DBFunctions::select(array('grand_project_leaders'),
-                                    array('id', 'project_id', 'type', 'start_date', 'end_date', 'comment'),
-                                    array('user_id' => EQ($this->id)),
-                                    array('end_date' => 'DESC'));
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if(!$project->isSubProject() && !$project->isDeleted()){
-                $projects[] = array(
-                    'id' => $row['id'],
-                    'projectId' => $project->getId(),
-                    'personId' => $this->getId(),
-                    'type' => $row['type'],
                     'startDate' => $row['start_date'],
                     'endDate' => $row['end_date'],
                     'name' => $project->getName(),
@@ -4116,52 +4089,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the date that this person became leader of the given Project
-     * @param Project $project The Project that this person is/was a leader of
-     * @return string The date that this person became a leader
-     */
-    function getLeaderStartDate($project){
-        $dates = $this->getLeaderDates($project, 'leader');
-        return $dates['start_date'];
-    }
-    
-    /**
-     * Returns the date that this person stopped being leader of the given Project
-     * @param Project $project The Project that this person is/was a leader of
-     * @return string The date that this person stopped being a leader
-     */
-    function getLeaderEndDate($project){
-        $dates = $this->getLeaderDates($project, 'leader');
-        return $dates['end_date'];
-    }
-    
-    /**
-     * Returns an array containing both the start and end dates that this Person
-     * was leader/co-leader of the given project
-     * @param Project $project The Project that this person is/was a leader of
-     * @param string $lead Whether to look for 'leader' or 'co-leader'
-     * @return array An array containing both the start and end 
-     */
-    private function getLeaderDates($project, $lead='leader'){
-        foreach($project->getAllPreds() as $pred){
-            $projectIds[] = $pred->getId();
-        }
-        $sql = "SELECT start_date, end_date
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.project_id = p.id
-                AND p.id IN (".implode(",", $projectIds).")
-                AND l.user_id = '{$this->id}'
-                AND l.type = '$lead'";
-        $data = DBFunctions::execSQL($sql);
-        $date = "";
-        if(count($data) > 0){
-            return $data[0];
-        }
-        return array('start_date' => '0000-00-00 00:00:00',
-                     'end_date'   => '0000-00-00 00:00:00');
-    }
-    
-    /**
      * Returns an array of Projects that this Person is a leader or co-leader of
      * @param boolean $history Whether or not to include the entire leadership history
      * @param boolean $idsOnly Whether or not to just return the ids of the Projects
@@ -4181,10 +4108,11 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT p.id
-                                         FROM grand_project_leaders l, grand_project p
-                                         WHERE l.project_id = p.id
-                                         AND l.user_id = '{$this->id}'");
+            $res = DBFunctions::execSQL("SELECT rp.project_id
+                                         FROM grand_roles r, grand_role_projects rp
+                                         WHERE rp.role_id = r.id
+                                         AND r.role = '".PL."'
+                                         AND r.user_id = '{$this->id}'");
         }
         foreach ($res as &$row) {
             if($idsOnly){
@@ -4217,16 +4145,17 @@ class Person extends BackboneModel {
         if(isset($this->leadershipCache[$startRange.$endRange])){
             return $this->leadershipCache[$startRange.$endRange];
         }
-        
-        $sql = "SELECT DISTINCT project_id
-                FROM grand_project_leaders
-                WHERE user_id = '{$this->id}'
+        $sql = "SELECT DISTINCT rp.project_id
+                FROM grand_roles r, grand_role_projects rp
+                WHERE rp.role_id = r.id
+                AND r.role = '".PL."'
+                AND r.user_id = '{$this->id}'
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                ( (r.end_date != '0000-00-00 00:00:00') AND
+                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
+                ( (r.end_date = '0000-00-00 00:00:00') AND
+                ((r.start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
         $projects = array();
@@ -4251,10 +4180,11 @@ class Person extends BackboneModel {
         if(isset($this->leadershipCache[$date])){
             return $this->leadershipCache[$date];
         }
-        
-        $sql = "SELECT DISTINCT project_id
-                FROM grand_project_leaders
-                WHERE user_id = '{$this->id}'
+        $sql = "SELECT DISTINCT rp.project_id
+                FROM grand_roles r, grand_role_projects rp
+                WHERE rp.role_id = r.id
+                AND r.role = '".PL."'
+                AND r.user_id = '{$this->id}'
                 AND (('$date' BETWEEN start_date AND end_date ) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
         $data = DBFunctions::execSQL($sql);
         $projects = array();
@@ -4287,20 +4217,15 @@ class Person extends BackboneModel {
         if($p == null || $p->getName() == ""){
             return false;
         }
-        $extra = "";
-        if($type != null){
-            $extra = "AND l.type = '$type'";
-        }
         $data = DBFunctions::execSQL("SELECT 1
-                                     FROM grand_project_leaders l, grand_project p 
-                                     WHERE l.project_id = p.id
-                                     AND l.user_id = '{$this->id}'
-                                     AND p.name = '{$p->getName()}'
-                                     AND (l.end_date = '0000-00-00 00:00:00'
-                                          OR l.end_date > CURRENT_TIMESTAMP)
-                                     $extra");
-       
-        if(DBFunctions::getNRows() > 0){
+                                      FROM grand_roles r, grand_role_projects rp
+                                      WHERE rp.role_id = r.id
+                                      AND rp.project_id = '{$p->getId()}'
+                                      AND r.role = '".PL."'
+                                      AND r.user_id = '{$this->id}'
+                                      AND (r.end_date = '0000-00-00 00:00:00'
+                                           OR r.end_date > CURRENT_TIMESTAMP)");
+        if(count($data) > 0){
             return true;
         }
         if($p instanceof Project && !$p->clear){
@@ -4338,17 +4263,17 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person was a leader
      */
     function isProjectLeaderDuring($startRange, $endRange){
-        $sql = "SELECT p.id
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.type = 'leader'
-                AND p.id = l.project_id
-                AND l.user_id = '{$this->id}' 
+        $sql = "SELECT DISTINCT rp.project_id
+                FROM grand_roles r, grand_role_projects rp
+                WHERE rp.role_id = r.id
+                AND r.role = '".PL."'
+                AND r.user_id = '{$this->id}'
                 AND ( 
-                ( (l.end_date != '0000-00-00 00:00:00') AND
-                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
+                ( (r.end_date != '0000-00-00 00:00:00') AND
+                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
                 OR
-                ( (l.end_date = '0000-00-00 00:00:00') AND
-                ((l.start_date <= '$endRange')))
+                ( (r.end_date = '0000-00-00 00:00:00') AND
+                ((r.start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
