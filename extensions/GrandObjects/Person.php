@@ -691,7 +691,7 @@ class Person extends BackboneModel {
                     }
                 }
             }
-            if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
+            else if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
                 if($filter != null && $filter != "all"){
                     $found = false;
                     foreach(self::$rolesCache[$row] as $role){
