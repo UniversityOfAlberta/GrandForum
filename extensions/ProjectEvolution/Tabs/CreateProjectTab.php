@@ -220,6 +220,7 @@ EOF;
                     $x = new stdClass();
                     $x->name = $_POST['acronym'];
                     $_POST['projects'] = array($x);
+                    $_POST['startDate'] = $_POST['effective_date'];
                     
                     $api = new RoleAPI();
                     $api->doPOST();
