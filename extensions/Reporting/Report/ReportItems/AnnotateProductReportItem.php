@@ -3,7 +3,7 @@
 class AnnotateProductReportItem extends AbstractReportItem {
     
     function render(){
-        global $wgOut;
+        global $wgOut, $config;
         $product = Product::newFromId($this->productId);
         $showStatus = (strtolower($this->getAttr("showStatus", "false") == "true"));
         
@@ -11,6 +11,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         $incomplete = true;
         $peerReviewedMissing = false;
         $impactFactorMissing = false;
+        $snipMissing = false;
         $structure = $product->getStructure();
         if(count($structure['data']) == 0){
             // Type has no data fields
@@ -31,20 +32,29 @@ class AnnotateProductReportItem extends AbstractReportItem {
             $peerReviewedMissing = true;  
         }
         
-        if($product->getCategory() == "Publication" &&
-           isset($structure['data']['impact_factor']) &&
-           $product->getData('impact_factor') == ""){
-            $impactFactorMissing = true;
+        if($config->getValue('elsevierApi') != ""){
+            if($product->getCategory() == "Publication" &&
+               isset($structure['data']['snip']) &&
+               $product->getData('snip') == ""){
+                $snipMissing = true;
+            }
+        }
+        else{
+            if($product->getCategory() == "Publication" &&
+               isset($structure['data']['impact_factor']) &&
+               $product->getData('impact_factor') == ""){
+                $impactFactorMissing = true;
+            }
         }
         $html = "";
-        if($incomplete || $peerReviewedMissing || $impactFactorMissing){
+        if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing){
             $html .= "<span style='background:orange;'>";
         }
         else{
             $html .= "<span>";
         }
         $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
-        if($incomplete || $peerReviewedMissing || $impactFactorMissing){
+        if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing){
             $html .= "<ul style='color: #FF6600;'>";
             if($incomplete){
                 $html .= "<li>This entry may be incomplete</li>";
@@ -54,6 +64,9 @@ class AnnotateProductReportItem extends AbstractReportItem {
             }
             if($impactFactorMissing){
                 $html .= "<li>This entry is missing impact factor information</li>";
+            }
+            if($snipMissing){
+                $html .= "<li>This entry is missing SNIP information</li>";
             }
             $html .= "</ul>";
         }

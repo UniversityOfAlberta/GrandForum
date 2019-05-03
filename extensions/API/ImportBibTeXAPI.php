@@ -56,6 +56,7 @@ class ImportBibTeXAPI extends API{
     }
     
     function createProduct($paper, $category, $type, $overwrite=false){
+        global $config;
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
@@ -147,7 +148,12 @@ class ImportBibTeXAPI extends API{
                         if(!isset($product->data[$dkey]) || $product->data[$dkey] == ""){
                             $product->data[$dkey] = $field;
                             if($dkey == "issn"){
-                                $journals = Journal::newFromIssn($field);
+                                if($config->getValue('elsevierApi') != ""){
+                                    $journals = ElsevierJournal::newFromIssn($field);
+                                }
+                                else{
+                                    $journals = Journal::newFromIssn($field);
+                                }
                                 $nJournals = count($journals);
                                 if($nJournals >= 1){
                                     $journal = $journals[0];
@@ -157,6 +163,7 @@ class ImportBibTeXAPI extends API{
                                     }
                                     $product->data['impact_factor'] = $journal->impact_factor;
                                     $product->data['eigen_factor'] = $journal->eigenfactor;
+                                    $product->data['snip'] = $journal->snip;
                                 }
                             }
                         }

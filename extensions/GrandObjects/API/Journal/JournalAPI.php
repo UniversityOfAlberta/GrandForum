@@ -3,6 +3,7 @@
 class JournalAPI extends RESTAPI {
     
     function doGET(){
+        global $config;
         $id = $this->getParam('id');
         $search = $this->getParam('search');
         if($id != ""){
@@ -13,11 +14,21 @@ class JournalAPI extends RESTAPI {
             return $journal->toJSON();
         }
         else if ($search != ""){
-            $journals = new Collection(Journal::getAllJournalsBySearch($search));
+            if($config->getValue('elsevierApi') != ""){
+                $journals = new Collection(ElsevierJournal::getAllJournalsBySearch($search));
+            }
+            else {
+                $journals = new Collection(Journal::getAllJournalsBySearch($search));
+            }
             return $journals->toJSON();           
         }
         else{
-            $journals = new Collection(Journal::getAllJournals());
+            if($config->getValue('elsevierApi') != ""){
+                $journals = new Collection(ElsevierJournal::getAllJournals());
+            }
+            else{
+                $journals = new Collection(Journal::getAllJournals());
+            }
             return $journals->toJSON();
         }
     }

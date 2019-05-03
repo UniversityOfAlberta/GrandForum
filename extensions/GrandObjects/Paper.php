@@ -490,6 +490,23 @@ class Paper extends BackboneModel{
                                 $fhidden = (strtolower("{$fattrs->hidden}") == "true");
                                 $foptions = explode("|", "{$fattrs->options}");
                                 
+                                if($config->getValue('elsevierApi') != ""){
+                                    // Modify data attributes for Elsevier
+                                    if($fid == "eigen_factor"){
+                                        $fhidden = true;
+                                    }
+                                    else if($fid == "category_ranking"){
+                                        $fhidden = true;
+                                    }
+                                    else if($fid == "impact_factor"){
+                                        $fhidden = true;
+                                    }
+                                    else if($fid == "snip"){
+                                        $fhidden = false;
+                                        $flabel = "SNIP<sup><span class='clicktooltip' style='font-size:17px; font-weight: normal;' title='The Source Normalised Impact per Paper <b>(SNIP)</b> is the ratio of the average number of citations received by articles in a journal (categorised in a particular field), and the citation potential of the field (i.e., the average length of the reference list of articles in that field). The SNIP allows comparisons between fields with different publication and citation rates. The SNIP is calculated using <a target=_blank href=https://www.scopus.com/sources>Scopus data</a>.'>&#9432;</span></sup>";
+                                    }
+                                }
+                                
                                 $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
                                                                                                          'bibtex' => $fbibtex,
                                                                                                          'label' => $flabel,
@@ -1368,6 +1385,7 @@ class Paper extends BackboneModel{
      * @return string The citation text
      */
     function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false){
+        global $config;
         $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
@@ -1382,9 +1400,10 @@ class Paper extends BackboneModel{
             $status = ($showStatus) ? $this->getStatus() : "";
             $peer_rev = "";
             $reported = "";
-            $ifranking = "";
+            $ifranking = array();
             $ranking = $this->getData(array('category_ranking'));
             $if = $this->getData(array('impact_factor'));
+            $snip = $this->getData(array('snip'));
             $ratio = $this->getData(array('acceptance_ratio'));
             
             if($this->getCategory() == "Publication"){
@@ -1402,21 +1421,46 @@ class Paper extends BackboneModel{
                     $reported = "&nbsp;/&nbsp;Reported: $reportedYear";
                 }
             }
-            if($if != "" && $ranking != ""){
-                $fraction = explode("/", $ranking);
-                $numerator = @$fraction[0];
-                $denominator = @$fraction[1];
-                $percent = number_format(($numerator/max(1, $denominator))*100, 2);
-                $ranking = $ranking." = {$percent}%";
-                $journal = $this->getJournal();
-                $jType = "";
-                if(isset($journal['description'])){
-                    $jType = " ({$journal['description']})";
+            if($if != "" || $ranking != "" || $snip != ""){
+                if($config->getValue('elsevierApi') != ""){
+                    // Prefer SNIP
+                    if($snip != ""){
+                        $ifranking[] = "SNIP: {$snip}";
+                    }
+                    else if($if != ""){
+                        $ifranking[] = "IF: {$if}";
+                    }
                 }
-                $ifranking = "IF: {$if}; Ranking: {$ranking}{$jType}<br />";
+                else{
+                    // Prefer IF
+                    if($if != ""){
+                        $ifranking[] = "IF: {$if}";
+                    }
+                    else if($snip != ""){
+                        $ifranking[] = "SNIP: {$snip}";
+                    }
+                }
+                
+                if($ranking != "" && ($snip == "" || $config->getValue('elsevierApi') == "")){
+                    $fraction = explode("/", $ranking);
+                    $numerator = @$fraction[0];
+                    $denominator = @$fraction[1];
+                    $percent = number_format(($numerator/max(1, $denominator))*100, 2);
+                    $ranking = $ranking." = {$percent}%";
+                    $journal = $this->getJournal();
+                    $jType = "";
+                    if(isset($journal['description'])){
+                        $jType = " ({$journal['description']})";
+                    }
+                    $ifranking[] = "Ranking: {$ranking}{$jType}";
+                }
+                $ifranking = implode("; ", $ifranking)."<br />";
             }
             else if(str_replace("/", "", $ratio) != ""){
                 $ifranking = "Acceptance Rate: {$ratio}<br />";
+            }
+            else{
+                $ifranking = "";
             }
             $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}{$reported}</div>";
         }

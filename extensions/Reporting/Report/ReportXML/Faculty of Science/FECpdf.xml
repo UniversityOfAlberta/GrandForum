@@ -198,7 +198,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -608,7 +608,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">

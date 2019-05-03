@@ -337,13 +337,18 @@ ProductEditView = Backbone.View.extend({
                     journals.search = request.term;
                     journals.fetch({success: function(collection){
                         var data = _.map(collection.toJSON(), function(journal){
+                            var label = journal.title + " " + journal.year;
+                            if(journal.description != null){
+                                label += " (" + journal.description + ")";
+                            }
                             return {id: journal.id, 
-                                    label: journal.title + " " + journal.year + " (" + journal.description + ")", 
+                                    label: label, 
                                     value: journal.title,
                                     journal: journal.title,
                                     impact_factor: journal.impact_factor,
                                     category_ranking: journal.category_ranking,
                                     eigen_factor: journal.eigenfactor,
+                                    snip: journal.snip,
                                     issn: journal.issn
                             };
                         });
@@ -357,6 +362,7 @@ ProductEditView = Backbone.View.extend({
                         this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
                         this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
                         this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
+                        this.$("input[name=data_snip]").val(ui.item.snip).change();
                         this.$("input[name=data_issn]").val(ui.item.issn).change();
                     }, this));
                 }, this)
@@ -381,6 +387,7 @@ ProductEditView = Backbone.View.extend({
         this.$("input[name=data_category_ranking]").prop('disabled', true);
         this.$("input[name=data_impact_factor]").prop('disabled', true);
         this.$("input[name=data_eigen_factor]").prop('disabled', true);
+        this.$("input[name=data_snip]").prop('disabled', true);
         this.$("input[name=data_eigen_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
 
         _.defer($.proxy(function(){

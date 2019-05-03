@@ -20,7 +20,8 @@ Journal = Backbone.Model.extend({
             ratio: '',
             impact_factor: '',
             cited_half_life: '',
-            eigenfactor: ''
+            eigenfactor: '',
+            snip: ''
         };
     }
     

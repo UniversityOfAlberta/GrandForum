@@ -19,23 +19,25 @@ class Journal extends BackboneModel {
     var $impact_factor;
     var $cited_half_life;
     var $eigenfactor;
+    var $snip;
 
     function Journal($data){
         if (!empty($data)){
             $row = $data[0]; // since we're passing the entire result set
-            $this->id = $row['id'];
-            $this->year = $row['year'];
-            $this->short_title = $row['short_title'];
-            $this->iso_abbrev = $row['iso_abbrev'];
-            $this->title = $row['title'];
-            $this->issn = $row['issn'];
-            $this->eissn = $row['eissn'];
-            $this->description = $row['description'];
-            $this->ranking_numerator = $row['ranking_numerator'];
-            $this->ranking_denominator = $row['ranking_denominator'];
-            $this->impact_factor = $row['impact_factor'];
-            $this->cited_half_life = $row['cited_half_life'];
-            $this->eigenfactor = $row['eigenfactor'];
+            $this->id = @$row['id'];
+            $this->year = @$row['year'];
+            $this->short_title = @$row['short_title'];
+            $this->iso_abbrev = @$row['iso_abbrev'];
+            $this->title = @$row['title'];
+            $this->issn = @$row['issn'];
+            $this->eissn = @$row['eissn'];
+            $this->description = @$row['description'];
+            $this->ranking_numerator = @$row['ranking_numerator'];
+            $this->ranking_denominator = @$row['ranking_denominator'];
+            $this->impact_factor = @$row['impact_factor'];
+            $this->cited_half_life = @$row['cited_half_life'];
+            $this->eigenfactor = @$row['eigenfactor'];
+            $this->snip = @$row['snip'];
         }
     }
 
@@ -138,6 +140,10 @@ class Journal extends BackboneModel {
     function getImpactFactor(){
         return $this->impact_factor;
     }
+    
+    function getSNIP(){
+        return $this->snip;
+    }
 
     function getRankNum(){
         return $this->ranking_numerator;
@@ -179,14 +185,15 @@ class Journal extends BackboneModel {
             'iso_abbrev' => $this->iso_abbrev,
             'title' => $this->title,
             'issn' => $this->issn,
-            'eissn', $this->eissn,
+            'eissn' => $this->eissn,
             'description' => $this->description,
             'ranking_numerator' => $this->ranking_numerator,
             'ranking_denominator' => $this->ranking_denominator,
             'category_ranking' => $this->getRank(),
             'impact_factor' => $this->impact_factor,
             'cited_half_life' => $this->cited_half_life,
-            'eigenfactor' => $this->eigenfactor
+            'eigenfactor' => $this->eigenfactor,
+            'snip' => $this->snip
         );
         return $json;
     }
