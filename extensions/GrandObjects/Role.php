@@ -88,6 +88,7 @@ class Role extends BackboneModel {
 	    $id = DBFunctions::insertId();
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    Person::$leaderCache = array();
 	    $this->getPerson()->roles = null;
 	    if($status){
             $this->id = $id;
@@ -158,6 +159,7 @@ class Role extends BackboneModel {
 	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    Person::$leaderCache = array();
 	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
 	    Cache::delete("personRolesDuring{$this->getPerson()->getId()}*", true);
@@ -183,6 +185,7 @@ class Role extends BackboneModel {
 	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    Person::$leaderCache = array();
 	    $this->getPerson()->roles = null;
 	    foreach($this->getPerson()->getProjects(true) as $project){
             Cache::delete("project{$project->getId()}_people*", true);

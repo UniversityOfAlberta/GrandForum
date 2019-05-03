@@ -250,9 +250,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       PARTNER => 7,
                       PA => 8, // Might eventually be merged with PS
                       PL => 9,
-                      'PL' => 9,
                       TL => 11,
-                      'TL' => 11,
                       TC => 11,
                       APL => 11,
                       TC => 11,
@@ -266,7 +264,7 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, PL, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
