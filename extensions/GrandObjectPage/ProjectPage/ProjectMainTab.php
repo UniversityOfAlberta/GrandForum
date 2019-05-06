@@ -160,8 +160,10 @@ class ProjectMainTab extends AbstractEditableTab {
         foreach ($challenges as $chlg){
             $cid = $chlg->getId();
             $cname = $chlg->getAcronym();
-            $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
-            $chlg_opts .= "<option value='{$cid}' {$selected}>{$chlg->getAcronym()}</option>";
+            if($cname != "Not Specified"){
+                $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
+                $chlg_opts .= "<option value='{$cid}' {$selected}>{$chlg->getAcronym()}</option>";
+            }
         }
         if($edit){
             $this->html .=<<<EOF
