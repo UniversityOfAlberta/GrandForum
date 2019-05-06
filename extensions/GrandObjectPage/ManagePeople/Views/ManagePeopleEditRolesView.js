@@ -160,7 +160,10 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
             this.$el.removeClass('deleted');
         }
         console.log(this.model.toJSON());
-        if((this.model.get('name') == PL || this.model.get('name') == PS || this.model.get('name') == PA) && 
+        if((this.model.get('name') == PL || 
+            this.model.get('name') == APL || 
+            this.model.get('name') == PS || 
+            this.model.get('name') == PA) && 
            this.model.get('projects').length == 0){
             this.$(".projectsCell").css("background", "#FDEEB2")
                                    .css("box-shadow", "inset 0 0 0 1px #9C600D");
