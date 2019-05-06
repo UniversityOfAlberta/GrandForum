@@ -103,8 +103,7 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CIP Application", "{$url}CIPApplication", $selected);*/
         }
         foreach($person->getProjects() as $project){
-            if ($project->getType() == 'Innovation Hub' && 
-                ($person->isRoleAtLeast(NI) || $person->isRole(PS, $project))){
+            if ($project->getType() == 'Innovation Hub' && $person->isRoleAtLeast(NI)){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IHReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}IHReport&project={$project->getName()}", $selected);
             }
