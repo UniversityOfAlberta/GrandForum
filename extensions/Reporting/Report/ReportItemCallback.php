@@ -975,19 +975,19 @@ class ReportItemCallback {
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
-                    $roles .= ", PL";
+                    $roles .= ", ".PL;
                 }
                 else{
-                    $roles .= "PL";
+                    $roles .= PL;
                 }
             }
         }
         else if($person->isProjectLeader()){
             if($roles != ""){
-                $roles .= ", PL";
+                $roles .= ", ".PL;
             }
             else{
-                $roles .= "PL";
+                $roles .= PL;
             }
         }
         return $roles;
@@ -1084,19 +1084,19 @@ class ReportItemCallback {
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
-                    $roles .= ", PL";
+                    $roles .= ", ".PL;
                 }
                 else{
-                    $roles .= "PL";
+                    $roles .= PL;
                 }
             }
         }
         else if($person->isProjectLeader()){
             if($roles != ""){
-                $roles .= ", PL";
+                $roles .= ", ".PL;
             }
             else{
-                $roles .= "PL";
+                $roles .= PL;
             }
         }
         return $roles;

@@ -2254,14 +2254,10 @@ class Person extends BackboneModel {
         $roles = $this->getRoles();
         $roleNames = array();
         foreach($roles as $role){
-            $roleNames[] = $role->getRole();
+            $roleNames[$role->getRole()] = $role->getRole();
         }
         foreach($roleNames as $key => $role){
             if($role == INACTIVE){
-                if($this->isProjectLeader()){
-                    unset($roleNames[$key]);
-                    continue;
-                }
                 $lastRole = $this->getLastRole();
                 if($lastRole != null){
                     $roleNames[$key] = "Inactive-".$lastRole->getRole();
@@ -2322,7 +2318,7 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
             $this->roles = array();
-            if($this->isProjectLeader()){
+            /*if($this->isProjectLeader()){
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => PL,
@@ -2330,7 +2326,7 @@ class Person extends BackboneModel {
                                                            'start_date' => '0000-00-00 00:00:00',
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));
-            }
+            }*/
             if($this->isThemeLeader()){
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
@@ -3144,7 +3140,7 @@ class Person extends BackboneModel {
             return ($this->isRole('Former-'.AR, $project) || 
                     $this->isRole('Former-'.CI, $project));
         }
-        if($role == PL || $role == 'PL'){
+        if($role == PL){
             return ($project != null) ? $this->leadershipOf($project) : $this->isProjectLeader();
         }
         if($role == APL){
@@ -3161,10 +3157,10 @@ class Person extends BackboneModel {
             }
             return false;
         }
-        if($role == TL || $role == 'TL'){
+        if($role == TL){
             return ($project != null) ? $this->isThemeLeaderOf($project) : $this->isThemeLeader();
         }
-        if($role == TC || $role == 'TC'){
+        if($role == TC){
             return ($project != null) ? $this->isThemeCoordinatorOf($project) : $this->isThemeCoordinator();
         }
         if($role == EVALUATOR){
@@ -3229,7 +3225,7 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL || $role == "PL"){
+        if($role == PL){
             $project_objs = $this->leadershipOn($date);
             if(count($project_objs) > 0){
                 $roles[] = PL;
@@ -3291,18 +3287,18 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL || $role == "PL"){
+        if($role == PL){
             $project_objs = $this->leadershipDuring($startRange, $endRange);
             if(count($project_objs) > 0){
                 $roles[] = PL;
             }
         }
-        if($role == TL || $role == "TL"){
+        if($role == TL){
             if($this->isThemeLeaderDuring($startRange, $endRange)){
                 $roles[] = TL;
             }
         }
-        if($role == TC || $role == "TC"){
+        if($role == TC){
             if($this->isThemeCoordinatorDuring($startRange, $endRange)){
                 $roles[] = TC;
             }
