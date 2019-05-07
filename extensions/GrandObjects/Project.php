@@ -479,6 +479,7 @@ class Project extends BackboneModel {
                        'shortname' => $this->getShortName(),
                        'description' => $this->getDescription(),
                        'longDescription' => $this->getLongDescription(),
+                       'memberStatus' => $this->getMemberStatus(),
                        'photo' => $this->getPhoto(),
                        'cachedPhoto' => $this->getPhoto(true),
                        'logo' => $this->getLogo(),
@@ -486,7 +487,7 @@ class Project extends BackboneModel {
                        'website' => $this->getWebsite(),
                        'dept_website' => $this->getDeptWebsite(),
                        'email' => $this->getEmail(),
-                       'use_generic' => $this->getUseGeneric(),
+                       'useGeneric' => $this->getUseGeneric(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -1381,6 +1382,28 @@ EOF;
         return "";
     }
     
+    // Returns the description of the Project
+    function getMemberStatus($history=false){
+        $sql = "(SELECT member_status
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT member_status
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['member_status'];
+        }
+        return "";
+    }
+    
     function getWebsite($history=false){
         $website = "";
         $sql = "(SELECT website 
@@ -1390,7 +1413,7 @@ EOF;
             $sql .= "AND evolution_id = '{$this->evolutionId}' 
                      ORDER BY id DESC LIMIT 1)
                     UNION
-                    (SELECT long_description
+                    (SELECT website
                      FROM `grand_project_descriptions` d
                      WHERE d.project_id = '{$this->id}'";
         }
@@ -1415,7 +1438,7 @@ EOF;
             $sql .= "AND evolution_id = '{$this->evolutionId}' 
                      ORDER BY id DESC LIMIT 1)
                     UNION
-                    (SELECT long_description
+                    (SELECT dept_website
                      FROM `grand_project_descriptions` d
                      WHERE d.project_id = '{$this->id}'";
         }

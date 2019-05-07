@@ -235,6 +235,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
             $fullNameField->attr('size', 27);
             
+            $memberStatusField = new SelectBox("memberStatus", "Member Status", $this->project->getMemberStatus(), array("Member", "Non-Member", "Associate Member"));
+            
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
                                 <td><input type='file' style='width:269px;' name='photo' /></td>
@@ -242,17 +244,17 @@ class ProjectMainTab extends AbstractEditableTab {
                             <tr>
                                 <td></td>
                                 <td><input type='text' name='photo_url' style='width:269px;' placeholder='Enter photo URL here instead of file upload' /></td>
+                                <td style='white-space: nowrap;' align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
                             </tr>
                             <tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Logo:</b></td>
                                 <td><input type='file' style='width:269px;' name='logo' /></td>
-                                <td style='white-space: nowrap;' align='right'><b>University Abbreviation:</b></td><td>{$shortNameField->render()}</td>
+                                <td style='white-space: nowrap;' align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td><input type='text' name='logo_url' style='width:269px;' placeholder='Enter logo URL here instead of file upload' /></td>
-                                <td style='white-space: nowrap;' align='right'><b>Department Name:</b></td><td>{$fullNameField->render()}</td>
-                                
+                                <td style='white-space: nowrap;' align='right'><b>Member Status:</b></td><td>{$memberStatusField->render()}</td>
                             </tr>";
         }
     }                                
@@ -458,6 +460,7 @@ class ProjectMainTab extends AbstractEditableTab {
             if($_POST['description'] != $this->project->getDescription() ||
                $_POST['fullName'] != $this->project->getFullName() ||
                $_POST['shortName'] != $this->project->getShortName() ||
+               $_POST['memberStatus'] != $this->project->getMemberStatus() ||
                $_POST['website'] != $this->project->getWebsite() ||
                $_POST['dept_website'] != $this->project->getDeptWebsite() ||
                $_POST['email'] != $this->project->getEmail() ||
