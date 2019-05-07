@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2018">
+<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2019">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="applications" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="Research Program at AGE-WELL 2018" name="Description" title="Research Program at AGE-WELL 2018" type="ReportSection">
+    <ReportSection id="description" tooltip="Research Program at AGE-WELL 2019" name="Description" title="Research Program at AGE-WELL 2019" type="ReportSection">
         <ReportItem id="description" type="Static">
             <![CDATA[
-                <p>Join us in October in Vancouver, BC for Innovation in Action, our fourth Annual Conference!  AGE-WELL2018 will be held as a pre-conference event to the Canadian Association on Gerontology Annual Scientific and Educational Meeting. Conference Highlights including a brief program are now available on the conference intranet page with registration opening in Spring 2018.</p>
+                <p>Join us in October in Vancouver, BC for Innovation in Action, our fourth Annual Conference!  AGE-WELL 2019 will be held as a pre-conference event to the Canadian Association on Gerontology Annual Scientific and Educational Meeting. Conference Highlights including a brief program are now available on the conference intranet page with registration opening in Spring 2019.</p>
 
-                <p>With an eye towards renewal, the AGE-WELL 2018 conference theme is Innovation in Action. Sessions are designed to maximize networking, knowledge exchange and collaboration among AGE-WELL stakeholders. We would like to invite you and your teams to present your latest research findings this October in Vancouver.</p>
+                <p>With an eye towards renewal, the AGE-WELL 2019 conference theme is Innovation in Action. Sessions are designed to maximize networking, knowledge exchange and collaboration among AGE-WELL stakeholders. We would like to invite you and your teams to present your latest research findings this October in Vancouver.</p>
 
                 <p>We are delighted to announce a partnership with the SAGE peer-reviewed, open access, interdisciplinary journal, <a href='http://journals.sagepub.com/home/jrt' target='_blank'>Journal of Rehabilitation and Assistive Technologies Engineering (RATE)</a>. Authors of abstracts accepted by the AGE-WELL Conference are encouraged to submit a full paper to form part of a <a href='http://journals.sagepub.com/page/jrt/call-for-papers/age-well-annual-conference' target='_blank'>Special Collection in RATE</a>. For full details on the scope of the Special Collection and how to submit your paper please read the Special Collection Call for Papers. Each session has a checkbox that advises you would like this submission to be considered for the Call for Papers.</p>
 
-                <p>Each of the 5 subsections are the available session applications for the 2018 AGE-WELL conference. Within each subsection contains 6 Application dropdowns for those who would like to submit more than one submission in each session. Fill in the information for the session(s) that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.</p>
+                <p>Each of the 5 subsections are the available session applications for the 2019 AGE-WELL conference. Within each subsection contains 6 Application dropdowns for those who would like to submit more than one submission in each session. Fill in the information for the session(s) that you wish to apply, and then 'check' the submit box and press either the 'Submit' or 'Save' button.</p>
 
                 <p>Questions about this conference application can be directed to Krystle Wiltshire, AGE-WELL Administrative Coordinator (<a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a>).</p>
             ]]>
@@ -33,14 +33,14 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2018 will feature up to 6 Lunch ‘n’ Learn workshops. These 1-hour sessions will be accessible as a sign-up session through the AGE-WELL Conference app to attendees, and offered on both conference days from 1PM – 2PM. Network Members can submit up to 6 proposals for this session. Lunch ‘n’ Learns are open to Core Facilities, Crosscutting Activity Teams, Innovation Hubs, Projects and Workpackages.</p>
+                <p>AGE-WELL 2019 will feature up to 6 Lunch ‘n’ Learn workshops. These 1-hour sessions will be accessible as a sign-up session through the AGE-WELL Conference app to attendees, and offered on both conference days from 1PM – 2PM. Network Members can submit up to 6 proposals for this session. Lunch ‘n’ Learns are open to Core Facilities, Crosscutting Activity Teams, Innovation Hubs, Projects and Workpackages.</p>
 
-                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+                <p><b>Application Deadline: Friday, August 17, 2019</b></p>
 
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="3_if" type="If" if="{>(2018-08-20,{$timestamp})}">
+        <ReportItemSet id="3_if" type="If" if="{>(2019-08-20,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
                     <div id="3_accordion">
@@ -54,7 +54,7 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="3_special" type="Checkbox" blobItem="3_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                <ReportItem id="3_special" type="Checkbox" blobItem="3_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2019” Journal">
                     <![CDATA[
                         <tr>
                             <td colspan="2">{$item}</td>
@@ -171,14 +171,14 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2018 will feature 12 scientific talks. Each talk will consist of a 15-minute presentation and 5-minute Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Scientific Talks are open to all project programs (Core Research Projects, Catalyst & SIP).</p>
+                <p>AGE-WELL 2019 will feature 12 scientific talks. Each talk will consist of a 15-minute presentation and 5-minute Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Scientific Talks are open to all project programs (Core Research Projects, Catalyst & SIP).</p>
 
-                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+                <p><b>Application Deadline: Friday, August 17, 2019</b></p>
 
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="2_if" type="If" if="{>(2018-08-20,{$timestamp})}">
+        <ReportItemSet id="2_if" type="If" if="{>(2019-08-20,{$timestamp})}">
             <ReportItem id="2_head" type="Static">
                 <![CDATA[
                     <div id="2_accordion">
@@ -192,7 +192,7 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_special" type="Checkbox" blobItem="2_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                <ReportItem id="2_special" type="Checkbox" blobItem="2_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2019” Journal">
                     <![CDATA[
                         <tr>
                             <td colspan="2">{$item}</td>
@@ -291,14 +291,14 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2018 will feature 10 Science Slams. A science slam is a quick-fire presentation where HQP will get 5 minutes to present their research in front of conference attendees followed by 5 minutes Q&A. 10 finalists will be chosen (five for each session). The audience will then get to vote on the best innovation/presentation. Presentations should be creative, exciting and innovative. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Science Slams are open to AGE-WELL HQP only.</p>
+                <p>AGE-WELL 2019 will feature 10 Science Slams. A science slam is a quick-fire presentation where HQP will get 5 minutes to present their research in front of conference attendees followed by 5 minutes Q&A. 10 finalists will be chosen (five for each session). The audience will then get to vote on the best innovation/presentation. Presentations should be creative, exciting and innovative. Network Members can submit up to 6 proposals for this session, and abstracts must not exceed 250 words. Science Slams are open to AGE-WELL HQP only.</p>
 
-                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+                <p><b>Application Deadline: Friday, August 17, 2019</b></p>
 
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="1_if" type="If" if="{>(2018-08-20,{$timestamp})}">
+        <ReportItemSet id="1_if" type="If" if="{>(2019-08-20,{$timestamp})}">
             <ReportItem id="1_head" type="Static">
                 <![CDATA[
                     <div id="1_accordion">
@@ -312,7 +312,7 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="1_special" type="Checkbox" blobItem="1_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                <ReportItem id="1_special" type="Checkbox" blobItem="1_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2019” Journal">
                     <![CDATA[
                         <tr>
                             <td colspan="2">{$item}</td>
@@ -397,14 +397,14 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2018 will feature an open poster session. AGE-WELL Crosscutting Themes and Core Facilities will be offered tabletops during the poster session. Network Members can submit up to 6 posters for this session, and abstracts must not exceed 150 words. The Poster session is open to all AGE-WELL Network Members.</p>
+                <p>AGE-WELL 2019 will feature an open poster session. AGE-WELL Crosscutting Themes and Core Facilities will be offered tabletops during the poster session. Network Members can submit up to 6 posters for this session, and abstracts must not exceed 150 words. The Poster session is open to all AGE-WELL Network Members.</p>
 
-                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+                <p><b>Application Deadline: Friday, August 17, 2019</b></p>
 
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="4_if" type="If" if="{>(2018-08-20,{$timestamp})}">
+        <ReportItemSet id="4_if" type="If" if="{>(2019-08-20,{$timestamp})}">
             <ReportItem id="4_head" type="Static">
                 <![CDATA[
                     <div id="4_accordion">
@@ -418,7 +418,7 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_special" type="Checkbox" blobItem="4_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                <ReportItem id="4_special" type="Checkbox" blobItem="4_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2019” Journal">
                     <![CDATA[
                         <tr>
                             <td colspan="2">{$item}</td>
@@ -523,14 +523,14 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2018 will feature our Drinks & Demos reception held the evening of Tuesday, October 16. Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be attending this event. While network members can only present one demo each, you are welcome to submit up to 6 demos on behalf of your team by using the dropdowns below. Abstracts must not exceed 150 words. This session is open to all AGE-WELL Network Members, the only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).</p>
+                <p>AGE-WELL 2019 will feature our Drinks & Demos reception held the evening of Tuesday, October 16. Members from across our network including industry and community partners, Board of Directors as well as seniors and caregivers will be attending this event. While network members can only present one demo each, you are welcome to submit up to 6 demos on behalf of your team by using the dropdowns below. Abstracts must not exceed 150 words. This session is open to all AGE-WELL Network Members, the only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.).</p>
 
-                <p><b>Application Deadline: Friday, August 17, 2018</b></p>
+                <p><b>Application Deadline: Friday, August 17, 2019</b></p>
 
                 <p>Please contact <a href='mailto:krystle@agewell-nce.ca'>krystle@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="5_if" type="If" if="{>(2018-08-20,{$timestamp})}">
+        <ReportItemSet id="5_if" type="If" if="{>(2019-08-20,{$timestamp})}">
             <ReportItem id="5_head" type="Static">
                 <![CDATA[
                     <div id="5_accordion">
@@ -544,7 +544,7 @@
                         <table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="5_special" type="Checkbox" blobItem="5_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2018” Journal">
+                <ReportItem id="5_special" type="Checkbox" blobItem="5_SPECIAL" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like this submission to be considered for the “Special Collection: AGE-WELL 2019” Journal">
                     <![CDATA[
                         <tr>
                             <td colspan="2">{$item}</td>
