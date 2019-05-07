@@ -53,10 +53,10 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
             }
             $programsLine = implode("<br />", $programsLine);
+            $useGeneric = $this->project->getUseGeneric();
             $email    = ($address->getEmail() != "") ? 
                         "<a href='mailto:{$address->getEmail()}'>{$address->getEmail()}</a>" : "";
-            $chairEmail = ($this->project->getEmail() != "") ? 
-                        "<a href='mailto:{$this->project->getEmail()}'>{$this->project->getEmail()}</a>" : "";
+            $chairEmail = $this->project->getEmail();
             $website  = ($this->project->getWebsite() != "" && $this->project->getWebsite() != "http://" && $this->project->getWebsite() != "https://") ? 
                         "<a href='{$this->project->getWebsite()}' target='_blank'>{$this->project->getWebsite()}</a>" : "";
             $deptWebsite  = ($this->project->getDeptWebsite() != "" && $this->project->getDeptWebsite() != "http://" && $this->project->getDeptWebsite() != "https://") ? 
@@ -69,6 +69,22 @@ class ProjectMainTab extends AbstractEditableTab {
                         "<a href='{$address->getLinkedIn()}' target='_blank'>{$address->getLinkedIn()}</a>" : "";
             $youtube  = ($address->getYoutube() != "" && $address->getYoutube() != "http://" && $address->getYoutube() != "https://") ? 
                         "<a href='{$address->getYoutube()}' target='_blank'>{$address->getYoutube()}</a>" : "";
+                        
+            if($useGeneric && $chairEmail != ""){
+                $chairEmail = $chairEmail;
+            }
+            else {
+                $leaders = $this->project->getLeaders();
+                if(count($leaders) > 0){
+                    foreach($leaders as $leader){
+                        $chairEmail = $leader->getEmail();
+                        break;
+                    }
+                }
+            }
+            
+            $chairEmail = ($chairEmail != "") ? "<a href='mailto:{$chairEmail}'>{$chairEmail}</a>" : "";          
+            
             $this->html .= "<tr>
                                 <td valign='top' colspan='2'>
                                     <b>Mailing Address:</b>
@@ -105,6 +121,8 @@ class ProjectMainTab extends AbstractEditableTab {
                             </tr>";
         }
         else if($edit){
+            $genericYesChecked = ($this->project->getUseGeneric()) ? "checked='checked'" : "";
+            $genericNoChecked = ($this->project->getUseGeneric()) ? "" : "checked='checked'";
             $this->html .= "<table>";
             $this->html .= "<tr>
                                 <td align='right' valign='top' colspan='2'>
@@ -128,7 +146,14 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
                                         <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
                                         <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
-                                        <b>Chair Email:</b><input type='text' size='35' name='email' value='".str_replace("'", "&#39;", $this->project->getEmail())."' /><br />
+                                        <b>Generic Chair Email:</b><input type='text' size='35' name='email' value='".str_replace("'", "&#39;", $this->project->getEmail())."' placeholder='chair@university.ca' /><br />
+                                            <div style='width: 300px; text-align:left;'>
+                                                
+                                                <b>Use Generic?</b><br />
+                                                <div style='float:right;width:200px;'>If 'No', the chair's personal email will be displayed.</div>
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='use_generic' style='vertical-align:middle;' value='1' $genericYesChecked /> Yes<br />
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='use_generic' style='vertical-align:middle;' value='0' $genericNoChecked /> No<br />
+                                            </div>
                                         <b>Dept Website:</b><input type='text' name='dept_website' value='".str_replace("'", "&#39;", $this->project->getDeptWebsite())."' size='35' /><br />
                                         <b>Uni Website:</b><input type='text' name='website' value='".str_replace("'", "&#39;", $this->project->getWebsite())."' size='35' /><br />
                                         <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
@@ -428,13 +453,15 @@ class ProjectMainTab extends AbstractEditableTab {
             $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
             $_POST['dept_website'] = @str_replace("'", "&#39;", $_POST['dept_website']);
             $_POST['email'] = @str_replace("'", "&#39;", $_POST['email']);
+            $_POST['use_generic'] = @str_replace("'", "&#39;", $_POST['use_generic']);
             $_POST['long_description'] = $this->project->getLongDescription();
             if($_POST['description'] != $this->project->getDescription() ||
                $_POST['fullName'] != $this->project->getFullName() ||
                $_POST['shortName'] != $this->project->getShortName() ||
                $_POST['website'] != $this->project->getWebsite() ||
                $_POST['dept_website'] != $this->project->getDeptWebsite() ||
-               $_POST['email'] != $this->project->getEmail()){
+               $_POST['email'] != $this->project->getEmail() ||
+               $_POST['use_generic'] != $this->project->getUseGeneric()){
                 $error = APIRequest::doAction('ProjectDescription', true);
                 if($error != ""){
                     return $error;

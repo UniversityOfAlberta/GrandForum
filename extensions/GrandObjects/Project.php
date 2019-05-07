@@ -486,6 +486,7 @@ class Project extends BackboneModel {
                        'website' => $this->getWebsite(),
                        'dept_website' => $this->getDeptWebsite(),
                        'email' => $this->getEmail(),
+                       'use_generic' => $this->getUseGeneric(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -1447,6 +1448,27 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             return $data[0]['email'];
+        }
+        return "";
+    }
+    
+    function getUseGeneric($history=false){
+        $sql = "(SELECT use_generic 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT use_generic
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['use_generic'];
         }
         return "";
     }
