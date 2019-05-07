@@ -485,6 +485,7 @@ class Project extends BackboneModel {
                        'cachedLogo' => $this->getLogo(true),
                        'website' => $this->getWebsite(),
                        'dept_website' => $this->getDeptWebsite(),
+                       'email' => $this->getEmail(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -1427,6 +1428,27 @@ EOF;
             $website = 'http://'.$website;
         }
         return $website;
+    }
+    
+    function getEmail($history=false){
+        $sql = "(SELECT email 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT email
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['email'];
+        }
+        return "";
     }
     
     /**

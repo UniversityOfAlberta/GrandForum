@@ -8,6 +8,7 @@ class ProjectDescriptionAPI extends API{
 	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");
 	    $this->addPOST("website",true,"The website url","http://agewell-nce.ca/");
 	    $this->addPOST("dept_website",true,"The department website url","http://agewell-nce.ca/");
+	    $this->addPOST("email",true,"The email address of the department chair","");
 	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
 	    $this->addPOST("shortName",false,"The short name of the project", "MEOW");
     }
@@ -24,6 +25,9 @@ class ProjectDescriptionAPI extends API{
         }
         if(isset($_POST['dept_website']) && $_POST['dept_website'] != ""){
             $_POST['dept_website'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['dept_website']));
+        }
+        if(isset($_POST['email']) && $_POST['email'] != ""){
+            $_POST['email'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['email']));
         }
         if(isset($_POST['project']) && $_POST['project'] != ""){
             $_POST['project'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project']));
@@ -82,6 +86,7 @@ class ProjectDescriptionAPI extends API{
                                   'long_description' => @$_POST['long_description'],
                                   'website' => @$_POST['website'],
                                   'dept_website' => @$_POST['dept_website'],
+                                  'email' => @$_POST['email'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();

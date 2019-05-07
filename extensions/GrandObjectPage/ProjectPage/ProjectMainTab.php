@@ -55,6 +55,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $programsLine = implode("<br />", $programsLine);
             $email    = ($address->getEmail() != "") ? 
                         "<a href='mailto:{$address->getEmail()}'>{$address->getEmail()}</a>" : "";
+            $chairEmail = ($this->project->getEmail() != "") ? 
+                        "<a href='mailto:{$this->project->getEmail()}'>{$this->project->getEmail()}</a>" : "";
             $website  = ($this->project->getWebsite() != "" && $this->project->getWebsite() != "http://" && $this->project->getWebsite() != "https://") ? 
                         "<a href='{$this->project->getWebsite()}' target='_blank'>{$this->project->getWebsite()}</a>" : "";
             $deptWebsite  = ($this->project->getDeptWebsite() != "" && $this->project->getDeptWebsite() != "http://" && $this->project->getDeptWebsite() != "https://") ? 
@@ -83,6 +85,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <span style='display:inline-block; width:80px; color: #555;'>Phone</span>    {$address->getPhone()}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Fax</span>      {$address->getFax()}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Email</span>    {$email}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Chair Email</span> {$chairEmail}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Dept Website</span>  {$deptWebsite}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Uni Website</span>  {$website}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Twitter</span>  {$twitter}<br />
@@ -125,8 +128,9 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>Phone:</b><input type='text' size='35' name='address_phone' value='".str_replace("'", "&#39;", $address->getPhone())."' /><br />
                                         <b>Fax:</b><input type='text' size='35' name='address_fax' value='".str_replace("'", "&#39;", $address->getFax())."' /><br />
                                         <b>Email:</b><input type='text' size='35' name='address_email' value='".str_replace("'", "&#39;", $address->getEmail())."' /><br />
-                                        <b>Dept Website:</b><input type='text' name='dept_website' value='{$this->project->getDeptWebsite()}' size='35' /><br />
-                                        <b>Uni Website:</b><input type='text' name='website' value='{$this->project->getWebsite()}' size='35' /><br />
+                                        <b>Chair Email:</b><input type='text' size='35' name='email' value='".str_replace("'", "&#39;", $this->project->getEmail())."' /><br />
+                                        <b>Dept Website:</b><input type='text' name='dept_website' value='".str_replace("'", "&#39;", $this->project->getDeptWebsite())."' size='35' /><br />
+                                        <b>Uni Website:</b><input type='text' name='website' value='".str_replace("'", "&#39;", $this->project->getWebsite())."' size='35' /><br />
                                         <b>Twitter:</b><input type='text' size='35' name='address_twitter' placeholder='https://twitter.com/*****' value='".str_replace("'", "&#39;", $address->getTwitter())."' /><br />
                                         <b>Facebook:</b><input type='text' size='35' name='address_facebook' placeholder='https://www.facebook.com/*****/' value='".str_replace("'", "&#39;", $address->getFacebook())."' /><br />
                                         <b>LinkedIn:</b><input type='text' size='35' name='address_linkedin' placeholder='https://www.linkedin.com/school/*****/' value='".str_replace("'", "&#39;", $address->getLinkedIn())."' /><br />
@@ -423,12 +427,14 @@ class ProjectMainTab extends AbstractEditableTab {
             $_POST['description'] = @$_POST['description'];
             $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
             $_POST['dept_website'] = @str_replace("'", "&#39;", $_POST['dept_website']);
+            $_POST['email'] = @str_replace("'", "&#39;", $_POST['email']);
             $_POST['long_description'] = $this->project->getLongDescription();
             if($_POST['description'] != $this->project->getDescription() ||
                $_POST['fullName'] != $this->project->getFullName() ||
                $_POST['shortName'] != $this->project->getShortName() ||
                $_POST['website'] != $this->project->getWebsite() ||
-               $_POST['dept_website'] != $this->project->getDeptWebsite()){
+               $_POST['dept_website'] != $this->project->getDeptWebsite() ||
+               $_POST['email'] != $this->project->getEmail()){
                 $error = APIRequest::doAction('ProjectDescription', true);
                 if($error != ""){
                     return $error;
