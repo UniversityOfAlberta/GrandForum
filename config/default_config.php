@@ -279,6 +279,7 @@
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
     $config->setConst("PA",         "PA");
+    $config->setConst("ACHAIR",     "ActingChair");
     $config->setConst("PL",         "PL");
     $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
@@ -305,6 +306,7 @@
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('PARTNER')        => "Partner",
         $config->getConst('PA')             => "Project Assistant",
+        $config->getConst('ACHAIR')         => "Acting Chair",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",

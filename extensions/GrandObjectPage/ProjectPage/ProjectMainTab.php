@@ -559,6 +559,7 @@ EOF;
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             $this->showRole(PL);
+            $this->showRole(ACHAIR);
             $this->showRole(PA);
             if($this->project->getType() == "Innovation Hub"){
                 $this->showRole(null, 'Innovation Hub Team');

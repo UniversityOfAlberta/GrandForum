@@ -249,6 +249,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       PARTNER => 7,
                       PS => 8,
                       PA => 8, // Might eventually be merged with PS
+                      ACHAIR => 9,
                       PL => 9,
                       'PL' => 9,
                       TL => 11,
@@ -266,11 +267,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, PA, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, PA, ACHAIR, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, PS, PA, STUDENT, EXTERNAL, AR, CI, PA, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, PA, STUDENT, EXTERNAL, AR, CI, PA, ACHAIR, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 foreach($config->getValue('committees') as $role => $roleDef){
     define($role, $role);
