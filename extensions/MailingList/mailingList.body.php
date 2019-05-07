@@ -147,6 +147,9 @@ class MailList{
                                         array('mailListName' => EQ($project_name)));
             if(count($data) > 0){
                 $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@{$config->getValue('domain')}'>{$data[0]['mailListName']}@{$config->getValue('domain')}</a>");
+                if($me->isRoleAtLeast(ADMIN)){
+                    $wgOut->addHTML("<br /><b>Admin Interface:</b> <a href='{$wgServer}/mailman/admin/{$project_name}'>{$wgServer}/mailman/admin/{$project_name}</a>");
+                }
                 $emails = MailingList::listMembers($project_name);
                 $wgOut->addHTML("<h2>List Members</h2><a id='showPeople' class='button'>Show Members on List</a>
                 <script type='text/javascript'>
