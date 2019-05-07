@@ -18,7 +18,10 @@ foreach($lines as $line){
         $role2 = trim($cells[6]);
         $roles = array($role1, $role2);
         
-        $person = Person::newFromName("$first.$last");
+        $person = Person::newFromEmail("$email");
+        if($person->getId() == ""){
+            $person = Person::newFromName("$first.$last");
+        }
         if($person->getId() == ""){
             // Create New User
             User::createNew("$first.$last", array('real_name' => "$first $last", 
@@ -133,11 +136,7 @@ foreach($lines as $line){
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type: text/html; charset=utf-8';
         $headers[] = 'From: CS-CAN Forum <support@forum.cscan-infocan.ca>';
-        if($person->getEmail() == "ksbooth@cs.ubc.ca" ||
-           $person->getEmail() == "ycoady@uvic.ca" ||
-           $person->getEmail() == "spencerrose@uvic.ca"){
-            mail($person->getEmail(), "CS-CAN Forum Account", $message, implode("\r\n", $headers));
-        }
+        //mail($person->getEmail(), "CS-CAN Forum Account", $message, implode("\r\n", $headers));
     }
 }
 

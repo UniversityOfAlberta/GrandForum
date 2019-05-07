@@ -262,7 +262,7 @@ class SpecialPasswordReset extends FormSpecialPage {
 			$password = $user->randomPassword();
 			$user->setNewpassword( $password );
 			$user->saveSettings();
-			$passwords[] = $this->msg( 'passwordreset-emailelement', $user->getName(), $password )
+			$passwords[] = $this->msg( 'passwordreset-emailelement', $user->getEmail(), $password )
 				->inLanguage( $userLanguage )->text(); // We'll escape the whole thing later
 		}
 		$passwordBlock = implode( "\n\n", $passwords );

@@ -334,7 +334,7 @@ class IndexTable {
             $activityPlans = "<th>Activity Plans</th>";
         }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Chair</th>{$activityPlans}</tr></thead><tbody>");
+                            <thead><tr><th>University</th><th>Department</th><th>Chair</th>{$activityPlans}</tr></thead><tbody>");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
             if($project->getType() == 'Administrative'){
@@ -344,8 +344,8 @@ class IndexTable {
                 }
                 $leaderString = implode(", ", $leaders);
                 $wgOut->addHTML("<tr>
-                                    <td><a href='{$project->getUrl()}'>{$project->getName()}<a></td>
-                                    <td>{$project->getFullName()}</td>
+                                    <td>{$project->getName()}</td>
+                                    <td><a href='{$project->getUrl()}'>{$project->getFullName()}</a></td>
                                     <td>{$leaderString}</td>");
                 if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
                     $wgOut->addHTML("<td>");
