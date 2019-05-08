@@ -4,14 +4,14 @@
         <Role role="RMC">
             <SectionPermission id="eula" permissions="-" />
             <SectionPermission id="ex_review" permissions="-" />
-            <SectionPermission id="ktc_review" permissions="-" />
+            <SectionPermission id="ktc_review" permissions="" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
         <Role role="KTC">
             <SectionPermission id="eula" permissions="-" />
             <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="ktc_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="" />
         </Role>
         <Role role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
