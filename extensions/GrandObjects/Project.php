@@ -475,6 +475,7 @@ class Project extends BackboneModel {
         
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
+                       'uniname' => $this->getUniName(),
                        'fullname' => $this->getFullName(),
                        'shortname' => $this->getShortName(),
                        'description' => $this->getDescription(),
@@ -609,6 +610,11 @@ EOF;
     // Returns the name of this Project
     function getName(){
         return $this->name;
+    }
+    
+    // Returns the name, but without text from parenthesis
+    function getUniName(){
+        return trim(preg_replace("/\(.*\)/", "", $this->getName()));
     }    
     
     // Returns the full name of this Project

@@ -344,7 +344,7 @@ class IndexTable {
                 }
                 $leaderString = implode(", ", $leaders);
                 $wgOut->addHTML("<tr>
-                                    <td>{$project->getName()}</td>
+                                    <td>{$project->getUniName()}</td>
                                     <td><a href='{$project->getUrl()}'>{$project->getFullName()}</a></td>
                                     <td>{$leaderString}</td>");
                 if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
