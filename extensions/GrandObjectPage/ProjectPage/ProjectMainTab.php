@@ -235,7 +235,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "Department Name", $this->project->getFullName());
             $fullNameField->attr('size', 27);
             
-            $memberStatusField = new SelectBox("memberStatus", "Member Status", $this->project->getMemberStatus(), array("Member", "Non-Member", "Associate Member"));
+            $memberStatusField = new SelectBox("memberStatus", "Member Status", $this->project->getMemberStatus(), array("Member", "Associate Member", "Non-Member"));
             
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
