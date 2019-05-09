@@ -565,7 +565,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#milestones'));
                                 $(this).dialog('close');
-                                $('input[value=\"Save Milestones\"]').click();
+                                $('button[value=\"Save Milestones\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
@@ -583,7 +583,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                                 $('#addFESMilestoneDialog').remove();
                                 $(this).parent().prependTo($('#milestones'));
                                 $(this).dialog('close');
-                                $('input[value=\"Save Milestones\"]').click();
+                                $('button[value=\"Save Milestones\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
