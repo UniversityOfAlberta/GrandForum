@@ -3,6 +3,22 @@ Feature: Manage People
     As a User I need to be able to request role/project changes
     As an Admin I need to be able to accept role/project changes
 
+    Scenario: PL adding NI to project
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I follow "Manage People"
+        And I press "Edit Existing Member"
+        And I select "NI User3" from "select"
+        And I click "Add"
+        And I wait "1000"
+        And I fill in "Search:" with "NI User3"
+        And I click by css "#editRoles"
+        And I select "Phase2Project1" from "selectedProject"
+        And I click by css "#addProject"
+        And I press "Save"
+        And I wait "1000"
+        When I go to "index.php/Phase2Project1:Main"
+        Then I should see "User3, NI"
+
     Scenario: Staff Making HQP a candidate
         Given I am logged in as "Staff.User1" using password "Staff.Pass1"
         When I follow "Manage People"

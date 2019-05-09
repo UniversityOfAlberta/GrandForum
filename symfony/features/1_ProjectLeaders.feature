@@ -11,6 +11,7 @@ Feature: Project/Theme Leaders
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should see "Wiki"
+        And I should see "Edit Main"
         
         Examples:
         | user       | pass       |
@@ -26,6 +27,7 @@ Feature: Project/Theme Leaders
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should not see "Wiki"
+        And I should not see "Edit Main"
         
         Examples:
         | user       | pass       |
