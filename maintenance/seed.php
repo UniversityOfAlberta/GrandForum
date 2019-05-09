@@ -223,9 +223,11 @@ User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'emai
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat-test.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat-test.com"));
 User::createNew("HQP.User4", array('password' => User::crypt("HQP.Pass4"), 'email' => "hqp.user4@behat-test.com"));
+User::createNew("HQP-Candidate.User1", array('password' => User::crypt("HQP-Candidate.Pass1"), 'email' => "hqp-candidate.user1@behat-test.com"));
 User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat-test.com"));
 User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat-test.com"));
 User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat-test.com"));
+User::createNew("Inactive.User1", array('password' => User::crypt("Inactive.User1"), 'email' => "Inactive.User1@behat-test.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
@@ -239,6 +241,10 @@ DBFunctions::insert('mw_user_groups',
                     array('ug_user' => 1,
                           'ug_group' => 'sysop'));
 $wgUser = User::newFromName("Admin.User1");
+
+DBFunctions::update('mw_user',
+                    array('candidate' => 1),
+                    array('user_name' => 'HQP-Candidate.User1'));
 
 createProject("Phase1Project1", "Phase 1 Project 1", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
 createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
@@ -272,6 +278,7 @@ addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
 addUserRole("HQP.User4", HQP);
+addUserRole("HQP-Candidate.User1", HQP);
 addUserRole("HQP.ToBeInactivated", HQP);
 
 addUserProject("NI.User1", "Phase1Project1");

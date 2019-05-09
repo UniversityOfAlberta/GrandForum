@@ -2412,6 +2412,9 @@ class Person extends BackboneModel {
      */
     function getAllowedRoles(){
         global $wgRoleValues, $wgRoles;
+        if($this->isCandidate()){
+            return array();
+        }
         $maxValue = 0;
         $roles = array();
         $roleNames = array();

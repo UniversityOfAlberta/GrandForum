@@ -2,6 +2,58 @@ Feature: Manage People
     In order to edit user's roles/projects/relations/universities
     As a User I need to be able to request role/project changes
     As an Admin I need to be able to accept role/project changes
+        
+    Scenario: Checking Admin allowedRoles
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should see "Manager"
+        When I log "allowedRoles" I should see "Admin"
+        
+    Scenario: Checking Manager allowedRoles
+        Given I am logged in as "Manager.User1" using password "Manager.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should see "Manager"
+        When I log "allowedRoles" I should not see "Admin"
+        
+    Scenario: Checking Staff allowedRoles
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should not see "Manager"
+        When I log "allowedRoles" I should not see "Admin"
+        
+    Scenario: Checking PL allowedRoles and allowedProjects
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I log "allowedRoles" I should see "CI"
+        When I log "allowedRoles" I should see "AR"
+        When I log "allowedRoles" I should see "PS"
+        When I log "allowedRoles" I should not see "PL"
+        When I log "allowedProjects" I should see "Phase2Project1"
+        When I log "allowedProjects" I should not see "Phase2Project2"
+        
+    Scenario: Checking NI allowedRoles
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I log "allowedRoles" I should see "HQP"
+        When I log "allowedRoles" I should see "External"
+        When I log "allowedRoles" I should see "AR"
+        When I log "allowedRoles" I should see "CI"
+        When I log "allowedRoles" I should not see "PL"
+        
+    Scenario: Checking HQP allowedRoles
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I log "allowedRoles" I should see "HQP"
+        When I log "allowedRoles" I should not see "External"
+        When I log "allowedRoles" I should not see "PS"
+        
+    Scenario: Checking HQP-Candidate allowedRoles
+        Given I am logged in as "HQP-Candidate.User1" using password "HQP-Candidate.Pass1"
+        When I log "allowedRoles" I should not see "HQP"
+        
+    Scenario: Checking Inactive allowedRoles
+        Given I am logged in as "Inactive.User1" using password "Inactive.Pass1"
+        When I log "allowedRoles" I should not see "HQP"
 
     Scenario: PL adding NI to project
         Given I am logged in as "PL.User1" using password "PL.Pass1"
