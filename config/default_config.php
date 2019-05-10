@@ -97,6 +97,12 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // A list of api keys
+    $config->setValue("apiKeys", array());
+    
+    // A whitelist of ip addresses so that certain ips can still get past the login wall
+    $config->setValue("ipWhitelist", array());
+    
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     
