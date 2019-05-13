@@ -156,7 +156,7 @@ function parsePublicSections($title, $text){
 }
 
 function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
-    global $config;
+    global $config, $wgUser;
     if(!$user->isLoggedIn()){
         if((($title->getText() == "Main Page" && $title->getNsText() == "") || 
             ($title->getText() == "UserLogin" && $title->getNsText() == "Special") ||
@@ -170,6 +170,7 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
            in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
            strpos(@$_GET['action'], 'api.') === 0){
             // Allow Access
+            $wgUser = User::newFromId(1);
             return true;
         }
         if(strpos(@$_GET['action'], 'api.') === 0){
