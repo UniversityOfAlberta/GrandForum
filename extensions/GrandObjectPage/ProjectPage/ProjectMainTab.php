@@ -123,6 +123,10 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $genericYesChecked = ($this->project->getUseGeneric()) ? "checked='checked'" : "";
             $genericNoChecked = ($this->project->getUseGeneric()) ? "" : "checked='checked'";
+            $adminGenericYesChecked = ($this->project->getAdminUseGeneric()) ? "checked='checked'" : "";
+            $adminGenericNoChecked = ($this->project->getAdminUseGeneric()) ? "" : "checked='checked'";
+            $techGenericYesChecked = ($this->project->getTechUseGeneric()) ? "checked='checked'" : "";
+            $techGenericNoChecked = ($this->project->getTechUseGeneric()) ? "" : "checked='checked'";
             $this->html .= "<table>";
             $this->html .= "<tr>
                                 <td align='right' valign='top' colspan='2'>
@@ -153,6 +157,22 @@ class ProjectMainTab extends AbstractEditableTab {
                                                 <div style='float:right;width:200px;'>If 'No', the chair's personal email will be displayed.</div>
                                                 &nbsp;&nbsp;&nbsp;<input type='radio' name='use_generic' style='vertical-align:middle;' value='1' $genericYesChecked /> Yes<br />
                                                 &nbsp;&nbsp;&nbsp;<input type='radio' name='use_generic' style='vertical-align:middle;' value='0' $genericNoChecked /> No<br />
+                                            </div>
+                                        <b>Generic Admin Email:</b><input type='text' size='35' name='admin_email' value='".str_replace("'", "&#39;", $this->project->getAdminEmail())."' placeholder='admin@university.ca' /><br />
+                                            <div style='width: 300px; text-align:left;'>
+                                                
+                                                <b>Use Generic?</b><br />
+                                                <div style='float:right;width:200px;'>If 'No', the admin's personal email will be displayed.</div>
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='admin_use_generic' style='vertical-align:middle;' value='1' $adminGenericYesChecked /> Yes<br />
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='admin_use_generic' style='vertical-align:middle;' value='0' $adminGenericNoChecked /> No<br />
+                                            </div>
+                                        <b>Generic Tech Email:</b><input type='text' size='35' name='tech_email' value='".str_replace("'", "&#39;", $this->project->getTechEmail())."' placeholder='tech@university.ca' /><br />
+                                            <div style='width: 300px; text-align:left;'>
+                                                
+                                                <b>Use Generic?</b><br />
+                                                <div style='float:right;width:200px;'>If 'No', the tech's personal email will be displayed.</div>
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='tech_use_generic' style='vertical-align:middle;' value='1' $techGenericYesChecked /> Yes<br />
+                                                &nbsp;&nbsp;&nbsp;<input type='radio' name='tech_use_generic' style='vertical-align:middle;' value='0' $techGenericNoChecked /> No<br />
                                             </div>
                                         <b>Dept Website:</b><input type='text' name='dept_website' value='".str_replace("'", "&#39;", $this->project->getDeptWebsite())."' size='35' /><br />
                                         <b>Uni Website:</b><input type='text' name='website' value='".str_replace("'", "&#39;", $this->project->getWebsite())."' size='35' /><br />
@@ -456,6 +476,10 @@ class ProjectMainTab extends AbstractEditableTab {
             $_POST['dept_website'] = @str_replace("'", "&#39;", $_POST['dept_website']);
             $_POST['email'] = @str_replace("'", "&#39;", $_POST['email']);
             $_POST['use_generic'] = @str_replace("'", "&#39;", $_POST['use_generic']);
+            $_POST['admin_email'] = @str_replace("'", "&#39;", $_POST['admin_email']);
+            $_POST['admin_use_generic'] = @str_replace("'", "&#39;", $_POST['admin_use_generic']);
+            $_POST['tech_email'] = @str_replace("'", "&#39;", $_POST['tech_email']);
+            $_POST['tech_use_generic'] = @str_replace("'", "&#39;", $_POST['tech_use_generic']);
             $_POST['long_description'] = $this->project->getLongDescription();
             if($_POST['description'] != $this->project->getDescription() ||
                $_POST['fullName'] != $this->project->getFullName() ||
@@ -464,7 +488,11 @@ class ProjectMainTab extends AbstractEditableTab {
                $_POST['website'] != $this->project->getWebsite() ||
                $_POST['dept_website'] != $this->project->getDeptWebsite() ||
                $_POST['email'] != $this->project->getEmail() ||
-               $_POST['use_generic'] != $this->project->getUseGeneric()){
+               $_POST['use_generic'] != $this->project->getUseGeneric() ||
+               $_POST['admin_email'] != $this->project->getAdminEmail() ||
+               $_POST['admin_use_generic'] != $this->project->getAdminUseGeneric() ||
+               $_POST['tech_email'] != $this->project->getTechEmail() ||
+               $_POST['tech_use_generic'] != $this->project->getTechUseGeneric()){
                 $error = APIRequest::doAction('ProjectDescription', true);
                 if($error != ""){
                     return $error;

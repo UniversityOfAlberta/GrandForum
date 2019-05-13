@@ -438,12 +438,26 @@ class Project extends BackboneModel {
     }
     
     function toArray(){
-        $leaders = $this->getLeaders();
+        $admins = array();
+        $techs = array();
         $leads = array();
-        foreach($leaders as $leader){
+        foreach($this->getLeaders() as $leader){
             $leads[] = array('id' => $leader->getId(),
                              'name' => $leader->getNameForForms(),
-                             'url' => $leader->getUrl());
+                             'url' => $leader->getUrl(),
+                             'email' => $leader->getEmail());
+        }
+        foreach($this->getAllPeople(PA) as $admin){
+            $admins[] = array('id' => $admin->getId(),
+                              'name' => $admin->getNameForForms(),
+                              'url' => $admin->getUrl(),
+                              'email' => $admin->getEmail());
+        }
+        foreach($this->getAllPeople(PS) as $tech){
+            $admins[] = array('id' => $tech->getId(),
+                              'name' => $tech->getNameForForms(),
+                              'url' => $tech->getUrl(),
+                              'email' => $tech->getEmail());
         }
         $subProjects = $this->getSubProjects();
         $subs = array();
@@ -489,6 +503,10 @@ class Project extends BackboneModel {
                        'dept_website' => $this->getDeptWebsite(),
                        'email' => $this->getEmail(),
                        'useGeneric' => $this->getUseGeneric(),
+                       'adminEmail' => $this->getAdminEmail(),
+                       'adminUseGeneric' => $this->getAdminUseGeneric(),
+                       'techEmail' => $this->getTechEmail(),
+                       'techUseGeneric' => $this->getTechUseGeneric(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -499,6 +517,8 @@ class Project extends BackboneModel {
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
                        'leaders' => $leads,
+                       'admins' => $admins,
+                       'techs' => $techs,
                        'subprojects' => $subs,
                        'startDate' => $this->getCreated(),
                        'endDate' => $this->getDeleted());
@@ -1481,6 +1501,48 @@ EOF;
         return "";
     }
     
+    function getAdminEmail($history=false){
+        $sql = "(SELECT admin_email 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT admin_email
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['admin_email'];
+        }
+        return "";
+    }
+    
+    function getTechEmail($history=false){
+        $sql = "(SELECT tech_email 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT tech_email
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['tech_email'];
+        }
+        return "";
+    }
+    
     function getUseGeneric($history=false){
         $sql = "(SELECT use_generic 
                 FROM grand_project_descriptions d
@@ -1498,6 +1560,48 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             return $data[0]['use_generic'];
+        }
+        return "";
+    }
+    
+    function getAdminUseGeneric($history=false){
+        $sql = "(SELECT admin_use_generic 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT admin_use_generic
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['admin_use_generic'];
+        }
+        return "";
+    }
+    
+    function getTechUseGeneric($history=false){
+        $sql = "(SELECT tech_use_generic 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT tech_use_generic
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['tech_use_generic'];
         }
         return "";
     }

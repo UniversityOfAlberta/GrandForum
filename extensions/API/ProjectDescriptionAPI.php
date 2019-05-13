@@ -11,6 +11,10 @@ class ProjectDescriptionAPI extends API{
 	    $this->addPOST("dept_website",true,"The department website url","http://agewell-nce.ca/");
 	    $this->addPOST("email",true,"The email address of the department chair","");
 	    $this->addPOST("use_generic",true,"Whether to use the generic chair email or not","1");
+	    $this->addPOST("admin_email",true,"The email address of the department admin","");
+	    $this->addPOST("admin_use_generic",true,"Whether to use the generic admin email or not","1");
+	    $this->addPOST("tech_email",true,"The email address of the department tech","");
+	    $this->addPOST("tech_use_generic",true,"Whether to use the generic tech email or not","1");
 	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
 	    $this->addPOST("shortName",false,"The short name of the project", "MEOW");
     }
@@ -33,6 +37,18 @@ class ProjectDescriptionAPI extends API{
         }
         if(isset($_POST['use_generic']) && $_POST['use_generic'] != ""){
             $_POST['use_generic'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['use_generic']));
+        }
+        if(isset($_POST['admin_email']) && $_POST['admin_email'] != ""){
+            $_POST['admin_email'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['admin_email']));
+        }
+        if(isset($_POST['admin_use_generic']) && $_POST['admin_use_generic'] != ""){
+            $_POST['admin_use_generic'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['admin_use_generic']));
+        }
+        if(isset($_POST['tech_email']) && $_POST['tech_email'] != ""){
+            $_POST['tech_email'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['tech_email']));
+        }
+        if(isset($_POST['tech_use_generic']) && $_POST['tech_use_generic'] != ""){
+            $_POST['tech_use_generic'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['tech_use_generic']));
         }
         if(isset($_POST['project']) && $_POST['project'] != ""){
             $_POST['project'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project']));
@@ -94,6 +110,10 @@ class ProjectDescriptionAPI extends API{
                                   'dept_website' => @$_POST['dept_website'],
                                   'email' => @$_POST['email'],
                                   'use_generic' => @$_POST['use_generic'],
+                                  'admin_email' => @$_POST['admin_email'],
+                                  'admin_use_generic' => @$_POST['admin_use_generic'],
+                                  'tech_email' => @$_POST['tech_email'],
+                                  'tech_use_generic' => @$_POST['tech_use_generic'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();
