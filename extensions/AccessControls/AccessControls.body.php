@@ -168,7 +168,7 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
         if(in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist')) &&
            isset($_GET['apiKey']) && 
            in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
-           strpos(@$_GET['action'], 'api.') === 0){
+           strpos(@$_GET['action'], 'api.') === 0 && $_SERVER['REQUEST_METHOD'] == "GET"){
             // Allow Access
             $wgUser = User::newFromId(1);
             return true;
