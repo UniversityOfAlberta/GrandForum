@@ -172,6 +172,12 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
             // Allow Access
             return true;
         }
+        if(strpos(@$_GET['action'], 'api.') === 0){
+            // Don't show the normal permission error, just return an empty result instead
+            echo json_encode(array());
+            exit;
+        }
+        // Show permission error
         permissionError();
         exit;
     }
