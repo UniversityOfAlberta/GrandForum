@@ -54,9 +54,13 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             $programsLine = implode("<br />", $programsLine);
             $useGeneric = $this->project->getUseGeneric();
+            $adminUseGeneric = $this->project->getAdminUseGeneric();
+            $techUseGeneric = $this->project->getTechUseGeneric();
             $email    = ($address->getEmail() != "") ? 
                         "<a href='mailto:{$address->getEmail()}'>{$address->getEmail()}</a>" : "";
             $chairEmail = $this->project->getEmail();
+            $adminEmail = $this->project->getAdminEmail();
+            $techEmail = $this->project->getTechEmail();
             $website  = ($this->project->getWebsite() != "" && $this->project->getWebsite() != "http://" && $this->project->getWebsite() != "https://") ? 
                         "<a href='{$this->project->getWebsite()}' target='_blank'>{$this->project->getWebsite()}</a>" : "";
             $deptWebsite  = ($this->project->getDeptWebsite() != "" && $this->project->getDeptWebsite() != "http://" && $this->project->getDeptWebsite() != "https://") ? 
@@ -83,7 +87,35 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
             }
             
-            $chairEmail = ($chairEmail != "") ? "<a href='mailto:{$chairEmail}'>{$chairEmail}</a>" : "";          
+            if(($adminUseGeneric || count($this->project->getAllPeople(PA)) == 0) && $adminEmail != ""){
+                $adminEmail = $adminEmail;
+            }
+            else {
+                $admins = $this->project->getAllPeople(PA);
+                if(count($admins) > 0){
+                    foreach($admins as $admin){
+                        $adminEmail = $admin->getEmail();
+                        break;
+                    }
+                }
+            }
+            
+            if(($techUseGeneric || count($this->project->getAllPeople(PS)) == 0) && $techEmail != ""){
+                $techEmail = $techEmail;
+            }
+            else {
+                $techs = $this->project->getAllPeople(PS);
+                if(count($techs) > 0){
+                    foreach($techs as $tech){
+                        $techEmail = $tech->getEmail();
+                        break;
+                    }
+                }
+            }
+            
+            $chairEmail = ($chairEmail != "") ? "<a href='mailto:{$chairEmail}'>{$chairEmail}</a>" : "";
+            $adminEmail = ($adminEmail != "") ? "<a href='mailto:{$adminEmail}'>{$adminEmail}</a>" : "";
+            $techEmail = ($techEmail != "") ? "<a href='mailto:{$techEmail}'>{$techEmail}</a>" : "";
             
             $this->html .= "<tr>
                                 <td valign='top' colspan='2'>
@@ -102,6 +134,8 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <span style='display:inline-block; width:80px; color: #555;'>Fax</span>      {$address->getFax()}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Email</span>    {$email}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Chair Email</span> {$chairEmail}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Admin Email</span> {$adminEmail}<br />
+                                        <span style='display:inline-block; width:80px; color: #555;'>Tech Email</span> {$techEmail}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Dept Website</span>  {$deptWebsite}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Uni Website</span>  {$website}<br />
                                         <span style='display:inline-block; width:80px; color: #555;'>Twitter</span>  {$twitter}<br />
