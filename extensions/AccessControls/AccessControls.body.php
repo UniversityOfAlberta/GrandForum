@@ -155,6 +155,35 @@ function parsePublicSections($title, $text){
 	return $text;
 }
 
+function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
+    global $config, $wgUser;
+    if(!$user->isLoggedIn()){
+        if((($title->getText() == "Main Page" && $title->getNsText() == "") || 
+            ($title->getText() == "UserLogin" && $title->getNsText() == "Special") ||
+            ($title->getText() == "Contents" && $title->getNsText() == "Help")) &&
+           strpos(@$_GET['action'], 'api.') !== 0){
+            // Allow Access
+            return true;
+        }
+        if(in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist')) &&
+           isset($_GET['apiKey']) && 
+           in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
+           strpos(@$_GET['action'], 'api.') === 0 && $_SERVER['REQUEST_METHOD'] == "GET"){
+            // Allow Access
+            $wgUser = User::newFromId(1);
+            return true;
+        }
+        if(strpos(@$_GET['action'], 'api.') === 0){
+            // Don't show the normal permission error, just return an empty result instead
+            echo json_encode(array());
+            exit;
+        }
+        // Show permission error
+        permissionError();
+        exit;
+    }
+}
+
 function onUserCanExecute($special, $subpage){
     if(!$special->userCanExecute($special->getUser())){
         permissionError();
@@ -175,6 +204,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
+    global $wgUser;
     GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;

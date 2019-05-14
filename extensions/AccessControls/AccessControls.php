@@ -57,6 +57,7 @@ $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
 $wgHooks['BeforeInitialize'][] = 'onBeforeInitialize';
 $wgHooks['UnknownAction'][] = 'deleteUser';
+$wgHooks['BeforeInitialize'][] = 'checkLoggedIn';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
