@@ -159,7 +159,6 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
         else{
             this.$el.removeClass('deleted');
         }
-        console.log(this.model.toJSON());
         if((this.model.get('name') == PL || 
             this.model.get('name') == APL || 
             this.model.get('name') == PS || 
