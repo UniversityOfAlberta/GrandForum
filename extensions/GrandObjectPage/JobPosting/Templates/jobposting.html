@@ -1,0 +1,64 @@
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:JobPostingPage#" style="float: right;">Back to Job Postings</a>
+<div>
+    <table>
+        <tr>
+            <td class="label">Visibility:</td>
+            <td><%= visibility %></td>
+        </tr>
+        <tr>
+            <td class="label">Application Deadline Type:</td>
+            <td><%= deadlineType %></td>
+        </tr>
+        <tr>
+            <td class="label">Application Deadline Date:</td>
+            <td><%= formatDate(deadlineDate) %></td>
+        </tr>
+        <tr>
+            <td class="label">Job Start Date Type:</td>
+            <td ><%= startDateType %></td>
+        </tr>
+        <tr>
+            <td class="label">Job Start Date:</td>
+            <td><%= formatDate(startDate) %></td>
+        </tr>
+        <tr>
+            <td class="label">Tenure-track Position:</td>
+            <td><%= tenure %></td>
+        </tr>
+        <tr>
+            <td class="label">Nominal Rank:</td>
+            <td><%= rank %><% if(rank == "Other"){ %>: <%= rankOther %><% } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Position Type:</td>
+            <td><%= positionType %></td>
+        </tr>
+        <tr>
+            <td class="label">Research Fields:</td>
+            <td><%= researchFields %></div></td>
+        </tr>
+        <tr>
+            <td class="label">Keywords:</td>
+            <td><%= keywords %></td>
+        </tr>
+        <% if(contact != ""){ %>
+            <tr>
+                <td class="label">Email Contact:</td>
+                <td><a href="mailto:<%= contact %>" target="_blank"><%= contact %></td>
+            </tr>
+        <% } %>
+        <% if(sourceLink != ""){ %>
+            <tr>
+                <td class="label">Source Link:</td>
+                <td><a href="<%= sourceLink %>" target="_blank"><%= sourceLink %></a></td>
+            </tr>
+        <% } %>
+    </table>
+    <h3>Summary</h3>
+    <%= nl2br(summary) %>
+</div>
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='editJobPosting'>Edit Job Posting</button>&nbsp;<button id='deleteJobPosting'>Delete Job Posting</button>
+<% } %>

@@ -30,6 +30,7 @@ autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
+autoload_register('GrandObjects/API/JobPosting');
 
 global $apiRequest;
 // Person
@@ -155,6 +156,10 @@ $apiRequest->addAction('Hidden','journal', 'JournalAPI');
 $apiRequest->addAction('Hidden','journal/:id', 'JournalAPI');
 $apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
 
+//JobPostings
+$apiRequest->addAction('Hidden','jobposting', 'JobPostingAPI');
+$apiRequest->addAction('Hidden','jobposting/:id', 'JobPostingAPI');
+
 function createModels(){
 
     function addScript($file){
@@ -184,6 +189,7 @@ function createModels(){
     addScript("MailingList");
     addScript("Freeze");
     addScript("Journal");
+    addScript("JobPosting");
     
     return true;
 }

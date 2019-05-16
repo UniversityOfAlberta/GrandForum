@@ -1,0 +1,69 @@
+<div>
+    <h3>Job Title <small>(max 70 characters)</small>:</h3>
+    <%= HTML.TextBox(this, 'jobTitle', {size: '50'}) %><br /><br />
+    <table>
+        <tr>
+            <td class="label">Visibility:</td>
+            <td><%= HTML.Radio(this, 'visibility', {options: ['Publish', 'Draft']}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Application Deadline Type:</td>
+            <td valign="top"><%= HTML.Select(this, 'deadlineType', {options: ['Hard', 'Soft', 'Open']}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Application Deadline Date:</td>
+            <td><%= HTML.DatePicker(this, 'deadlineDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Job Start Date Type:</td>
+            <td valign="top"><%= HTML.Select(this, 'startDateType', {options: ['No later than', 'No earlier than', 'Approximate', 'Negotiable']}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Job Start Date:</td>
+            <td><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Tenure-track Position:</td>
+            <td><%= HTML.Radio(this, 'tenure', {options: ['Yes', 'No']}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Nominal Rank:</td>
+            <td><%= HTML.Select(this, 'rank', {options: ['Full', 'Associate', 'Assistant', 'Adjunct', 'Other']}) %>
+                <%= HTML.TextBox(this, 'rankOther', {style: "display:none;"}) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Position Type:</td>
+            <td valign="top"><%= HTML.Select(this, 'positionType', {options: ['Research + Teaching', 'Teaching Only', 'Research Only', 'Administrative']}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Research Fields:</td>
+            <td valign="top"><div id="researchFields" style="width:500px;"></div></td>
+        </tr>
+        <tr>
+            <td class="label">Keywords:</td>
+            <td valign="top"><div id="keywords" style="width:500px;"></div></td>
+        </tr>
+        <tr>
+            <td class="label">Email Contact:</td>
+            <td valign="top"><%= HTML.TextBox(this, 'contact', {}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Source Link:</td>
+            <td valign="top"><%= HTML.TextBox(this, 'sourceLink', {}) %></td>
+        </tr>
+    </table>
+    <h3>Summary <small>(max 2000 characters)</small>:</h3>
+    <div style="display:inline-block; text-align:right; margin-top: -2em;">
+        <small><span id="characterCount"></span>/2000 characters</small><br />
+        <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
+    </div>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="saveJobPosting">
+        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Job Posting
+    </button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>

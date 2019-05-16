@@ -1,0 +1,37 @@
+<% if(me.isLoggedIn()){ %>
+    <a href="#/new" class="button" id="add">Create a Job Ad</a><br /><br />
+<% } %>
+<table id="jobpostings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="25%">Deadline/Review</th>
+            <th width="25%">Location</th>
+            <th width="49%">Posting</th>
+            <th width="1%">Delete?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(job){ %>
+            <tr>
+                <td>
+                    <span style="display:none;"><%= job.get('deadlineDate') %></span>
+                    <%= dateTimeHelpers.formatDate(job.get('deadlineDate')) %><br />
+                    (Posted: <%= dateTimeHelpers.formatDate(job.get('created')) %>)
+                </td>
+                <td>
+                    <%= job.get('department') %>
+                </td>
+                <td>
+                    <a href="<%= job.get('url') %>"><%= job.get('jobTitle') %></a><br />
+                    <%= job.get('university') %>
+                </td>
+                <td align="center">
+                    <% if(job.get('isAllowedToEdit')){ %>
+                        <span id="<%= job.get('id') %>" class="delete-icon"></span>
+                    <% } %>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New Job Posting"></div>
