@@ -14,6 +14,7 @@ class StoryAPI extends RESTAPI {
     }
 
     function doPOST(){
+        global $wgServer, $wgScriptPath;
         $story = new Story(array());
         $me = Person::newFromWgUser();
         if(trim($this->POST('title')) == ""){
@@ -26,14 +27,22 @@ class StoryAPI extends RESTAPI {
         if($status === false){
             $this->throwError("The story <i>{$story->getTitle()}</i> could not be created");
         }
-        if($me->isRoleAtLeast(MANAGER)){
+        if(!$me->isRoleAtLeast(MANAGER)){
+            $people = Person::getAllPeople();
+            foreach($people as $person){
+		        if($person->isRoleAtLeast(MANAGER)){
+		            Notification::addNotification($me,$person,"New Discussion Room Story", "{$me->getNameForForms()} has made a new discussion room story which needs to be approved", "{$wgServer}{$wgScriptPath}/index.php/Special:ApproveStory?action=view", true);
+		        }
+            }
+        }
+        /*if($me->isRoleAtLeast(MANAGER)){
             $story->approve();
 	        $people = Person::getAllPeople();
 	        foreach($people as $person){
 	        	//Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}");
                 //Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}", true);
 	        }
-	    }
+	    }*/
         return $story->toJSON();
     }
 

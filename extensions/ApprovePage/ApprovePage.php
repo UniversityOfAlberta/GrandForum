@@ -40,6 +40,9 @@ class ApprovePage extends SpecialPage{
         $requests = Wiki::getAllUnapprovedPages();
         $forms = array();
         foreach($requests as $request){
+            if($request->getArticle() == null){
+                continue;
+            }
             $date = wfTimestamp(TS_DB, $request->getArticle()->getTimestamp());
             $title = str_replace("<", "&lt;", str_replace(">", "&gt;", $request->getTitle()));
             $req_user = $request->getNewestAuthor();
