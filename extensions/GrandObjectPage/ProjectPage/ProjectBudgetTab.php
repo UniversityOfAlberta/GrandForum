@@ -229,7 +229,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
             $startYear = max(substr($phaseDates[1], 0, 4), date('Y', strtotime($project->getCreated()) - (3 * 30 * 24 * 60 * 60)));
             
             for($i=$endYear; $i >= $startYear; $i--){
-                $editable = ($i == $endYear || $i == $midYear);
+                $editable = ($i == $endYear || $i == $midYear || $me->isRoleAtLeast(STAFF));
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
