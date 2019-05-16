@@ -175,6 +175,7 @@ class CavendishTemplate extends QuickTemplate {
                 $.each(this.$el.find('input[type=datepicker]'), function(index, val){
                     $(val).datepicker({
                         'dateFormat': $(val).attr('format'),
+                        'yearRange': "c-50:c+10",
                         'defaultDate': $(val).attr('value').substr(0, 10),
                         'changeMonth': true,
                         'changeYear': true,
