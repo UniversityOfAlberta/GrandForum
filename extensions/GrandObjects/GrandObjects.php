@@ -158,6 +158,7 @@ $apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
 
 //JobPostings
 $apiRequest->addAction('Hidden','jobposting', 'JobPostingAPI');
+$apiRequest->addAction('Hidden','jobposting/current', 'JobPostingAPI');
 $apiRequest->addAction('Hidden','jobposting/:id', 'JobPostingAPI');
 
 function createModels(){

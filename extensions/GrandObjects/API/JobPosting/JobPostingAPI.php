@@ -4,12 +4,18 @@ class JobPostingAPI extends RESTAPI {
     
     function doGET(){
         $id = $this->getParam('id');
+        $current = ($this->getParam('current') != "");
         if($id != ""){
             $job = JobPosting::newFromId($id);
             return $job->toJSON();
         }
         else{
-            $jobs = new Collection(JobPosting::getAllJobPostings());
+            if($current){
+                $jobs = new Collection(JobPosting::getCurrentJobPostings());
+            }
+            else {
+                $jobs = new Collection(JobPosting::getAllJobPostings());
+            }
             return $jobs->toJSON();
         }
         return $page->toJSON();

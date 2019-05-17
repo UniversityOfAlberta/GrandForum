@@ -40,6 +40,9 @@ class JobPosting extends BackboneModel {
         }
     }
     
+    /**
+     * Returns an array of all Job Postings which this user is able to view
+     */
     static function getAllJobPostings(){
         $data = DBFunctions::select(array('grand_job_postings'),
                                     array('*'),
@@ -52,6 +55,20 @@ class JobPosting extends BackboneModel {
             }
         }
         return $jobs;
+    }
+    
+    /**
+     * Returns an array of Job Postings which have not yet expired
+     */
+    static function getCurrentJobPostings(){
+        $newJobs = array();
+        $jobs = self::getAllJobPostings();
+        foreach($jobs as $job){
+            if($job->getDeadlineType() == "Open" || $job->getDeadlineDate() >= date('Y-m-d')){
+                $newJobs[] = $job;   
+            }
+        }
+        return $newJobs;
     }
     
     function JobPosting($data){
