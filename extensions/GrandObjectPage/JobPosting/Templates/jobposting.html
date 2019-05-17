@@ -45,7 +45,7 @@
         <% if(projectId != 0){ %>
             <tr>
                 <td class="label">University/Department:</td>
-                <td><%= this.allProjects.get(projectId).get('uniname') %></td>
+                <td><%= this.allProjects.get(projectId).get('uniname') %> (<%= this.allProjects.get(projectId).get('fullname') %>)</td>
             </tr>
         <% } %>
         <% if(contact != ""){ %>
