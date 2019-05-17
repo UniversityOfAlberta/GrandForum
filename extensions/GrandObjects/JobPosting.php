@@ -8,6 +8,7 @@ class JobPosting extends BackboneModel {
     
     var $id;
     var $userId;
+    var $projectId;
     var $visibility;
     var $jobTitle;
     var $deadlineType;
@@ -58,6 +59,7 @@ class JobPosting extends BackboneModel {
             $row = $data[0];
             $this->id = $row['id'];
             $this->userId = $row['user_id'];
+            $this->projectId = $row['project_id'];
             $this->visibility = $row['visibility'];
             $this->jobTitle = $row['job_title'];
             $this->deadlineType = $row['deadline_type'];
@@ -84,6 +86,14 @@ class JobPosting extends BackboneModel {
     
     function getUserId(){
         return $this->userId;
+    }
+    
+    function getProjectId(){
+        return $this->projectId;
+    }
+    
+    function getProject(){
+        return Project::newFromId($this->projectId);
     }
     
     function getUser(){
@@ -163,7 +173,8 @@ class JobPosting extends BackboneModel {
      * @return string The department name of this JobPosting's creator
      */
     function getDepartment(){
-        foreach($this->getUser()->getProjects() as $project){
+        if($this->getProjectId() != 0){
+            $project = $this->getProject();
             return $project->getFullName();
         }
         return "";
@@ -174,7 +185,8 @@ class JobPosting extends BackboneModel {
      * @return string The university name of this JobPosting's creator
      */
     function getUniversity(){
-        foreach($this->getUser()->getProjects() as $project){
+        if($this->getProjectId() != 0){
+            $project = $this->getProject();
             return $project->getUniName();
         }
         return "";
@@ -213,6 +225,7 @@ class JobPosting extends BackboneModel {
         global $wgUser;
         $json = array('id' => $this->getId(),
                       'userId' => $this->getUserId(),
+                      'projectId' => $this->getProjectId(),
                       'visibility' => $this->getVisibility(),
                       'jobTitle' => $this->getJobTitle(),
                       'deadlineType' => $this->getDeadlineType(),
@@ -230,8 +243,6 @@ class JobPosting extends BackboneModel {
                       'summary' => $this->getSummary(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
-                      'department' => $this->getDepartment(),
-                      'university' => $this->getUniversity(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
                       'url' => $this->getUrl());
         return $json;
@@ -242,6 +253,7 @@ class JobPosting extends BackboneModel {
         if($me->isLoggedIn()){
             $status = DBFunctions::insert('grand_job_postings',
                                           array('user_id' => $this->userId,
+                                                'project_id' => $this->projectId,
                                                 'visibility' => $this->visibility,
                                                 'job_title' => $this->jobTitle,
                                                 'deadline_type' => $this->deadlineType,
@@ -269,6 +281,7 @@ class JobPosting extends BackboneModel {
         if($this->isAllowedToEdit()){
             $status = DBFunctions::update('grand_job_postings',
                                           array('user_id' => $this->userId,
+                                                'project_id' => $this->projectId,
                                                 'visibility' => $this->visibility,
                                                 'job_title' => $this->jobTitle,
                                                 'deadline_type' => $this->deadlineType,

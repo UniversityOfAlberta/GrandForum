@@ -9,6 +9,7 @@ JobPosting = Backbone.Model.extend({
     defaults: {
         id: null,
         userId: "",
+        projectId: 0,
         visibility: "Publish",
         jobTitle: "",
         deadlineType: "Hard",

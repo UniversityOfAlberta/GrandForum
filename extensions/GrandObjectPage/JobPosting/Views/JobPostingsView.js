@@ -1,8 +1,6 @@
 JobPostingsView = Backbone.View.extend({
-    selectedTags: null,
 
     initialize: function(){
-        this.selectedTags = new Array();
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.template = _.template($('#jobpostings_template').html());

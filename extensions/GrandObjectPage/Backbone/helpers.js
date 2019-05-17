@@ -284,7 +284,7 @@ HTML.DatePicker = function(view, attr, options){
 HTML.Select = function(view, attr, options){
     var el = HTML.Element("<select />", options);
     $(el).attr('name', HTML.Name(attr));
-    var val = HTML.Value(view, attr);
+    var val = HTML.Value(view, attr).toString();
     var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";

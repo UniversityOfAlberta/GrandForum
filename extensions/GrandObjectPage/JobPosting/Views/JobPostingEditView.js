@@ -1,12 +1,26 @@
 JobPostingEditView = Backbone.View.extend({
 
+    allProjects: null,
+
     initialize: function(){
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Job Posting does not exist");
             }, this)
         });
-        this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "sync", $.proxy(function(){
+            this.allProjects = new Projects();
+            this.allProjects.fetch();
+            this.listenTo(this.allProjects, "sync", $.proxy(function(){
+                me.getProjects();
+                me.projects.ready().then($.proxy(function(){
+                    if(this.model.isNew() && me.projects.length > 0){
+                        this.model.set('projectId', me.projects.first().get('projectId'));
+                    }
+                    this.render();
+                }, this));
+            }, this));
+        }, this));
         this.listenTo(this.model, "change:rank", this.updateRank);
         this.listenTo(this.model, "change:title", function(){
             main.set('title', this.model.get('title'));
@@ -151,6 +165,7 @@ JobPostingEditView = Backbone.View.extend({
         this.renderResearchFieldsWidget();
         //this.renderTinyMCE();
         this.characterCount();
+        this.$('[name=projectId]').chosen();
         return this.$el;
     }
 

@@ -64,6 +64,7 @@ class JobPostingAPI extends RESTAPI {
                 $researchFields = implode(", ", $this->POST('researchFields'));
             }
             $job->userId = $me->getId();
+            $job->projectId = $this->POST('projectId');
             $job->visibility = $this->POST('visibility');
             $job->jobTitle = $this->POST('jobTitle');
             $job->deadlineType = $this->POST('deadlineType');
@@ -101,6 +102,7 @@ class JobPostingAPI extends RESTAPI {
                     $researchFields = implode(", ", $this->POST('researchFields'));
                 }
                 $job->userId = $me->getId();
+                $job->projectId = $this->POST('projectId');
                 $job->visibility = $this->POST('visibility');
                 $job->jobTitle = $this->POST('jobTitle');
                 $job->deadlineType = $this->POST('deadlineType');

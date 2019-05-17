@@ -42,6 +42,12 @@
             <td class="label">Keywords:</td>
             <td><%= keywords %></td>
         </tr>
+        <% if(projectId != 0){ %>
+            <tr>
+                <td class="label">University/Department:</td>
+                <td><%= this.allProjects.get(projectId).get('uniname') %></td>
+            </tr>
+        <% } %>
         <% if(contact != ""){ %>
             <tr>
                 <td class="label">Email Contact:</td>
