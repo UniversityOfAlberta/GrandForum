@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <% this.model.each(function(job){ %>
+        <% this.model.each($.proxy(function(job){ %>
             <tr>
                 <td>
                     <span style="display:none;"><%= job.get('deadlineDate') %></span>
@@ -19,11 +19,15 @@
                     (Posted: <%= dateTimeHelpers.formatDate(job.get('created')) %>)
                 </td>
                 <td>
-                    <%= job.get('department') %>
+                    <% if(job.get('projectId') != 0 && this.allProjects.get(job.get('projectId')).get('contact').city != "" && this.allProjects.get(job.get('projectId')).get('contact').province != ""){ %>
+                        <%= this.allProjects.get(job.get('projectId')).get('contact').city %>, <%= this.allProjects.get(job.get('projectId')).get('contact').province %>
+                    <% } %>
                 </td>
                 <td>
                     <a href="<%= job.get('url') %>"><%= job.get('jobTitle') %></a><br />
-                    <%= job.get('university') %>
+                    <% if(job.get('projectId') != 0){ %>
+                        <%= this.allProjects.get(job.get('projectId')).get('uniname') %>
+                    <% } %>
                 </td>
                 <td align="center">
                     <% if(job.get('isAllowedToEdit')){ %>
@@ -31,7 +35,7 @@
                     <% } %>
                 </td>
             </tr>
-        <% }) %>
+        <% }, this)) %>
     </tbody>
 </table>
 <div id="editDialog" title="New Job Posting"></div>
