@@ -160,6 +160,7 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
     if(!$user->isLoggedIn()){
         if((($title->getText() == "Main Page" && $title->getNsText() == "") || 
             ($title->getText() == "UserLogin" && $title->getNsText() == "Special") ||
+            ($title->getText() == "PasswordReset" && $title->getNsText() == "Special") ||
             ($title->getText() == "Contents" && $title->getNsText() == "Help")) &&
            strpos(@$_GET['action'], 'api.') !== 0){
             // Allow Access

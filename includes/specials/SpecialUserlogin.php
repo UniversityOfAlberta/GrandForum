@@ -978,7 +978,7 @@ class LoginForm extends SpecialPage {
 		$mainPage = Title::newMainPage();
 		$mainPageUrl = $mainPage->getCanonicalURL();
 
-		$m = $this->msg( $emailText, $ip, $u->getName(), $np, '<' . $mainPageUrl . '>',
+		$m = $this->msg( $emailText, $ip, $u->getEmail(), $np, '<' . $mainPageUrl . '>',
 			round( $wgNewPasswordExpiry / 86400 ) )->inLanguage( $userLanguage )->text();
 		$result = $u->sendMail( $this->msg( $emailTitle )->inLanguage( $userLanguage )->text(), $m );
 
