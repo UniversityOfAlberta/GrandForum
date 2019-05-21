@@ -79,7 +79,8 @@ JobPostingEditView = Backbone.View.extend({
     },
     
     checkProjectContact: function(){
-        if(this.allProjects != null){
+        this.$("#contactError").hide();
+        if(this.allProjects != null && this.model.get('projectId') != 0){
             var contact = this.allProjects.get(this.model.get('projectId')).get('contact');
             if(_.isEmpty(contact.city) ||
                _.isEmpty(contact.province) ||
@@ -90,9 +91,6 @@ JobPostingEditView = Backbone.View.extend({
                _.isEmpty(contact.email)){
                 this.$("#contactError").html("The department contact information is incomplete.  <a href='" + this.allProjects.get(this.model.get('projectId')).get('url') + "' target='_blank'>Click here</a> to update it.");
                 this.$("#contactError").show();
-            }
-            else{
-                this.$("#contactError").hide();
             }
         }
     },
