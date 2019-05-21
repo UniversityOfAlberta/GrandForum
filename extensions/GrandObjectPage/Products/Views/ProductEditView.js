@@ -20,7 +20,7 @@ ProductEditView = Backbone.View.extend({
         this.template = _.template($('#product_edit_template').html());
         
         var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
-        tagsGet.then($.proxy(function(availableTags){
+        tagsGet.then(function(availableTags){
             this.availableTags = availableTags;
             if(!this.model.isNew() && !this.isDialog){
                 this.model.fetch({silent: true});
@@ -28,7 +28,7 @@ ProductEditView = Backbone.View.extend({
             else{
                 _.defer(this.render);
             }
-        }, this));
+        }.bind(this));
     },
     
     events: {
@@ -60,13 +60,13 @@ ProductEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveProduct").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
@@ -76,7 +76,7 @@ ProductEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Product", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -153,7 +153,7 @@ ProductEditView = Backbone.View.extend({
     renderJournalsAutocomplete: function(){
         if(this.$("input[name=data_published_in]").length > 0){
             var autoComplete = {
-                source: $.proxy(function(request, response){
+                source: function(request, response){
                     var journals = new Journals();
                     journals.search = request.term;
                     journals.fetch({success: function(collection){
@@ -170,17 +170,17 @@ ProductEditView = Backbone.View.extend({
                         });
                         response(data);
                     }});
-                }, this),
+                }.bind(this),
                 minLength: 2,
-                select: $.proxy(function(event, ui){
-                    _.defer($.proxy(function(){
+                select: function(event, ui){
+                    _.defer(function(){
                         this.$("input[name=data_published_in]").val(ui.item.journal).change();
                         this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
                         this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
                         this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
                         this.$("input[name=data_issn]").val(ui.item.issn).change();
-                    }, this));
-                }, this)
+                    }.bind(this));
+                }.bind(this)
             };
             
             this.$("input[name=data_issn]").autocomplete(autoComplete);

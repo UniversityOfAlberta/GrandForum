@@ -17,23 +17,23 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             extraRelationships.url = this.person.urlRoot + '/' + this.person.get('id') + '/relations/inverse';
             extraRelationships.fetch();
         }
-        this.model.ready().then($.proxy(function(){
+        this.model.ready().then(function(){
             this.relations = this.model;
             this.listenTo(this.relations, "add", this.addRows);
             this.relations.each(function(r){
                 r.startTracking();
             });
             this.render();
-            extraRelationships.ready().then($.proxy(function(){
+            extraRelationships.ready().then(function(){
                 console.log(extraRelationships.models);
                 this.relations.add(extraRelationships.models);
                 this.relations.each(function(r){
                     r.startTracking();
                 });
                 this.render();
-            }, this));
+            }.bind(this));
             
-        }, this));
+        }.bind(this));
         
         var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
@@ -41,7 +41,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                    h1: 0,
                    w2: 0,
                    h2: 0};
-        this.interval = setInterval($.proxy(function(){
+        this.interval = setInterval(function(){
             if(this.$el.width() != dim.w1 ||
                this.$el.height() != dim.h1 ||
                $(window).width() != dim.w2 ||
@@ -61,14 +61,14 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             dim.h1 = this.$el.height();
             dim.w2 = $(window).width();
             dim.h2 = $(window).height();
-	    }, this), 100);
+	    }.bind(this), 100);
     },
     
     saveAll: function(){
         var copy = this.relations.where({'user2': this.person.get('id')});
         clearAllMessages();
         var requests = new Array();
-        _.each(copy, $.proxy(function(relation){
+        _.each(copy, function(relation){
             if(relation.unsavedAttributes() != false){
                 if(relation.get('deleted') != "true"){
                     requests.push(relation.save(null));
@@ -77,7 +77,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                     requests.push(relation.destroy(null));
                 }
             }
-        }, this));
+        }.bind(this));
         $.when.apply($, requests).then(function(){
             addSuccess("Relations saved");
         }).fail(function(){
@@ -97,7 +97,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     addRows: function(){
         var relations = new Backbone.Collection(this.relations.where({'user2': this.person.get('id')}));
-        relations.each($.proxy(function(relation, i){
+        relations.each(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
                 view.allPeople = this.allPeople;
@@ -110,7 +110,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 }
                 this.relationViews[i] = view;
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){
@@ -137,10 +137,10 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         
         this.listenTo(this.model, "change", this.update);
         this.listenTo(this.model, "change:projects", this.renderProjects);
-        this.listenTo(this.model, "change:user1", $.proxy(function(){
+        this.listenTo(this.model, "change:user1", function(){
             this.owner = this.allPeople.get(this.model.get('user1'));
             this.render();
-        }, this));
+        }.bind(this));
         this.listenTo(this.owner, "sync", this.render);
         this.listenTo(this.target, "sync", this.render);
         
@@ -193,9 +193,9 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     renderProjects: function(){
         this.$("#projects").empty();
         var template = _.template($("#edit_role_projects_template").html());
-        _.each(this.model.get('projects'), $.proxy(function(proj){
+        _.each(this.model.get('projects'), function(proj){
             this.$("#projects").append(template(proj));
-        }, this));
+        }.bind(this));
         if(this.$("#projects tr").length == 0){
             this.$("#projects").append("<tr><td align='center' colspan='2'>No Projects</td></tr>");
         }

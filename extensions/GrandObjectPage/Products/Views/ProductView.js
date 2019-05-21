@@ -2,9 +2,9 @@ ProductView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Product does not exist");
-            }, this)
+            }.bind(this)
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#product_template').html());
@@ -73,7 +73,7 @@ ProductView = Backbone.View.extend({
             projects.push(project);
             xhrs.push(project.fetch());
         });
-        $.when.apply(null, xhrs).done($.proxy(function(){
+        $.when.apply(null, xhrs).done(function(){
             this.$('#productProjects').empty();
             this.$('#productProjects').append("<ul>");
             _.each(projects, function(project){
@@ -105,7 +105,7 @@ ProductView = Backbone.View.extend({
                     this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
                 }
             });
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

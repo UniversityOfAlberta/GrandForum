@@ -32,13 +32,13 @@ CollaborationEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveCollaboration").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveCollaboration").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveCollaboration").prop('disabled', false);
                 clearAllMessages();
@@ -48,7 +48,7 @@ CollaborationEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Collaboration", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     

@@ -2,9 +2,9 @@ CollaborationView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Collaboration does not exist");
-            }, this)
+            }.bind(this)
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#collaboration_template').html());
@@ -50,7 +50,7 @@ CollaborationView = Backbone.View.extend({
             projects.push(project);
             xhrs.push(project.fetch());
         });
-        $.when.apply(null, xhrs).done($.proxy(function(){
+        $.when.apply(null, xhrs).done(function(){
             this.$('#collaborationProjects').empty();
             this.$('#collaborationProjects').append("<ul>");
             _.each(projects, function(project){
@@ -86,7 +86,7 @@ CollaborationView = Backbone.View.extend({
             if (projects.length == 0) {
                 this.$("#collaborationProjects").append("<span class='empty_box_content'>No projects</span>");
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

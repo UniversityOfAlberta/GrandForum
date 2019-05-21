@@ -9,10 +9,10 @@
         </tr>
     </thead>
     <tbody>
-        <% this.projects.each($.proxy(function(project){ %>
+        <% this.projects.each(function(project){ %>
         <tr>
             <td><%= project.get('name') %></td>
-            <% _.each(Freeze.features, $.proxy(function(feature){ %>
+            <% _.each(Freeze.features, function(feature){ %>
                 <td align="center">
                     <% if(this.model.findWhere({'projectId': project.get('id'), 'feature': feature}) != undefined){ %>
                         <input data-id="<%= this.model.findWhere({'projectId': project.get('id'), 'feature': feature}).get('id') %>" 
@@ -23,9 +23,9 @@
                                data-feature="<%= feature %>" type="checkbox" />
                     <% } %>
                 </td>
-            <% }, this)) %>
+            <% }.bind(this)) %>
         </tr>
-        <% }, this)) %> 
+        <% }.bind(this)) %> 
     </tbody>
 </table>
 <button id="save">Save</button><span style="display:none;" class="throbber"></span>
