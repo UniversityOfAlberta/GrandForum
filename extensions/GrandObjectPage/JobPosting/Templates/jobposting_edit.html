@@ -46,7 +46,8 @@
         </tr>
         <tr>
             <td class="label">University/Department:</td>
-            <td valign="top"><%= HTML.Select(this, 'projectId', {style: "width:400px;", options: [{value: 0, option: '---'}].concat(this.allProjects.map(function(project){ return {value: project.get('id'), option: project.get('name')}; }))}) %></td>
+            <td valign="top"><%= HTML.Select(this, 'projectId', {style: "width:400px;", options: [{value: 0, option: '---'}].concat(this.allProjects.map(function(project){ return {value: project.get('id'), option: project.get('name')}; }))}) %>
+            <div id="contactError" class="warning" style="display:none;"></div></td>
         </tr>
         <tr>
             <td class="label">Email Contact:</td>

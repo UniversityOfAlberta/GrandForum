@@ -18,9 +18,11 @@ JobPostingEditView = Backbone.View.extend({
                         this.model.set('projectId', me.projects.first().get('projectId'));
                     }
                     this.render();
+                    this.checkProjectContact();
                 }, this));
             }, this));
         }, this));
+        this.listenTo(this.model, "change:projectId", this.checkProjectContact);
         this.listenTo(this.model, "change:rank", this.updateRank);
         this.listenTo(this.model, "change:title", function(){
             main.set('title', this.model.get('title'));
@@ -65,6 +67,7 @@ JobPostingEditView = Backbone.View.extend({
         "keyup textarea[name=summary]": "characterCount",
         "cut textarea[name=summary]": "characterCount",
         "paste textarea[name=summary]": "characterCount",
+        
         "click #saveJobPosting": "saveJobPosting",
         "click #cancel": "cancel"
     },
@@ -73,6 +76,25 @@ JobPostingEditView = Backbone.View.extend({
         _.defer($.proxy(function(){
             this.$("#characterCount").text(this.$("textarea[name=summary]").val().length);
         }, this));
+    },
+    
+    checkProjectContact: function(){
+        if(this.allProjects != null){
+            var contact = this.allProjects.get(this.model.get('projectId')).get('contact');
+            if(_.isEmpty(contact.city) ||
+               _.isEmpty(contact.province) ||
+               _.isEmpty(contact.country) ||
+               _.isEmpty(contact.code) ||
+               _.isEmpty(contact.phone) ||
+               _.isEmpty(contact.line1) ||
+               _.isEmpty(contact.email)){
+                this.$("#contactError").html("The department contact information is incomplete.  <a href='" + this.allProjects.get(this.model.get('projectId')).get('url') + "' target='_blank'>Click here</a> to update it.");
+                this.$("#contactError").show();
+            }
+            else{
+                this.$("#contactError").hide();
+            }
+        }
     },
     
     updateRank: function(){
