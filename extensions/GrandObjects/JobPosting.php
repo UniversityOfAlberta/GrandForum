@@ -240,9 +240,15 @@ class JobPosting extends BackboneModel {
     
     function toArray(){
         global $wgUser;
+        $project = null;
+        $proj = $this->getProject();
+        if($proj != null){
+            $project = $proj->toArray();
+        }
         $json = array('id' => $this->getId(),
                       'userId' => $this->getUserId(),
                       'projectId' => $this->getProjectId(),
+                      'project' => $project,
                       'visibility' => $this->getVisibility(),
                       'jobTitle' => $this->getJobTitle(),
                       'deadlineType' => $this->getDeadlineType(),
