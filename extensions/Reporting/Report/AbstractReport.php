@@ -127,21 +127,21 @@ abstract class AbstractReport extends SpecialPage {
                 $this->project->id = $projectName;
             }
             else{
-		if(strpos($projectName, 'Sop') !== false ){
-		    $sopString = explode(":",$projectName);
-		    $this->project = new Project(array());
-		    $this->project->id = $sopString[1];
-		    $this->project->name = $projectName;
-		    $this->project->type = "SOP";
-		}
-		else{
+                if(strpos($projectName, 'Sop') !== false ){
+                    $sopString = explode(":",$projectName);
+                    $this->project = new Project(array());
+                    $this->project->id = $sopString[1];
+                    $this->project->name = $projectName;
+                    $this->project->type = "SOP";
+                }
+                else{
                     $this->project = Project::newFromName($projectName);
                     if($this->project == null ||
                        $this->project->getId() == 0){
-                     // Try themes
-                       $this->project = Theme::newFromName($projectName);
+                        // Try themes
+                        $this->project = Theme::newFromName($projectName);
                     }
-		}
+                }
             }
         }
         if(isset($_GET['generatePDF'])){
@@ -292,12 +292,12 @@ abstract class AbstractReport extends SpecialPage {
                     $report->submitReport();
                     if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == ""){
                         $check = $report->getLatestPDF();
-                    	if (count($check) > 0) {
-                    		$tok = $check[0]['token'];
-                    	}
-                    	
-                    	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-                    	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                        if (count($check) > 0) {
+                            $tok = $check[0]['token'];
+                        }
+
+                        $url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
+                        $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
@@ -874,12 +874,12 @@ abstract class AbstractReport extends SpecialPage {
         $json = array();
         $preview = isset($_GET['preview']);
         $pdfFiles = @$_GET['pdfFiles'];
-		if($pdfFiles != ''){
-		    $pdfFiles = explode(',', $pdfFiles);
-		}
-		else{
-		    $pdfFiles = $this->pdfFiles;
-		}
+        if($pdfFiles != ''){
+            $pdfFiles = explode(',', $pdfFiles);
+        }
+        else{
+            $pdfFiles = $this->pdfFiles;
+        }
         if($this->pdfAllProjects && !$preview){
             foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
                 if(!$project->isSubProject()){
@@ -925,81 +925,83 @@ abstract class AbstractReport extends SpecialPage {
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
             //When they submit, an SoP is added to the table
-	    $sop =  SOP::newFromUserId($me->getId());
-	    if(!is_array($sop)){
+            $sop =  SOP::newFromUserId($me->getId());
+            if(!is_array($sop)){
+                $gsms_id = "";
+                if($config->getValue('networkName') == 'GARS') {
+                    $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_OT', 'CS_Questions_tab0', 'gsmsID_OT');
+                } else if ($config->getValue('networkName') == 'CSGARS') {
+                    $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_CS', 'CS_Questions_tab0', 'gsmsIDCS');
+                }
 
-            $gsms_id = "";
-            if($config->getValue('networkName') == 'GARS') {
-                $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_OT', 'CS_Questions_tab0', 'gsmsID_OT');
-            } else if ($config->getValue('networkName') == 'CSGARS') {
-                $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_CS', 'CS_Questions_tab0', 'gsmsIDCS');
-            }
-
-	    	$sop = new SOP(array());
-	    	$sop->user_id = $me->getId();
-	    	$sop->create();
-	        $sop = SOP::newFromUserId($me->getId());
-            $gsms_data = new GsmsData(array());
-            $gsms_data->user_id = $me->getId();
-            $gsms_data->status = "Application Completed";
-            $gsms_data->visible = "true";
-            $gsms_data->gsms_id = $gsms_id;
-            $gsms_data->create();
-            
-            // Do OIS Request
-            $url = "https://gars.ualberta.ca/ois/new/";
-            $ccid = explode("@", $me->getEmail());
-            $ccid = @$ccid[0];
-            
-            //set POST variables
-            $fields = array(
-	            'ccid' => $ccid,
-	            'sop' => array(implode("\n", $sop->getContent()))
-            );
-            
-            //url-ify the data for the POST
-            $fields_string = json_encode($fields);
-
-            //open connection
-            $ch = curl_init();
-
-            //set the url, number of POST vars, POST data
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-                'Content-Type: application/json',                                                                                
-                'Content-Length: ' . strlen($fields_string))                                                                       
-            );
-            
-            //execute post
-            $result = curl_exec($ch);
-
-            //close connection
-            curl_close($ch);
-            $response = json_decode($result);
-            if($response !== false && $response != null){
-                $url = $response->link;
-                $token = $response->applicantToken;
-                $gsms_data->ois_id = $token;
-                $gsms_data->update();
-                // To send HTML mail, the Content-type header must be set
-                $headers[] = 'MIME-Version: 1.0';
-                $headers[] = 'Content-type: text/html; charset=utf-8';
-                $headers[] = 'From: GARS Support <support@gars.ualberta.ca>';
-                // Additional headers
+                $sop = new SOP(array());
+                $sop->user_id = $me->getId();
+                $sop->create();
+                $sop = SOP::newFromUserId($me->getId());
+                $gsms_data = new GsmsData(array());
+                $gsms_data->user_id = $me->getId();
+                $gsms_data->status = "Application Completed";
+                $gsms_data->visible = "true";
+                $gsms_data->gsms_id = $gsms_id;
+                $gsms_data->create();
                 
-                mail($me->getEmail(), "GARS Online Interview System", "As part of your GARS application, you will need to complete the <a href='http://gars.ualberta.ca/ois{$url}'>Online Interview</a>", implode("\r\n", $headers)); 
+                // Check of OIS is enabled
+                if($config->getValue("oisEnabled")){
+                    // Do OIS Request
+                    $url = "https://gars.ualberta.ca/ois/new/";
+                    $ccid = explode("@", $me->getEmail());
+                    $ccid = @$ccid[0];
+                    
+                    //set POST variables
+                    $fields = array(
+                        'ccid' => $ccid,
+                        'sop' => array(implode("\n", $sop->getContent()))
+                    );
+                    
+                    //url-ify the data for the POST
+                    $fields_string = json_encode($fields);
+
+                    //open connection
+                    $ch = curl_init();
+
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+                        'Content-Type: application/json',                                                                                
+                        'Content-Length: ' . strlen($fields_string))                                                                       
+                    );
+                    
+                    //execute post
+                    $result = curl_exec($ch);
+
+                    //close connection
+                    curl_close($ch);
+                    $response = json_decode($result);
+                    if($response !== false && $response != null){
+                        $url = $response->link;
+                        $token = $response->applicantToken;
+                        $gsms_data->ois_id = $token;
+                        $gsms_data->update();
+                        // To send HTML mail, the Content-type header must be set
+                        $headers[] = 'MIME-Version: 1.0';
+                        $headers[] = 'Content-type: text/html; charset=utf-8';
+                        $headers[] = 'From: GARS Support <support@gars.ualberta.ca>';
+                        // Additional headers
+                        
+                        mail($me->getEmail(), "GARS Online Interview System", "As part of your GARS application, you will need to complete the <a href='http://gars.ualberta.ca/ois{$url}'>Online Interview</a>", implode("\r\n", $headers)); 
+                    }
+                }
             }
-	    }
-	    //$sop->updateStatistics(); //This SHOULD call TASHA
+            //$sop->updateStatistics(); //This SHOULD call TASHA
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
-            	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-            	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                $url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
+                $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
