@@ -57,9 +57,9 @@ for($y=2017;$y<=YEAR;$y++){
 			    $output = array(
 				    "sid " . $array['student_id'],
 				    "term " . $term,
-				    "surname " . $person->getLastName(),
-				    "firstname " . $person->getFirstName(),
-				    "middlename " . $person->getMiddleName(),
+				    "surname " . str_replace("&#39;", "'", $person->getLastName()),
+				    "firstname " . str_replace("&#39;", "'", $person->getFirstName()),
+				    "middlename " . str_replace("&#39;", "'", $person->getMiddleName()),
 				    "gender " . $gender,
 				    "email " . $array['student_data']['email'],
 				    "citizenship " . $array['additional']['country_of_citizenship_full'],
