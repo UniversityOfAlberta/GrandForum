@@ -51,7 +51,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900">
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900" optional="true">
             <![CDATA[
 		<h3>Are there any extenuating circumstances that you would like the Admissions Committee to consider in making their decision? Extenuating circumstances might include gaps in your education or experience, or leaves of absence from previous programs. Note: if there are no extenuating circumstances, please leave this question blank.</h3>
                 {$item}

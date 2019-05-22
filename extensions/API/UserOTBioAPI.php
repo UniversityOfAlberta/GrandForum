@@ -198,7 +198,11 @@ class UserOTBioAPI extends API{
                                   'country_of_citizenship' => $student['country'],
                                   'additional' => serialize($student)),
                             array('user_id' => EQ($student_id)));
-                    $reviewers = $student['reviewers'];
+                   
+                   $gsmsId = $student_obj->getGSMS()->id;
+                   Cache::delete("gsms_{$gsmsId}");
+                   Cache::delete("gsms_user_{$student_id}");
+                    /*$reviewers = $student['reviewers'];
                     foreach($reviewers as $reviewer){
                         $reviewer_obj = Person::newFromNameLike($reviewer);
                         $reviewer_id = $reviewer_obj->getId();
@@ -214,7 +218,7 @@ class UserOTBioAPI extends API{
                             $errors[] = "<b>$reviewer</b> assignment failed. Reviewer not found or duplicated.";
                             $error_count++;
                         }
-                    }
+                    }*/
                     DBFunctions::commit();
 		    $success[] = "<b>{$student['lastname']},{$student['firstname']}</b> updated.";
 		}

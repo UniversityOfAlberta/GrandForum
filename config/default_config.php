@@ -101,6 +101,9 @@
 
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
+    // Whether or not to use the OIS system
+    $config->setValue("oisEnabled", false);
+
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
