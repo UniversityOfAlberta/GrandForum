@@ -63,10 +63,10 @@ class ElsevierJournal extends Journal {
         else{
             if(preg_match("/^(.{4}-.{4})$/m", $search)){
                 // Looks like an issn
-                $url = "https://api.elsevier.com/content/serial/title/?issn={$search}&apiKey={$config->getValue('elsevierApi')}&count=25&httpAccept=application/json";
+                $url = "https://api.elsevier.com/content/serial/title/?issn={$search}&apiKey={$config->getValue('elsevierApi')}&count=100&httpAccept=application/json";
             }
             else{
-                $url = "https://api.elsevier.com/content/serial/title/?title={$search}&apiKey={$config->getValue('elsevierApi')}&count=25&httpAccept=application/json";
+                $url = "https://api.elsevier.com/content/serial/title/?title={$search}&apiKey={$config->getValue('elsevierApi')}&count=100&httpAccept=application/json";
             }
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -78,7 +78,9 @@ class ElsevierJournal extends Journal {
         $journals = array();
         if(isset($output->{'serial-metadata-response'}->entry)){
             foreach($output->{'serial-metadata-response'}->entry as $entry){
-                $journals[] = new ElsevierJournal(array(array(
+                $percent = 0;
+                similar_text(strtolower($string), strtolower(@$entry->{'dc:title'}), $percent);
+                $journal = new ElsevierJournal(array(array(
                     'year' => "",
                     'short_title' => @$entry->{'dc:title'},
                     'iso_abbrev' => @$entry->{'dc:title'},
@@ -88,8 +90,13 @@ class ElsevierJournal extends Journal {
                     'eissn' => @$entry->{'prism:eIssn'},
                     'snip' => @$entry->SNIPList->SNIP[0]->{'$'}
                 )));
+                $journal->similarity = $percent;
+                $journals[] = $journal;
             }
         }
+        usort($journals, function($a, $b){
+            return ($a->similarity < $b->similarity);
+        });
         return $journals;     
     }
     
