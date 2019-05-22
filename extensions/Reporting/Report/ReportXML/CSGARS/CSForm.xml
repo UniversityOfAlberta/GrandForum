@@ -76,6 +76,7 @@
         <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
             <![CDATA[
                     <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
         </ReportItem>

@@ -28,66 +28,68 @@ $filenames = [];
 @mkdir($outdir);
 $peopleSoFar = 0;
 $nPeople = count($people);
-foreach($people as $person) {
-	$gsms = $person->getGSMS();
-	if ($gsms->id != null) {
-		$sop = $gsms->getSOP();
-		// Only export Admitted students
-		if ($sop->getFinalAdmit() == "Admit") {
-			$array = $gsms->toArray();
-			if ($array['term'] == "Fall Term") {
-				$year = explode("/", $array['academic_year'])[0];
-				$term = "F" . substr($year, 2); // '2018' becomes '18'
-			} else if ($array['term'] == "Winter Term") {
-				$year = explode("/", $array['academic_year'])[1];
-				$term = "W" . $year;
-			}
+for($y=2017;$y<=YEAR;$y++){
+    foreach($people as $person){
+	    $gsms = $person->getGSMS($y);
+	    if ($gsms->id != null) {
+		    $sop = $gsms->getSOP();
+		    // Only export Admitted students
+		    if ($sop->getFinalAdmit() == "Admit") {
+			    $array = $gsms->toArray();
+			    if ($array['term'] == "Fall Term") {
+				    $year = explode("/", $array['academic_year'])[0];
+				    $term = "F" . substr($year, 2); // '2018' becomes '18'
+			    } else if ($array['term'] == "Winter Term") {
+				    $year = explode("/", $array['academic_year'])[1];
+				    $term = "W" . $year;
+			    }
 			
-			if ($array['gender'] == "M") {
-				$gender = "Male";
-			} else if ($array['gender'] == "F") {
-				$gender = "Female";
-			} else {
-				$gender = $array['gender'];
-			}
+			    if ($array['gender'] == "M") {
+				    $gender = "Male";
+			    } else if ($array['gender'] == "F") {
+				    $gender = "Female";
+			    } else {
+				    $gender = $array['gender'];
+			    }
 
-            $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);
+                $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);
 
-			$output = array(
-				"sid " . $array['student_id'],
-				"term " . $term,
-				"surname " . $person->getLastName(),
-				"firstname " . $person->getFirstName(),
-				"middlename " . $person->getMiddleName(),
-				"gender " . $gender,
-				"email " . $array['student_data']['email'],
-				"citizenship " . $array['additional']['country_of_citizenship_full'],
-				"immigration " . $array['additional']['immigration'],
-				"degree " . $array['degree'],
-				"specialization " . $array['area'],
-				"status " . $array['ftpt']
-			);
-			if ($array['student_id'] != 0) {
-				$loc = $outdir . "/" . $array['student_id'];
-				array_push($filenames, $array['student_id']);
-			} else {
-				$f = "gsms" . $array['gsms_id'];
-				$loc = $outdir . "/" . $f;
-				array_push($filenames, $f);
-			}
-			$found = false;
-			if(!file_exists($loc)){
-			    $found = true;
-			}
-			file_put_contents($loc, implode("\n", $output) . "\n");
-			if($found){
-			    $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$outdir}/{$array['student_id']}";
-			    echo "{$command}\n";
-			    system("{$command}");
-			}
-		}
-	}
-	//show_status(++$peopleSoFar, $nPeople);
+			    $output = array(
+				    "sid " . $array['student_id'],
+				    "term " . $term,
+				    "surname " . $person->getLastName(),
+				    "firstname " . $person->getFirstName(),
+				    "middlename " . $person->getMiddleName(),
+				    "gender " . $gender,
+				    "email " . $array['student_data']['email'],
+				    "citizenship " . $array['additional']['country_of_citizenship_full'],
+				    "immigration " . $array['additional']['immigration'],
+				    "degree " . $array['degree'],
+				    "specialization " . $array['area'],
+				    "status " . $array['ftpt']
+			    );
+			    if ($array['student_id'] != 0) {
+				    $loc = $outdir . "/" . $array['student_id'];
+				    array_push($filenames, $array['student_id']);
+			    } else {
+				    $f = "gsms" . $array['gsms_id'];
+				    $loc = $outdir . "/" . $f;
+				    array_push($filenames, $f);
+			    }
+			    $found = false;
+			    if(!file_exists($loc)){
+			        $found = true;
+			    }
+			    file_put_contents($loc, implode("\n", $output) . "\n");
+			    if($found){
+			        $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$outdir}/{$array['student_id']}";
+			        echo "{$command}\n";
+			        system("{$command}");
+			    }
+		    }
+	    }
+	    //show_status(++$peopleSoFar, $nPeople);
+    }
 }
 
 

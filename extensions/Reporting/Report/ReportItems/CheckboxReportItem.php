@@ -19,9 +19,9 @@ class CheckboxReportItem extends AbstractReportItem {
 		    $option = str_replace("'", "&#39;", $option);
 		    $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
 		}
-
 		if ($other) {
-			$items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input style='vertical-align:middle;' name='Other' />&nbsp;<div style='display:table-cell;'></div></div>";
+		    $otherVal = @str_replace("'", "&#39;", $value['other']);
+			$items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'>Other: <input style='vertical-align:middle;' name='{$this->getPostId()}[other]' value='$otherVal' />&nbsp;<div style='display:table-cell;'></div></div>";
 		}
 
         $output = "";

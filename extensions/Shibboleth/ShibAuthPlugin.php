@@ -273,13 +273,14 @@ function SetupShibAuth()
 function SetupShibPopup(){
     global $config;
     
-    echo "<div id='loginDialog' title='Login' style='position:relative;'>
+    echo "
+        <div id='loginDialog' title='Login' style='position:relative;'>
         <div id='loginMessages' style='font-size: 0.9em;'></div>
         <div id='loginView1' style='display:inline-block;'>
             <table>
                 <tr>
                     <td width='225px' align='center'>
-                        <span style='font-size:1.3em;'>Department Members<br /><br /><a class='button' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></span>
+                        <span style='font-size:1.3em;'>Department Members<br /><br /><a class='button' id='sso' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></span>
                     </td>
                     <td width='30px;' align='center'>
                         <div style='width:1px;height:60px;background:#888888;'></div>
@@ -301,6 +302,10 @@ function SetupShibPopup(){
                 </tr>
             </table>
         </div>
+        <script type='text/javascript'>
+            var target = '?target=' + window.location.origin + window.location.pathname + '?hash=' + window.location.hash.replace('#', '');
+            $('a#sso').attr('href', $('a#sso').attr('href') + target);
+        </script>
         <div id='loginView2' style='display:none;'>";
             if(ShibAuthPlugin::autoCreate()){
                 if(!isset($_POST['submit'])){

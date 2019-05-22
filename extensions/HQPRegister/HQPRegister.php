@@ -63,7 +63,7 @@ class HQPRegister extends SpecialPage{
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
-        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
+        //$lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
         $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
@@ -119,7 +119,6 @@ class HQPRegister extends SpecialPage{
             
             if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
-                
             }
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;

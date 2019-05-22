@@ -4,6 +4,8 @@ Sop = Backbone.Model.extend({
     },
 
     urlRoot: 'index.php?action=api.sop',
+    
+    hidden: false,
 
     defaults: function() {
         return{

@@ -67,18 +67,20 @@ SopsView = Backbone.View.extend({
         }
         
         // Filter the Sops
-        var sops = new Sops(this.sops.filter($.proxy(function(sop) { 
+        var sops = new Sops(this.sops.filter($.proxy(function(sop) {
+            sop.hidden = !this.hidden;
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
-
             for (var i = 0; i < reviewers.length; i++) {
-                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
+                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1" || reviewers[i].hidden == true)) {
+                    sop.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
 
             for (var i = 0; i < other_reviewers.length; i++) {
-                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
+                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1" || other_reviewers[i].hidden == true)) {
+                    sop.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
@@ -159,8 +161,8 @@ SopsView = Backbone.View.extend({
                                                         { 'visible': false, 'targets': invisibleColumns }
                                                       ],
                                                      'columns': [
-                                                        { 'width': '225px' }, // User email gender
-                                                        { 'width': '95px' },  // GSMS ID
+                                                        { 'width': '250px' }, // User email gender
+                                                        { 'width': '115px' },  // GSMS ID
                                                         { 'width': '30px' },  // GSMS PDF
                                                         { 'width': '55px' },  // Folder
                                                         { 'width': '70px' },  // DoB
@@ -255,7 +257,7 @@ SopsView = Backbone.View.extend({
     events: {
         "keyup .filter_option": "reloadTable",
         "change .filter_option" : "reloadTable",
-        "click input[type=checkbox]": "reloadTable",
+        "click input[type=checkbox]:not([name=hidden])": "reloadTable",
         "click #clearFiltersButton" : "clearFilters",
         "click #filterMeOnly": "reloadTable",
         "click #selectTagBox" : "showCheckboxes",
@@ -420,10 +422,10 @@ SopsView = Backbone.View.extend({
 
    filterSupervisors: function(settings,data,dataIndex){
         var filtersupervisors = this.filterSelectSupervisors.chosen().val();
-        var studentsupervisors = data[11].split(", ");
+        var studentsupervisors = unaccentChars(data[11]).split(", ");
         if (filtersupervisors != null) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                if ($.inArray(filtersupervisors[i], studentsupervisors) != -1) {
+                if ($.inArray(unaccentChars(filtersupervisors[i]), studentsupervisors) != -1) {
                     return true;
                 }
             }
@@ -434,10 +436,10 @@ SopsView = Backbone.View.extend({
 
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = this.filterSelectReviewers.chosen().val();
-        var reviewers = data[18];
+        var reviewers = unaccentChars(data[18]);
         if (filterreviewers != null) {
             for (var i = 0; i < filterreviewers.length; ++i) {
-                if (reviewers.indexOf(filterreviewers[i]) != -1) {
+                if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
                     return true;
                 }
             }
@@ -680,7 +682,11 @@ SopsView = Backbone.View.extend({
     
     changeYear: function(){
         var year = this.$("#year").val();
-        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + Backbone.history.fragment.split("/")[0] + "//" + year;
+        var frag = Backbone.history.fragment.split("/")[0];
+        if(frag == ""){
+            frag = "reviewInProgress";
+        }
+        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + frag + "//" + year;
     },
 
     render: function(){
