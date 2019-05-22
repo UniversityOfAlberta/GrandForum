@@ -945,6 +945,55 @@ abstract class AbstractReport extends SpecialPage {
             $gsms_data->visible = "true";
             $gsms_data->gsms_id = $gsms_id;
             $gsms_data->create();
+            
+            // Do OIS Request
+            $url = "https://gars.ualberta.ca/ois/new/";
+            $ccid = explode("@", $me->getEmail());
+            $ccid = @$ccid[0];
+            
+            //set POST variables
+            $fields = array(
+	            'ccid' => $ccid,
+	            'sop' => array(implode("\n", $sop->getContent()))
+            );
+            
+            //url-ify the data for the POST
+            $fields_string = json_encode($fields);
+
+            //open connection
+            $ch = curl_init();
+
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+                'Content-Type: application/json',                                                                                
+                'Content-Length: ' . strlen($fields_string))                                                                       
+            );
+            
+            //execute post
+            $result = curl_exec($ch);
+
+            //close connection
+            curl_close($ch);
+            $response = json_decode($result);
+            if($response !== false && $response != null){
+                $url = $response->link;
+                $token = $response->applicantToken;
+                $gsms_data->ois_id = $token;
+                $gsms_data->update();
+                // To send HTML mail, the Content-type header must be set
+                $headers[] = 'MIME-Version: 1.0';
+                $headers[] = 'Content-type: text/html; charset=utf-8';
+                $headers[] = 'From: GARS Support <support@gars.ualberta.ca>';
+                // Additional headers
+                
+                mail($me->getEmail(), "GARS Online Interview System", "As part of your GARS application, you will need to complete the <a href='http://gars.ualberta.ca/ois{$url}'>Online Interview</a>", implode("\r\n", $headers)); 
+            }
 	    }
 	    //$sop->updateStatistics(); //This SHOULD call TASHA
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
