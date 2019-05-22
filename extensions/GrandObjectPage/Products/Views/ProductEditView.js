@@ -377,11 +377,10 @@ ProductEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderJournalsAutocomplete();
-        
         if(productStructure.categories[this.model.get('category')] != undefined &&
            (productStructure.categories[this.model.get('category')].types[this.model.get('type')] != undefined &&
-            _.size(productStructure.categories[this.model.get('category')].types[this.model.get('type')].titles) > 0) ||
-            (_.size(_.first(_.values(productStructure.categories[this.model.get('category')].types)).titles) > 0)){
+            _.size(productStructure.categories[this.model.get('category')].types[this.model.get('type')].titles) > 0 ||
+            _.size(_.first(_.values(productStructure.categories[this.model.get('category')].types)).titles) > 0)){
             this.$("select[name=title]").combobox();
         }
         this.$("input[name=data_category_ranking]").prop('disabled', true);
