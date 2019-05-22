@@ -206,17 +206,17 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.$el.html(this.template());
         this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
         this.$el.css('display', 'none');
-        $(document).click($.proxy(function(e){
+        $(document).click(function(e){
             if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){
                 this.$el.css('display', 'none');
             }
-        }, this));
+        }.bind(this));
         if(typeof pageRouter != 'undefined'){
             // In the event clicking the result only changes the router page
-            pageRouter.bind('all', $.proxy(function(event){
+            pageRouter.bind('all', function(event){
                 this.$el.css('display', 'none');
                 $("#globalSearchInput").val("");
-            }, this));
+            }.bind(this));
         }
         return this.$el;
     }

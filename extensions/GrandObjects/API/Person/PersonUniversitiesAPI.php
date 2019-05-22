@@ -85,8 +85,6 @@ class PersonUniversitiesAPI extends RESTAPI {
                 $position_id = $id;
             }
         }
-        
-        MailingList::unsubscribeAll($person);
         DBFunctions::insert('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
@@ -100,7 +98,6 @@ class PersonUniversitiesAPI extends RESTAPI {
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
-        MailingList::subscribeAll($person);
         return $this->doGET();
     }
     
@@ -159,7 +156,6 @@ class PersonUniversitiesAPI extends RESTAPI {
             }
         }
         
-        MailingList::unsubscribeAll($person);
         DBFunctions::update('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
@@ -174,7 +170,6 @@ class PersonUniversitiesAPI extends RESTAPI {
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
-        MailingList::subscribeAll($person);
         return $this->doGET();
     }
     
@@ -185,13 +180,11 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
-        MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_user_university',
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
-        MailingList::subscribeAll($person);
         return json_encode(array());
     }
 }

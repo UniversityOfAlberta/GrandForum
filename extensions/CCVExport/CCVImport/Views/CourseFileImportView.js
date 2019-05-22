@@ -10,9 +10,9 @@ CourseFileImportView = Backbone.View.extend({
         if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
             this.model.set("person", me);
         }
-        this.listenTo(this.people, "sync", $.proxy(function(){
+        this.listenTo(this.people, "sync", function(){
             this.render();
-        }, this));
+        }.bind(this));
         this.people.fetch();
         this.model.on("change:person", this.render);
     },
@@ -26,7 +26,7 @@ CourseFileImportView = Backbone.View.extend({
         var button = $("#courseupload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = function(response, error){
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();
@@ -66,7 +66,7 @@ CourseFileImportView = Backbone.View.extend({
                 addError(error);
             }
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();
     },

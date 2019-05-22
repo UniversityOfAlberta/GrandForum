@@ -7,9 +7,9 @@ EditGrantView = Backbone.View.extend({
     initialize: function(){
         if(!this.model.isNew()){
             this.model.fetch({
-                error: $.proxy(function(e){
+                error: function(e){
                     this.$el.html("This Revenue Account does not exist");
-                }, this)
+                }.bind(this)
             });
         }
         this.listenTo(this.model, "change:title", function(){
@@ -38,9 +38,9 @@ EditGrantView = Backbone.View.extend({
             }
         });
         
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
+        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
             this.allContributions = response;
-        }, this));
+        }.bind(this));
         
         this.template = _.template($('#edit_grant_template').html());
         if(this.model.isNew()){
@@ -52,13 +52,13 @@ EditGrantView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#save").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#save").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#save").prop('disabled', false);
                 clearAllMessages();
@@ -68,7 +68,7 @@ EditGrantView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Revenue Account", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -76,9 +76,9 @@ EditGrantView = Backbone.View.extend({
         if(this.timeout != null){
             clearTimeout(this.timeout);
         }
-        this.timeout = setTimeout($.proxy(function(){
+        this.timeout = setTimeout(function(){
             var id = $(e.currentTarget).attr('data-id');
-            $.get(wgServer + wgScriptPath + "/index.php/Contribution:" + id, $.proxy(function(response){
+            $.get(wgServer + wgScriptPath + "/index.php/Contribution:" + id, function(response){
                 var widthBefore = $(document).width();
                 var heightBefore = $(document).height();
 
@@ -102,8 +102,8 @@ EditGrantView = Backbone.View.extend({
                 if(heightAfter != heightBefore){
                     $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2 - (heightAfter - heightBefore + 5));
                 }
-            }, this));
-        }, this), 50);
+            }.bind(this));
+        }.bind(this), 50);
     },
     
     hidePreview: function(e){
@@ -114,9 +114,9 @@ EditGrantView = Backbone.View.extend({
     },
     
     changePI: function(){
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.model.set('user_id', this.model.get('pi').id);
-        }, this));
+        }.bind(this));
     },
     
     events: {
@@ -168,19 +168,19 @@ EditGrantView = Backbone.View.extend({
         this.$("#contributions .sortable-widget").show();
         
         // Left Side (Current)
-        _.each(contributions, $.proxy(function(cId){
+        _.each(contributions, function(cId){
             var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
             if(contribution != null){
                 this.$("#contributions #sortable1").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
             }
-        }, this));
+        }.bind(this));
         
         // Right Side (Available)
-        _.each(this.allContributions, $.proxy(function(contribution){
+        _.each(this.allContributions, function(contribution){
             if(!_.contains(contributions, contribution.id)){
                 this.$("#contributions #sortable2").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
             }
-        }, this));
+        }.bind(this));
     
         // Advanced groups
 	    [{
@@ -228,8 +228,8 @@ EditGrantView = Backbone.View.extend({
 	        $(hideElements).hide();
 	    };
 	    
-	    this.$("#contributions .sortable-search input").change($.proxy(changeFn, this));
-	    this.$("#contributions .sortable-search input").keyup($.proxy(changeFn, this));
+	    this.$("#contributions .sortable-search input").change(changeFn.bind(this));
+	    this.$("#contributions .sortable-search input").keyup(changeFn.bind(this));
     },
     
     renderCoapplicantsWidget: function(){
@@ -338,12 +338,12 @@ EditGrantView = Backbone.View.extend({
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
-        this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change($.proxy(this.changePI, this));
+        this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change(this.changePI.bind(this));
         
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$("#start_date").change();
             this.$("#end_date").change();
-        }, this));
+        }.bind(this));
         return this.$el;
     }
 

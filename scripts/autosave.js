@@ -68,15 +68,15 @@ function Autosave(value){
                 }
             },
             error: function(data){
-                autoSaveSessionRenewFN = $.proxy(function(){
+                autoSaveSessionRenewFN = function(){
                     var autoSaveSessionRenew = window.open(wgServer + wgScriptPath, "myWindow", 'width=100,height=100');
-                    _.delay($.proxy(function(){
+                    _.delay(function(){
                         autoSaveSessionRenew.close();
                         fn = null;
                         $.ajax(this);
-                    }, this), 1000);
+                    }.bind(this), 1000);
                     return;
-                }, this);
+                }.bind(this);
                 obj.auto.html("<b>Error Saving</b>");
                 clearError();
                 addError('There was an error saving this page.  Please verify that you are logged in, and not impersonating anyone.  <a style="cursor:pointer;" onClick="autoSaveSessionRenewFN()">Click Here</a> to try again.');

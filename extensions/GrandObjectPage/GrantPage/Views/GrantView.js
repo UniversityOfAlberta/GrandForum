@@ -5,12 +5,12 @@ GrantView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Revenue Account does not exist");
-            }, this)
+            }.bind(this)
         });
         
-        this.listenTo(this.model, 'change', $.proxy(function(){
+        this.listenTo(this.model, 'change', function(){
             this.person = new Person({id: this.model.get('user_id')});
             
             this.model.getGrantAward();
@@ -22,11 +22,11 @@ GrantView = Backbone.View.extend({
             else{
                 this.render();
             }
-        }, this));
+        }.bind(this));
         
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
+        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
             this.allContributions = response;
-        }, this));
+        }.bind(this));
         
         this.template = _.template($('#grant_template').html());
     },
@@ -46,9 +46,9 @@ GrantView = Backbone.View.extend({
     },
     
     save: function(){
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.model.save(null, {
-                success: $.proxy(function(){
+                success: function(){
                     clearAllMessages();
                     if(this.model.get('exclude')){
                         addSuccess("The Revenue Account is now Excluded");
@@ -56,8 +56,8 @@ GrantView = Backbone.View.extend({
                     else{
                         addSuccess("The Revenue Account is no longer Excluded");
                     }
-                }, this),
-                error: $.proxy(function(o, e){
+                }.bind(this),
+                error: function(o, e){
                     clearAllMessages();
                     if(e.responseText != ""){
                         addError(e.responseText, true);
@@ -65,9 +65,9 @@ GrantView = Backbone.View.extend({
                     else{
                         addError("There was a problem saving the Revenue Account", true);
                     }
-                }, this)
+                }.bind(this)
             });
-        }, this));
+        }.bind(this));
     },
     
     events: {
@@ -81,10 +81,10 @@ GrantView = Backbone.View.extend({
            this.allContributions.length != null && 
            this.model.get('contributions').length > 0){
             this.$("#contributions").empty();
-            _.each(this.model.get('contributions'), $.proxy(function(cId){
+            _.each(this.model.get('contributions'), function(cId){
                 var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
                 this.$("#contributions").append("<li><a href='" + wgServer + wgScriptPath + "/index.php/Contribution:" + contribution.id + "'>" + contribution.name + "</a></li>");
-            }, this));
+            }.bind(this));
         }
     },
     
@@ -96,19 +96,19 @@ GrantView = Backbone.View.extend({
             people.push(person);
             xhrs.push(person.fetch());
         });
-        $.when.apply($, xhrs).then($.proxy(function(){
+        $.when.apply($, xhrs).then(function(){
             this.$("#copi").empty();
             var html = new Array();
-            _.each(people, $.proxy(function(copi){
+            _.each(people, function(copi){
                 if(copi.get('id') != null){
                     html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
                 }
                 else{
                     html.push(copi.get('realName'));
                 }
-            }, this));
+            }.bind(this));
             this.$("#copi").html(html.join("; "));
-        }, this));
+        }.bind(this));
     },
 
     render: function(){
@@ -128,11 +128,11 @@ GrantView = Backbone.View.extend({
             show: 'fade',
             resizable: false,
             draggable: false,
-            open: $.proxy(function(){
+            open: function(){
                 $("html").css("overflow", "hidden");
                 $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
                 $("#deleteCheck", this.deleteDialog).prop("checked", false);
-                $("#deleteCheck", this.deleteDialog).change($.proxy(function(e){
+                $("#deleteCheck", this.deleteDialog).change(function(e){
                     var isChecked = $(e.currentTarget).is(":checked");
                     if(isChecked){
                         $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", false);
@@ -140,18 +140,18 @@ GrantView = Backbone.View.extend({
                     else{
                         $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
                     }
-                }, this));
-            }, this),
+                }.bind(this));
+            }.bind(this),
             beforeClose: function(){
                 $("html").css("overflow", "auto");
             },
             buttons: {
-                "Yes": $.proxy(function(){
+                "Yes": function(){
                     var model = this.model;
                     if(model.get('deleted') != true){
                         $("div.throbber", this.deleteDialog).show();
                         model.destroy({
-                            success: $.proxy(function(model, response) {
+                            success: function(model, response) {
                                 this.deleteDialog.dialog('close');
                                 $("div.throbber", this.deleteDialog).hide();
                                 if(response.deleted == true){
@@ -165,7 +165,7 @@ GrantView = Backbone.View.extend({
                                     clearError();
                                     addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
                                 }
-                            }, this),
+                            }.bind(this),
                             error: function(model, response) {
                                 clearSuccess();
                                 clearError();
@@ -178,10 +178,10 @@ GrantView = Backbone.View.extend({
                         clearAllMessages();
                         addError('This ' + model.get('category') + ' is already deleted');
                     }
-                }, this),
-                "No": $.proxy(function(){
+                }.bind(this),
+                "No": function(){
                     this.deleteDialog.dialog('close');
-                }, this)
+                }.bind(this)
             }
         });
         return this.$el;

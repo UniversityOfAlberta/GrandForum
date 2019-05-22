@@ -4,14 +4,14 @@ CSVImportView = Backbone.View.extend({
 
     initialize: function(options){
         this.parent = options.parent;
-	this.people = new People();
+        this.people = new People();
         this.people.roles = [NI];
-	if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
+        if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
             this.model.set("person", me);
-	}
-	this.listenTo(this.people, "sync", $.proxy(function(){
+        }
+        this.listenTo(this.people, "sync", function(){
             this.render();
-        }, this));
+        }.bind(this));
         this.people.fetch();
         this.model.on("change:person", this.render);
     },
@@ -25,30 +25,30 @@ CSVImportView = Backbone.View.extend({
         var button = $("#csvupload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = function(response, error){
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();
                 var success = new Array();
                 var warning = new Array();
                 var nCreated = response.created.length;
-		var nCourses = (response.courses != undefined) ? response.courses.length: 0;
+                var nCourses = (response.courses != undefined) ? response.courses.length: 0;
                 var nError = response.error.length;
-		var nPresentations = (response.presentations != undefined) ? response.presentations.length: 0;
-		var nAdditionals = (response.additionals != undefined) ? response.additionals.length: 0;
-		var nAwards = (response.awards != undefined) ? response.awards.length: 0;
+                var nPresentations = (response.presentations != undefined) ? response.presentations.length: 0;
+                var nAdditionals = (response.additionals != undefined) ? response.additionals.length: 0;
+                var nAwards = (response.awards != undefined) ? response.awards.length: 0;
                 var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
                 var nFunding = (response.funding != undefined) ? response.funding.length : 0;
                 var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
                 if(nCreated > 0){
                     success.push("<b>" + nCreated + "</b> products were created");
                 }
-		if(response.fec_info!= undefined){
-		  success.push("FEC personal information was created/updated");
-		}
-		if(nCourses > 0){
-		    success.push("<b>" + nCourses + "</b> courses were created/updated");
-		}
+                if(response.fec_info!= undefined){
+                    success.push("FEC personal information was created/updated");
+                }
+                if(nCourses > 0){
+                    success.push("<b>" + nCourses + "</b> courses were created/updated");
+                }
                 if(nHQP > 0){
                     success.push("<b>" + nHQP + "</b> HQP were created/updated");
                 }
@@ -96,7 +96,7 @@ CSVImportView = Backbone.View.extend({
                 addError(error);
             }
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();
     },

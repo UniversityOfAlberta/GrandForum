@@ -20,12 +20,12 @@ ProductEditView = Backbone.View.extend({
         if(!this.model.isNew() && !this.isDialog){
             // Model exists
             this.model.fetch({
-                success: $.proxy(function(){
+                success: function(){
                     this.listenTo(this.model, "change:projects", this.render);
                     this.listenTo(this.model, "change:category", this.render);
                     this.listenTo(this.model, "change:type", this.render);
                     this.listenTo(this.model, "change:access", this.render);
-                }, this)
+                }.bind(this)
             });
         }
         else{
@@ -57,7 +57,7 @@ ProductEditView = Backbone.View.extend({
     },
     
     updateStatus: function(){
-        _.defer($.proxy(function(){
+        _.defer(function(){
             var currentDate = new Date().toISOString().substr(0, 10);
             if(this.model.get('category') == "Publication" && this.model.get('date') != "0000-00-00" && 
                                                               this.model.get('date') != ""){
@@ -78,7 +78,7 @@ ProductEditView = Backbone.View.extend({
             else{
                 this.$("[name=status]").prop("disabled", false);
             }
-        }, this));
+        }.bind(this));
     },
     
     changeStart: function(){
@@ -150,18 +150,18 @@ ProductEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveProduct").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(){
+            }.bind(this),
+            error: function(){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
                 addError("There was a problem saving the Product", true);
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -202,13 +202,13 @@ ProductEditView = Backbone.View.extend({
                 splitOn: delimiter,
                 tagLimit: tagLimit,
                 availableTags: availableTags,
-                afterTagAdded: $.proxy(function(event, ui){
+                afterTagAdded: function(event, ui){
                     if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
                     }
-                }, this),
+                }.bind(this),
                 tagSource: function(search, showChoices) {
                     if(search.term.length < 2){ showChoices(); return; }
                     var filter = search.term.toLowerCase();
@@ -267,13 +267,13 @@ ProductEditView = Backbone.View.extend({
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
                 availableTags: availableTags,
-                afterTagAdded: $.proxy(function(event, ui){
+                afterTagAdded: function(event, ui){
                     if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
                     }
-                }, this),
+                }.bind(this),
                 tagSource: function(search, showChoices) {
                     if(search.term.length < 2){ showChoices(); return; }
                     var filter = search.term.toLowerCase();
@@ -332,7 +332,7 @@ ProductEditView = Backbone.View.extend({
     renderJournalsAutocomplete: function(){
         if(this.$("input[name=data_published_in]").length > 0){
             var autoComplete = {
-                source: $.proxy(function(request, response){
+                source: function(request, response){
                     var journals = new Journals();
                     journals.search = request.term;
                     journals.fetch({success: function(collection){
@@ -354,18 +354,18 @@ ProductEditView = Backbone.View.extend({
                         });
                         response(data);
                     }});
-                }, this),
+                }.bind(this),
                 minLength: 2,
-                select: $.proxy(function(event, ui){
-                    _.defer($.proxy(function(){
+                select: function(event, ui){
+                    _.defer(function(){
                         this.$("input[name=data_published_in]").val(ui.item.journal).change();
                         this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
                         this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
                         this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
                         this.$("input[name=data_snip]").val(ui.item.snip).change();
                         this.$("input[name=data_issn]").val(ui.item.issn).change();
-                    }, this));
-                }, this)
+                    }.bind(this));
+                }.bind(this)
             };
             
             this.$("input[name=data_issn]").autocomplete(autoComplete);
@@ -390,10 +390,10 @@ ProductEditView = Backbone.View.extend({
         this.$("input[name=data_snip]").prop('disabled', true);
         this.$("input[name=data_eigen_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
 
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$("#acceptance_date").change();
             this.$("#date").change();
-        }, this));
+        }.bind(this));
         //this.updateStatus();
         return this.$el;
     }

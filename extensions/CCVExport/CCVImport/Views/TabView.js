@@ -6,9 +6,9 @@ TabView = Backbone.View.extend({
     initialize: function(options){
 	var self = this;
 	me.getRoles();
-	me.roles.ready().then($.proxy(function(){
+	me.roles.ready().then(function(){
 	    this.currentRoles = me.roles.getCurrent();
-	    me.roles.ready().then($.proxy(function(){
+	    me.roles.ready().then(function(){
 	        Backbone.Subviews.add(this);
                 var intervalId = setInterval(function(){
                     if($('#ccvtab').is(':visible')){
@@ -46,8 +46,8 @@ TabView = Backbone.View.extend({
                     }
                  }, 100);
 	         this.render();
-	    }, this)) 
-	}, this));
+	    }.bind(this)) 
+	}.bind(this));
     },
 
     subviewCreators: {

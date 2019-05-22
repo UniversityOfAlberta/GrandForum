@@ -55,7 +55,6 @@ class UserCreate {
         Person::$cache = array();
         Person::$rolesCache = array();
         $person = Person::newFromId($wgUser->getId());
-        MailingList::subscribeAll($person);
         return true;
     }
     

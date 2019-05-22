@@ -156,7 +156,6 @@ class EditMember extends SpecialPage{
                 }
                 
                 if(isset($_POST['candidate']) && !$person->isCandidate()){
-                    MailingList::unsubscribeAll($person);
                     DBFunctions::update('mw_user',
                                         array('candidate' => '1'),
                                         array('user_id' => EQ($person->getId())));
@@ -173,7 +172,6 @@ class EditMember extends SpecialPage{
                     Cache::delete("allPeopleCache");
                     $person->candidate = false;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
-                    MailingList::subscribeAll($person);
                 }
             }
             EditMember::generateMain();

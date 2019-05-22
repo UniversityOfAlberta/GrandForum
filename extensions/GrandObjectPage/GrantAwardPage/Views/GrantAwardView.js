@@ -5,18 +5,18 @@ GrantAwardView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Awarded NSERC Application does not exist");
-            }, this)
+            }.bind(this)
         });
         
-        this.listenTo(this.model, 'change', $.proxy(function(){
+        this.listenTo(this.model, 'change', function(){
             this.person = new Person({id: this.model.get('user_id')});
             var xhr = this.person.fetch();
             this.listenTo(this.model.grant, 'sync', this.render);
             this.model.getGrant();
             $.when(xhr).then(this.render);
-        }, this));
+        }.bind(this));
         
         this.template = _.template($('#grantaward_template').html());
     },

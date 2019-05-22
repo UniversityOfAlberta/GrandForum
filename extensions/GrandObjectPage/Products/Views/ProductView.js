@@ -4,9 +4,9 @@ ProductView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Product does not exist");
-            }, this)
+            }.bind(this)
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#product_template').html());
@@ -37,20 +37,20 @@ ProductView = Backbone.View.extend({
         this.$("#deleteProduct").prop("disabled", true);
         this.$("#undeleteProduct").prop("disabled", true);
         this.model.save(null, {
-            success: $.proxy(function(model, response) {
+            success: function(model, response) {
                 clearSuccess();
                 clearError();
                 addSuccess('The ' + response.category + ' <i>' + response.title + '</i> was un-deleted sucessfully');
                 this.$("#deleteProduct").prop("disabled", false);
                 this.$("#undeleteProduct").prop("disabled", false);
-            }, this),
-            error: $.proxy(function(model, response) {
+            }.bind(this),
+            error: function(model, response) {
                 clearSuccess();
                 clearError();
                 addError('The ' + response.category + ' <i>' + response.title + '</i> was not un-deleted sucessfully');
                 this.$("#deleteProduct").prop("disabled", false);
                 this.$("#undeleteProduct").prop("disabled", false);
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -92,7 +92,7 @@ ProductView = Backbone.View.extend({
             projects.push(project);
             xhrs.push(project.fetch());
         });
-        $.when.apply(null, xhrs).done($.proxy(function(){
+        $.when.apply(null, xhrs).done(function(){
             this.$('#productProjects').empty();
             this.$('#productProjects').append("<ul>");
             _.each(projects, function(project){
@@ -114,7 +114,7 @@ ProductView = Backbone.View.extend({
             _.each(projects, function(project){
                 this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
             });
-        }, this));
+        }.bind(this));
     },
     
     render: function(){
@@ -137,11 +137,11 @@ ProductView = Backbone.View.extend({
 	            show: 'fade',
 	            resizable: false,
 	            draggable: false,
-	            open: $.proxy(function(){
+	            open: function(){
 	                $("html").css("overflow", "hidden");
 	                $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
 	                $("#deleteCheck", this.deleteDialog).prop("checked", false);
-	                $("#deleteCheck", this.deleteDialog).change($.proxy(function(e){
+	                $("#deleteCheck", this.deleteDialog).change(function(e){
 	                    var isChecked = $(e.currentTarget).is(":checked");
 	                    if(isChecked){
 	                        $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", false);
@@ -149,18 +149,18 @@ ProductView = Backbone.View.extend({
 	                    else{
 	                        $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
 	                    }
-	                }, this));
-	            }, this),
+	                }.bind(this));
+	            }.bind(this),
 	            beforeClose: function(){
 	                $("html").css("overflow", "auto");
 	            },
 	            buttons: {
-	                "Yes": $.proxy(function(){
+	                "Yes": function(){
 	                    var model = this.model;
 	                    if(model.get('deleted') != true){
 	                        $("div.throbber", this.deleteDialog).show();
                             model.destroy({
-                                success: $.proxy(function(model, response) {
+                                success: function(model, response) {
                                     this.deleteDialog.dialog('close');
                                     $("div.throbber", this.deleteDialog).hide();
                                     if(response.deleted == true){
@@ -174,7 +174,7 @@ ProductView = Backbone.View.extend({
                                         clearError();
                                         addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
                                     }
-                                }, this),
+                                }.bind(this),
                                 error: function(model, response) {
                                     clearSuccess();
                                     clearError();
@@ -187,10 +187,10 @@ ProductView = Backbone.View.extend({
                             clearAllMessages();
                             addError('This ' + model.get('category') + ' is already deleted');
                         }
-	                }, this),
-	                "No": $.proxy(function(){
+	                }.bind(this),
+	                "No": function(){
 	                    this.deleteDialog.dialog('close');
-	                }, this)
+	                }.bind(this)
 	            }
 	        });
         return this.$el;

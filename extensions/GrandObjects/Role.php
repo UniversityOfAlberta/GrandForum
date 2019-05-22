@@ -57,7 +57,6 @@ class Role extends BackboneModel {
 	function create(){
 	    $me = Person::newFromWgUser();
 	    $person = $this->getPerson();
-	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::insert('grand_roles',
 	                                  array('user_id'    => $this->user,
 	                                        'role'       => $this->getRole(),
@@ -80,13 +79,10 @@ class Role extends BackboneModel {
                 }
             }
         }
-        
-        MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
 	
 	function update(){
-	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::update('grand_roles',
 	                                  array('role'       => $this->getRole(),
 	                                        'start_date' => $this->getStartDate(),
@@ -98,15 +94,12 @@ class Role extends BackboneModel {
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
-	    
-        MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
 	
 	function delete(){
 	    $me = Person::newFromWgUser();
 	    $person = $this->getPerson();
-	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
@@ -123,7 +116,6 @@ class Role extends BackboneModel {
                 }
             }
 	    }
-        MailingList::subscribeAll($this->getPerson());
 	    return false;
 	}
 	

@@ -6,9 +6,9 @@ EditGrantAwardView = Backbone.View.extend({
     initialize: function(){
         if(!this.model.isNew()){
             this.model.fetch({
-                error: $.proxy(function(e){
+                error: function(e){
                     this.$el.html("This Awarded NSERC Application does not exist");
-                }, this)
+                }.bind(this)
             });
         }
         this.grants = new Grants();
@@ -43,13 +43,13 @@ EditGrantAwardView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#save").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#save").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#save").prop('disabled', false);
                 clearAllMessages();
@@ -59,7 +59,7 @@ EditGrantAwardView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Awarded NSERC Application", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -94,13 +94,13 @@ EditGrantAwardView = Backbone.View.extend({
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
                 availableTags: this.allPeople.pluck('fullName'),
-                afterTagAdded: $.proxy(function(event, ui){
+                afterTagAdded: function(event, ui){
                     if(this.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
                     }
-                }, this),
+                }.bind(this),
                 tagSource: function(search, showChoices) {
                     if(search.term.length < 2){ showChoices(); return; }
                     var filter = search.term.toLowerCase();
@@ -147,10 +147,10 @@ EditGrantAwardView = Backbone.View.extend({
     
     renderPartners: function(){
         this.$("#partners").empty();
-        _.each(this.model.get('partners'), $.proxy(function(partner){
+        _.each(this.model.get('partners'), function(partner){
             var view = new EditPartnerView({model: partner, parent: this});
             this.$("#partners").append(view.render());
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

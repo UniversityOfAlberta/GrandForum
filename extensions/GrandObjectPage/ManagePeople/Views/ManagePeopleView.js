@@ -15,9 +15,9 @@ ManagePeopleView = Backbone.View.extend({
         this.template = _.template($('#manage_people_template').html());
         this.listenTo(this.model, "reset", function(){
             // First remove deleted models
-            _.each(this.subViews, $.proxy(function(view){
+            _.each(this.subViews, function(view){
                     view.remove();
-            }, this));
+            }.bind(this));
             this.subViews = new Array();
             this.people = this.model;
             this.listenTo(this.people, "add", this.addRows);
@@ -40,23 +40,23 @@ ManagePeopleView = Backbone.View.extend({
             this.table = null;
         }
         // First remove deleted models
-        _.each(this.subViews, $.proxy(function(view){
+        _.each(this.subViews, function(view){
             var m = view.model;
             if(this.people.where({id: m.get('id')}).length == 0){
                 this.subViews = _.without(this.subViews, view);
                 view.remove();
             }
-        }, this));
+        }.bind(this));
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
-        this.people.each($.proxy(function(p, i){
+        this.people.each(function(p, i){
             if(!_.contains(models, p.id)){
                 // Person isn't in the table yet
                 var row = new ManagePeopleRowView({model: p, parent: this});
                 this.subViews.push(row);
                 this.$("#personRows").append(row.$el);
             }
-        }, this));
+        }.bind(this));
         _.each(this.subViews, function(row){
             row.render();
         });
@@ -82,14 +82,14 @@ ManagePeopleView = Backbone.View.extend({
     
     // Sanity Check 3: Check for duplicate HQP
     checkHQPDuplicates: function(){
-        deleteHqp = $.proxy(function(button, id){ //global function
+        deleteHqp = function(button, id){ //global function
             $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
             var data = 'id=' + id;
             $.ajax({
                 type: 'POST',
                 url: 'index.php?action=deleteDuplicates&handler=hqp',
                 data: data,
-                success: $.proxy(function (data) {
+                success: function (data) {
                     $('.hqp' + id).prev().html('DELETED - ' + $('.hqp' + id).prev().html());
                     $('.hqp' + id).prev().css('color', '#00aa00');
                     $('.hqp' + id).remove();
@@ -97,18 +97,18 @@ ManagePeopleView = Backbone.View.extend({
                     this.stopListening(this.model, "add");
                     this.stopListening(this.model, "remove");
                     this.allPeople.fetch();
-                }, this)
+                }.bind(this)
             });
-        }, this);
+        }.bind(this);
         
-        mergeHqp = $.proxy(function(button, id1, id2){ //global function
+        mergeHqp = function(button, id1, id2){ //global function
             $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
             var data = 'id1=' + id1 + '&id2=' + id2;
             $.ajax({
                 type: 'POST',
                 url: 'index.php?action=mergeDuplicates&handler=hqp',
                 data: data,
-                success: $.proxy(function (data) {
+                success: function (data) {
                     $('#hqp' + id1 + '_' + id2).prev().html('MERGED - ' + $('#hqp' + id1 + '_' + id2).prev().html());
                     $('#hqp' + id1 + '_' + id2).prev().css('color', '#00aa00');
                     $('#hqp' + id1 + '_' + id2).remove();
@@ -116,11 +116,11 @@ ManagePeopleView = Backbone.View.extend({
                     this.stopListening(this.model, "add");
                     this.stopListening(this.model, "remove");
                     this.allPeople.fetch();
-                }, this)
+                }.bind(this)
             });
-        }, this);
+        }.bind(this);
         
-        ignoreHqp = $.proxy(function(button, id1, id2){ //global function
+        ignoreHqp = function(button, id1, id2){ //global function
             $(button).parent().append("<img src='" + wgServer + wgScriptPath + "/skins/Throbber.gif' />");
             var data = 'id1=' + id1 + '&id2=' + id2;
             $.ajax({
@@ -133,7 +133,7 @@ ManagePeopleView = Backbone.View.extend({
                     $('#hqp' + id1 + '_' + id2).remove();
                 }
             });
-        }, this);
+        }.bind(this);
         
         var outputSoFar = '';
         var ajaxRequest;  // The variable that makes Ajax possible!
@@ -298,8 +298,8 @@ ManagePeopleView = Backbone.View.extend({
         $("#selectExistingMember").chosen({width: "99%"});
         $("#selectExistingMember").trigger("chosen:activate");
         xhr = null;
-        var changeFn = $.proxy(function(e){
-            _.defer($.proxy(function(){
+        var changeFn = function(e){
+            _.defer(function(){
                 if(e.keyCode == 37 ||
                    e.keyCode == 38 ||
                    e.keyCode == 39 ||
@@ -317,7 +317,7 @@ ManagePeopleView = Backbone.View.extend({
                     return;
                 }
                 var url = wgServer + wgScriptPath + "/index.php?action=api.globalSearch/people/" + escape(searchStr).replace(/\//g, ' ');
-                xhr = $.get(url, $.proxy(function(data){
+                xhr = $.get(url, function(data){
                     if($("#selectExistingMember_chosen .chosen-search input").val() != searchStr){
                         // The value in the search box has changed, retry the ajax request
                         $("#selectExistingMember_chosen .chosen-search input").trigger("change");
@@ -325,7 +325,7 @@ ManagePeopleView = Backbone.View.extend({
                     }
                     var results = data.results;
                     var people = new Array("<option></option>");
-                    _.each(this.allPeople.sortBy('reversedName'), $.proxy(function(p){
+                    _.each(this.allPeople.sortBy('reversedName'), function(p){
                         if(_.contains(results, parseInt(p.get('id')))){
                             var fullname = p.get('reversedName');
                             if(p.get('email') != ""){
@@ -333,13 +333,13 @@ ManagePeopleView = Backbone.View.extend({
                             }
                             people.push("<option value='" + p.get('id') + "'>" + fullname + "</option>");
                         }
-                    }, this));
+                    }.bind(this));
                     $("#selectExistingMember").html(people.join());
                     $("#selectExistingMember").trigger("chosen:updated");
                     $("#selectExistingMember_chosen .chosen-search input").val(searchStr);
-                }, this));
-            }, this));
-        }, this);
+                }.bind(this));
+            }.bind(this));
+        }.bind(this);
         $("#selectExistingMember_chosen .chosen-search input").keyup(changeFn)
                                                               .change(changeFn)
                                                               .on("paste", changeFn);
@@ -378,17 +378,17 @@ ManagePeopleView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Add": $.proxy(function(e){
+	            "Add": function(e){
 	                var addButton = e.currentTarget;
 	                enableAddButton = function(){ // Used by child frame
 	                    $(addButton).prop('disabled', false);
 	                }
-	                closeAddHQP = $.proxy(function(){ // Used by child frame
+	                closeAddHQP = function(){ // Used by child frame
 	                    this.addNewMemberDialog.dialog('close');
 	                    clearSuccess();
 	                    addSuccess("User created successfully");
 	                    this.model.fetch();
-	                }, this);
+	                }.bind(this);
 	                $(addButton).prop('disabled', true);
 	                if(document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').length > 0){
 	                    document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').click();
@@ -396,10 +396,10 @@ ManagePeopleView = Backbone.View.extend({
                     else{ 
                         document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=submit]').click();
                     }
-	            }, this),
-	            "Cancel": $.proxy(function(){
+	            }.bind(this),
+	            "Cancel": function(){
 	                this.addNewMemberDialog.dialog('close');
-	            }, this)
+	            }.bind(this)
 	        }
 	    });
         this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
@@ -420,22 +420,22 @@ ManagePeopleView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Add": $.proxy(function(e){
+	            "Add": function(e){
 	                var id = $("#selectExistingMember").val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {id: id})
-	                .done($.proxy(function(){
+	                .done(function(){
 	                    var person = this.allPeople.findWhere({'id': id});
 	                    person.fetch();
 	                    this.people.add(person);
-	                }, this))
-	                .fail($.proxy(function(){
+	                }.bind(this))
+	                .fail(function(){
 	                    addError("There was a problem adding this person");
-	                }, this));
+	                }.bind(this));
                     this.addExistingMemberDialog.dialog('close');
-	            }, this),
-	            "Cancel": $.proxy(function(){
+	            }.bind(this),
+	            "Cancel": function(){
 	                this.addExistingMemberDialog.dialog('close');
-	            }, this)
+	            }.bind(this)
 	        }
 	    });
 	    this.$el.append(this.addNewMemberDialog.parent());

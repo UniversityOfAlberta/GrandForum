@@ -42,13 +42,13 @@ ManageProductsViewRow = Backbone.View.extend({
 
         // Unselect all subprojects as well
         if(project != undefined){
-            _.each(project.get('subprojects'), $.proxy(function(sub){
+            _.each(project.get('subprojects'), function(sub){
                 var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
                 if(index != -1){
                     projects.splice(index, 1);
                     this.$("input[data-project=" + sub.id + "]").prop('checked', false);
                 }
-            }, this));
+            }.bind(this));
         }
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent
@@ -146,7 +146,7 @@ ManageProductsViewRow = Backbone.View.extend({
             var product = new Product(this.model.toJSON());
             product.set('id', null);
             product.save(null, {
-                success: $.proxy(function(){
+                success: function(){
                     clearSuccess();
                     clearError();
                     addSuccess('The ' + product.get('category') + ' <i>' + product.get('title') + '</i> was duplicated');
@@ -154,15 +154,15 @@ ManageProductsViewRow = Backbone.View.extend({
                     this.duplicating = false;
                     this.$(".copy-icon").css('background', '');
                     this.$(".copy-icon .throbber").hide();
-                }, this),
-                error: $.proxy(function(){
+                }.bind(this),
+                error: function(){
                     clearSuccess();
                     clearError();
                     addError('There was a problem duplicating the ' + product.get('category') + ' <i>' + product.get('title') + '</i>');
                     this.duplicating = false;
                     this.$(".copy-icon").css('background', '');
                     this.$(".copy-icon .throbber").hide();
-                }, this)
+                }.bind(this)
             });
         }
     },
@@ -199,18 +199,18 @@ ManageProductsViewRow = Backbone.View.extend({
                           peerReviewedMissing: false
                          };
         
-        // $.proxy rebinds this to val to this.model.get('cat') instead of 'type'
+        // bind rebinds this to val to this.model.get('cat') instead of 'type'
         if(productStructure.categories[this.model.get('category')].
            types[this.model.getType()].data.length == 0){
             incomplete.incomplete = false;
         }
         else{
             _.each(productStructure.categories[this.model.get('category')].
-                   types[this.model.getType()].data, $.proxy(function(val, key){        
+                   types[this.model.getType()].data, function(val, key){
                         if(this.model.get('data')[key] != undefined && this.model.get('data')[key].trim() != ""){
                             incomplete.incomplete = false;
                         }
-                }, this)
+                }.bind(this)
             );
         }
 

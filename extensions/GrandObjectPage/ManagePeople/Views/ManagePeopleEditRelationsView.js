@@ -9,17 +9,17 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         this.model.fetch();
         this.relationViews = new Array();
         this.template = _.template($('#edit_relations_template').html());
-        this.model.ready().then($.proxy(function(){
+        this.model.ready().then(function(){
             this.relations = this.model;
             this.listenTo(this.relations, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
+            this.model.ready().then(function(){
                 this.render();
-            }, this));
-        }, this));
+            }.bind(this));
+        }.bind(this));
         
         var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
-        setInterval($.proxy(function(){
+        setInterval(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
                     my: "center center",
@@ -29,21 +29,21 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
 	        }
-	    }, this), 100);
-	    $(window).resize($.proxy(function(){
+	    }.bind(this), 100);
+	    $(window).resize(function(){
 	        this.$el.dialog("option","position", {
                 my: "center center",
                 at: "center center",
                 offset: "0 -75%"
             });
-	    }, this));
+	    }.bind(this));
     },
     
     saveAll: function(){
         var person = this.person;
         var copy = this.relations.where({'user2': person.get('id')})
         clearAllMessages();
-        _.each(copy, $.proxy(function(relation){
+        _.each(copy, function(relation){
             if(relation.get('deleted') != "true"){
                 if(!relation.save(null, {
                     success: function(){
@@ -68,7 +68,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                     }
                 });
             }
-        }, this));
+        }.bind(this));
     },
     
     addRelation: function(){
@@ -78,7 +78,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     addRows: function(){
         var relations = new Backbone.Collection(this.relations.where({'user2': this.person.get('id')}));
-        relations.each($.proxy(function(relation, i){
+        relations.each(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
                 this.$("#relation_rows").append(view.render());
@@ -90,7 +90,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 }
                 this.relationViews[i] = view;
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){
@@ -179,10 +179,10 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.update();
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$("[name=startDate]").change();
             this.$("[name=endDate]").change();
-        }, this));
+        }.bind(this));
         return this.$el;
     }, 
     

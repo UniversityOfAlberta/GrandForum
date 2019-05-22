@@ -41,11 +41,11 @@ GrantAwardsView = Backbone.View.extend({
             start = 0;
         }
         if(this.table != undefined){
-            _.defer($.proxy(function(){
+            _.defer(function(){
                 var data = this.processData(start);
                 this.table.rows.add(data);
                 this.table.draw();
-            }, this));
+            }.bind(this));
             return this.$el;
         }
         return this.render();

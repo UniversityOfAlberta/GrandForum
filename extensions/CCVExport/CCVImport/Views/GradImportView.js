@@ -10,7 +10,7 @@ GradImportView = Backbone.View.extend({
         var button = $("#gdupload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = function(response, error){
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();
@@ -43,7 +43,7 @@ GradImportView = Backbone.View.extend({
                 addError(error);
             }
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();    
     },

@@ -74,9 +74,6 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
 
-$egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
-                                           'path' => "$IP/extensions/MailingList/mailingList.body.php");
-
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 

@@ -20,7 +20,6 @@ autoload_register('GrandObjects/API/Wiki');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Grant');
 autoload_register('GrandObjects/API/PDF');
-autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Journal');
 
 global $apiRequest;
@@ -71,11 +70,6 @@ $apiRequest->addAction('Hidden','grantaward/:start/:count', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantaward/:id', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantpartner', 'GrantPartnerAPI');
 $apiRequest->addAction('Hidden','grantpartner/:id', 'GrantPartnerAPI');
-// MailingList
-$apiRequest->addAction('Hidden','mailingList', 'MailingListAPI');
-$apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
-$apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
-$apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 //Journals
@@ -99,7 +93,6 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js?".filemtime("extensions/GrandObjects/BackboneModels/Virtu.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Journal.js?".filemtime("extensions/GrandObjects/BackboneModels/Journal.js")."'></script>\n";
     return true;
 }

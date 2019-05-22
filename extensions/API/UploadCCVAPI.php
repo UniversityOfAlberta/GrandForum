@@ -313,7 +313,6 @@ class UploadCCVAPI extends API{
                                           'end_date'      => $end_date));
             }
             $status = true;
-            MailingList::subscribeAll($person);
         }
         return $status;
     }

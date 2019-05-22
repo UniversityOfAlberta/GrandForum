@@ -78,13 +78,13 @@ HistoriesView = Backbone.View.extend({
         this.model.each(function(history){
             ajax.push(history.save());
         });
-        $.when.apply($, ajax).then($.proxy(function(){
+        $.when.apply($, ajax).then(function(){
             addSuccess("Product Histories Saved");
             this.$("button#saveHistory").removeAttr("disabled");
-        }, this),$.proxy(function(){
+        }.bind(this), function(){
             addError("There was an error saving the product histories");
             this.$("button#saveHistory").removeAttr("disabled");
-        }, this));
+        }.bind(this));
     },
     
     events: {
@@ -97,11 +97,11 @@ HistoriesView = Backbone.View.extend({
             v.remove();
         });
         this.views = {};
-        this.model.each($.proxy(function(productHistory){
+        this.model.each(function(productHistory){
             var view = new HistoryView({model: productHistory});
             this.$("#histories").append(view.render());
             this.views[productHistory.cid] = view;
-        }, this));
+        }.bind(this));
     },
     
     render: function(){
@@ -132,12 +132,12 @@ HistoryView = Backbone.View.extend({
             this.model.destroy();
             return;
         }
-        $.when(this.model.destroy()).then($.proxy(function(){
+        $.when(this.model.destroy()).then(function(){
             addSuccess("Product History Rule Deleted");
-        }, this),$.proxy(function(){
+        }.bind(this), function(){
             addError("There was an error deleting the history");
             $(e.currentTarget).removeAttr("disabled");
-        }, this));
+        }.bind(this));
     },
     
     events: {

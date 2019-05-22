@@ -10,17 +10,17 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         this.roleViews = new Array();
         this.listenTo(this.model, "change", this.render);
         this.template = _.template($('#edit_roles_template').html());
-        this.model.ready().then($.proxy(function(){
+        this.model.ready().then(function(){
             this.roles = this.model.getAll();
             this.listenTo(this.roles, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
+            this.model.ready().then(function(){
                 this.render();
-            }, this));
-        }, this));
+            }.bind(this));
+        }.bind(this));
         
         var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
-        setInterval($.proxy(function(){
+        setInterval(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
                     my: "center center",
@@ -30,20 +30,20 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
 	        }
-	    }, this), 100);
-	    $(window).resize($.proxy(function(){
+	    }.bind(this), 100);
+	    $(window).resize(function(){
 	        this.$el.dialog("option","position", {
                 my: "center center",
                 at: "center center",
                 offset: "0 -75%"
             });
-	    }, this));
+	    }.bind(this));
     },
     
     saveAll: function(){
         var copy = this.roles.toArray();
         clearAllMessages();
-        _.each(copy, $.proxy(function(role){
+        _.each(copy, function(role){
             if(_.contains(allowedRoles, role.get('name'))){
                 if(role.get('deleted') != "true"){
                     role.save(null, {
@@ -66,7 +66,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
                     });
                 }
             }
-        }, this));
+        }.bind(this));
     },
     
     addRole: function(){
@@ -75,7 +75,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     },
     
     addRows: function(){
-        this.roles.each($.proxy(function(role, i){
+        this.roles.each(function(role, i){
             if(this.roleViews[i] == null){
                 var view = new ManagePeopleEditRolesRowView({model: role});
                 this.$("#role_rows").append(view.render());
@@ -87,7 +87,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
                 }
                 this.roleViews[i] = view;
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){
