@@ -62,9 +62,40 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent.deleteDialog.dialog('open');
     },
     
+    duplicateProduct: function(){
+        if(!this.duplicating){
+            // Only duplicate if there isn't already a pending one happening
+            this.$(".copy-icon").css('background', 'none');
+            this.$(".copy-icon .throbber").show();
+            this.duplicating = true;
+            var product = new Product(this.model.toJSON());
+            product.set('id', null);
+            product.save(null, {
+                success: $.proxy(function(){
+                    clearSuccess();
+                    clearError();
+                    addSuccess('The ' + product.get('category') + ' <i>' + product.get('title') + '</i> was duplicated');
+                    this.parent.products.add(product);
+                    this.duplicating = false;
+                    this.$(".copy-icon").css('background', '');
+                    this.$(".copy-icon .throbber").hide();
+                }, this),
+                error: $.proxy(function(){
+                    clearSuccess();
+                    clearError();
+                    addError('There was a problem duplicating the ' + product.get('category') + ' <i>' + product.get('title') + '</i>');
+                    this.duplicating = false;
+                    this.$(".copy-icon").css('background', '');
+                    this.$(".copy-icon .throbber").hide();
+                }, this)
+            });
+        }
+    },
+    
     events: {
         "change .checkboxCell input[type=checkbox]": "toggleSelect",
         "click .edit-icon": "editProduct",
+        "click .copy-icon": "duplicateProduct",
         "click .delete-icon": "deleteProduct",
     },
     

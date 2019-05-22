@@ -93,6 +93,21 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
     background: url("../../{$iconPathHighlighted}glyphicons_150_edit_small.png");
 }
 
+.copy-icon {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 17px;
+    height: 17px;
+    margin-left: 1px;
+    margin-right:1px;
+    background: url("../../{$iconPath}glyphicons_154_more_windows.png");
+}
+
+.copy-icon:hover {
+    background: url("../../{$iconPathHighlighted}glyphicons_154_more_windows.png");
+}
+
 .delete-icon {
     cursor: pointer;
     display: inline-block;
