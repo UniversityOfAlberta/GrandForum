@@ -107,7 +107,6 @@ class JobPostingAPI extends RESTAPI {
                 if(is_array($researchFields)){
                     $researchFields = implode(", ", $this->POST('researchFields'));
                 }
-                $job->userId = $me->getId();
                 $job->projectId = $this->POST('projectId');
                 $job->visibility = $this->POST('visibility');
                 $job->jobTitle = $this->POST('jobTitle');

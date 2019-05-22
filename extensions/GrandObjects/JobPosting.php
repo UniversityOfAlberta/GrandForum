@@ -303,8 +303,7 @@ class JobPosting extends BackboneModel {
     function update(){
         if($this->isAllowedToEdit()){
             $status = DBFunctions::update('grand_job_postings',
-                                          array('user_id' => $this->userId,
-                                                'project_id' => $this->projectId,
+                                          array('project_id' => $this->projectId,
                                                 'visibility' => $this->visibility,
                                                 'job_title' => $this->jobTitle,
                                                 'deadline_type' => $this->deadlineType,
