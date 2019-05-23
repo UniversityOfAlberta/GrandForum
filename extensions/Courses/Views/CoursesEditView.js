@@ -39,13 +39,13 @@ CoursesEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveCourse").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveCourse").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('course_url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveCourse").prop('disabled', false);
                 clearAllMessages();
@@ -55,7 +55,7 @@ CoursesEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Course", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
 

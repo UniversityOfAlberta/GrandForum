@@ -160,12 +160,12 @@
 
             // Bind autocomplete.source callback functions to this context.
             if ($.isFunction(this.options.autocomplete.source)) {
-                this.options.autocomplete.source = $.proxy(this.options.autocomplete.source, this);
+                this.options.autocomplete.source = this.options.autocomplete.source.bind(this);
             }
 
             // DEPRECATED.
             if ($.isFunction(this.options.tagSource)) {
-                this.options.tagSource = $.proxy(this.options.tagSource, this);
+                this.options.tagSource = this.options.tagSource.bind(this);
             }
 
             this.tagList

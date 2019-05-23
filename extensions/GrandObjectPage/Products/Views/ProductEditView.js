@@ -29,11 +29,11 @@ ProductEditView = Backbone.View.extend({
         this.allProjects.fetch();
         var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
         me.getProjects();
-        tagsGet.then($.proxy(function(availableTags){
+        tagsGet.then(function(availableTags){
             this.availableTags = availableTags;
-                me.projects.ready().then($.proxy(function(){
+                me.projects.ready().then(function(){
                 this.projects = me.projects.getCurrent();
-                this.allProjects.ready().then($.proxy(function(){
+                this.allProjects.ready().then(function(){
                     var other = new Project({id: "-1", name: "Other"});
                     other.id = "-1";
                     this.otherProjects = this.allProjects.getCurrent();
@@ -47,15 +47,15 @@ ProductEditView = Backbone.View.extend({
                     else{
                         _.defer(this.render);
                     }
-                }, this));
-            }, this));
-        }, this));
-        $(document).click($.proxy(function(e){
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));
+        $(document).click(function(e){
             var popup = $("div.popupBox:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 this.model.trigger("change:projects");
             }
-        }, this));
+        }.bind(this));
     },
     
     select: function(projectId){
@@ -77,13 +77,13 @@ ProductEditView = Backbone.View.extend({
 
         // Unselect all subprojects as well
         if(project != undefined){
-            _.each(project.get('subprojects'), $.proxy(function(sub){
+            _.each(project.get('subprojects'), function(sub){
                 var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
                 if(index != -1){
                     projects.splice(index, 1);
                     this.$("input[data-project=" + sub.id + "]").prop('checked', false);
                 }
-            }, this));
+            }.bind(this));
         }
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent
@@ -145,19 +145,19 @@ ProductEditView = Backbone.View.extend({
         console.log(this.model.get('projects'));
         this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         var lastHeight = this.$el.prop("scrollHeight")
-        var interval = setInterval($.proxy(function(){
+        var interval = setInterval(function(){
             if(this.$el.prop("scrollHeight") > lastHeight){
                 this.$el.scrollTop(this.$el.scrollTop() + Math.abs(lastHeight - this.$el.prop("scrollHeight")));
                 lastHeight = this.$el.prop("scrollHeight");
             }
-        }, this), 16);
-        this.$("div.otherPopup").slideDown($.proxy(function(){
+        }.bind(this), 16);
+        this.$("div.otherPopup").slideDown(function(){
             clearInterval(interval);
             if(this.$el.prop("scrollHeight") > lastHeight){
                 this.$el.scrollTop(this.$el.scrollTop() + Math.abs(lastHeight - this.$el.prop("scrollHeight")));
                 lastHeight = this.$el.prop("scrollHeight");
             }
-        }, this));
+        }.bind(this));
     },
     
     showSubprojects: function(e){
@@ -201,13 +201,13 @@ ProductEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveProduct").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
@@ -217,7 +217,7 @@ ProductEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Product", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     

@@ -6,9 +6,9 @@ TabsView = Backbone.View.extend({
     initialize: function(options){
         var self = this;
         me.getRoles();
-        me.roles.ready().then($.proxy(function(){
+        me.roles.ready().then(function(){
             this.currentRoles = me.roles.getCurrent();
-            me.roles.ready().then($.proxy(function(){
+            me.roles.ready().then(function(){
                 Backbone.Subviews.add(this);
                 var intervalId = setInterval(function(){ //Intervals are set to check if the tab is visible to render all items
                     if($('#tabs-1').is(':visible') && self.subviews.studentImport != undefined){
@@ -39,8 +39,8 @@ TabsView = Backbone.View.extend({
                     }
                  }, 100);
                  this.render();
-            }, this))
-        }, this));
+            }.bind(this))
+        }.bind(this));
     },
 
     subviewCreators: {

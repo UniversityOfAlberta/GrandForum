@@ -30,8 +30,6 @@
 		(function($){
 
 			var jQversion = jQuery.fn.jquery.split(".");
-			if(jQversion[1]<8)
-				return;
 
 			jQuery.browser = {};
 			jQuery.browser.mozilla = false;

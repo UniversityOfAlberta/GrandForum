@@ -33,7 +33,7 @@ SopsView = Backbone.View.extend({
         }
         this.getUserPrefs();
         
-        $(window).resize($.proxy(function(){
+        $(window).resize(function(){
             this.$('div.dataTables_scrollBody').css('max-height', $(window).height() - 
                                                        this.$('#tableContainer').offset().top - 
                                                        this.$('#listTable_length').outerHeight() - 
@@ -41,7 +41,7 @@ SopsView = Backbone.View.extend({
                                                        this.$('#listTable_info').outerHeight() -
                                                        $('#footer').outerHeight());
             this.table.draw();
-        }, this));
+        }.bind(this));
     },
 
     updateUserPrefs: function() {
@@ -67,7 +67,7 @@ SopsView = Backbone.View.extend({
         }
         
         // Filter the Sops
-        var sops = new Sops(this.sops.filter($.proxy(function(sop) {
+        var sops = new Sops(this.sops.filter(function(sop) {
             sop.hidden = !this.hidden;
             var reviewers = sop.attributes.reviewers;
             var other_reviewers = sop.attributes.other_reviewers;
@@ -85,15 +85,15 @@ SopsView = Backbone.View.extend({
                 }
             }
             return this.hidden;
-        }, this)));
+        }.bind(this)));
         
         // Render the SopsRows
         var fragment = document.createDocumentFragment();
-        sops.each($.proxy(function(p, i){
+        sops.each(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
             row.render();
             fragment.appendChild(row.el);
-        }, this));
+        }.bind(this));
         this.$("#sopRows").html(fragment);
         
         // Create the DataTable
@@ -204,7 +204,7 @@ SopsView = Backbone.View.extend({
                                                             title: 'CSGARS_Overview_Table'
                                                         } )
                                                      ], 
-                                                     'drawCallback': $.proxy(function() {
+                                                     'drawCallback': function() {
                                                         this.renderRoles();
                                                         if (SopsView.filtersSelected.filterMenuOpen == true) {
                                                             // Move the filter menu back out
@@ -248,7 +248,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.appliedNSERC = this.appliedNSERC.prop("checked");
                                                         SopsView.filtersSelected.filterDoBSpan = this.filterDoBSpan.val();
                                                         SopsView.filtersSelected.filterSelectEPLTest = this.filterSelectEPLTest.val();
-                                                     }, this)
+                                                     }.bind(this)
                                                  });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         table = this.table;
@@ -327,7 +327,7 @@ SopsView = Backbone.View.extend({
         var filtercountry = this.filterSelectCountry.chosen();
         var value = filtercountry.val();
         var studentcountry = data[5];
-        if (value != null) {
+        if (!_.isEmpty(value)) {
             if ($.inArray(studentcountry, value) == -1) {
                 return false;
             }
@@ -338,7 +338,7 @@ SopsView = Backbone.View.extend({
     filterProgramName: function(settings,data,dataIndex){
         var filterprograms = this.filterSelectProgramName.chosen().val();
         var studentprogram = data[8];
-        if (filterprograms != null) {
+        if (!_.isEmpty(filterprograms)) {
             for (var i = 0; i < filterprograms.length; ++i) {
                 if (studentprogram.indexOf(filterprograms[i]) > -1) {
                     return true;
@@ -367,7 +367,7 @@ SopsView = Backbone.View.extend({
     /*filterFolder: function(settings,data,dataIndex){
         var input = $('#filterSelectFolder').chosen().val();
         var folder = data[3];
-        if (input != null) {
+        if (!_.isEmpty(input)) {
             for (var i = 0; i < input.length; ++i) {
                 if (folder.indexOf(input[i]) > -1) {
                     return true;
@@ -381,7 +381,7 @@ SopsView = Backbone.View.extend({
     filterDecision: function(settings,data,dataIndex){
         var input = this.filterSelectDecision.chosen().val();
         var decision = data[24];
-        if (input != null) {
+        if (!_.isEmpty(input)) {
             for (var i = 0; i < input.length; ++i) {
                 if (input[i] == decision) {
                     return true;
@@ -409,7 +409,7 @@ SopsView = Backbone.View.extend({
    filterByAreasOfInterest: function(settings,data,dataIndex){
         var filterSelected= this.filterSelectAoI.chosen().val();
         var aois = data[10].split(", ");
-        if (filterSelected != null) {
+        if (!_.isEmpty(filterSelected)) {
             for (var i = 0; i < filterSelected.length; ++i) {
                 if ($.inArray(filterSelected[i], aois) != -1) {
                     return true;
@@ -423,7 +423,7 @@ SopsView = Backbone.View.extend({
    filterSupervisors: function(settings,data,dataIndex){
         var filtersupervisors = this.filterSelectSupervisors.chosen().val();
         var studentsupervisors = unaccentChars(data[11]).split(", ");
-        if (filtersupervisors != null) {
+        if (!_.isEmpty(filtersupervisors)) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
                 if ($.inArray(unaccentChars(filtersupervisors[i]), studentsupervisors) != -1) {
                     return true;
@@ -437,7 +437,7 @@ SopsView = Backbone.View.extend({
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = this.filterSelectReviewers.chosen().val();
         var reviewers = unaccentChars(data[18]);
-        if (filterreviewers != null) {
+        if (!_.isEmpty(filterreviewers)) {
             for (var i = 0; i < filterreviewers.length; ++i) {
                 if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
                     return true;
@@ -660,7 +660,7 @@ SopsView = Backbone.View.extend({
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
-        return false;
+            return false;
         }
         return true;
     },
@@ -729,23 +729,23 @@ SopsView = Backbone.View.extend({
         this.filterCommentsEl = this.$('#filterComments');
         this.filterMeOnly = this.$('#filterMeOnly');
         
-        var fnChosen = $.proxy(function (variable) {
+        var fnChosen = function (variable) {
             if (SopsView.filtersSelected[variable] != null) {
                 var field = this[variable].chosen();
                 field.val(SopsView.filtersSelected[variable]);
                 field.trigger("chosen:updated");
             }
-        }, this);
-        var fnField = $.proxy(function (variable) {
+        }.bind(this);
+        var fnField = function (variable) {
             if (SopsView.filtersSelected[variable] != null) {
                 var field = this[variable].val(SopsView.filtersSelected[variable]);
             }
-        }, this);
-        var fnCheckbox = $.proxy(function (variable) {
+        }.bind(this);
+        var fnCheckbox = function (variable) {
             if (SopsView.filtersSelected[variable]) {
                 this[variable].prop("checked", true);
             }
-        }, this);
+        }.bind(this);
 
         // This is for keeping filter options across overview table types
         fnChosen('filterSelectCountry');
@@ -795,30 +795,30 @@ SopsView = Backbone.View.extend({
         });
         $.fn.dataTable.ext.search = new Array();
         $.fn.dataTable.ext.search.push(
-            $.proxy(this.filterGPA, this),
-            //$.proxy(this.filterFolder, this),
-            $.proxy(this.filterDecision, this),
-            $.proxy(this.filterMineOnly, this),
-            $.proxy(this.filterByTags, this),
-            $.proxy(this.filterProgramName, this),
-            $.proxy(this.filterCitizenship, this),
-            $.proxy(this.filterNumPubs, this),
-            $.proxy(this.filterNumAwards, this),
-            $.proxy(this.filterScholHeld, this),
-            $.proxy(this.filterScholApplied, this),
-            $.proxy(this.filterBirthday, this),
-            $.proxy(this.filterGREVerbal, this),
-            $.proxy(this.filterGREQuantitative, this),
-            $.proxy(this.filterGREAnalytical, this),
-            $.proxy(this.filterGRECS, this),
-            $.proxy(this.filterCourses, this),
-            $.proxy(this.filterNotes, this),
-            $.proxy(this.filterComments, this),
-            $.proxy(this.filterByAreasOfInterest, this),
-            $.proxy(this.filterSupervisors, this),
-            $.proxy(this.filterReviewers, this),
-            $.proxy(this.filterEPLTest, this),
-            $.proxy(this.filterEPLScore, this)
+            this.filterGPA.bind(this),
+            //this.filterFolder.bind(this),
+            this.filterDecision.bind(this),
+            this.filterMineOnly.bind(this),
+            this.filterByTags.bind(this),
+            this.filterProgramName.bind(this),
+            this.filterCitizenship.bind(this),
+            this.filterNumPubs.bind(this),
+            this.filterNumAwards.bind(this),
+            this.filterScholHeld.bind(this),
+            this.filterScholApplied.bind(this),
+            this.filterBirthday.bind(this),
+            this.filterGREVerbal.bind(this),
+            this.filterGREQuantitative.bind(this),
+            this.filterGREAnalytical.bind(this),
+            this.filterGRECS.bind(this),
+            this.filterCourses.bind(this),
+            this.filterNotes.bind(this),
+            this.filterComments.bind(this),
+            this.filterByAreasOfInterest.bind(this),
+            this.filterSupervisors.bind(this),
+            this.filterReviewers.bind(this),
+            this.filterEPLTest.bind(this),
+            this.filterEPLScore.bind(this)
         );
         this.$("#filterDoB").datepicker({
             dateFormat: 'yy-mm-dd',

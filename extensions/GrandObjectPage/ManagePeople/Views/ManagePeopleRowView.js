@@ -36,29 +36,29 @@ ManagePeopleRowView = Backbone.View.extend({
 	            open: function(){
 	                $("html").css("overflow", "hidden");
 	            },
-	            beforeClose: $.proxy(function(){
+	            beforeClose: function(){
 	                $("html").css("overflow", "auto");
 	                this.editRoles.stopListening();
 	                this.editRoles.undelegateEvents();
 	                clearInterval(this.editRoles.interval);
 	                this.editRoles.interval = null;
-	            }, this),
+	            }.bind(this),
 	            buttons: {
 	                "+": { 
 	                    text: "Add Role", 
-	                    click: $.proxy(function(e){
+	                    click: function(e){
 	                        this.editRoles.addRole();
-	                    }, this), 
+	                    }.bind(this), 
 	                    disabled: (allowedRoles.length == 0),
 	                    style: "float: left;"
 	                },
-	                "Save": $.proxy(function(e){
+	                "Save": function(e){
 	                    this.editRoles.saveAll();
                         this.rolesDialog.dialog('close');
-	                }, this),
-	                "Cancel": $.proxy(function(){
+	                }.bind(this),
+	                "Cancel": function(){
 	                    this.rolesDialog.dialog('close');
-	                }, this)
+	                }.bind(this)
 	            }
 	        });
 	    }
@@ -85,29 +85,29 @@ ManagePeopleRowView = Backbone.View.extend({
 	            open: function(){
 	                $("html").css("overflow", "hidden");
 	            },
-	            beforeClose: $.proxy(function(){
+	            beforeClose: function(){
 	                $("html").css("overflow", "auto");
 	                this.editProjects.stopListening();
 	                this.editProjects.undelegateEvents();
 	                clearInterval(this.editProjects.interval);
 	                this.editProjects.interval = null;
-	            }, this),
+	            }.bind(this),
 	            buttons: {
 	                "+": { 
 	                    text: "Add Project", 
-	                    click: $.proxy(function(e){
+	                    click: function(e){
 	                        this.editProjects.addProject();
-	                    }, this),
+	                    }.bind(this),
 	                    disabled: (allowedProjects.length == 0),
 	                    style: "float: left;"
 	                },
-	                "Save": $.proxy(function(e){
+	                "Save": function(e){
 	                    this.editProjects.saveAll();
                         this.projectsDialog.dialog('close');
-	                }, this),
-	                "Cancel": $.proxy(function(){
+	                }.bind(this),
+	                "Cancel": function(){
 	                    this.projectsDialog.dialog('close');
-	                }, this)
+	                }.bind(this)
 	            }
 	        });
         }
@@ -134,28 +134,28 @@ ManagePeopleRowView = Backbone.View.extend({
 	            open: function(){
 	                $("html").css("overflow", "hidden");
 	            },
-	            beforeClose: $.proxy(function(){
+	            beforeClose: function(){
 	                $("html").css("overflow", "auto");
 	                this.editRelations.stopListening();
 	                this.editRelations.undelegateEvents();
 	                clearInterval(this.editRelations.interval);
 	                this.editRelations.interval = null;
-	            }, this),
+	            }.bind(this),
 	            buttons: {
 	                "+": { 
 	                    text: "Add Relationship", 
-	                    click: $.proxy(function(e){
+	                    click: function(e){
 	                        this.editRelations.addRelation();
-	                    }, this), 
+	                    }.bind(this), 
 	                    style: "float: left;"
 	                },
-	                "Save": $.proxy(function(e){
+	                "Save": function(e){
 	                    this.editRelations.saveAll();
                         this.relationsDialog.dialog('close');
-	                }, this),
-	                "Cancel": $.proxy(function(){
+	                }.bind(this),
+	                "Cancel": function(){
 	                    this.relationsDialog.dialog('close');
-	                }, this)
+	                }.bind(this)
 	            }
 	        });
         }
@@ -182,28 +182,28 @@ ManagePeopleRowView = Backbone.View.extend({
 	            open: function(){
 	                $("html").css("overflow", "hidden");
 	            },
-	            beforeClose: $.proxy(function(){
+	            beforeClose: function(){
 	                $("html").css("overflow", "auto");
 	                this.editUniversities.stopListening();
 	                this.editUniversities.undelegateEvents();
 	                clearInterval(this.editUniversities.interval);
 	                this.editUniversities.interval = null;
-	            }, this),
+	            }.bind(this),
 	            buttons: {
 	                "+": { 
 	                    text: "Add University", 
-	                    click: $.proxy(function(e){
+	                    click: function(e){
 	                        this.editUniversities.addUniversity();
-	                    }, this), 
+	                    }.bind(this), 
 	                    style: "float: left;"
 	                },
-	                "Save": $.proxy(function(e){
+	                "Save": function(e){
 	                    this.editUniversities.saveAll();
                         this.universitiesDialog.dialog('close');
-	                }, this),
-	                "Cancel": $.proxy(function(){
+	                }.bind(this),
+	                "Cancel": function(){
 	                    this.universitiesDialog.dialog('close');
-	                }, this)
+	                }.bind(this)
 	            }
 	        });
         }

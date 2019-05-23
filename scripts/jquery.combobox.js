@@ -2,7 +2,7 @@
     $.widget( "custom.combobox", {
       _create: function() {
         var interval = null;
-        var createFn = $.proxy(function(){
+        var createFn = function(){
             if(this.element.is(":visible") || this.element.css('width') != '0px'){
                 var next = this.element.next();
                 if(next.hasClass('custom-combobox')){
@@ -24,7 +24,7 @@
                 clearInterval(interval);
                 interval = null;
             }
-        }, this);
+        }.bind(this);
         if(this.element.is(":visible") || this.element.css('width') != '0px'){
             createFn();
         }

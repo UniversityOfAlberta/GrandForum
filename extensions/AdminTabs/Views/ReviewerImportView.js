@@ -9,7 +9,7 @@ ReviewerImportView = Backbone.View.extend({
         var button = $("#courseupload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(success, errors){
+        ccvUploaded = function(success, errors){
             // Purposefully global so that iframe can access
                 clearAllMessages();
                 if(success != ""){
@@ -20,7 +20,7 @@ ReviewerImportView = Backbone.View.extend({
                 }
                 button.prop("disabled", false);
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();
     },

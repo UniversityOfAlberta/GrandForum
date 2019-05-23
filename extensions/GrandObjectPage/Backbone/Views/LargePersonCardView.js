@@ -6,9 +6,9 @@ LargePersonCardView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.getRoleString().bind('sync', this.renderRoles, this);
         this.template = _.template($("#large_person_card_template").html());
-        setInterval($.proxy(function(){
+        setInterval(function(){
             this.responsive();
-        }, this), 33);
+        }.bind(this), 33);
     },
     
     renderRoles: function(){

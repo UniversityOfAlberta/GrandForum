@@ -24,9 +24,9 @@ SopsRowView = Backbone.View.extend({
             this.model.hidden = false;
         }
         this.$("#hiddenThrobber").show();
-        $.post(wgServer + wgScriptPath + '/index.php?action=api.sophidden/' + this.model.get('user_id') + '/' + this.model.get('year'), {hidden: this.model.hidden}, $.proxy(function(response){
+        $.post(wgServer + wgScriptPath + '/index.php?action=api.sophidden/' + this.model.get('user_id') + '/' + this.model.get('year'), {hidden: this.model.hidden}, function(response){
             this.$("#hiddenThrobber").hide();
-        }, this));
+        }.bind(this));
     },
 
     addNotes: function() {
