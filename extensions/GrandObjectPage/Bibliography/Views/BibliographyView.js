@@ -10,9 +10,9 @@ BibliographyView = Backbone.View.extend({
         this.tags = new Array();
         Backbone.Subviews.add(this);
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Bibliography does not exist");
-            }, this)
+            }.bind(this)
         });
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(Backbone, 'document-click-event', function(e){
@@ -188,7 +188,7 @@ BibliographyView = Backbone.View.extend({
         });
         var outputBib = "";
         this.$('#bibExportThrobber').show();
-        $.when.apply(null, xhrs).done($.proxy(function() {
+        $.when.apply(null, xhrs).done(function() {
             $.each(lis,function(index, value) {
                 var prod = prods.get($(value).attr('product-id'));
                 outputBib += prod.get('bibtex') + "\n\n";
@@ -200,7 +200,7 @@ BibliographyView = Backbone.View.extend({
                 this.showNoBibsErrMsg();
             }
             this.$('#bibExportThrobber').hide();
-        },this));
+        }.bind(this));
     },
 
     setProduct: function(e) {
@@ -241,9 +241,9 @@ BibliographyView = Backbone.View.extend({
                 $("html").css("overflow", "auto");
             },
             buttons: {
-                "Close": $.proxy(function(){
+                "Close": function(){
                     this.bibtexDialog.dialog('close');
-                }, this)    
+                }.bind(this)    
             }
         });
         this.$el.append(this.bibtexDialog.parent());
@@ -265,10 +265,10 @@ BibliographyView = Backbone.View.extend({
             xhrs.push(product.fetch());
         });
         this.products = products;
-        $.when.apply(null, xhrs).done($.proxy(function(){
+        $.when.apply(null, xhrs).done(function(){
             var xhrs2 = new Array();
             var tags = new Array();
-            _.each(products, $.proxy(function(product){
+            _.each(products, function(product){
                 xhrs2.push(product.getCitation());
                 this.mention.push({"name": product.get('title')});
                 var listTags = product.get('tags');
@@ -276,16 +276,16 @@ BibliographyView = Backbone.View.extend({
                     this.mention.push({"name": listTags[i]});
                     this.tags.push(listTags[i]);
                 }
-            }, this));
+            }.bind(this));
             this.tags = this.unique(this.tags);
-            _.each(this.tags, $.proxy(function(tag) {
+            _.each(this.tags, function(tag) {
                 var option = '<option value="' + tag + '">' + tag + '</option>';
                 this.$('#filterSelectTags').append(option);
-            }, this));
+            }.bind(this));
             this.$('#filterSelectTags').trigger("chosen:updated");
 
-            $.when.apply(null, xhrs2).done($.proxy(function(){
-                _.each(products, $.proxy(function(product){
+            $.when.apply(null, xhrs2).done(function(){
+                _.each(products, function(product){
                     var citation = product.get('citation');
                     citation = citation.replace(/ [a-zA-Z]{3}[)][.]/, ").");
                     this.$('#products ol').append("<li product-id='" + product.get('id') + "'>" + citation + "<br />");
@@ -310,12 +310,12 @@ BibliographyView = Backbone.View.extend({
                             "</div></td></tr></table>" +
                         "</div><br />" );
                     
-                    _.each(product.get('tags'), $.proxy(function(tag) {
+                    _.each(product.get('tags'), function(tag) {
                         var tagId = "#tagsDiv" + product.get('id');
                         this.$(tagId).append(
                             "<a class='tag' id='" + tag + "'>" + tag +"</a>, "
                         );
-                    }, this));
+                    }.bind(this));
                                 
                         $("#abstract" + id).click(function() {
                             $("#abstactAndTags" + id).slideToggle("slow", 
@@ -325,12 +325,12 @@ BibliographyView = Backbone.View.extend({
                                 }
                             );
                         });
-                }, this));
+                }.bind(this));
                 $(".pdfnodisplay").remove();
                 this.filterAuthors(); 
                 this.$('#loadPublicationsSpinner').remove();
-            }, this));
-        }, this));
+            }.bind(this));
+        }.bind(this));
     },
 
     unique: function (array) {

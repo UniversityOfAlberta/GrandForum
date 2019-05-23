@@ -93,12 +93,12 @@ ListRulesView = Backbone.View.extend({
             rule.destroy();
             return;
         }
-        $.when(rule.destroy()).then($.proxy(function(){
+        $.when(rule.destroy()).then(function(){
             addSuccess("Mailing List Rule Deleted");
-        }, this),$.proxy(function(){
+        }.bind(this), function(){
             addError("There was an error deleting the rule");
             $(e.currentTarget).removeAttr("disabled");
-        }, this));
+        }.bind(this));
     },
     
     addNewRule: function(e){
@@ -112,13 +112,13 @@ ListRulesView = Backbone.View.extend({
         this.model.rules.each(function(r){
             ajax.push(r.save());
         });
-        $.when.apply($, ajax).then($.proxy(function(){
+        $.when.apply($, ajax).then(function(){
             addSuccess("Mailing List Rules Saved");
             this.$("button#saveRules").removeAttr("disabled");
-        }, this),$.proxy(function(){
+        }.bind(this), function(){
             addError("There was an error saving the rules");
             this.$("button#saveRules").removeAttr("disabled");
-        }, this));
+        }.bind(this));
     },
     
     events: {

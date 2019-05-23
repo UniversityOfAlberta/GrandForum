@@ -2,9 +2,9 @@ ContributionView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Contribution does not exist");
-            }, this)
+            }.bind(this)
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#contribution_template').html());

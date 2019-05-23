@@ -11,8 +11,8 @@ DiversitySurveyView = Backbone.View.extend({
                 clearAllMessages();
                 addError(e.responseText);
             },
-            success: $.proxy(function(){
-                $(window).bind('keydown', $.proxy(function(event) {
+            success: function(){
+                $(window).bind('keydown', function(event) {
                     if (event.ctrlKey || event.metaKey) {
                         switch (String.fromCharCode(event.which).toLowerCase()) {
                         case 's':
@@ -23,8 +23,8 @@ DiversitySurveyView = Backbone.View.extend({
                             break;
                         }
                     }
-                }, this));
-            }, this)
+                }.bind(this));
+            }.bind(this)
         });
     },
     
@@ -35,14 +35,14 @@ DiversitySurveyView = Backbone.View.extend({
     save: _.debounce(function(){
         this.$("#save").prop("disabled", true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
                 });
                 this.$("#save").prop("disabled", false);
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     if(e.responseText != undefined && e.responseText != ""){
@@ -53,7 +53,7 @@ DiversitySurveyView = Backbone.View.extend({
                     }
                 });
                 this.$("#save").prop("disabled", false);
-            }, this)
+            }.bind(this)
         });
     }, 200, true),
     

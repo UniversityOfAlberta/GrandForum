@@ -3,7 +3,7 @@
  
     var id = $(this).attr('id');
     
-    $.get(options.url, $.proxy(function(json){
+    $.get(options.url, function(json){
         
         _.each(json.items, function(i, index){
             if(i.content != undefined && i.content.length > 25){
@@ -76,7 +76,7 @@
         
         timeline.fit();
         
-        timeline.on('select', $.proxy(function(properties){
+        timeline.on('select', function(properties){
             var id = _.first(properties.items);
             var item = items['_data'][id];
             
@@ -120,12 +120,12 @@
                     }
                 }
             });
-        }, this));
+        }.bind(this));
         
         this.alternateBackground();
         
         // Handle Filter Changes
-        $("#" + id + "Filter > input").change($.proxy(function(e){
+        $("#" + id + "Filter > input").change(function(e){
             var values = new Array();
             $("#" + id + "Filter > input:checked").each(function(i, v){
                 values.push($(v).val());
@@ -136,8 +136,8 @@
             timeline.setGroups(filteredGroups);
             this.alternateBackground();
             timeline.fit();
-        }, this));
+        }.bind(this));
 
-    }, this));
+    }.bind(this));
 }
 })( jQuery );

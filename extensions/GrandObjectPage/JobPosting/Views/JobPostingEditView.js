@@ -4,24 +4,24 @@ JobPostingEditView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Job Posting does not exist");
-            }, this)
+            }.bind(this)
         });
-        this.listenTo(this.model, "sync", $.proxy(function(){
+        this.listenTo(this.model, "sync", function(){
             this.allProjects = new Projects();
             this.allProjects.fetch();
-            this.listenTo(this.allProjects, "sync", $.proxy(function(){
+            this.listenTo(this.allProjects, "sync", function(){
                 me.getProjects();
-                me.projects.ready().then($.proxy(function(){
+                me.projects.ready().then(function(){
                     if(this.model.isNew() && me.projects.length > 0){
                         this.model.set('projectId', me.projects.first().get('projectId'));
                     }
                     this.render();
                     this.checkProjectContact();
-                }, this));
-            }, this));
-        }, this));
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));
         this.listenTo(this.model, "change:projectId", this.checkProjectContact);
         this.listenTo(this.model, "change:rank", this.updateRank);
         this.listenTo(this.model, "change:title", function(){
@@ -39,13 +39,13 @@ JobPostingEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveJobPosting").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveJobPosting").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveJobPosting").prop('disabled', false);
                 clearAllMessages();
@@ -55,7 +55,7 @@ JobPostingEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Job Posting", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -73,9 +73,9 @@ JobPostingEditView = Backbone.View.extend({
     },
     
     characterCount: function(){
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$("#characterCount").text(this.$("textarea[name=summary]").val().length);
-        }, this));
+        }.bind(this));
     },
     
     checkProjectContact: function(){
@@ -148,7 +148,7 @@ JobPostingEditView = Backbone.View.extend({
     
     renderTinyMCE: function(){
         var model = this.model;
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
@@ -170,7 +170,7 @@ JobPostingEditView = Backbone.View.extend({
                     ed.on('blur', update);
                 }
             });
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

@@ -105,7 +105,7 @@
         }
         else{
             divActions.css('opacity', 1);
-            unHoverTimeout=setTimeout($.proxy(function(){
+            unHoverTimeout=setTimeout(function(){
                 if(skin == 'cavendish2'){
                     if($(this).hasClass('selected')){
                         $(this).addClass('selected2');
@@ -125,7 +125,7 @@
                         $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
                     }
                 }
-            }, this), 75);
+            }.bind(this), 75);
         }
         e.stopPropagation();
     });

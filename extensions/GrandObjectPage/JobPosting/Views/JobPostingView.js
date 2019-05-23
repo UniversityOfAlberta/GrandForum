@@ -4,15 +4,15 @@ JobPostingView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Job Posting does not exist");
-            }, this)
+            }.bind(this)
         });
-        this.listenTo(this.model, "sync", $.proxy(function(){
+        this.listenTo(this.model, "sync", function(){
             this.allProjects = new Projects();
             this.allProjects.fetch();
             this.listenTo(this.allProjects, "sync", this.render);
-        }, this));
+        }.bind(this));
         this.template = _.template($('#jobposting_template').html());
     },
     

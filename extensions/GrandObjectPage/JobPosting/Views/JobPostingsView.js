@@ -4,11 +4,11 @@ JobPostingsView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch();
-        this.listenTo(this.model, "sync", $.proxy(function(){
+        this.listenTo(this.model, "sync", function(){
             this.allProjects = new Projects();
             this.allProjects.fetch();
             this.listenTo(this.allProjects, "sync", this.render);
-        }, this));
+        }.bind(this));
         this.template = _.template($('#jobpostings_template').html());
         main.set('title', 'Job Postings');
         this.listenTo(this.model, "remove", this.render);

@@ -30,15 +30,15 @@ Product = Backbone.Model.extend({
     },
     
     getCitation: function(){
-        return $.get(this.urlRoot + '/' + this.get('id') + '/citation', $.proxy(function(content){
+        return $.get(this.urlRoot + '/' + this.get('id') + '/citation', function(content){
             this.set('citation', content);
-        }, this));
+        }.bind(this));
     },
 
     getBibTeX: function() {
-        return $.get(this.urlRoot + '/' + this.get('id') + '/bibtex', $.proxy(function(content){
+        return $.get(this.urlRoot + '/' + this.get('id') + '/bibtex', function(content){
             this.set('bibtex', content);
-        }, this));
+        }.bind(this));
     },
 
     getAuthors: function(){

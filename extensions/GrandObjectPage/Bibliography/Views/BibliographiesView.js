@@ -36,8 +36,7 @@ BibliographiesView = Backbone.View.extend({
 
     delete: function(e) {
         if (confirm("Are you sure you want to delete this bibliography?")) {
-            this.model.get(e.target.id).destroy({success: $.proxy(function(model, response) {
-                console.log(model);
+            this.model.get(e.target.id).destroy({success: function(model, response) {
                 if (response.id != null) {
                     this.model.add(model);
                     clearAllMessages();
@@ -46,7 +45,7 @@ BibliographiesView = Backbone.View.extend({
                     clearAllMessages();
                     addSuccess("Bibliography deleted");
                 }
-            }, this), error: function() {
+            }.bind(this), error: function() {
                 clearAllMessages();
                 addError("Bibliography deletion failed");
             }, wait: true});
@@ -58,7 +57,7 @@ BibliographiesView = Backbone.View.extend({
         var titles = new Array();
         var descriptions = new Array();
         var tags = new Array();
-        $.when.apply(null, xhrs).done($.proxy(function(){
+        $.when.apply(null, xhrs).done(function(){
             this.model.each(function(bib){
                 _.each(bib.get('products'), function(product){
                     if (!_.include(titles, product.title)) {
@@ -78,7 +77,7 @@ BibliographiesView = Backbone.View.extend({
 
             });
             main.set('tagsFilterHTML', tags.sort().join(" "));
-        }, this));
+        }.bind(this));
     },
 
     filterTags: function(view) {
@@ -151,18 +150,18 @@ BibliographiesView = Backbone.View.extend({
             width: 140,
             filter: true,
             placeholder: "Select Keywords",
-            onClick: $.proxy(function(view) {
+            onClick: function(view) {
                 // console.log("beginning of on click: ", view.label, view.checked);
                 // console.log("before filtering: ", this.selectedTags);
                 this.filterTags(view);
                 // console.log("after filtering: ", view.label, ": ", this.selectedTags);
-            }, this),
-            onUncheckAll: $.proxy(function() {
+            }.bind(this),
+            onUncheckAll: function() {
                 this.showAllRows();
                 this.selectedTags = new Array();
                 // console.log("onUncheckAll cleared array: ", this.selectedTags);
-            }, this),
-            onCheckAll: $.proxy(function() {
+            }.bind(this),
+            onCheckAll: function() {
                 var tags = $("#tags-select").multipleSelect("getSelects");
                 this.selectedTags = new Array();
                 
@@ -170,9 +169,9 @@ BibliographiesView = Backbone.View.extend({
                     this.filterTags({"label": tags[i], "checked": true});
                 }
                 // console.log("onCheckAll after filtering: ", this.selectedTags);
-            }, this),
+            }.bind(this),
         });
-        $("#filterByTags").click($.proxy(function() {
+        $("#filterByTags").click(function() {
             if (document.getElementById("filterByTags").checked)
             {
                 $("#tags-select").multipleSelect("enable");
@@ -183,10 +182,10 @@ BibliographiesView = Backbone.View.extend({
                 $("#tags-select").multipleSelect("disable");
                 $(".placeholder").text('');
             }
-        }, this));
-        $("#clearFiltersButton").click($.proxy(function() {
+        }.bind(this));
+        $("#clearFiltersButton").click(function() {
             this.clearFilter();
-        }, this));
+        }.bind(this));
         return this.$el;
     }
 

@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <% this.model.each($.proxy(function(job){ %>
+        <% this.model.each(function(job){ %>
             <tr>
                 <td>
                     <span style="display:none;"><%= job.get('deadlineDate') %></span>
@@ -35,7 +35,7 @@
                     <% } %>
                 </td>
             </tr>
-        <% }, this)) %>
+        <% }.bind(this)) %>
     </tbody>
 </table>
 <div id="editDialog" title="New Job Posting"></div>
