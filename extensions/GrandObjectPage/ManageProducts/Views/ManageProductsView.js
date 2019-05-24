@@ -234,7 +234,7 @@ ManageProductsView = Backbone.View.extend({
     
     releasePrivate: function(){
         this.$("#saveProducts").prop('disabled', true);
-        this.$(".throbber").show();
+        this.$("#listTable_length .throbber").show();
         var xhrs = new Array();
         this.products.each(function(product){
             if(product.get('access_id') > 0){
@@ -284,7 +284,7 @@ ManageProductsView = Backbone.View.extend({
                 clearAllMessages();
                 addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully released");
                 this.$("#saveProducts").prop('disabled', false);
-                this.$(".throbber").hide();
+                this.$("#listTable_length .throbber").hide();
                 this.productChanged();
             }.bind(this)).fail(function(e){
                 // Failure
@@ -299,7 +299,7 @@ ManageProductsView = Backbone.View.extend({
                 list.push("</ul>");
                 addError(list.join(''));
                 this.$("#saveProducts").prop('disabled', false);
-                this.$(".throbber").hide();
+                this.$("#listTable_length .throbber").hide();
                 this.productChanged();
             }.bind(this));
         }.bind(this));
@@ -317,7 +317,7 @@ ManageProductsView = Backbone.View.extend({
             return;
         }
         this.$("#saveProducts").prop('disabled', true);
-        this.$(".throbber").show();
+        this.$("#listTable_length .throbber").show();
         var xhrs = new Array();
         this.products.each(function(product){
             if(product.dirty){
@@ -366,7 +366,7 @@ ManageProductsView = Backbone.View.extend({
                 clearAllMessages();
                 addSuccess("All " + productsTerm.pluralize().toLowerCase() + " have been successfully saved");
                 this.$("#saveProducts").prop('disabled', false);
-                this.$(".throbber").hide();
+                this.$("#listTable_length .throbber").hide();
                 this.productChanged();
             }.bind(this)).fail(function(e){
                 // Failure
@@ -381,7 +381,7 @@ ManageProductsView = Backbone.View.extend({
                 list.push("</ul>");
                 addError(list.join(''));
                 this.$("#saveProducts").prop('disabled', false);
-                this.$(".throbber").hide();
+                this.$("#listTable_length .throbber").hide();
                 this.productChanged();
             }.bind(this));
         }.bind(this));
