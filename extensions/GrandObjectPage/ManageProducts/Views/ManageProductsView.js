@@ -172,9 +172,11 @@ ManageProductsView = Backbone.View.extend({
                 frag.appendChild(row.el);
             }
         }.bind(this));
+        
         _.each(this.subViews, function(row){
             row.render();
         });
+        
         this.$("#productRows").append(frag);
         this.createDataTable(order, searchStr);
         this.productChanged();
@@ -196,16 +198,20 @@ ManageProductsView = Backbone.View.extend({
     },    
     
     createDataTable: function(order, searchStr){
+        var creating = true;
         this.table = this.$('#listTable').DataTable({'autoWidth': false,
                                                      'fixedHeader': true,
+                                                     'preDrawCallback': function(){
+                                                        return !creating;
+                                                     },
                                                      'aoColumnDefs': [
                                                         {'bSortable': false, 'aTargets': _.range(0, 1) }
                                                      ],
 	                                                 'aLengthMenu': [[100], ['100']]});
+	    creating = false;
 	    this.cacheRows();
 	    this.table.order(order);
 	    this.table.search(searchStr);
-	    this.table.draw();
 	    this.$('#listTable_wrapper #listTable_length').remove();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();

@@ -124,16 +124,6 @@ ManageProductsViewRow = Backbone.View.extend({
             this.model.get('data')['snip'].trim() == "")){
             incomplete.incomplete = true;
         }
-        
-        /*
-        // This version of the code does NOT highlight if type of publication is changed.
-        
-        if ( _.size( _.filter(this.model.get('data').trim(), function(val){return val != ""})) >= 1){
-            console.log(productStructure.categories[this.model.get('category')].types[this.model.get('type')].data)  
-            //console.log(_.size( _.filter(this.model.get('data'), function(val){return val != ""})));
-            incomplete.incomplete = false;
-        } 
-        */  
             
         this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine, incomplete));
         if(this.parent.table != null){
