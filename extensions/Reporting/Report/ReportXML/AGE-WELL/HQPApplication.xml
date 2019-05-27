@@ -235,7 +235,6 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
                 <script type='text/javascript'>
                     $('#micheal input').change(function(){
                         var value = $('#micheal input').is(":checked");
-                        console.log(value);
                         if(value){
                             $('#michael_desc td > div').slideDown();
                         }

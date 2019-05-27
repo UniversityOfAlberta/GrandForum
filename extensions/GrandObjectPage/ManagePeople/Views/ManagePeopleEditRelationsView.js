@@ -25,7 +25,6 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             });
             this.render();
             extraRelationships.ready().then(function(){
-                console.log(extraRelationships.models);
                 this.relations.add(extraRelationships.models);
                 this.relations.each(function(r){
                     r.startTracking();

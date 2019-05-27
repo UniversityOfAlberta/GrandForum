@@ -154,7 +154,6 @@ ManageProductsView = Backbone.View.extend({
         }.bind(this));
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
-        //var start = new Date().getTime();
         var frag = document.createDocumentFragment();
         this.products.each(function(p, i){
             if(!_.contains(models, p.id)){
@@ -175,8 +174,7 @@ ManageProductsView = Backbone.View.extend({
         this.createDataTable(order, searchStr);
         this.productChanged();
         this.$("#listTable").show();
-        //var end = new Date().getTime();
-        //console.log(end - start);
+        this.table.draw();
     },
     
     cacheRows: function(){
@@ -193,16 +191,20 @@ ManageProductsView = Backbone.View.extend({
     },    
     
     createDataTable: function(order, searchStr){
+        var creating = true;
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
+                                                     'preDrawCallback': function(){
+                                                        return !creating;
+                                                     },
                                                      'aoColumnDefs': [
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
+	    creating = false;
 	    this.cacheRows();
 	    this.table.order(order);
 	    this.table.search(searchStr);
-	    this.table.draw();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
 	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');

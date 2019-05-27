@@ -131,9 +131,6 @@ $egAnnokiExtensions['Solr'] = array('name' => 'Solr',
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
-$egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
-                                              'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
-
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                          

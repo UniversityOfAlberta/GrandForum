@@ -82,7 +82,6 @@ CollaborationView = Backbone.View.extend({
                     this.$('#collaborationProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
                 }
             });
-            console.log(projects.length);
             if (projects.length == 0) {
                 this.$("#collaborationProjects").append("<span class='empty_box_content'>No projects</span>");
             }

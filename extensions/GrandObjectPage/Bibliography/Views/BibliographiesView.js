@@ -37,7 +37,6 @@ BibliographiesView = Backbone.View.extend({
     delete: function(e) {
         if (confirm("Are you sure you want to delete this bibliography?")) {
             this.model.get(e.target.id).destroy({success: function(model, response) {
-                console.log(model);
                 if (response.id != null) {
                     this.model.add(model);
                     clearAllMessages();
@@ -111,7 +110,6 @@ BibliographiesView = Backbone.View.extend({
                         if (!(tag === "")) {
                             if ($.inArray(tag, this.selectedTags) !== -1)
                             {
-                                // console.log(tag);
                                 show = true;
                             }
                         }
@@ -152,15 +150,11 @@ BibliographiesView = Backbone.View.extend({
             filter: true,
             placeholder: "Select Keywords",
             onClick: function(view) {
-                // console.log("beginning of on click: ", view.label, view.checked);
-                // console.log("before filtering: ", this.selectedTags);
                 this.filterTags(view);
-                // console.log("after filtering: ", view.label, ": ", this.selectedTags);
             }.bind(this),
             onUncheckAll: function() {
                 this.showAllRows();
                 this.selectedTags = new Array();
-                // console.log("onUncheckAll cleared array: ", this.selectedTags);
             }.bind(this),
             onCheckAll: function() {
                 var tags = $("#tags-select").multipleSelect("getSelects");
@@ -169,7 +163,6 @@ BibliographiesView = Backbone.View.extend({
                 for (i = 0; i < tags.length; i++) {
                     this.filterTags({"label": tags[i], "checked": true});
                 }
-                // console.log("onCheckAll after filtering: ", this.selectedTags);
             }.bind(this),
         });
         $("#filterByTags").click(function() {

@@ -164,7 +164,6 @@
         //'ScreenCapture',
         //'Solr',
         //'TravelForm',
-        //'AdvancedSearch',
         'CCVExport',
         'ReportIssue',
         'MyThreads',
