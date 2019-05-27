@@ -124,7 +124,7 @@ ManageProductsViewRow = Backbone.View.extend({
             this.model.get('data')['snip'].trim() == "")){
             incomplete.incomplete = true;
         }
-            
+        
         this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine, incomplete));
         if(this.parent.table != null){
             // Need this so that the search functionality is updated

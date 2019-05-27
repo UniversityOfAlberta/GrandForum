@@ -174,16 +174,22 @@ ManageProductsView = Backbone.View.extend({
                 frag.appendChild(row.el);
             }
         }.bind(this));
+        
         _.each(this.subViews, function(row){
             row.render();
         });
+        
         this.$("#productRows").append(frag);
         
+        var start = new Date().getTime();
         this.createDataTable(order, searchStr);
+        var end = new Date().getTime();
         
         this.productChanged();
         this.$("#listTable").show();
         this.table.draw();
+        
+        console.log(end - start);
     },
     
     cacheRows: function(){
