@@ -69,12 +69,15 @@ function subview(subviewName){
 
 function HTML(){}
 
-HTML.Element = function(html, options){
-    var el = $(html);
+HTML.Element = function(tag, type, options){
+    var el = document.createElement(tag);
+    if(type != ''){
+        el.setAttribute('type', type);
+    }
     for(oId in options){
         if(oId != 'options'){
             var option = options[oId];
-            $(el).attr(oId, option);
+            el.setAttribute(oId, option);
         }
     }
     return el;
@@ -105,10 +108,9 @@ HTML.Value = function(view, attr){
 }
 
 HTML.TextBox = function(view, attr, options){
-    var el = HTML.Element("<input type='text' />", options);
-    $(el).attr('type', 'text');
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr));
+    var el = HTML.Element("input", "text", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
@@ -122,28 +124,26 @@ HTML.TextBox = function(view, attr, options){
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el.outerHTML;
 }
 
 HTML.TextArea = function(view, attr, options){
-    var el = HTML.Element("<textarea type='text'></textarea>", options);
-    $(el).attr('name', HTML.Name(attr));
-    $(el).text(HTML.Value(view, attr));
+    var el = HTML.Element("textarea", "text", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.innerHTML = HTML.Value(view, attr);
     view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
     view.undelegate('change', 'textarea[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el.outerHTML;
 }
 
 HTML.CheckBox = function(view, attr, options){
-    var el = HTML.Element("<input type='checkbox' />", options);
-    $(el).attr('name', HTML.Name(attr));
+    var el = HTML.Element("input", "checkbox", options);
+    el.setAttribute('name', HTML.Name(attr));
     if(HTML.Value(view, attr) == options.value){
-        $(el).attr('checked', 'checked');
+        el.setAttribute('checked', 'checked');
     }
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
@@ -168,11 +168,11 @@ HTML.CheckBox = function(view, attr, options){
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
-    return $(el)[0].outerHTML;
+    return el.outerHTML;
 }
 
 HTML.Radio = function(view, attr, options){
-    var el = HTML.Element("<span>");
+    var el = HTML.Element("span", "", []);
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
@@ -194,8 +194,7 @@ HTML.Radio = function(view, attr, options){
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el.outerHTML;
 }
 
 HTML.Pages = function(view, attr, options){
@@ -211,13 +210,13 @@ HTML.Pages = function(view, attr, options){
     if(values[1] != undefined){
         end = values[1].trim();
     }
-    var el1 = HTML.Element("<input type='integer' />", options);
-    $(el1).attr('name', HTML.Name(attr) + '_start');
-    $(el1).attr('value', start);
+    var el1 = HTML.Element("input", "integer", options);
+    el1.setAttribute('name', HTML.Name(attr) + '_start');
+    el1.setAttribute('value', start);
     
-    var el2 = HTML.Element("<input type='integer' />", options);
-    $(el2).attr('name', HTML.Name(attr) + '_end');
-    $(el2).attr('value', end);
+    var el2 = HTML.Element("input", "integer", options);
+    el2.setAttribute('name', HTML.Name(attr) + '_end');
+    el2.setAttribute('value', end);
     
     var fn = function(e){
         if(attr.indexOf('.') != -1){
@@ -257,10 +256,9 @@ HTML.Pages = function(view, attr, options){
 }
 
 HTML.DatePicker = function(view, attr, options){
-    var el = HTML.Element("<input type='datepicker' />", options);
-    $(el).attr('name', HTML.Name(attr));
-
-    $(el).attr('value', HTML.Value(view, attr));
+    var el = HTML.Element("input", "datepicker", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
@@ -274,13 +272,12 @@ HTML.DatePicker = function(view, attr, options){
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el.outerHTML;
 }
 
 HTML.Select = function(view, attr, options){
-    var el = HTML.Element("<select />", options);
-    $(el).attr('name', HTML.Name(attr));
+    var el = HTML.Element("select", "", options);
+    el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
     
@@ -328,10 +325,10 @@ HTML.Select = function(view, attr, options){
 }
 
 HTML.File = function(view, attr, options){
-    var el = HTML.Element("<input type='file' />", options);
-    $(el).attr('type', 'file');
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr));
+    var el = HTML.Element("input", "file", options);
+    el.setAttribute('type', 'file');
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -356,17 +353,16 @@ HTML.File = function(view, attr, options){
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el.outerHTML;
 }
 
 HTML.MiscAutoComplete = function(view, attr, options){
-    var el = HTML.Element("<input type='text' />", options);
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "")
-                                              .replace("Misc", "")
-                                              .replace("Other: ", "")
-                                              .replace("Other", ""));
+    var el = HTML.Element("input", "text", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr).replace("Misc: ", "")
+                                                   .replace("Misc", "")
+                                                   .replace("Other: ", "")
+                                                   .replace("Other", ""));
     var prefix = (options.prefix != undefined) ? options.prefix : "Misc";
     $(el).wrap('div');
     

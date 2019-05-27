@@ -1,9 +1,9 @@
 TagItView = Backbone.View.extend({
 
     tagName: 'div',
+    template: _.template($('#tagit_template').html()),
 
     initialize: function(){
-        this.template = _.template($('#tagit_template').html());
         var that = this;
         if(this.model.get('options').afterTagRemoved != undefined){
             var fn = this.model.get('options').afterTagRemoved;
@@ -79,7 +79,6 @@ TagItView = Backbone.View.extend({
     },
     
     render: function(){
-        var that = this;
         this.$el.html(this.template(this.model.toJSON()));
         this.$("ul.tagit").tagit(this.model.get('options'));
         if(this.model.get('capitalize')){

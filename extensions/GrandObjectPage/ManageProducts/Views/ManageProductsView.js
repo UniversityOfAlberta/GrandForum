@@ -148,6 +148,7 @@ ManageProductsView = Backbone.View.extend({
         var products = this.currentProducts();
         
         // First remove deleted models
+        
         _.each(this.subViews, function(view){
             var m = view.model;
             if(products.where({id: m.get('id')}).length == 0){
@@ -156,6 +157,7 @@ ManageProductsView = Backbone.View.extend({
                 view.$el.detach();
             }
         }.bind(this));
+        
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
         var frag = document.createDocumentFragment();
@@ -172,13 +174,13 @@ ManageProductsView = Backbone.View.extend({
                 frag.appendChild(row.el);
             }
         }.bind(this));
-        
         _.each(this.subViews, function(row){
             row.render();
         });
-        
         this.$("#productRows").append(frag);
+        
         this.createDataTable(order, searchStr);
+        
         this.productChanged();
         this.$("#listTable").show();
         this.table.draw();
