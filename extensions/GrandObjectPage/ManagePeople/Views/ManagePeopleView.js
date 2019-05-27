@@ -263,10 +263,15 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     createDataTable: function(order, searchStr){
+        var creating = true;
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
+                                                     'preDrawCallback': function(){
+                                                        return !creating;
+                                                     },
                                                      'autoWidth': false,
                                                      'fixedHeader': true,
 	                                                 'aLengthMenu': [[-1], ['All']]});
+	    creating = false;
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
