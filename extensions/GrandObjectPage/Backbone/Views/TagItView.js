@@ -1,9 +1,9 @@
 TagItView = Backbone.View.extend({
 
     tagName: 'div',
+    template: _.template($('#tagit_template').html()),
 
     initialize: function(){
-        this.template = _.template($('#tagit_template').html());
         var that = this;
         this.model.get('options').afterTagRemoved = function(event, ui){that.renderSuggestions();};
         this.model.get('options').afterTagAdded = function(event, ui){that.renderSuggestions();};
