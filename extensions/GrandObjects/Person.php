@@ -1811,13 +1811,9 @@ class Person extends BackboneModel {
 
     function getNameForProduct($format=null){
         global $config;
-        /*if($this->getId() == 0){
+        if(strstr($this->getNameForForms(), "<span class='noshow'>&quot;</span>") !== false){
             return $this->getNameForForms();
-        }*/
-        $firstname = $this->getFirstName();
-        $middlename = $this->getMiddleName();
-        $lastname = $this->getLastName();
-
+        }
         $regex = "/\{.*?\}/";
         if($format == null){
             $format = $config->getValue("nameFormat");

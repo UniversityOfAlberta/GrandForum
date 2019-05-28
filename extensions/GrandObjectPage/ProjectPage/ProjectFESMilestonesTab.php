@@ -652,12 +652,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         $('#modification select', $(this).parent().parent()).change();
                     }
                     var checked = $('input.milestone:checked', $(this).parent().parent());
-                    var proxyFn = $.proxy(clickFn, checked.last());
+                    var proxyFn = clickFn.bind(checked.last());
                     proxyFn();
                 });
                 $('#milestones_table_fes td#modification select').change(function(){
                     var checked = $('input.milestone:checked', $(this).parent().parent());
-                    var proxyFn = $.proxy(clickFn, checked.last());
+                    var proxyFn = clickFn.bind(checked.last());
                     proxyFn();
                 });
                 

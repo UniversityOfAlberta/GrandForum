@@ -12,13 +12,13 @@ ProjectSelectorView = Backbone.View.extend({
     initialize: function(options){
         this.otherOnly = (options.otherOnly != undefined) ? options.otherOnly : false;
         
-        this.listenTo(Backbone, 'document-click-event', $.proxy(function(e){
+        this.listenTo(Backbone, 'document-click-event', function(e){
             // Clicking somewhere else in the document, close popup
             var popup = this.$("div.popupBox:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 this.model.trigger("change:projects");
             }
-        }, this));
+        }.bind(this));
         
         if(options.allProjects != undefined &&
            options.projects    != undefined &&
@@ -43,7 +43,7 @@ ProjectSelectorView = Backbone.View.extend({
             me.getProjects();
         }
         
-        me.projects.ready().then($.proxy(function(){
+        me.projects.ready().then(function(){
             this.listenTo(this.model, "change:projects", this.render);
             if(options.projects != undefined){
                 this.projects = options.projects;
@@ -51,7 +51,7 @@ ProjectSelectorView = Backbone.View.extend({
             else{
                 this.projects = me.projects.getCurrent();
             }
-            this.allProjects.ready().then($.proxy(function(){
+            this.allProjects.ready().then(function(){
                 if(options.otherProjects != undefined && options.oldProjects != undefined){
                     this.otherProjects = options.otherProjects;
                     this.oldProjects = options.oldProjects;
@@ -66,8 +66,8 @@ ProjectSelectorView = Backbone.View.extend({
                     this.oldProjects.remove(this.projects.models);
                 }
                 this.render();
-            }, this));
-        }, this));
+            }.bind(this));
+        }.bind(this));
     },
     
     projectChecked: function(projectId){
@@ -114,13 +114,13 @@ ProjectSelectorView = Backbone.View.extend({
 
         // Unselect all subprojects as well
         if(project != undefined){
-            _.each(project.get('subprojects'), $.proxy(function(sub){
+            _.each(project.get('subprojects'), function(sub){
                 var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
                 if(index != -1){
                     projects.splice(index, 1);
                     this.$("input[data-project=" + sub.id + "]").prop('checked', false);
                 }
-            }, this));
+            }.bind(this));
         }
         var index = _.indexOf(projects, _.findWhere(projects, {id: projectId}));
         if(index != -1){
@@ -184,19 +184,19 @@ ProjectSelectorView = Backbone.View.extend({
     showOther: function(e){
         this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         var lastHeight = this.$el.prop("scrollHeight")
-        var interval = setInterval($.proxy(function(){
+        var interval = setInterval(function(){
             if(this.$el.prop("scrollHeight") > lastHeight){
                 this.$el.scrollTop(this.$el.scrollTop() + Math.abs(lastHeight - this.$el.prop("scrollHeight")));
                 lastHeight = this.$el.prop("scrollHeight");
             }
-        }, this), 16);
-        this.$("div.otherPopup").slideDown($.proxy(function(){
+        }.bind(this), 16);
+        this.$("div.otherPopup").slideDown(function(){
             clearInterval(interval);
             if(this.$el.prop("scrollHeight") > lastHeight){
                 this.$el.scrollTop(this.$el.scrollTop() + Math.abs(lastHeight - this.$el.prop("scrollHeight")));
                 lastHeight = this.$el.prop("scrollHeight");
             }
-        }, this));
+        }.bind(this));
     },
     
     showSubprojects: function(e){

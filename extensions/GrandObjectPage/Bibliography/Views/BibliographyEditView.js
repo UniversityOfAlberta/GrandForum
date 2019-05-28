@@ -9,9 +9,9 @@ BibliographyEditView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Bibliography does not exist");
-            }, this)
+            }.bind(this)
         });
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:title", function(){
@@ -43,13 +43,13 @@ BibliographyEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveBibliography").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveBibliography").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveBibliography").prop('disabled', false);
                 clearAllMessages();
@@ -59,7 +59,7 @@ BibliographyEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Bibliography", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -74,11 +74,11 @@ BibliographyEditView = Backbone.View.extend({
         if(this.productView != null){
             this.productView.stopListening();
         }
-        this.timeout = setTimeout($.proxy(function(){
+        this.timeout = setTimeout(function(){
             var id = $(e.currentTarget).attr('data-id');
             var product = new Product({id: id});
             this.productView = new ProductView({el: $("#preview"), model: product});
-            this.productView.listenTo(product, "sync", $.proxy(function(){
+            this.productView.listenTo(product, "sync", function(){
                 // Reset to original title (not the Product's)
                 main.set('title', this.model.get('title')); 
                 this.productView.$el.prepend("<h1>" + product.get('title') + "</h1>");
@@ -101,8 +101,8 @@ BibliographyEditView = Backbone.View.extend({
                 if(heightAfter != heightBefore){
                     $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2 - (heightAfter - heightBefore + 5));
                 }
-            }, this));
-        }, this), 50);
+            }.bind(this));
+        }.bind(this), 50);
     },
     
     renderEditors: function(){
@@ -157,19 +157,19 @@ BibliographyEditView = Backbone.View.extend({
         this.$("#editors .sortable-widget").show();
         
         // Left Side (Current)
-        _.each(editors, $.proxy(function(e){
+        _.each(editors, function(e){
             var editor = this.allPeople.findWhere({id: e.id.toString()});
             if(editor != null){
                 this.$("#editors #sortable1").append("<li data-id='" + editor.get('id') + "'>" + editor.get('fullName') + "</li>");
             }
-        }, this));
+        }.bind(this));
         
         //Right Side (Available)
-        this.allPeople.each($.proxy(function(editor){
+        this.allPeople.each(function(editor){
             if(!_.contains(_.pluck(editors, 'id'), editor.get('id'))){
                 this.$("#editors #sortable2").append("<li data-id='" + editor.get('id') + "'>" + editor.get('fullName') + "</li>");
             }
-        }, this));
+        }.bind(this));
     
         // Advanced groups
 	    [{
@@ -215,8 +215,8 @@ BibliographyEditView = Backbone.View.extend({
 	        $(hideElements).hide();
 	    };
 	    
-	    this.$("#editors .sortable-search input").change($.proxy(changeFn, this));
-	    this.$("#editors .sortable-search input").keyup($.proxy(changeFn, this));
+	    this.$("#editors .sortable-search input").change(changeFn.bind(this));
+	    this.$("#editors .sortable-search input").keyup(changeFn.bind(this));
     },
     
     renderProductsWidget: function(){
@@ -243,7 +243,7 @@ BibliographyEditView = Backbone.View.extend({
         
         // Left Side (Current)
         this.$("#products #sortable1").empty();
-        _.each(products, $.proxy(function(p){
+        _.each(products, function(p){
             if (!_.isObject(p)) {
                 var product = this.allProducts.findWhere({id: p});
             } else {
@@ -253,16 +253,16 @@ BibliographyEditView = Backbone.View.extend({
                 var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
                 this.$("#products #sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
             }
-        }, this));
+        }.bind(this));
         
         //Right Side (Available)
         this.$("#products #sortable2").empty();
-        this.allProducts.each($.proxy(function(product){
+        this.allProducts.each(function(product){
             var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
             if ((!_.contains(_.pluck(products, 'id'), product.get('id'))) && (!_.contains(products, product.get('id').toString()))) {
                 this.$("#products #sortable2").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
             }
-        }, this));
+        }.bind(this));
     
         // Advanced groups
 	    [{
@@ -308,8 +308,8 @@ BibliographyEditView = Backbone.View.extend({
 	        $(hideElements).hide();
 	    };
 	    
-	    this.$("#products .sortable-search input").change($.proxy(changeFn, this));
-	    this.$("#products .sortable-search input").keyup($.proxy(changeFn, this));
+	    this.$("#products .sortable-search input").change(changeFn.bind(this));
+	    this.$("#products .sortable-search input").keyup(changeFn.bind(this));
     },
 
     importBibTeX: function(){
@@ -341,13 +341,13 @@ BibliographyEditView = Backbone.View.extend({
                 $("html").css("overflow", "auto");
             },
             buttons: {
-                "Import": $.proxy(function(e){
+                "Import": function(e){
                     var button = $(e.currentTarget);
                     button.prop("disabled", true);
                     var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
                     var overwrite = $("input[name=overwrite]:checked", this.bibtexDialog).val();
                     $("div.throbber", this.bibtexDialog).show();
-                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite, private: 'no'}, $.proxy(function(response){
+                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite, private: 'no'}, function(response){
                         var data = response.data;
                         if(!_.isUndefined(data.created)){
                             var ids = _.pluck(data.created, 'id');
@@ -381,17 +381,17 @@ BibliographyEditView = Backbone.View.extend({
                         button.prop("disabled", false);
                         $("div.throbber", this.bibtexDialog).hide();
                         this.bibtexDialog.dialog('close');
-                    }, this)).fail($.proxy(function(){
+                    }.bind(this)).fail(function(){
                         clearAllMessages();
                         addError("There was an error importing the BibTeX references");
                         button.prop("disabled", false);
                         $("div.throbber", this.bibtexDialog).hide();
                         this.bibtexDialog.dialog('close');
-                    }, this));
-                }, this),
-                "Cancel": $.proxy(function(){
+                    }.bind(this));
+                }.bind(this),
+                "Cancel": function(){
                     this.bibtexDialog.dialog('close');
-                }, this)    
+                }.bind(this)    
             }
             
         });

@@ -69,12 +69,15 @@ function subview(subviewName){
 
 function HTML(){}
 
-HTML.Element = function(html, options){
-    var el = $(html);
+HTML.Element = function(tag, type, options){
+    var el = document.createElement(tag);
+    if(type != ''){
+        el.setAttribute('type', type);
+    }
     for(oId in options){
         if(oId != 'options'){
             var option = options[oId];
-            $(el).attr(oId, option);
+            el.setAttribute(oId, option);
         }
     }
     return el;
@@ -106,11 +109,10 @@ HTML.Value = function(view, attr){
 }
 
 HTML.TextBox = function(view, attr, options){
-    var el = HTML.Element("<input type='text' />", options);
-    $(el).attr('type', 'text');
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr));
-    var events = view.events;
+    var el = HTML.Element("input", "text", options);
+    el.setAttribute('type', 'text');
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + '][type=text]'] = function(e){
         if(attr.indexOf('.') != -1){
             var elems = attr.split(".");
@@ -137,31 +139,29 @@ HTML.TextBox = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=text]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=text]', view.events['change input[name=' + HTML.Name(attr) + '][type=text]']);
+    return el.outerHTML;
 }
 
 HTML.TextArea = function(view, attr, options){
-    var el = HTML.Element("<textarea type='text'></textarea>", options);
-    $(el).attr('name', HTML.Name(attr));
-    $(el).text(HTML.Value(view, attr));
-    var events = view.events;
+    var el = HTML.Element("textarea", "text", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.innerHTML = HTML.Value(view, attr);
     view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    view.undelegate('change', 'textarea[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
+    return el.outerHTML;
 }
 
 HTML.CheckBox = function(view, attr, options){
-    var el = HTML.Element("<input type='checkbox' />", options);
-    $(el).attr('name', HTML.Name(attr));
+    var el = HTML.Element("input", "checkbox", options);
+    el.setAttribute('name', HTML.Name(attr));
     if(HTML.Value(view, attr) == options.value){
         $(el).attr('checked', 'checked');
     }
-    var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
@@ -184,12 +184,13 @@ HTML.CheckBox = function(view, attr, options){
             }
         }
     };
-    view.delegateEvents(events);
-    return $(el)[0].outerHTML;
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=checkbox]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=checkbox]', view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]']);
+    return el.outerHTML;
 }
 
 HTML.MultiCheckBox = function(view, attr, options){
-    var el = HTML.Element("<span>");
+    var el = HTML.Element("span", "", []);
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
@@ -204,7 +205,6 @@ HTML.MultiCheckBox = function(view, attr, options){
             $(el).append("<div><input type='checkbox' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
         }
     });
-    var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
         if(attr.indexOf('.') != -1){
             var values = view.$('input[name=' + HTML.Name(attr) + '][type=checkbox]:checked');
@@ -226,12 +226,13 @@ HTML.MultiCheckBox = function(view, attr, options){
             view.model.set(attr, data);
         }
     };
-    view.delegateEvents(events);
-    return $(el)[0].outerHTML;
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=checkbox]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=checkbox]', view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]']);
+    return el.outerHTML;
 }
 
 HTML.Radio = function(view, attr, options){
-    var el = HTML.Element("<span>");
+    var el = HTML.Element("span", "", []);
     var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
@@ -245,7 +246,6 @@ HTML.Radio = function(view, attr, options){
             $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
         }
     });
-    var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + '][type=radio]'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
@@ -257,21 +257,20 @@ HTML.Radio = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=radio]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=radio]', view.events['change input[name=' + HTML.Name(attr) + '][type=radio]']);
+    return el.outerHTML;
 }
 
 HTML.DatePicker = function(view, attr, options){
-    var el = HTML.Element("<input type='datepicker' />", options);
-    $(el).attr('name', HTML.Name(attr));
-
-    $(el).attr('value', HTML.Value(view, attr));
-    var events = view.events;
+    var el = HTML.Element("input", "datepicker", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.delegateEvents(events);
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
     $(el).wrap('div');
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').keydown(function() {
@@ -282,8 +281,8 @@ HTML.DatePicker = function(view, attr, options){
 }
 
 HTML.Select = function(view, attr, options){
-    var el = HTML.Element("<select />", options);
-    $(el).attr('name', HTML.Name(attr));
+    var el = HTML.Element("select", "", options);
+    el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
     _.each(options.options, function(opt){
@@ -305,7 +304,6 @@ HTML.Select = function(view, attr, options){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
 
-    var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var elems = attr.split(".");
@@ -332,21 +330,21 @@ HTML.Select = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.delegateEvents(events);
+    view.undelegate('change', 'select[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'select[name=' + HTML.Name(attr) + ']', view.events['change select[name=' + HTML.Name(attr) + ']']);
     $(el).wrap('div');
     return $(el).parent().html();
 }
 
 HTML.File = function(view, attr, options){
-    var el = HTML.Element("<input type='file' />", options);
-    $(el).attr('type', 'file');
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr));
-    var events = view.events;
+    var el = HTML.Element("input", "file", options);
+    el.setAttribute('type', 'file');
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var file = e.target.files[0];
         var reader = new FileReader();
-        reader.addEventListener("load", $.proxy(function() {
+        reader.addEventListener("load", function() {
             var fileObj = {
                 filename: file.name,
                 type: file.type,
@@ -362,18 +360,18 @@ HTML.File = function(view, attr, options){
             else{
                 view.model.set(attr, fileObj);
             }
-        }, this));
+        }.bind(this));
         reader.readAsDataURL(file);
     };
-    view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
+    return el.outerHTML;
 }
 
 HTML.MiscAutoComplete = function(view, attr, options){
-    var el = HTML.Element("<input type='text' />", options);
-    $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
+    var el = HTML.Element("input", "text", options);
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
     $(el).wrap('div');
     
     var evt = function(e){
@@ -415,7 +413,6 @@ HTML.TagIt = function(view, attr, options){
     }
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
-    var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var current = tagitView.tagit("assignedTags");
         var newItems = new Array();
@@ -431,7 +428,8 @@ HTML.TagIt = function(view, attr, options){
             view.model.set(attr, _.clone(newItems), {silent: true});
         }
     };
-    view.delegateEvents(events);
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
     return el;
 }
 
@@ -444,7 +442,6 @@ HTML.Switcheroo = function(view, attr, options){
     var subName = attr.substr(index+1);
 
     $(el).attr('name', HTML.Name(attr));
-    var events = view.events;
     view.events['change input[name=' + options.name + ']'] = function(e){
         var current = switcherooView.switcheroo().getValue();
         var newItems = Array();
@@ -464,14 +461,17 @@ HTML.Switcheroo = function(view, attr, options){
         var field = attr.substr(0, index);
         eval("view.model.set({" + field + ": newItems}, {silent:true});");
     };
-    view.delegateEvents(events);
+    view.undelegate('change', 'input[name=' + options.name + ']');
+    view.delegate('change', 'input[name=' + options.name + ']', view.events['change input[name=' + options.name + ']']);
     return el;
 }
 
 HTML.ProjectSelector = function(view, attr, options){
     if(options == undefined){ options = {} };
     var id = _.uniqueId("project_selector_");
-    var el = HTML.Element("<div id='" + id + "'><span class='throbber'></span></div>", options);
+    var el = HTML.Element("div", "", options);
+    el.setAttribute('id', id);
+    $(el).append("<span class='throbber'></span>");
     $(el).wrap('div');
     if(view.projectSelectorView != undefined){
         // Teardown the old view to prevent double firing of events

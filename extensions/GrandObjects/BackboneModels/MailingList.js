@@ -29,11 +29,11 @@ MailingListRule = RelationModel.extend({
         this.on("change:type", this.changeValues);
         this.on("change:possibleValues", function(){
             var found = false;
-            _.each(this.get('possibleValues').ids, $.proxy(function(val){
+            _.each(this.get('possibleValues').ids, function(val){
                 if(val == this.get('value')){
                     found = true;
                 }
-            }, this));
+            }.bind(this));
             if(!found){
                 this.set('value', _.first(this.get('possibleValues').ids));
             }
@@ -51,9 +51,9 @@ MailingListRule = RelationModel.extend({
                 break;
             case "PROJ":
                 var projects = new Projects();
-                $.when(projects.fetch()).then($.proxy(function(){
+                $.when(projects.fetch()).then(function(){
                     this.set('possibleValues', {ids: projects.pluck('id'), names: projects.pluck('name')});
-                }, this));
+                }.bind(this));
                 break;
             case "PHASE":
                 var phases = _.range(1, projectPhase+1);
@@ -61,9 +61,9 @@ MailingListRule = RelationModel.extend({
                 break;
             case "LOC":
                 var unis = new Universities();
-                $.when(unis.fetch()).then($.proxy(function(){
+                $.when(unis.fetch()).then(function(){
                     this.set('possibleValues', {ids: unis.pluck('id'), names: unis.pluck('name'), groups: unis.pluck('province')});
-                }, this));
+                }.bind(this));
                 break;
         }
     },

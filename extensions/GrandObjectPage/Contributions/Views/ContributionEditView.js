@@ -16,9 +16,9 @@ ContributionEditView = Backbone.View.extend({
         
         if(!this.model.isNew() && !this.isDialog){
             this.model.fetch({silent: true, 
-                              success: $.proxy(function(){
+                              success: function(){
                                 this.listenTo(this.model, "change:partners", this.renderPartners);
-                              }, this)
+                              }.bind(this)
                              });
         }
         else{
@@ -72,13 +72,13 @@ ContributionEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveContribution").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveContribution").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(o, e){
+            }.bind(this),
+            error: function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveContribution").prop('disabled', false);
                 clearAllMessages();
@@ -88,7 +88,7 @@ ContributionEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Contribution", true);
                 }
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -132,7 +132,7 @@ ContributionEditView = Backbone.View.extend({
     
     renderPartners: function(){
         this.$("#saveContribution").prop('disabled', false);
-        _.each(this.model.get('partners'), $.proxy(function(partner, i){
+        _.each(this.model.get('partners'), function(partner, i){
             var lastType = this.$("#partner" + i).attr('last-type');
             var type = partner.type;
             var subtype = partner.subtype;
@@ -204,7 +204,7 @@ ContributionEditView = Backbone.View.extend({
                 this.$("#warning" + i).hide();
                 this.$("#saveContribution").prop('disabled', false);
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

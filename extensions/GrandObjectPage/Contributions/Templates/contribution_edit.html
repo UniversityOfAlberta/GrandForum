@@ -27,7 +27,7 @@
     <tr>
         <td valign="top" width="50%">
             <h2>Partners</h2>
-            <% _.each(partners, $.proxy(function(partner, i){ %>
+            <% _.each(partners, function(partner, i){ %>
                 <div class="warning" style="display:none;" id="warning<%= i %>"></div>
                 <table id="partner<%= i %>">
                     <tr>
@@ -141,7 +141,7 @@
                     </tr>
                 </table>
                 <hr />
-            <% }, this)) %>
+            <% }.bind(this)) %>
             <button id="addPartner">Add Partner</button>
             <div style="background:#EEE;padding:5px;">
                 <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>

@@ -11,9 +11,9 @@ ThreadView = Backbone.View.extend({
             this.tinyMCEMention = options.tinyMCEMention;
         }
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Thread does not exist.");
-            }, this)
+            }.bind(this)
         });
         this.listenTo(this.model, 'sync', this.render);
     },
@@ -33,17 +33,17 @@ ThreadView = Backbone.View.extend({
         this.$("#postRows").hide();
         var models = _.pluck(this.model.get('posts'), 'id');
         var ajax = new Array();
-        _.each(models, $.proxy(function(p){
+        _.each(models, function(p){
             var mod = new Post({'id':p});
             ajax.push(mod.fetch());
             var row = new PostView({model: mod, parent: this, isComment: this.isComment, tinyMCEMention: this.tinyMCEMention});
             this.$("#postRows").append(row.$el);
-        }, this));
+        }.bind(this));
         this.addNewRow();
-        $.when.apply(undefined, ajax).then($.proxy(function(){
+        $.when.apply(undefined, ajax).then(function(){
             this.$("#loading").empty();
             this.$("#postRows").show();
-        }, this));
+        }.bind(this));
     },
 
     addNewRow: function(){

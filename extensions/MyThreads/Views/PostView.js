@@ -40,9 +40,9 @@ PostView = Backbone.View.extend({
     },
     
     deletePost: function(){
-        this.model.destroy({success: $.proxy(function(model, response){
+        this.model.destroy({success: function(model, response){
             this.$el.remove();
-        }, this)});
+        }.bind(this)});
     },
 
     submitPost: function(){
@@ -77,7 +77,7 @@ PostView = Backbone.View.extend({
                 $('#tinyMCEUploadForm input').val('');
             });
         }
-        _.defer($.proxy(function(){
+        _.defer(function(){
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
@@ -105,7 +105,7 @@ PostView = Backbone.View.extend({
                     ed.on('blur', update);
                 }
             });
-        }, this));
+        }.bind(this));
     },
 
     render: function(){

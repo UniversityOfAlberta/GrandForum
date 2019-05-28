@@ -11,11 +11,11 @@ $(document).ready(function(){
             "Submit": function(){
                 dataToSend.comments = $("div#reportIssueDialog textarea").val();
                 dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, $.proxy(function(response){
+                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
                     addSuccess('The issue has been reported.');
-                }, this));
+                }.bind(this));
             },
             "Cancel": function(){
                 $(this).dialog('close');

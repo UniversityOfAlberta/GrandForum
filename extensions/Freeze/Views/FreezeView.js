@@ -7,11 +7,11 @@ FreezeView = Backbone.View.extend({
         this.projects = new Projects();
         this.toDelete = new Freezes();
         
-        $.when(this.model.fetch()).then($.proxy(function(){
+        $.when(this.model.fetch()).then(function(){
             return $.when(this.projects.fetch());
-        }, this)).then($.proxy(function(){
+        }.bind(this)).then(function(){
             this.render();
-        }, this));
+        }.bind(this));
         
         this.template = _.template($("#freeze_template").html());
     },
@@ -64,14 +64,14 @@ FreezeView = Backbone.View.extend({
                 _.defer(function(){ xhrs.push(freeze.destroy()) });
             }
         });
-        _.defer($.proxy(function(){
+        _.defer(function(){
             $.when.apply(null, xhrs).then(
-                _.delay($.proxy(function(){
+                _.delay(function(){
                     this.$(".throbber").hide();
                     this.$("#save").prop("disabled", false);
-                }, this), 500)
+                }.bind(this), 500)
             );
-        }, this));
+        }.bind(this));
     },
     
     events: {

@@ -35,23 +35,23 @@ ManagePeopleView = Backbone.View.extend({
             this.table = null;
         }
         // First remove deleted models
-        _.each(this.subViews, $.proxy(function(view){
+        _.each(this.subViews, function(view){
             var m = view.model;
             if(this.people.where({id: m.get('id')}).length == 0){
                 this.subViews = _.without(this.subViews, view);
                 view.remove();
             }
-        }, this));
+        }.bind(this));
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
-        this.people.each($.proxy(function(p, i){
+        this.people.each(function(p, i){
             if(!_.contains(models, p.id)){
                 // Person isn't in the table yet
                 var row = new ManagePeopleRowView({model: p, parent: this});
                 this.subViews.push(row);
                 this.$("#personRows").append(row.$el);
             }
-        }, this));
+        }.bind(this));
         _.each(this.subViews, function(row){
             row.render();
         });
@@ -59,11 +59,16 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     createDataTable: function(order, searchStr){
+        var creating = true;
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
+                                                     'preDrawCallback': function(){
+                                                        return !creating;
+                                                     },
                                                      'autoWidth': false,
 	                                                 'aLengthMenu': [[-1], ['All']],
 	                                                 'oSearch': {"sSearch": searchStr},
 	                                                 'order': order});
+	    creating = false;
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
     },
@@ -104,20 +109,20 @@ ManagePeopleView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Add": $.proxy(function(e){
+	            "Add": function(e){
 	                var id = $("#selectExistingMember").val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {id: id})
-	                .done($.proxy(function(){
+	                .done(function(){
 	                    this.people.add(this.allPeople.findWhere({'id': id}));
-	                }, this))
-	                .fail($.proxy(function(){
+	                }.bind(this))
+	                .fail(function(){
 	                    addError("There was a problem adding this person");
-	                }, this));
+	                }.bind(this));
                     this.addExistingMemberDialog.dialog('close');
-	            }, this),
-	            "Cancel": $.proxy(function(){
+	            }.bind(this),
+	            "Cancel": function(){
 	                this.addExistingMemberDialog.dialog('close');
-	            }, this)
+	            }.bind(this)
 	        }
 	    });
         return this.$el;

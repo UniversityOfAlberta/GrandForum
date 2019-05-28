@@ -13,7 +13,7 @@ ManagePeopleEditSubRolesView = Backbone.View.extend({
                    h1: 0,
                    w2: 0,
                    h2: 0};
-        this.interval = setInterval($.proxy(function(){
+        this.interval = setInterval(function(){
             if(this.$el.width() != dim.w1 ||
                this.$el.height() != dim.h1 ||
                $(window).width() != dim.w2 ||
@@ -33,7 +33,7 @@ ManagePeopleEditSubRolesView = Backbone.View.extend({
             dim.h1 = this.$el.height();
             dim.w2 = $(window).width();
             dim.h2 = $(window).height();
-	    }, this), 100);
+	    }.bind(this), 100);
     },
     
     events: {

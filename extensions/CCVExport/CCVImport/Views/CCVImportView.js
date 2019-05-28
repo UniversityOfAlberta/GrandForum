@@ -5,9 +5,9 @@ CCVImportView = Backbone.View.extend({
     initialize: function(options){
         this.people = new People();
         this.people.roles = [NI];
-        this.listenTo(this.people, "sync", $.proxy(function(){
+        this.listenTo(this.people, "sync", function(){
             this.render();
-        }, this));
+        }.bind(this));
         this.people.fetch();
         this.model.on("change:person", this.render);
     },
@@ -21,7 +21,7 @@ CCVImportView = Backbone.View.extend({
         var button = $("#upload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = function(response, error){
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();
@@ -65,7 +65,7 @@ CCVImportView = Backbone.View.extend({
                 addError(error);
             }
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();
     },

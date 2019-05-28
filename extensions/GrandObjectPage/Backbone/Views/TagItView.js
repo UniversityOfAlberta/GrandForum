@@ -1,9 +1,9 @@
 TagItView = Backbone.View.extend({
 
     tagName: 'div',
+    template: _.template($('#tagit_template').html()),
 
     initialize: function(){
-        this.template = _.template($('#tagit_template').html());
         var that = this;
         this.model.get('options').afterTagRemoved = function(event, ui){that.renderSuggestions();};
         this.model.get('options').afterTagAdded = function(event, ui){that.renderSuggestions();};
@@ -71,9 +71,9 @@ TagItView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        _.each(this.model.get('values'), $.proxy(function(val){
+        _.each(this.model.get('values'), function(val){
             this.$("ul.tagit").append("<li>" + val + "</li>");
-        }, this));
+        }.bind(this));
         this.$("ul.tagit").tagit(this.model.get('options'));
         if(this.model.get('capitalize')){
             this.$("ul.tagit").css('text-transform', 'uppercase');
