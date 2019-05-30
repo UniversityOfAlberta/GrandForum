@@ -53,7 +53,7 @@ class ImportORCIDAPI extends API{
                     curl_close($ch);
                     foreach($workResults->bulk as $workResult){
                         if(isset($workResult->work->citation) && $workResult->work->citation->{'citation-type'} == "BIBTEX"){
-                            $bibtex .= $workResult->work->citation->{'citation-value'};
+                            $bibtex .= $workResult->work->citation->{'citation-value'}."\n";
                         }
                     }
                     
