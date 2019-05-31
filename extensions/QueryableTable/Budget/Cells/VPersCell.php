@@ -4,7 +4,7 @@ class VPersCell extends Cell {
     
     function VPersCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         if($cellValue != ''){
-            $origCellValue = $cellValue;
+            $origCellValue = trim($cellValue);
             $names = explode(',', $origCellValue);
             $person = null;
             if(count($names) > 1){
