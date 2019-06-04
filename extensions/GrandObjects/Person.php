@@ -409,7 +409,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             self::$leaderCache[-1][] = array();
             foreach($data as $row){
-                self::$leaderCache[$row['user_id']][] = $row;
+                self::$leaderCache[$row['user_id']][$row['id']] = $row;
             }
         }
     }
@@ -4283,20 +4283,8 @@ class Person extends BackboneModel {
         if($p == null || $p->getName() == ""){
             return false;
         }
-        $extra = "";
-        if($type != null){
-            $extra = "AND l.type = '$type'";
-        }
-        $data = DBFunctions::execSQL("SELECT 1
-                                     FROM grand_project_leaders l, grand_project p 
-                                     WHERE l.project_id = p.id
-                                     AND l.user_id = '{$this->id}'
-                                     AND p.name = '{$p->getName()}'
-                                     AND (l.end_date = '0000-00-00 00:00:00'
-                                          OR l.end_date > CURRENT_TIMESTAMP)
-                                     $extra");
-       
-        if(DBFunctions::getNRows() > 0){
+        self::generateLeaderCache();
+        if(isset(self::$leaderCache[$this->getId()][$p->getId()])){
             return true;
         }
         if($p instanceof Project && !$p->clear){
