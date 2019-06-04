@@ -238,13 +238,15 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Coverage Information</h3>
                 <ul>
-                <li>
-                As announced in the <a href='http://www.cbc.ca/news/canada/manitoba/mifegymiso-manitoba-accessibility-1.4473206'>media
-                </a>, as of January 2018, Mifegymiso® will be covered by Manitoba Pharmacare, after annual deductions have been met, <a href='http://www.mifegymiso.com/cost-coverage-statement/
-'>read more</a>
-                </li>
+                    <li>
+                    As announced in the <a href='http://www.cbc.ca/news/canada/manitoba/mifegymiso-manitoba-accessibility-1.4473206'>media
+                    </a>, as of January 2018, Mifegymiso® will be covered by Manitoba Pharmacare, after annual deductions have been met, <a href='http://www.mifegymiso.com/cost-coverage-statement/'>read more</a>
+                    </li>
                     <li>As reported in the media on March 9th, 2017, Winnipeg Regional Health Authority has confirmed Mifegymiso® is now available at Health Sciences Centre's Women's Hospital, but patients must pay $350, <a href='http://www.cbc.ca/beta/news/canada/manitoba/abortion-pill-available-at-hsc-in-winnipeg-but-patients-will-pay-1.4016440' target='_blank'>read more</a></li>
-                    <li>On July 20th, 2017 government officials from the province of Manitoba announced that mifepristone will be covered at select sites, <a href='http://www.cbc.ca/news/canada/manitoba/manitoba-to-cover-cost-of-abortion-pill-mifegymiso-at-approved-centres-1.4214354' target='_blank'>read more</a></li>
+                        <li>On July 20th, 2017 government officials from the province of Manitoba announced that mifepristone will be covered at select sites, <a href='http://www.cbc.ca/news/canada/manitoba/manitoba-to-cover-cost-of-abortion-pill-mifegymiso-at-approved-centres-1.4214354' target='_blank'>read more</a></li>
+                        <li>
+                            On June 1, 2019, the Manitoban government announced its plans to expand no-cost coverage to individuals across the province. <a href='https://nationalpost.com/news/canada/minister-says-manitoba-to-provide-universal-access-to-abortion-pill-mifegymiso' target='_blank'>Read more</a>
+                        </li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
