@@ -929,6 +929,7 @@ Lire la suite</a></li>
 Lire la suite</a></li>
                     <li>On July 20th, 2017 government officials from the province of Manitoba announced that mifepristone will be covered at select sites, <a href='http://www.cbc.ca/news/canada/manitoba/manitoba-to-cover-cost-of-abortion-pill-mifegymiso-at-approved-centres-1.4214354' target='_blank'>
 Lire la suite</a></li>
+                    <li>Le 1er juin 2019, le gouvernement manitobain a annoncé son intention d'étendre la gratuité du Mifegymiso® à toutes les femmes de la province. <a href='https://www.translatetheweb.com/?from=&to=fr&ref=SERP&dl=fr&rr=UC&a=https%3a%2f%2fnationalpost.com%2fnews%2fcanada%2fminister-says-manitoba-to-provide-universal-access-to-abortion-pill-mifegymiso' target='_blank'>Lire la suite</a></li>
                 </ul>
                 
                 <h3>Envoi / Distribution des informations</h3>
