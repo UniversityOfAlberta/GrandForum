@@ -281,6 +281,9 @@ class ReportXMLParser {
             if(isset($attributes->allowIdProjects) && strtolower($attributes->allowIdProjects) == 'true'){
                 $this->report->allowIdProjects = true;
             }
+            if(isset($attributes->orientation)){
+                $this->report->orientation = $attributes->orientation;
+            }
             if(isset($attributes->disabled) && strtolower($attributes->disabled) == 'true'){
                 $this->report->setDisabled(true);
             }

@@ -151,13 +151,16 @@ class Milestone {
      * @return Activity The Activity associated with this Milestone
      */
     function getActivity(){
-        $data = DBFunctions::select(array('grand_activities'),
-                                    array('name'),
-                                    array('id' => EQ($this->activity_id)));
-        if(isset($data[0])){
-            return Activity::newFromId($this->activity_id);
+        if($this->activity == null){
+            $data = DBFunctions::select(array('grand_activities'),
+                                        array('name'),
+                                        array('id' => EQ($this->activity_id)));
+            if(isset($data[0])){
+                $this->activity = Activity::newFromId($this->activity_id);
+                return $this->activity;
+            }
         }
-        return null;
+        return $this->activity;
     }
     
     /**

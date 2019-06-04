@@ -35,14 +35,17 @@
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL's Project Scorecard and Reporting Framework">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
-                <p>Please complete the project scorecard provided. You should specifically respond to the reviewer feedback from the Request for Proposals. You should identify areas of strength and weakness of the project and team and identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the Catalyst year in order to strengthen your project as they pertain to NCE Program Criteria:</p>
-                <ol>
-                    <li>Scientific Excellence;</li>
-                    <li>Networking and Partnerships;</li>
-                    <li>Knowledge and Technology Exchange and Exploitation;</li>
-                    <li>Development of Highly Qualified Personnel (HQP); and </li>
-                    <li>Team and Project Management.</li>
-                </ol>
+                <p>Please complete the project scorecard provided. You should specifically respond to the reviewer feedback from the Core Research Program (CRP) Request for Proposals. You should identify areas of strength and weakness of the project and team and identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the Catalyst year in order to strengthen your project as they pertain to NCE Program Criteria.</p>
+                <p>As previously communicated, the expectations of the CRP Catalyst phase include activities related to:</p>
+                <ul>
+                    <li>Building partnerships and team capacity;</li>
+                    <li>Developing knowledge mobilization and commercialization plans;</li>
+                    <li>Developing relationships with the stakeholders (i.e., older adults and caregivers should be involved in all aspects of the project from the start);</li>
+                    <li>Developing relationships and collaborations with the other projects within the Challenge Areas and across the Network; and</li>
+                    <li>Recruitment of the full research team to hit the ground running in April 2020.</li>
+                </ul>
+                
+                <p>Through these activities, projects should be positioned not only to maximize the likelihood of producing specific outputs, but also to contribute to the development of AGE-WELL Challenge Areas.</p>
                 
                 <p>You should also outline:</p>
                 <ul>
@@ -50,7 +53,7 @@
                     <li>Any supports or resources that you feel your project would benefit from. AGE-WELL’s Network Management Office is keen to work with all the CRP Catalyst projects has access to numerous supports and resources across the Network that may be useful to projects.</li>
                 </ul>
                 
-                <p>The project scorecard will be submitted to AGE-WELL by June 27, 2019. It will be used by the Network Management Office to match projects with mentors and to create individual project support and resource packages (e.g. links to specific partners, cross-cutting activities, people, etc.).</p>
+                <p>The project scorecard will be submitted to AGE-WELL by July 4, 2019. It will be used by the Network Management Office to match projects with mentors and to create individual project support and resource packages (e.g. links to specific partners, cross-cutting activities, people, etc.).</p>
                 
                 <p>As part of the initial planning and ongoing work during the Catalyst phase, Project Leads should consider connecting with their research team, partners and stakeholders (e.g. older people, caregivers, service providers, government agencies) to reflect on how to best to address:</p>
                 <ul>
@@ -88,19 +91,18 @@
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard">
         <ReportItem id="TableHeader" type="Static">
             <![CDATA[
-                <table class="wikitable small">
+                <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Referencing CRP reviewer feedback, please identify the project’s key areas of strength and weakness, and identify concrete goals for the Catalyst year. Keep it brief and realistic. 
+                <table class="wikitable small" width="100%">
                     <tr>
                         <th></th>
-                        <th colspan='5'>To be completed by June 27, 2019</th>
-                        <th colspan='2'>To be completed by January 15, 2020</th>
+                        <th colspan='3'>To be completed by July 4, 2019</th>
+                        <th colspan='2'>To be completed in January 2020<br />(date to be confirmed)</th>
                     </tr>
                     <tr>
                         <th>NCE Area</th>
                         <th>Identified Strengths of project</th>
                         <th>Identified Weaknesses of project</th>
                         <th>Actions to be taken to address weaknesses</th>
-                        <th>Anticipated changes to be made to address weaknesses</th>
-                        <th>Supports and resources needed from AGE-WELL</th>
                         <th>Actions completed</th>
                         <th>Key outcomes</th>
                     </tr>
@@ -132,17 +134,7 @@
         <ReportItem id="sci_5" type="Textarea" blobItem="SCI_5" height="100%">
             <![CDATA[
                     <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="sci_6" type="Textarea" blobItem="SCI_6" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="sci_7" type="Textarea" blobItem="SCI_7" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-                 </tr>
+                </tr>
             ]]>
         </ReportItem>
         <!-- Networking and Partnerships -->
@@ -171,17 +163,7 @@
         <ReportItem id="net_5" type="Textarea" blobItem="NET_5" height="100%">
             <![CDATA[
                     <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="net_6" type="Textarea" blobItem="NET_6" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="net_7" type="Textarea" blobItem="NET_7" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-                 </tr>
+                </tr>
             ]]>
         </ReportItem>
         <!-- KTEE -->
@@ -210,17 +192,7 @@
         <ReportItem id="ktee_5" type="Textarea" blobItem="KTEE_5" height="100%">
             <![CDATA[
                     <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ktee_6" type="Textarea" blobItem="KTEE_6" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ktee_7" type="Textarea" blobItem="KTEE_7" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-                 </tr>
+                </tr>
             ]]>
         </ReportItem>
         <!-- Training of HQP -->
@@ -249,17 +221,7 @@
         <ReportItem id="hqp_5" type="Textarea" blobItem="HQP_5" height="100%">
             <![CDATA[
                     <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp_6" type="Textarea" blobItem="HQP_6" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp_7" type="Textarea" blobItem="HQP_7" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-                 </tr>
+                </tr>
             ]]>
         </ReportItem>
         <!-- Team and Project Management -->
@@ -288,22 +250,18 @@
         <ReportItem id="team_5" type="Textarea" blobItem="TEAM_5" height="100%">
             <![CDATA[
                     <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="team_6" type="Textarea" blobItem="TEAM_6" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="team_7" type="Textarea" blobItem="TEAM_7" height="100%">
-            <![CDATA[
-                    <td>{$item}</td>
-                 </tr>
+                </tr>
             ]]>
         </ReportItem>
         <ReportItem id="TableFooter" type="Static">
             <![CDATA[
                 </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
+            <![CDATA[
+                <p>Considering the expectations of the Catalyst year, and the weaknesses listed above, please highlight areas of support that may be required. Supports and resources needed from AGE-WELL:</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
