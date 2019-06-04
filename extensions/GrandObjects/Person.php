@@ -60,6 +60,9 @@ class Person extends BackboneModel {
     var $multimedia;
     var $aliases = false;
     var $roleHistory;
+    var $degreeReceived;
+    var $movedOn;
+    var $thesis;
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
@@ -1846,21 +1849,24 @@ class Person extends BackboneModel {
      * @return array An array of key/value pairs representing the DB row
      */
     function getMovedOn(){
-        $sql = "SELECT *
-                FROM `grand_movedOn`
-                WHERE `user_id` = '{$this->getId()}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return $data[0];
+        if($this->movedOn == null){
+            $sql = "SELECT *
+                    FROM `grand_movedOn`
+                    WHERE `user_id` = '{$this->getId()}'";
+            $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                $this->movedOn = $data[0];
+            }
+            else{
+                $this->movedOn = array("where" => "",
+                                       "studies" => "",
+                                       "employer" => "",
+                                       "city" => "",
+                                       "country" => "",
+                                       "effective_date" => "");
+            }
         }
-        else{
-            return array("where" => "",
-                         "studies" => "",
-                         "employer" => "",
-                         "city" => "",
-                         "country" => "",
-                         "effective_date" => "");
-        }
+        return $this->movedOn;
     }
     
     /**
@@ -1961,14 +1967,17 @@ class Person extends BackboneModel {
      * @return string The date that this Person's degree started
      */
     function getDegreeReceivedDate($guess = true){
-        $data = DBFunctions::select(array('grand_relations'),
-                                    array('end_date'),
-                                    array('user2' => EQ($this->getId()),
-                                          'type' => EQ('Supervises')),
-                                    array('end_date' => 'ASC'));
-        if(DBFunctions::getNRows() > 0)
-          return $data[0]['end_date'];
-        return NULL;
+        if($this->degreeReceived == null){
+            $data = DBFunctions::select(array('grand_relations'),
+                                        array('end_date'),
+                                        array('user2' => EQ($this->getId()),
+                                              'type' => EQ('Supervises')),
+                                        array('end_date' => 'ASC'));
+            if(DBFunctions::getNRows() > 0){
+                $this->degreeReceived = $data[0]['end_date'];
+            }
+        }
+        return $this->degreeReceived;
     }
     
     /**
