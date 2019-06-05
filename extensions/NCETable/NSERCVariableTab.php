@@ -1396,6 +1396,7 @@ EOF;
                        $pub->getCategory() == "Scientific Excellence - Leadership"){
                         $dissem["b".$key][] = $pub;
                     }
+                    break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
                 case 'Masters Thesis':
@@ -1414,27 +1415,6 @@ EOF;
                     $dissem["c".$key][] = $pub;   
                     break;
             }
-            /*
-            switch ($pub->getType()) {
-                case 'Book':
-                case 'Book Chapter':
-                case 'Collections Paper':
-                case 'Proceedings Paper':
-                    $dissem["a2".$key][] = $pub;
-                    break;
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    $dissem["a1".$key][] = $pub;
-                    break;
-                case 'Masters Thesis':
-                case 'PhD Thesis':
-                case 'Tech Report':
-                case 'Misc':
-                case 'Poster':
-                default:
-                    $dissem["b".$key][] = $pub;
-            }
-            //break;*/
         }
         
         $n_a1_r1 = count($dissem['a1_r1']);
@@ -1843,6 +1823,7 @@ EOF;
                        $pub->getCategory() == "Scientific Excellence - Leadership"){
                         $pub_count["b"][] = $pub;
                     }
+                    break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
                 case 'Masters Thesis':
