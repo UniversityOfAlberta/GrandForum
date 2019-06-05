@@ -1392,10 +1392,12 @@ EOF;
                 case 'Review Article':
                 case 'Invited Presentation':
                 default:
-                    if($pub->getCategory() == "Publication" ||
-                       $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
-                       ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
-                        $dissem["b".$key][] = $pub;
+                    if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
+                            if($pub->getCategory() == "Publication" ||
+                               $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
+                               ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
+                            $dissem["b".$key][] = $pub;
+                        }
                     }
                     break;
                 // C: Specialized Publications
