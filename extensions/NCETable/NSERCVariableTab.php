@@ -1390,10 +1390,11 @@ EOF;
                 case 'Poster':
                 case 'Book Review':
                 case 'Review Article':
+                case 'Invited Presentation':
                 default:
                     if($pub->getCategory() == "Publication" ||
                        $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
-                       $pub->getCategory() == "Scientific Excellence - Leadership"){
+                       ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
                         $dissem["b".$key][] = $pub;
                     }
                     break;
@@ -1817,10 +1818,11 @@ EOF;
                 case 'Poster':
                 case 'Book Review':
                 case 'Review Article':
+                case 'Invited Presentation':
                 default:
                     if($pub->getCategory() == "Publication" ||
                        $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
-                       $pub->getCategory() == "Scientific Excellence - Leadership"){
+                       ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
                         $pub_count["b"][] = $pub;
                     }
                     break;
