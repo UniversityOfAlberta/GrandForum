@@ -276,7 +276,7 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id != "%"){
+	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%"){
 	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
@@ -329,7 +329,7 @@ class ReportBlob {
 			//echo ">>>> Offending SQL:\n{$sql}\n";
 			throw new DomainException('Address leads to ambiguous data.');
 		}
-		if($this->_type != BLOB_RAW && $this->_owner_id != "%"){
+		if($this->_type != BLOB_RAW && $this->_owner_id !== "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
 		    Cache::store($cacheId, $this->_data);
 		}
