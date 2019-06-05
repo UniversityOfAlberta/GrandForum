@@ -61,6 +61,7 @@ class Person extends BackboneModel {
     var $aliases = false;
     var $roleHistory;
     var $degreeReceived;
+    var $degreeStartDate;
     var $movedOn;
     var $thesis;
     var $budgets = array();
@@ -1953,21 +1954,26 @@ class Person extends BackboneModel {
      * @return string The date that this Person's degree started
      */
     function getDegreeStartDate($guess = true){
-        $data = DBFunctions::select(array('grand_relations'),
-                                    array('start_date'),
-                                    array('user2' => EQ($this->getId())),
-                                    array('start_date' => 'ASC'));
-        if(DBFunctions::getNRows() > 0)
-          return $data[0]['start_date'];
-        return NULL;
+        if($this->degreeStartDate === null){
+            $this->degreeStartDate = "";
+            $data = DBFunctions::select(array('grand_relations'),
+                                        array('start_date'),
+                                        array('user2' => EQ($this->getId())),
+                                        array('start_date' => 'ASC'));
+            if(DBFunctions::getNRows() > 0){
+                $this->degreeStartDate = $data[0]['start_date'];
+            }
+        }
+        return $this->degreeStartDate;
     }
 
     /**
      * Returns when this Person's degree ended (NOTE: This is a guesstimate)
-     * @return string The date that this Person's degree started
+     * @return string The date that this Person's degree ended
      */
     function getDegreeReceivedDate($guess = true){
-        if($this->degreeReceived == null){
+        if($this->degreeReceived === null){
+            $this->degreeReceived = "";
             $data = DBFunctions::select(array('grand_relations'),
                                         array('end_date'),
                                         array('user2' => EQ($this->getId()),
@@ -2298,30 +2304,35 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
+                // All History
                 if($this->roleHistory === null){
                     $data = DBFunctions::select(array('grand_roles'),
                                                 array('*'),
                                                 array('user_id' => $this->id),
                                                 array('end_date' => 'DESC'));
-                    $this->roleHistory = $data;
+                    $this->roleHistory = array();
+                    foreach($data as $row){
+                        $this->roleHistory[] = new Role(array($row));
+                    }
                 }
-                $data = $this->roleHistory;
+                return $this->roleHistory;
             }
             else{
+                // History at a specific date
                 $sql = "SELECT *
                         FROM grand_roles
                         WHERE user_id = '{$this->id}'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
                 $data = DBFunctions::execSQL($sql);
-            }
-            $roles = array();
-            if(count($data) > 0){
-                foreach($data as $row){
-                    $roles[] = new Role(array($row));
+                $roles = array();
+                if(count($data) > 0){
+                    foreach($data as $row){
+                        $roles[] = new Role(array($row));
+                    }
                 }
+                return $roles;
             }
-            return $roles;
         }
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
@@ -2811,7 +2822,7 @@ class Person extends BackboneModel {
      */
     function getProjects($history=false, $allowProposed=false){
         $projects = array();
-        if(($this->projects == null || $history) && $this->id != null){
+        if(($this->projects === null || $history) && $this->id != null){
             $sql = "SELECT p.name
                     FROM grand_project_members u, grand_project p
                     WHERE user_id = '{$this->id}'
@@ -2841,10 +2852,10 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($history === false && $this->projects == null){
+        if($history === false && $this->projects === null){
             $this->projects = $projects;
         }
-        if($history === false && $this->projects != null){
+        if($history === false && $this->projects !== null){
             return $this->projects;
         }
         return $projects;
@@ -3836,7 +3847,7 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is related to another Person
      */
     function relatedTo($person, $relationship){
-        if( $person instanceof Person ){
+        if($person instanceof Person){
             $person_id = $person->getId();
             $data = DBFunctions::select(array('grand_relations'),
                                         array('*'),

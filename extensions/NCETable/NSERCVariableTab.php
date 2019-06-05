@@ -1754,6 +1754,11 @@ EOF;
             }
             switch ($pub->getType()) {
                 // A1: Articles in refereed publications
+                case 'Journal Paper':
+                case 'Magazine/Newspaper Article':
+                    $pub_count["a1"][] = $pub;
+                    break;
+                // A2: Other refereed contributions
                 case 'Book':
                 case 'Book Chapter':
                 case 'Edited Book':
@@ -1762,11 +1767,13 @@ EOF;
                 case 'Proceedings Paper':
                     $pub_count["a2"][] = $pub;
                     break;
-                // A2: Other refereed contributions
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    $pub_count["a1"][] = $pub;
-                    break;
+                // B: Non-refereed contributions
+                case 'Misc':
+                case 'Poster':
+                case 'Book Review':
+                case 'Review Article':
+                default:
+                    $pub_count["b"][] = $pub;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
                 case 'Masters Thesis':
@@ -1784,13 +1791,6 @@ EOF;
                 case 'Manual':
                     $pub_count["c"][] = $pub;   
                     break;
-                // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
-                case 'Review Article':
-                default:
-                    $pub_count["b"][] = $pub;
             }
         }
         
