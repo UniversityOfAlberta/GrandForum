@@ -9,6 +9,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
         parent::AbstractTab("Dashboard");
         $this->project = $project;
         $this->visibility = $visibility;
+        if(isset($_GET['showDashboard'])){
+            echo $this->showDashboard($this->project, $this->visibility);
+            exit;
+        }
     }
     
     function tabSelect(){
@@ -50,8 +54,11 @@ class ProjectDashboardTab extends AbstractEditableTab {
             if(!$this->project->isSubProject()){
                 $this->showTopProducts($this->project, $this->visibility);
             }
-            $this->showDashboard($this->project, $this->visibility);
+            $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
             $this->html .= "<script type='text/javascript'>
+            $.get('{$this->project->getUrl()}?showDashboard', function(response){
+                $('#ajax_dashboard').html(response);
+            });
             _.defer(function(){
                 $('input[value=\"Edit Dashboard\"]').css('display', 'none');
             });</script>";
@@ -63,8 +70,11 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if(!$this->project->isSubProject()){
             $this->showEditTopProducts($this->project, $this->visibility);
         }
-        $this->showDashboard($this->project, $this->visibility);
+        $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
         $this->html .= "<script type='text/javascript'>
+            $.get('{$this->project->getUrl()}?showDashboard', function(response){
+                $('#ajax_dashboard').html(response);
+            });
             _.defer(function(){
                 $('select.chosen:visible').chosen();
                 $('select.chosen').each(function(i, el){
@@ -214,40 +224,40 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function showDashboard($project, $visibility){
         global $wgOut, $config;
         $me = Person::newFromWgUser();
+        $html = "";
         if($me->isLoggedIn()){
-            $wgOut->addScript("<script type='text/javascript'>
-                $(document).ready(function(){
-                    $('#dashboardAccordion').accordion({autoHeight: false,
-                                                        collapsible: true});
-                });
-            </script>");
-            $this->html .= "<h2>Dashboard</h2>";
-            $this->html .= "<div id='dashboardAccordion'>";
-            $this->html .= "<h3><a href='#'>Overall</a></h3>";
-            $this->html .= "<div style='overflow: auto;'>";
+            $html .= "<h2>Dashboard</h2>";
+            $html .= "<div id='dashboardAccordion'>";
+            $html .= "<h3><a href='#'>Overall</a></h3>";
+            $html .= "<div style='overflow: auto;'>";
             $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project);
             if(!$visibility['isLead']){
                 $dashboard->filterCols(HEAD, array('Contributions'));
             }
-            $this->html .= $dashboard->render(false, false);
-            $this->html .= "</div>";
+            $html .= $dashboard->render(false, false);
+            $html .= "</div>";
             $startYear = YEAR;
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             $phaseDates = $config->getValue("projectPhaseDates");
             for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)) - 1; $i--){
-                $this->html .= "<h3><a href='#'>$i/".substr($i+1,2,2)."</a></h3>";
-                $this->html .= "<div style='overflow: auto;'>";
+                $html .= "<h3><a href='#'>$i/".substr($i+1,2,2)."</a></h3>";
+                $html .= "<div style='overflow: auto;'>";
                 $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project, "$i-04-01", ($i+1)."-03-31");
                 if(!$visibility['isLead']){
                     $dashboard->filterCols(HEAD, array('Contributions'));
                 }
-                $this->html .= $dashboard->render(false, false);
-                $this->html .= "</div>";
+                $html .= $dashboard->render(false, false);
+                $html .= "</div>";
             }
-            $this->html .="</div>";
+            $html .="</div>";
+            $html .= "<script type='text/javascript'>
+                $('#dashboardAccordion').accordion({autoHeight: false,
+                                                    collapsible: true});
+            </script>";
         }
+        return $html;
     }
 
 }    
