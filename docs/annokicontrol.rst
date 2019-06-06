@@ -13,7 +13,7 @@ This is essentially an extension loader for the rest of the extensions.  The ext
 If the extension 'GrandObjects' is also enabled in the config.php file, then it will be loaded whenever a page request is made.
 
 DBFunctions
-===========
+-----------
 
 Another useful file is DBFunctions.php.  This file contains database access functions which automatically sanitize inputs in queries.  For example simple SELECT query can be written like the following:
 
