@@ -708,7 +708,7 @@ EOF;
                             $titles = array("", "Primary", "Secondary");
                             break;
                         case "BOD": // Board of Directors
-                            $titles = array("", "President", "Past Presidence Vice President", "Secretary", "Treasurer", "Director", "Observer");
+                            $titles = array("", "President", "Past President", "Vice President", "Secretary", "Treasurer", "Director", "Executive Director", "Observer");
                             break;
                         case CI: // Faculty
                             $titles = array("", "Professor", "Associate Professor", "Assistant Professor", "Instructor", "Lecturer", "Other");
