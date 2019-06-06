@@ -162,7 +162,6 @@
         //'AllocatedBudgets',
         'ProjectEvolution',
         //'ScreenCapture',
-        //'Solr',
         //'TravelForm',
         'CCVExport',
         'ReportIssue',
