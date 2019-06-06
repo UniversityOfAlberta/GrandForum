@@ -37,6 +37,7 @@ Extension Documentation
 
    annokicontrol
    grandobjects
+   cache
    project evolution
    messages
    backbonepage
