@@ -35,6 +35,7 @@ Extension Documentation
 .. toctree::
    :maxdepth: 2
 
+   annokicontrol
    grandobjects
    project evolution
    messages
