@@ -28,7 +28,7 @@ PHP Usage
 
 Using Messages is very simple, and similar to how the global $wgOut variable is used with mediawiki. Messages uses a global variable $wgMessage, and messages can be added by using the following 5 methods:
 
-.. code:: php
+.. code-block:: php
 
     global $wgMessage;
 
@@ -42,7 +42,7 @@ Messages will always be display in the same order, regardless of when each metho
 
 Messages can also be cleared by calling the following methods:
 
-.. code:: php
+.. code-block:: php
 
     global $wgMessage;
 
@@ -57,7 +57,7 @@ Javascript Usage
 
 Messages can also be added using the javascript interface.
 
-.. code:: javascript
+.. code-block:: javascript
 
     addError("This is an error message");
     addWarning("This is a warning message");

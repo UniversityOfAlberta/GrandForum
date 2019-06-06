@@ -16,7 +16,7 @@ XML Structure
 
 Reports are defined in xml files.  The structure is fairly simple, however the number of possible combination of elements and their attributes can make it quite complex.  Here is a super simple example of what the structure typically looks like:
 
-.. code:: xml
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <Report name="" reportType="" pdfType="" pdfFiles="" ajax="true">

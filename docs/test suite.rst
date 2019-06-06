@@ -74,7 +74,7 @@ behat can interact with this instead of a real browser, which will speed up the 
 
 You will need to install PhantomJS by running:
 
-.. code:: bash
+.. code-block:: bash
 
     $ sudo npm -g install phantomjs
 

@@ -17,7 +17,7 @@ implemented function it will call the TabUtils::`createTab`_ function.
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
     
     function createTab(&$tabs) { ... }
     
@@ -32,7 +32,7 @@ and append the subtab to one of the top level tabs
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
 
     function createSubTabs(&$tabs) { ... }
 
@@ -47,7 +47,7 @@ function.
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
 
     function createToolboxHeader(&$toolbox) { ... }
 
@@ -63,7 +63,7 @@ toolbox headers.
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
 
     function createToolboxLinks(&$toolbox) { ... }
 
@@ -79,7 +79,7 @@ hook it a page can override this with its own access control logic.
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
 
     function checkImpersonationPermissions($person, $realPerson, $ns, $title, $pageAllowed) { ... }
 
@@ -94,7 +94,7 @@ the message if it needs to be more specific.
 
 **Define Function**
 
-.. code:: php
+.. code-block:: php
 
     function impersonationMessage($person, $realPerson, $ns, $title, $message) { ... }
 

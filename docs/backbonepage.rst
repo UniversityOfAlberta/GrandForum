@@ -29,13 +29,13 @@ Registering a BackbonePage
 
 To make a BackbonePage known to the Forum, the BackbonePage::register function needs to be called.  ie:
 
-.. code:: php
+.. code-block:: php
 
     BackbonePage::register('Products', 'Products', 'network-tools', dirname(__FILE__));
     
 Alternatively if you do not want it to be a SpecialPage, and rather a smaller inline widget (like the global search) then you would instead do the following:
 
-.. code:: php
+.. code-block:: php
 
     $wgHooks['BeforePageDisplay'][] = 'initGlobalSearch';
 
@@ -56,7 +56,7 @@ Bake
 
 bake is a tool that can be used to initialize and update BackbonePages so that that they conform to the directory structure and that all the abstract methods are up to date.  To use bake first you need to add the following to your .bashrc
 
-.. code:: bash 
+.. code-block:: bash 
     
     function bake(){
         cp /local/data/home/dwt/bake/bake.php ~/bake.php
@@ -65,7 +65,7 @@ bake is a tool that can be used to initialize and update BackbonePages so that t
     
 Once you have done that you can type the following to create a new BackbonePage
 
-.. code:: bash
+.. code-block:: bash
 
     $ bake create NewBackbonePage
     
@@ -73,7 +73,7 @@ a new directory "NewBackbonePage" will be created and will come with several def
 
 If some changes have been made to the structure of the templates, you can run
 
-.. code:: bash
+.. code-block:: bash
 
     $ bake update
     
