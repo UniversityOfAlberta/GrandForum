@@ -224,7 +224,7 @@ ProductEditView = Backbone.View.extend({
         if(!this.model.isSingleAuthor()){
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
-        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member</i></p>");
+        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member (if they are known)</i></p>");
         this.$("#productAuthors .tagit").sortable({
             stop: function(event,ui) {
                 $('input[name=authors_fullname]').val(
