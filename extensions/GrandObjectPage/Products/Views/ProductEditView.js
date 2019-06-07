@@ -219,10 +219,12 @@ ProductEditView = Backbone.View.extend({
                 }
             }
         });
+        
         this.$("#productAuthors").html(html);
         if(!this.model.isSingleAuthor()){
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
+        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member</i></p>");
         this.$("#productAuthors .tagit").sortable({
             stop: function(event,ui) {
                 $('input[name=authors_fullname]').val(
@@ -232,6 +234,25 @@ ProductEditView = Backbone.View.extend({
                         .text()
                 ).change();
             }
+        });
+        this.$el.on('contextmenu', "#productAuthors .tagit-choice", function(e){
+            e.preventDefault();
+            var origText = $(".tagit-label",$(this)).text();;
+            var newText = $(".tagit-label",$(this)).text();
+            if($(".tagit-label",$(this)).text().includes('"')){
+                newText = newText.replace(/"/g, '');
+            }
+            else{
+                newText = '"' + newText + '"';
+            }
+            var assignedTags = $('div[name=authors_fullname] ul.tagit').tagit('assignedTags');
+            $('div[name=authors_fullname] ul.tagit').tagit('removeAll');
+            _.each(assignedTags, function(tag){
+                if(tag == origText){
+                    tag = newText;
+                }
+                $('div[name=authors_fullname] ul.tagit').tagit('createTag', tag);
+            });
         });
         this.$el.on('mouseover', 'div[name=authors_fullname] li.tagit-choice', function(){
             $(this).css('cursor', 'move');
