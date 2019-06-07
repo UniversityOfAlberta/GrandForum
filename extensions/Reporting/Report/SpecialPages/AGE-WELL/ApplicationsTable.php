@@ -20,6 +20,7 @@ class ApplicationsTable extends SpecialPage{
     var $wps;
     var $ccs;
     var $ihs;
+    var $catalyst;
     var $projects;
 
     function ApplicationsTable() {
@@ -57,6 +58,7 @@ class ApplicationsTable extends SpecialPage{
         
         $this->ccs = array();
         $this->ihs = array();
+        $this->catalyst = array();
         $this->projects = Project::getAllProjectsEver();
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
@@ -64,6 +66,9 @@ class ApplicationsTable extends SpecialPage{
             }
             if($project->getType() == "Innovation Hub"){
                 $this->ihs[] = $project;
+            }
+            if(preg_match("/.*CAT-2019.*/", $project->getName()) != 0){
+                $this->catalyst[] = $project;
             }
         }
     }
@@ -413,6 +418,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT_SCORECARD', $this->catalyst, 2019, "CAT-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2018, "2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2017, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2016, "2017"));
