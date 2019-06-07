@@ -3,6 +3,10 @@ JobPosting = Backbone.Model.extend({
     initialize: function(){
         
     },
+    
+    getWebsiteUrl: function(){
+        return "https://cscan-infocan.ca/careers/?job_id=" + this.get('id');
+    },
 
     urlRoot: 'index.php?action=api.jobposting',
 

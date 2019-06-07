@@ -60,6 +60,12 @@
                 <td><a href="<%= sourceLink %>" target="_blank"><%= sourceLink %></a></td>
             </tr>
         <% } %>
+        <% if(visibility == "Publish"){ %>
+            <tr>
+                <td class="label"><a href="<%= this.model.getWebsiteUrl() %>" target="_blank">Website Page</a></td>
+                <td></td>
+            </tr>
+        <% } %>
     </table>
     <h3>Summary</h3>
     <%= nl2br(summary) %>
