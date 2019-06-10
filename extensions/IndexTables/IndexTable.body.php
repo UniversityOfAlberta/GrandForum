@@ -1,6 +1,7 @@
 <?php
 
 require_once("InactiveUsers.php");
+require_once("ActiveUsers.php");
 autoload_register('IndexTables');
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
