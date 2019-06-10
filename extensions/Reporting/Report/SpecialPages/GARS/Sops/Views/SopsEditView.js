@@ -2,15 +2,25 @@ SopsEditView = Backbone.View.extend({
 
     sops: null,
     gsmsdata: null,
+    
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;
             this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
+            
             var xhr = this.gsmsdata.fetch();
-            $.when(xhr).then(this.render);
-            //this.render();
+            $.when(xhr).then(function(){
+                this.render();
+            }.bind(this));
         }, this);
+        Backbone.Subviews.add(this);
+    },
+    
+    subviewCreators: {
+        "oisView" : function() {
+            return new OISView({model: this.gsmsdata});
+        }
     },
     
     events: {
@@ -202,14 +212,12 @@ SopsEditView = Backbone.View.extend({
             break;
         }
         var reviewers = this.gsmsdata.attributes.reviewers;
-        console.log(reviewers);
         for (var i = 0; i < reviewers.length; i++) {
             if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
         var other_reviewers = this.gsmsdata.attributes.other_reviewers;
-        console.log(other_reviewers);
         for (var i = 0; i < other_reviewers.length; i++) {
             if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";

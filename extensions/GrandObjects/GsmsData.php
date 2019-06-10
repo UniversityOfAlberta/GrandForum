@@ -346,6 +346,7 @@ class GsmsData extends BackboneModel{
             $degrees = $this->education_history;
         }
         $json = array('id' =>$this->id,
+                  'ois_id' => $this->ois_id,
                   'user_id' =>$this->user_id,
                   'year' => $year,
                   'status' => $this->status,
