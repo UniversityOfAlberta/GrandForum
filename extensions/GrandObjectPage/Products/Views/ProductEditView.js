@@ -358,7 +358,7 @@ ProductEditView = Backbone.View.extend({
                     journals.search = request.term;
                     journals.fetch({success: function(collection){
                         var data = _.map(collection.toJSON(), function(journal){
-                            var label = journal.title + " " + journal.year;
+                            var label = journal.title;
                             if(journal.description != null){
                                 label += " (" + journal.description + ")";
                             }

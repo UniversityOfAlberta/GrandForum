@@ -64,17 +64,17 @@ class Journal extends BackboneModel {
         $journals = array();
         if($issn != ""){
             $data = DBFunctions::select(array('grand_journals'),
+                                    array('MAX(year)'));
+            $year = $data[0]['MAX(year)'];
+            $data = DBFunctions::select(array('grand_journals'),
                                         array('*'),
                                         array('issn' => $issn,
                                               WHERE_OR('eissn') => $issn),
                                         array('year' => 'DESC'));
-            $lastYear = "0000";
             foreach($data as $row){
-                if($row['year'] >= $lastYear){
+                if($row['year'] == $year){
                     $journals[] = new Journal(array($row));
                     $lastYear = $row['year'];
-                }
-                else{
                     break;
                 }
             }
@@ -89,7 +89,11 @@ class Journal extends BackboneModel {
     static function getAllJournals(){
         $journals = array();
         $data = DBFunctions::select(array('grand_journals'),
-                                     array('*'));
+                                    array('MAX(year)'));
+        $year = $data[0]['MAX(year)'];
+        $data = DBFunctions::select(array('grand_journals'),
+                                    array('*'),
+                                    array('year' => EQ($year)));
         
         foreach($data as $row){
             $journal = new Journal(array($row));
@@ -103,9 +107,12 @@ class Journal extends BackboneModel {
     static function getAllJournalsBySearch($string){
         $journals = array();
         $strings = explode(" ", unaccentChars($string));
-        
         $data = DBFunctions::select(array('grand_journals'),
-                                    array('*'));
+                                    array('MAX(year)'));
+        $year = $data[0]['MAX(year)'];
+        $data = DBFunctions::select(array('grand_journals'),
+                                    array('*'),
+                                    array('year' => EQ($year)));
         
         foreach($data as $row){
             $found = true;
