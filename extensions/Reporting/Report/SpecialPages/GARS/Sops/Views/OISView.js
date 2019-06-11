@@ -23,12 +23,12 @@ OISView = Backbone.View.extend({
             video.currentTime = 0;
         });
         if($(e.currentTarget).parents(".video").prev().length > 0){
-            $("video", $(e.currentTarget).parents(".video")).hide("slide", {
+            $(".videoFrame", $(e.currentTarget).parents(".video")).hide("slide", {
                 direction: "right",
                 complete: function(){
                     $(e.currentTarget).parents(".video").hide();
                     $(e.currentTarget).parents(".video").prev().show();
-                    $("video", $(e.currentTarget).parents(".video").prev()).show("slide", {
+                    $(".videoFrame", $(e.currentTarget).parents(".video").prev()).show("slide", {
                         direction: "left",
                         complete: function(){
                             $("video", $(e.currentTarget).parents(".video").prev())[0].play();
@@ -45,12 +45,12 @@ OISView = Backbone.View.extend({
             video.currentTime = 0;
         });
         if($(e.currentTarget).parents(".video").next().length > 0){
-            $("video", $(e.currentTarget).parents(".video")).hide("slide", {
+            $(".videoFrame", $(e.currentTarget).parents(".video")).hide("slide", {
                 direction: "left",
                 complete: function(){
                     $(e.currentTarget).parents(".video").hide();
                     $(e.currentTarget).parents(".video").next().show();
-                    $("video", $(e.currentTarget).parents(".video").next()).show("slide", {
+                    $(".videoFrame", $(e.currentTarget).parents(".video").next()).show("slide", {
                         direction: "right",
                         complete: function(){
                             $("video", $(e.currentTarget).parents(".video").next())[0].play();

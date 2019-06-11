@@ -455,6 +455,7 @@ table.gsms-mini-table tr:nth-child(odd) {
     border-color: #000000;
     border-width: 1px 0 1px 1px;
     border-style: solid;
+    z-index: 100;
 }
 
 .videoPrev.disabled {
@@ -491,6 +492,7 @@ table.gsms-mini-table tr:nth-child(odd) {
     border-color: #000000;
     border-width: 1px 1px 1px 0;
     border-style: solid;
+    z-index: 100;
 }
 
 .videoNext.disabled {
