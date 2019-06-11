@@ -2,20 +2,20 @@
 
 $dir = dirname(__FILE__) . '/';
 
-$wgSpecialPages['ActiveUsers'] = 'ActiveUsers'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['ActiveUsers'] = $dir . 'ActiveUsers.i18n.php';
-$wgSpecialPageGroups['ActiveUsers'] = 'other-tools';
+$wgSpecialPages['ActivatedUsers'] = 'ActivatedUsers'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['ActivatedUsers'] = $dir . 'ActivatedUsers.i18n.php';
+$wgSpecialPageGroups['ActivatedUsers'] = 'other-tools';
 
-$wgHooks['SubLevelTabs'][] = 'ActiveUsers::createSubTabs';
+$wgHooks['SubLevelTabs'][] = 'ActivatedUsers::createSubTabs';
 
-function runActiveUsers($par){
-    ActiveUsers::execute($par);
+function runActivatedUsers($par){
+    ActivatedUsers::execute($par);
 }
 
-class ActiveUsers extends SpecialPage {
+class ActivatedUsers extends SpecialPage {
 
-    function ActiveUsers() {
-		SpecialPage::__construct("ActiveUsers", MANAGER.'+', true, 'runActiveUsers');
+    function ActivatedUsers() {
+		SpecialPage::__construct("ActivatedUsers", MANAGER.'+', true, 'runActivatedUsers');
 	}
 
     function execute($par){
@@ -66,9 +66,9 @@ class ActiveUsers extends SpecialPage {
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(MANAGER)){
             $selected = ($wgTitle->getNSText() == "Special" && 
-                         $wgTitle->getText() == "ActiveUsers"); 
-	        $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Active Users", 
-                                                                   "$wgServer$wgScriptPath/index.php/Special:ActiveUsers", 
+                         $wgTitle->getText() == "ActivatedUsers") ? "selected" : ""; 
+	        $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Activated Users", 
+                                                                   "$wgServer$wgScriptPath/index.php/Special:ActivatedUsers", 
                                                                    "$selected");
         }
 	}
