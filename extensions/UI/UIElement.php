@@ -93,7 +93,7 @@ abstract class UIElement {
      * Inserts another UIElement before this UIElement
      * @param UIElement $element The UIElement to insert
      */
-    function insertBefore($element){
+    function insertBefore($element, $beforeId=0){
         if($this->parent() != null){
             $this->parent()->insertBefore($element, $this->id);
         }
@@ -103,7 +103,7 @@ abstract class UIElement {
      * Inserts another UIElement before this UIElement
      * @param UIElement $element
      */
-    function insertAfter($element){
+    function insertAfter($element, $afterId=0){
         if($this->parent() != null){
             $this->parent()->insertAfter($element, $this->id);
         }

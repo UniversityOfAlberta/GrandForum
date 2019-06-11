@@ -148,7 +148,7 @@ class UIElementArray extends UIElement {
         }
     }
     
-    function validate(){
+    function validate($value=false){
         $result = true;
         foreach($this->elements as $element){
             $result = ($element->validate()) && $result;

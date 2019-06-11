@@ -14,7 +14,7 @@
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
-    session_start();
+    //session_start();
     if(phpversion() < 5.4){
         error_reporting(E_ALL);
     }
