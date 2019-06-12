@@ -122,9 +122,6 @@ $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
 
-$egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
-                                             'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
-
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
