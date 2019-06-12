@@ -12,6 +12,7 @@ ManageProductsView = Backbone.View.extend({
     ccvDialog: null,
     bibtexDialog: null,
     duplicatesDialog: null,
+    colVisDialog: null,
 
     initialize: function(options){
         this.subViews = new Array();
@@ -207,6 +208,22 @@ ManageProductsView = Backbone.View.extend({
                                                      'preDrawCallback': function(){
                                                         return !creating;
                                                      },
+                                                     'drawCallback': function(){
+                                                        $("input", this.colVisDialog).each(function(i, check){
+                                                            if($(check).is(":checked")){
+                                                                $("table.dataTable tr td:nth-child(" + (i+1) + ")," +
+                                                                  "table.dataTable tr th:nth-child(" + (i+1) + ")").each(function(j, el){
+                                                                    el.style.display = '';
+                                                                  }.bind(this));
+                                                            }
+                                                            else{
+                                                                $("table.dataTable tr td:nth-child(" + (i+1) + ")," +
+                                                                  "table.dataTable tr th:nth-child(" + (i+1) + ")").each(function(j, el){
+                                                                    el.style.display = 'none';
+                                                                  }.bind(this));
+                                                            }
+                                                        }.bind(this));
+                                                     }.bind(this),
                                                      'aoColumnDefs': [
                                                         {'bSortable': false, 'aTargets': _.range(0, 1) }
                                                      ],
@@ -230,6 +247,40 @@ ManageProductsView = Backbone.View.extend({
 	        }
 	        this.$("#showOnly select").append(el);
 	    }.bind(this));
+	    this.createColVis();
+    },
+    
+    createColVis: function(){
+        if(this.colVisDialog == null){
+            this.$("#listTable thead tr th").each(function(i, th){
+                var text = $(th).contents().filter(function(){ return this.nodeType == 3; }).text();
+                this.$("#colvis").append("<input id='" + i + "' type='checkbox' value='" + text + "' style='vertical-align: bottom;' checked />&nbsp;" + text + "<br />");
+            }.bind(this));
+            this.$("#colvis input").change(this.table.draw);
+            this.colVisDialog = this.$("#colvis").dialog({
+                autoOpen: false,
+	            show: "blind",
+	            hide: "blind",
+	            resizable: false,
+	            draggable: false,
+	            position: { my: "right top", at: "right bottom", of: this.$("#openColVis") }
+            });
+            if(this.category == "" || this.category == null){
+                $("input[value=Category]", this.colVisDialog).prop('checked', true);
+            }
+            else{
+                $("input[value=Category]", this.colVisDialog).prop('checked', false);
+            }
+        }
+    },
+    
+    openColVis: function(){
+        if(!this.colVisDialog.dialog('isOpen')){
+            this.colVisDialog.dialog('open');
+        }
+        else{
+            this.colVisDialog.dialog('close');
+        }
     },
     
     deletePrivate: function(){
@@ -400,10 +451,12 @@ ManageProductsView = Backbone.View.extend({
             this.category = null;
             main.set('title', productsTerm + ' Management');
             this.$("#addProductButton").text("Add " + productsTerm);
+            $("input[value=Category]", this.colVisDialog).prop('checked', true);
         }
         else{
             main.set('title', this.category.pluralize() + ' Management');
             this.$("#addProductButton").text("Add " + this.category);
+            $("input[value=Category]", this.colVisDialog).prop('checked', false);
         }
         this.addRows();
     },
@@ -432,6 +485,7 @@ ManageProductsView = Backbone.View.extend({
         "click #importBibTexButton": "importBibTeX",
         "click #uploadCalendarButton": "uploadCalendar",
         "click #importOrcidButton": "importOrcid",
+        "click #openColVis": "openColVis",
         "change #showOnly select": "showOnly",
         "change #onlyRecent": "changeRecent",
         "change #hideExcluded": "changeHideExcluded"
