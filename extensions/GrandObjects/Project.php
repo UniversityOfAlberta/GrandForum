@@ -882,8 +882,7 @@ EOF;
                 }
                 else if(($filter == null || 
                          ($person->isRole($filter, $this)) || 
-                         ($person->isRole($filter."-Candidate", $this) && $this->getStatus() == "Proposed")) && 
-                        !$person->isRole(ADMIN)){
+                         ($person->isRole($filter."-Candidate", $this) && $this->getStatus() == "Proposed"))){
                     $people[$person->getId()] = $person;
                 }
             }
