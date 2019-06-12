@@ -161,7 +161,6 @@
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'ScreenCapture',
         //'TravelForm',
         'CCVExport',
         'ReportIssue',
