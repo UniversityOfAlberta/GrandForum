@@ -841,6 +841,20 @@ class Person extends BackboneModel {
         return "";
     }
     
+    /**
+     * Returns the precomputed case number for this Person
+     */
+    function getCaseNumber($year=YEAR){
+        $data = DBFunctions::select(array('grand_case_numbers'),
+                                    array('*'),
+                                    array('user_id' => $this->getId(),
+                                          'year' => $year));
+        if(!empty($data)){
+            return $data[0]['number'];
+        }
+        return "";
+    }
+    
     function getSalary($year){
         if(!isset(self::$personSalaryCache[$this->id][$year])){
             $salary = DBFunctions::select(array('grand_user_salaries'),
