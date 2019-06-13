@@ -256,7 +256,9 @@ ManageProductsView = Backbone.View.extend({
                 var text = $(th).contents().filter(function(){ return this.nodeType == 3; }).text();
                 this.$("#colvis").append("<input id='" + i + "' type='checkbox' value='" + text + "' style='vertical-align: bottom;' checked />&nbsp;" + text + "<br />");
             }.bind(this));
-            this.$("#colvis input").change(this.table.draw);
+            this.$("#colvis input").change(function(){
+                this.table.draw();
+            }.bind(this));
             this.colVisDialog = this.$("#colvis").dialog({
                 autoOpen: false,
 	            show: "blind",
