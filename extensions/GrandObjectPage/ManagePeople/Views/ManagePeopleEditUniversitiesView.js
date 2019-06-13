@@ -50,7 +50,10 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 	    }.bind(this), 100);
     },
     
-    saveAll: function(){
+    saveAll: function(refresh){
+        console.log(refresh);
+        var refresh = (refresh === undefined) ? true : refresh;
+        console.log(refresh);
         var copy = this.universities.toArray();
         clearAllMessages();
         var requests = new Array();
@@ -72,7 +75,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         }.bind(this));
         $.when.apply($, requests).then(function(){
             addSuccess("Universities saved");
-            this.person.fetch();
+            if(refresh){
+                this.person.fetch();
+            }
         }.bind(this)).fail(function(){
             addError("Universities could not be saved");
         });
