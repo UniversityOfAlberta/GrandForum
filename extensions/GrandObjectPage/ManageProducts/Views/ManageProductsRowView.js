@@ -10,6 +10,7 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
         this.listenTo(this.model, "change:access_id", this.setDirty, true);
+        this.listenTo(this.model, "change:exclude", this.setDirty, true);
     },
     
     setDirty: function(trigger){
