@@ -21,7 +21,7 @@ JobPosting = Backbone.Model.extend({
         startDateType: "No later than",
         startDate: "",
         tenure: "Yes",
-        rank: "Full",
+        rank: "Full Professor",
         rankOther: "",
         positionType: "Research + Teaching",
         researchFields: "",
