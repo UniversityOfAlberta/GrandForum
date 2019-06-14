@@ -1,6 +1,15 @@
 <div>
     <h3>Job Title <small>(max 70 characters)</small>:</h3>
-    <%= HTML.TextBox(this, 'jobTitle', {size: '50'}) %><br /><br />
+    <table>
+        <tr>
+            <td class="label">English:</td>
+            <td><%= HTML.TextBox(this, 'jobTitle', {size: '50'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">French:</td>
+            <td><%= HTML.TextBox(this, 'jobTitleFr', {size: '50'}) %></td>
+        </tr>
+    </table>
     <table>
         <tr>
             <td class="label">Visibility:</td>
@@ -33,16 +42,32 @@
             </td>
         </tr>
         <tr>
+            <td class="label">Language of instruction:</td>
+            <td><%= HTML.Select(this, 'language', {options: ['English', 'French', 'Bilingual']}) %></td>
+        </tr>
+        <tr>
             <td class="label">Position Type:</td>
             <td valign="top"><%= HTML.Select(this, 'positionType', {options: ['Research + Teaching', 'Teaching Only', 'Research Only', 'Administrative']}) %></td>
         </tr>
         <tr>
             <td class="label">Research and/or Teaching Fields:</td>
-            <td valign="top"><div id="researchFields" style="width:500px;"></div></td>
+            <td style="vertical-align: baseline;">
+                <u><b>English</b></u>
+                <div id="researchFields" style="width:500px;"></div>
+            
+                <u><b>French</b></u>
+                <div id="researchFieldsFr" style="width:500px;"></div>
+            </td>
         </tr>
         <tr>
             <td class="label">Keywords:</td>
-            <td valign="top"><div id="keywords" style="width:500px;"></div></td>
+            <td style="vertical-align: baseline;">
+                <u><b>English</b></u>
+                <div id="keywords" style="width:500px;"></div>
+            
+                <u><b>French</b></u>
+                <div id="keywordsFr" style="width:500px;"></div>
+            </td>
         </tr>
         <tr>
             <td class="label">University/Department:</td>
@@ -59,9 +84,16 @@
         </tr>
     </table>
     <h3>Summary <small>(max 2000 characters)</small>:</h3>
-    <div style="display:inline-block; text-align:right; margin-top: -2em;">
+    <u><b>English</b></u><br />
+    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
         <small><span id="characterCount"></span>/2000 characters</small><br />
         <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
+    </div><br /><br />
+    
+    <u><b>French</b></u><br />
+    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
+        <small><span id="characterCountFr"></span>/2000 characters</small><br />
+        <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
     </div>
 </div>
 <div style="width:180px;display:inline-block;">

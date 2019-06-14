@@ -22,10 +22,10 @@ class JobPostingAPI extends RESTAPI {
     }
     
     function validate(){
-        if(trim($this->POST('jobTitle')) == ""){
+        if(trim($this->POST('jobTitle')) == "" && trim($this->POST('jobTitleFr')) == ""){
             $this->throwError("A job title must be provided");
         }
-        if(strlen($this->POST('jobTitle')) > 70){
+        if(strlen($this->POST('jobTitle')) > 70 || strlen($this->POST('jobTitleFr')) > 70){
             $this->throwError("The job title must be no longer than 70 characters");
         }
         if(($this->POST("deadlineType") == "Soft" || $this->POST("deadlineType") == "Hard") &&
@@ -51,7 +51,7 @@ class JobPostingAPI extends RESTAPI {
         if(trim($this->POST("sourceLink")) == ""){
             $this->throwError("A source link must be provided");
         }
-        if(strlen($this->POST('summary')) > 2000){
+        if(strlen($this->POST('summary')) > 2000 || strlen($this->POST('summaryFr')) > 2000){
             $this->throwError("The summary must be no longer than 2000 characters");
         }
     }
@@ -62,17 +62,26 @@ class JobPostingAPI extends RESTAPI {
             $this->validate();
             $job = new JobPosting(array());
             $keywords = $this->POST('keywords');
+            $keywordsFr = $this->POST('keywordsFr');
             $researchFields = $this->POST('researchFields');
+            $researchFieldsFr = $this->POST('researchFieldsFr');
             if(is_array($keywords)){
                 $keywords = implode(", ", $this->POST('keywords'));
             }
+            if(is_array($keywordsFr)){
+                $keywordsFr = implode(", ", $this->POST('keywordsFr'));
+            }
             if(is_array($researchFields)){
                 $researchFields = implode(", ", $this->POST('researchFields'));
+            }
+            if(is_array($researchFieldsFr)){
+                $researchFieldsFr = implode(", ", $this->POST('researchFieldsFr'));
             }
             $job->userId = $me->getId();
             $job->projectId = $this->POST('projectId');
             $job->visibility = $this->POST('visibility');
             $job->jobTitle = $this->POST('jobTitle');
+            $job->jobTitleFr = $this->POST('jobTitleFr');
             $job->deadlineType = $this->POST('deadlineType');
             $job->deadlineDate = $this->POST('deadlineDate');
             $job->startDateType = $this->POST('startDateType');
@@ -80,12 +89,16 @@ class JobPostingAPI extends RESTAPI {
             $job->tenure = $this->POST('tenure');
             $job->rank = $this->POST('rank');
             $job->rankOther = $this->POST('rankOther');
+            $job->language = $this->POST('language');
             $job->positionType = $this->POST('positionType');
             $job->researchFields = $researchFields;
+            $job->researchFieldsFr = $researchFieldsFr;
             $job->keywords = $keywords;
+            $job->keywordsFr = $keywordsFr;
             $job->contact = $this->POST('contact');
             $job->sourceLink = $this->POST('sourceLink');
             $job->summary = $this->POST('summary');
+            $job->summaryFr = $this->POST('summaryFr');
             $job->create();
             return $job->toJSON();
         }
@@ -100,16 +113,25 @@ class JobPostingAPI extends RESTAPI {
             if($job->isAllowedToEdit()){
                 $this->validate();
                 $keywords = $this->POST('keywords');
+                $keywordsFr = $this->POST('keywordsFr');
                 $researchFields = $this->POST('researchFields');
+                $researchFieldsFr = $this->POST('researchFieldsFr');
                 if(is_array($keywords)){
                     $keywords = implode(", ", $this->POST('keywords'));
+                }
+                if(is_array($keywordsFr)){
+                    $keywordsFr = implode(", ", $this->POST('keywordsFr'));
                 }
                 if(is_array($researchFields)){
                     $researchFields = implode(", ", $this->POST('researchFields'));
                 }
+                if(is_array($researchFieldsFr)){
+                    $researchFieldsFr = implode(", ", $this->POST('researchFieldsFr'));
+                }
                 $job->projectId = $this->POST('projectId');
                 $job->visibility = $this->POST('visibility');
                 $job->jobTitle = $this->POST('jobTitle');
+                $job->jobTitleFr = $this->POST('jobTitleFr');
                 $job->deadlineType = $this->POST('deadlineType');
                 $job->deadlineDate = $this->POST('deadlineDate');
                 $job->startDateType = $this->POST('startDateType');
@@ -117,12 +139,16 @@ class JobPostingAPI extends RESTAPI {
                 $job->tenure = $this->POST('tenure');
                 $job->rank = $this->POST('rank');
                 $job->rankOther = $this->POST('rankOther');
+                $job->language = $this->POST('language');
                 $job->positionType = $this->POST('positionType');
                 $job->researchFields = $researchFields;
+                $job->researchFieldsFr = $researchFieldsFr;
                 $job->keywords = $keywords;
+                $job->keywordsFr = $keywordsFr;
                 $job->contact = $this->POST('contact');
                 $job->sourceLink = $this->POST('sourceLink');
                 $job->summary = $this->POST('summary');
+                $job->summaryFr = $this->POST('summaryFr');
                 $job->update();
                 return $job->toJSON();
             }

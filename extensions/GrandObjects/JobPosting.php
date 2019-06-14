@@ -11,6 +11,7 @@ class JobPosting extends BackboneModel {
     var $projectId;
     var $visibility;
     var $jobTitle;
+    var $jobTitleFr;
     var $deadlineType;
     var $deadlineDate;
     var $startDateType;
@@ -18,12 +19,16 @@ class JobPosting extends BackboneModel {
     var $tenure;
     var $rank;
     var $rankOther;
+    var $language;
     var $positionType;
     var $researchFields;
+    var $researchFieldsFr;
     var $keywords;
+    var $keywordsFr;
     var $contact;
     var $sourceLink;
     var $summary;
+    var $summaryFr;
     var $created;
     var $deleted;
     
@@ -79,6 +84,7 @@ class JobPosting extends BackboneModel {
             $this->projectId = $row['project_id'];
             $this->visibility = $row['visibility'];
             $this->jobTitle = $row['job_title'];
+            $this->jobTitleFr = $row['job_title_fr'];
             $this->deadlineType = $row['deadline_type'];
             $this->deadlineDate = $row['deadline_date'];
             $this->startDateType = $row['start_date_type'];
@@ -86,12 +92,16 @@ class JobPosting extends BackboneModel {
             $this->tenure = $row['tenure'];
             $this->rank = $row['rank'];
             $this->rankOther = $row['rank_other'];
+            $this->language = $row['language'];
             $this->positionType = $row['position_type'];
             $this->researchFields = $row['research_fields'];
+            $this->researchFieldsFr = $row['research_fields_fr'];
             $this->keywords = $row['keywords'];
+            $this->keywordsFr = $row['keywords_fr'];
             $this->contact = $row['contact'];
             $this->sourceLink = $row['source_link'];
             $this->summary = $row['summary'];
+            $this->summaryFr = $row['summary_fr'];
             $this->created = $row['created'];
             $this->deleted = $row['deleted'];
         }
@@ -125,6 +135,10 @@ class JobPosting extends BackboneModel {
         return $this->jobTitle;
     }
     
+    function getJobTitleFr(){
+        return $this->jobTitleFr;
+    }
+    
     function getDeadlineType(){
         return $this->deadlineType;
     }
@@ -153,6 +167,10 @@ class JobPosting extends BackboneModel {
         return $this->rankOther;
     }
     
+    function getLanguage(){
+        return $this->language;
+    }
+    
     function getPositionType(){
         return $this->positionType;
     }
@@ -161,8 +179,16 @@ class JobPosting extends BackboneModel {
         return $this->researchFields;
     }
     
+    function getResearchFieldsFr(){
+        return $this->researchFieldsFr;
+    }
+    
     function getKeywords(){
         return $this->keywords;
+    }
+    
+    function getKeywordsFr(){
+        return $this->keywordsFr;
     }
     
     function getContact(){
@@ -175,6 +201,10 @@ class JobPosting extends BackboneModel {
     
     function getSummary(){
         return $this->summary;
+    }
+    
+    function getSummaryFr(){
+        return $this->summaryFr;
     }
     
     function getCreated(){
@@ -251,6 +281,7 @@ class JobPosting extends BackboneModel {
                       'project' => $project,
                       'visibility' => $this->getVisibility(),
                       'jobTitle' => $this->getJobTitle(),
+                      'jobTitleFr' => $this->getJobTitleFr(),
                       'deadlineType' => $this->getDeadlineType(),
                       'deadlineDate' => $this->getDeadlineDate(),
                       'startDateType' => $this->getStartDateType(),
@@ -258,12 +289,16 @@ class JobPosting extends BackboneModel {
                       'tenure' => $this->getTenure(),
                       'rank' => $this->getRank(),
                       'rankOther' => $this->getRankOther(),
+                      'language' => $this->getLanguage(),
                       'positionType' => $this->getPositionType(),
                       'researchFields' => $this->getResearchFields(),
+                      'researchFieldsFr' => $this->getResearchFieldsFr(),
                       'keywords' => $this->getKeywords(),
+                      'keywordsFr' => $this->getKeywordsFr(),
                       'contact' => $this->getContact(),
                       'sourceLink' => $this->getSourceLink(),
                       'summary' => $this->getSummary(),
+                      'summaryFr' => $this->getSummaryFr(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
@@ -279,6 +314,7 @@ class JobPosting extends BackboneModel {
                                                 'project_id' => $this->projectId,
                                                 'visibility' => $this->visibility,
                                                 'job_title' => $this->jobTitle,
+                                                'job_title_fr' => $this->jobTitleFr,
                                                 'deadline_type' => $this->deadlineType,
                                                 'deadline_date' => $this->deadlineDate,
                                                 'start_date_type' => $this->startDateType,
@@ -286,12 +322,16 @@ class JobPosting extends BackboneModel {
                                                 'tenure' => $this->tenure,
                                                 'rank' => $this->rank,
                                                 'rank_other' => $this->rankOther,
+                                                'language' => $this->language,
                                                 'position_type' => $this->positionType,
                                                 'research_fields' => $this->researchFields,
+                                                'research_fields_fr' => $this->researchFieldsFr,
                                                 'keywords' => $this->keywords,
+                                                'keywords_fr' => $this->keywordsFr,
                                                 'contact' => $this->contact,
                                                 'source_link' => $this->sourceLink,
-                                                'summary' => $this->summary));
+                                                'summary' => $this->summary,
+                                                'summary_fr' => $this->summaryFr));
             if($status){
                 $this->id = DBFunctions::insertId();
             }
@@ -306,6 +346,7 @@ class JobPosting extends BackboneModel {
                                           array('project_id' => $this->projectId,
                                                 'visibility' => $this->visibility,
                                                 'job_title' => $this->jobTitle,
+                                                'job_title_fr' => $this->jobTitleFr,
                                                 'deadline_type' => $this->deadlineType,
                                                 'deadline_date' => $this->deadlineDate,
                                                 'start_date_type' => $this->startDateType,
@@ -313,12 +354,16 @@ class JobPosting extends BackboneModel {
                                                 'tenure' => $this->tenure,
                                                 'rank' => $this->rank,
                                                 'rank_other' => $this->rankOther,
+                                                'language' => $this->language,
                                                 'position_type' => $this->positionType,
                                                 'research_fields' => $this->researchFields,
+                                                'research_fields_fr' => $this->researchFieldsFr,
                                                 'keywords' => $this->keywords,
+                                                'keywords_fr' => $this->keywordsFr,
                                                 'contact' => $this->contact,
                                                 'source_link' => $this->sourceLink,
-                                                'summary' => $this->summary),
+                                                'summary' => $this->summary,
+                                                'summary_fr' => $this->summaryFr),
                                           array('id' => $this->id));
             return $status;
         }

@@ -68,6 +68,10 @@ JobPostingEditView = Backbone.View.extend({
         "cut textarea[name=summary]": "characterCount",
         "paste textarea[name=summary]": "characterCount",
         
+        "keyup textarea[name=summaryFr]": "characterCount",
+        "cut textarea[name=summaryFr]": "characterCount",
+        "paste textarea[name=summaryFr]": "characterCount",
+        
         "click #saveJobPosting": "saveJobPosting",
         "click #cancel": "cancel"
     },
@@ -75,6 +79,7 @@ JobPostingEditView = Backbone.View.extend({
     characterCount: function(){
         _.defer(function(){
             this.$("#characterCount").text(this.$("textarea[name=summary]").val().length);
+            this.$("#characterCountFr").text(this.$("textarea[name=summaryFr]").val().length);
         }.bind(this));
     },
     
@@ -123,6 +128,25 @@ JobPostingEditView = Backbone.View.extend({
         this.$("#researchFields").html(html);
         this.$("#researchFields .tagit").css("margin-top", 0)
                                         .css("margin-bottom", 0);
+                                        
+        var objs = {};
+        var delimiter = ',';
+        var html = HTML.TagIt(this, 'researchFieldsFr', {
+            values: this.model.get('researchFieldsFr').split(','),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: 'Enter fields here...',
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter
+            }
+        });
+        this.$("#researchFieldsFr").html(html);
+        this.$("#researchFieldsFr .tagit").css("margin-top", 0)
+                                          .css("margin-bottom", 0);
     },
     
     renderKeywordsWidget: function(){
@@ -144,6 +168,25 @@ JobPostingEditView = Backbone.View.extend({
         this.$("#keywords").html(html);
         this.$("#keywords .tagit").css("margin-top", 0)
                                   .css("margin-bottom", 0);
+                                  
+        var objs = {};
+        var delimiter = ',';
+        var html = HTML.TagIt(this, 'keywordsFr', {
+            values: this.model.get('keywordsFr').split(','),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: 'Enter keywords here...',
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter
+            }
+        });
+        this.$("#keywordsFr").html(html);
+        this.$("#keywordsFr .tagit").css("margin-top", 0)
+                                    .css("margin-bottom", 0);
     },
     
     renderTinyMCE: function(){

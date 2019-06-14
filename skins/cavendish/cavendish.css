@@ -1132,7 +1132,7 @@ del {
     text-align:right;
     font-size: 1.0em;
     font-weight: bold;
-    vertical-align: top;
+    vertical-align: baseline;
     line-height: 25px;
     white-space:nowrap;
 }
