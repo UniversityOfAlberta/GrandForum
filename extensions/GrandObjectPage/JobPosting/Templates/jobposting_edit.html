@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <td class="label">Nominal Rank:</td>
-            <td><%= HTML.Select(this, 'rank', {options: ['Full Professor', 'Associate Professor', 'Assistant Professor', 'Adjunct Professor', 'Other']}) %>
+            <td><%= HTML.Select(this, 'rank', {options: ['Full Professor', 'Associate Professor', 'Assistant Professor', 'Adjunct Professor', 'Lecturer', 'Postdoctoral fellow', 'Other']}) %>
                 <%= HTML.TextBox(this, 'rankOther', {style: "display:none;"}) %>
             </td>
         </tr>
@@ -37,7 +37,7 @@
             <td valign="top"><%= HTML.Select(this, 'positionType', {options: ['Research + Teaching', 'Teaching Only', 'Research Only', 'Administrative']}) %></td>
         </tr>
         <tr>
-            <td class="label">Research Fields:</td>
+            <td class="label">Research and/or Teaching Fields:</td>
             <td valign="top"><div id="researchFields" style="width:500px;"></div></td>
         </tr>
         <tr>
