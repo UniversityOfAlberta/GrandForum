@@ -23,10 +23,11 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         if($wgUser->isLoggedIn()){
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
-            $tabs["CV"] = TabUtils::createTab("My QA CV");
+            $tabs["ReportArchive"] = TabUtils::createTab("Report Archive");
             $tabs["Chair"] = TabUtils::createTab("Chair");
             $tabs["Dean"] = TabUtils::createTab("Dean");
             $tabs["FEC"] = TabUtils::createTab("FEC");
+            $tabs["CV"] = TabUtils::createTab("My QA CV");
         }
         return true;
     }

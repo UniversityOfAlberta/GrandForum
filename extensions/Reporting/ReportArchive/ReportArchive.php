@@ -5,6 +5,8 @@ $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
+$wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
+
 function runReportArchive($par) {
     ReportArchive::execute($par);
 }
@@ -33,7 +35,7 @@ class ReportArchive extends SpecialPage {
     // Gives a listing of all the ReportArchived pdfs
     static function generateReportArchivedReportsHTML(){
         global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath;
-        $person = Person::newFromId($wgUser->getId());
+        $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF) && isset($_GET['person'])){
             $person = Person::newFromName($_GET['person']);
             if($person->getName() == ""){
@@ -135,7 +137,33 @@ class ReportArchive extends SpecialPage {
                 }
             }
         }
+        $wgOut->addHTML("<p>You can view your submitted Annual Reports below (starting from 2018):</p><ul>");
+        $found = false;
+        for($y=YEAR;$y>=2018;$y--){
+            $report = new DummyReport("FEC", $person, 0, $y, true);
+            $check = $report->getPDF();
+            if(count($check) > 0){
+                $found = true; // Found at least 1 past submission
+                $pdf = PDF::newFromToken($check[0]['token']);
+                $wgOut->addHTML("<li><a href='{$pdf->getUrl()}' target='_blank'><b>$y</b></a> - Submitted: {$check[0]['timestamp']}</li>");
+            }
+        }
+        $wgOut->addHTML("</ul>");
+        if(!$found){
+            $wgOut->addHTML("You have submitted no Annual Reports");
+        }
         return;
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromWgUser();
+        
+        if($person->isRole(NI)){
+            $selected = @($wgTitle->getText() == "ReportArchive") ? "selected" : false;
+            $tabs["ReportArchive"]['subtabs'][] = TabUtils::createSubTab("Archive", "$wgServer$wgScriptPath/index.php/Special:ReportArchive", $selected);
+        }
+        return true;
     }
 }
 
