@@ -63,7 +63,7 @@ class PollView {
 				if($isOwner){
 					$this->sendEmails();
 				}
-
+                $wgOut->addHTML("<div>{$this->pollCollection->description}</div>");
 				$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
 			
 				if($notVotedYet){

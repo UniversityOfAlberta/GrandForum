@@ -49,6 +49,7 @@ class CreatePoll extends SpecialPage{
 		global $wgOut, $wgUser, $wgScriptPath, $wgServer, $wgTitle, $wgArticle, $wgMessage;
 		if(isset($_POST['submit'])){
 			$name = $_POST['name'];
+			$description = @$_POST['description'];
 			$noName = false;
 			if($name == ""){
 				$noName = true;
@@ -82,6 +83,7 @@ class CreatePoll extends SpecialPage{
 				DBFunctions::insert('grand_poll_collection',
 				                    array('author_id' => $wgUser->getId(),
 				                          'collection_name' => $name,
+				                          'description' => $description,
 				                          'self_vote' => $_POST['self'],
 				                          'timestamp' => time(),
 				                          'time_limit' => $_POST['time']));
@@ -94,7 +96,7 @@ class CreatePoll extends SpecialPage{
 				@$row = $rows[0];
 				$poll_id = null;
 				if($row != null){
-					$collection_id = $row['collection_id'];
+					$collection_id = DBFunctions::insertId();
 					foreach($groups as $group){
 					    DBFunctions::insert('grand_poll_groups',
 					                        array('group_name' => $group,
@@ -128,7 +130,7 @@ class CreatePoll extends SpecialPage{
 					    @$row = $rows[0];
 					    $poll_id = null;
 					    if($row != null){
-						    $poll_id = $row['poll_id'];
+						    $poll_id = DBFunctions::insertId();
 					    }
 					    if($poll_id != null){
 						    foreach($options as $option){
@@ -256,6 +258,14 @@ class CreatePoll extends SpecialPage{
 						</tr>
 						<tr>
 							<td align='right' valign='top'>
+								<b>Description:</b>
+							</td>
+							<td>
+								<textarea name='description' style='height:200px;' /></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td align='right' valign='top'>
 								<b>Time Limit:</b>
 							</td>
 							<td>
@@ -278,6 +288,18 @@ class CreatePoll extends SpecialPage{
 							</td>
 						</tr>
 					</table>
+					<script type='text/javascript'>
+					    $('textarea[name=description]').tinymce({
+					        theme: 'modern',
+					        menubar: false,
+					        document_base_url: wgServer + wgScriptPath + '/',
+                            plugins: 'link charmap lists table paste',
+                            toolbar: [
+                                'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
+                            ],
+                            paste_data_images: true
+					    });
+					</script>
 					$FORM_TEXT
 					<p id='addQ'>
 						<a href='javascript:addQuestion();'>[Add Question]</a>&nbsp;&nbsp;&nbsp;<a href='javascript:removeQuestion();'>[Remove Question]</a>

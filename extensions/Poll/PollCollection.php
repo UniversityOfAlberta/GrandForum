@@ -5,6 +5,7 @@ class PollCollection {
 	var $id;
 	var $author;
 	var $name;
+	var $description;
 	var $polls;
 	var $groups;
 	var $created;
@@ -18,6 +19,7 @@ class PollCollection {
 		if(count($rows) > 0){
 			$row = $rows[0];
 			$name = $row['collection_name'];
+			$description = $row['description'];
 			$selfVote = $row['self_vote'];
 			$created = $row['timestamp'];
 			$timeLimit = $row['time_limit'];
@@ -31,7 +33,7 @@ class PollCollection {
 				$groups[] = $row1['group_name'];
 			}
 			
-			$poll = new PollCollection($id, $author, $name, $selfVote, null, $groups, $created, $timeLimit);
+			$poll = new PollCollection($id, $author, $name, $description, $selfVote, null, $groups, $created, $timeLimit);
 			return $poll;
 		}
 		else {
@@ -173,10 +175,11 @@ class PollCollection {
 		return $users;
 	}
 	
-	function PollCollection($id, $author, $name, $selfVote, $polls, $groups, $created, $timeLimit){
+	function PollCollection($id, $author, $name, $description, $selfVote, $polls, $groups, $created, $timeLimit){
 		$this->id = $id;
 		$this->author = $author;
 		$this->name = $name;
+		$this->description = $description;
 		$this->selfVote = $selfVote;
 		$this->polls = $polls;
 		$this->groups = $groups;
