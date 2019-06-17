@@ -40,11 +40,11 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Huawei")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Winter 2019)", "{$url}Huawei", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HuaweiFall2019")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Fall 2019)", "{$url}Huawei", $selected);*/
             
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC LOI (Winter 2019)", "{$url}LOI", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOIFall2019")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC LOI (Fall 2019)", "{$url}LOI", $selected);
         }
         
         return true;
