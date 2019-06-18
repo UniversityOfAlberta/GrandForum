@@ -77,7 +77,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail">
+        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true">
             <![CDATA[
                 <h3>Huawei Contact:</h3>
                 {$item}
