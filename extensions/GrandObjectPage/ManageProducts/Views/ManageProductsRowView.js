@@ -112,6 +112,7 @@ ManageProductsViewRow = Backbone.View.extend({
 
         if(this.model.get('category') == "Publication" && 
            (typeof(this.model.get('data')['peer_reviewed']) == 'undefined' ||
+            this.model.get('data')['peer_reviewed'] === null ||
             this.model.get('data')['peer_reviewed'].trim() == "")){
             incomplete.peerReviewedMissing = true;
         }
@@ -119,9 +120,11 @@ ManageProductsViewRow = Backbone.View.extend({
         if(this.model.get('category') == "Publication" &&
            productStructure.categories[this.model.get('category')].types[this.model.getType()].data['impact_factor'] != undefined &&
            (typeof(this.model.get('data')['impact_factor']) == 'undefined' ||
+            this.model.get('data')['impact_factor'] === null ||
             this.model.get('data')['impact_factor'].trim() == "") && 
             productStructure.categories[this.model.get('category')].types[this.model.getType()].data['snip'] != undefined &&
            (typeof(this.model.get('data')['snip']) == 'undefined' ||
+            this.model.get('data')['snip'] === null ||
             this.model.get('data')['snip'].trim() == "")){
             incomplete.incomplete = true;
         }
