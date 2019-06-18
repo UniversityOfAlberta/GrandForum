@@ -5,10 +5,35 @@ require_once("CreatePoll.php");
 
 $wgHooks['UnknownAction'][] = 'PollView::viewPoll';
 $notificationFunctions[] = 'PollView::createNotification';
+$wgHooks['TopLevelTabs'][] = 'PollView::createTab';
+$wgHooks['SubLevelTabs'][] = 'PollView::createSubTabs';
 
 class PollView {
 
 	var $pollCollection;
+	
+	static function createTab(&$tabs){
+	    $tabs["MyPolls"] = TabUtils::createTab("My Polls");
+	    return true;
+	}
+	
+	static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        
+        $rows = DBFunctions::select(array('grand_poll_collection'),
+		                            array('collection_id'));
+		foreach($rows as $row){
+			$collection = PollCollection::newFromId($row['collection_id']);
+			$canUserViewPoll = $collection->canUserViewPoll($wgUser);
+			if($canUserViewPoll){
+				if(!$collection->hasUserVoted($wgUser->getId()) && !$collection->isPollExpired()){
+				    $selected = @($_GET['action'] == "viewPoll" && $_GET['id'] === $collection->id) ? "selected" : false;
+                    $tabs["MyPolls"]['subtabs'][] = TabUtils::createSubTab("{$collection->name}", "$wgServer$wgScriptPath/index.php?action=viewPoll&id={$collection->id}", $selected);
+				}
+			}
+		}
+        return true;
+    }
 	
 	static function createNotification(){
 		global $wgUser, $notifications, $wgServer, $wgScriptPath;
