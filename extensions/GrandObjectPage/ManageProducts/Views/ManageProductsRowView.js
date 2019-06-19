@@ -146,7 +146,9 @@ ManageProductsViewRow = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         }
-        
+        if(this.parent.table != null){
+            this.parent.table.draw();
+        }
         return this.$el;
     }
 
