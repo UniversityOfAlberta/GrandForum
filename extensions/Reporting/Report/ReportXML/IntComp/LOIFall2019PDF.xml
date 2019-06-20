@@ -64,6 +64,12 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" labels="Keyword" showHeader="false" orientation="list" optional="true" multiple="true">
+            <![CDATA[
+                <h3>Keywords</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h3>Proposal Summary</h3>
