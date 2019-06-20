@@ -24,7 +24,7 @@ class ActivatedUsers extends SpecialPage {
 		$data = Person::getAllCandidates('all');
 
 		$text .= "<table id='activeUsers' class='wikitable' frame='box' rules=all'>
-                    <thead><tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Email</th><th>Status</th></tr></thead>
+                    <thead><tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Email</th><th>Status</th><th width='1%'>Delete?</th></tr></thead>
                     <tbody>";
 		
 		foreach($data as $person){
@@ -48,6 +48,9 @@ class ActivatedUsers extends SpecialPage {
                         <td>
                             {$status}
                         </td>
+                        <td align='center' style='white-space:nowrap;'>
+                            <button id='{$user->getToken()}' class='deleteUser'>Delete</button><span class='throbber' style='display:none;'></span>
+                        </td>
                     </tr>";
 		}
 		$text .= "</tbody></table>
@@ -55,6 +58,26 @@ class ActivatedUsers extends SpecialPage {
 		    $('#activeUsers').dataTable({
 		        'aLengthMenu': [[100,-1], [100,'All']], 
                 'iDisplayLength': 100
+            });
+            
+            $('button.deleteUser').click(function(){
+                if(confirm('Are you sure you want to delete this user?')){
+                    $(this).prop('disabled', true);
+                    $(this).parent().children('.throbber').show();
+                    $.get('$wgServer$wgScriptPath/index.php?action=deleteUser&user=' + $(this).attr('id'), function(response){
+                        if(response.indexOf('This user account has successfully been deactivated.') !== -1){
+                            clearSuccess();
+                            addSuccess('User deleted');
+                            $(this).parent().children('.throbber').hide();
+                        }
+                        else{
+                            clearAllMessages();
+                            addError('There was a problem deleting the user');
+                            $(this).parent().children('.throbber').hide();
+                            $(this).prop('disabled', false);
+                        }
+                    }.bind(this));
+                }
             });
 		</script>";
         $wgOut->addHTML($text);
