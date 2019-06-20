@@ -59,25 +59,26 @@ class ActivatedUsers extends SpecialPage {
 		        'aLengthMenu': [[100,-1], [100,'All']], 
                 'iDisplayLength': 100
             });
-            
-            $('button.deleteUser').click(function(){
-                if(confirm('Are you sure you want to delete this user?')){
-                    $(this).prop('disabled', true);
-                    $(this).parent().children('.throbber').show();
-                    $.get('$wgServer$wgScriptPath/index.php?action=deleteUser&user=' + $(this).attr('id'), function(response){
-                        if(response.indexOf('This user account has successfully been deactivated.') !== -1){
-                            clearSuccess();
-                            addSuccess('User deleted');
-                            $(this).parent().children('.throbber').hide();
-                        }
-                        else{
-                            clearAllMessages();
-                            addError('There was a problem deleting the user');
-                            $(this).parent().children('.throbber').hide();
-                            $(this).prop('disabled', false);
-                        }
-                    }.bind(this));
-                }
+            $(document).ready(function(){
+                $('button.deleteUser').click(function(){
+                    if(confirm('Are you sure you want to delete this user?')){
+                        $(this).prop('disabled', true);
+                        $(this).parent().children('.throbber').show();
+                        $.get('$wgServer$wgScriptPath/index.php?action=deleteUser&user=' + $(this).attr('id'), function(response){
+                            if(response.indexOf('This user account has successfully been deactivated.') !== -1){
+                                clearSuccess();
+                                addSuccess('User deleted');
+                                $(this).parent().children('.throbber').hide();
+                            }
+                            else{
+                                clearAllMessages();
+                                addError('There was a problem deleting the user');
+                                $(this).parent().children('.throbber').hide();
+                                $(this).prop('disabled', false);
+                            }
+                        }.bind(this));
+                    }
+                });
             });
 		</script>";
         $wgOut->addHTML($text);
