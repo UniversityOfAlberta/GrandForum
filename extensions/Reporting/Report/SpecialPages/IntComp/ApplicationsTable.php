@@ -160,7 +160,6 @@ class ApplicationsTable extends SpecialPage{
                                                                                          'Secondary' => $secondary,
                                                                                          'Secondary (Other)' => $secondary_other));
         $tab1->idProjectRange = array(0,1);
-        $tabbedPage->addTab($tab1);
         
         $tab2 = new ApplicationTab('RP_LOI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title, 
                                                                                                   'Duration' => $duration,
@@ -170,7 +169,9 @@ class ApplicationsTable extends SpecialPage{
                                                                                                   'Primary' => $primary,
                                                                                                   'Secondary' => $secondary));
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
+        
         $tabbedPage->addTab($tab2);
+        $tabbedPage->addTab($tab1);
         
         $wgOut->addHTML($tabbedPage->showPage());
     }
