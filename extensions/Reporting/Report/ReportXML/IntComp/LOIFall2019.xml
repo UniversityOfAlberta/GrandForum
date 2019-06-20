@@ -62,6 +62,7 @@
         <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
             <![CDATA[
                 <!--div class="info">The LOI submission deadline has expired</div-->
+                <div class="info">Use the <b>[+]</b> tab above to apply for multiple LOIs.</div>
                 <h3>Project Title:</h3>
                 {$item}
             ]]>
