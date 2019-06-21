@@ -781,7 +781,8 @@ EOF;
         if($this->id == -1){
             return "{$wgServer}{$wgScriptPath}/index.php";
         }
-        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getName()}:Main";
+        $nsName = str_replace("'", "&#39;", $this->getName());
+        return "{$wgServer}{$wgScriptPath}/index.php/{$nsName}:Main";
     }
     
     // Returns the full name of this Project

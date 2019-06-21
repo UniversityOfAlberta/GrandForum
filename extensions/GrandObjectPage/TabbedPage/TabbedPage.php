@@ -69,7 +69,8 @@ class TabbedPage {
             $i++;
         }
         
-        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>
+        $nsName = str_replace("'", "&#39;", $wgTitle->getNsText());
+        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$nsName}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>
             <div id='currentViewSpinner' style='text-align:center;margin-top:10%;'></div>
             <script type='text/javascript'>
                 spin = spinner('currentViewSpinner', 40, 75, 12, 10, '#888');
