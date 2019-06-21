@@ -10,7 +10,7 @@ class PharmacyMap extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(HQP);
+        return $me->isLoggedIn();
     }
     
     function getTemplates(){
