@@ -397,7 +397,7 @@ class PollView {
                                 </td>
                                 <td>");
         $pollGroups = $this->pollCollection->groups;
-        $groups = array_unique($wgUser->getGroups());
+        $groups = array_values(array_unique($wgUser->getGroups()));
         if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
             $groups[] = "Student";
         }
