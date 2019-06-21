@@ -310,7 +310,7 @@ class CreatePoll extends SpecialPage{
 								<b>Poll Visibility:</b>
 							</td>
 							<td>");
-		$groups = $wgUser->getGroups();
+		$groups = array_unique($wgUser->getGroups());
 		if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
 		    $groups[] = "Student";
 		}

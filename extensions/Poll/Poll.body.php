@@ -83,6 +83,15 @@ class PollView {
 			}
 			
 			$isOwner = ($wgUser->getId() == $this->pollCollection->author->getId() && $found);
+			if($isOwner && !isset($_GET['edit'])){
+			    // Person is Owner, show Edit button
+			    $wgOut->addHTML("<a class='button' style='position:absolute; top: 5px; right: 10px;' href='index.php?action=viewPoll&id={$this->pollCollection->id}&edit'>Edit Poll</a>");
+			}
+			if($isOwner && isset($_GET['edit'])){
+			    // Show Edit view
+			    $this->editView();
+			    return false;
+			}
 			if(!$expired){
 				$notVotedYet = (!$this->pollCollection->hasUserVoted($wgUser->getId()) && !(isset($_POST['submit']) && $this->allQuestionsAnswered()));
 				if($isOwner){
@@ -178,8 +187,8 @@ class PollView {
 	}
 	
 	function ownerViews($poll){
-		global $wgOut, $wgUser;
-		$submitted = (isset($_POST['submit']) && isset($_POST['submit']) && $this->allQuestionsAnswered());
+		global $wgOut, $wgUser, $wgMessage;
+		$submitted = (isset($_POST['submit']) && $this->allQuestionsAnswered());
 		$wgOut->setPageTitle($this->pollCollection->name);
 		if($this->pollCollection->isPollExpired() || $this->pollCollection->hasUserVoted($wgUser->getId())){
 			$this->resultsHTML($wgOut, $poll);
@@ -290,6 +299,191 @@ class PollView {
 		$wgOut->addHTML("</fieldset>");
 	}
 	
+	function processEdit(){
+	    global $wgMessage;
+	    $name = $_POST['name'];
+		$description = @$_POST['description'];
+		$noName = false;
+		if($name == ""){
+			$noName = true;
+		}
+		$groups = array();
+		$noGroupsSelected = true;
+		if(isset($_POST['groups'])){
+			$groupP = $_POST['groups'];
+			while (list ($key,$val) = @each ($groupP)) {
+				$groups[] = $val;
+				$noGroupsSelected = false;
+			}
+		}
+		
+		$validTime = false;
+		if($_POST['time'] == "" || ctype_digit($_POST['time'])){
+			$validTime = true;
+		}
+		
+		if(!$noGroupsSelected && !$noName && $validTime){
+		    DBFunctions::update('grand_poll_collection',
+		                        array('collection_name' => $name,
+		                              'description' => $description,
+		                              'time_limit' => $_POST['time']),
+		                        array('collection_id' => EQ($this->pollCollection->id)));
+		    DBFunctions::delete('grand_poll_groups',
+		                        array('collection_id' => $this->pollCollection->id));
+		    foreach($groups as $group){
+			    DBFunctions::insert('grand_poll_groups',
+			                        array('group_name' => $group,
+			                              'collection_id' => $this->pollCollection->id));
+		    }
+		    redirect("index.php?action=viewPoll&id={$this->pollCollection->id}");
+		    exit;
+		}
+		else {
+			// User failed to enter at least one of the required fields.  Display appropriate errors.
+			if($noName){
+				$wgMessage->addError("There was no poll name entered.");
+			}
+			if(!$validTime){
+				$wgMessage->addError("The Time Limit must be a positive number, or left blank.");
+			}
+			if($noGroupsSelected){
+				$wgMessage->addError("There were not user groups selected.");
+			}
+		}
+	}
+        
+    function editView(){
+        global $wgOut, $wgUser;
+        if(isset($_POST['edit'])){
+            $this->processEdit();
+        }
+        $me = Person::newFromWgUser();
+        $wgOut->setPageTitle("Edit Poll");
+        $wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}&edit' method='post'>");
+        $wgOut->addHTML("<table>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Poll Name:</b>
+                                </td>
+                                <td>
+                                    <input type='text' name='name' value='".str_replace("'", "&#39;", $this->pollCollection->name)."' size='50' />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Description:</b>
+                                </td>
+                                <td>
+                                    <textarea name='description' style='height:200px;'>{$this->pollCollection->description}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Time Limit:</b>
+                                </td>
+                                <td>
+                                    <input type='text' name='time' size='5' value='{$this->pollCollection->timeLimit}' />
+                                    <div class='prefsectiontip'>
+                                        <p>Time Limit should be a number which represents the number of days to leave the poll open.  If it is left blank or is 0 then the poll will stay open indefinitely.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td align='right' valign='top'>
+                                    <b>Poll Visibility:</b>
+                                </td>
+                                <td>");
+        $pollGroups = $this->pollCollection->groups;
+        $groups = array_unique($wgUser->getGroups());
+        if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
+            $groups[] = "Student";
+        }
+        $nPerCol = ceil(count($groups)/3);
+        $remainder = count($groups) % 3;
+        $col1 = array();
+        $col2 = array();
+        $col3 = array();
+        if($remainder == 0){
+            $j = $nPerCol;
+            $k = $nPerCol*2;
+            $jEnd = $nPerCol*2;
+            $kEnd = $nPerCol*3;
+        }
+        else if($remainder == 1){
+            $j = $nPerCol;
+            $k = $nPerCol*2 - 1;
+            $jEnd = $nPerCol*2 - 1;
+            $kEnd = $nPerCol*3 - 2;
+        }
+        else if($remainder == 2){
+            $j = $nPerCol;
+            $k = $nPerCol*2;
+            $jEnd = $nPerCol*2;
+            $kEnd = $nPerCol*3 - 1;
+        }
+        for($i = 0; $i < $nPerCol; $i++){
+            if(isset($groups[$i])){
+                $col1[] = $groups[$i];
+            }
+            if(isset($groups[$j]) && $j < $jEnd){
+                $col2[] = $groups[$j];
+            }
+            if(isset($groups[$k]) && $k < $kEnd){
+                $col3[] = $groups[$k];
+            }
+            $j++;
+            $k++;
+        }
+
+        $groups = array();
+        $i = 0;
+        foreach($col1 as $row){
+            if(isset($col1[$i])){
+                $groups[] = $col1[$i];
+            }
+            if(isset($col2[$i])){
+                $groups[] = $col2[$i];
+            }
+            if(isset($col3[$i])){
+                $groups[] = $col3[$i];
+            }
+            $i++;
+        }
+
+        $checked = (in_array("all", $pollGroups)) ? "checked" : "";
+        $wgOut->addHTML("<table border='0' cellspacing='2' width='500'>
+            <tr>
+                <td colspan='3'><input type='checkbox' name='groups[]' value='all' $checked /> All Users</td>\n");
+        $i = 0;
+        foreach($groups as $group){
+            if($i % 3 == 0){
+                $wgOut->addHTML("</tr><tr>\n");
+            }
+            $checked = (in_array($group, $pollGroups)) ? "checked" : "";
+            $wgOut->addHTML("<td><input type='checkbox' name='groups[]' value='$group' $checked /> $group</td>\n");
+            $i++;
+        }
+        $wgOut->addHTML("</tr></table>");
+        $wgOut->addHTML("<input type='submit' name='edit' value='Edit Poll' />");
+        $wgOut->addHTML("</td></tr></table>");
+        $wgOut->addHTML("</form>");
+        $wgOut->addHTML("<script type='text/javascript'>
+                            $('textarea[name=description]').tinymce({
+                                theme: 'modern',
+                                menubar: false,
+                                document_base_url: wgServer + wgScriptPath + '/',
+                                plugins: 'link charmap lists table paste',
+                                toolbar: [
+                                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
+                                ],
+                                paste_data_images: true
+                            });
+                        </script>");
+    }
+       
 	function resultsHTML($wgOut, $poll){
 		$totalVotes = $poll->getTotalVotes();
 		$wgOut->addHTML("<h2>{$poll->name}</h2>
