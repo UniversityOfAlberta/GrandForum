@@ -1629,9 +1629,10 @@ EOF;
      * @return array Returns an array of file Articles that belong to this Project
      */
     function getFiles(){
+        $nsName = DBFunctions::escape($this->getName());
         $sql = "SELECT p.page_id
                 FROM mw_an_upload_permissions u, mw_page p
-                WHERE u.nsName = REPLACE('{$this->getName()}', ' ', '_')
+                WHERE u.nsName = REPLACE('{$nsName}', ' ', '_')
                 AND (u.upload_name = REPLACE(p.page_title, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', p.page_title), '_', ' '))";
         $data = DBFunctions::execSQL($sql);
         $articles = array();
