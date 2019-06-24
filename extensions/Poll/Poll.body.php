@@ -467,7 +467,7 @@ class PollView {
             $i++;
         }
         $wgOut->addHTML("</tr></table>");
-        $wgOut->addHTML("<input type='submit' name='edit' value='Edit Poll' />");
+        $wgOut->addHTML("<input type='submit' name='edit' value='Submit Edits' />");
         $wgOut->addHTML("</td></tr></table>");
         $wgOut->addHTML("</form>");
         $wgOut->addHTML("<script type='text/javascript'>
