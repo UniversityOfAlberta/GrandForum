@@ -189,7 +189,7 @@
         </ReportItem>
         <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
             <![CDATA[
-                <h3>Expectations</h3>
+                <h3>Supports and resources needed from AGE-WELL:</h3>
                 {$item}
             ]]>
         </ReportItem>
