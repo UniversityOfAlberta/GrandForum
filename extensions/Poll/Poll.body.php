@@ -397,10 +397,8 @@ class PollView {
                                 </td>
                                 <td>");
         $pollGroups = $this->pollCollection->groups;
-        $groups = array_values(array_unique($wgUser->getGroups()));
-        if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
-            $groups[] = "Student";
-        }
+        $groups = $me->getAllowedRoles();
+
         $nPerCol = ceil(count($groups)/3);
         $remainder = count($groups) % 3;
         $col1 = array();

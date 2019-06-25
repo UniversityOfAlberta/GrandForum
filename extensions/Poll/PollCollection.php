@@ -72,16 +72,13 @@ class PollCollection {
 		    $person = Person::newFromUser($user);
 			$groups = $user->getGroups();
 			foreach($this->groups as $group){
-				if($group == "all"){
-					return true;
-				}
-				if($group == "Student" && ($person->isStudent() || $person->isRoleAtLeast(STAFF))){
-		            return true;
-		        }
-				if(array_search($group, $groups) !== false){
-					return true;
-				}
-			}
+			    if($group == "all"){
+                    return true;
+                }
+                else if($person->isRole($group)){
+                    return true;
+                }
+            }
 		}
 		return false;
 	}
@@ -139,7 +136,29 @@ class PollCollection {
 		$uTable = "mw_user";
 		$users = array();
         $rows = array();
-		if(array_search('all', $this->groups) !== false){
+        $people = Person::getAllPeople();
+        if(array_search('all', $this->groups) !== false){
+            foreach($people as $person){
+                $users[$person->getId()] = array('user_id' => $person->getId(),
+		                                         'user_name' => $person->getName(),
+		                                         'user_email' => $person->getEmail());
+            }
+            return $users;
+        }
+        else{
+            foreach($people as $person){
+                foreach($this->groups as $group){
+                    if($person->isRole($group)){
+                        $users[$person->getId()] = array('user_id' => $person->getId(),
+		                                                 'user_name' => $person->getName(),
+		                                                 'user_email' => $person->getEmail());
+		                break;
+                    }
+                }
+            }
+            return $users;
+        }
+		/*if(array_search('all', $this->groups) !== false){
 	        $rows = DBFunctions::select(array('mw_user_groups' => 'ug',
 	                                          'mw_user' => 'u'),
 	                                    array('DISTINCT u.user_id',
@@ -171,7 +190,7 @@ class PollCollection {
 		}
 		foreach($rows as $row){
 			$users[] = $row;
-		}
+		}*/
 		return $users;
 	}
 	
