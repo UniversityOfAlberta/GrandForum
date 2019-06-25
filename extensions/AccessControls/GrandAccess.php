@@ -4,7 +4,7 @@ class GrandAccess {
 
     static $alreadyDone = array();
 
-    static function setupGrandAccess($user, $aRights){
+    static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues;
         if(isset(self::$alreadyDone[$user->getId()])){
             return true;
