@@ -466,6 +466,7 @@ class PollView {
         }
         $wgOut->addHTML("</tr></table>");
         $wgOut->addHTML("<input type='submit' name='edit' value='Submit Edits' />");
+        $wgOut->addHTML("<a href='index.php?action=viewPoll&id={$this->pollCollection->id}' class='button'>Cancel</a>");
         $wgOut->addHTML("</td></tr></table>");
         $wgOut->addHTML("</form>");
         $wgOut->addHTML("<script type='text/javascript'>
