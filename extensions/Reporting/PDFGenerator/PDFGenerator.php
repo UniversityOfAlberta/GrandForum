@@ -787,6 +787,8 @@ EOF;
             $headerName = utf8_encode($headerName);
         }
         
+        $headerName = html_entity_decode($headerName);
+        
         $headerLines = explode("<br />", $report->name);
         $nHeaderLines = count($headerLines);
         

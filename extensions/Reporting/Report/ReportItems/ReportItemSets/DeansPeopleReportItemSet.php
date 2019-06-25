@@ -7,15 +7,6 @@ class DeansPeopleReportItemSet extends ReportItemSet {
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
-
-        $data = DBFunctions::select(array('grand_personal_fec_info'),
-                                    array('user_id'),
-                                    array(),
-                                    array('date_of_appointment' => 'DESC'));
-        $fec = array();                  
-        foreach($data as $row){
-            $fec[$row['user_id']] = count($fec) + 1;
-        }
         
         $data = array();
         foreach($allPeople as $person){
@@ -24,10 +15,9 @@ class DeansPeopleReportItemSet extends ReportItemSet {
                       $person->isSubRole("DR"));
             if($found){
                 $tuple = self::createTuple();
-                $index = @$fec[$person->getId()];
                 $fecType = $person->getFECType($end);
                 $tuple['person_id'] = $person->getId();
-                $tuple['extra'] = "<b>{$person->getFECType($end)}</b>".str_pad($index, 3, "0", STR_PAD_LEFT);
+                $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
                 $data[] = $tuple;
             }
         }

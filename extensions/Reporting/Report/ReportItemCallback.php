@@ -79,6 +79,7 @@ class ReportItemCallback {
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
             "user_fec" => "getUserFEC",
+            "user_case_number" => "getUserCaseNumber",
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_product_count" => "getUserProductCount",
@@ -149,6 +150,7 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "strip_html" => "strip_html",
             "count" => "count",
             "add" => "add",
             "subtract" => "subtract",
@@ -543,6 +545,11 @@ class ReportItemCallback {
     function getUserFEC(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getFECType($this->reportItem->getReport()->year.CYCLE_END_MONTH);
+    }
+    
+    function getUserCaseNumber(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getCaseNumber($this->reportItem->getReport()->year);
     }
     
     function getUserNationality(){
@@ -1150,6 +1157,10 @@ class ReportItemCallback {
                    str_replace("(", "&#40;", $set[$index]));
         }
         return "";
+    }
+    
+    function strip_html($html){
+        return strip_tags($html);
     }
     
     function getPostId(){

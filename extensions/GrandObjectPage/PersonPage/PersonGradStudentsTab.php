@@ -84,13 +84,13 @@ class PersonGradStudentsTab extends AbstractTab {
     function supervisesHTML($hqpTypes=array(), $startDate=null, $endDate=null){
         $html = "<table class='wikitable relations_table' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                     <thead><tr>
-                            <th width='25%'>Name</th>
-                            <th width='25%'>Position</th>
-                            <th width='15%' style='white-space: nowrap;'>Start Date</th>
-                            <th width='15%' style='white-space: nowrap;'>End Date</th>
-                            <th width='15%' style='white-space: nowrap;'>Status</th>
+                            <th width='30%'>Name</th>
+                            <th width='30%'>Position</th>
+                            <th width='' style='white-space: nowrap;'>Start Date</th>
+                            <th width='' style='white-space: nowrap;'>End Date</th>
+                            <th width='' style='white-space: nowrap;'>Status</th>
                             <!--th style='white-space: nowrap;'>Research Area</th-->
-                            <th width='20%'>Role</th>
+                            <th width='10%'>Role</th>
                         </tr>
                     </thead><tbody>";
         if($startDate == null || $endDate == null){
@@ -232,13 +232,13 @@ class PersonGradStudentsTab extends AbstractTab {
     function committeeHTML($startDate=null, $endDate=null){
         $html = "<table id='relations_table2' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                     <thead><tr>
-                            <th width='25%'>Name</th>
-                            <th width='25%'>Position</th>
-                            <th width='15%' style='white-space: nowrap;'>Start Date</th>
-                            <th width='15%' style='white-space: nowrap;'>End Date</th>
-                            <th width='15%' style='white-space: nowrap;'>Status</th>
+                            <th width='30%'>Name</th>
+                            <th width='30%'>Position</th>
+                            <th width='' style='white-space: nowrap;'>Start Date</th>
+                            <th width='' style='white-space: nowrap;'>End Date</th>
+                            <th width='' style='white-space: nowrap;'>Status</th>
                             <!--th style='white-space: nowrap;'>Research Area</th-->
-                            <th width='20%'>Role</th>
+                            <th width='10%'>Role</th>
                         </tr>
                     </thead><tbody>";
         if($startDate == null || $endDate == null){
