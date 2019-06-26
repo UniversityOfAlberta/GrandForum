@@ -398,7 +398,7 @@ class PollView {
                                 <td>");
         $pollGroups = $this->pollCollection->groups;
         $groups = $me->getAllowedRoles();
-        if($me->isRole(PL)){
+        if($me->isAtLeastRole(PL)){
 		    $groups[] = PL;
 		}
         $nPerCol = ceil(count($groups)/3);

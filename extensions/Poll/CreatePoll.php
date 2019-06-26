@@ -311,7 +311,7 @@ class CreatePoll extends SpecialPage{
 							</td>
 							<td>");
 		$groups = $me->getAllowedRoles();
-		if($me->isRole(PL)){
+		if($me->isAtLeastRole(PL)){
 		    $groups[] = PL;
 		}
 		$nPerCol = ceil(count($groups)/3);
