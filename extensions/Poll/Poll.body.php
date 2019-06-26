@@ -63,6 +63,7 @@ class PollView {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$this->pollCollection = PollCollection::newFromId($_GET['id']);
 		if($this->pollCollection != null){
+			$groups = $wgUser->getGroups();
 			$found = false;
 			$found = $this->pollCollection->canUserViewPoll($wgUser);
 			$expired = $this->pollCollection->isPollExpired();
@@ -352,7 +353,7 @@ class PollView {
 	}
         
     function editView(){
-        global $wgOut, $wgUser, $wgRoles;
+        global $wgOut, $wgUser;
         if(isset($_POST['edit'])){
             $this->processEdit();
         }
@@ -396,8 +397,10 @@ class PollView {
                                 </td>
                                 <td>");
         $pollGroups = $this->pollCollection->groups;
-        $groups = $wgRoles;
-
+        $groups = $me->getAllowedRoles();
+        if($me->isRole(PL)){
+		    $groups[] = PL;
+		}
         $nPerCol = ceil(count($groups)/3);
         $remainder = count($groups) % 3;
         $col1 = array();
@@ -465,7 +468,6 @@ class PollView {
         }
         $wgOut->addHTML("</tr></table>");
         $wgOut->addHTML("<input type='submit' name='edit' value='Submit Edits' />");
-        $wgOut->addHTML("<a href='index.php?action=viewPoll&id={$this->pollCollection->id}' class='button'>Cancel</a>");
         $wgOut->addHTML("</td></tr></table>");
         $wgOut->addHTML("</form>");
         $wgOut->addHTML("<script type='text/javascript'>

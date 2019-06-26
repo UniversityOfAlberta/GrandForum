@@ -171,7 +171,7 @@ class CreatePoll extends SpecialPage{
 	}
 	
 	function generateFormHTML($wgOut){
-		global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $FORM_TEXT;
+		global $wgUser, $wgServer, $wgScriptPath, $FORM_TEXT;
 		$me = Person::newFromWgUser();
 		$wgOut->addScript("<script type='text/javascript'>
 					var opID = new Array();
@@ -310,7 +310,10 @@ class CreatePoll extends SpecialPage{
 								<b>Poll Visibility:</b>
 							</td>
 							<td>");
-		$groups = $wgRoles;
+		$groups = $me->getAllowedRoles();
+		if($me->isRole(PL)){
+		    $groups[] = PL;
+		}
 		$nPerCol = ceil(count($groups)/3);
 		$remainder = count($groups) % 3;
 		$col1 = array();
