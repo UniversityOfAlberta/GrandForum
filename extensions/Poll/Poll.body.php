@@ -63,7 +63,6 @@ class PollView {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$this->pollCollection = PollCollection::newFromId($_GET['id']);
 		if($this->pollCollection != null){
-			$groups = $wgUser->getGroups();
 			$found = false;
 			$found = $this->pollCollection->canUserViewPoll($wgUser);
 			$expired = $this->pollCollection->isPollExpired();
@@ -401,6 +400,7 @@ class PollView {
         if($me->isRoleAtLeast(PL)){
 		    $groups[] = PL;
 		}
+		$groups = array_unique($groups);
         $nPerCol = ceil(count($groups)/3);
         $remainder = count($groups) % 3;
         $col1 = array();
