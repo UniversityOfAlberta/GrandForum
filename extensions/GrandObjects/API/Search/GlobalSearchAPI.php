@@ -100,6 +100,7 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'experts':
+                break;
                 $output = array();
                 chdir("extensions/GlobalSearch/ExpertSearch/");
                 exec("./search.sh ".escapeshellarg($origSearch), $output);
