@@ -271,6 +271,7 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 break;
             case 'wikipage':
+                break;
                 $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
