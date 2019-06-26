@@ -290,6 +290,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField->attr('size', 27);
             
             $memberStatusField = new SelectBox("memberStatus", "Member Status", $this->project->getMemberStatus(), array("Member", "Associate Member", "Non-Member"));
+            $facultyListField = new SelectBox("facultyList", "Faculty List", $this->project->getFacultyList(), array("", "Provided", "Missing"));
             
             $this->html .= "<tr>
                                 <td align='right' style='white-space: nowrap; width: 1%;'><b>Upload new Photo:</b></td>
@@ -309,6 +310,11 @@ class ProjectMainTab extends AbstractEditableTab {
                                 <td></td>
                                 <td><input type='text' name='logo_url' style='width:269px;' placeholder='Enter logo URL here instead of file upload' /></td>
                                 <td style='white-space: nowrap;' align='right'><b>Member Status:</b></td><td>{$memberStatusField->render()}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style='white-space: nowrap;' align='right'><b>Faculty List:</b></td><td>{$facultyListField->render()}</td>
                             </tr>";
         }
     }                                
@@ -519,6 +525,7 @@ class ProjectMainTab extends AbstractEditableTab {
                $_POST['fullName'] != $this->project->getFullName() ||
                $_POST['shortName'] != $this->project->getShortName() ||
                $_POST['memberStatus'] != $this->project->getMemberStatus() ||
+               $_POST['facultyList'] != $this->project->getFacultyList() ||
                $_POST['website'] != $this->project->getWebsite() ||
                $_POST['dept_website'] != $this->project->getDeptWebsite() ||
                $_POST['email'] != $this->project->getEmail() ||

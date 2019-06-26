@@ -7,6 +7,7 @@ class ProjectDescriptionAPI extends API{
 	    $this->addPOST("description",true,"The short overview for this project","MEOW is great");
 	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");
 	    $this->addPOST("member_status",true,"The member status of this project","Member");
+	    $this->addPOST("faculty_list",true,"The faculty list status of this project","Provided");
 	    $this->addPOST("website",true,"The website url","http://agewell-nce.ca/");
 	    $this->addPOST("dept_website",true,"The department website url","http://agewell-nce.ca/");
 	    $this->addPOST("email",true,"The email address of the department chair","");
@@ -106,6 +107,7 @@ class ProjectDescriptionAPI extends API{
                                   'description' => $_POST['description'],
                                   'long_description' => @$_POST['long_description'],
                                   'member_status' => @$_POST['memberStatus'],
+                                  'faculty_list' => @$_POST['facultyList'],
                                   'website' => @$_POST['website'],
                                   'dept_website' => @$_POST['dept_website'],
                                   'email' => @$_POST['email'],

@@ -495,6 +495,7 @@ class Project extends BackboneModel {
                        'description' => $this->getDescription(),
                        'longDescription' => $this->getLongDescription(),
                        'memberStatus' => $this->getMemberStatus(),
+                       'facultyList' => $this->getFacultyList(),
                        'photo' => $this->getPhoto(),
                        'cachedPhoto' => $this->getPhoto(true),
                        'logo' => $this->getLogo(),
@@ -1408,7 +1409,7 @@ EOF;
         return "";
     }
     
-    // Returns the description of the Project
+    // Returns the member status of the Project
     function getMemberStatus($history=false){
         $sql = "(SELECT member_status
                 FROM grand_project_descriptions d
@@ -1426,6 +1427,28 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             return $data[0]['member_status'];
+        }
+        return "";
+    }
+    
+    // Returns the faculty list status of the Project
+    function getFacultyList($history=false){
+        $sql = "(SELECT faculty_list
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT faculty_list
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['faculty_list'];
         }
         return "";
     }
