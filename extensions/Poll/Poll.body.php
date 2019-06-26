@@ -63,7 +63,6 @@ class PollView {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$this->pollCollection = PollCollection::newFromId($_GET['id']);
 		if($this->pollCollection != null){
-			$groups = $wgUser->getGroups();
 			$found = false;
 			$found = $this->pollCollection->canUserViewPoll($wgUser);
 			$expired = $this->pollCollection->isPollExpired();
@@ -353,7 +352,7 @@ class PollView {
 	}
         
     function editView(){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $wgRoles;
         if(isset($_POST['edit'])){
             $this->processEdit();
         }
@@ -397,7 +396,7 @@ class PollView {
                                 </td>
                                 <td>");
         $pollGroups = $this->pollCollection->groups;
-        $groups = $me->getAllowedRoles();
+        $groups = $wgRoles;
 
         $nPerCol = ceil(count($groups)/3);
         $remainder = count($groups) % 3;
