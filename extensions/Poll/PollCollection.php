@@ -71,6 +71,9 @@ class PollCollection {
 		if($user->isLoggedIn()){
 		    $person = Person::newFromUser($user);
 			$groups = $user->getGroups();
+			if($user->getId() == $this->author->getId()){
+			    return true;
+			}
 			foreach($this->groups as $group){
 			    if($group == "all"){
                     return true;
@@ -158,39 +161,6 @@ class PollCollection {
             }
             return $users;
         }
-		/*if(array_search('all', $this->groups) !== false){
-	        $rows = DBFunctions::select(array('mw_user_groups' => 'ug',
-	                                          'mw_user' => 'u'),
-	                                    array('DISTINCT u.user_id',
-	                                          'u.user_id',
-	                                          'u.user_name',
-	                                          'u.user_email'),
-	                                    array('u.user_id' => EQ(COL('ug.ug_user'))));
-		}
-		else if(array_search('Student', $this->groups) !== false){
-		    $hqps = Person::getAllPeople(HQP);
-		    foreach($hqps as $hqp){
-		        if($hqp->isStudent()){
-		            $users[] = array('user_id' => $hqp->getId(),
-		                             'user_name' => $hqp->getName(),
-		                             'user_email' => $hqp->getEmail());
-		        }
-		    }
-		    return $users;
-		}
-		else {
-		    $rows = DBFunctions::select(array('mw_user_groups' => 'ug',
-		                                      'mw_user' => 'u'),
-		                                array('DISTINCT u.user_id',
-		                                      'u.user_id',
-		                                      'u.user_name',
-		                                      'u.user_email'),
-		                                array('u.user_id' => EQ(COL('ug.ug_user')),
-		                                      'ug.ug_group' => IN($this->groups)));
-		}
-		foreach($rows as $row){
-			$users[] = $row;
-		}*/
 		return $users;
 	}
 	
