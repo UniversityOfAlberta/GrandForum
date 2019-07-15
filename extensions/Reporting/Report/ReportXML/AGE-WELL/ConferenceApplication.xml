@@ -214,20 +214,6 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="2_THEME"  blobSubItem="{$extraIndex}" options="Technology|Policy|Knowledge Mobilization|Commercialization|Caregivers|Older Adults|ICTs|eHealth|AI|Mobile Technologies">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Theme Keywords:</b></td>
-                            <td>{$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="2_theme_other" type="Text" blobItem="2_THEME_OTHER" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                                Other: {$item}
-                            </td>
-                        </tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="2_title" type="Text" blobItem="2_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
@@ -441,20 +427,6 @@
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
                             <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="6_theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="6_THEME"  blobSubItem="{$extraIndex}" options="Technology|Policy|Knowledge Mobilization|Commercialization|Caregivers|Older Adults|ICTs|eHealth|AI|Mobile Technologies">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Theme Keywords:</b></td>
-                            <td>{$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="6_theme_other" type="Text" blobItem="6_THEME_OTHER" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                                Other: {$item}
-                            </td>
                         </tr>
                     ]]>
                 </ReportItem>
