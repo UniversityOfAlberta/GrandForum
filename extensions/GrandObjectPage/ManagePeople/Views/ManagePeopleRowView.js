@@ -212,11 +212,12 @@ ManagePeopleRowView = Backbone.View.extend({
                     latestRel = rel;
                 }
             });
-            
+            var name = this.model.get('name');
             if(latestRel != null){
                 _.each(universities, function(uni){
                     var tmpStart = "";
                     var tmpEnd = "";
+                    
                     if(start != "" && end != ""){
                         // Date already found, skip
                         return;
@@ -240,10 +241,13 @@ ManagePeopleRowView = Backbone.View.extend({
                         // Otherwise use the relationship date
                         tmpStart = latestRel.startDate;
                     }
-                    if(tmpStart > tmpEnd && tmpEnd.substr(0,10) != '0000-00-00'){
+                    
+                    if(tmpStart.substr(0,10) > tmpEnd.substr(0,10) && tmpEnd.substr(0,10) != '0000-00-00'){
                         // Date doesn't make sense, so don't use it
+                        console.log(tmpStart, tmpEnd, name);
                         return;
                     }
+                    
                     start = tmpStart;
                     end = tmpEnd;
                     position = uni.position;
@@ -261,6 +265,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 start = '';
             }
             if(end == '0000-00-00' || end == '0000-00-00 00:00:00' || end == '' || end == undefined){
+                
                 end = 'Current';
             }
             
