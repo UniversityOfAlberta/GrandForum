@@ -151,6 +151,9 @@
                         $("#3_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#3_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#3_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
@@ -257,6 +260,9 @@
                         $("#2_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#2_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#2_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
@@ -367,6 +373,9 @@
                         $("#1_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#1_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#1_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
@@ -473,6 +482,9 @@
                         $("#6_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#6_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#6_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
@@ -598,6 +610,9 @@
                         $("#4_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#4_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#4_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
@@ -742,6 +757,9 @@
                         $("#5_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#5_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#5_accordion").accordion("resize");
+                            }, 1000);
                         });
                     </script>
                 ]]>
