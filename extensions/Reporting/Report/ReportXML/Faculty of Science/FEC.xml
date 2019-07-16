@@ -845,7 +845,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
-            <h2>Preview</h2>
+                <h2>Preview</h2>
                 <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
                 {$item}
             ]]>

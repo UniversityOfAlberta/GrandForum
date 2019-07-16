@@ -359,7 +359,7 @@ abstract class AbstractReportSection {
 		$get_array[] = "&$key=".urlencode($get);
 	    }
 	}
-        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace(" ", "", $this->name)."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}".implode("",$get_array)."'>{$this->name}</a>\n");
+        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace(" ", "", $this->name))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}".implode("",$get_array)."'>{$this->name}</a>\n");
     }
     
     function render(){

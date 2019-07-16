@@ -247,7 +247,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace(" ", "", $section->name)] = $section->getPercentComplete();
+                        $prog[str_replace("&", "", str_replace(" ", "", $section->name))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
