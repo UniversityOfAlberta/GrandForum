@@ -58,8 +58,8 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                             $('#generate_button_' + index).attr('value', tok);
                                                             $('#download_button_' + index).removeAttr('disabled');
                                                             
-                                                            $('#generate_success').html('PDF Generated Successfully.');
-                                                            $('#generate_success').css('display', 'block');
+                                                            $('#generate_success{$this->getPostId()}').html('PDF Generated Successfully.');
+                                                            $('#generate_success{$this->getPostId()}').css('display', 'block');
                                                             $('#download_button_' + index).attr('name', tok);
                                                             $('#download_button_' + index).html(name + ' PDF');
                                                             
