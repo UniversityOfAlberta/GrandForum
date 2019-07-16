@@ -24,6 +24,7 @@ class Paper extends BackboneModel{
     var $contributors;
     var $data = false;
     var $lastModified;
+    var $dateCreated;
     var $authorsWaiting;
     var $contributorsWaiting;
     var $deleted;
@@ -592,6 +593,7 @@ class Paper extends BackboneModel{
             $this->contributorsWaiting = true;
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
+            $this->dateCreated = $data[0]['date_created'];
             $this->acceptance_date = $data[0]['acceptance_date'];
             foreach($this->getExclusions() as $exclusion){
                 if($exclusion->getId() == $me->getId()){
