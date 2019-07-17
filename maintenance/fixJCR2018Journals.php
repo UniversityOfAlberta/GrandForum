@@ -51,6 +51,8 @@
                     echo $product->getId().": {$if} ({$ranking}) -> {$journal->getImpactFactor()} ({$journal->getRank()})\n";
                     $product->data['impact_factor'] = $journal->getImpactFactor();
                     $product->data['category_ranking'] = $journal->getRank();
+                    $product->getAuthors();
+                    $product->getContributors();
                     $product->update();
                 }
             }
