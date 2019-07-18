@@ -176,9 +176,11 @@
             </statuses>
             <data>
                 <field label="Category Ranking" type="String">category_ranking</field>
+                <field label="Category Ranking" type="String">category_ranking_override</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
+                <field label="Impact Factor" type="String">impact_factor_override</field>
                 <field label="SNIP" type="String" hidden="true">snip</field>
-                <field label="Eigen Factor" type="String">eigen_factor</field>
+                <field label="Eigen Factor" type="String" hidden="true">eigen_factor</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" label="Volume" type="String">volume</field>
@@ -209,9 +211,11 @@
             </statuses>
             <data>
                 <field label="Category Ranking" type="String">category_ranking</field>
+                <field label="Category Ranking" type="String">category_ranking_override</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
+                <field label="Impact Factor" type="String">impact_factor_override</field>
                 <field label="SNIP" type="String" hidden="true">snip</field>
-                <field label="Eigen Factor" type="String">eigen_factor</field>
+                <field label="Eigen Factor" type="String" hidden="true">eigen_factor</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>

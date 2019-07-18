@@ -502,6 +502,12 @@ class Paper extends BackboneModel{
                                     else if($fid == "impact_factor"){
                                         $fhidden = true;
                                     }
+                                    else if($fid == "category_ranking_override"){
+                                        $fhidden = true;
+                                    }
+                                    else if($fid == "impact_factor_override"){
+                                        $fhidden = true;
+                                    }
                                     else if($fid == "snip"){
                                         $fhidden = false;
                                         $flabel = "SNIP<sup><span class='clicktooltip' style='font-size:17px; font-weight: normal;' title='The Source Normalised Impact per Paper <b>(SNIP)</b> is the ratio of the average number of citations received by articles in a journal (categorised in a particular field), and the citation potential of the field (i.e., the average length of the reference list of articles in that field). The SNIP allows comparisons between fields with different publication and citation rates. The SNIP is calculated using <a target=_blank href=https://www.scopus.com/sources>Scopus data</a>.'>&#9432;</span></sup>";
@@ -1168,6 +1174,9 @@ class Paper extends BackboneModel{
     function getJournal(){
         $journal_title = DBFunctions::escape($this->getVenue());
         $issn = DBFunctions::escape($this->getData('issn'));
+        if($journal_title == "" && $issn == ""){
+            return array();
+        }
         $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
                                       WHERE (`title` = '{$journal_title}' 
                                              AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
@@ -1405,8 +1414,17 @@ class Paper extends BackboneModel{
             $ifranking = array();
             $ranking = $this->getData(array('category_ranking'));
             $if = $this->getData(array('impact_factor'));
+            $ranking_override = $this->getData(array('category_ranking_override'));
+            $if_override = $this->getData(array('impact_factor_override'));
             $snip = $this->getData(array('snip'));
             $ratio = $this->getData(array('acceptance_ratio'));
+            
+            if($if_override != ""){
+                $if = "<i>$if_override</i>";
+            }
+            if($ranking_override != ""){
+                $ranking = "<i>$ranking_override</i>";
+            }
             
             if($this->getCategory() == "Publication"){
                 if($this->getData('peer_reviewed') == "Yes"){
@@ -1445,8 +1463,8 @@ class Paper extends BackboneModel{
                 
                 if($ranking != "" && ($snip == "" || $config->getValue('elsevierApi') == "")){
                     $fraction = explode("/", $ranking);
-                    $numerator = @$fraction[0];
-                    $denominator = @$fraction[1];
+                    $numerator = preg_replace("/[^0-9,.]/", "", @$fraction[0]);
+                    $denominator = preg_replace("/[^0-9,.]/", "", @$fraction[1]);
                     $percent = number_format(($numerator/max(1, $denominator))*100, 2);
                     $ranking = $ranking." = {$percent}%";
                     $journal = $this->getJournal();

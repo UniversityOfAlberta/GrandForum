@@ -509,7 +509,7 @@
             <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
                 <![CDATA[
                     <h2>Publications</h2>
-                    <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/forum_test/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
+                    <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
                     <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 ]]>
             </ReportItem>

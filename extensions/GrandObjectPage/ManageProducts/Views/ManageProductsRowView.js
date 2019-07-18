@@ -122,6 +122,9 @@ ManageProductsViewRow = Backbone.View.extend({
            (typeof(this.model.get('data')['impact_factor']) == 'undefined' ||
             this.model.get('data')['impact_factor'] === null ||
             this.model.get('data')['impact_factor'].trim() == "") && 
+           (typeof(this.model.get('data')['impact_factor_override']) == 'undefined' ||
+            this.model.get('data')['impact_factor_override'] === null ||
+            this.model.get('data')['impact_factor_override'].trim() == "") &&
             productStructure.categories[this.model.get('category')].types[this.model.getType()].data['snip'] != undefined &&
            (typeof(this.model.get('data')['snip']) == 'undefined' ||
             this.model.get('data')['snip'] === null ||

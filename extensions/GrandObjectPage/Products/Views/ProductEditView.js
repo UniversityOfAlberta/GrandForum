@@ -404,11 +404,18 @@ ProductEditView = Backbone.View.extend({
             _.size(_.first(_.values(productStructure.categories[this.model.get('category')].types)).titles) > 0)){
             this.$("select[name=title]").combobox();
         }
-        this.$("input[name=data_category_ranking]").prop('disabled', true);
-        this.$("input[name=data_impact_factor]").prop('disabled', true);
-        this.$("input[name=data_eigen_factor]").prop('disabled', true);
-        this.$("input[name=data_snip]").prop('disabled', true);
-        this.$("input[name=data_eigen_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
+        this.$("input[name=data_category_ranking]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_impact_factor]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_eigen_factor]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_snip]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_category_ranking_override]").css('width', '94px').attr('placeholder', 'Override...');;
+        this.$("input[name=data_impact_factor_override]").css('width', '94px').attr('placeholder', 'Override...');
+        this.$("input[name=data_impact_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
+        this.$("input[name=data_category_ranking]").after(this.$("input[name=data_category_ranking_override]"));
+        this.$("input[name=data_impact_factor]").after(this.$("input[name=data_impact_factor_override]"));
+        this.$("input[name=data_category_ranking]").parents("tr").next().remove();
+        this.$("input[name=data_impact_factor]").parents("tr").next().remove();
+        
 
         _.defer(function(){
             this.$("#acceptance_date").change();
