@@ -141,12 +141,12 @@ class CAPSCompleteRegister extends SpecialPage{
         $user = Person::newFromId($wgUser->getId());
         if($wgLang->getCode() == "en"){
             $wgOut->addHTML("<p>This section is for certified mifepristone abortion care providers (physicians and pharmacists).<br />
-                                To enter, please provide information on a sponsor who can confirm your eligibility. We will review and respond within 7 days. If you have any questions please contact the site administrators <a href='mailto:cart.assist@ubc.ca'>cart.assist@ubc.ca</a>.</p>");
+                                To enter, please provide information on a sponsor who can confirm your eligibility. We will review and respond within 7 days. If you have any questions please contact the site administrators <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</p>");
             $wgOut->addHTML("<div id='fileUploadInfo' title='Proof of Certification' style='display:none'>Please upload a copy of your proof of certification from the Mifepristone training program.</div>");
         }
         else if($wgLang->getCode() == "fr"){
             $wgOut->addHTML("<p>Cette section est pour les fournisseurs certifiés de soins mifépristone avortement (médecins et pharmaciens). <br />
-                                Pour entrer, s'il vous plaît fournir des informations sur un sponsor qui peut confirmer votre admissibilité. Nous allons examiner et de répondre dans les 7 jours. Si vous avez des questions s'il vous plaît contacter le site aux administrateurs <a href='mailto:cart.assist@ubc.ca'>cart.assist@ubc.ca</a></p>");
+                                Pour entrer, s'il vous plaît fournir des informations sur un sponsor qui peut confirmer votre admissibilité. Nous allons examiner et de répondre dans les 7 jours. Si vous avez des questions s'il vous plaît contacter le site aux administrateurs <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a></p>");
             $wgOut->addHTML("<div id='fileUploadInfo' title='Proof of Certification' style='display:none'>S'il vous plaît télécharger une copie de votre preuve de certification du programme de formation mifépristone .</div>");
         }
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:CAPSCompleteRegister' method='post' enctype='multipart/form-data'>\n");
