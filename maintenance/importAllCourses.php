@@ -43,6 +43,11 @@
         else if ($term == "Winter2018"){ $startEndDate["start"] = 43106; $startEndDate["end"]  = 43201;} //Winter2018: Jan 8, 2018 - Apr 13, 2018
         else if ($term == "Spring2018"){ $startEndDate["start"] = 43225; $startEndDate["end"]  = 43262;} //Spring2018: May 7, 2018 - Jun 13, 2018
         else if ($term == "Summer2018"){ $startEndDate["start"] = 43288; $startEndDate["end"]  = 43325;} //Summer2018: Jul 9, 2018 - Aug 15, 2018
+        
+        else if ($term == "Fall2018"){ $startEndDate["start"] = 43345; $startEndDate["end"]  = 43439;}   //Fall2018:   Sep 4, 2018 - Dec 7, 2018
+        else if ($term == "Winter2019"){ $startEndDate["start"] = 43470; $startEndDate["end"]  = 43563;} //Winter2019: Jan 7, 2019 - Apr 10, 2019
+        else if ($term == "Spring2019"){ $startEndDate["start"] = 43589; $startEndDate["end"]  = 43626;} //Spring2019: May 6, 2019 - Jun 12, 2019
+        else if ($term == "Summer2019"){ $startEndDate["start"] = 43652; $startEndDate["end"]  = 43689;} //Summer2019: Jul 8, 2019 - Aug 14, 2019
                     
         return $startEndDate; 
     }
@@ -51,8 +56,8 @@
     $start = microtime(true);
     
     // clean DB
-    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 6056", true);
-    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 6056", true);  
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 11019", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 11018", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
@@ -139,7 +144,7 @@
                 
                 //if ($userID == 337){ echo "yoooooooooo" . $subject . " " . $catalog . "\n"; }
                 
-                if($userID == 410){
+                //if($userID == 410){
                     $courseID++; // # of total insertions
                                                    
                     // set the key to values string
@@ -153,7 +158,7 @@
                     
                    // set grandUserCourses         
                    $grandUserCourses[] = "('{$userID}','{$courseID}')";
-               }
+               //}
             }
         }
         

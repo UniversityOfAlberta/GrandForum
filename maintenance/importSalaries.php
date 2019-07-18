@@ -6,7 +6,7 @@
 
     $file = file_get_contents("salaries.csv");
     $lines = explode("\n", $file);
-    $year = 2017;
+    $year = 2018;
     DBFunctions::delete('grand_user_salaries',
                         array('year' => $year));
     foreach($lines as $line){
