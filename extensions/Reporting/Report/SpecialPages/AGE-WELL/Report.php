@@ -136,6 +136,10 @@ class Report extends AbstractReport {
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CatalystEvaluation&project={$project->getName()}", $selected);
                     }
+                    else if(preg_match("/.*AW-PP2019.*/", $project->getName()) != 0){
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PlatformEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PlatformEvaluation&project={$project->getName()}", $selected);
+                    }
                     else{
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectEvaluation&project={$project->getName()}", $selected);
