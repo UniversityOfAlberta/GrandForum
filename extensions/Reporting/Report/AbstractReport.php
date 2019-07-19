@@ -132,7 +132,7 @@ abstract class AbstractReport extends SpecialPage {
         if($projectName === false && isset($_GET['project'])){
             $projectName = $_GET['project'];
         }
-        if($projectName != null){
+        if($projectName !== null && $projectName !== false){
             if(is_numeric($projectName)){
                 $this->project = new Project(array());
                 $this->project->id = $projectName;
