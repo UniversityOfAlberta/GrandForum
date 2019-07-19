@@ -611,6 +611,13 @@ class ReportItemCallback {
         foreach($products as $product){
             if(in_array($product->getType(), $types)){
                 $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
+                if($reportedYear == ""){
+                    // Not reported yet, but do some checks to make sure we don't count it twice
+                    if($product->getDate() > $end_date){
+                        // Found one, set the reported year to next year as long as next year isn't greater than the current reporting year
+                        $reportedYear = min($year+1, $this->reportItem->getReport()->year-1);
+                    }
+                }
                 if($reportedYear == "" || $reportedYear == $year){
                     if($case == "Publication"){
                         if($product->getData('peer_reviewed') == "Yes"){
