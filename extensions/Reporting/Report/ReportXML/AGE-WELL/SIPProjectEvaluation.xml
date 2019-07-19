@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's Project Scorecard and Reporting Framework" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation" disabled="false" startDate="1900-01-01" endDate="2100-01-01">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation" disabled="false" year="2018" startDate="1900-01-01" endDate="2100-01-01">
     <ReportSection id="overview">
         <ReportItem id="instructions">
             <![CDATA[
@@ -26,6 +26,12 @@
             <![CDATA[
                 <h2>Product Development</h2>
                 <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How have/will the outcomes of your project benefit the Canadian economy and what progress has your project made in the last 12 months in achieving these outcomes?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="quality">
+            <![CDATA[
+                <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life of older adults and their caregivers, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project eventually benefit the Canadian society?  Provide any demonstrated evidence of the impact of service or knowledge products on key health and quality of life outcomes relevant to healthy aging.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -186,12 +192,28 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2">
+    <ReportSection id="narrative2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
         <ReportItem id="justification" delete="true" />
         <ReportItem id="level" delete="true" />
-        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true" position="0">
+        <ReportItem id="learned" delete="true" />
+        <ReportItem id="steps">
             <![CDATA[
                 <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="study">
+            <![CDATA[
+                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. We will draw on these case studies as we prepare our network renewal applications.</h3>
+                The following should be provided for the case study: 
+                <ul>
+                    <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
+                    <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
+                    <li>Details of the beneficiaries – who or what community, constituency or organisation has benefitted, been affected or impacted on.</li>
+                    <li>Details of the nature of the impact – how they have benefitted, been affected or impacted on.</li>
+                    <li>Evidence or indicators of the extent of the impact described, as appropriate to the case being made.</li>
+                    <li>Dates of when these impacts occurred.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
