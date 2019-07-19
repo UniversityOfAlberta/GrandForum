@@ -32,7 +32,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL's Project Scorecard and Reporting Framework">
+    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL Platform Project Scorecard (2019-2020)">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>Please complete the project scorecard provided. You should specifically respond to the reviewer feedback from the Core Research Program (CRP) Request for Proposals. You should identify areas of strength and weakness of the project and team and identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the year in order to strengthen your project as they pertain to NCE Program Criteria. Please keep in mind that the feedback provided to you is based on a review of your proposal for the CRP- Catalyst program and not a Pilot Project.</p>
@@ -85,7 +85,7 @@
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard">
         <ReportItem id="TableHeader" type="Static">
             <![CDATA[
-                <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Referencing CRP reviewer feedback, please identify the project’s key areas of strength and weakness, and identify concrete goals for the Catalyst year. Keep it brief and realistic. 
+                <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Referencing CRP reviewer feedback, please identify the project’s key areas of strength and weakness, and identify concrete goals for the seed funding year. Keep it brief and realistic.
                 <table class="wikitable small" width="100%">
                     <tr>
                         <th></th>
