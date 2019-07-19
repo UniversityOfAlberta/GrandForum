@@ -1283,7 +1283,7 @@
         </ReportItem>
         <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
             <![CDATA[
-                <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
+                <h3>What are the next steps for your project and developed products? Describe how you will leverage AGE-WELL activities moving forward. Will you apply for outside funding? Will you apply for AGE-WELL funding, if renewed? What kind of funding will you need to advance your product?</h3>
                 {$item}
             ]]>
         </ReportItem>
