@@ -90,6 +90,8 @@
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                     <% } else if(val.type == "File"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Date"){ %>
+                        <%= HTML.DatePicker(this, 'data.' + index, {format: 'yy-mm-dd'}) %>
                     <% } else { %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } %>

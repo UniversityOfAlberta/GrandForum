@@ -144,15 +144,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right" style="white-space:nowrap;">
-                                                <b>Theme Keywords:</b>
-                                            </td>
-                                            <td>
-                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_THEME,{$extraIndex},{$user_id},0,2_theme)}<br />
-                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_THEME_OTHER,{$extraIndex},{$user_id},0)}
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <td align="right" style="white-space:nowrap;" valign="top">
                                                 <b>Talk Abstract:</b>
                                             </td>
@@ -294,15 +285,6 @@
                                             </td>
                                             <td>
                                                 {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT,{$extraIndex},{$user_id},0)}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">
-                                                <b>Theme Keywords:</b>
-                                            </td>
-                                            <td>
-                                                {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_THEME,{$extraIndex},{$user_id},0,6_theme)}<br />
-                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_THEME_OTHER,{$extraIndex},{$user_id},0)}
                                             </td>
                                         </tr>
                                         <tr>
