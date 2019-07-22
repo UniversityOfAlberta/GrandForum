@@ -137,6 +137,16 @@ person/:id/products
     **Actions**
         **GET**
             Returns a list of non-private Products authored by this Person
+            
+person/:id/products/bibtex
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Person
+    **Actions**
+        **GET**
+            Returns all bibtex references of non-private Products authored by this Person
         
 person/:id/products/private
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -429,6 +439,16 @@ project/:id/products
             Returns a simplified list of Products associated with the specified Project
         **POST**
             Associates a product with the specified Project
+            
+project/:id/products/bibtex
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Project
+    **Actions**
+        **GET**
+            Returns all bibtex references of Products associated with the specified Project
         
 project/:id/products/:productId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -546,6 +566,16 @@ product/:id
             Updates the specified Product
         **DELETE**
             Deletes the specified Product.  If the Product was 'private' the deletion will be permanent.
+        
+product/:id/bibtex
+~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Product
+    **Actions**
+        **GET**
+            Returns the bibtex reference of the Product
         
 product/:id/citation
 ~~~~~~~~~~~~~~~~~~~~

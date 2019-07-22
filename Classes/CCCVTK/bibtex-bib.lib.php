@@ -40,12 +40,14 @@ class Bibliography // {{{
    * Constructs a Bibliiography object from data in a given filename
    * @param $filename The filename to read from
    */
-  public function Bibliography($filename) // {{{
+  public function Bibliography($filename="") // {{{
   {
-    if (!isset($filename))
-      throw new Exception("No filename given");
-    $cont = file_get_contents($filename);
-    $this->parse($cont);
+    if($filename != ""){
+        if (!isset($filename))
+          throw new Exception("No filename given");
+        $cont = file_get_contents($filename);
+        $this->parse($cont);
+    }
   } // }}}
   
   /**

@@ -48,6 +48,7 @@ $apiRequest->addAction('Hidden','person/:id/relations', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/inverse', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/:relId', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/products/bibtex', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/all', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/:productId', 'PersonProductAPI');
@@ -76,6 +77,7 @@ $apiRequest->addAction('Hidden','project/:id/members/:role', 'ProjectMembersAPI'
 $apiRequest->addAction('Hidden','project/:id/contributions', 'ProjectContributionsAPI');
 $apiRequest->addAction('Hidden','project/:id/allocations', 'ProjectAllocationsAPI');
 $apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
+$apiRequest->addAction('Hidden','project/:id/products/bibtex', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
 
 // Freeze

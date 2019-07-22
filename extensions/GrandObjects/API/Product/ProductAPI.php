@@ -13,7 +13,9 @@ class ProductAPI extends RESTAPI {
                 return $paper->getCitation();
             }
             if($this->getParam('bibtex') != ""){
-                return BibTexExporter::exportProduct($paper);
+                header('Content-Type: text/plain');
+                echo $paper->toBibTeX();
+                exit;
             }
             return $paper->toJSON();
         }
