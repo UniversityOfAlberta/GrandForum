@@ -24,16 +24,16 @@
                 <table rules="all" frame="box" class="wikitable smaller" width="100%">
                     <tr>
                         <th></th>
-                        <th colspan='3'>To be completed by August 9, 2019</th>
+                        <th colspan='3'>To be completed by August 23, 2019</th>
                         <th colspan='2'>To be completed in January 2020<br />(date to be confirmed)</th>
                     </tr>
                     <tr>
                         <th>NCE Area</th>
-                        <th>Identified Strengths of project</th>
-                        <th>Identified Weaknesses of project</th>
-                        <th>Actions to be taken to address weaknesses</th>
-                        <th>Actions completed</th>
-                        <th>Key outcomes</th>
+                        <th>Planned Objectives -<br />Main objectives for the upcoming year</th>
+                        <th>Planned Outputs -<br />Deliverables required to meet project objectives</th>
+                        <th>Planned Project Activities -<br />Activities required to generate outputs</th>
+                        <th>Completed Objectives -<br />Main objectives of project over last year</th>
+                        <th>Completed Outputs -<br />Deliverables meeting the project objectives</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -195,7 +195,7 @@
         </ReportItem>
         <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
             <![CDATA[
-                <h3>Considering the expectations of the seed funding year, and the weaknesses listed above, please highlight areas of support that may be required. Supports and resources needed from AGE-WELL:</h3>
+                <h3>Considering the expectations of the seed funding year, please identify supports and resources needed from the AGE-WELL Network to support your project in carrying out the planned objectives:</h3>
                 {$item}
             ]]>
         </ReportItem>

@@ -35,7 +35,7 @@
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL Platform Project Scorecard (2019-2020)">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
-                <p>Please complete the project scorecard provided. You should specifically respond to the reviewer feedback from the Core Research Program (CRP) Request for Proposals. You should identify areas of strength and weakness of the project and team and identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the year in order to strengthen your project as they pertain to NCE Program Criteria. Please keep in mind that the feedback provided to you is based on a review of your proposal for the CRP program and not as a Platform Project.</p>
+                <p>Please complete the project scorecard provided. You should identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the year in order to strengthen your Platform Project as they pertain to NCE Program Criteria.</p>
                 
                 <p>AGE-WELL Platform Projects address issues of network-wide importance and provide tangible added-value to the Network in alignment with its mission. In 2018, AGE-WELL’s Board of Directors identified the development and management of data platforms as an area of strategic importance and future investment. Considerations to be addressed within a new cluster of data platform projects may include: secure storage of and shared access to big data sets; federation of diverse databases, including data from sources outside the Network; data portals to facilitate access to federated data; and analytic tools such as data mining and visualization. Other considerations are expected to emerge over time.</p>
                 
@@ -59,9 +59,9 @@
                     </ul>
                 </p>
                 
-                <p>The project scorecard will be submitted to AGE-WELL by August 9, 2019. It will be used by the Network Management Office to match projects with mentors and to create individual project support and resource packages (e.g. links to specific partners, cross-cutting activities, people, etc.).</p>
+                <p>The project scorecard will be submitted to AGE-WELL by August 23, 2019. It will be used by the Network Management Office to match projects with mentors and to create individual project support and resource packages (e.g. links to specific partners, cross-cutting activities, people, etc.).</p>
                 
-                <p>In January 2020, projects will return to the scorecard and reflect on their work during the seed funding phase. The updated scorecard and a two-page progress report will be submitted for evaluation.</p>
+                <p>In January 2020, projects will return to the scorecard and reflect on their work during the seed funding phase.</p>
                 
                 <h3>NCE Program Criteria</h3>
                 
@@ -85,20 +85,20 @@
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard">
         <ReportItem id="TableHeader" type="Static">
             <![CDATA[
-                <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Referencing CRP reviewer feedback, please identify the project’s key areas of strength and weakness, and identify concrete goals for the seed funding year. Keep it brief and realistic.
+                <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Please identify the project’s goals, activities, and deliverables for the seed funding year. Keep it brief and realistic.
                 <table class="wikitable small" width="100%">
                     <tr>
                         <th></th>
-                        <th colspan='3'>To be completed by August 9, 2019</th>
+                        <th colspan='3'>To be completed by August 23, 2019</th>
                         <th colspan='2'>To be completed in January 2020<br />(date to be confirmed)</th>
                     </tr>
                     <tr>
                         <th>NCE Area</th>
-                        <th>Identified Strengths of project</th>
-                        <th>Identified Weaknesses of project</th>
-                        <th>Actions to be taken to address weaknesses</th>
-                        <th>Actions completed</th>
-                        <th>Key outcomes</th>
+                        <th>Planned Objectives -<br />Main objectives for the upcoming year</th>
+                        <th>Planned Outputs -<br />Deliverables required to meet project objectives</th>
+                        <th>Planned Project Activities -<br />Activities required to generate outputs</th>
+                        <th>Completed Objectives -<br />Main objectives of project over last year</th>
+                        <th>Completed Outputs -<br />Deliverables meeting the project objectives</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -260,7 +260,7 @@
         </ReportItem>
         <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
             <![CDATA[
-                <p>Considering the expectations of the seed funding year, and the weaknesses listed above, please highlight areas of support that may be required. Supports and resources needed from AGE-WELL:</p>
+                <p>Considering the expectations of the seed funding year, please identify supports and resources needed from the AGE-WELL Network to support your project in carrying out the planned objectives:</p>
                 {$item}
             ]]>
         </ReportItem>
