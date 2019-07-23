@@ -163,6 +163,7 @@
         'ProjectEvolution',
         //'TravelForm',
         'CCVExport',
+        //'CrossForumExport',
         'ReportIssue',
         'MyThreads',
         'Freeze'
@@ -177,6 +178,14 @@
     // should be an associative array with the index as the type of social network, and the value is the url
     // Options: twitter, linkedin, flickr, youtube
     $config->setValue("socialLinks", array());
+    
+    // Associative array of other Forum instances that this one can import from
+    $config->setValue("crossForumUrls", array("AGE-WELL" => "https://forum.agewell-nce.ca/index.php/Special:CrossForumExport",
+                                              "CFN"      => "https://forum.cfn-nce.ca/index.php/Special:CrossForumExport",
+                                              "FES"      => "https://forum.futureenergysystems.ca/index.php/Special:CrossForumExport",
+                                              "GlycoNet" => "https://forum.glyconet.ca/index.php/Special:CrossForumExport",
+                                              "GlycoNet Test" => "https://grand.cs.ualberta.ca/~dwt/glyconet_test/index.php/Special:CrossForumExport",
+                                              "Int-Comp" => "https://int-comp-forum.ualberta.ca/index.php/Special:CrossForumExport"));
 
     $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
                                                  2 => "2015-04-01 00:00:00"));

@@ -44,6 +44,7 @@ Extension Documentation
    userinterface
    queryabletable
    report
+   crossforumexport
 
 .. _api-docs:
 
