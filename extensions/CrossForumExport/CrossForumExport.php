@@ -112,6 +112,19 @@ class CrossForumExport extends SpecialPage {
         </style>");
         $wgOut->addScript("<script type='text/javascript'>
             $(document).ready(function(){
+                _.defer(function(){
+                    $('.tooltip').qtip({
+		                position: {
+		                    adjust: {
+			                    x: -($('.tooltip').width()-25),
+			                    y: -($('.tooltip').height()/3)
+		                    }
+		                },
+		                show: {
+		                    delay: 500
+		                }
+		            });
+		        });
                 $('.smallLogo a').attr('href', wgServer + wgScriptPath + '/index.php/Special:CrossForumExport');
                 $('#side').append($('form#mw-resetpass-form').detach());
                 $('#wpMailmypassword').hide();

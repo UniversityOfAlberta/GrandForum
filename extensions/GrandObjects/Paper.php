@@ -90,6 +90,9 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given bibtex_id
      */
     static function newFromBibTeXId($bibtex_id, $title=""){
+        if(trim($bibtex_id) == ""){
+            return new Paper(array()); 
+        }
         if(isset(self::$cache[$bibtex_id])){
             return self::$cache[$bibtex_id];
         }
@@ -99,7 +102,8 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         if($title != ""){
             $newData = array();
@@ -1547,6 +1551,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
@@ -1643,6 +1648,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
