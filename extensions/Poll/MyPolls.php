@@ -35,8 +35,8 @@ class MyPolls extends SpecialPage{
 							<th>Name</th> <th>Number of Votes</th> <th>Creation Date</th> <th>Expiration Date</th>
 						</tr>");
 			foreach($collections as $collection){
-				$created = date("Y-m-d G:H:i", $collection->created);
-				$expiration = $collection->getExpirationDate("Y-m-d G:H:i");
+				$created = date("Y-m-d H:i:s", $collection->created);
+				$expiration = $collection->getExpirationDate("Y-m-d H:i:s");
 				$wgOut->addHTML("<tr style='background:#FFFFFF;'>
 							<td><a href='$wgServer$wgScriptPath/index.php?action=viewPoll&id={$collection->id}'>{$collection->name}</a></td> <td>{$collection->getTotalVotes()}</td> <td>$created</td> <td>$expiration</td>
 						</tr>");
