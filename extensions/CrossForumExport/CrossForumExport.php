@@ -28,9 +28,7 @@ class CrossForumExport extends SpecialPage {
             // Handle Exporting
             $me = Person::newFromWgUser();
             $products = $me->getPapers("all", true, 'both', true, 'Public');
-            //header('Content-Type: text/plain');
             $collection = new Collection($products);
-            //echo implode("", $collection->pluck('toBibTeX()'));
             echo "<script type='text/javascript'>
                 opener.postMessage(".json_encode(implode("", $collection->pluck('toBibTeX()'))).", '*');
                 window.close();

@@ -3417,7 +3417,9 @@ class Person extends BackboneModel {
                !$paper->deleted && 
                $paper->getId() != 0 &&
                ($category == 'all' || $paper->getCategory() == $category)){
-                $papersArray[] = $paper;
+                if($paper->getAccessId() == 0 || !$onlyPublic){
+                    $papersArray[] = $paper;
+                }
             }
         }
         if($exclude){

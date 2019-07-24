@@ -82,7 +82,6 @@ class ReportItemCallback {
             "user_case_number" => "getUserCaseNumber",
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
-            "user_product_count" => "getUserProductCount",
             "user_grad_count" => "getUserGradCount",
             "user_msc_count" => "getUserMscCount",
             "user_phd_count" => "getUserPhdCount",
@@ -1189,13 +1188,6 @@ class ReportItemCallback {
     
     function getReportSection(){
         return $this->reportItem->getSection()->name;
-    }
-
-    function getUserProductCount(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $products = $person->getPapersAuthored('all', ($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30", true);
-        $products = $person->getPapers("all", false, 'both', true, "Public");
-        return count($products);
     }
 
     function getUserGradCount(){
