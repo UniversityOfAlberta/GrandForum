@@ -183,6 +183,7 @@
     $config->setValue("crossForumUrls", array("AGE-WELL" => "https://forum.agewell-nce.ca/index.php/Special:CrossForumExport",
                                               "CFN"      => "https://forum.cfn-nce.ca/index.php/Special:CrossForumExport",
                                               "FES"      => "https://forum.futureenergysystems.ca/index.php/Special:CrossForumExport",
+                                              "UofA FoS" => "https://forum-fos.ualberta.ca/forum_test/index.php/Special:CrossForumExport",
                                               "GlycoNet" => "https://forum.glyconet.ca/index.php/Special:CrossForumExport",
                                               "GlycoNet Test" => "https://grand.cs.ualberta.ca/~dwt/glyconet_test/index.php/Special:CrossForumExport",
                                               "Int-Comp" => "https://int-comp-forum.ualberta.ca/index.php/Special:CrossForumExport"));

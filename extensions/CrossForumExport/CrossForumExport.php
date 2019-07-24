@@ -32,7 +32,7 @@ class CrossForumExport extends SpecialPage {
             $collection = new Collection($products);
             //echo implode("", $collection->pluck('toBibTeX()'));
             echo "<script type='text/javascript'>
-                opener.exportFn(".json_encode(implode("", $collection->pluck('toBibTeX()'))).");
+                opener.postMessage(".json_encode(implode("", $collection->pluck('toBibTeX()'))).", '*');
                 window.close();
                 setInterval(function(){
                     // If the user was interacting with something in the window, it doesn't close, so try again often
@@ -114,17 +114,17 @@ class CrossForumExport extends SpecialPage {
             $(document).ready(function(){
                 _.defer(function(){
                     $('.tooltip').qtip({
-		                position: {
-		                    adjust: {
-			                    x: -($('.tooltip').width()-25),
-			                    y: -($('.tooltip').height()/3)
-		                    }
-		                },
-		                show: {
-		                    delay: 500
-		                }
-		            });
-		        });
+                        position: {
+                            adjust: {
+                                x: -($('.tooltip').width()-25),
+                                y: -($('.tooltip').height()/3)
+                            }
+                        },
+                        show: {
+                            delay: 500
+                        }
+                    });
+                });
                 $('.smallLogo a').attr('href', wgServer + wgScriptPath + '/index.php/Special:CrossForumExport');
                 $('#side').append($('form#mw-resetpass-form').detach());
                 $('#wpMailmypassword').hide();
@@ -137,6 +137,11 @@ class CrossForumExport extends SpecialPage {
         $wgOut->addScript("<script type='text/javascript'>
         
             var crossForumUrls = ".json_encode($config->getValue('crossForumUrls')).";
+        
+            var exportFn = function(event) { };
+            window.addEventListener('message', function(event){
+                exportFn(event);
+            }, false);
         
             var openCrossForumExport = function(url, callback){
                 exportFn = callback;
