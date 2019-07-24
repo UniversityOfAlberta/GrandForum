@@ -18,7 +18,8 @@ class ImportBibTeXAPI extends API{
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
                                'inbook' => 'Book Chapter',
-                               'misc' => 'Misc');
+                               'misc' => 'Misc',
+                               'patent' => array('Patent', 'Patent Issued'));
 
     var $structure = null;
 
@@ -62,7 +63,7 @@ class ImportBibTeXAPI extends API{
             return null;  
         }
         $checkBibProduct = Product::newFromBibTeXId(@$paper['doi']);
-        $checkProduct = Product::newFromTitle($paper['title'], $category, $type);
+        $checkProduct = Product::newFromTitle($paper['title']);
         if((!$overwrite && $checkProduct->exists()) ||
            (!$overwrite && $checkBibProduct->exists())){
             return null;
@@ -71,7 +72,9 @@ class ImportBibTeXAPI extends API{
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
         }
-        else if($checkProduct->getId() != 0){
+        else if($checkProduct->getId() != 0 && 
+           ($checkProduct->getCategory() == $category || $category == null) &&
+           $checkProduct->getType() == $type){
             // Make sure that a product with the same title/category/type does not already exist
             $product = $checkProduct;
         }
@@ -214,9 +217,20 @@ class ImportBibTeXAPI extends API{
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, "Publication", $type, $overwrite);
-                    if($product != null){
-                        $createdProducts[$product->getId()] = $product;
+                    if(is_array($type)){
+                        // Could map to different types
+                        foreach($type as $t){
+                            $product = $this->createProduct($paper, null, $t, $overwrite);
+                            if($product !== false){
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        $product = $this->createProduct($paper, null, $type, $overwrite);
+                    }
+                    if($product != null && $product !== false){
+                        $createdProducts[] = $product;
                     }
                     else{
                         $errorProducts[] = $paper;

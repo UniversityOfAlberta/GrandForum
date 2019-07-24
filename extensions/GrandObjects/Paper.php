@@ -2061,6 +2061,61 @@ class Paper extends BackboneModel{
         }
     }
     
+    /**
+     * Exports this Paper as a BibTeX
+     * @return string This Paper's BibTeX
+     */
+    function toBibTeX(){
+        $dir = dirname(__FILE__);
+        require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
+        $hash = ImportBibTeXAPI::$bibtexHash;
+        foreach($hash as $key => $types){
+            if($types == $this->getType() ||
+               (is_array($types) && in_array($this->getType(), $types))){
+                // Compatable with BibTeX
+                $pStructure = Product::structure();
+                $structure = null;
+                if(isset($pStructure['categories'][$this->getCategory()]['types'][$this->getType()])){
+                    // Make sure that the type actually exists
+                    $structure = $pStructure['categories'][$this->getCategory()]['types'][$this->getType()];
+                }
+                else{
+                    $found = false;
+                    foreach($pStructure['categories'] as $cat => $cats){
+                        if(isset($cats['types'][$this->getType()])){
+                            // Then check if the type might exist in a different category
+                            $structure = $pStructure['categories'][$cat]['types'][$this->getType()];
+                            break;
+                        }
+                    }
+                    if(!$found){
+                        return false;
+                    }
+                }
+                $authors = new Collection($this->getAuthors());
+                $bibtex = array('bibtex_type' => $key,
+                                'raw' => array('title' => $this->getTitle()));
+                $bibtex['raw']['author'] = trim(preg_replace('/\s+/', ' ', str_replace("<span class='noshow'>&quot;</span>", "", implode(" and ", $authors->pluck('getNameForProduct("{%First} {%M.} {%Last}")')))));
+                $bibtex['raw']['year'] = substr($this->getDate(), 0, 4);
+                $bibtex['raw']['month'] = date("M", strtotime($this->getDate()));
+                $bibtex['raw']['abstract'] = $this->getDescription();
+                
+                if($structure != null){
+                    foreach($structure['data'] as $dkey => $dfield){
+                        if(isset($dfield['bibtex']) && $dfield['bibtex'] != ""){
+                            $bibtex['raw'][$dfield['bibtex']] = $this->getData($dkey);
+                        }
+                    }
+                }
+                
+                $bib = new Bibliography();
+                $bib->m_entries[$key] = $bibtex;
+                return $bib->toBibTeX();
+            }
+        }
+        return "";
+    }
+    
     function exists(){
         return ($this->id != "");
     }

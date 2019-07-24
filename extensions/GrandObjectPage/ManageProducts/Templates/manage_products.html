@@ -54,6 +54,20 @@
     <input type="radio" id="bibtex_overwrite" name="bibtex_overwrite" value="yes" style="vertical-align:middle;" /> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="bibtex_overwrite" name="bibtex_overwrite" value="" style="vertical-align:middle;" checked="checked" /> No
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
+<% if(isExtensionEnabled('CrossForumExport')){ %>
+    <div id="crossForumExportDialog" style="display:none;" title="Import from other Forum">
+        <p>If you have an account on another Forum, you can import BibTeX references from it.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+        <select>
+            <% _.each(crossForumUrls, function(url, name){ %>
+                <!--% if(!url.includes(window.location.hostname)){ %-->
+                    <option value="<%= url %>"><%= name %></option>
+                <!--% } %-->
+            <% }) %>
+        </select>
+        <br /><br /><input type="checkbox" id="bibtex_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
+        <div class="throbber" style="float:right;display:none;"></div>
+    </div>
+<% } %>
 <div id="instructions" style="display:none;">
     <p>
         This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase() %>.  <%= productsTerm.pluralize() %> will show up in this list if one of the following conditions is true.
@@ -95,6 +109,9 @@
     <% if(productStructure.categories['Activity'] != undefined && 
           productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
         <button id="uploadCalendarButton">Import ICS Calendar</button>
+    <% } %>
+    <% if(isExtensionEnabled('CrossForumExport')){ %>
+        <button id="crossForumExport">Import from other Forum</button>
     <% } %>
     <% if(_.contains(allowedRoles, MANAGER)){ %>
         <span style="margin-left:30px;">

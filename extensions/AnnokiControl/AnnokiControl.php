@@ -110,6 +110,9 @@ $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                          
+$egAnnokiExtensions['CrossForumExport'] = array('name' => 'CrossForumExport', 
+                                                'path' => "$IP/extensions/CrossForumExport/CrossForumExport.php");
+                                         
 $egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
                                          'path' => "$IP/extensions/QASummary/QASummary.php");
                                          

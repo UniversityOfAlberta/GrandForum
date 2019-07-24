@@ -1829,7 +1829,7 @@ class Person extends BackboneModel {
     function getNameForProduct($format=null){
         global $config;
         $regex = "/\{.*?\}/";
-        $format = ($format == null) ? strtolower($config->getValue("nameFormat")) : $format;
+        $format = ($format == null) ? strtolower($config->getValue("nameFormat")) : strtolower($format);
         $format = preg_replace_callback($regex,"self::formatName",$format);
         $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
         if(str_replace(".", "", strtolower($format)) == "et al" || str_replace(".", "", strtolower($format)) == "al, et"){
