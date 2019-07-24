@@ -889,6 +889,9 @@ EOF;
                 }
             }
         }
+        usort($people, function($a, $b){
+            return ($a->getReversedName() > $b->getReversedName());
+        });
         return $people;
     }
     
