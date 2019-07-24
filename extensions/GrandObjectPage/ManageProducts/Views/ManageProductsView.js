@@ -898,7 +898,6 @@ ManageProductsView = Backbone.View.extend({
 	                var popup = openCrossForumExport(value, function(event){
 	                    clearInterval(popupInterval);
 	                    var bibtex = event.data;
-	                    console.log(bibtex);
 	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: bibtex, overwrite: overwrite}, function(response){
 	                        var data = response.data;
 	                        if(!_.isUndefined(data.created)){

@@ -23,14 +23,18 @@ class CrossForumExport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $config;
         if($wgUser->isLoggedIn()){
             // Handle Exporting
             $me = Person::newFromWgUser();
             $products = $me->getPapers("all", true, 'both', true, 'Public');
             $collection = new Collection($products);
             echo "<script type='text/javascript'>
-                opener.postMessage(".json_encode(implode("", $collection->pluck('toBibTeX()'))).", '*');
+                var crossForumUrls = ".json_encode($config->getValue('crossForumUrls')).";
+                Object.keys(crossForumUrls).forEach(function(key) {
+                    var url = crossForumUrls[key];
+                    opener.postMessage(".json_encode(implode("", $collection->pluck('toBibTeX()'))).", url);
+                });
                 window.close();
                 setInterval(function(){
                     // If the user was interacting with something in the window, it doesn't close, so try again often
