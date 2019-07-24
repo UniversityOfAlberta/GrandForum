@@ -655,10 +655,20 @@ ManageProductsView = Backbone.View.extend({
                             var nCreated = response.created.length;
                             var nError = response.error.length;
                             if(nCreated > 0){
-	                            addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
+                                var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
+                                           "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                           "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                           "<li>" + _.pluck(response.created, 'title').join("</li><li>") + 
+                                           "</li></ul></div>";
+                                addSuccess(info);
 	                        }
 	                        if(nError > 0){
-	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+	                            var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
+                                           "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                           "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                           "<li>" + _.pluck(response.error, 'title').join("</li><li>") + 
+                                           "</li></ul></div>";
+                                addInfo(info);
 	                        }
 	                        button.prop("disabled", false);
 	                        $("div.throbber", this.ccvDialog).hide();
@@ -777,10 +787,20 @@ ManageProductsView = Backbone.View.extend({
                                 var nCreated = data.created.length;
                                 var nError = response.messages.length;
                                 if(nCreated > 0){
-                                    addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
+                                    var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + _.pluck(response.data.created, 'title').join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addSuccess(info);
                                 }
                                 if(nError > 0){
-                                    addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+                                    var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + response.messages.join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addInfo(info);
                                 }
                             }
                             button.prop("disabled", false);
@@ -897,10 +917,20 @@ ManageProductsView = Backbone.View.extend({
                                 var nError = response.messages.length;
                                 
                                 if(nCreated > 0){
-                                    addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
+                                    var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + _.pluck(response.data.created, 'title').join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addSuccess(info);
                                 }
                                 if(nError > 0){
-                                    addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+                                    var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + response.messages.join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addInfo(info);
                                 }
                             }
                             button.prop("disabled", false);

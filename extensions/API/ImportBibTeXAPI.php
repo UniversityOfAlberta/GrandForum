@@ -228,7 +228,7 @@ class ImportBibTeXAPI extends API{
                     if($checkProduct->exists()){
                          $json['duplicates'][] = $checkProduct->toArray();
                     }
-                    $this->addMessage("Duplicate");
+                    $this->addMessage("{$product['title']}");
                 }
             }
             $this->data = $json;
