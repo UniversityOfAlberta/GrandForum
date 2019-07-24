@@ -182,21 +182,20 @@ class ImportBibTeXAPI extends API{
 
             $errorProducts = array();
             $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
-            $private = (isset($_POST['private']) && strtolower($_POST['private']) == "yes") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
                     if(is_array($type)){
                         // Could map to different types
                         foreach($type as $t){
-                            $product = $this->createProduct($paper, null, $t, $overwrite, $private);
+                            $product = $this->createProduct($paper, null, $t, $overwrite);
                             if($product !== false){
                                 break;
                             }
                         }
                     }
                     else{
-                        $product = $this->createProduct($paper, null, $type, $overwrite, $private);
+                        $product = $this->createProduct($paper, null, $type, $overwrite);
                     }
                     if($product != null && $product !== false){
                         $createdProducts[] = $product;
