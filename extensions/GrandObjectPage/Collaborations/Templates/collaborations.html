@@ -23,6 +23,7 @@
             <th>Projects</th>
             <th>Year</th>
             <th>End Year</th>
+            <th>Last Changed</th>
             <th width="1%"></th>
         </tr>
     </thead>
@@ -84,6 +85,9 @@
                     <% } else {%>
                         Active
                     <% } %>
+                </td>
+                <td>
+                    <%= collab.get('changed').substr(0, 10) %>
                 </td>
                 <td>
                     <span id="<%= collab.get('id') %>" class="delete-icon"></span>
