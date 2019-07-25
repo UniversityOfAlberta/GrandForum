@@ -140,7 +140,8 @@
                                                 <b>Project/CC:</b>
                                             </td>
                                             <td>
-                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT,{$extraIndex},{$user_id},0)}
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT,{$extraIndex},{$user_id},0)}<br />
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -284,7 +285,8 @@
                                                 <b>Project/CC:</b>
                                             </td>
                                             <td>
-                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT,{$extraIndex},{$user_id},0)}
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT,{$extraIndex},{$user_id},0)}<br />
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -429,7 +431,8 @@
                                                 <b>Project/CC:</b>
                                             </td>
                                             <td>
-                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PROJECT,{$extraIndex},{$user_id},0)}
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PROJECT,{$extraIndex},{$user_id},0)}<br />
+                                                {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
                                             </td>
                                         </tr>
                                         <tr>
