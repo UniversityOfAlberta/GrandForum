@@ -3,9 +3,9 @@ ThreadView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch({
-            error: $.proxy(function(e){
+            error: function(e){
                 this.$el.html("This Thread does not exist.");
-            }, this)
+            }.bind(this)
         });
         this.model.bind('sync', this.render);
     },
@@ -32,10 +32,10 @@ ThreadView = Backbone.View.extend({
             this.$("#postRows").append(row.$el);
         });
         this.addNewRow();
-        $.when.apply(undefined, ajax).then($.proxy(function(){
+        $.when.apply(undefined, ajax).then(function(){
             this.$("#loading").empty();
             this.$("#postRows").show();
-        }, this));
+        }.bind(this));
     },
 
     addNewRow: function(){

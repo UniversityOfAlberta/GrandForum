@@ -23,9 +23,9 @@ BoardView = Backbone.View.extend({
             this.$("#advancedSearchButton").click();
         }
         else{
-            this.lastTimeout = setTimeout($.proxy(function(){
+            this.lastTimeout = setTimeout(function(){
                 this.$("#advancedSearchButton").click();
-            }, this), 500);
+            }.bind(this), 500);
         }
     },
     
@@ -55,7 +55,7 @@ BoardView = Backbone.View.extend({
             this.table.destroy();
         }
         var onlyStickies = (this.threads.where({'stickied': "0"}).length == 0);
-        this.threads.each($.proxy(function(p, i){
+        this.threads.each(function(p, i){
             var row = new MyThreadsRowView({model: p, parent: this});
             if(p.get('stickied') == 1 && !onlyStickies){
                 this.$("#stickies").append(row.$el);
@@ -64,7 +64,7 @@ BoardView = Backbone.View.extend({
                 this.$("#threads").append(row.$el);
             }
             row.render();
-        }, this));
+        }.bind(this));
         this.createDataTable();
         this.$("#advancedSearchButton").prop('disabled', false);
     },
@@ -123,44 +123,44 @@ BoardView = Backbone.View.extend({
                 open: function(){
                     $("html").css("overflow", "hidden");
                 },
-                beforeClose: $.proxy(function(){
+                beforeClose: function(){
                     this.editDialog.view.stopListening();
                     this.editDialog.view.undelegateEvents();
                     this.editDialog.view.$el.empty();
                     $("html").css("overflow", "auto");
-                }, this),
+                }.bind(this),
                 buttons: [
                     {
                         text: "Save Thread",
-                        click: $.proxy(function(){
+                        click: function(){
                         var m = this.editDialog.view.model.save(null, {
-                            success: $.proxy(function(){
+                            success: function(){
                                 this.$(".throbber").hide();
                                 this.$("#saveThread").prop('disabled', false);
                                 this.editDialog.view2.model.set("thread_id", m.responseJSON.id);
                                 this.editDialog.view2.model.save(null, {
-                                    success: $.proxy(function(){
+                                    success: function(){
                                         this.$(".throbber").hide();
                                         this.$("#saveThread").prop('disabled', false);
                                         this.editDialog.dialog("close");
                                         clearAllMessages();
                                         this.model.fetch();
                                         addSuccess("Thread has been successfully saved");
-                                    }, this),
-                                    error: $.proxy(function(){
+                                    }.bind(this),
+                                    error: function(){
                                         this.$(".throbber").hide();
                                         clearAllMessages();
                                         addError("There was a problem saving the Post", true);
-                                    }, this)
+                                    }.bind(this)
                                 });
-                            }, this),
-                            error: $.proxy(function(){
+                            }.bind(this),
+                            error: function(){
                                 this.$(".throbber").hide();
                                 clearAllMessages();
                                 addError("There was a problem saving the Thread", true);
-                            }, this)
+                            }.bind(this)
                         });
-                    }, this)
+                    }.bind(this)
                 }
             ]
         });

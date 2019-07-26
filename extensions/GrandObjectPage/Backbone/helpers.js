@@ -308,7 +308,7 @@ HTML.File = function(view, attr, options){
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var file = e.target.files[0];
         var reader = new FileReader();
-        reader.addEventListener("load", $.proxy(function() {
+        reader.addEventListener("load", function() {
             var fileObj = {
                 filename: file.name,
                 type: file.type,
@@ -324,7 +324,7 @@ HTML.File = function(view, attr, options){
             else{
                 view.model.set(attr, fileObj);
             }
-        }, this));
+        }.bind(this));
         reader.readAsDataURL(file);
     };
     view.delegateEvents(events);

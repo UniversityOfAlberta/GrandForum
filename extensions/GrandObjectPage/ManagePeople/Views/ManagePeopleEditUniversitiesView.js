@@ -11,21 +11,21 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.template = _.template($('#edit_universities_template').html());
         this.universityViews = new Array();
     
-        this.model.ready().then($.proxy(function(){
+        this.model.ready().then(function(){
             this.universities = this.model;
             this.listenTo(this.universities, "add", this.addRows);
             this.universities.each(function(u){
                 u.startTracking();
             });
             this.render();
-        }, this));
+        }.bind(this));
         
         // Reposition the dialog when the window is resized or the dialog is resized
         var dim = {w1: 0,
                    h1: 0,
                    w2: 0,
                    h2: 0};
-        this.interval = setInterval($.proxy(function(){
+        this.interval = setInterval(function(){
             if(this.$el.width() != dim.w1 ||
                this.$el.height() != dim.h1 ||
                $(window).width() != dim.w2 ||
@@ -45,14 +45,14 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
             dim.h1 = this.$el.height();
             dim.w2 = $(window).width();
             dim.h2 = $(window).height();
-	    }, this), 100);
+	    }.bind(this), 100);
     },
     
     saveAll: function(){
         var copy = this.universities.toArray();
         clearAllMessages();
         var requests = new Array();
-        _.each(copy, $.proxy(function(university){
+        _.each(copy, function(university){
             if(university.unsavedAttributes() != false){
                 if(university.get('deleted') != "true"){
                     requests.push(university.save(null));
@@ -61,7 +61,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                     requests.push(university.destroy(null));
                 }
             }
-        }, this));
+        }.bind(this));
         $.when.apply($, requests).then(function(){
             addSuccess("Universities saved");
         }).fail(function(){
@@ -81,7 +81,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     },
     
     addRows: function(){
-        this.universities.each($.proxy(function(university, i){
+        this.universities.each(function(university, i){
             if(this.universityViews[i] == null){
                 var view = new ManagePeopleEditUniversitiesRowView({model: university, person: this.person});
                 this.$("#university_rows").append(view.render());
@@ -93,7 +93,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
                 this.universityViews[i] = view;
             }
-        }, this));
+        }.bind(this));
     },
     
     render: function(){

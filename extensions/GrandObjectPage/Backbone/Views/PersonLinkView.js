@@ -17,7 +17,7 @@ PersonLinkView = Backbone.View.extend({
             this.$(".card").html(card.render());
             this.cardRendered = true;
         }
-        this.timeout = setTimeout($.proxy(function(){
+        this.timeout = setTimeout(function(){
             $(".card").hide();
             this.$(".card").show();
             this.$(".card").css("position", "absolute")
@@ -25,14 +25,14 @@ PersonLinkView = Backbone.View.extend({
                            .css("left", -(25 + 6 + 1));
             this.$(".card").offset({left: Math.max(30, this.$(".card").offset().left)});
             this.$(".card").offset({left: Math.min($(window).width() - this.$(".card").width() - 32, this.$(".card").offset().left)});
-        }, this), 300);
+        }.bind(this), 300);
     },
     
     hideCard: function(){
         clearTimeout(this.timeout);
-        this.timeout = setTimeout($.proxy(function(){
+        this.timeout = setTimeout(function(){
             this.$(".card").hide();
-        }, this), 200);
+        }.bind(this), 200);
     },
     
     render: function(){
@@ -44,20 +44,20 @@ PersonLinkView = Backbone.View.extend({
                        .attr("target", this.model.get('target'))
                        .attr("title", this.model.get('title'));
             this.$el.append("<div class='card' style='display:none;position:absolute;border:1px solid #AAAAAA;box-shadow: 0 0 3px #d8d8d8;height:39px;width:317px;background:#FFFFFF;' />");
-            this.$(".card").mouseover($.proxy(function(){
+            this.$(".card").mouseover(function(){
                 clearTimeout(this.timeout);
-            }, this));
-            this.$(".card").mouseout($.proxy(this.hideCard, this));
+            }.bind(this));
+            this.$(".card").mouseout(this.hideCard.bind(this));
         }
         else{
             this.$el.html(this.model.get('text'));
         }
-        this.$("a").mouseover($.proxy(this.showCard, this));
-        this.$("a").mouseout($.proxy(this.hideCard, this));
-        $(window).unload($.proxy(function(){
+        this.$("a").mouseover(this.showCard.bind(this));
+        this.$("a").mouseout(this.hideCard.bind(this));
+        $(window).unload(function(){
             // Make sure that cards hide when navigating away
             this.$(".card").hide();
-        }, this));
+        }.bind(this));
         return this.$el;
     }
 

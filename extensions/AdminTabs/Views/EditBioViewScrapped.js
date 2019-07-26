@@ -5,9 +5,9 @@ EditBioView = Backbone.View.extend({
     initialize: function(options){
         this.people = new People();
         this.people.roles = [NI];
-        this.listenTo(this.people, "sync", $.proxy(function(){
+        this.listenTo(this.people, "sync", function(){
             this.render();
-        }, this));
+        }.bind(this));
         this.people.fetch();
         this.model.on("change:infoSheet", this.render);
     },
@@ -26,7 +26,7 @@ EditBioView = Backbone.View.extend({
         var button = $("#upload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(success, errors){
+        ccvUploaded = function(success, errors){
             // Purposefully global so that iframe can access
                 clearAllMessages();
                 if(success != ""){
@@ -37,7 +37,7 @@ EditBioView = Backbone.View.extend({
                 }
                 button.prop("disabled", false);
             this.$(".throbber").hide();
-        }, this);
+        }.bind(this);
         var form = this.$("form");
         form.submit();
     },

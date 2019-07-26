@@ -38,11 +38,11 @@ SopsView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
-        this.sops.each($.proxy(function(p, i){
+        this.sops.each(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
             this.$("#sopRows").append(row.$el);
             row.render();
-        }, this));
+        }.bind(this));
         this.createDataTable();
     },
     
