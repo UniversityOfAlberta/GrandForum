@@ -16,6 +16,7 @@ GsmsData = Backbone.Model.extend({
     defaults: function() {
         return {
             id:null,
+            ois_id: "",
             review_status: null,
             applicant_number: null,
             gender: "",

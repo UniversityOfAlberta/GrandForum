@@ -1,0 +1,24 @@
+<div style="text-align:center">
+    <% _.each(Responses, function(r, i){ %>
+        <div class="video" id="video_<%= i*2 %>" style="display:none;">
+            <div class="videoHead"><%= r.questionText %></div>
+            <div class="videoPrev">&#10094; Previous</div>
+            <div class="videoFrame">
+                <video width="100%" controls>
+                    <source src="https://gars.ualberta.ca/ois/<%= r.questionURL %>" />
+                </video>
+            </div>
+            <div class="videoNext">Next &#10095;</div>
+        </div>
+        <div class="video" id="video_<%= i*2 + 1 %>" style="display:none;">
+            <div class="videoHead"><%= r.questionText %></div>
+            <div class="videoPrev">&#10094; Previous</div>
+            <div class="videoFrame">
+                <video width="100%" controls>
+                    <source src="https://gars.ualberta.ca/ois/<%= r.responseURL %>" />
+                </video>
+            </div>
+            <div class="videoNext">Next &#10095;</div>
+        </div>
+    <% }) %>
+</div>

@@ -385,13 +385,21 @@
     <div>
         <h3><a href="#">Review</a></h3>
         <div>
-            <iframe id="review_iframe" style="width:100%;height:5000px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
+            <iframe id="review_iframe" style="width:100%;height:750px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
         </div>
     </div>
     <div>
         <h3><a href="#">Grad Chair</a></h3>
         <div>
-            <iframe style="width:100%;height:2500px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=CommitteeComments&project=Sop:<%= id %>&embed"></iframe>
+            <iframe style="width:100%;height:750px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=CommitteeComments&project=Sop:<%= id %>&embed"></iframe>
         </div>
     </div>
+    <% if(this.gsmsdata.get('ois_id') != ""){ %>
+        <div>
+            <h3><a href="#">Online Interview</a></h3>
+            <div>
+                <%= subview('oisView') %>
+            </div>
+        </div>
+    <% } %>
 </div>

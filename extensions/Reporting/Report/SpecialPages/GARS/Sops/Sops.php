@@ -36,7 +36,8 @@ class Sops extends BackbonePage {
         return array('Backbone/*',
                      'sops',
                      'sops_row',
-                     'sops_edit'
+                     'sops_edit',
+                     'ois_view'
         );
     }
 
@@ -49,6 +50,7 @@ class Sops extends BackbonePage {
           'SopsView',
           'SopsRowView',
           'SopsEditView',
+          'OISView'
         );
     }
 

@@ -2,15 +2,24 @@ SopsEditView = Backbone.View.extend({
 
     sops: null,
     gsmsdata: null,
+    
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
             this.sops = this.model;
             this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
             var xhr = this.gsmsdata.fetch();
-            $.when(xhr).then(this.render);
-            //this.render();
+            $.when(xhr).then(function(){
+                this.render();
+            }.bind(this));
         }, this);
+        Backbone.Subviews.add(this);
+    },
+    
+    subviewCreators: {
+        "oisView" : function() {
+            return new OISView({model: this.gsmsdata});
+        }
     },
     
     events: {
@@ -202,14 +211,12 @@ SopsEditView = Backbone.View.extend({
             break;
         }
         var reviewers = this.gsmsdata.attributes.reviewers;
-        console.log(reviewers);
         for (var i = 0; i < reviewers.length; i++) {
             if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
         var other_reviewers = this.gsmsdata.attributes.other_reviewers;
-        console.log(other_reviewers);
         for (var i = 0; i < other_reviewers.length; i++) {
             if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
@@ -217,6 +224,88 @@ SopsEditView = Backbone.View.extend({
         }
         suffix += "/"+this.gsmsdata.attributes.student_data.email;
         $('#link_to_table').attr('href', wgServer+wgScriptPath+'/index.php/Special:Sops'+suffix);
+    },
+    
+    renderAnnotator: function(){
+        this.$("#sopItem").annotator()
+          .annotator('addPlugin', 'Filter', {
+            filters: [
+              {
+                label: 'MyTags',
+                property: 'tags',
+                isFiltered: function (input, tags){
+                  if(input && tags && tags.length){
+                    var keywords = input.split(/\s+/g);
+                    for(var i = 0; i < keywords.length; i += 1){
+                      for(var j = 0; j < tags.length; j += 1){
+                        if(tags[j].indexOf(keywords[i]) !== -1){
+                          return true;
+                        }
+                      }
+                    }
+                  }
+                  return false;
+                }
+              }
+            ]
+          })
+          .annotator('addPlugin', 'MyTags', {
+            availableTags: [
+              "other",
+              "academic experience", 
+              "professional experience", 
+              "personal qualities",
+            ], // use tags
+          })
+          .annotator( 'addPlugin', 'Store', {
+              prefix: wgServer+wgScriptPath+"/index.php?action=api.sop/" + self.model.id,
+              urls: {
+                  create: '/annotations',
+                  update: '/annotations/:id',
+                  read: '/annotations/:id',
+                  destroy: '/annotations/:id',
+                  search: '/annotations'
+              },
+          }).annotator('addPlugin', 'Permissions', {
+            userAuthorize: function(action, annotation, user) {
+              var token, tokens, _i, _len;
+              if (annotation.permissions) {
+                tokens = annotation.permissions[action] || [];
+                if (tokens.length === 0) {
+                  return true;
+                }
+                for (_i = 0, _len = tokens.length; _i < _len; _i++) {
+                  token = tokens[_i];
+                  if (this.userId(user) === token) {
+                    return true;
+                  }
+                }
+                return true;
+              } else if (annotation.user) {
+                if (user) {
+                  return this.userId(user) === this.userId(annotation.user);
+                } else {
+                  return true;
+                }
+              }
+              return true;
+            },
+            showEditPermissionsCheckbox: false,
+            showViewPermissionsCheckbox: false,
+            user: me.get('name'), // 'me.id' -> logged in user id
+            userId: function (user) {
+              if (user && user.id) {
+                return user.id;
+              }
+              return user;
+            },
+            userString: function (user) {
+              if (user && user.name) {
+                return user;
+              }
+              return user;
+            }
+          });
     },
 
     render: function(){
@@ -232,88 +321,6 @@ SopsEditView = Backbone.View.extend({
         self.spellcheck();
         $('iframe').css('border','0 !important');
       }, 1000);
-      setTimeout(function(){
-              $("#sopItem").annotator()
-                  .annotator('addPlugin', 'Filter', {
-                    filters: [
-                      {
-                        label: 'MyTags',
-                        property: 'tags',
-                        isFiltered: function (input, tags){
-                          if(input && tags && tags.length){
-                            var keywords = input.split(/\s+/g);
-                            for(var i = 0; i < keywords.length; i += 1){
-                              for(var j = 0; j < tags.length; j += 1){
-                                if(tags[j].indexOf(keywords[i]) !== -1){
-                                  return true;
-                                }
-                              }
-                            }
-                          }
-                          return false;
-                        }
-                      }
-                    ]
-                  })
-                  .annotator('addPlugin', 'MyTags', {
-                    availableTags: [
-                      "other",
-                      "academic experience", 
-                      "professional experience", 
-                      "personal qualities",
-                    ], // use tags
-                  })
-                  .annotator( 'addPlugin', 'Store', {
-                      prefix: wgServer+wgScriptPath+"/index.php?action=api.sop/" + self.model.id,
-                      urls: {
-                          create: '/annotations',
-                          update: '/annotations/:id',
-                          read: '/annotations/:id',
-                          destroy: '/annotations/:id',
-                          search: '/annotations'
-                      },
-                  }).annotator('addPlugin', 'Permissions', {
-                    userAuthorize: function(action, annotation, user) {
-                      var token, tokens, _i, _len;
-                      if (annotation.permissions) {
-                        tokens = annotation.permissions[action] || [];
-                        if (tokens.length === 0) {
-                          return true;
-                        }
-                        for (_i = 0, _len = tokens.length; _i < _len; _i++) {
-                          token = tokens[_i];
-                          if (this.userId(user) === token) {
-                            return true;
-                          }
-                        }
-                        return true;
-                      } else if (annotation.user) {
-                        if (user) {
-                          return this.userId(user) === this.userId(annotation.user);
-                        } else {
-                          return true;
-                        }
-                      }
-                      return true;
-                    },
-                    showEditPermissionsCheckbox: false,
-                    showViewPermissionsCheckbox: false,
-                    user: me.get('name'), // 'me.id' -> logged in user id
-                    userId: function (user) {
-                      if (user && user.id) {
-                        return user.id;
-                      }
-                      return user;
-                    },
-                    userString: function (user) {
-                      if (user && user.name) {
-                        return user;
-                      }
-                      return user;
-                    }
-                  });
-
-      }, 6000);
       /** This part constantly updates the errors column. It needs to check for the ajax response from AtD **/
       $( document ).ajaxComplete(function() {
           if($("#grammar_errors").text() == "0" || $("#grammar_errors").text() == ""){
@@ -348,25 +355,26 @@ SopsEditView = Backbone.View.extend({
 
       //Call function to draw the Radar chart
       //Will expect that data is in %'s
-
       var intervalId = setInterval(function(){
         if($('#chart').is(':visible')){
           RadarChart.draw("#chart", d, mycfg);
           clearInterval(intervalId);
           intervalId = null;
         }     
-      }, 100)
+      }, 100);
+      
       var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
       mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
       this.set_link_to_table();
-      $('#review_iframe').on('load', function () {
-          $("#accordion > div").accordion({
-          autoHeight: false,
-          collapsible: true,
-          active:false
-        });
-      });
+      this.$('#review_iframe').on('load', function(){
+          this.$("#accordion > div").accordion({
+              autoHeight: false,
+              collapsible: true,
+              active:false
+          });
+          this.renderAnnotator();
+      }.bind(this));
       return this.$el;
     }
 });
