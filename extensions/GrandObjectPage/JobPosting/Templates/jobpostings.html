@@ -1,4 +1,4 @@
-<% if(me.isLoggedIn()){ %>
+<% if(isAllowedToCreateJobPostings){ %>
     <a href="#/new" class="button" id="add">Create a Job Ad</a><br /><br />
 <% } %>
 <table id="jobpostings" frame="box" rules="all">
@@ -7,7 +7,9 @@
             <th width="25%">Deadline/Review</th>
             <th width="25%">Location</th>
             <th width="49%">Posting</th>
-            <th width="1%">Delete?</th>
+            <% if(isAllowedToCreateJobPostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
         </tr>
     </thead>
     <tbody>
@@ -29,11 +31,13 @@
                         <%= this.allProjects.get(job.get('projectId')).get('uniname') %>
                     <% } %>
                 </td>
-                <td align="center">
-                    <% if(job.get('isAllowedToEdit')){ %>
-                        <span id="<%= job.get('id') %>" class="delete-icon"></span>
-                    <% } %>
-                </td>
+                <% if(isAllowedToCreateJobPostings){ %>
+                    <td align="center">
+                        <% if(job.get('isAllowedToEdit')){ %>
+                            <span id="<%= job.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
             </tr>
         <% }.bind(this)) %>
     </tbody>

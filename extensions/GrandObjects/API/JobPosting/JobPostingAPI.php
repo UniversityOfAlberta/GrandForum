@@ -58,7 +58,7 @@ class JobPostingAPI extends RESTAPI {
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if(JobPosting::isAllowedToCreate()){
             $this->validate();
             $job = new JobPosting(array());
             $keywords = $this->POST('keywords');

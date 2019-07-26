@@ -268,6 +268,11 @@ class JobPosting extends BackboneModel {
         }
     }
     
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return ($me->isLoggedIn() && ($me->isRoleAtLeast(MANAGER) || $me->isRole(PL) || $me->isRole(PA)));
+    }
+    
     function toArray(){
         global $wgUser;
         $project = null;
@@ -307,8 +312,7 @@ class JobPosting extends BackboneModel {
     }
     
     function create(){
-        $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if(self::isAllowedToCreate()){
             $status = DBFunctions::insert('grand_job_postings',
                                           array('user_id' => $this->userId,
                                                 'project_id' => $this->projectId,
