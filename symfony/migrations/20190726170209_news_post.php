@@ -23,7 +23,7 @@ class NewsPost extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('grand_news_post', array('id' => 'id'));
+        $table = $this->table('grand_news_postings', array('id' => 'id'));
         $table->addColumn('translated_id', 'integer')
               ->addColumn('user_id', 'integer')
               ->addColumn('visibility', 'string', array('limit' => 16))
