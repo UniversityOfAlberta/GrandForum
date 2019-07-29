@@ -100,6 +100,7 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'experts':
+                break;
                 $output = array();
                 chdir("extensions/GlobalSearch/ExpertSearch/");
                 exec("./search.sh ".escapeshellarg($origSearch), $output);
@@ -270,6 +271,7 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 break;
             case 'wikipage':
+                break;
                 $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);

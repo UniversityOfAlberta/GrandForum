@@ -13,7 +13,6 @@ ManageProductsView = Backbone.View.extend({
     deletePrivateDialog: null,
     ccvDialog: null,
     bibtexDialog: null,
-    crossForumExportDialog: null,
     duplicatesDialog: null,
 
     initialize: function(){
@@ -71,10 +70,6 @@ ManageProductsView = Backbone.View.extend({
     
     importBibTeX: function(){
         this.bibtexDialog.dialog('open');
-    },
-    
-    crossForumExport: function(){
-        this.crossForumExportDialog.dialog('open');
     },
     
     uploadCalendar: function(){
@@ -403,8 +398,7 @@ ManageProductsView = Backbone.View.extend({
         "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX",
-        "click #uploadCalendarButton": "uploadCalendar",
-        "click #crossForumExport": "crossForumExport"
+        "click #uploadCalendarButton": "uploadCalendar"
     },
     
     render: function(){
@@ -655,20 +649,10 @@ ManageProductsView = Backbone.View.extend({
                             var nCreated = response.created.length;
                             var nError = response.error.length;
                             if(nCreated > 0){
-                                var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
-                                           "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                           "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                           "<li>" + _.pluck(response.created, 'title').join("</li><li>") + 
-                                           "</li></ul></div>";
-                                addSuccess(info);
+	                            addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
 	                        }
 	                        if(nError > 0){
-	                            var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
-                                           "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                           "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                           "<li>" + _.pluck(response.error, 'title').join("</li><li>") + 
-                                           "</li></ul></div>";
-                                addInfo(info);
+	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
 	                        }
 	                        button.prop("disabled", false);
 	                        $("div.throbber", this.ccvDialog).hide();
@@ -787,20 +771,10 @@ ManageProductsView = Backbone.View.extend({
                                 var nCreated = data.created.length;
                                 var nError = response.messages.length;
                                 if(nCreated > 0){
-                                    var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
-                                               "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                               "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                               "<li>" + _.pluck(response.data.created, 'title').join("</li><li>") + 
-                                               "</li></ul></div>";
-                                    addSuccess(info);
+                                    addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
                                 }
                                 if(nError > 0){
-                                    var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
-                                               "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                               "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                               "<li>" + response.messages.join("</li><li>") + 
-                                               "</li></ul></div>";
-                                    addInfo(info);
+                                    addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
                                 }
                             }
                             button.prop("disabled", false);
@@ -872,87 +846,6 @@ ManageProductsView = Backbone.View.extend({
 	            }.bind(this),
 	            "Cancel": function(){
 	                this.calendarDialog.dialog('close');
-	            }.bind(this)
-	        }
-	    });
-	    this.crossForumExportDialog = this.$("#crossForumExportDialog").dialog({
-	        autoOpen: false,
-	        modal: true,
-	        show: 'fade',
-	        resizable: false,
-	        draggable: false,
-	        width: "800px",
-	        open: function(){
-	            $("html").css("overflow", "hidden");
-	        },
-	        beforeClose: function(){
-	            $("html").css("overflow", "auto");
-	        },
-	        buttons: {
-	            "Import": function(e){
-	                var button = $(e.currentTarget);
-	                button.prop("disabled", true);
-	                var value = $("select", this.crossForumExportDialog).val();
-	                var overwrite = $("input[name=overwrite]:checked", this.crossForumExportDialog).val();
-	                $("div.throbber", this.crossForumExportDialog).show();
-	                var popup = openCrossForumExport(value, function(event){
-	                    clearInterval(popupInterval);
-	                    var bibtex = event.data;
-	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: bibtex, overwrite: overwrite}, function(response){
-	                        var data = response.data;
-	                        if(!_.isUndefined(data.created)){
-	                            var ids = _.pluck(data.created, 'id');
-	                            this.products.remove(ids, {silent: true});
-	                            this.products.trigger("remove");
-                                this.products.add(data.created, {silent: true});
-                                this.products.trigger("add");
-                            }
-                            clearAllMessages();
-                            if(response.errors.length > 0){
-                                addError(response.errors.join("<br />"));
-                            }
-                            if(!_.isUndefined(data.created)){
-                                var nCreated = data.created.length;
-                                var nError = response.messages.length;
-                                
-                                if(nCreated > 0){
-                                    var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
-                                               "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                               "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                               "<li>" + _.pluck(response.data.created, 'title').join("</li><li>") + 
-                                               "</li></ul></div>";
-                                    addSuccess(info);
-                                }
-                                if(nError > 0){
-                                    var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
-                                               "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                               "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                               "<li>" + response.messages.join("</li><li>") + 
-                                               "</li></ul></div>";
-                                    addInfo(info);
-                                }
-                            }
-                            button.prop("disabled", false);
-                            $("div.throbber", this.crossForumExportDialog).hide();
-                            this.crossForumExportDialog.dialog('close');
-	                    }.bind(this)).fail(function(){
-	                        clearAllMessages();
-	                        addError("There was an error importing the BibTeX references");
-	                        button.prop("disabled", false);
-                            $("div.throbber", this.crossForumExportDialog).hide();
-                            this.crossForumExportDialog.dialog('close');
-	                    }.bind(this));
-	                }.bind(this));
-	                var popupInterval = setInterval(function(){
-                        if(popup == null || popup.closed){
-                            button.prop("disabled", false);
-                            $("div.throbber", this.crossForumExportDialog).hide();
-                            clearInterval(popupInterval);
-                        }
-                    }.bind(this), 500);
-	            }.bind(this),
-	            "Cancel": function(){
-	                this.crossForumExportDialog.dialog('close');
 	            }.bind(this)
 	        }
 	    });

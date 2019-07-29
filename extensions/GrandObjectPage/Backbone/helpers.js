@@ -108,6 +108,8 @@ HTML.Value = function(view, attr){
     }
 }
 
+
+
 HTML.TextBox = function(view, attr, options){
     var el = HTML.Element("input", "text", options);
     el.setAttribute('type', 'text');
@@ -144,6 +146,60 @@ HTML.TextBox = function(view, attr, options){
     return el.outerHTML;
 }
 
+
+// Used for creating multiple textareas for adding motions
+HTML.MotionTextArea = function(view, attr, options){
+    // The form will not change until update is called
+    update = function(){
+        view.model.set('indicator', 1);
+        view.model.set('indicator', 2);
+    }
+    deleteMotion = function(motion){
+        data = view.model.get("data");
+        data['motion' + motion] = "";
+        view.model.set("data", data);
+        update();
+    }
+
+    // Delete blank motions
+    view.model.set('numberOfMotions', 1);
+    for(i=1; i<11;i++){
+        if(view.model.get("data")['motion' + i] == null || view.model.get("data")['motion' + i] =="") {
+            temp = view.model.get("data");
+            temp['motion' + i] = temp['motion' + (i+1)];
+            temp['motion' + (i+1)] = "";
+            view.model.set("data", temp);
+        }
+    }
+    // Displays one more motion textarea than what is currently filled in
+    for(i = 1; (view.model.get("data")['motion' + i] != null && view.model.get("data")['motion' + i] != ""); i++){
+        if(i < 10) {
+            view.model.set('numberOfMotions', i + 1);
+        } else {
+            // Maximum of 10 motions (set in XML)
+            view.model.set('numberOfMotions', 10);
+        }
+
+    }
+
+    // Create the textareas and buttons
+    allMotions = '';
+    for (i = 0; i < view.model.get('numberOfMotions'); i++) { 
+        var label = HTML.Element("div");
+        label.setAttribute('class', 'label');
+        label.setAttribute('style', 'float: left;');
+        label.setAttribute('align', 'left');
+        label.innerHTML = 'Motion ' + (i+1);
+        allMotions += label.outerHTML + '<br><br>';
+        allMotions += HTML.TextArea(view, attr+(i+1), options) + '<br>';
+        if(i != view.model.get('numberOfMotions')-1) {
+             allMotions += "<button type='button' onclick='deleteMotion(" + (i+1) + ")'>Delete Motion</button><br>";
+        }
+    }
+
+    return allMotions + "<button type='button' onclick='update()'>Add Motion</button>";
+}
+
 HTML.TextArea = function(view, attr, options){
     var el = HTML.Element("textarea", "text", options);
     el.setAttribute('name', HTML.Name(attr));
@@ -163,7 +219,6 @@ HTML.TextArea = function(view, attr, options){
                     return $(e.target).val();
                 }
             }
-            
             var data = view.model.get(elems[0]);
             data = recurse(data, 1);
             view.model.set(elems[0], _.clone(data));
@@ -174,8 +229,10 @@ HTML.TextArea = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
+
+
     view.undelegate('change', 'textarea[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
+   view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
     return el.outerHTML;
 }
 

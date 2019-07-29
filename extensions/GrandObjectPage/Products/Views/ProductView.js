@@ -12,7 +12,31 @@ ProductView = Backbone.View.extend({
     
     events: {
         "click #editProduct": "editProduct",
-        "click #deleteProduct": "deleteProduct"
+        "click #deleteProduct": "deleteProduct",
+        "click #pdfview": "pdf"
+    },
+
+    pdf: function(){
+        data = this.model.get('data');
+        data['title'] = this.model.get('title');
+        data['date'] = this.model.get('date');
+        $.ajax({
+            url : '../../extensions/GrandObjectPage/Products/pdf/dom.php',
+            type : 'POST',
+            data:  data,
+            success : function (result) {
+
+        const a = document.createElement("a");
+        a.href = "data:application/pdf;base64," + result;
+        a.download = "file.pdf";
+
+        document.body.appendChild(a);
+        a.click();
+             },
+            error : function () {
+                console.log ('error');
+            }
+         });
     },
     
     editProduct: function(){

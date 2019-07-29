@@ -86,7 +86,6 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
-            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cspc'>CSPC</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tech'>Tech</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=regional'>Regional</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=seminar'>Seminar</a>";
@@ -132,9 +131,6 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "atop" && $me->isRoleAtLeast(SD)){
             $this->generateATOP();
-        }
-        else if($program == "cspc" && $me->isRoleAtLeast(SD)){
-            $this->generateCSPC();
         }
         else if($program == "tech" && $me->isRoleAtLeast(SD)){
             $this->generateTech();
@@ -285,13 +281,6 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2018, "2018", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2017, "2017", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "2016"));
-        $wgOut->addHTML($tabbedPage->showPage());
-    }
-    
-    function generateCSPC(){
-        global $wgOut;
-        $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), $this->hqps, 2019, "2019", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

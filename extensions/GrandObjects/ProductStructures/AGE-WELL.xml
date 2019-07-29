@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
 
+
+	<Products category="Governance Executive Summary">
+		<Product type="Action Item" status="Invited|Not Invited">
+            <data>
+                <field type="Header" header="Motions" linebreak="true">header_motion</field>
+                <field label="Motion(s)" placeholder="Add new motion" type="Motions" height="120px" linebreak="true" >motion</field>
+                <motion label="Motion 1" options="do_not_show">motion1</motion>
+                <motion label="Motion 2" options="do_not_show">motion2</motion>
+                <motion label="Motion 3" options="do_not_show">motion3</motion>
+                <motion label="Motion 4" options="do_not_show">motion4</motion>
+                <motion label="Motion 5" options="do_not_show">motion5</motion>
+                <motion label="Motion 6" options="do_not_show">motion6</motion>
+                <motion label="Motion 7" options="do_not_show">motion7</motion>
+                <motion label="Motion 8" options="do_not_show">motion8</motion>
+                <motion label="Motion 9" options="do_not_show">motion9</motion>
+                <motion label="Motion 10" options="do_not_show">motion10</motion>
+                <field type="Header" header="Item" linebreak="true">header_item</field>
+                <field label="Item Number" type="Text" linebreak="true">item_no</field>
+                <field label="Action Requested" type="Radio" linebreak="true" options="Approval|Recommendation|Unknown">action_requested</field>
+                <field label="Proposed By" type="Area" height="100px" linebreak="true">proposed</field>
+                <field label="Presenter(s)" type="Area" height="100px" linebreak="true">presenters</field>
+                <field type="Header" header="Details" linebreak="true">header_details</field>
+                <field label="Responsibility" type="Area" height="100px" linebreak="true" placeholder="Insert lead portfolio or other administrative unit.">responsibility</field>
+                <field label="The Purpose of the Proposal" type="Area" linebreak="true" height="100px" placeholder="The proposal is before the commitee because...">purpose</field>
+                <field label="Executive Summary" type="Area" height="100px" linebreak="true" placeholder="While you are preparing the governance briefing note, consider why this item is before the committee and what you are asking of the committee.">executive_summary</field>
+                <field label="Supplementary Notes and Context" type="Area" height="100px" linebreak="true" placeholder="This section is for use by University Governance only to outline governance process.">supplementary</field>
+                <field type="Header" header="Engagement and Routing (Include meeting dates)" linebreak="true">header_engagement</field>
+                <field type="SmallHeader" header="Consultation and Stakeholder Participation (parties who have seen the proposal and in what capacity)" linebreak="true">header_consultation</field>
+                <field label="Those who are actively participating" type="Area" height="100px" linebreak="true" >participating</field>
+                <field label="Those who have been consulted" type="Area" height="100px" linebreak="true" >consulted</field>
+                <field label="Those who have been informed" type="Area" height="100px" linebreak="true" >informed</field>
+                <field label="Approval Route (Governance)" type="Area" height="100px" linebreak="true" placeholder="Including meeting dates.">approval_route</field>
+                <field type="Header" header="Strategic Alignment" linebreak="true">header_strategic</field>
+                <field label="Alignment with For the Public Good" type="Area" height="100px" linebreak="true" placeholder="Please note the Institutional Strategic Plan objective(s)/strategies the proposal supports.">public_good</field>
+                <field type="Header" header="Alignment with Institutional Risk Indicator" linebreak="true">header_risk</field>
+                <field label="Enrolment Management" type="Check">enrolment_management</field>
+                <field label="Faculty and Staff" type="Check">faculty_staff</field>
+                <field label="Funding and Resource Management" type="Check">funding_management</field>
+                <field label="IT Services, Software and Hardware" type="Check">it_services</field>
+                <field label="Leadership and Change" type="Check">leadership_change</field>
+                <field label="Physical Infrastructure" type="Check">physical_infrastructure</field>
+                <field label="Relationship with Stakeholders" type="Check">relationship_stakeholders</field>
+                <field label="Reputation" type="Check">reputation</field>
+                <field label="Research Enterprise" type="Check">research_enterprise</field>
+                <field label="Safety" type="Check">safety</field>
+                <field label="Student Success" type="Check">student_success</field>
+
+                <field label="Legislative Compliance and jurisdiction" type="Area" height="100px" linebreak="true" placeholder="Cite reference to relevant legislation, policy, and governance committee(s) [title only is required].">compliance</field>
+                <field type="Header" header="Meeting Minutes Related" linebreak="true">header_meeting</field>
+                <field label="Date" type="Date" linebreak="true">post_date</field>
+                <field label="Post-Meeting Discussion" type="Area" height="100px" linebreak="true" placeholder="Please fill in the post-meeting discussion for this item.">post_discussion</field>
+                <field label="Meeting Attendees" type="Area" height="100px" linebreak="true" placeholder="Please fill in attendees for this meeting.">attendees</field>
+                <field label="Attachments" type="File" linebreak="true">attachments</field>
+
+            </data>
+        </Product>
+	</Products>
+
     <!-- Scientific Excellence – Advancing Knowledge -->
     <Products category="Scientific Excellence - Advancing Knowledge">
         
@@ -800,7 +858,7 @@
         
         <Product type="Patent" status="">
             <data>
-                <field bibtex="number" label="Patent Number" type="String">number</field>
+                <field label="Patent Number" type="String">number</field>
             </data>
         </Product>
         

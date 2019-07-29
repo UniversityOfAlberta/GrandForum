@@ -410,7 +410,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 }
 
-function onFetchChangesList($user, $sk, &$list) {
+function onFetchChangesList($user, $sk, $list) {
   $list = $user->getOption( 'usenewrc' ) ? new ProtectedEnhancedChangesList( $sk ) : new ProtectedOldChangesList( $sk );
   return false;
 }

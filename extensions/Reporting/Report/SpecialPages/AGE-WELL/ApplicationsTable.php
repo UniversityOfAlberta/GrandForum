@@ -21,7 +21,6 @@ class ApplicationsTable extends SpecialPage{
     var $ccs;
     var $ihs;
     var $catalyst;
-    var $platform;
     var $projects;
 
     function ApplicationsTable() {
@@ -60,7 +59,6 @@ class ApplicationsTable extends SpecialPage{
         $this->ccs = array();
         $this->ihs = array();
         $this->catalyst = array();
-        $this->platform = array();
         $this->projects = Project::getAllProjectsEver();
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
@@ -71,9 +69,6 @@ class ApplicationsTable extends SpecialPage{
             }
             if(preg_match("/.*CAT-2019.*/", $project->getName()) != 0){
                 $this->catalyst[] = $project;
-            }
-            if(preg_match("/.*AW-PP2019.*/", $project->getName()) != 0){
-                $this->platform[] = $project;
             }
         }
     }
@@ -279,18 +274,17 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2019', $this->fullHQPs, 2019, "2019-10"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', $this->fullHQPs, 2019, "2019-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', $this->fullHQPs, 2019, "2019-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', $this->fullHQPs, 2019, "2019-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', $this->fullHQPs, 2018, "2018-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', $this->fullHQPs, 2018, "2018-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2018', $this->fullHQPs, 2018, "2018-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2017', $this->fullHQPs, 2017, "2017-10"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2017', $this->fullHQPs, 2017, "2017-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', $this->fullHQPs, 2017, "2017-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', $this->fullHQPs, 2017, "2017-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2016', $this->fullHQPs, 2016, "2016-10"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', $this->fullHQPs, 2019, "07-2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', $this->fullHQPs, 2019, "04-2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', $this->fullHQPs, 2019, "01-2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', $this->fullHQPs, 2018, "07-2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', $this->fullHQPs, 2018, "04-2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2018', $this->fullHQPs, 2018, "01-2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2017', $this->fullHQPs, 2017, "10-2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2017', $this->fullHQPs, 2017, "07-2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', $this->fullHQPs, 2017, "04-2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', $this->fullHQPs, 2017, "01-2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2016', $this->fullHQPs, 2016, "10-2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -424,7 +418,6 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_PLAT_SCORECARD', $this->platform, 2018, "PLAT-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT_SCORECARD', $this->catalyst, 2018, "CAT-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2018, "2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2017, "2018"));

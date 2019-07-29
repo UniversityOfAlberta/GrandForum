@@ -25,7 +25,6 @@ class Collaboration extends BackboneModel{
     var $endYear = 0;
     var $knowledgeUser = false;
     var $accessId = 0;
-    var $changed = "";
     var $projects = array();
     var $projectsWaiting = true;
     
@@ -136,7 +135,6 @@ class Collaboration extends BackboneModel{
             $this->knowledgeUser = $data[0]['knowledge_user'];
             $this->projectsWaiting = true;
             $this->accessId = $data[0]['access_id'];
-            $this->changed = $data[0]['changed'];
         }
     }
     
@@ -206,10 +204,6 @@ class Collaboration extends BackboneModel{
     
     function getAccessId(){
         return $this->accessId;
-    }
-    
-    function getChanged(){
-        return $this->changed;
     }
     
     function getCreator(){
@@ -435,8 +429,7 @@ class Collaboration extends BackboneModel{
             'year' => $this->getYear(),
             'endYear' => $this->getEndYear(),
             'knowledgeUser' => $this->getKnowledgeUser(),
-            'projects' => $projects,
-            'changed' => $this->getChanged()
+            'projects' => $projects
         );
         return $data;
     }

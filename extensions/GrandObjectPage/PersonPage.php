@@ -117,7 +117,7 @@ class PersonPage {
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 
-                if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){
+                if($config->getValue('networkName') == 'ADA'){
                     $tabbedPage->addTab(new PersonDemographicsTab($person, $visibility));
                 }                
                 

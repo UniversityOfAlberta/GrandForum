@@ -14,7 +14,7 @@ function addMessage(type, message, scroll, selector){
     else{
         $(selector + ' .' + type).stop();
         $(selector + ' .' + type).remove();
-        $(selector).append("<div class='" + type + "' style='display:none'><span style='display:inline-block;width:100%;'>" + message + "</span></div>");
+        $(selector).append("<div class='" + type + "' style='display:none'><span style='display:inline-block;'>" + message + "</span></div>");
         addClose($(selector + ' .' + type));
         $(selector + ' .' + type).slideDown(250);
     }

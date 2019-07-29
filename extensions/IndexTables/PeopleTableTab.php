@@ -82,13 +82,8 @@ class PeopleTableTab extends AbstractTab {
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
-            $statusHeader .= "<th>Gender</th>";
-            if($me->isRoleAtLeast(MANAGER)){
-                $statusHeader .= "<th style='display:none;'>Indigenous</th>
-                                  <th style='display:none;'>Disability</th>
-                                  <th style='display:none;'>Minority</th>";
-            }
-            $statusHeader .= "<th>Nationality</th>
+            $statusHeader .= "<th>Gender</th>
+                              <th>Nationality</th>
                               <th>Status</th>";
         }
         $this->html .= "Below are all of the ".strtolower($this->id)." {$this->table} members in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
@@ -188,11 +183,6 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Inactive";                
                 }
                 $this->html .= "<td align='left'>{$person->getGender()}</td>";
-                if($me->isRoleAtLeast(MANAGER)){
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
-                }
                 $this->html .= "<td align='left'>{$person->getNationality()}</td>";
                 $this->html .= "<td align='left'>{$status}</td>";
             }

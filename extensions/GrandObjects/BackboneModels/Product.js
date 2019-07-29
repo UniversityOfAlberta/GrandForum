@@ -92,6 +92,7 @@ Product = Backbone.Model.extend({
         }
         return productStructure.categories[this.get('category')].types[type].data;
     },
+
     
     getPossibleStatus: function(){
         var type = this.get('type').split(":")[0];

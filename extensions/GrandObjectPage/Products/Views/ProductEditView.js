@@ -5,6 +5,7 @@ ProductEditView = Backbone.View.extend({
 
     initialize: function(options){
         this.parent = this;
+        this.listenTo(this.model, "change:indicator", this.render);
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);

@@ -13,9 +13,7 @@ class ProductAPI extends RESTAPI {
                 return $paper->getCitation();
             }
             if($this->getParam('bibtex') != ""){
-                header('Content-Type: text/plain');
-                echo $paper->toBibTeX();
-                exit;
+                return BibTexExporter::exportProduct($paper);
             }
             return $paper->toJSON();
         }
@@ -144,7 +142,7 @@ class ProductAPI extends RESTAPI {
             else{
                 $finalExt = '';
             }
-            if(strlen($file->data)*(3/4) > 1024*1024*5){ // Checks the approx size
+            if(strlen($file->data)*(3/4) > 1024*1024*15){ // Checks the approx size
                 $this->throwError("File cannot be larger than 5MB");
             }
             else if(!UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){

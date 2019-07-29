@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's Project Scorecard and Reporting Framework" extends="ProjectEvaluationPDF" year="2018" startDate="1900-01-01" endDate="2100-01-01">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" extends="ProjectEvaluationPDF">
     <ReportSection id="narrative1">
         <ReportItem id="economic">
             <![CDATA[
                 <h2>Product Development</h2>
                 <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How have/will the outcomes of your project benefit the Canadian economy and what progress has your project made in the last 12 months in achieving these outcomes?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="quality">
-            <![CDATA[
-                <h3>How will the outcomes of your project eventually benefit the Canadian society?</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -63,19 +57,12 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2" pagebreak="false" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
+    <ReportSection id="narrative2" pagebreak="false">
         <ReportItem id="justification" delete="true" />
         <ReportItem id="level" delete="true" />
-        <ReportItem id="learned" delete="true" />
-        <ReportItem id="steps">
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true" position="0">
             <![CDATA[
                 <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="study">
-            <![CDATA[
-                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas.</h3>
                 {$item}
             ]]>
         </ReportItem>

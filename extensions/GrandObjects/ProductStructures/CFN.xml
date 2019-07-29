@@ -535,7 +535,7 @@
         
         <Product type="Patent Issued" ccv_name="Patents Issued" status="">
             <data>
-                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Number" type="String">number</field>
                 <field label="Owner" type="String">owner</field>
             </data>
         </Product>

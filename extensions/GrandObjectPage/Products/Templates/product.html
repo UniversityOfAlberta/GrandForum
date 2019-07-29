@@ -4,6 +4,11 @@
 <h2>Description</h2>
 <%= description.replace(/\n/g, "<br />") %>
 <h2>Information</h2>
+
+<%if(type=="Action Item"){ %>
+    <button id="pdfview">View As PDF</button>
+<% } %>
+
 <table id="productData">
     <% if(this.model.get('tags').length > 0){ %>
         <tr><td align="right"><b>Tags:</b></td><td><%= tags.join(", ") %></td></tr>
@@ -22,6 +27,8 @@
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
+                    <% } else if(val.type == "Date"){ %>
+                        <%= formatDate(data[index]) %>
                     <% } else if(val.type == "File"){
                         var dataStr = data[index]['data'].split(';base64,')[1]
                         var type = data[index]['data'].split(';base64,')[0].replace(/data:/,'')

@@ -128,9 +128,6 @@ $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                          
-$egAnnokiExtensions['CrossForumExport'] = array('name' => 'CrossForumExport', 
-                                                'path' => "$IP/extensions/CrossForumExport/CrossForumExport.php");
-                                         
 $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue', 
                                            'path' => "$IP/extensions/ReportIssue/ReportIssue.php");
 

@@ -90,9 +90,6 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given bibtex_id
      */
     static function newFromBibTeXId($bibtex_id, $title=""){
-        if(trim($bibtex_id) == ""){
-            return new Paper(array()); 
-        }
         if(isset(self::$cache[$bibtex_id])){
             return self::$cache[$bibtex_id];
         }
@@ -102,8 +99,7 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
-                LIMIT 1";
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         if($title != ""){
             $newData = array();
@@ -559,10 +555,18 @@ class Paper extends BackboneModel{
                                 $fbibtex = "{$fattrs->bibtex}";
                                 $fhidden = (strtolower("{$fattrs->hidden}") == "true");
                                 $foptions = explode("|", "{$fattrs->options}");
+                                $flinebreak = explode("|", "{$fattrs->linebreak}");
+                                $fheight = explode("|", "{$fattrs->height}");
+                                $fplaceholder = explode("|", "{$fattrs->placeholder}");
+                                $fheader = explode("|", "{$fattrs->header}");
                                 
                                 $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
                                                                                                          'bibtex' => $fbibtex,
+                                                                                                         'linebreak' => $flinebreak,
+                                                                                                         'header' => $fheader,
+                                                                                                         'height' => $fheight,
                                                                                                          'label' => $flabel,
+                                                                                                         'placeholder' => $fplaceholder,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);
@@ -1551,7 +1555,6 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
-            $this->bibtex_id = @$this->data['doi'];
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
@@ -1648,7 +1651,6 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
-            $this->bibtex_id = @$this->data['doi'];
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
@@ -1838,61 +1840,6 @@ class Paper extends BackboneModel{
             }
             return $json;
         }
-    }
-    
-    /**
-     * Exports this Paper as a BibTeX
-     * @return string This Paper's BibTeX
-     */
-    function toBibTeX(){
-        $dir = dirname(__FILE__);
-        require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
-        $hash = ImportBibTeXAPI::$bibtexHash;
-        foreach($hash as $key => $types){
-            if($types == $this->getType() ||
-               (is_array($types) && in_array($this->getType(), $types))){
-                // Compatable with BibTeX
-                $pStructure = Product::structure();
-                $structure = null;
-                if(isset($pStructure['categories'][$this->getCategory()]['types'][$this->getType()])){
-                    // Make sure that the type actually exists
-                    $structure = $pStructure['categories'][$this->getCategory()]['types'][$this->getType()];
-                }
-                else{
-                    $found = false;
-                    foreach($pStructure['categories'] as $cat => $cats){
-                        if(isset($cats['types'][$this->getType()])){
-                            // Then check if the type might exist in a different category
-                            $structure = $pStructure['categories'][$cat]['types'][$this->getType()];
-                            break;
-                        }
-                    }
-                    if(!$found){
-                        return false;
-                    }
-                }
-                $authors = new Collection($this->getAuthors());
-                $bibtex = array('bibtex_type' => $key,
-                                'raw' => array('title' => $this->getTitle()));
-                $bibtex['raw']['author'] = trim(preg_replace('/\s+/', ' ', str_replace("<span class='noshow'>&quot;</span>", "", implode(" and ", $authors->pluck('getNameForProduct("{%First} {%M.} {%Last}")')))));
-                $bibtex['raw']['year'] = substr($this->getDate(), 0, 4);
-                $bibtex['raw']['month'] = date("M", strtotime($this->getDate()));
-                $bibtex['raw']['abstract'] = $this->getDescription();
-                
-                if($structure != null){
-                    foreach($structure['data'] as $dkey => $dfield){
-                        if(isset($dfield['bibtex']) && $dfield['bibtex'] != ""){
-                            $bibtex['raw'][$dfield['bibtex']] = $this->getData($dkey);
-                        }
-                    }
-                }
-                
-                $bib = new Bibliography();
-                $bib->m_entries[$key] = $bibtex;
-                return $bib->toBibTeX();
-            }
-        }
-        return "";
     }
     
     function exists(){

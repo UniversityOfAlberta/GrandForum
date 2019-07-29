@@ -18,8 +18,7 @@ class ImportBibTeXAPI extends API{
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
                                'inbook' => 'Book Chapter',
-                               'misc' => 'Misc',
-                               'patent' => array('Patent', 'Patent Issued'));
+                               'misc' => 'Misc');
 
     var $structure = null;
 
@@ -53,18 +52,17 @@ class ImportBibTeXAPI extends API{
         return $month;
     }
     
-    function createProduct($paper, $category, $type, $overwrite=false, $private=true){
+    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false, $private=true){
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
         }
-        $checkBibProduct = Product::newFromBibTeXId(@$paper['doi'], $paper['title']);
+        $checkBibProduct = Product::newFromBibTeXId($bibtex_id, $paper['title']);
         $checkProduct = Product::newFromTitle($paper['title']);
-        if((!$overwrite && $checkProduct->exists()) ||
-           (!$overwrite && $checkBibProduct->exists())){
+        if(!$overwrite && ($checkBibProduct->exists() || $checkProduct->exists())){
             return null;
         }
-        if(@trim($paper['doi']) != "" && $checkBibProduct->getId() != 0){
+        if($checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
         }
@@ -110,6 +108,7 @@ class ImportBibTeXAPI extends API{
         $product->authors = array();
         if(!$product->exists()){
             if ($private) { $product->access_id = $me->getId(); }
+            $product->bibtex_id = $bibtex_id;
         }
         $product->access = "Public";
         $product->authors = array();
@@ -182,20 +181,21 @@ class ImportBibTeXAPI extends API{
 
             $errorProducts = array();
             $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
+            $private = (isset($_POST['private']) && strtolower($_POST['private']) == "yes") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
-                foreach($bib->m_entries as $paper){
+                foreach($bib->m_entries as $bibtex_id => $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
                     if(is_array($type)){
                         // Could map to different types
                         foreach($type as $t){
-                            $product = $this->createProduct($paper, null, $t, $overwrite);
+                            $product = $this->createProduct($paper, null, $t, $bibtex_id, $overwrite, $private);
                             if($product !== false){
                                 break;
                             }
                         }
                     }
                     else{
-                        $product = $this->createProduct($paper, null, $type, $overwrite);
+                        $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite, $private);
                     }
                     if($product != null && $product !== false){
                         $createdProducts[] = $product;
@@ -228,7 +228,7 @@ class ImportBibTeXAPI extends API{
                     if($checkProduct->exists()){
                          $json['duplicates'][] = $checkProduct->toArray();
                     }
-                    $this->addMessage("{$product['title']}");
+                    $this->addMessage("Duplicate");
                 }
             }
             $this->data = $json;

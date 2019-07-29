@@ -69,16 +69,29 @@
             <div><%= HTML.ProjectSelector(this, 'projects') %></div>
         </td>
     </tr>
+    
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
-        <% if(!val.hidden){ %>
+    <!--linebreak is used for Item form to give space for textareas-->
+        <% if(val.linebreak == "true" && !val.hidden && val.options != "do_not_show"){ %>
             <tr>
-                <td class="label"><%= val.label %>:
-                    <% if(val.type == "File"){ %>
-                        <small style="display:block;line-height:6px;">(Max 5MB)</small>
-                    <% } %>
-                </td>
-                <td class="field">
-                    <% if(val.type == "String"){ %>
+                <td colspan="100%">
+                    <% if(val.type == "Header"){ %>
+                        <h2><%= val.header[0] %></h2>   
+                        <br>
+                    <% } else if(val.type == "SmallHeader"){ %>
+                        <h4 style="font-weight: normal;"><%= val.header[0] %></h4>
+                        <br>
+                    <% } else if(val.type == "Motions"){ %>
+                        <!-- No label -->
+                    <% } else { %>
+                        <div class="label" style="float: left;" align="left"><%= val.label %>
+                        </div>
+                        <br><br>
+                    <% } %>         
+                <div class="field">   
+                    <% if(val.height == null){ %>
+                        <% val.height = '50px' %>
+                    <% } if(val.type == "String"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } else if(val.type == "Integer"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:100px;", class: "integer"}) %>
@@ -90,6 +103,47 @@
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                     <% } else if(val.type == "File"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Area"){ %>
+                        <%= HTML.TextArea(this, 'data.' + index, {style: 'height:' + val.height + ';width:650px;', placeholder: val.placeholder}) %>
+                    <% } else if(val.type == "Motions"){ %>
+                        <%= HTML.MotionTextArea(this, 'data.' + index, {style: 'height:' + val.height + ';width:650px;', placeholder: val.placeholder}) %>
+                    <% } else if(val.type == "Header" || val.type =="SmallHeader"){ %>
+                        <!--    Headers have no field    -->
+                    <% } else if(val.type == "Date"){ %>
+                        <%= HTML.DatePicker(this, 'data.' + index, {format: 'yy-mm-dd'}) %>
+                    <% } else { %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                    <% } %>
+                </div>
+            </td>
+            </tr>
+        <% } else if(!val.hidden && val.options != "do_not_show"){ %>
+            <tr>
+                <td class="label"><%= val.label %>:
+                    <% if(val.type == "File"){ %>
+                        <small style="display:block;line-height:6px;">(Max 5MB)</small>
+                    <% } %>
+
+                </td>
+                <td class="field">
+                    <% if(val.options[1] == null){ %>
+                        <% val.options[1] = '50px' %>
+                    <% } if(val.type == "String"){ %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                    <% } else if(val.type == "Integer"){ %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:100px;", class: "integer"}) %>
+                    <% } else if(val.type == "Radio"){ %>
+                        <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Check"){ %>
+                        <%= HTML.CheckBox(this, 'data.' + index, {size: 30, value: "Yes"}) %>
+                    <% } else if(val.type == "Select"){ %>
+                        <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
+                    <% } else if(val.type == "File"){ %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Area"){ %>
+                        <%= HTML.TextArea(this, 'data.' + index, {style: 'height:' + val.height + ';width:650px;', placeholder: val.placeholder}) %>
+                    <% } else if(val.type == "Header"){ %>
+                        <!--    Headers have no field    -->
                     <% } else if(val.type == "Date"){ %>
                         <%= HTML.DatePicker(this, 'data.' + index, {format: 'yy-mm-dd'}) %>
                     <% } else { %>

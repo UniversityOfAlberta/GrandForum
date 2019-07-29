@@ -29,8 +29,7 @@ Collaboration = Backbone.Model.extend({
             funding: 0,
             year: YEAR,
             endYear: "0",
-            knowledgeUser: 0, // true or false
-            changed: ""
+            knowledgeUser: 0 // true or false
         };
     }
 
