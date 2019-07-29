@@ -129,8 +129,8 @@ Product = Backbone.Model.extend({
         return {
             id : null,
             title: "",
-            category: "",
-            type: "",
+            category: "Governance Executive Summary",
+            type: "Action Item",
             description: "",
             tags: new Array(),
             date: Date.format(new Date(), 'yyyy-MM-dd'),
