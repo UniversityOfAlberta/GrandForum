@@ -135,6 +135,9 @@ class PollView {
 					}
 				}
 			}
+			if($expired && $isOwner){
+			    $this->aggregateTable();
+			}
 			return false;
 		}
 		else{
