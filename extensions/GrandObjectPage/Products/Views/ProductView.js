@@ -21,7 +21,7 @@ ProductView = Backbone.View.extend({
         data['title'] = this.model.get('title');
         data['date'] = this.model.get('date');
         $.ajax({
-            url : '../../extensions/GrandObjectPage/Products/pdf/dom.php',
+            url : wgServer + wgScriptPath+ '/extensions/GrandObjectPage/Products/pdf/dom.php',
             type : 'POST',
             data:  data,
             success : function (result) {
