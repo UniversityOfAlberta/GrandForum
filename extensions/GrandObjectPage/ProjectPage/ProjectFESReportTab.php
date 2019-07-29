@@ -11,6 +11,14 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $this->visibility = $visibility;
     }
     
+    function generatePDFBody(){
+        $this->generateBody();
+    }
+    
+    function canGeneratePDF(){
+        return true;
+    }
+    
     function userCanView(){
         $me = Person::newFromWgUser();
         // Check that they are leader
@@ -33,6 +41,10 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $this->html .= "<div id='reportAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
         $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        if(isset($_GET['generatePDF'])){
+            // Only show the current year in the PDF
+            $year = $today;
+        }
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         for($y=$today; $y >= $year; $y--){
