@@ -965,17 +965,6 @@ Item No.{$_POST['item_no']}</p>
 </tr>
 </table>
 
-<p class="p-p15">Attachments (each to be numbered 1 - &lt;&gt;)</p>
-<ol class="wwnum41_"><li class="calibre1"><p class="p-p11">Attachment 1 (page(s) 1 - &lt;&gt;)</p>
-</li>
-<li class="calibre1"><p class="p-p11">Attachment 2 (page(s) 1 - &lt;&gt;)</p>
-</li>
-</ol>
-<p class="p-p1">&nbsp;</p>
-<p class="p-p16"><span class="s-t2">Prepared by:</span><span class="s-t1"> &lt;Name, Title, e-mail address&gt;</span>&nbsp;</p>
-<p class="p-p5">&nbsp;</p>
-<p class="p-p17"><span id="calibre_link-1" class="calibre2"></span>/home/sheldon/Documents/Untitled 1.odt</p>
-
 
 </div>
 
