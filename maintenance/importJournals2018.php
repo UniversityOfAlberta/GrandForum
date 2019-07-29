@@ -64,20 +64,20 @@
                 }*/
                 $eissn = $conn[3];
                 $description = strtoupper(trim($conn[5]));
-                if(isset($alreadyDone[$issn.$description.$type]) || $type == ""){
+                if(isset($alreadyDone[$issn.$description]) || $type == ""){
                     continue;
                 }
                 $numer = 0;
                 $denom = 0;
-                if(isset($categories[$description.$type])){
-                    $numer = trim(++$categories[$description.$type]['count']);
+                if(isset($categories[$description])){
+                    $numer = trim(++$categories[$description]['count']);
                 }
                 else{
-                    $categories[$description.$type]['count'] = 0;
-                    $numer = trim(++$categories[$description.$type]['count']);
+                    $categories[$description]['count'] = 0;
+                    $numer = trim(++$categories[$description]['count']);
                 }
 
-                $toBeInserted[$description.$type][] = 
+                $toBeInserted[$description][] = 
                     array('year' => 2018,
                           'short_title' => $short_title,
                           'iso_abbrev' => $iso_abbrev,
@@ -90,7 +90,7 @@
                           'cited_half_life' => trim($half_life),
                           'eigenfactor' => trim($eigenfactor));
                 
-                $alreadyDone[$issn.$description.$type] = true;
+                $alreadyDone[$issn.$description] = true;
             }
         }
     }
