@@ -1584,7 +1584,7 @@ class Person extends BackboneModel {
     }
 
     function getLdap(){
-        if(strstr($this->getEmail(), "@ualberta.ca") !== false){
+        if(strstr($this->getEmail(), "ualberta.ca") !== false){
             $ccid = explode("@", $this->getEmail());
             return @"https://directory.ualberta.ca/person/{$ccid[0]}";
         }
