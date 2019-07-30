@@ -152,7 +152,8 @@ class IndexTable {
         $universityHeader = "";
         $ldapHeader = "";
         if($me->isRoleAtLeast(ADMIN)){
-            $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
+            $idHeader = "<th style='white-space: nowrap;'>User Id</th>
+                         <th style='white-space: nowrap;'>Employee Id</th>";
         }
         if($me->isLoggedIn()){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th>";
@@ -210,6 +211,7 @@ class IndexTable {
             }
             if($idHeader != ''){
                 $wgOut->addHTML("<td>{$person->getId()}</td>");
+                $wgOut->addHTML("<td>{$person->getEmployeeId()}</td>");
             }
             $wgOut->addHTML("</tr>");
         }
