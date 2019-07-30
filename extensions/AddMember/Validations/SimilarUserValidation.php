@@ -27,7 +27,7 @@ class SimilarUserValidation extends UIValidation {
     function failMessage($name){
         $names = array();
         foreach($this->duplicatePeople as $person){
-            $names[] = "<a href='{$person->getURL()}' target='_blank'>{$person->getName()}</a>";
+            $names[] = "<b>{$person->getName()}</b>";
         }
         if(count($names) > 1){
             return "The name provided is similar to the following people: ".implode(", ", $names);

@@ -2,6 +2,8 @@
 
 class UniqueEmailValidation extends UIValidation {
 
+    var $duplicatePerson;
+
     function UniqueEmailValidation($neg=false, $warning=false) {
         parent::UIValidation($neg, $warning);
     }
@@ -11,11 +13,12 @@ class UniqueEmailValidation extends UIValidation {
             return true;
         }
         $person = Person::newFromEmail($value);
+        $this->duplicatePerson = $person;
         return ($person == null || $person->getId() == 0);
     }
     
     function failMessage($name){
-        return "This email address '<i>{$this->value}</i>' has already been taken";
+        return "This email address '<i>{$this->value}</i>' has already been taken by the user: <b>{$this->duplicatePerson->getNameForForms()}</b>";
     }
     
     function failNegMessage($name){
@@ -23,7 +26,7 @@ class UniqueEmailValidation extends UIValidation {
     }
     
     function warningMessage($name){
-        return "This email address '<i>{$this->value}</i>' has already been taken";
+        return "This email address '<i>{$this->value}</i>' has already been taken by the user: <b>{$this->duplicatePerson->getNameForForms()}</b>";
     }
     
     function warningNegMessage($name){

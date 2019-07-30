@@ -60,6 +60,9 @@ class AddHqp extends SpecialPage{
                                     array('user_name' => $_POST['wpName']));
                 DBFUnctions::commit();
             }
+            else{
+                $wgMessage->addWarning("<br /><b>WARNING:</b> If there are more than one of the same person, it may cause problems with your publications being associated with the wrong person.  Use 'Find Existing HQP' if the user already exists.  Only continue if you are certain that this is a unique account.");
+            }
             AddHqp::generateFormHTML($wgOut);
         }
         else{
