@@ -1010,6 +1010,7 @@
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
                   <field label="Start Date" type="Date">start_date</field>
                   <field label="End Date" type="Date">end_date</field>
+                  <field label="Awarded Yearly" type="CheckBox">yearly</field>
              </data>
              <authors label="Recipient"></authors>
              <date label="Announcement Date"></date>
@@ -1042,6 +1043,7 @@
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
                   <field label="Start Date" type="Date">start_date</field>
                   <field label="End Date" type="Date">end_date</field>
+                  <field label="Awarded Yearly" type="CheckBox">yearly</field>
              </data>
              <authors label="Recipient"></authors>
              <date label="Announcement Date"></date>
@@ -1074,6 +1076,7 @@
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
                   <field label="Start Date" type="Date">start_date</field>
                   <field label="End Date" type="Date">end_date</field>
+                  <field label="Awarded Yearly" type="CheckBox">yearly</field>
              </data>
              <authors label="Recipient"></authors>
              <date label="Announcement Date"></date>
@@ -1106,6 +1109,7 @@
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
                   <field label="Start Date" type="Date">start_date</field>
                   <field label="End Date" type="Date">end_date</field>
+                  <field label="Awarded Yearly" type="CheckBox">yearly</field>
              </data>
              <authors label="Recipient"></authors>
             <date label="Announcement Date"></date>
@@ -1138,6 +1142,7 @@
                   <field label="Scope" type="Select" options="International|National|Provincial|University|Faculty|Departmental">scope</field>
                   <field label="Start Date" type="Date">start_date</field>
                   <field label="End Date" type="Date">end_date</field>
+                  <field label="Awarded Yearly" type="CheckBox">yearly</field>
              </data>
              <authors label="Recipient"></authors>
              <date label="Announcement Date"></date>

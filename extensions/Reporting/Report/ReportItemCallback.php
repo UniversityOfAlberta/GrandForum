@@ -807,6 +807,16 @@ class ReportItemCallback {
     
     function getProductYear(){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($product->getData('yearly') == 1){
+            $productStart = substr($product->getData('start_date'), 0, 4);
+            $productEnd = substr($product->getData('end_date'), 0, 4);
+            $reportStart = $this->reportItem->getReport()->startYear;
+            $reportEnd = $this->reportItem->getReport()->year;
+            
+            $start = ($productStart > $reportStart && $productStart != "0000") ? $productStart : $reportStart;
+            $end = ($productEnd < $reportEnd && $productEnd != "0000") ? $productEnd : $reportEnd;
+            return "$start-$end";
+        }
         return @$product->getYear();
     }
     

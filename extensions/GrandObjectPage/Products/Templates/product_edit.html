@@ -115,6 +115,8 @@
                             <%= HTML.Pages(this, 'data.' + index, {style: "width:87px;"}) %>
                         <% } else if(val.type == "Radio"){ %>
                             <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <% } else if(val.type == "CheckBox"){ %>
+                            <%= HTML.CheckBox(this, 'data.' + index, {value: 1, default: 0}) %>
                         <% } else if(val.type == "Select"){ %>
                             <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                         <% } else if(val.type == "File"){ %>

@@ -3489,15 +3489,23 @@ class Person extends BackboneModel {
             $reportedYear = $paper->getReportedForPerson($this->getId());
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
-               (($date >= $startRange && $date <= $endRange ||
+               (// Handle Products Normally
+                ($date >= $startRange && $date <= $endRange ||
                 ($acceptanceDate >= $startRange && $acceptanceDate <= $endRange && $acceptanceDateLabel != "")) ||
+                // Handle Products where acceptance date and date behave as start and end dates
                 ($acceptanceDateLabel == "Start Date" && $dateLabel == "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange && $date >= $startRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange ||
                   $acceptanceDate <= $endRange && $date == "0000-00-00")) ||
+                // Handle Reported Products
                 ($useReported && $reportedYear != "" && ($reportedYear).CYCLE_START_MONTH >= $startRange && 
-                                                        ($reportedYear+1).CYCLE_END_MONTH <= $endRange)
+                                                        ($reportedYear+1).CYCLE_END_MONTH <= $endRange) ||
+                // Handle Yearly Awards
+                ($paper->getData('yearly') == 1 && ($paper->getData('start_date') >= $startRange && $paper->getData('end_date') <= $endRange && $paper->getData('end_date') >= $startRange ||
+                                                     $paper->getData('start_date') <= $startRange && $paper->getData('end_date') >= $startRange ||
+                                                     $paper->getData('start_date') <= $endRange && $paper->getData('end_date') >= $endRange ||
+                                                     $paper->getData('start_date') <= $endRange && $paper->getData('end_date') == "0000-00-00"))
                 )){
                 $papersArray[] = $paper;
             }
