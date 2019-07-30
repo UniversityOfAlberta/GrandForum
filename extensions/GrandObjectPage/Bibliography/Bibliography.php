@@ -38,7 +38,7 @@ class BibliographyPage extends BackbonePage {
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP)){
-            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add Bibliography", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage#/new");
+            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add Meeting", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage#/new");
         }
         return true;
     }

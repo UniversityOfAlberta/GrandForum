@@ -7,7 +7,7 @@ BibliographiesView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "sync", this.renderProductsAndTags);
         this.template = _.template($('#bibliographies_template').html());
-        main.set('title', 'Bibliographies');
+        main.set('title', 'Meetings');
         this.listenTo(this.model, "remove", this.render);
     },
        
@@ -35,19 +35,19 @@ BibliographiesView = Backbone.View.extend({
     },
 
     delete: function(e) {
-        if (confirm("Are you sure you want to delete this bibliography?")) {
+        if (confirm("Are you sure you want to delete this meeting?")) {
             this.model.get(e.target.id).destroy({success: function(model, response) {
                 if (response.id != null) {
                     this.model.add(model);
                     clearAllMessages();
-                    addError("Bibliography deletion failed");
+                    addError("Meeting deletion failed");
                 } else {
                     clearAllMessages();
-                    addSuccess("Bibliography deleted");
+                    addSuccess("Meeting deleted");
                 }
             }.bind(this), error: function() {
                 clearAllMessages();
-                addError("Bibliography deletion failed");
+                addError("Meeting deletion failed");
             }, wait: true});
         }
     },

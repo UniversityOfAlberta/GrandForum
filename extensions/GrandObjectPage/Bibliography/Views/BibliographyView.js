@@ -11,7 +11,7 @@ BibliographyView = Backbone.View.extend({
         Backbone.Subviews.add(this);
         this.model.fetch({
             error: function(e){
-                this.$el.html("This Bibliography does not exist");
+                this.$el.html("This Meeting does not exist");
             }.bind(this)
         });
         this.listenTo(this.model, 'change', this.render);
@@ -36,16 +36,16 @@ BibliographyView = Backbone.View.extend({
     },
 
     delete: function(e) {
-        if (confirm("Are you sure you want to delete this bibliography?")) {
+        if (confirm("Are you sure you want to delete this Meeting?")) {
             this.model.destroy({success: function() {
                 document.location = wgServer + wgScriptPath + "/index.php/Special:BibliographyPage#";
                 _.defer(function() {
                     clearAllMessages();
-                    addSuccess("Bibliography deleted")
+                    addSuccess("Meeting deleted")
                 });
             }, error: function() {
                 clearAllMessages();
-                addError("Bibliography failed");
+                addError("Meeting failed");
             }});
         }
     },

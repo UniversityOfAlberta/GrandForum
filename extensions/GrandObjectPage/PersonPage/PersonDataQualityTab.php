@@ -53,7 +53,7 @@ class PersonDataQualityTab extends AbstractTab {
             $profile_checks = $this->getProfileChecks($errors);
             $hqp_checks = $this->getHqpChecks($errors);
             $product_checks = $this->getProductChecks($errors);
-            $duplicates = $this->getMyProductDuplicates();
+            
 
             $productTerm = $config->getValue('productsTerm');
 
@@ -70,10 +70,6 @@ class PersonDataQualityTab extends AbstractTab {
                 <h3><a href='#'>{$productTerm} Errors</a></h3>
                 <div>
                 {$product_checks}
-                </div>
-                <h3><a href='#'>{$productTerm} Duplicates</a></h3>
-                <div>
-                {$duplicates}
                 </div>
             </div>
 EOF;
@@ -180,26 +176,7 @@ EOF;
 
     }
 
-    function getMyProductDuplicates(){
-        ProductHandler::init();
-	    MyProductHandler::init();
-	    PersonHandler::init();
-        $handlers = AbstractDuplicatesHandler::$handlers;
-        $structure = Product::structure();
-        
-        $html = "<div id='duplicateProductsAccordion'>";
-        foreach($structure['categories'] as $key => $cat){
-            $key = str_replace("-", "", str_replace(" ", "", $key));
-            $dup_pub = new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]);
-            $dup_pub->generateBody();
-            $html .= "<h4><a href='#'>".Inflect::pluralize($key)."</a></h4>
-                      <div>
-                        {$dup_pub->html}<br />
-                      </div>";
-        }
-        $html .= "</div>";
-        return $html;
-    }
+    
 
     static function getErrors($ni_id = null){
         global $config;

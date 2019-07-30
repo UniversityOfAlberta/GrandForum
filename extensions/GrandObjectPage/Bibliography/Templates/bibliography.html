@@ -8,17 +8,15 @@
     <%= nl2br(striphtml(description)) %>
 </div>
 <% if(editors.length > 0){ %>
-    <h2>Editors</h2>
+    <h2>People</h2>
     <ul>
     <% _.each(editors, function(editor){ %>
         <li><a href="<%= editor.url %>"><%= editor.fullname %></a></li>
     <% }) %>
     </ul>
 <% } %>
-<h2>Publications
+<h2>Items
 	<div id="headerButtonContainer" style="position:relative; float:right; bottom:8px;">
-		<span id="bibExportThrobber" class="throbber" style="display:none;"></span>
-	    <button id="exportBib" style="padding-top: 4px;padding-right: 7px;padding-bottom: 4px;padding-left: 8px;margin-top: -8px;margin-right:6px;">Export BibTeX</button>
 	    
 	    <button id="filtersBtn" type="button" style="padding-top: 3px;padding-right: 4px;padding-bottom: 4px;padding-left: 7px;margin-top:-8px;">Filters
 	        <!-- <img src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>filterIcon.svg" /> -->

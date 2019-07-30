@@ -10,7 +10,7 @@ BibliographyEditView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch({
             error: function(e){
-                this.$el.html("This Bibliography does not exist");
+                this.$el.html("This Meeting does not exist");
             }.bind(this)
         });
         this.listenTo(this.model, "sync", this.render);
@@ -57,7 +57,7 @@ BibliographyEditView = Backbone.View.extend({
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Bibliography", true);
+                    addError("There was a problem saving the Meeting", true);
                 }
             }.bind(this)
         });
@@ -318,10 +318,10 @@ BibliographyEditView = Backbone.View.extend({
     
     render: function(){
         if(this.model.isNew()){
-            main.set('title', 'New Bibliography');
+            main.set('title', 'New Meeting');
         }
         else {
-            main.set('title', 'Edit Bibliography');
+            main.set('title', 'Edit Meeting');
         }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProductsWidget();

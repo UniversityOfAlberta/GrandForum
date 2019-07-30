@@ -123,7 +123,7 @@ class IndexTable {
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
         }
         if(Bibliography::count() > 0){
-            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Bibliographies", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Meetings", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage", "$selected");
         }
         $tabs['Main']['subtabs'][] = $productsSubTab;
 
