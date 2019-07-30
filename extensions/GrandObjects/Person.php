@@ -1589,10 +1589,11 @@ class Person extends BackboneModel {
     }
 
     function getLdap(){
-        if (preg_match("#https?://#", $this->ldap) === 0){
-            $this->ldap = 'http://'.$this->ldap;
+        if(strstr($this->getEmail(), "@ualberta.ca") !== false){
+            $ccid = explode("@", $this->getEmail());
+            return @"https://directory.ualberta.ca/person/{$ccid[0]}";
         }
-        return $this->ldap;
+        return "";
     }
 
     function getGoogleScholar(){

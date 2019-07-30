@@ -187,7 +187,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->employeeId = @$_POST['employeeId'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
-            $this->person->ldap = @$_POST['ldap'];
+            //$this->person->ldap = @$_POST['ldap'];
             $this->person->googleScholar = @$_POST['googleScholarUrl'];
             $this->person->sciverseId = @$_POST['sciverseId'];
             $this->person->orcId = @$_POST['orcId'];
@@ -419,10 +419,10 @@ EOF;
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>";
         if($config->getValue('singleUniversity')){
-                $this->html .= "<tr>
+                /*$this->html .= "<tr>
                                 <td align='right'><b>LDAP URL:</b></td>
                                 <td><input type='text' size='30' name='ldap' value='".str_replace("'", "&#39;", $person->getLdap())."' /></td>
-                            </tr>";
+                            </tr>";*/
                 $this->html .= "<tr>
                                 <td align='right'><b>Google Scholar URL:</b></td>
                                 <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
