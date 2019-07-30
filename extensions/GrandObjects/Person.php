@@ -79,7 +79,6 @@ class Person extends BackboneModel {
     var $photo;
     var $twitter;
     var $website;
-    var $ldap;
     var $googleScholar;
     var $sciverseId;
     var $orcId;
@@ -390,7 +389,6 @@ class Person extends BackboneModel {
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
-                                              'ldap_url',
                                               'google_scholar_url',
                                               'sciverse_id',
                                               'orcid',
@@ -1258,7 +1256,6 @@ class Person extends BackboneModel {
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
-            $this->ldap = @$data[0]['ldap_url'];
             $this->googleScholar = @$data[0]['google_scholar_url'];
             $this->sciverseId = @$data[0]['sciverse_id'];
             $this->orcId = @$data[0]['orcid'];
@@ -1344,7 +1341,6 @@ class Person extends BackboneModel {
                                     array('employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
-                                          'ldap_url' => $this->getLdap(),
                                           'google_scholar_url' => $this->getGoogleScholar(),
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
@@ -1381,7 +1377,6 @@ class Person extends BackboneModel {
                                           'employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
-                                          'ldap_url' => $this->getLdap(),
                                           'google_scholar_url' => $this->getGoogleScholar(),
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),

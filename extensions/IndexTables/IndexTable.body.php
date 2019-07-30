@@ -201,7 +201,7 @@ class IndexTable {
             $wgOut->addHTML("<td align='left'>{$university['position']}</td>");
             if($config->getValue('singleUniversity')){
                 $wgOut->addHTML("<td align='left'>");
-                if($person->ldap != ""){
+                if($person->getLdap() != ""){
                     $wgOut->addHTML("<a href='{$person->getLdap()}' target='_blank'>LDAP</a>");
                 }
                 $wgOut->addHTML("</td>");
