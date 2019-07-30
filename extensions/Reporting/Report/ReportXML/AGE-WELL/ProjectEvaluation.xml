@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true" disabled="true" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true" disabled="false" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="instructions" permissions="rw" />
@@ -77,22 +77,25 @@
  
                 <p>The aim of the form is to allow the RMC to assess the progress, performance against the key impact objectives of AGE-WELL and demonstrate that the network is effectively working to achieve our goals. Reporting is crucial to the ongoing success and future of AGE-WELL.</p>
 
-                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages. AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
+                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages.</p>
+                
+                <p>AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
 
-                <p>Projects are required to justify the current PRL stage they are at, and which stage they will be at one year later. It is expected that projects will progress through theses stages at an appropriate pace, in order to receive ongoing investment however it should be noted that it is expected that some projects may remain at a specific PRL longer than others. Justification and a demonstration of progress is required.</p>
+                <p>Projects are required to justify the current PRL stage they are at so that we can track progress over time. It should be noted that it is expected that some projects may remain at a specific PRL longer than others. Justification and a demonstration of progress is required.</p>
 
-                <p>Each project is required to complete 2 tables related to the 5 NCE objectives (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training) for the past year and for the upcoming year. All projects are asked to complete the tables relevant to their project; not all projects may be able to complete both the KM and Commercialization tables.  These tables were developed based on the Balance Scorecard approach and will be used by the RMC to review projects progress from year to year. The outcome of RMC review of each project will be used to make a recommendation to the AGE-WELL Board of Directors with respect to ongoing funding levels and continuation of projects. Projects will only be reviewed against themselves and the progress they make towards the objectives they have set.</p>
+                <p>Each project is required to complete one table related to each of the 5 NCE objectives (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization, and HQP Training) for the past year.</p>
+                
+                <p>All projects are asked to complete the tables relevant to their project. These tables were developed based on the Balance Scorecard approach and will be used by the RMC to review projects against what was planned at last year’s report. Projects will only be reviewed against themselves and the progress they make towards the objectives they have set. RMC will also submit an overall summary of Core Research Program performance to AGE-WELL’s Board of directors based on an overview of project achievements. The outcome of the RMC review of each project will be used to make a recommendation to the AGE-WELL Board of Directors with respect to potential future investment, if renewed. Projects will only be reviewed against themselves and the progress they make towards the objectives they have set.</p>
 
                 <p>The report consists of qualitative and quantitative information to appropriately capture the progress your project is making on the key impact area.</p>
 
-                <p>The report requests three types of information:
+                <p>The report requests two types of information:
                     <ol>
-                        <li>Narrative- a short written account of what the project has been doing to achieve impact;</li>
-                        <li>Metrics- quantitative data (most values are auto populated via reporting on Forum) substantiating information must be provided for all entered values; and </li>
-                        <li>Case study - a short vignette that describes an outstanding work or achievement by the project.</li>
+                        <li>Narrative: a short written account of what the project has accomplished to achieve impact; and</li>
+                        <li>Metrics: quantitative data (most values are auto populated via reporting on Forum), substantiating information must be provided for all entered values;</li>
                     </ol>
                 </p>
-                <p>For more information on the development of this evaluation or instructions please watch the <a href='https://youtu.be/xYA7mANKkhM' target='_blank'>Webinar</a> posted on the Intranet. You can also find a Word version of the form <a href='http://members.agewell-nce.ca/wp-content/uploads/2018/07/AGE-WELL-Project-Evaluation-Form_2018-19_for-posting.docx' target='_blank'>here</a> if you would like to work offline.</p>
+                <p>For more information on the development of this evaluation or instructions please watch the <a href='https://youtu.be/xYA7mANKkhM' target='_blank'>Webinar</a> posted on the Intranet. You can also find a Word version of the form <a href='http://members.agewell-nce.ca/login/?redirect_to=/network-management/annual-project-progress-evaluation/' target='_blank'>here</a> if you would like to work offline.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -117,20 +120,24 @@
         </ReportItem>
         <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
             <![CDATA[
-                <h2>Product Development</h2>
-                <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
-                {$item}
+                <div style='display:none;'>
+                    <h2>Product Development</h2>
+                    <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true" limit="300">
             <![CDATA[
-                <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life of older adults and their caregivers, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project eventually benefit the Canadian society?  Provide any demonstrated evidence of the impact of service or knowledge products on key health and quality of life outcomes relevant to healthy aging.</h3>
-                {$item}
+                <div style='display:none;'>
+                    <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life of older adults and their caregivers, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project eventually benefit the Canadian society?  Provide any demonstrated evidence of the impact of service or knowledge products on key health and quality of life outcomes relevant to healthy aging.</h3>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="nProducts" blobItem="N_PRODUCTS" type="Integer" min="0" max="100" size="3">
             <![CDATA[
-                <p>How many products is your project developing?</p> {$item}
+                <p><b>How many products has your project developed?</b></p> {$item}
             ]]>
         </ReportItem>
         <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Product Type|Stage|PRL Level" types="Text|Select(Technology,Policy/Practice,Service)|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)">
@@ -442,7 +449,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
+        <!--ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2018/19)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -669,7 +676,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
         <ReportItem id="instructions" type="Static">
@@ -804,7 +811,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
+        <!--ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2018/19)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -917,7 +924,7 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge &amp; Technology Exchange and Exploitation" name="KTEE" title="Knowledge &amp; Technology Exchange and Exploitation">
         <ReportItem id="instructions" type="Static">
@@ -1095,7 +1102,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
+        <!--ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2018/19)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1256,7 +1263,7 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" tooltip="HQP Training" name="HQP Training">
         <ReportItem id="instructions" type="Static">
@@ -1350,7 +1357,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
+        <!--ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2018/19)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1427,34 +1434,50 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
-    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
+    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Next Steps" name="PRL Justifications" title="PRL Justifications &amp; Next Steps">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
-                <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why</h3>
+                <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why.</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" limit="500">
+        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" optional="true" limit="500">
             <![CDATA[
-                <h3>Which PRL level do you expect to be at in one year from now? Provide a brief justification and key steps you will be taking to move to the next level</h3>
+                <div style='display:none;'>
+                    <h3>Which PRL level do you expect to be at in one year from now? Provide a brief justification and key steps you will be taking to move to the next level</h3>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+            <![CDATA[
+                <h3>What are the next steps for your project and developed products? Describe how you will leverage AGE-WELL activities moving forward. Will you apply for outside funding? Will you apply for AGE-WELL funding, if renewed? What kind of funding will you need to advance your product?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="learned" type="Textarea" blobItem="LEARNED" rich="true">
+            <![CDATA[
+                <h3>AGE-WELL’s Core Research Program is a set of integrated, long-term research projects that are the cornerstone of the Network’s activities. What has your team learned over the past 4.5 years that you wish you had known in your first year? What knowledge have you learned that you would pass on to future CRP AGE-WELL researchers, if renewed? </h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="500">
             <![CDATA[
-                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. We will draw on these case studies as we prepare our network renewal applications.</h3>
-                The following should be provided for the case study: 
-                <ul>
-                    <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
-                    <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
-                    <li>Details of the beneficiaries – who or what community, constituency or organisation has benefitted, been affected or impacted on.</li>
-                    <li>Details of the nature of the impact – how they have benefitted, been affected or impacted on.</li>
-                    <li>Evidence or indicators of the extent of the impact described, as appropriate to the case being made.</li>
-                    <li>Dates of when these impacts occurred.</li>
-                </ul>
-                {$item}
+                <div style='display:none;'>
+                    <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. We will draw on these case studies as we prepare our network renewal applications.</h3>
+                    The following should be provided for the case study: 
+                    <ul>
+                        <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
+                        <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
+                        <li>Details of the beneficiaries – who or what community, constituency or organisation has benefitted, been affected or impacted on.</li>
+                        <li>Details of the nature of the impact – how they have benefitted, been affected or impacted on.</li>
+                        <li>Evidence or indicators of the extent of the impact described, as appropriate to the case being made.</li>
+                        <li>Dates of when these impacts occurred.</li>
+                    </ul>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
     </ReportSection>

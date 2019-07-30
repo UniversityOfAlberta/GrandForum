@@ -90,6 +90,9 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given bibtex_id
      */
     static function newFromBibTeXId($bibtex_id, $title=""){
+        if(trim($bibtex_id) == ""){
+            return new Paper(array()); 
+        }
         if(isset(self::$cache[$bibtex_id])){
             return self::$cache[$bibtex_id];
         }
@@ -99,7 +102,8 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         if($title != ""){
             $newData = array();
@@ -1322,9 +1326,11 @@ class Paper extends BackboneModel{
     }
     
     function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
-        $authors = array();
-        $me = Person::newFromWgUser();
-        if(strstr(strtolower($matches[0]), "authors") !== false){
+        $match1 = $matches[0];
+        $match2 = $matches[0];
+        $match = strtolower($matches[0]);
+        if(strstr($match, "authors") !== false){
+            $authors = array();
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
                     if($hyperlink){
@@ -1345,36 +1351,25 @@ class Paper extends BackboneModel{
                     $authors[] = $a->getNameForProduct();
                 }
             }
+            $authors = implode(", ", $authors);
+            $match1 = str_ireplace("%authors",   $authors,   $match1);
+            $match2 = str_ireplace("%authors",   "",         $match2);
         }
-
-        $authors = implode(", ", $authors);
-        $date = $this->getDate();
         
-        if($hyperlink){
-            $title = "<a href='{$this->getUrl()}'>{$this->title}</a>";
-        }
-        else{
-            $title = $this->title;
-        }
-        $type = $this->type;
-        $pages = $this->getData(array('ms_pages', 'pages'));
-        $publisher = $this->getData(array('publisher'));
-        $venue = $this->getVenue();
-        $volume = $this->getData(array('volume'));
-        $issue = $this->getData(array('number'));
-        $editor = $this->getData(array('editors'));
-               
-        $yyyy = substr($date, 0, 4);
-        $yy = substr($date, 2, 2);
-        $mm = substr($date, 5, 2);
-        $dd = substr($date, 8, 2);
-        
-        $month = date('F', strtotime($date));
-        $mon = date('M', strtotime($date));
-        
-        foreach($matches as $key => $match){
-            $match1 = $match;
-            $match2 = $match;
+        if(strstr($match, "yyyy") !== false ||
+           strstr($match, "yy") !== false ||
+           strstr($match, "mm") !== false ||
+           strstr($match, "dd") !== false ||
+           strstr($match, "month") !== false ||
+           strstr($match, "mon") !== false){
+            $date = $this->getDate();
+            $yyyy = substr($date, 0, 4);
+            $yy = substr($date, 2, 2);
+            $mm = substr($date, 5, 2);
+            $dd = substr($date, 8, 2);
+            
+            $month = date('F', strtotime($date));
+            $mon = date('M', strtotime($date));
             
             $match1 = str_ireplace("%yyyy",      $yyyy,      $match1);
             $match1 = str_ireplace("%yy",        $yy,        $match1);
@@ -1382,38 +1377,73 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%dd",        $dd,        $match1);
             $match1 = str_ireplace("%month",     $month,     $match1);
             $match1 = str_ireplace("%mon",       $mon,       $match1);
-            $match1 = str_ireplace("%title",     $title,     $match1);
-            $match1 = str_ireplace("%type",      $type,      $match1);
-            $match1 = str_ireplace("%pages",     $pages,     $match1);
-            $match1 = str_ireplace("%authors",   $authors,   $match1);
-            $match1 = str_ireplace("%publisher", $publisher, $match1);
-            $match1 = str_ireplace("%editor",    $editor,    $match1);
-            $match1 = str_ireplace("%venue",     $venue,     $match1);
-            $match1 = str_ireplace("%issue",     $issue,     $match1);
-            $match1 = str_ireplace("%volume",    $volume,    $match1);
-
-            $match2 = str_ireplace("%yyyy",      "", $match2);
-            $match2 = str_ireplace("%yy",        "", $match2);
-            $match2 = str_ireplace("%mm",        "", $match2);
-            $match2 = str_ireplace("%dd",        "", $match2);
-            $match2 = str_ireplace("%month",     "", $match2);
-            $match2 = str_ireplace("%mon",       "", $match2);
-            $match2 = str_ireplace("%title",     "", $match2);
-            $match2 = str_ireplace("%type",      "", $match2);
-            $match2 = str_ireplace("%pages",     "", $match2);
-            $match2 = str_ireplace("%authors",   "", $match2);
-            $match2 = str_ireplace("%publisher", "", $match2);
-            $match2 = str_ireplace("%editor",    "", $match2);
-            $match2 = str_ireplace("%venue",     "", $match2);
-            $match2 = str_ireplace("%issue",     "", $match2);
-            $match2 = str_ireplace("%volume",    "", $match2);
             
-            if($match1 == $match2){
-                 $matches[$key] = "";
+            $match2 = str_ireplace("%yyyy",      "",         $match2);
+            $match2 = str_ireplace("%yy",        "",         $match2);
+            $match2 = str_ireplace("%mm",        "",         $match2);
+            $match2 = str_ireplace("%dd",        "",         $match2);
+            $match2 = str_ireplace("%month",     "",         $match2);
+            $match2 = str_ireplace("%mon",       "",         $match2);
+        }
+        
+        if(strstr($match, "title") !== false){
+            if($hyperlink){
+                $title = "<a href='{$this->getUrl()}'>{$this->title}</a>";
             }
             else{
-                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+                $title = $this->title;
             }
+            $match1 = str_ireplace("%title",     $title,     $match1);
+            $match2 = str_ireplace("%title",     "",         $match2);
+        }
+        
+        if(strstr($match, "type") !== false){
+            $type = $this->type;
+            $match1 = str_ireplace("%type",      $type,      $match1);
+            $match2 = str_ireplace("%type",      "",         $match2);
+        }
+
+        if(strstr($match, "pages") !== false){
+            $pages = $this->getData(array('ms_pages', 'pages'));
+            $match1 = str_ireplace("%pages",     $pages,     $match1);
+            $match2 = str_ireplace("%pages",     "",         $match2);
+        }
+        
+        if(strstr($match, "publisher") !== false){
+            $publisher = $this->getData(array('publisher'));
+            $match1 = str_ireplace("%publisher", $publisher, $match1);
+            $match2 = str_ireplace("%publisher", "",         $match2);
+        }
+        
+        if(strstr($match, "venue") !== false){
+            $venue = $this->getVenue();
+            $match1 = str_ireplace("%venue",     $venue,     $match1);
+            $match2 = str_ireplace("%venue",     "",         $match2);
+        }
+        
+        if(strstr($match, "editor") !== false){
+            $editor = $this->getData(array('editors'));
+            $match1 = str_ireplace("%editor",    $editor,    $match1);
+            $match2 = str_ireplace("%editor",    "",         $match2);
+        }
+        
+        if(strstr($match, "volume") !== false){
+            $volume = $this->getData(array('volume'));
+            $match1 = str_ireplace("%volume",    $volume,    $match1);
+            $match2 = str_ireplace("%volume",    "",         $match2);
+        }
+        
+        if(strstr($match, "issue") !== false){
+            $issue = $this->getData(array('number'));
+            $match1 = str_ireplace("%issue",     $issue,     $match1);
+            $match2 = str_ireplace("%issue",     "",         $match2);
+        }
+
+        if($match1 == $match2){
+             $matches[0] = "";
+        }
+        else{
+            $matches[0] = str_replace("}","",str_replace("{","",$match1));
         }
         return implode("", $matches);
     }
@@ -1521,6 +1551,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
@@ -1617,6 +1648,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $this->bibtex_id = @$this->data['doi'];
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
@@ -1806,6 +1838,61 @@ class Paper extends BackboneModel{
             }
             return $json;
         }
+    }
+    
+    /**
+     * Exports this Paper as a BibTeX
+     * @return string This Paper's BibTeX
+     */
+    function toBibTeX(){
+        $dir = dirname(__FILE__);
+        require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
+        $hash = ImportBibTeXAPI::$bibtexHash;
+        foreach($hash as $key => $types){
+            if($types == $this->getType() ||
+               (is_array($types) && in_array($this->getType(), $types))){
+                // Compatable with BibTeX
+                $pStructure = Product::structure();
+                $structure = null;
+                if(isset($pStructure['categories'][$this->getCategory()]['types'][$this->getType()])){
+                    // Make sure that the type actually exists
+                    $structure = $pStructure['categories'][$this->getCategory()]['types'][$this->getType()];
+                }
+                else{
+                    $found = false;
+                    foreach($pStructure['categories'] as $cat => $cats){
+                        if(isset($cats['types'][$this->getType()])){
+                            // Then check if the type might exist in a different category
+                            $structure = $pStructure['categories'][$cat]['types'][$this->getType()];
+                            break;
+                        }
+                    }
+                    if(!$found){
+                        return false;
+                    }
+                }
+                $authors = new Collection($this->getAuthors());
+                $bibtex = array('bibtex_type' => $key,
+                                'raw' => array('title' => $this->getTitle()));
+                $bibtex['raw']['author'] = trim(preg_replace('/\s+/', ' ', str_replace("<span class='noshow'>&quot;</span>", "", implode(" and ", $authors->pluck('getNameForProduct("{%First} {%M.} {%Last}")')))));
+                $bibtex['raw']['year'] = substr($this->getDate(), 0, 4);
+                $bibtex['raw']['month'] = date("M", strtotime($this->getDate()));
+                $bibtex['raw']['abstract'] = $this->getDescription();
+                
+                if($structure != null){
+                    foreach($structure['data'] as $dkey => $dfield){
+                        if(isset($dfield['bibtex']) && $dfield['bibtex'] != ""){
+                            $bibtex['raw'][$dfield['bibtex']] = $this->getData($dkey);
+                        }
+                    }
+                }
+                
+                $bib = new Bibliography();
+                $bib->m_entries[$key] = $bibtex;
+                return $bib->toBibTeX();
+            }
+        }
+        return "";
     }
     
     function exists(){

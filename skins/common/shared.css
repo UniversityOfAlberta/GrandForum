@@ -548,11 +548,6 @@ table.collapsed tr.collapsable {
 }
 
 /* success and error messages */
-.error,
-.warning,
-.success {
-	font-size: larger;
-}
 .error {
 	color: #cc0000;
 }

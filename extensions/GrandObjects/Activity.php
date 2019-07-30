@@ -2,6 +2,8 @@
 
 class Activity {
     
+    static $activityCache = array();
+    
     var $id;
     var $name;
     var $project;
@@ -14,10 +16,15 @@ class Activity {
      * @return Activity The Activity with the given id
      */
     function newFromId($id){
+        if(isset(self::$activityCache[$id])){
+            return self::$activityCache[$id];
+        }
         $data = DBFunctions::select(array('grand_activities'),
                                     array('*'),
                                     array('id' => EQ($id)));
-        return new Activity($data);
+        $activity = new Activity($data);
+        self::$activityCache[$id] = $activity;
+        return $activity;
     }
     
     /**

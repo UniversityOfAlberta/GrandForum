@@ -800,7 +800,7 @@
         
         <Product type="Patent" status="">
             <data>
-                <field label="Patent Number" type="String">number</field>
+                <field bibtex="number" label="Patent Number" type="String">number</field>
             </data>
         </Product>
         

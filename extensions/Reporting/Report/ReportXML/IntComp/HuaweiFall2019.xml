@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_FALL_2019" pdfType="RPTP_HUAWEI_FALL_2019" pdfFiles="HuaweiFall2019PDF" allowIdProjects="true" ajax="true" disabled="true">
+    <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PI">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PI-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" title="UofA-Huawei JIC Application (Fall 2019)" blobSection="PROP_DESC" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
+            <![CDATA[
+                <h3>Project Title:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" multiple="true">
+            <![CDATA[
+                <h3>Keywords:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail">
+            <![CDATA[
+                <h3>UoA Lead:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true">
+            <![CDATA[
+                <h3>Huawei Contact:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collaborators" type="MultiText" blobItem="COLLABORATORS" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" multiple="true">
+            <![CDATA[
+                <h3>Collaborators:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" limit="300" rich="true">
+            <![CDATA[
+                <h3>Executive Summary:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Proposal (4p free form):</h3>
+                Include:
+	            <ul>
+	                <li>Problem Statement</li>
+	                <li>Goals</li>
+	                <li>Related Research and Background</li>
+	                <li>Methodology</li>
+	            </ul>
+	            If you have any figures, uploaded them as a single pdf in the optional 'Attachment Upload' and reference them in your proposal.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h3>Attachment Upload (optional)</h3>
+                <p>Use the following upload box to upload a single <b>pdf</b> file</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Upload" blobItem="MILESTONES" blobType="BLOB_RAW" template="Huawei_Milestones.xls" structure="HUAWEI_MILESTONES">
+            <![CDATA[
+                <h3>Milestones</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/Huawei_Milestones.xls'>Milestones Template</a>
+                <ul>
+                    <li>Mark active milestone with an 'X'.</li>
+                    <li>When entering names of people, enter their full names (First Last).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>References (1p):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobItem="BUDGET" blobType="BLOB_RAW" template="Huawei_Budget.xlsx" structure="HUAWEI_BUDGET">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <b>Budget Justification</b>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Textarea" blobItem="BIOS" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Biosketches of the Team (2p free form):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" emails="{$my_email}" />
+    </ReportSection>
+</Report>

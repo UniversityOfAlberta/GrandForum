@@ -9,6 +9,7 @@ UML Diagram
 -----------
 
 .. image:: _images/report/ReportUML.png
+
 This diagram is a little out of date, but most of what is shown still exists.
 
 XML Structure
@@ -16,7 +17,7 @@ XML Structure
 
 Reports are defined in xml files.  The structure is fairly simple, however the number of possible combination of elements and their attributes can make it quite complex.  Here is a super simple example of what the structure typically looks like:
 
-.. code:: xml
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <Report name="" reportType="" pdfType="" pdfFiles="" ajax="true">
@@ -78,7 +79,9 @@ Variables & Functions
 The Report supports simple variable and functions replaces.  Variables will look like ``{$user_name}`` and will be replaced with context relevant text.  The ReportItemCallback.php file contains a list of all of the variables.
 
 Function calls can also be made to make the reports more dynamic.  A function call will look like ``{concat(STR1,STR2)}`` and will be replaced by the return value of the function call.  Functions behave similarily to a functional language like scheme.  So a nested function call might look like:
-::
+
+.. code-block:: xml
+
     {concat(STR1,
         {concat(STR2,
             {concat(STR3,STR4)}
@@ -86,7 +89,9 @@ Function calls can also be made to make the reports more dynamic.  A function ca
     )}
     
 State can also be stored by calling the ``{set(var,val)}`` function.  The state is stored in the parent ReportItemSet or ReportSection depending on which one is closest to the ReportItem.  The values can be retrieved using the ``{get(var)}`` function.  For example:
-::
+
+.. code-block:: xml
+
     {set(var1, Hello World)}
     
     {get(var1)}
@@ -101,3 +106,8 @@ PDFs are generated using the HTML -> PDF library `DomPDF`_.  The Reports will us
 There are some limitations with DomPDF which can sometimes cause problems.  Sometimes large tables will cause the generation to crash or timeout, so it is best to avoid large tables or at least make the font size in the tables small so that it takes up less space.  Also sometimes certain characters will not render correctly because of font or encoding settings.  The function ``replaceSpecial()`` in PDFGenerator.php largely helps with this issue, however it does not cover all possible characters and will probably need to be edited as other ones show up.  Pagination is also somewhat difficult to fully control.  Css attributes like ``page-break-after:always;`` or ``page-break-before:always;`` can be used to force pagebreaks, but these options are limited.
 
 .. _DomPDF: https://github.com/dompdf/dompdf
+
+Special Pages
+-------------
+
+There is a directory 'SpecialPages' in the Reporting extension which contains a folder for each of the possible network instances.  The folder should be named exactly the same as the networkName in the configuration.  Within theses directories will be a set of SpecialPages which will construct tabs for each of the reports.  At minimum there should be a Report.php and a DummyReport.php SpecialPage.  The DummyReport isn't a real SpecialPage, rather it will be used to handle a virtual Report, like for getting pdf files.  In the Report.php file, the tabs will be added using the TopLevelTabs and SubLevelTabs hooks.  Additional SpecialPages can be used as well to further organize certain types of Reports, or it could be used to show Review Tables etc.

@@ -973,6 +973,7 @@ div#person .ui-tabs-panel {
     border-radius: 10px;
     padding: 0;
     box-shadow: none;
+    border-bottom: 1px solid #AAA !important;
 }
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {

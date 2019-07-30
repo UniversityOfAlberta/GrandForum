@@ -40,11 +40,20 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Huawei")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Winter 2019)", "{$url}Huawei", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HuaweiFall2019")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Fall 2019)", "{$url}Huawei", $selected);*/
             
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC LOI (Winter 2019)", "{$url}LOI", $selected);
+            $projectId = 0;
+            do{
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOIFall2019") && ($_GET['project'] == $projectId || (!isset($_GET['project']) && $projectId == 0))) ? "selected" : false;
+                $tabName = ($projectId > 0) ? "[".($projectId+1)."]" : "JIC LOI (Fall 2019)&nbsp;&nbsp;&nbsp;[".($projectId+1)."]";
+                $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab($tabName, "{$url}LOIFall2019&project=$projectId", $selected);
+                
+                $report = new DummyReport("LOIFall2019", $person, ++$projectId, YEAR, true);
+            } while($report->hasStarted());
+
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOIFall2019") && ($_GET['project'] == $projectId)) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}LOIFall2019&project=$projectId", $selected);
         }
         
         return true;

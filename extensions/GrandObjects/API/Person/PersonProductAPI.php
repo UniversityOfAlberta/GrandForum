@@ -35,6 +35,12 @@ class PersonProductAPI extends RESTAPI {
                     $json[] = $array;
                 }
             }
+            if($this->getParam('bibtex') != ""){
+                header('Content-Type: text/plain');
+                $collection = new Collection($products);
+                echo implode("", $collection->pluck('toBibTeX()'));
+                exit;
+            }
             return json_encode($json);
         }
         else if($this->getParam(0) == "product"){

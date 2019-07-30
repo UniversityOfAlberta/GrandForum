@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" pdfFiles="HQPApplications/CSPCPDF" ajax="true" disabled="false" year="2019">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <h3>Background</h3>
+                <p>Delivering on the GlycoNet vision, to find solutions to important health issues and improve the quality of life of Canadians through glycomics, requires an understanding of how fundamental scientific discoveries are translated into health innovations and how these innovations can most positively impact the health and well-being of the nation. In order to introduce GlycoNet HQP to these concepts, the Network will sponsor two graduate students or postdoctoral fellows annually to attend the Canadian Science Policy Conference and then share their experience broadly with the GlycoNet community.</p>
+
+                <p>More information about the conference can be found on the CSPC website: <a target="_blank" href='https://sciencepolicyconference.ca/'>https://sciencepolicyconference.ca/</a></p>
+
+                <h3>Guidelines and Process</h3>
+                <ul>
+                    <li>This competition is open to graduate students and postdoctoral fellows supervised by GlycoNet Network investigators. Applicants do not need to currently be working on a GlycoNet-funded project.</li>
+                    <li>Applicants will submit an application through the GlycoNet Forum by the specified deadline (below).</li>
+                    <li>Applications will be reviewed by the Training Committee, and applicants notified of their application status by mid-October.</li>
+                    <li>Funding will support the travel, accommodation, and registration fee for the conference-only option. These reservations will be made by the GlycoNet administrative office directly. Meals outside of those supplied by the conference are not included. The gala dinner is not included.</li>
+                    <li>Award recipients must submit a blog article to the GlycoNet Communications Associate no later than December 15. In the article, the award recipient will reflect on their experience and what they learned as well as discuss what they found impactful about the conference and how it may influence their studies and career goals. These submissions will be shared publicly through the GlycoNet CuriOSEity blog. Articles must adhere to the blog quality standards requested by the Communications Associate.</li>
+                </ul>
+
+                <h3>Deadline</h3>
+                <p>Application deadline is <b>September 15th</b>. Network management will strive to notify successful applicants by mid-October.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
+        <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" sizes="125|125|150|150|100|100|125">
+            <![CDATA[
+                <h3>Applicant Information</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="project" type="Text" blobItem="PROJECT" blotType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td align="right"><b>GlycoNet Project (if applicable):</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow">
+            <![CDATA[
+                    <tr>
+                        <td valign="top" align="right" style="padding-top:3px;"><b>Academic Program/Status:</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attended" type="Radio" blobItem="ATTENDED" blotType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <tr>
+                        <td valign="top" align="right" style="padding-top:3px;"><b>Have you attended the CSPC before?:</b></td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
+            <![CDATA[
+                <h3>Description</h3>
+                <p>Describe why you are interested in participating in the CSPC, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="declaration" name="Applicant Declaration" type="EULA" blobSection="DECLARATION">
+        <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the declaration" no="No, I do not agree to the declaration">
+            <![CDATA[
+                <p>By submitting this CSPC Competition Application Form I agree with GlycoNet that:</p>
+                <ol>
+                    <li>the information contained in this form is true, complete, and accurate;</li>
+                    <li>I will immediately notify the GlycoNet Training Coordinator of any substantive changes to my program status or conflicts that may affect my participation in this program;</li>
+                    <li>I consent to being identified by name as a recipient of funding under the CSPC Competition program on the GlycoNet website and in GlycoNet publications.</li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you can submit your application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

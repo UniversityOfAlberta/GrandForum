@@ -22,7 +22,6 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
 
-
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ApplicationTabs');
 autoload_register('Reporting/Report/ReportSections');
@@ -51,6 +50,7 @@ abstract class AbstractReport extends SpecialPage {
     var $readOnly = false;
     var $topProjectOnly;
     var $generatePDF;
+    var $orientation;
     var $pdfType;
     var $pdfFiles;
     var $pdfAllProjects;
@@ -114,6 +114,7 @@ abstract class AbstractReport extends SpecialPage {
         $this->sectionPermissions = array();
         $this->topProjectOnly = $topProjectOnly;
         $this->pdfAllProjects = false;
+        $this->orientation = 'portrait';
         if(isset($_GET['person'])){
             $me = Person::newFromWgUser();
             $person = Person::newFromId($_GET['person']);
@@ -131,7 +132,7 @@ abstract class AbstractReport extends SpecialPage {
         if($projectName === false && isset($_GET['project'])){
             $projectName = $_GET['project'];
         }
-        if($projectName != null){
+        if($projectName !== null && $projectName !== false){
             if(is_numeric($projectName)){
                 $this->project = new Project(array());
                 $this->project->id = $projectName;
@@ -931,7 +932,7 @@ abstract class AbstractReport extends SpecialPage {
                         $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
                         $report->renderForPDF();
                         $data = "";
-                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report);
+                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report, false, $report->orientation);
                         $sto = new ReportStorage($this->person);
                         $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
                         if($project != null){
@@ -952,7 +953,7 @@ abstract class AbstractReport extends SpecialPage {
             $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
             $report->renderForPDF();
             $data = "";
-            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report);
+            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report, false, $report->orientation);
             if($preview){
                 exit;
             }

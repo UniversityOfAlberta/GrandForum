@@ -35,13 +35,16 @@ Extension Documentation
 .. toctree::
    :maxdepth: 2
 
+   annokicontrol
    grandobjects
+   cache
    project evolution
    messages
    backbonepage
    userinterface
    queryabletable
    report
+   crossforumexport
 
 .. _api-docs:
 

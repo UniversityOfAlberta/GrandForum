@@ -719,7 +719,7 @@
 
         <Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Number" type="String">number</field>
+                <field bibtex="number" label="Number" type="String">number</field>
             </data>
         </Artifact>
         

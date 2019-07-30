@@ -35,20 +35,25 @@
         </ReportItem>
         <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
             <![CDATA[
-                <h2>Product Development</h2>
-                <h3>How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
-                {$item}
+                <div style='display:none'>
+                    <h2>Product Development</h2>
+                    <h3>How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true" limit="300">
             <![CDATA[
-                <h3>How will the outcomes of your project eventually benefit the Canadian society?</h3>
-                {$item}
+                <div style='display:none'>
+                    <h3>How will the outcomes of your project eventually benefit the Canadian society?</h3>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="nProducts" blobItem="N_PRODUCTS" type="Integer" min="0" max="100" size="3">
             <![CDATA[
-                <p>How many products is your project developing?</p> {$item}
+                <br />
+                <p><b>How many products has your project developed?</b></p> {$item}
             ]]>
         </ReportItem>
         <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Product Type|Stage|PRL Level" types="Text|Select(Technology,Policy/Practice,Service)|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)" class="wikitable">
@@ -299,7 +304,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="pagebreak" type="PageBreak">
+        <!--ReportItem id="pagebreak" type="PageBreak">
             <![CDATA[
                 {$item}
             ]]>
@@ -530,7 +535,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
         <!-- Table 1 -->
@@ -648,7 +653,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="pagebreak" type="PageBreak">
+        <!--ReportItem id="pagebreak" type="PageBreak">
             <![CDATA[
                 {$item}
             ]]>
@@ -765,7 +770,7 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge &amp; Technology Exchange and Exploitation" name="KTEE" title="Knowledge &amp; Technology Exchange and Exploitation">
         <!-- Table 1 -->
@@ -931,7 +936,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="pagebreak" type="PageBreak">
+        <!--ReportItem id="pagebreak" type="PageBreak">
             <![CDATA[
                 {$item}
             ]]>
@@ -1096,7 +1101,7 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" tooltip="HQP Training" name="HQP Training">
         <!-- Table 1 -->
@@ -1178,7 +1183,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="pagebreak" type="PageBreak">
+        <!--ReportItem id="pagebreak" type="PageBreak">
             <![CDATA[
                 {$item}
             ]]>
@@ -1259,25 +1264,41 @@
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
-    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies" pagebreak="false">
+    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Next Steps" name="PRL Justifications" title="PRL Justifications &amp; Next Steps" pagebreak="false">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
-                <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.</h3>
+                <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why.</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" limit="500">
+        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" optional="true" limit="500">
             <![CDATA[
-                <h3>Which PRL level do you expect to be at in one year from now?</h3>
+                <div style='display:none;'>
+                    <h3>Which PRL level do you expect to be at in one year from now?</h3>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+            <![CDATA[
+                <h3>What are the next steps for your project and developed products? Describe how you will leverage AGE-WELL activities moving forward. Will you apply for outside funding? Will you apply for AGE-WELL funding, if renewed? What kind of funding will you need to advance your product?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
+        <ReportItem id="learned" type="Textarea" blobItem="LEARNED" rich="true">
             <![CDATA[
-                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas.</h3>
+                <h3>AGE-WELL’s Core Research Program is a set of integrated, long-term research projects that are the cornerstone of the Network’s activities. What has your team learned over the past 4.5 years that you wish you had known in your first year? What knowledge have you learned that you would pass on to future CRP AGE-WELL researchers, if renewed? </h3>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="500">
+            <![CDATA[
+                <div style='display:none;'>
+                    <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas.</h3>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
     </ReportSection>

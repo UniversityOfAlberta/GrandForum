@@ -26,16 +26,21 @@ database (dbName), then you are ready to start installing the forum.
 Before installing the forum, you will need to first install some symfony libraries.
 To do this, cd into the symfony/ directory and then run the install.sh script:
 
-.. code:: bash
+.. code-block:: bash
 
     $ cd symfony/
     $ ./install.sh
+
+You should also install some other system packages like pdftk, php-mbstring, php-mcrypt.  
+The Forum also uses APC (Alternative PHP Cache) as an opcode and general cache to improve 
+the performance.  It isn't required, but for larger installations can make a big difference 
+(PHP 5.x only).
 
 Once the symfony libraries are installed, you can begin to install the forum.
 To install the forum, you should first cd into maintenance/install, then
 run install.php. 
 
-.. code:: bash
+.. code-block:: bash
 
     $ cd maintenance/install
     $ php install.php

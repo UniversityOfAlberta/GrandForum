@@ -90,7 +90,7 @@ class HQPEpicTab extends AbstractEditableTab {
     </li>
     <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
-        $this->html .= "<table class='wikitable'>
+        $this->html .= "<table class='wikitable' style='border: 1px !important;'>
             <tr>
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (Doctoral)</th>
             </tr>
@@ -171,7 +171,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     </li>
     <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
-        $this->html .= "<table class='wikitable'>
+        $this->html .= "<table class='wikitable' style='border: 1px !important;'>
             <tr>
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (Post-Doctoral Fellows)</th>
             </tr>
@@ -252,7 +252,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     </li>
     <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
-        $this->html .= "<table class='wikitable'>
+        $this->html .= "<table class='wikitable' style='border: 1px !important;'>
             <tr>
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (Master's)</th>
             </tr>
@@ -324,7 +324,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     </li>
     <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
-        $this->html .= "<table class='wikitable'>
+        $this->html .= "<table class='wikitable' style='border: 1px !important;'>
             <tr>
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (Affiliate HQP)</th>
             </tr>
@@ -396,7 +396,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     </li>
     <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
-        $this->html .= "<table class='wikitable'>
+        $this->html .= "<table class='wikitable' style='border: 1px !important;'>
             <tr>
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (WP/CC Funded HQP)</th>
             </tr>
@@ -568,6 +568,8 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
         $user = Person::newFromName("Pam.Borghardt");
         Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
         $user = Person::newFromName("Bridgette.Murphy");
+        Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
+        $user = Person::newFromName("Emeline.Janigan");
         Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
         DBFunctions::commit();
         header("Location: {$this->person->getUrl()}?tab=epic");

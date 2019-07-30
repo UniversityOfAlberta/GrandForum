@@ -18,7 +18,7 @@ Usage
 A class must first extend the QueryableTable class, and implement the
 following methods:
 
-.. code:: php
+.. code-block:: php
 
     abstract static function union_tables($tables);
 
@@ -26,7 +26,7 @@ following methods:
 
 in most cases, the implementation should look something like this:
 
-.. code:: php
+.. code-block:: php
 
     class MyQueryableTable extends QueryableTable {
 
@@ -47,7 +47,7 @@ a constructor to populate any data, rather it is the responsibility for
 the subclass to create constructors. A typical implementation might look
 something like this:
 
-.. code:: php
+.. code-block:: php
 
     function MyQueryableTable($structure, $matrix){
         global $myQueryableTableStructures;
@@ -90,14 +90,14 @@ Ok so that probably looks sort of confusing, but all that is happening is it is 
 
 Once the constructor is in place, you can create a new instance like this:
 
-.. code:: php
+.. code-block:: php
 
     $table = new MyQueryableTable(MY_STRUCTURE, $data);
     echo $table->render();
     
 Now you might be wondering where that MY_STRUCTURE comes from. That is a constant which would be used to define a specific structure for a table. An example would be something like this:
 
-.. code:: php
+.. code-block:: php
 
     global $myQueryableTableStructures = array();
     define('MY_STRUCTURE', 1);
@@ -109,7 +109,7 @@ Now you might be wondering where that MY_STRUCTURE comes from. That is a constan
         
 READ, HEAD etc. are all pre-defined Cell types. You can define your own cells by subclassing the abstract class Cell, and then defining them like this:
 
-.. code:: php
+.. code-block:: php
 
     global $cellTypes;
     define('MY_CELL', 1000);
@@ -122,7 +122,7 @@ Just like you would with a database table, you can also run queries on a Queryab
 
 Suppose we are using a QueryableTable with the same structure as mentioned above, and our data looks like the following:
 
-.. code:: php
+.. code-block:: php
 
     $data = array(array("Channel1", "Channel2", "Channel3", "Channel4"),
                   array("Red", "Green", "Blue", "Alpha"),
@@ -136,13 +136,13 @@ The render methods returns an html representation of the table. An optional para
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function render($sortable=false);
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->render();
     
@@ -157,13 +157,13 @@ Copy is a very important method. Typically it will be used before you do any que
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function copy();
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->render();
     
@@ -178,13 +178,13 @@ Select applies a projection on the columns of the table. It will select columns 
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function select($key, $values=array());
    
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->select(HEAD, array("Channel1"))->render();
     
@@ -201,13 +201,13 @@ Where applies a selection to the rows of the table. It will select the rows with
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function where($key, $values=array());
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->where(HEAD, array("Channel1"))->render();
     
@@ -222,13 +222,13 @@ Filtercols removes the columns which have a cell of type $key, and whose value i
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function filterCols($key, $values=array());
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->filterCols(HEAD, array("Channel1"))->render();
     
@@ -243,13 +243,13 @@ Filter removes the row which have a cell of type $key, and whose value is equal 
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function filter($key, $values=array());
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->filter(HEAD, array("Channel1"))->render();
     
@@ -264,13 +264,13 @@ Limit will only show $amount number of rows, starting from $start
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function limit($start, $amount);
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->limit(0,2)->render();
     
@@ -285,13 +285,13 @@ LimitCols will only show $amount number of columns, starting from $start
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
     
     function limitCols($start, $amount);
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->limitCols(0,2)->render();
     
@@ -302,13 +302,13 @@ Transpose flips the rows and columns in the table.
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function transpose();
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->transpose()->render();
     
@@ -323,13 +323,13 @@ Counts the number of cells in the table, and returns a single celled table with 
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function count();
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->count()->render();
     
@@ -344,13 +344,13 @@ Concatenates all the cell values in the table, and returns a single celled table
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function concat();
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->concat()->render();
     
@@ -365,13 +365,13 @@ Rasterize will transform all cells into simpler cell types. In most cases the ce
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function rasterize();
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->rasterize()->render();
     
@@ -386,13 +386,13 @@ Join can be used to join two tables together side by side. If there is a differe
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function join($table);
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->join($table->copy())->render();
     
@@ -407,13 +407,13 @@ Union can be used to join two tables together one on top of the other. If there 
 
 **Signature**
 
-.. code:: php
+.. code-block:: php
 
     function union($table);
     
 **Usage**
 
-.. code:: php
+.. code-block:: php
 
     echo $table->copy()->union($table->copy())->render();
     

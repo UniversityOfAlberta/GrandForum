@@ -1361,25 +1361,63 @@ EOF;
             }
             
             switch ($pub->getType()) {
-                case 'Book':
-                case 'Book Chapter':
-                case 'Collections Paper':
-                case 'Proceedings Paper':
-                    $dissem["a2".$key][] = $pub;
-                    break;
+                // A1: Articles in refereed publications
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    $dissem["a1".$key][] = $pub;
+                    if($pub->getData('peer_reviewed') == "Yes"){
+                        $dissem["a1".$key][] = $pub;
+                    }
+                    else{
+                        $dissem["b".$key][] = $pub;
+                    }
                     break;
-                case 'Masters Thesis':
-                case 'PhD Thesis':
-                case 'Tech Report':
+                // A2: Other refereed contributions
+                case 'Book':
+                case 'Book Chapter':
+                case 'Edited Book':
+                case 'Collections Paper':
+                case 'Conference Paper':
+                case 'Proceedings Paper':
+                    if($pub->getData('peer_reviewed') == "Yes"){
+                        $dissem["a2".$key][] = $pub;
+                    }
+                    else{
+                        $dissem["b".$key][] = $pub;
+                    }
+                    break;
+                // B: Non-refereed contributions
                 case 'Misc':
                 case 'Poster':
+                case 'Book Review':
+                case 'Review Article':
+                case 'Invited Presentation':
                 default:
-                    $dissem["b".$key][] = $pub;
+                    if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
+                            if($pub->getCategory() == "Publication" ||
+                               $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
+                               ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
+                            $dissem["b".$key][] = $pub;
+                        }
+                    }
+                    break;
+                // C: Specialized Publications
+                case 'Bachelors Thesis':
+                case 'Masters Thesis':
+                case 'Masters Dissertation':
+                case 'PHD Thesis':
+                case 'PHD Dissertation':
+                case 'Tech Report':
+                case 'Abstract':
+                case 'Journal Abstract':
+                case 'Conference Abstract':
+                case 'White Paper':
+                case 'Symposium Record':
+                case 'Industrial Report':
+                case 'Internal Report':
+                case 'Manual':
+                    $dissem["c".$key][] = $pub;   
+                    break;
             }
-            //break;
         }
         
         $n_a1_r1 = count($dissem['a1_r1']);
@@ -1754,18 +1792,43 @@ EOF;
             }
             switch ($pub->getType()) {
                 // A1: Articles in refereed publications
+                case 'Journal Paper':
+                case 'Magazine/Newspaper Article':
+                    if($pub->getData('peer_reviewed') == "Yes"){
+                        $pub_count["a1"][] = $pub;
+                    }
+                    else{
+                        $pub_count["b"][] = $pub;
+                    }
+                    break;
+                // A2: Other refereed contributions
                 case 'Book':
                 case 'Book Chapter':
                 case 'Edited Book':
                 case 'Collections Paper':
                 case 'Conference Paper':
                 case 'Proceedings Paper':
-                    $pub_count["a2"][] = $pub;
+                    if($pub->getData('peer_reviewed') == "Yes"){
+                        $pub_count["a2"][] = $pub;
+                    }
+                    else{
+                        $pub_count["b"][] = $pub;
+                    }
                     break;
-                // A2: Other refereed contributions
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    $pub_count["a1"][] = $pub;
+                // B: Non-refereed contributions
+                case 'Misc':
+                case 'Poster':
+                case 'Book Review':
+                case 'Review Article':
+                case 'Invited Presentation':
+                default:
+                    if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
+                        if($pub->getCategory() == "Publication" ||
+                           $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
+                           ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
+                            $pub_count["b"][] = $pub;
+                        }
+                    }
                     break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
@@ -1784,13 +1847,6 @@ EOF;
                 case 'Manual':
                     $pub_count["c"][] = $pub;   
                     break;
-                // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
-                case 'Review Article':
-                default:
-                    $pub_count["b"][] = $pub;
             }
         }
         

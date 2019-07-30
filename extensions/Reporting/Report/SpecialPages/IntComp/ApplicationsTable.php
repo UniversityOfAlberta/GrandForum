@@ -150,7 +150,7 @@ class ApplicationsTable extends SpecialPage{
         $secondary_other->setId("secondary_other");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title, 
+        $tab1 = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title, 
                                                                                          'Duration' => $duration,
                                                                                          'Budget ($K)' => $budget,
                                                                                          'PI' => $pi,
@@ -159,8 +159,20 @@ class ApplicationsTable extends SpecialPage{
                                                                                          'Primary (Other)' => $primary_other,
                                                                                          'Secondary' => $secondary,
                                                                                          'Secondary (Other)' => $secondary_other));
-        $tab->idProjectRange = array(0,1);
-        $tabbedPage->addTab($tab);
+        $tab1->idProjectRange = array(0,1);
+        
+        $tab2 = new ApplicationTab('RP_LOI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title, 
+                                                                                                  'Duration' => $duration,
+                                                                                                  'Budget ($K)' => $budget,
+                                                                                                  'PI' => $pi,
+                                                                                                  'Contact' => $contact,
+                                                                                                  'Primary' => $primary,
+                                                                                                  'Secondary' => $secondary));
+        $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
+        
+        $tabbedPage->addTab($tab2);
+        $tabbedPage->addTab($tab1);
+        
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

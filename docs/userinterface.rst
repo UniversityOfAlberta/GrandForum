@@ -20,7 +20,7 @@ If an error is found in the validate() function, it is displayed to the UI and f
 Example
 -------
 
-.. code:: php
+.. code-block:: php
 
     function createForm(){
         global $wgRoles, $wgUser;

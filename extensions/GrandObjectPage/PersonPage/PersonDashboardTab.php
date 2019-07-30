@@ -9,6 +9,10 @@ class PersonDashboardTab extends AbstractEditableTab {
         parent::AbstractTab("Dashboard");
         $this->person = $person;
         $this->visibility = $visibility;
+        if(isset($_GET['showDashboard'])){
+            echo $this->showDashboard($this->person, $this->visibility);
+            exit;
+        }
     }
     
     function tabSelect(){
@@ -50,9 +54,12 @@ class PersonDashboardTab extends AbstractEditableTab {
             $amount = 5;
         }
         $this->showTopProducts($this->person, $this->visibility, $amount);
-        $this->showDashboard($this->person, $this->visibility);
+        $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
         if($me->isLoggedIn()){
             $this->html .= "<script type='text/javascript'>
+                $.get('{$this->person->getUrl()}?showDashboard', function(response){
+                $('#ajax_dashboard').html(response);
+            });
             _.defer(function(){
                 $('button[value=\"Edit Dashboard\"]').css('display', 'none');
             });</script>";
@@ -66,8 +73,11 @@ class PersonDashboardTab extends AbstractEditableTab {
             $amount = 5;
         }
         $this->showEditTopProducts($this->person, $this->visibility, $amount);
-        $this->showDashboard($this->person, $this->visibility);
+        $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
         $this->html .= "<script type='text/javascript'>
+            $.get('{$this->person->getUrl()}?showDashboard', function(response){
+                $('#ajax_dashboard').html(response);
+            });
             _.defer(function(){
                 $('select.chosen:visible').chosen();
                 $('select.chosen').each(function(i, el){
@@ -224,6 +234,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     function showDashboard($person, $visibility){
         global $wgUser;
+        $html = "";
         if($wgUser->isLoggedIn()){
             $dashboard = null;
             $me = Person::newFromId($wgUser->getId());
@@ -241,10 +252,10 @@ class PersonDashboardTab extends AbstractEditableTab {
                 $dashboard = new DashboardTable(HQP_PUBLIC_PROFILE_STRUCTURE, $person);
             }
             if($dashboard != null){
-                $this->html .= "<h2>Dashboard</h2>";
-                $this->html .= $dashboard->render(false, $visibility['isMe']);
+                $html .= "<h2>Dashboard</h2>";
+                $html .= $dashboard->render(false, $visibility['isMe']);
             }
-            $this->html .= "<script type='text/javascript'>
+            $html .= "<script type='text/javascript'>
                 var completedRows = $('table.dashboard td:contains((Completed))').parent();
                 completedRows.hide();
                 if(completedRows.length > 0){
@@ -264,6 +275,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                 }
             </script>";
         }
+        return $html;
     }
 }
 ?>

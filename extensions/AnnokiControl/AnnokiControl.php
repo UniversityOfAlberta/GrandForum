@@ -122,17 +122,14 @@ $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
 
-$egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
-                                             'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
-
-$egAnnokiExtensions['Solr'] = array('name' => 'Solr',
-                                    'path' => "$IP/extensions/Solr/Solr.php");
-
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
+                                         
+$egAnnokiExtensions['CrossForumExport'] = array('name' => 'CrossForumExport', 
+                                                'path' => "$IP/extensions/CrossForumExport/CrossForumExport.php");
                                          
 $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue', 
                                            'path' => "$IP/extensions/ReportIssue/ReportIssue.php");

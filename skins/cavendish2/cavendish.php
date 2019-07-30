@@ -84,7 +84,6 @@ class CavendishTemplate2 extends QuickTemplate {
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/jquery.tagit.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/tagit.ui-zendesk.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/cavendish2/jquery.dropdown.css" rel="Stylesheet" />
-		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish2/highlights.css.php" />
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/skins/markitup/style.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/style.css" />
@@ -113,8 +112,7 @@ class CavendishTemplate2 extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.md5.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.reallyvisible.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>   
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>  
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/plugins/natural.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
@@ -743,7 +741,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 $branch = @$output[1];
                 $revIdFull = "<a title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
                 $branchFull = "<a title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
-                $docs = "<a title='docs' target='_blank' href='http://ssrg5.cs.ualberta.ca/rtd/docs/grand-forum/en/latest/'>Docs</a>";
+                $docs = "<a title='docs' target='_blank' href='https://grand-forum.readthedocs.io/en/latest/'>Docs</a>";
                 
                 if(strstr($wgScriptPath, "staging") !== false){
                     echo "<div style='position:absolute;top:15px;left:525px;' class='highlightsBackground2'>
@@ -915,7 +913,6 @@ class CavendishTemplate2 extends QuickTemplate {
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
-	<div id="recordDiv"></div>
 </div><!-- end of the CONTAINER div -->
 <?php echo wfReportTimeOld(); ?>
 
