@@ -94,7 +94,11 @@ class NewsPosting extends BackboneModel {
     }
     
     function getTranslatedId(){
-        return $this->translatedId;
+        $news = NewsPosting::newFromId($this->translatedId);
+        if($news->isAllowedToView() && !$news->isDeleted()){
+            return $this->translatedId;
+        }
+        return 0;
     }
     
     function getUserId(){
