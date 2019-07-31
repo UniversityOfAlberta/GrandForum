@@ -34,8 +34,9 @@ foreach($lines as $line){
         if($person == null || $person->getId() == ""){
             $person = Person::newFromName($username);
         }
-        /*
-        if($person == null || $person->getId() == ""){
+        // --------------------------UNCOMMENT THIS TO CREATE USERS-------------------//
+/*
+	if($person == null || $person->getId() == ""){
             // Create New User
             User::createNew($username, array('real_name' => "$first $last", 
                                              'password' => User::crypt(mt_rand()), 
@@ -99,9 +100,10 @@ foreach($lines as $line){
                     $leadership->doPOST();
                 }
             }
-        }*/
-        
-        // Now Send the Email
+        }
+        //-----------------------COMMENT ENDS HERE------------------------------//
+*/	
+	// Now Send the Email
         $token = $person->getUser()->getToken();
         $deleteUrl = "https://forum.cscan-infocan.ca/index.php?action=deleteUser&user={$token}";
         if($person->getUser()->getEmailAuthenticationTimestamp() != ""){
@@ -139,9 +141,8 @@ Si vous avez des questions (ou si vous ne souhaitez pas créer de compte utilisa
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type: text/html; charset=utf-8';
         $headers[] = 'From: CS-CAN Forum <support@forum.cscan-infocan.ca>';
-        //mail("dwt@ualberta.ca", "CS-CAN Forum Account", $message, implode("\r\n", $headers));
+        // UNCOMMENT THIS TO SEND EMAILS
         //mail($person->getEmail(), "CS-CAN Forum Account", $message, implode("\r\n", $headers));
-        //exit;
     }
 }
 
