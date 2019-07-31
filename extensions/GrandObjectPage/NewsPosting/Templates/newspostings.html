@@ -1,0 +1,42 @@
+<% if(isAllowedToCreateNewsPostings){ %>
+    <a href="#/new" class="button" id="add">Create a News Ad</a><br /><br />
+<% } %>
+<table id="newspostings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="5%" style="white-space: nowrap;">Posting Date</th>
+            <th width="5%" style="white-space: nowrap;">Language</th>
+            <th width="25%">Author</th>
+            <th width="64%">Posting</th>
+            <% if(isAllowedToCreateNewsPostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(news){ %>
+            <tr>
+                <td align="center">
+                    <%= news.get('postedDate') %>
+                </td>
+                <td align="center">
+                    <%= news.get('language') %>
+                </td>
+                <td>
+                    <%= news.get('author') %>
+                </td>
+                <td>
+                    <a href="<%= news.get('url') %>" ><%= news.get('title') %></a>
+                </td>
+                <% if(isAllowedToCreateNewsPostings){ %>
+                    <td align="center">
+                        <% if(news.get('isAllowedToEdit')){ %>
+                            <span id="<%= news.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New News Posting"></div>

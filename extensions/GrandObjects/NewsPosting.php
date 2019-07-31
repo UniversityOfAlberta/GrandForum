@@ -118,7 +118,7 @@ class NewsPosting extends BackboneModel {
     }
     
     function getPostedDate(){
-        return $this->postedDate;
+        return substr($this->postedDate, 0, 10);
     }
     
     function getSummary(){
@@ -133,8 +133,22 @@ class NewsPosting extends BackboneModel {
         return $this->sourceName;
     }
     
+    function getSourceLink(){
+        return $this->sourceLink;
+    }
+    
     function getImage(){
         return $this->image;
+    }
+    
+    function getImageUrl(){
+        global $wgServer, $wgScriptPath;
+        $image = $this->getImage();
+        if($image != ""){
+            $md5 = md5($this->getImage());
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.newsposting/{$this->getId()}/image&$md5";
+        }
+        return "";
     }
     
     function getImageCaption(){
@@ -185,11 +199,6 @@ class NewsPosting extends BackboneModel {
     
     function toArray(){
         global $wgUser;
-        $project = null;
-        $proj = $this->getProject();
-        if($proj != null){
-            $project = $proj->toArray();
-        }
         $json = array('id' => $this->getId(),
                       'translatedId' => $this->getTranslatedId(),
                       'userId' => $this->getUserId(),
@@ -202,7 +211,7 @@ class NewsPosting extends BackboneModel {
                       'author' => $this->getAuthor(),
                       'sourceName' => $this->getSourceName(),
                       'sourceLink' => $this->getSourceLink(),
-                      'image' => $this->getImage(),
+                      'image' => $this->getImageUrl(),
                       'imageCaption' => $this->getImageCaption(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
@@ -232,6 +241,11 @@ class NewsPosting extends BackboneModel {
                                                 'deleted' => $this->deleted));
             if($status){
                 $this->id = DBFunctions::insertId();
+                if($this->translatedId != 0){
+                    DBFunctions::update('grand_news_postings',
+                                        array('translated_id' => $this->id),
+                                        array('id' => $this->translatedId));
+                }
             }
             return $status;
         }
@@ -266,8 +280,8 @@ class NewsPosting extends BackboneModel {
     function delete(){
         if($this->isAllowedToEdit()){
             $status = DBFunctions::update('grand_news_postings',
-                                array('deleted' => 1),
-                                array('id' => $this->id));
+                                          array('deleted' => 1),
+                                          array('id' => $this->id));
             if($status){
                 $this->deleted = true;
             }

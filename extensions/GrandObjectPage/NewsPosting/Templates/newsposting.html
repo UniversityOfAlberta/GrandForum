@@ -1,0 +1,53 @@
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:NewsPostingPage#" style="float: right;">Back to News Postings</a>
+<div>
+    <table>
+        <tr>
+            <td class="label">Visibility:</td>
+            <td><%= visibility %></td>
+        </tr>
+        <% if(translatedId != 0 && this.translated.get('language') != ""){ %>
+            <tr>
+                <td class="label">Translated:</td>
+                <td><a href="<%= this.translated.get('url') %>"><%= this.translated.get('language') %></a></td>
+            </tr>
+        <% } %>
+        <% if(articleLink != ""){ %>
+            <tr>
+                <td class="label">Article Link:</td>
+                <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
+            </tr>
+        <% } %>
+        <tr>
+            <td class="label">Posted:</td>
+            <td><%= postedDate %></td>
+        </tr>
+        <tr>
+            <td class="label">Author:</td>
+            <td><%= author %></td>
+        </tr>
+        <% if(sourceLink != "" && sourceName != ""){ %>
+            <tr>
+                <td class="label">Source Link:</td>
+                <td><a href="<%= sourceLink %>" target="_blank"><%= sourceName %></a></td>
+            </tr>
+        <% } %>
+        <% if(image != ""){ %>
+            <tr>
+                <td class="label">Image:</td>
+                <td align="center"><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-height: 200px; max-width: 300px;" /></a><br /><%= imageCaption %></td>
+            </tr>
+        <% } %>
+        <% if(visibility == "Publish"){ %>
+            <tr>
+                <td class="label"><a href="<%= this.model.getWebsiteUrl() %>" target="_blank">Website Page</a></td>
+                <td></td>
+            </tr>
+        <% } %>
+    </table>
+    <h3>Summary</h3>
+    <%= nl2br(summary) %>
+</div>
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='editNewsPosting'>Edit News Posting</button>&nbsp;<button id='deleteNewsPosting'>Delete News Posting</button>
+<% } %>
