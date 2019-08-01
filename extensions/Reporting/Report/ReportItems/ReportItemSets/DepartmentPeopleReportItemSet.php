@@ -31,6 +31,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Dean should not be in recommendations
                     continue;
                 }
+                if($me->isRoleDuring(IAC, $start, $end) && ($person->isRoleDuring(ISAC, $start, $end) || $person->isRole(ISAC))){
+                    // EA should not get to see Chair's Information
+                    continue;
+                }
                 if(($person->isRoleDuring(ISAC, $start, $end) || $person->isRole(ISAC)) && !$person->isSubRole("CR")){
                     // Chairs should not show up, unless they have an explicit Chair's Recommendation
                     continue;
