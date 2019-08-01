@@ -3372,20 +3372,23 @@ class Person extends BackboneModel {
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
      * @param string $access Whether to include 'Forum' or 'Public' access
      * @param string $exclude Whether or not to obey exclusion
+     * @param boolean $nested Whether this was called recursively (so as not to keep checking HQP of HQP etc.
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
-    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum', $exclude=true){
+    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum', $exclude=true, $nested=false){
         $me = Person::newFromWgUser();
         self::generateAuthorshipCache($this->id);
         $processed = array();
         $papersArray = array();
         $papers = array();
-        foreach($this->getHQP($history, true) as $hqp){
-            $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access);
-            foreach($ps as $p){
-                if(!isset($processed[$p->getId()])){
-                    $processed[$p->getId()] = true;
-                    $papersArray[] = $p;
+        if(!$nested){
+            foreach($this->getHQP($history, true) as $hqp){
+                $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access, true, true);
+                foreach($ps as $p){
+                    if(!isset($processed[$p->getId()])){
+                        $processed[$p->getId()] = true;
+                        $papersArray[] = $p;
+                    }
                 }
             }
         }
