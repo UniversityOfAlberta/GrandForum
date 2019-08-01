@@ -983,8 +983,10 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
+                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <script type='text/javascript'>
+                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 100px;background:white;'>{getExtra()} / {$user_name}</div>");
+                                </script>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -998,6 +1000,19 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
@@ -1112,8 +1127,10 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
+                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <script type='text/javascript'>
+                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 100px;background:white;'>{getExtra()} / {$user_name}</div>");
+                                </script>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -1127,6 +1144,19 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
@@ -1241,8 +1271,10 @@
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
                             <![CDATA[
-                                <div style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <div class="pdfnodisplay" style="position:absolute;top:0;right:0;padding: 20px 20px 0 50px;background:white;">{getExtra()} / {$user_name}</div>
+                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                                <script type='text/javascript'>
+                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 100px;background:white;'>{getExtra()} / {$user_name}</div>");
+                                </script>
                             ]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -1256,6 +1288,19 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
