@@ -11,6 +11,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $includeDeansPeople = (strtolower($this->getAttr("includeDeansPeople", "false")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        $me = Person::newFromWgUser();
 
         foreach($allPeople as $person){
             $found = false;
@@ -23,9 +24,19 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                ($person->isInDepartment($dept, $uni, $start, $end) && $person->getFECType($end) != "") || 
                ($found)){
                 if($excludeMe && $person->isMe()){
+                    // Should not see themselves in recommendations
                     continue;
                 }
-                if($person->isRoleDuring(DEAN, $start, $end) || $person->isSubRole("VPR")){
+                if($person->isRoleDuring(DEAN, $start, $end) || $person->isRole(DEAN) || $person->isSubRole("VPR")){
+                    // Dean should not be in recommendations
+                    continue;
+                }
+                if(($person->isRoleDuring(ISAC, $start, $end) || $person->isRole(ISAC)) && !$person->isSubRole("CR")){
+                    // Chairs should not show up, unless they have an explicit Chair's Recommendation
+                    continue;
+                }
+                if($me->isRoleDuring(ISAC, $start, $end) && !$me->isRole(ISAC) && !$person->isSubRole("CR")){
+                    // Previous Chair should not see any people except for those who have an explicit Chair's Recommendation
                     continue;
                 }
                 $fecType = $person->getFECType($end);

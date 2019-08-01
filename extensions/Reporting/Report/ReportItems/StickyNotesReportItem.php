@@ -115,6 +115,9 @@ class StickyNotesReportItem extends AbstractReportItem {
             <script type='text/javascript'>
                 $.get('$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&html', function(response){
                     var stickies = ".json_encode($this->getBlobValue()).";
+                    if(stickies == null){
+                        stickies = new Array();
+                    }
                     sticky(response, '{$this->getPostId()}', stickies); 
                 });
             </script>";
@@ -126,7 +129,7 @@ class StickyNotesReportItem extends AbstractReportItem {
 	
 	function renderForPDF(){
 	    global $wgOut;
-	    $wgOut->addHTML($this->processCData(""));
+	    //$wgOut->addHTML($this->processCData(""));
 	}
 }
 
