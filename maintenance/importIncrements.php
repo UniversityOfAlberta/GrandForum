@@ -3,7 +3,7 @@
     require_once('commandLine.inc');
     global $wgUser;
     
-    $increments = explode("\n", file_get_contents("Increments.csv"));
+    $increments = explode("\n", file_get_contents("salaries.csv"));
     
     foreach($increments as $increment){
         $cells = str_getcsv($increment);
@@ -27,8 +27,8 @@
                 $incs[2017] = $cells[7];
                 $reas[2017] = $cells[8];
                 */
-                $incs[2018] = $cells[9];
-                $reas[2018] = $cells[10];
+                $incs[2018] = $cells[6];
+                $reas[2018] = $cells[7];
                 
                 foreach($incs as $year => $inc){
                     $inc = @number_format($inc, 2);
