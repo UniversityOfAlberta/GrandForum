@@ -234,7 +234,7 @@ class IndexTable {
             $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
         }
         if($me->isRoleAtLeast(ADMIN)){
-            $idHeader = "<th>Project Id</th>";
+            $idHeader = "<th>Committee Id</th>";
         }
         $data = Project::getAllProjectsEver();
         $wgOut->addHTML("

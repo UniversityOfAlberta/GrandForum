@@ -91,6 +91,8 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
+
+                /*
                 if($config->getValue('projectLongDescription')){
                     if($config->getValue('networkName') == "FES"){
                         $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
@@ -124,6 +126,7 @@ class ProjectPage {
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
                 }
+                */
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
