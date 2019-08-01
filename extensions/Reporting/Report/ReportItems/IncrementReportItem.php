@@ -44,35 +44,35 @@ class IncrementReportItem extends SelectReportItem {
 	            break;
 	    }
 	    
-	    $salary = $person->getSalary($this->getReport()->year-1);
+	    $salary = $person->getSalary($this->getReport()->year);
 	    $increment = "0A";
         $maxSalary = 0;
         switch($fecType){
 	        default:
 	        case "A1":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'assist');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'assist');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'assist');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'assist');
                 break;
 	        case "B1":
 	        case "B2":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'assoc');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'assoc');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'assoc');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'assoc');
                 break;
 	        case "C1":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'prof');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'prof');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'prof');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'prof');
                 break;
 	        case "D1":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso2');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso2');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'fso2');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'fso2');
                 break;
 	        case "E1":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso3');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso3');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'fso3');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'fso3');
                 break;
 	        case "F1":
-	            $increment = Person::getSalaryIncrement($this->getReport()->year-1, 'fso4');
-                $maxSalary = Person::getMaxSalary($this->getReport()->year-1, 'fso4');
+	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'fso4');
+                $maxSalary = Person::getMaxSalary($this->getReport()->year, 'fso4');
                 break;
 	    }
         if($increment > 0 && $maxSalary > 0){
@@ -105,7 +105,7 @@ class IncrementReportItem extends SelectReportItem {
 	                        <th>FEC Year</th>
 	                        <th>Increment</th>
 	                    </tr>";
-	    for($year=$this->getReport()->year-1; $year >= $this->getReport()->year - 6; $year--){
+	    for($year=$this->getReport()->year; $year >= $this->getReport()->year - 6; $year--){
 	        $popup .= "<tr>
 	            <td align='center'>{$year}</td>
 	            <td align='center' class='increment{$year}'>{$person->getIncrement($year)}</td>

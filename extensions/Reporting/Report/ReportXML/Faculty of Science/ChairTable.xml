@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="true">
+<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <!--Role role="ISAC">
+        <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -40,8 +40,8 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role-->
-        <Role role="ISAC">
+        </Role>
+        <!--Role role="ISAC">
             <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
@@ -80,7 +80,7 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="dept_publications" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role>
+        </Role-->
         <!-- Chemistry -->
         <!--Person id="352">
             <SectionPermission id="evaluations" permissions="rw" />
