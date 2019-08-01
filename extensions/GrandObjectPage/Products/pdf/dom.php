@@ -8,11 +8,13 @@ use Dompdf\Dompdf;
 
 // instantiate and use the dompdf class
 $dompdf = new Dompdf();
+
+//Format the item date in the header
 $formatDate = date('M d, Y',strtotime($_POST['date']));
+
+// Set the checkboxes
 $approval = ($_POST['action_requested'] == 'Approval')? ☒ : ☐ ;
 $recommendation = ($_POST['action_requested'] == 'Recommendation')? ☒ : ☐ ;
-
-//risk
 $enrolment_management = ($_POST['enrolment_management'])? ☒ : ☐ ;
 $faculty_staff = ($_POST['faculty_staff'])? ☒ : ☐ ;
 $funding_management = ($_POST['funding_management'])? ☒ : ☐ ;
@@ -24,6 +26,11 @@ $research_enterprise = ($_POST['research_enterprise'])? ☒ : ☐ ;
 $reputation = ($_POST['reputation'])? ☒ : ☐ ;
 $safety = ($_POST['safety'])? ☒ : ☐ ;
 $student_success = ($_POST['student_success'])? ☒ : ☐ ;
+
+foreach ($_POST as &$value) {
+    $value = nl2br($value);
+}
+
 // Creates the html for motions based on how many there are
 $motionHTML2 = '';
 $multipleMotions = false;
@@ -45,38 +52,14 @@ if($multipleMotions){
 	$motionHTML = '</table><p class="p-p1">&nbsp;</p><p class="p-p3">Motion';
 }
 $motionHTML .= '</p><table class="t-table"><col class="tc-table2_a"></col><tr class="tr-table1_"><td class="td-table1_a"><p class="p-p4">';
-$motionHTML .= nl2br($_POST['motion1']);
+$motionHTML .= $_POST['motion1'];
 $motionHTML .= '</p></td></tr></table>';
 $motionHTML .= $motionHTML2;
 
-
-$execHTML = '
-<tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p4">Executive Summary</p>
-<p class="p-standard"><span class="s-t1">(</span><span class="s-t2">outline the specific item &ndash; and remember your audience</span><span class="s-t1">)</span>&nbsp;</p>
-</td>
-<td class="td-table1_a" style="width:75%;">
-<p class="p-p4">';
-$execHTML .= nl2br($_POST['executive_summary']);
-$execHTML .= '</p></td></tr>';
-
-
-if(strlen($_POST["executive_summary"]) > 4000) {
-	$execHTML = '';
-	for($i = 0; $i < floor(strlen($_POST["executive_summary"]) / 4000) + 1; $i++) {
-		$small = substr(nl2br($_POST["executive_summary"]), 4000*$i,4000);
-		if($i == 0) {
-		$execHTML .= '<tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p4">Executive Summary</p>
-		<p class="p-standard"><span class="s-t1">(</span><span class="s-t2">outline the specific item &ndash; and remember your audience</span><span class="s-t1">)</span>&nbsp;</p></td><td class="td-table1_a" style="width:75%;"><p class="p-p4">';
-		} else {
-		$execHTML .= '<tr class="tr-table1_" ><td class="td-table1_a" style="width:25%;"></td>
-<td class="td-table1_a" style="width:75%;"><p class="p-p4">';
+if (strlen($_POST["executive_summary"]) < 2) {
+    $_POST["executive_summary"] = "<br>";
 }
-		$execHTML .= $small;
-		$execHTML .= '</p></td></tr>';
-	}
-}
-
-
+// String contains all CSS and HTML to form the pdf
 $html = <<<EOD
 <html><head>
 <style>
@@ -811,7 +794,6 @@ body {
 }
 
 
-
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><title>Unknown</title></head><body>
 <header style="position: fixed;top: -115px; left: 0px; right: 0px;">
@@ -859,6 +841,8 @@ Item No.{$_POST['item_no']}</p>
 </td>
 </tr>
 </table>
+
+<div style="page-break-inside:avoid;">
 <p class="p-p5">&nbsp;</p>
 <p class="p-p3">Details</p>
 <table class="t-table"><col class="tc-table4_a"></col>
@@ -868,19 +852,36 @@ Item No.{$_POST['item_no']}</p>
 <td class="td-table1_a" style="width:75%;"><p class="p-standard"><span class="s-t2">{$_POST["responsibility"]}</span>&nbsp;</p>
 </td>
 </tr>
+</table>
+</div>
+
+<table class="t-table"><col class="tc-table4_a">
 <tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-standard"><span class="s-t1">The Purpose of the Proposal is (</span><span class="s-t2">please be specific</span><span class="s-t1">)</span>&nbsp;</p>
 </td>
 <td class="td-table1_a" style="width:75%;"><p class="p-p4">{$_POST["purpose"]}</p>
 </td>
 </tr>
-{$execHTML}
+</table>
+<div style="width: 100.8%;border-left: 1px solid black; position: relative;border-right: 1px solid black; border-bottom: 0.5px solid black;">
+<div style="position:absolute;top: 0;left:0; width: 22%;padding-left: 0.199cm;padding-right: 0.191cm;">
+<p class="p-p4">
+<p class="p-p4">Executive Summary</p>
+</p>
+</div>
+<div style="width: 73.6%;border-left: 1px solid black;padding-left: 0.199cm;padding-right: 0.191cm; margin-left: 24.9%;">
+<p class="p-p4" style="text-align: justify;padding-right: 0.191cm;">
+{$_POST["executive_summary"]}
+</p>
+</div>
+</div>
+<table class="t-table"><col class="tc-table4_a">
 <tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p4">Supplementary Notes and context</p>
 </td>
 <td class="td-table1_a"><p class="p-standard" style="width:75%;"><span class="s-t2">{$_POST["supplementary"]}</span>&nbsp;</p>
 </td>
 </tr>
 </table>
-<div id="e-table">
+<div id="e-table" style="page-break-inside: avoid;">
 <p class="p-p5">&nbsp;</p>
 <p class="p-p10"><span class="s-t3">Engagement and Routing </span><span class="s-t1">(Include meeting dates)</span>&nbsp;</p>
 <table class="t-table" style="page-break-inside: avoid;"><col class="tc-table1_a"></col>
@@ -898,7 +899,7 @@ Item No.{$_POST['item_no']}</p>
 </td>
 </tr>
 <tr class="tr-table1_"><td class="td-table1_a" style="width:75%;height:50px;"><p class="p-standard"><span class="s-t4">Those who have been </span><span class="s-t5">consulted</span><span class="s-t4">:</span>&nbsp;</p>
-<ul class="wwnum37_"><li class="calibre1"><p class="p-p4"></p>
+<ul class="wwnum37_"><li class="calibre1"><p class="p-p4">{$_POST["consulted"]}</p>
 </li>
 </ul>
 </td>
@@ -909,6 +910,9 @@ Item No.{$_POST['item_no']}</p>
 </ul>
 </td>
 </tr>
+</table>
+</div>
+
 <table class="t-table">
 <tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p12">Approval Route (Governance)</p>
 <p class="p-p12">(including meeting dates)</p>
@@ -917,8 +921,7 @@ Item No.{$_POST['item_no']}</p>
 </td>
 </tr>
 </table>
-</table>
-</div>
+
 <div id="e-table" style="page-break-inside:avoid;">
 <p class="p-p5">&nbsp;</p>
 <p class="p-p14">Strategic Alignment</p>
@@ -973,16 +976,11 @@ Item No.{$_POST['item_no']}</p>
 EOD;
 
 
-
+// Create a PDF from the html string
 $dompdf->loadHtml($html);
-
-// (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4', 'portrait');
-
-// Render the HTML as PDF
 $dompdf->render();
 
 // Output the generated PDF to Browser
-//$dompdf->stream();
 echo base64_encode($dompdf->output());
 ?>

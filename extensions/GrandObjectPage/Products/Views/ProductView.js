@@ -25,13 +25,12 @@ ProductView = Backbone.View.extend({
             type : 'POST',
             data:  data,
             success : function (result) {
+                const a = document.createElement("a");
+                a.href = "data:application/pdf;base64," + result;
+                a.download = "file.pdf";
 
-        const a = document.createElement("a");
-        a.href = "data:application/pdf;base64," + result;
-        a.download = "file.pdf";
-
-        document.body.appendChild(a);
-        a.click();
+                document.body.appendChild(a);
+                a.click();
              },
             error : function () {
                 console.log ('error');
