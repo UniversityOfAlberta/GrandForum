@@ -27,6 +27,8 @@ $reputation = ($_POST['reputation'])? ☒ : ☐ ;
 $safety = ($_POST['safety'])? ☒ : ☐ ;
 $student_success = ($_POST['student_success'])? ☒ : ☐ ;
 
+
+// Maintain line breaks from the textarea
 foreach ($_POST as &$value) {
     $value = nl2br($value);
 }
@@ -58,6 +60,24 @@ $motionHTML .= $motionHTML2;
 
 if (strlen($_POST["executive_summary"]) < 2) {
     $_POST["executive_summary"] = "<br>";
+}
+
+if (strlen($_POST["supplementary"]) < 2) {
+    $_POST["supplementary"] .= "<br><br><br>";
+} else if (strlen($_POST["supplementary"]) < 100) {
+    $_POST["supplementary"] .= "<br><br>";
+}
+
+if (strlen($_POST["approval_route"]) < 2) {
+    $_POST["approval_route"] = "<br><br><br><br><br>";
+} else if (strlen($_POST["approval_route"]) < 100) {
+    $_POST["approval_route"] .= "<br><br><br><br>";
+} else if (strlen($_POST["approval_route"]) < 200) {
+    $_POST["approval_route"] .= "<br><br><br>";
+} else if (strlen($_POST["approval_route"]) < 300) {
+    $_POST["approval_route"] .= "<br><br>";
+} else if (strlen($_POST["approval_route"]) < 400) {
+    $_POST["approval_route"] .= "<br>";
 }
 // String contains all CSS and HTML to form the pdf
 $html = <<<EOD
@@ -862,7 +882,7 @@ Item No.{$_POST['item_no']}</p>
 </td>
 </tr>
 </table>
-<div style="width: 100.8%;border-left: 1px solid black; position: relative;border-right: 1px solid black; border-bottom: 0.5px solid black;">
+<div style="width: 100.8%;border-left: 1px solid black; position: relative;border-right: 1px solid black; border-bottom: 0.5px solid black;border-top: 0.5px solid black;">
 <div style="position:absolute;top: 0;left:0; width: 22%;padding-left: 0.199cm;padding-right: 0.191cm;">
 <p class="p-p4">
 <p class="p-p4">Executive Summary</p>
@@ -874,13 +894,20 @@ Item No.{$_POST['item_no']}</p>
 </p>
 </div>
 </div>
-<table class="t-table"><col class="tc-table4_a">
-<tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p4">Supplementary Notes and context</p>
-</td>
-<td class="td-table1_a"><p class="p-standard" style="width:75%;"><span class="s-t2">{$_POST["supplementary"]}</span>&nbsp;</p>
-</td>
-</tr>
-</table>
+
+<div style="width: 100.8%;border-left: 1px solid black; position: relative;border-right: 1px solid black; border-bottom: 1px solid black;border-top: 0.5px solid black;">
+<div style="position:absolute;top: 0;left:0; width: 22%;padding-left: 0.199cm;padding-right: 0.191cm;">
+<p class="p-p4">
+<p class="p-p4">Supplementary Notes and context</p>
+</p>
+</div>
+<div style="width: 73.6%;border-left: 1px solid black;padding-left: 0.199cm;padding-right: 0.191cm; margin-left: 24.9%;">
+<p class="p-p4" style="text-align: justify;padding-right: 0.191cm;">
+{$_POST["supplementary"]}
+</p>
+</div>
+</div>
+
 <div id="e-table" style="page-break-inside: avoid;">
 <p class="p-p5">&nbsp;</p>
 <p class="p-p10"><span class="s-t3">Engagement and Routing </span><span class="s-t1">(Include meeting dates)</span>&nbsp;</p>
@@ -913,14 +940,18 @@ Item No.{$_POST['item_no']}</p>
 </table>
 </div>
 
-<table class="t-table">
-<tr class="tr-table1_"><td class="td-table1_a" style="width:25%;"><p class="p-p12">Approval Route (Governance)</p>
+<div style="width: 100.8%;border-left: 1px solid black; position: relative;border-right: 1px solid black; border-bottom: 1px solid black;border-top: 0.5px solid black;">
+<div style="position:absolute;top: 0;left:0; width: 22%;padding-left: 0.199cm;padding-right: 0.191cm;">
+<p class="p-p12">Approval Route (Governance)</p>
 <p class="p-p12">(including meeting dates)</p>
-</td>
-<td class="td-table1_a" style="width:75%;"><p class="p-p13">{$_POST["approval_route"]}</p>
-</td>
-</tr>
-</table>
+</div>
+<div style="width: 73.6%;border-left: 1px solid black;padding-left: 0.199cm;padding-right: 0.191cm; margin-left: 24.9%;">
+<p class="p-p4" style="text-align: justify;padding-right: 0.191cm;">
+{$_POST["approval_route"]}
+</p>
+</div>
+</div>
+
 
 <div id="e-table" style="page-break-inside:avoid;">
 <p class="p-p5">&nbsp;</p>
