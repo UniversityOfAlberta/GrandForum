@@ -2,9 +2,9 @@
 
 require_once('../../config/Config.php');
 
-function question($question){
+function question($question, $hidden=false){
     echo "\n$question: ";
-    return trim(fgets(STDIN));
+    return ($hidden) ? exec('read -s PW; echo $PW') : rtrim(fgets(STDIN), PHP_EOL);
 }
 
 function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge="Not Specified", $parent_id=0){
@@ -132,11 +132,18 @@ if(question("Initialize namespaces (y/n)") == 'y'){
 $wgUser = User::newFromName("Admin");
 if($wgUser->getID() == 0){
     $email = question("What should the Admin Email be");
-    $password = question("What should the Admin Password be");
+    do{
+        $password1 = question("What should the Admin Password be", true);
+        $password2 = question("What should the Admin Password be (Again)", true);
+        if($password1 != $password2){
+            sleep(1);
+            echo "\n\nPasswords do not match, try again...\n";
+        }
+    } while($password1 != $password2);
+    
     // Create Admin User
-
     User::createNew("Admin", array('real_name' => "Admin",
-                                   'password' => User::crypt($password), 
+                                   'password' => User::crypt($password1), 
                                    'email' => $email));
     DBFunctions::insert('grand_roles',
                         array('user_id' => 1,
