@@ -1420,7 +1420,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="dept_publications" tooltip="Publications" name="Publications" title="{$my_dept} Publications" blobSection="BLOB_NONE" type="ReportSection">
+    <!--ReportSection id="dept_publications" tooltip="Publications" name="Publications" title="{$my_dept} Publications" blobSection="BLOB_NONE" type="ReportSection">
         <ReportItem id="thead" type="Static">
             <![CDATA[
                 <table id='products' class='wikitable' frame='box' rules='all'>
@@ -1459,5 +1459,5 @@
                 </script>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
 </Report>
