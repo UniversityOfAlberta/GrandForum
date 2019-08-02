@@ -10,9 +10,15 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $includeDeansPeople = (strtolower($this->getAttr("includeDeansPeople", "false")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
-        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $me = Person::newFromWgUser();
-
+        
+        $me = Person::newFromWgUser();
+        if(!$me->isRole(ISAC) && !$me->isRole(IAC) && !$me->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            // Person isn't a Chair/EA, so don't return anyone
+            return $data;
+        }
+        
+        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         foreach($allPeople as $person){
             $found = false;
             if($includeDeansPeople){

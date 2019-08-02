@@ -101,6 +101,7 @@ class ReportItemCallback {
             "user_appointment_date" => "getUserAppointmentDate",
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
+            "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
             // ISAC
             "chair_id" => "getChairId",
             // Products
@@ -668,6 +669,29 @@ class ReportItemCallback {
             $count += $this->getUserPublicationCount(($y-1)."-07-01",($y)."-06-30",$type);
         }
         return $count;
+    }
+    
+    function isAllowedToViewRecommendation(){
+        $deptPeople = new DepartmentPeopleReportItemSet();
+        $deptPeople->setParent($this->reportItem->getSection());
+        $deptPeople->setAttribute('start', '{$last_year}-07-01');
+        $deptPeople->setAttribute('end', '{$this_year}-07-01');
+        $deptPeople->setAttribute('university', 'University of Alberta');
+        $deptPeople->setAttribute('department', '{$my_dept}');
+        $deptPeople->setAttribute('excludeMe', 'true');
+        
+        $deanPeople = new DeansPeopleReportItemset();
+        $deanPeople->setParent($this->reportItem->getSection());
+        $deanPeople->setAttribute('start', '{$last_year}-07-01');
+        $deanPeople->setAttribute('end', '{$this_year}-07-01');
+        
+        $data = array_merge($deptPeople->getData(), $deanPeople->getData());        
+        foreach($data as $tuple){
+            if($tuple['person_id'] == $this->reportItem->personId){
+                return true;
+            }
+        }
+        return false;
     }
 
     function getChairId(){

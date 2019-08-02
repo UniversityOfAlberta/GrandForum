@@ -6,9 +6,13 @@ class DeansPeopleReportItemSet extends ReportItemSet {
         $data = array();
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
-        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $me = Person::newFromWgUser();
+        if(!$me->isRole(DEAN) && !$me->isRole(DEANEA) && !$me->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            // Person isn't a Dean/DeanEA, so don't return anyone
+            return $data;
+        }
         
+        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $data = array();
         foreach($allPeople as $person){
             $found = ($person->isSubRole("DD") || 

@@ -824,22 +824,15 @@
     </ReportSection>
     <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles},ADMIN)},
-                                                     {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},DEANEA)})}">
-                <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
-                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
-                        <ReportItem id="code" type="Static">
-                            <![CDATA[
-                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <script type='text/javascript'>
-                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{getExtra()} / {$user_name}</div>");
-                                </script>
-                            ]]>
-                        </ReportItem>
-                    </ReportItemSet>
-                </ReportItemSet>
+            <ReportItemSet id="if" type="If" if="{isAllowedToViewRecommendation()}">
+                <ReportItem id="code" type="Static">
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                        </script>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
@@ -953,10 +946,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$my_roles},ADMIN)},
-                                                        {!contains({$my_roles},DEAN)},
-                                                        {!contains({$my_roles},DEANEA)})}">
+            <ReportItemSet id="else" type="If" if="{==({isAllowedToViewRecommendation()},false)}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
@@ -967,22 +957,15 @@
     </ReportSection>
     <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles_during},ADMIN)},
-                                                     {contains({$my_roles_during},DEAN)},
-                                                     {contains({$my_roles_during},DEANEA)})}">
-                <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
-                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
-                        <ReportItem id="code" type="Static">
-                            <![CDATA[
-                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <script type='text/javascript'>
-                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{getExtra()} / {$user_name}</div>");
-                                </script>
-                            ]]>
-                        </ReportItem>
-                    </ReportItemSet>
-                </ReportItemSet>
+            <ReportItemSet id="if" type="If" if="{isAllowedToViewRecommendation()}">
+                <ReportItem id="code" type="Static">
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                        </script>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
@@ -1096,10 +1079,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$my_roles_during},ADMIN)},
-                                                        {!contains({$my_roles_during},DEAN)},
-                                                        {!contains({$my_roles_during},DEANEA)})}">
+            <ReportItemSet id="else" type="If" if="{==({isAllowedToViewRecommendation()},false)}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
@@ -1110,22 +1090,15 @@
     </ReportSection>
     <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles},ADMIN)},
-                                                     {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},DEANEA)})}">
-                <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
-                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
-                        <ReportItem id="code" type="Static">
-                            <![CDATA[
-                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <script type='text/javascript'>
-                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{getExtra()} / {$user_name}</div>");
-                                </script>
-                            ]]>
-                        </ReportItem>
-                    </ReportItemSet>
-                </ReportItemSet>
+            <ReportItemSet id="if" type="If" if="{isAllowedToViewRecommendation()}">
+                <ReportItem id="code" type="Static">
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                        </script>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
@@ -1239,10 +1212,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$my_roles},ADMIN)},
-                                                        {!contains({$my_roles},DEAN)},
-                                                        {!contains({$my_roles},DEANEA)})}">
+            <ReportItemSet id="else" type="If" if="{==({isAllowedToViewRecommendation()},false)}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
@@ -1253,22 +1223,15 @@
     </ReportSection>
     <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="" blobSection="FEC_CHAIR_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles},ADMIN)},
-                                                     {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},DEANEA)})}">
-                <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
-                    <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
-                        <ReportItem id="code" type="Static">
-                            <![CDATA[
-                                <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{getExtra()} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
-                                <script type='text/javascript'>
-                                    $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{getExtra()} / {$user_name}</div>");
-                                </script>
-                            ]]>
-                        </ReportItem>
-                    </ReportItemSet>
-                </ReportItemSet>
+            <ReportItemSet id="if" type="If" if="{isAllowedToViewRecommendation()}">
+                <ReportItem id="code" type="Static">
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                        </script>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
@@ -1382,10 +1345,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$my_roles},ADMIN)},
-                                                        {!contains({$my_roles},DEAN)},
-                                                        {!contains({$my_roles},DEANEA)})}">
+            <ReportItemSet id="else" type="If" if="{==({isAllowedToViewRecommendation()},false)}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
