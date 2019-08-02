@@ -43,6 +43,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Previous Chair should not see any people except for those who have an explicit Chair's Recommendation
                     continue;
                 }
+                // SPECIAL CASES BELOW
+                if($me->getName() == "Ioanis.Nikolaidis" && $person->getName() == "Eleni.Stroulia"){
+                    continue;
+                }
                 $fecType = $person->getFECType($end);
                 $tuple = self::createTuple();
                 $tuple['person_id'] = $person->getId();
