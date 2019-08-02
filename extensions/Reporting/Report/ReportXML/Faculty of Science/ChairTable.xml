@@ -848,7 +848,7 @@
                         </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
-                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
+                <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
                         <script type="text/javascript">
@@ -976,9 +976,9 @@
     <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <ReportItemSet id="if" type="If" if="{or({==({$user_dept},{$my_dept})},
-                                                     {contains({$my_roles},ADMIN)},
-                                                     {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},DEANEA)})}">
+                                                     {contains({$my_roles_during},ADMIN)},
+                                                     {contains({$my_roles_during},DEAN)},
+                                                     {contains({$my_roles_during},DEANEA)})}">
                 <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
                     <ReportItemSet id="if" type="If" if="{==({$user_id},{$parent_id})}">
                         <ReportItem id="code" type="Static">
@@ -991,13 +991,12 @@
                         </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
-                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
+                <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
@@ -1106,9 +1105,9 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="else" type="If" if="{and({!=({$user_dept},{$my_dept})},
-                                                        {!contains({$my_roles},ADMIN)},
-                                                        {!contains({$my_roles},DEAN)},
-                                                        {!contains({$my_roles},DEANEA)})}">
+                                                        {!contains({$my_roles_during},ADMIN)},
+                                                        {!contains({$my_roles_during},DEAN)},
+                                                        {!contains({$my_roles_during},DEANEA)})}">
                 <ReportItem id="else" type="Static">
                     <![CDATA[
                         <p>You are not allowed to view the recommendations for this user.</p>
@@ -1135,13 +1134,12 @@
                         </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
-                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
+                <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
@@ -1279,13 +1277,12 @@
                         </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
-                <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" height="385px" embed="true">
+                <ReportItem id="download" type="Static">
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
-                        {$item}
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">

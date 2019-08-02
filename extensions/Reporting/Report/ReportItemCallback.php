@@ -59,6 +59,7 @@ class ReportItemCallback {
             "my_last_name" => "getMyLastName",
             "my_dept" => "getMyDept",
             "my_roles" => "getMyRoles",
+            "my_roles_during" => "getMyRolesDuring",
             "my_sub_roles" => "getMySubRoles",
             "parent_id" => "getParentId",
             "parent_name" => "getParentName",
@@ -421,6 +422,16 @@ class ReportItemCallback {
     function getMyRoles(){
         $person = Person::newFromWgUser();
         $roles = $person->getRoles();
+        $roleNames = array();
+        foreach($roles as $role){
+            $roleNames[$role->getRole()] = $role->getRole();
+        }
+        return implode(", ", $roleNames);
+    }
+    
+    function getMyRolesDuring(){
+        $person = Person::newFromWgUser();
+        $roles = $person->getRolesDuring($this->reportItem->getReport()->startYear."-07-01", $this->reportItem->getReport()->year."-06-30");
         $roleNames = array();
         foreach($roles as $role){
             $roleNames[$role->getRole()] = $role->getRole();
