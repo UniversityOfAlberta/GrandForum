@@ -44,7 +44,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 // SPECIAL CASES BELOW
-                if($me->getName() == "Ioanis.Nikolaidis" && $person->getName() == "Eleni.Stroulia"){
+                if(($me->getName() == "Ioanis.Nikolaidis" || $me->getName() == "CS.ExecutiveAssistant") && $person->getName() == "Eleni.Stroulia"){
                     continue;
                 }
                 $fecType = $person->getFECType($end);
