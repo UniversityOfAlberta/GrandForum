@@ -622,7 +622,7 @@ EOF;
             $this->html .= "<tr>
                                 <td><b>Role Titles:</b></td>
                                 <td><table>";
-            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
+            $titles = array("", "Chair", "Voting Ex-Officio", "Voting Elected", "Non-Voting Ex-Officio");
             foreach($roles as $role){
                 if($role->getId() > 0){
                     $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
