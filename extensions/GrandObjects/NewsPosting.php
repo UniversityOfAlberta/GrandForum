@@ -101,6 +101,10 @@ class NewsPosting extends BackboneModel {
         return 0;
     }
     
+    function getBilingual(){
+        return ($this->getTranslatedId() != 0) ? "Yes" : "No";
+    }
+    
     function getUserId(){
         return $this->userId;
     }
@@ -208,6 +212,7 @@ class NewsPosting extends BackboneModel {
                       'userId' => $this->getUserId(),
                       'visibility' => $this->getVisibility(),
                       'language' => $this->getLanguage(),
+                      'bilingual' => $this->getBilingual(),
                       'title' => $this->getTitle(),
                       'articleLink' => $this->getArticleLink(),
                       'postedDate' => $this->getPostedDate(),
