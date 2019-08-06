@@ -376,7 +376,7 @@ EOF;
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
             if($config->getValue('networkName') != "CS-CAN"){
-                $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+                $html .= "<h2>Committees</h2><ul>";
             }
             else {
                 $html .= "<h2>Department</h2><ul>";
