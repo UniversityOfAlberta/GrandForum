@@ -2,15 +2,20 @@
 
 abstract class ReportItemSet extends AbstractReportItem{
 
-    var $items;
+    protected $items;
     var $blobIndex;
     var $count;
     var $iteration;
     var $cached;
+    // The following are for lazy loading the data
+    var $parser;
+    var $section;
+    var $node;
+    var $data;
 
     // Creates a new ReportItemSet
     function ReportItemSet(){
-        $this->items = array();
+        $this->items = null;
         $this->blobIndex = "";
         $this->reportCallback = new ReportItemCallback($this);
         $this->cached = null;
@@ -39,6 +44,10 @@ abstract class ReportItemSet extends AbstractReportItem{
     abstract function getData();
 
     function getItems(){
+        if($this->items == null){
+            $this->items = array();
+            $this->parser->parseReportItemSet($this->section, $this->node, $this->data, false);
+        }
         return $this->items;
     }
     
@@ -47,7 +56,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $limit = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $limit += $item->getLimit();
@@ -67,7 +76,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nChars = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nChars += $item->getNChars();
@@ -87,7 +96,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nChars = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nChars += $item->getActualNChars();
@@ -107,7 +116,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nFields = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nFields += $item->getExceedingFields();
@@ -129,7 +138,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nFields = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nFields += $item->getEmptyFields();
@@ -163,7 +172,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     // Deleted the given ReportItem from this ReportItemSet
     function deleteReportItem($item){
-        foreach($this->items as $key => $it){
+        foreach($this->getItems() as $key => $it){
             if($item->id == $it->id){
                 unset($this->items[$key]);
                 return;
@@ -183,7 +192,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     function save(){
         $errors = array();
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             $errors = array_merge($errors, $item->save());
         }
         return $errors;
@@ -191,7 +200,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     function getBlobValue(){
         $values = array();
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             $id = $item->id;
             $extraId = $item->getExtraIndex();
             $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
@@ -204,7 +213,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function setBlobValue($values){
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             $id = $item->id;
             $extraId = $item->getExtraIndex();
             $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
@@ -223,7 +232,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nComplete = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             $nComplete += $item->getNComplete();
         }
         return $nComplete;
@@ -235,7 +244,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nFields = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             $nFields += $item->getNFields();
         }
         return $nFields;
@@ -246,7 +255,7 @@ abstract class ReportItemSet extends AbstractReportItem{
             return 0;
         }
         $nTextareas = 0;
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if($item instanceof ReportItemSet){
                 $nTextareas += $item->getNTextareas();
             }
@@ -258,7 +267,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function renderItems(){
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if(!$this->getReport()->topProjectOnly || ($this->getReport()->topProjectOnly && !$item->private)){
                 if(!$item->deleted){
                     $item->render();
@@ -268,7 +277,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function renderItemsForPDF(){
-        foreach($this->items as $item){
+        foreach($this->getItems() as $item){
             if(!$this->getReport()->topProjectOnly || ($this->getReport()->topProjectOnly && !$item->private)){
                 if(!$item->deleted){
                     $item->renderForPDF();
