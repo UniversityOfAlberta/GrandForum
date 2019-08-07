@@ -182,6 +182,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     // Returns the ReportItem with the given id, or null if it does not exist
     function getReportItemById($itemId){
+        if($this->items == null){
+            $this->items = array();
+        }
         foreach($this->items as $item){
             if($item->id == $itemId){
                 return $item;

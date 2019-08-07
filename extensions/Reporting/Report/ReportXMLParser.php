@@ -506,7 +506,7 @@ class ReportXMLParser {
         $attributes = $node->attributes();
         $children = $node->children();
         $itemset = $section->getReportItemById("{$attributes->id}");
-        if($lazy){
+        if($lazy === true || $lazy == 'both'){
             if($itemset != null){
                 //$itemset->count = count($itemset->getItems())/max(1, count($itemset->getData()));
                 //$itemset->iteration = 0;
@@ -583,9 +583,10 @@ class ReportXMLParser {
                     $itemset->setAttribute("{$key}", "{$value}");
                 }
             }
-
-            // Don't start loading the data yet
-            return $itemset;
+            if($lazy === true){
+                // Don't start loading the data yet
+                return $itemset;
+            }
         }
         $newData = $itemset->getData();
         if(count($newData) > 0){
@@ -595,7 +596,7 @@ class ReportXMLParser {
                         $item = $this->parseReportItem($itemset, $c, $value);
                     }
                     else if($c->getName() == "ReportItemSet"){
-                        $item = $this->parseReportItemSet($itemset, $c, $value);
+                        $item = $this->parseReportItemSet($itemset, $c, $value, 'both');
                     }
                     if($item == null){
                         continue;
