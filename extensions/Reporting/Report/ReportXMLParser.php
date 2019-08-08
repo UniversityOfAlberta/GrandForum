@@ -508,8 +508,8 @@ class ReportXMLParser {
         $itemset = $section->getReportItemById("{$attributes->id}");
         if($lazy === true || $lazy == 'both'){
             if($itemset != null){
-                //$itemset->count = count($itemset->getItems())/max(1, count($itemset->getData()));
-                //$itemset->iteration = 0;
+                $itemset->count = count($itemset->getItems())/max(1, count($itemset->getData()));
+                $itemset->iteration = 0;
             }
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";

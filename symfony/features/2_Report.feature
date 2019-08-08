@@ -6,6 +6,11 @@ Feature: Reporting
     Scenario: Validate Report XML
         Given I validate report xml
 
+    Scenario: Checking Lazy ReportItemSet
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Test"
+        Then The load time should be no greater than "1000"
+
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=Report"
