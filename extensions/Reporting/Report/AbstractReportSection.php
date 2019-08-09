@@ -64,6 +64,10 @@ abstract class AbstractReportSection {
         return $this->parent;
     }
     
+    function getItems(){
+        return $this->items;
+    }
+    
     function getReport(){
         return $this->parent;
     }
