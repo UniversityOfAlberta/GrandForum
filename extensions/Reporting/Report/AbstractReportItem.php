@@ -89,6 +89,18 @@ abstract class AbstractReportItem {
         return $parent;
     }
     
+    function getPrev(){
+        $items = $this->getParent()->getItems();
+        $prev = null;
+        foreach($items as $item){
+            if($item == $this){
+                return $prev;
+            }
+            $prev = $item;
+        }
+        return null;
+    }
+       
     function getSet(){
         $parent = $this->getParent();
         while(!($parent instanceof ReportItemSet)){

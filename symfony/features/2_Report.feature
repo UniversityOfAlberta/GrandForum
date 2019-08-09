@@ -10,6 +10,20 @@ Feature: Reporting
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Report?report=Test"
         Then The load time should be no greater than "1000"
+        
+    Scenario: Testing If/IfElse/Else ReportItemSet
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+4"
+        Then I should see "A0"
+        And I should not see "B0"
+        And I should not see "A1"
+        And I should see "B1"
+        And I should not see "A2"
+        And I should see "B2"
+        And I should not see "C2"
+        And I should not see "A3"
+        And I should not see "B3"
+        And I should see "C3"
 
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
