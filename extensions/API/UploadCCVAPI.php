@@ -90,7 +90,6 @@ class UploadCCVAPI extends API{
         $product->date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->acceptance_date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->data = array();
-        $product->authors = array();
         if(!isset($_POST['id'])){
             $product->access_id = $person->getId();
         }
@@ -99,48 +98,54 @@ class UploadCCVAPI extends API{
         }
         $product->access = "Public";
         $product->ccv_id = $ccv_id;
+        
+        $product->getAuthors();
+        $product->getContributors();
 
-        $paper['authors'] = strip_tags($paper['authors']);
-        $paper['authors'] = str_replace("\n", " ", $paper['authors']);
-        $paper['authors'] = str_replace(";", ",", $paper['authors']);
-        $paper['authors'] = str_replace("(*)", "", $paper['authors']);
-        $paper['authors'] = str_replace("*", "", $paper['authors']);
-        $paper['authors'] = trim($paper['authors']);
-        $authors1 = explode(",", $paper['authors']);
-        $authors2 = explode(" and ", $paper['authors']);
-        $commaFirstLast = false;
-        foreach($authors1 as $author){
-            if(strstr(trim($author), " ") === false){
-                // Probably using commas to separate first/last name... *sigh*
-                $commaFirstLast = true;
+        if(!is_array($product->authors)){ $product->authors = array(); }
+        if(empty($product->authors)){
+            $paper['authors'] = strip_tags($paper['authors']);
+            $paper['authors'] = str_replace("\n", " ", $paper['authors']);
+            $paper['authors'] = str_replace(";", ",", $paper['authors']);
+            $paper['authors'] = str_replace("(*)", "", $paper['authors']);
+            $paper['authors'] = str_replace("*", "", $paper['authors']);
+            $paper['authors'] = trim($paper['authors']);
+            $authors1 = explode(",", $paper['authors']);
+            $authors2 = explode(" and ", $paper['authors']);
+            $commaFirstLast = false;
+            foreach($authors1 as $author){
+                if(strstr(trim($author), " ") === false){
+                    // Probably using commas to separate first/last name... *sigh*
+                    $commaFirstLast = true;
+                }
             }
-        }
-        if($commaFirstLast || count($authors2) > count($authors1)){
-            $authors = $authors2;
-        }
-        else{
-            $authors = $authors1;
-        }
-        foreach($authors as $author){
-            if(strstr($author, " and ") !== false){
-                $exploded = explode(" and ", $author);
-                $author = $exploded[0];
+            if($commaFirstLast || count($authors2) > count($authors1)){
+                $authors = $authors2;
             }
-            if($commaFirstLast){
-                $names = explode(",", $author);
-                $last = @trim($names[0]);
-                $first = @trim($names[1]);
-                $author = "$first $last";
+            else{
+                $authors = $authors1;
             }
-            $obj = new stdClass;
-            $obj->name = trim($author);
-            $product->authors[] = $obj;
-        }
-        if($category == "Presentation"){
-            $obj = new stdClass;
-            $obj->id = $person->getId();
-            $product->authors[] = $obj;
-            $product->authors = array($obj);
+            foreach($authors as $author){
+                if(strstr($author, " and ") !== false){
+                    $exploded = explode(" and ", $author);
+                    $author = $exploded[0];
+                }
+                if($commaFirstLast){
+                    $names = explode(",", $author);
+                    $last = @trim($names[0]);
+                    $first = @trim($names[1]);
+                    $author = "$first $last";
+                }
+                $obj = new stdClass;
+                $obj->name = trim($author);
+                $product->authors[] = $obj;
+            }
+            if($category == "Presentation"){
+                $obj = new stdClass;
+                $obj->id = $person->getId();
+                $product->authors[] = $obj;
+                $product->authors = array($obj);
+            }
         }
         foreach($paper as $key => $field){
             if($field != ""){

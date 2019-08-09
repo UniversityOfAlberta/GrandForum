@@ -111,6 +111,9 @@ class ImportBibTeXAPI extends API{
 
         $paper['day'] = (isset($paper['day'])) ? $paper['day'] : "01";
 
+        $product->getAuthors();
+        $product->getContributors();
+
         if($product->description == ""){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
         if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
