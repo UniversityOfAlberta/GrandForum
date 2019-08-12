@@ -157,6 +157,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>11. References (max 1 page):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
