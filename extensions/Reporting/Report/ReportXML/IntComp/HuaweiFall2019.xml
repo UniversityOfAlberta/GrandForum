@@ -44,13 +44,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email|Phone">
+        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|Department/Unit|Email|Phone" types="Text|Text|Select(Agricultural Life and Environmental Sciences,Alberta School of Business,Arts,Augustana Campus,Campus Saint-Jean,Education,Engineering,Extension,Graduate Studies and Research,Kinesiology, Sport, and Recreation,Law,Medicine &amp; Dentistry,Native Studies,Nursing,Pharmacy and Pharmaceutical Sciences,Public Health, School of,Rehabilitation Medicine,Science,St. Joseph's College,St. Stephen's College)|Text|Text" sizes="100|100|||120">
             <![CDATA[
                 <h3>2. UofA Principal Investigator:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email|Phone">
+        <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Last Name|First Name|Department/Unit|Email|Phone" types="Text|Text|Select(Agricultural Life and Environmental Sciences,Alberta School of Business,Arts,Augustana Campus,Campus Saint-Jean,Education,Engineering,Extension,Graduate Studies and Research,Kinesiology, Sport, and Recreation,Law,Medicine &amp; Dentistry,Native Studies,Nursing,Pharmacy and Pharmaceutical Sciences,Public Health, School of,Rehabilitation Medicine,Science,St. Joseph's College,St. Stephen's College)|Text|Text" sizes="100|100|||120">
             <![CDATA[
                 <h3>3. Huawei Technical Lead:</h3>
                 {$item}
@@ -96,15 +96,40 @@
         </ReportItem>
         <ReportItem id="milestones" type="MultiText" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Timeline|Description&lt;br />&lt;small>(Include relationship to project objectives)&lt;/small>|Type&lt;br />&lt;small>(e.g., demo/prototype,&lt;br />document/paper)&lt;/small>" types="Text|Textarea|Text" multiple="true">
             <![CDATA[
-                <h3>8. Project Milestone / Deliverables (include as many entries as needed)</h3>
+                <h3>8. Project Milestones / Deliverables (include as many entries as needed)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|TextArea|Integer|Integer" multiple="true">
+        <ReportItem id="hqp_budget" type="MultiText" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" sizes="||100|100" multiple="true">
             <![CDATA[
                 <h3>9. Full Budget</h3>
+                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 10 below for more on this.</small>
+                <h4>HQP (include as many entries as needed):</h4>
                 {$item}
-                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 11 below for more on this.</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST">
+            <![CDATA[
+                <h4>Total HQP cost:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="equipment_budget" type="MultiText" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" sizes="||100|100|100" multiple="true">
+            <![CDATA[
+                <h4>Equipment / materials (include as many entries as needed):</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST">
+            <![CDATA[
+                <h4>Total equipment/material cost:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="travel_budget" type="MultiText" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" sizes="||100|100" multiple="true">
+            <![CDATA[
+                <h4>Travel (include as many entries as needed):</h4>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
@@ -128,6 +153,7 @@
         <ReportItem id="contingency" type="Textarea" blobItem="CONTINGENCY" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h3>10. Contingency plan:</h3>
+                In order to maximize the effectiveness of the available funding, UAHJIC will typically fund half of the full cost of a project the requested funding, i.e., <u>all UAHJIC projects are requested to apply for matching funds, e.g,. NSERC Alliance or MITACS</u>.  Keeping in mind the unavoidable uncertainty associated to a funding application, please explain how the project will be changed/downscaled in case the matching funds are not granted.
                 {$item}
             ]]>
         </ReportItem>
