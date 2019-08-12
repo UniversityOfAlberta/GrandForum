@@ -1,59 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_FALL_2019" pdfType="RPTP_HUAWEI_FALL_2019" pdfFiles="HuaweiFall2019PDF" allowIdProjects="true" ajax="true" disabled="true">
+<Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_FALL_2019" pdfType="RPTP_HUAWEI_FALL_2019" pdfFiles="HuaweiFall2019" allowIdProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="NI-Candidate">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PI">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PI-Candidate">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="External">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="External-Candidate">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="cover" permissions="rw" />
-            <SectionPermission id="narrative" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -61,92 +40,94 @@
     <ReportSection id="description" tooltip="General Information about the project" name="Description" title="UofA-Huawei JIC Application (Fall 2019)" blobSection="PROP_DESC" type="EditableReportSection">
         <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
             <![CDATA[
-                <h3>Project Title:</h3>
+                <h3>1. Project Title:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" multiple="true">
+        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email|Phone">
             <![CDATA[
-                <h3>Keywords:</h3>
+                <h3>2. UofA Principal Investigator:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail">
+        <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email|Phone">
             <![CDATA[
-                <h3>UoA Lead:</h3>
+                <h3>3. Huawei Technical Lead:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true">
+        <ReportItem id="start" type="Calendar" blobItem="START" width="80px">
             <![CDATA[
-                <h3>Huawei Contact:</h3>
-                {$item}
+                <h3>4. Project duration:</h3>
+                <table>
+                    <tr>
+                        <td>Start Date:</td><td>{$item}</td>
+                    </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators" type="MultiText" blobItem="COLLABORATORS" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" multiple="true">
+        <ReportItem id="end" type="Calendar" blobItem="END" width="80px">
             <![CDATA[
-                <h3>Collaborators:</h3>
-                {$item}
+                    <tr>
+                        <td>End Date:</td><td>{$item}</td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" limit="300" rich="true">
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Executive Summary:</h3>
+                <h3>5. Background and Expected Outcomes (max ½ page)</h3>
+                Explain the new concepts or directions needed to address the topic and how this research will fill knowledge gaps or allow technological advances to the partner. Position the proposed project relative to other efforts by the researchers and partners organization and to other related research.   Disclose existing IP related to the execution of the project. 
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Proposal (4p free form):</h3>
-                Include:
-	            <ul>
-	                <li>Problem Statement</li>
-	                <li>Goals</li>
-	                <li>Related Research and Background</li>
-	                <li>Methodology</li>
-	            </ul>
-	            If you have any figures, uploaded them as a single pdf in the optional 'Attachment Upload' and reference them in your proposal.
+                <h3>6. Proposal (max 2 pages)</h3>
+                Outline the research objectives (number them so that they can referred to in section 7 and 8. Detail the resources and activities needed to achieve the anticipated results.  Identify the indicators and methods for monitoring progress during the project and for assessing the outcomes.  Include a chart or table as needed.
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="attachment" type="Upload" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Attachment Upload (optional)</h3>
-                <p>Use the following upload box to upload a single <b>pdf</b> file</p>
+                <h3>7. Training Plan (max 1 page)</h3>
+                Indicate how the knowledge and experience gained by research trainees and the partners’ staff members are relevant to the advancement of the field, to applying knowledge, or to strengthening the partners’ sectors. Include the nature of the planned interactions with the partners and other relevant activities, as well as how the training fits the objectives and project deliverables.  The plan outlined here must match the budget plan in Section 9.
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobItem="MILESTONES" blobType="BLOB_RAW" template="Huawei_Milestones.xls" structure="HUAWEI_MILESTONES">
+        <ReportItem id="milestones" type="MultiText" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Timeline|Description&lt;br />&lt;small>(Include relationship to project objectives)&lt;/small>|Type&lt;br />&lt;small>(e.g., demo/prototype,&lt;br />document/paper)&lt;/small>" types="Text|Textarea|Text" multiple="true">
             <![CDATA[
-                <h3>Milestones</h3>
-                <a href='{$wgServer}{$wgScriptPath}/data/Huawei_Milestones.xls'>Milestones Template</a>
-                <ul>
-                    <li>Mark active milestone with an 'X'.</li>
-                    <li>When entering names of people, enter their full names (First Last).</li>
-                </ul>
+                <h3>8. Project Milestone / Deliverables (include as many entries as needed)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
+        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|TextArea|Integer|Integer" multiple="true">
             <![CDATA[
-                <h3>References (1p):</h3>
+                <h3>9. Full Budget</h3>
+                {$item}
+                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 11 below for more on this.</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h4>Other Costs (detailed as much as possible):</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" type="BudgetReportItem" blobItem="BUDGET" blobType="BLOB_RAW" template="Huawei_Budget.xlsx" structure="HUAWEI_BUDGET">
+        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT">
             <![CDATA[
+                <h4>TOTAL Project cost:</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" blobType="BLOB_TEXT" rich="true">
+        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5">
             <![CDATA[
-                <b>Budget Justification</b>
+                <h4>Budget Upload:</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="bios" type="Textarea" blobItem="BIOS" blobType="BLOB_TEXT" rich="true">
+        <ReportItem id="contingency" type="Textarea" blobItem="CONTINGENCY" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Biosketches of the Team (2p free form):</h3>
+                <h3>10. Contingency plan:</h3>
                 {$item}
             ]]>
         </ReportItem>
