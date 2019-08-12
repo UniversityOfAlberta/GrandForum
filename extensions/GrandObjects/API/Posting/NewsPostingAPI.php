@@ -32,8 +32,8 @@ class NewsPostingAPI extends RESTAPI {
         if(trim($this->POST('title')) == ""){
             $this->throwError("A news title must be provided");
         }
-        if(strlen($this->POST('title')) > 70){
-            $this->throwError("The news title must be no longer than 70 characters");
+        if(strlen($this->POST('title')) > 300){
+            $this->throwError("The news title must be no longer than 300 characters");
         }
         $this->checkFile();
     }
