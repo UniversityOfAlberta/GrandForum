@@ -132,6 +132,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST">
+            <![CDATA[
+                <h4>Total travel cost:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Other Costs (detailed as much as possible):</h4>
