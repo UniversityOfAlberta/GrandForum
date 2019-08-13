@@ -150,7 +150,7 @@
                 ${$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType="application/vnd.ms-excel">
+        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType=".xls,.xlsx">
             <![CDATA[
                 <h4>Budget Upload:</h4>
                 {$item}
