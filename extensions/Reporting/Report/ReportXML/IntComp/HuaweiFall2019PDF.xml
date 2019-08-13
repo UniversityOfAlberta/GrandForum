@@ -10,81 +10,137 @@
         </ReportItem>
         <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
             <![CDATA[
-                <h3>Project Title</h3>
-                <div>{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" multiple="true">
-            <![CDATA[
-                <h3>Keywords</h3>
+                <h3>1. Project Title:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lead" type="MultiText" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" class="wikitable" sizes="33%|33%|33%">
+        <ReportItem id="lead" type="MultiText" class="wikitable" blobItem="LEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|Faculty|Department|Email|Phone" types="Text|Text|Select(Agricultural Life and Environmental Sciences,Alberta School of Business,Arts,Augustana Campus,Campus Saint-Jean,Education,Engineering,Extension,Graduate Studies and Research,Kinesiology, Sport, and Recreation,Law,Medicine &amp; Dentistry,Native Studies,Nursing,Pharmacy and Pharmaceutical Sciences,Public Health, School of,Rehabilitation Medicine,Science,St. Joseph's College,St. Stephen's College)|Text|Text|Text">
             <![CDATA[
-                <h3>UoA Lead</h3>
+                <h3>2. UofA Principal Investigator:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" class="wikitable" sizes="33%|33%|33%"  optional="true">
+        <ReportItem id="tech" type="MultiText" class="wikitable" blobItem="TECH" blobType="BLOB_ARRAY" labels="Last Name|First Name|Unit/Department|Email|Phone" types="Text|Text|Text|Text|Text">
             <![CDATA[
-                <h3>Huawei Contact</h3>
+                <h3>3. Huawei Technical Lead:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators" type="MultiText" blobItem="COLLABORATORS" blobType="BLOB_ARRAY" labels="Last Name|First Name|E-mail" optional="true" multiple="true" class="wikitable" sizes="33%|33%|33%">
+        <ReportItem id="start" type="Calendar" blobItem="START" width="80px">
             <![CDATA[
-                <h3>Collaborators</h3>
-                {$item}
+                <h3>4. Project duration:</h3>
+                <table>
+                    <tr>
+                        <td>Start Date:</td><td>{$item}</td>
+                    </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" limit="300" rich="true">
+        <ReportItem id="end" type="Calendar" blobItem="END" width="80px">
             <![CDATA[
-                <h3>Executive Summary</h3>
+                    <tr>
+                        <td>End Date:</td><td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>5. Background and Expected Outcomes (max ½ page)</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Proposal</h3>
+                <h3>6. Proposal (max 2 pages)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobItem="MILESTONES" blobType="BLOB_RAW" template="Huawei_Milestones.xls" structure="HUAWEI_MILESTONES">
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Milestones</h3>
+                <h3>7. Training Plan (max 1 page)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="MultiText" class="wikitable" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Timeline|Description&lt;br />&lt;small>(Include relationship to project objectives)&lt;/small>|Type&lt;br />&lt;small>(e.g., demo/prototype,&lt;br />document/paper)&lt;/small>" types="Text|Textarea|Text" multiple="true">
+            <![CDATA[
+                <h3>8. Project Milestones / Deliverables (include as many entries as needed)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_budget" type="MultiText" class="wikitable" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" multiple="true">
+            <![CDATA[
+                <h3>9. Full Budget</h3>
+                <h4>HQP (include as many entries as needed):</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST">
+            <![CDATA[
+                <h4>Total HQP cost:</h4>
+                ${number_format({$value})}
+            ]]>
+        </ReportItem>
+        <ReportItem id="equipment_budget" type="MultiText" class="wikitable" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" multiple="true">
+            <![CDATA[
+                <h4>Equipment / materials (include as many entries as needed):</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST">
+            <![CDATA[
+                <h4>Total equipment/material cost:</h4>
+                ${number_format({$value})}
+            ]]>
+        </ReportItem>
+        <ReportItem id="travel_budget" type="MultiText" class="wikitable" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" multiple="true">
+            <![CDATA[
+                <h4>Travel (include as many entries as needed):</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST">
+            <![CDATA[
+                <h4>Total travel cost:</h4>
+                ${number_format({$value})}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h4>Other Costs (detailed as much as possible):</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h4>TOTAL Project cost:</h4>
+                ${number_format({$value})}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType="application/vnd.ms-excel">
+            <![CDATA[
+                <h4>Budget Upload:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contingency" type="Textarea" blobItem="CONTINGENCY" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>10. Contingency plan:</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>References</h3>
+                <h3>11. References (max 1 page):</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" type="BudgetReportItem" blobItem="BUDGET" blobType="BLOB_RAW" template="Huawei_Budget.xlsx" structure="HUAWEI_BUDGET">
-            <![CDATA[
-                <div class="pagebreak"></div>
-                <h3>Budget</h3>
-                {$item}
-            ]]>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" blobType="BLOB_TEXT" rich="true">
-            <![CDATA[
-                <b>Budget Justification</b>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="bios" type="Textarea" blobItem="BIOS" blobType="BLOB_TEXT" rich="true">
-            <![CDATA[
-                <h3>Biosketches of the Team</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="attachment" type="UploadPDF" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" emails="{$my_email}" />
     </ReportSection>
 </Report>

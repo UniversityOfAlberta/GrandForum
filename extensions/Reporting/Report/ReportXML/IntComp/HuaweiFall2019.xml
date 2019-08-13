@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_FALL_2019" pdfType="RPTP_HUAWEI_FALL_2019" pdfFiles="HuaweiFall2019" allowIdProjects="true" ajax="true" disabled="false">
+<Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_FALL_2019" pdfType="RPTP_HUAWEI_FALL_2019" pdfFiles="HuaweiFall2019PDF" allowIdProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="description" permissions="rw" />
@@ -108,10 +108,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST">
+        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST" width="80px">
             <![CDATA[
                 <h4>Total HQP cost:</h4>
-                {$item}
+                ${$item}
             ]]>
         </ReportItem>
         <ReportItem id="equipment_budget" type="MultiText" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" sizes="||100|100|100" multiple="true">
@@ -120,10 +120,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST">
+        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST" width="80px">
             <![CDATA[
                 <h4>Total equipment/material cost:</h4>
-                {$item}
+                ${$item}
             ]]>
         </ReportItem>
         <ReportItem id="travel_budget" type="MultiText" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" sizes="||100|100" multiple="true">
@@ -132,10 +132,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST">
+        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST" width="80px">
             <![CDATA[
                 <h4>Total travel cost:</h4>
-                {$item}
+                ${$item}
             ]]>
         </ReportItem>
         <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
@@ -144,13 +144,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT">
+        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT" width="80px">
             <![CDATA[
                 <h4>TOTAL Project cost:</h4>
-                {$item}
+                ${$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5">
+        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <h4>Budget Upload:</h4>
                 {$item}

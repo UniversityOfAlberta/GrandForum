@@ -152,6 +152,7 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "replace" => "replace",
             "set" => "set",
@@ -1730,6 +1731,10 @@ class ReportItemCallback {
             return "";
         }
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function number_format($val, $decimals=0, $dec_point="." , $thousands_sep=","){
+        return (is_numeric($val)) ? number_format($val, $decimals, $dec_point, $thousands_sep) : $val;
     }
     
     function replace($pattern, $replacement, $string){

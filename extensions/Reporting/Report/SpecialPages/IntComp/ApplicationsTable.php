@@ -186,9 +186,13 @@ class ApplicationsTable extends SpecialPage{
         $title->setId("title");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab('RP_HUAWEI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title));
-        $tab->idProjectRange = array(0,1);
-        $tabbedPage->addTab($tab);
+        $tab1 = new ApplicationTab('RP_HUAWEI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title));
+        $tab1->idProjectRange = array(0,1);
+        
+        $tab2 = new ApplicationTab('RP_HUAWEI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title));
+        $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
+        $tabbedPage->addTab($tab2);
+        $tabbedPage->addTab($tab1);
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
