@@ -50,7 +50,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Last Name|First Name|Faculty|Department|Email|Phone" types="Text|Text|Select(Agricultural Life and Environmental Sciences,Alberta School of Business,Arts,Augustana Campus,Campus Saint-Jean,Education,Engineering,Extension,Graduate Studies and Research,Kinesiology, Sport, and Recreation,Law,Medicine &amp; Dentistry,Native Studies,Nursing,Pharmacy and Pharmaceutical Sciences,Public Health, School of,Rehabilitation Medicine,Science,St. Joseph's College,St. Stephen's College)|Text|Text|Text" sizes="100|100||||120">
+        <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Last Name|First Name|Unit/Department|Email|Phone" types="Text|Text|Text|Text|Text" sizes="100|100|||120">
             <![CDATA[
                 <h3>3. Huawei Technical Lead:</h3>
                 {$item}
