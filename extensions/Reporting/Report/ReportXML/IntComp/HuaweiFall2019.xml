@@ -100,7 +100,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp_budget" type="MultiText" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" sizes="||100|100" multiple="true">
+        <ReportItem id="hqp_budget" type="MultiText" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" sizes="||100|100" multiple="true" optional="true">
             <![CDATA[
                 <h3>9. Full Budget</h3>
                 <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 10 below for more on this.</small>
@@ -108,43 +108,43 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST" width="80px">
+        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST" width="80px" optional="true">
             <![CDATA[
                 <h4>Total HQP cost:</h4>
                 ${$item}
             ]]>
         </ReportItem>
-        <ReportItem id="equipment_budget" type="MultiText" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" sizes="||100|100|100" multiple="true">
+        <ReportItem id="equipment_budget" type="MultiText" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" sizes="||100|100|100" multiple="true" optional="true">
             <![CDATA[
                 <h4>Equipment / materials (include as many entries as needed):</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST" width="80px">
+        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST" width="80px" optional="true">
             <![CDATA[
                 <h4>Total equipment/material cost:</h4>
                 ${$item}
             ]]>
         </ReportItem>
-        <ReportItem id="travel_budget" type="MultiText" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" sizes="||100|100" multiple="true">
+        <ReportItem id="travel_budget" type="MultiText" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" sizes="||100|100" multiple="true" optional="true">
             <![CDATA[
                 <h4>Travel (include as many entries as needed):</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST" width="80px">
+        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST" width="80px" optional="true">
             <![CDATA[
                 <h4>Total travel cost:</h4>
                 ${$item}
             ]]>
         </ReportItem>
-        <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT">
+        <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT" optional="true">
             <![CDATA[
                 <h4>Other Costs (detailed as much as possible):</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT" width="80px" optional="true">
             <![CDATA[
                 <h4>TOTAL Project cost:</h4>
                 ${$item}
