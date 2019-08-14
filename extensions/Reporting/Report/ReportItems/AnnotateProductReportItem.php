@@ -50,7 +50,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         }
         $structure = Product::structure();
         $acceptanceDateLabel = @$structure['categories'][$product->getCategory()]['types'][$product->getType()]["acceptance_date_label"];
-        if($product->getCategory == "Publication" &&
+        if($product->getCategory() == "Publication" &&
            $acceptanceDateLabel == "Acceptance Date" &&
            ($product->getAcceptanceDate() == "0000-00-00" || $product->getAcceptanceDate() == "")){
             $acceptanceDateMissing = true;
