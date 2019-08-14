@@ -12,6 +12,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         $peerReviewedMissing = false;
         $impactFactorMissing = false;
         $snipMissing = false;
+        $acceptanceDateMissing = false;
         $structure = $product->getStructure();
         if(count($structure['data']) == 0){
             // Type has no data fields
@@ -47,6 +48,13 @@ class AnnotateProductReportItem extends AbstractReportItem {
                 $impactFactorMissing = true;
             }
         }
+        $structure = Product::structure();
+        $acceptanceDateLabel = @$structure['categories'][$product->getCategory()]['types'][$product->getType()]["acceptance_date_label"];
+        if($product->getCategory == "Publication" &&
+           $acceptanceDateLabel == "Acceptance Date" &&
+           ($product->getAcceptanceDate() == "0000-00-00" || $product->getAcceptanceDate() == "")){
+            $acceptanceDateMissing = true;
+        }
         $html = "";
         if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing){
             $html .= "<span style='background:orange;'>";
@@ -55,7 +63,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
             $html .= "<span>";
         }
         $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
-        if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing){
+        if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing || $acceptanceDateMissing){
             $html .= "<ul style='color: #FF6600;'>";
             if($incomplete){
                 $html .= "<li>This entry may be incomplete</li>";
@@ -64,10 +72,13 @@ class AnnotateProductReportItem extends AbstractReportItem {
                 $html .= "<li>This entry is missing a Peer Reviewed status</li>";
             }
             if($impactFactorMissing){
-                $html .= "<li>This entry is missing impact factor information</li>";
+                $html .= "<li>This entry is missing Impact Factor information</li>";
             }
             if($snipMissing){
                 $html .= "<li>This entry is missing SNIP information</li>";
+            }
+            if($acceptanceDateMissing){
+                $html .= "<li>This entry is missing an Acceptance Date</li>";
             }
             $html .= "</ul>";
         }

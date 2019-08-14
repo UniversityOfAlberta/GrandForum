@@ -7,7 +7,7 @@
 <td align="center">
     <span style="display:none;">-<%= exclude %></span><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0}) %>
 </td>
-<td align="center" style="text-overflow: initial;">
+<td align="center" style="text-overflow: initial;<% if(category == 'Publication' && this.model.getAcceptanceDateLabel() == 'Acceptance Date' && acceptance_date == '0000-00-00') { %>background: #FF6600; <% } %>">
     <% if(this.model.getAcceptanceDateLabel() != undefined){ %>
         <span style="display:none"><%= acceptance_date.replace("0000-00-00", "9999-99-99") %></span><%= acceptance_date.replace("0000-00-00", "") %>
     <% } %>
@@ -22,7 +22,7 @@
     <%= type.replace("Misc: ", "").replace("Other: ", "") %> <br />
     <% if(status != ""){ %><small>(<%= status %>)</small><% } %>
 </td>
-<td style="<% if(incomplete) { %>background: #FFA500; <% } %> <% if(peerReviewedMissing) { %>background: #FF6600; <% } %>" >
+<td style="<% if(incomplete) { %>background: #FFA500; <% } %> <% if(peerReviewedMissing) { %>background: #FF6600; <% } %>">
     <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
 <td style="<% if(!isMine) { %>background: #FFD118; <% } %> padding:0;">
