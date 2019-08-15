@@ -118,12 +118,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <!--ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Select(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" class="wikitable" multiple="true" optional="true">
-            <![CDATA[
-                <h3>Project Courses</h3>
-                {$item}
-            ]]>
-        </ReportItem-->
         <ReportItemSet type="If" if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
             <ReportItem id="projectCourses_header" type="Static">
                 <![CDATA[
@@ -184,7 +178,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -198,7 +192,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -212,7 +206,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|Journal Abstract|White Paper|Tech Report|Poster|Manual" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -270,10 +264,6 @@
             ]]>
         </ReportItem>
         
-        <!-- Just here to submit the product years -->
-        <ReportItemSet id="allpresentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" start="CYCLE_START" end="CYCLE_END">
-        </ReportItemSet>
-        
         <!-- Patents/Spin-Offs -->
         <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">
             <![CDATA[
@@ -281,7 +271,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                 <![CDATA[
                     <li style="page-break-inside: avoid;">{$item}
@@ -501,11 +491,6 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <!--ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" showHeader="false" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem-->
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
@@ -599,7 +584,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="products1_2" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products1_2" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -608,7 +593,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -617,7 +602,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products3_2" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products3_2" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|PHD Thesis|PHD Dissertation|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -626,7 +611,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -635,7 +620,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -644,7 +629,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -685,5 +670,10 @@
                 </ul>
             ]]>
         </ReportItem>
+        <!-- Only Used to Mark Products as Submitted -->
+        <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit3" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" />
     </ReportSection>
 </Report>

@@ -725,11 +725,6 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </div>
             ]]>
         </ReportItem>
-        <!--ReportItem id="profActivities" type="MultiTextReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" multiple="true" addText="Add New" optional="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem-->
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
 &lt;br />
