@@ -19,7 +19,6 @@ abstract class AbstractReportSection {
     var $number;
     var $tooltip;
     var $disabled;
-    var $reportCallback;
     var $projectId;
     var $personId;
     var $variables = array();
@@ -43,7 +42,6 @@ abstract class AbstractReportSection {
         $this->number = array();
         $this->personId = 0;
         $this->projectId = 0;
-        $this->reportCallback = new ReportItemCallback($this);
     }
     
     function setAttribute($key, $value){
@@ -438,7 +436,7 @@ abstract class AbstractReportSection {
         
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m]));
+                $v = ReportItemCallback::call($this, $m);
                 $regex = '/{\$'.$m.'}/';
                 $cdata = preg_replace($regex, $v, $cdata);
             }

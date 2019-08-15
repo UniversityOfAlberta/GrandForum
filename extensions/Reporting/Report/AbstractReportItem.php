@@ -28,7 +28,6 @@ abstract class AbstractReportItem {
     var $blobItem;
     var $blobSubItem;
     var $value;
-    var $reportCallback;
     var $attributes;
     var $variables = array();
     
@@ -49,7 +48,6 @@ abstract class AbstractReportItem {
         $this->extra = array();
         $this->private = false;
         $this->deleted = false;
-        $this->reportCallback = new ReportItemCallback($this);
     }
     
     function setId($id){
@@ -464,7 +462,7 @@ abstract class AbstractReportItem {
         
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
+                $v = str_replace("$", "\\$", ReportItemCallback::call($this, $m));
                 $v = str_replace(",", "&#44;", $v);
                 $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
             }
@@ -495,7 +493,7 @@ abstract class AbstractReportItem {
                         continue;
                     }
                     else{
-                        $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
+                        $v = ReportItemCallback::call($this, $f, $a);
                         if(is_array($v)){
                             foreach($matches[1] as $k2 => $m2){
                                 $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);

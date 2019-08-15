@@ -17,7 +17,6 @@ abstract class ReportItemSet extends AbstractReportItem{
     function ReportItemSet(){
         $this->items = null;
         $this->blobIndex = "";
-        $this->reportCallback = new ReportItemCallback($this);
         $this->cached = null;
     }
     
