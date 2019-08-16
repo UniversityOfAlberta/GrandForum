@@ -23,10 +23,6 @@ class DeansPeopleReportItemSet extends ReportItemSet {
                     // Previous Dean should not see any people except for those who have an explicit Dean's Advice
                     continue;
                 }
-                if(!$me->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) && $person->isSubRole("DA")){
-                    // Don't show DA if the current Dean wasn't the Dean during the reporting period
-                    continue;
-                }
                 $tuple = self::createTuple();
                 $fecType = $person->getFECType($end);
                 $tuple['person_id'] = $person->getId();
