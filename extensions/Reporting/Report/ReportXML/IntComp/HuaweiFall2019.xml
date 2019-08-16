@@ -50,18 +50,24 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="colead" type="MultiText" blobItem="COLEAD" blobType="BLOB_ARRAY" labels="Last Name|First Name|Faculty|Department|Email|Phone" types="Text|Text|Select(Agricultural Life and Environmental Sciences,Alberta School of Business,Arts,Augustana Campus,Campus Saint-Jean,Education,Engineering,Extension,Graduate Studies and Research,Kinesiology, Sport, and Recreation,Law,Medicine &amp; Dentistry,Native Studies,Nursing,Pharmacy and Pharmaceutical Sciences,Public Health, School of,Rehabilitation Medicine,Science,St. Joseph's College,St. Stephen's College)|Text|Text|Text" sizes="100|100||||120" multiple="true" optional="true">
+            <![CDATA[
+                <h3>3. UofA Co-Principal Investigators (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="tech" type="MultiText" blobItem="TECH" blobType="BLOB_ARRAY" labels="Last Name|First Name|Unit/Department|Email|Phone" types="Text|Text|Text|Text|Text" sizes="100|100|||120">
             <![CDATA[
-                <h3>3. Huawei Technical Lead:</h3>
+                <h3>4. Huawei Technical Lead:</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="start" type="Calendar" blobItem="START" width="80px">
             <![CDATA[
-                <h3>4. Project duration:</h3>
+                <h3>5. Project duration:</h3>
                 <table>
                     <tr>
-                        <td>Start Date:</td><td>{$item}</td>
+                        <td>Start Date:</td><td>{$item}<small style='margin-left: 10px;'>(Please make sure you coordinate with your Huawei technical lead to have   a realistic start date which is mutually agreed by both sides)</small></td>
                     </tr>
             ]]>
         </ReportItem>
@@ -75,35 +81,35 @@
         </ReportItem>
         <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>5. Background and Expected Outcomes (max ½ page)</h3>
+                <h3>6. Background and Expected Outcomes (max ½ page)</h3>
                 Explain the new concepts or directions needed to address the topic and how this research will fill knowledge gaps or allow technological advances to the partner. Position the proposed project relative to other efforts by the researchers and partners organization and to other related research.   Disclose existing IP related to the execution of the project. 
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>6. Proposal (max 2 pages)</h3>
+                <h3>7. Proposal (max 2 pages)</h3>
                 Outline the research objectives (number them so that they can referred to in section 7 and 8. Detail the resources and activities needed to achieve the anticipated results.  Identify the indicators and methods for monitoring progress during the project and for assessing the outcomes.  Include a chart or table as needed.
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="training" type="Textarea" blobItem="TRAINING" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>7. Training Plan (max 1 page)</h3>
-                Indicate how the knowledge and experience gained by research trainees and the partners’ staff members are relevant to the advancement of the field, to applying knowledge, or to strengthening the partners’ sectors. Include the nature of the planned interactions with the partners and other relevant activities, as well as how the training fits the objectives and project deliverables.  The plan outlined here must match the budget plan in Section 9.
+                <h3>8. Training Plan (max 1 page)</h3>
+                Indicate how the knowledge and experience gained by research trainees and the partners’ staff members are relevant to the advancement of the field, to applying knowledge, or to strengthening the partners’ sectors. Include the nature of the planned interactions with the partners and other relevant activities, as well as how the training fits the objectives and project deliverables.  The plan outlined here must match the budget plan in Section 10.
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="milestones" type="MultiText" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Timeline|Description&lt;br />&lt;small>(Include relationship to project objectives)&lt;/small>|Type&lt;br />&lt;small>(e.g., demo/prototype,&lt;br />document/paper)&lt;/small>" types="Text|Textarea|Text" multiple="true">
             <![CDATA[
-                <h3>8. Project Milestones / Deliverables (include as many entries as needed)</h3>
+                <h3>9. Project Milestones / Deliverables (include as many entries as needed)</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="hqp_budget" type="MultiText" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" sizes="||100|100" multiple="true" optional="true">
             <![CDATA[
-                <h3>9. Full Budget</h3>
-                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 10 below for more on this.</small>
+                <h3>10. Full Budget</h3>
+                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 11 below for more on this.</small>
                 <h4>HQP (include as many entries as needed):</h4>
                 {$item}
             ]]>
@@ -158,14 +164,14 @@
         </ReportItem>
         <ReportItem id="contingency" type="Textarea" blobItem="CONTINGENCY" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>10. Contingency plan:</h3>
+                <h3>11. Contingency plan:</h3>
                 In order to maximize the effectiveness of the available funding, UAHJIC will typically fund half of the full cost of a project the requested funding, i.e., <u>all UAHJIC projects are requested to apply for matching funds, e.g,. NSERC Alliance or MITACS</u>.  Keeping in mind the unavoidable uncertainty associated to a funding application, please explain how the project will be changed/downscaled in case the matching funds are not granted.
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>11. References (max 1 page):</h3>
+                <h3>12. References (max 1 page):</h3>
                 {$item}
             ]]>
         </ReportItem>
