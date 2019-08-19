@@ -57,6 +57,10 @@ class JobPosting extends BackboneModel {
         $jobs = array();
         foreach($data as $row){
             $job = new JobPosting(array($row));
+            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
+                // Accessed using API Key, so restrict to Published only
+                continue;
+            }
             if($job->isAllowedToView()){
                 $jobs[] = $job;
             }
@@ -71,8 +75,12 @@ class JobPosting extends BackboneModel {
         $newJobs = array();
         $jobs = self::getAllJobPostings();
         foreach($jobs as $job){
+            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
+                // Accessed using API Key, so restrict to Published only
+                continue;
+            }
             if($job->getDeadlineType() == "Open" || $job->getDeadlineDate() >= date('Y-m-d')){
-                $newJobs[] = $job;   
+                $newJobs[] = $job;
             }
         }
         return $newJobs;
