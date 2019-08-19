@@ -231,7 +231,7 @@ class JobPosting extends BackboneModel {
     }
     
     function sendEmail(){
-        global $config;
+        global $config, $wgServer, $wgScriptPath;
         if($this->getVisibility() == "Publish" && !$this->emailSent){
             // Always set content-type when sending HTML email
             $headers = "MIME-Version: 1.0" . "\r\n";
@@ -244,7 +244,9 @@ class JobPosting extends BackboneModel {
 
                         <p>Details are available on the CS-Can | Info-Can website:</p>
 
-		                <a href='{$this->getWebsiteUrl()}'>{$this->getWebsiteUrl()}</a>";
+		                <p><a href='{$this->getWebsiteUrl()}'>{$this->getWebsiteUrl()}</a></p>
+		                
+		                <p>This notification is sent by the <a href='{$wgServer}{$wgScriptPath}'>CS-Can | Info-Can Forum</a>.</p>";
 
             mail("test-messages-only@forum.cscan-infocan.ca","New job posting by {$this->getUniversity()}",$message,$headers);
             
