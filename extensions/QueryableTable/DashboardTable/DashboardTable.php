@@ -131,7 +131,11 @@ class DashboardTable extends QueryableTable{
                     $('#{$this->id}details_div').append('<input type=\"button\" class=\"up_div\" value=\"&uarr;\" /><input type=\"button\" class=\"hide_div\" value=\"X\" />');
 			        $('#{$this->id}details_div').slideDown(200);
 			        $('#{$this->id}details_div table').dataTable({
-			                                                        'bPaginate': 'false'
+			                                                        'bPaginate': 'false',
+			                                                        'dom': 'Blfrtip',
+                                                                    'buttons': [
+                                                                        'excel', 'pdf'
+                                                                    ]
 			                                                     });
 			        $('html,body').animate({scrollTop:
 			                                $('#{$this->id}details_div').offset().top}, 1000);
