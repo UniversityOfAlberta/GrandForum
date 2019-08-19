@@ -277,7 +277,7 @@ class JobPosting extends BackboneModel {
             // Job is Public
             return true;
         }
-        if($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF)){
+        if($me->getId() == $this->getUserId()){
             // Job was created by the logged in user
             return true;
         }
