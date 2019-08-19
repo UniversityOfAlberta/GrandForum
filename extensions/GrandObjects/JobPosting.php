@@ -10,6 +10,7 @@ class JobPosting extends BackboneModel {
     var $userId;
     var $projectId;
     var $visibility;
+    var $emailSent;
     var $jobTitle;
     var $jobTitleFr;
     var $deadlineType;
@@ -84,6 +85,7 @@ class JobPosting extends BackboneModel {
             $this->userId = $row['user_id'];
             $this->projectId = $row['project_id'];
             $this->visibility = $row['visibility'];
+            $this->emailSent = $row['email_sent'];
             $this->jobTitle = $row['job_title'];
             $this->jobTitleFr = $row['job_title_fr'];
             $this->deadlineType = $row['deadline_type'];
@@ -275,7 +277,7 @@ class JobPosting extends BackboneModel {
             // Job is Public
             return true;
         }
-        if($me->getId() == $this->getUserId()){
+        if($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF)){
             // Job was created by the logged in user
             return true;
         }
