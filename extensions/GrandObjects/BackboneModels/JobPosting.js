@@ -13,7 +13,9 @@ JobPosting = Backbone.Model.extend({
     defaults: {
         id: null,
         userId: "",
+        user: null,
         projectId: 0,
+        project: null,
         visibility: "Draft",
         jobTitle: "",
         jobTitleFr: "",

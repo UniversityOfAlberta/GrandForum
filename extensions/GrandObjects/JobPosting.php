@@ -230,6 +230,31 @@ class JobPosting extends BackboneModel {
                             array('id' => $this->id));
     }
     
+    function sendEmail(){
+        global $config;
+        if($this->getVisibility() == "Publish" && !$this->emailSent){
+            // Always set content-type when sending HTML email
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+            // More headers
+            $headers .= "From: <{$config->getValue('supportEmail')}" . "\r\n";
+            $rank = ($this->getRank() != "Other") ? $this->getRank() : $this->getRankOther();
+            $message = "<p>There is a new job posting by {$this->getUniversity()} for {$rank} in {$this->getDepartment()}</p>
+
+                        <p>Details are available on the CS-Can | Info-Can website:</p>
+
+		                <a href='{$this->getWebsiteUrl()}'>{$this->getWebsiteUrl()}</a>";
+
+            mail("test-messages-only@forum.cscan-infocan.ca","New job posting by {$this->getUniversity()}",$message,$headers);
+            
+            $this->emailSent = true;
+            DBFunctions::update('grand_job_postings',
+                                array('email_sent' => $this->emailSent),
+                                array('id' => $this->id));
+        }
+    }
+    
     /**
      * Returns the department name of this JobPosting's creator
      * @return string The department name of this JobPosting's creator
@@ -266,6 +291,10 @@ class JobPosting extends BackboneModel {
         return "{$wgServer}{$wgScriptPath}/index.php/Special:JobPostingPage?embed#/{$this->getId()}";
     }
     
+    function getWebsiteUrl(){
+        return "https://cscan-infocan.ca/careers/?job_id=".$this->getId();
+    }
+    
     function isAllowedToEdit(){
         $me = Person::newFromWgUser();
         return ($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF));
@@ -297,6 +326,7 @@ class JobPosting extends BackboneModel {
         }
         $json = array('id' => $this->getId(),
                       'userId' => $this->getUserId(),
+                      'user' => $this->getUser()->toArray(),
                       'projectId' => $this->getProjectId(),
                       'project' => $project,
                       'visibility' => $this->getVisibility(),
@@ -355,6 +385,7 @@ class JobPosting extends BackboneModel {
             if($status){
                 $this->id = DBFunctions::insertId();
                 $this->generatePreviewCode();
+                $this->sendEmail();
             }
             return $status;
         }
@@ -387,6 +418,7 @@ class JobPosting extends BackboneModel {
                                                 'summary_fr' => $this->summaryFr),
                                           array('id' => $this->id));
             $this->generatePreviewCode();
+            $this->sendEmail();
             return $status;
         }
         return false;
