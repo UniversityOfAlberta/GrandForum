@@ -6,7 +6,13 @@ class JobPostingAPI extends RESTAPI {
         $id = $this->getParam('id');
         $current = ($this->getParam('current') != "");
         if($id != ""){
+            $previewCode = explode("-", $id);
+            $previewCode = @$previewCode[1];
             $job = JobPosting::newFromId($id);
+            if($previewCode == $job->getPreviewCode()){
+                $job->visibility = "Publish";
+                $job->generatePreviewCode();
+            }
             return $job->toJSON();
         }
         else{

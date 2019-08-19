@@ -18,7 +18,8 @@ JobPostingView = Backbone.View.extend({
     
     events: {
         "click #editJobPosting": "editJobPosting",
-        "click #deleteJobPosting": "deleteJobPosting"
+        "click #deleteJobPosting": "deleteJobPosting",
+        "click #previewLink": "clickPreviewLink"
     },
     
     deleteJobPosting: function(){
@@ -54,6 +55,12 @@ JobPostingView = Backbone.View.extend({
     
     editJobPosting: function(){
         document.location = document.location + '/edit';
+    },
+    
+    clickPreviewLink: function(){
+        _.delay(function(){
+            this.model.fetch();
+        }.bind(this), 3000);
     },
     
     render: function(){

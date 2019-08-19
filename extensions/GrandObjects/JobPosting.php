@@ -29,6 +29,7 @@ class JobPosting extends BackboneModel {
     var $sourceLink;
     var $summary;
     var $summaryFr;
+    var $previewCode;
     var $created;
     var $deleted;
     
@@ -102,6 +103,7 @@ class JobPosting extends BackboneModel {
             $this->sourceLink = $row['source_link'];
             $this->summary = $row['summary'];
             $this->summaryFr = $row['summary_fr'];
+            $this->previewCode = $row['preview_code'];
             $this->created = $row['created'];
             $this->deleted = $row['deleted'];
         }
@@ -207,12 +209,23 @@ class JobPosting extends BackboneModel {
         return $this->summaryFr;
     }
     
+    function getPreviewCode(){
+        return $this->previewCode;
+    }
+    
     function getCreated(){
         return $this->created;
     }
     
     function isDeleted(){
         return $this->deleted;
+    }
+    
+    function generatePreviewCode(){
+        $this->previewCode = md5(microtime() + rand(0,1000));
+        DBFunctions::update('grand_job_postings',
+                            array('preview_code' => $this->previewCode),
+                            array('id' => $this->id));
     }
     
     /**
@@ -304,6 +317,7 @@ class JobPosting extends BackboneModel {
                       'sourceLink' => $this->getSourceLink(),
                       'summary' => $this->getSummary(),
                       'summaryFr' => $this->getSummaryFr(),
+                      'previewCode' => $this->getPreviewCode(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
@@ -338,6 +352,7 @@ class JobPosting extends BackboneModel {
                                                 'summary_fr' => $this->summaryFr));
             if($status){
                 $this->id = DBFunctions::insertId();
+                $this->generatePreviewCode();
             }
             return $status;
         }
@@ -369,6 +384,7 @@ class JobPosting extends BackboneModel {
                                                 'summary' => $this->summary,
                                                 'summary_fr' => $this->summaryFr),
                                           array('id' => $this->id));
+            $this->generatePreviewCode();
             return $status;
         }
         return false;
