@@ -18,7 +18,7 @@
                 <td>
                     <span style="display:none;"><%= job.get('deadlineDate') %></span>
                     <%= dateTimeHelpers.formatDate(job.get('deadlineDate')) %><br />
-                    (Posted: <%= dateTimeHelpers.formatDate(job.get('created')) %> by <a href="<%= job.get('user').url %>"><%= job.get('user').name %></a>)
+                    (Posted: <%= dateTimeHelpers.formatDate(job.get('created')) %> by <a href="<%= job.get('user').url %>"><%= job.get('user').fullname %></a>)
                 </td>
                 <td>
                     <% if(job.get('projectId') != 0 && this.allProjects.get(job.get('projectId')).get('contact').city != "" && this.allProjects.get(job.get('projectId')).get('contact').province != ""){ %>
