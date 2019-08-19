@@ -9,7 +9,7 @@ class JobPostingAPI extends RESTAPI {
             $previewCode = explode("-", $id);
             $previewCode = @$previewCode[1];
             $job = JobPosting::newFromId($id);
-            if($previewCode == $job->getPreviewCode()){
+            if($previewCode != "" && $previewCode == $job->getPreviewCode()){
                 $job->visibility = "Publish";
                 $job->generatePreviewCode();
             }
