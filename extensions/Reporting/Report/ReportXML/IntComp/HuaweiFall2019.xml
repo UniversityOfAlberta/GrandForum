@@ -100,65 +100,22 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="MultiText" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Timeline|Description&lt;br />&lt;small>(Include relationship to project objectives)&lt;/small>|Type&lt;br />&lt;small>(e.g., demo/prototype,&lt;br />document/paper)&lt;/small>" types="Text|Textarea|Text" multiple="true">
+        <ReportItem id="deliverables" type="MultiText" blobItem="DELIVERABLES" blobType="BLOB_ARRAY" labels="Serial|Deliverables" types="Text|Textarea" sizes="100|" multiple="true">
             <![CDATA[
-                <h3>9. Project Milestones / Deliverables (include as many entries as needed)</h3>
-                {$item}
+                <h3>9. Project Milestone / Deliverables (include as many entries as needed)</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="hqp_budget" type="MultiText" blobItem="HQP_BUDGET" blobType="BLOB_ARRAY" labels="Name (if available)|Level (MSc, PhD, …)|Number of years|Cost/yr" types="Text|Text|Integer|Integer" sizes="||100|100" multiple="true" optional="true">
+        <ReportItem id="milestones" type="MultiText" blobItem="MILESTONES" blobType="BLOB_ARRAY" labels="Phase|Start-End Time&lt;br />(T0 to T0 + xx months)|Project Description|Project Objectives|List of Deliverables (S1,S2…)" types="Text|Text|Textarea|Textarea|Text" sizes="100|200|||100" multiple="true">
+            <![CDATA[
+                {$item}
+                <small>T0 is the effective start date</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType="application/vnd.ms-excel,.xls,.xlsx">
             <![CDATA[
                 <h3>10. Full Budget</h3>
-                <small>Even though you should list all costs associated with the project, keep in mind that UAHJIC will typically fund ½ of the proposal considering that the other ½ should be obtained through matching funds.  Please refer to Section 11 below for more on this.</small>
-                <h4>HQP (include as many entries as needed):</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="total_hqp_cost" type="Integer" blobItem="TOTAL_HQP_COST" width="80px" optional="true">
-            <![CDATA[
-                <h4>Total HQP cost:</h4>
-                ${$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="equipment_budget" type="MultiText" blobItem="EQUIPMENT_BUDGET" blobType="BLOB_ARRAY" labels="Type/Description|Justification|Timeline (needed by)|Quantity|Unit cost" types="Text|Textarea|Text|Integer|Integer" sizes="||100|100|100" multiple="true" optional="true">
-            <![CDATA[
-                <h4>Equipment / materials (include as many entries as needed):</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="total_equipment_cost" type="Integer" blobItem="TOTAL_EQUIPMENT_COST" width="80px" optional="true">
-            <![CDATA[
-                <h4>Total equipment/material cost:</h4>
-                ${$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="travel_budget" type="MultiText" blobItem="TRAVEL_BUDGET" blobType="BLOB_ARRAY" labels="Description|Justification|Quantity/yr|Unit cost" types="Text|Textarea|Integer|Integer" sizes="||100|100" multiple="true" optional="true">
-            <![CDATA[
-                <h4>Travel (include as many entries as needed):</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="total_travel_cost" type="Integer" blobItem="TOTAL_TRAVEL_COST" width="80px" optional="true">
-            <![CDATA[
-                <h4>Total travel cost:</h4>
-                ${$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="other_costs" type="Textarea" blobItem="OTHER_COSTS" blobType="BLOB_TEXT" optional="true">
-            <![CDATA[
-                <h4>Other Costs (detailed as much as possible):</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="total_costs" type="Integer" blobItem="TOTAL_COSTS" blobType="BLOB_TEXT" width="80px" optional="true">
-            <![CDATA[
-                <h4>TOTAL Project cost:</h4>
-                ${$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload" type="Upload" blobItem="UPLOAD" blobType="BLOB_RAW" fileSize="5" mimeType=".xls,.xlsx">
-            <![CDATA[
-                <h4>Budget Upload:</h4>
+                <a href='{$wgServer}{$wgScriptPath}/data/Huawei.xlsx'>Budget Template</a>
                 {$item}
             ]]>
         </ReportItem>
