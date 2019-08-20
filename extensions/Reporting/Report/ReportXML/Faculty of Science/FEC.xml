@@ -725,6 +725,57 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </div>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("[name=SPA_spa_level2]").change(function(){
+                            var value = $(this).val();
+                            if(value == "Minor SPA" ||
+                               value == "Major SPA"){
+                                $("#outer_disclosure2").slideDown();
+                            }
+                            else{
+                                $("#outer_disclosure2").slideUp();
+                            }
+                            if(value == "Major SPA"){
+                                $("#outer_major2").slideDown();
+                            }
+                            else{
+                                $("#outer_major2").slideUp();
+                            }
+                        }).change();
+                    });
+                </script>
+                <br /><br />
+                <hr />
+                <h3>Additional SPA</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                <div id="outer_disclosure2" style="display:none;">
+                <h3>I confirm that I have an up to date Disclosure Report on file</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                <div id="outer_major2" style="display:none;">
+                <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3>Describe the SPA below</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
 &lt;br />

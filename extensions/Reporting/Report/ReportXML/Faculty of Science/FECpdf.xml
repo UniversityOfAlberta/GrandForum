@@ -491,6 +491,36 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItemSet type="If" if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Minor SPA)},
+                                         {==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Major SPA)})}">
+            <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
+                <![CDATA[
+                    <br />
+                    <h3>Additional SPA</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
+                <![CDATA[
+                    <h3>I confirm that I have an up to date Disclosure Report on file</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Major SPA)}">
+                <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
+                    <![CDATA[
+                        <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT">
+                <![CDATA[
+                    <h3>Describe the SPA below</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
