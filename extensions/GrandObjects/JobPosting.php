@@ -246,7 +246,7 @@ class JobPosting extends BackboneModel {
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
             // More headers
-            $headers .= "From: <{$config->getValue('supportEmail')}" . "\r\n";
+            $headers .= "From: {$config->getValue('supportEmail')}" . "\r\n";
             $rank = ($this->getRank() != "Other") ? $this->getRank() : $this->getRankOther();
             $message = "<p>There is a new job posting by {$this->getUniversity()} for {$rank} in {$this->getDepartment()}</p>
 
