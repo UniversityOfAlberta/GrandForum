@@ -248,7 +248,7 @@ class JobPosting extends BackboneModel {
             // More headers
             $headers .= "From: {$config->getValue('supportEmail')}" . "\r\n";
             $rank = ($this->getRank() != "Other") ? $this->getRank() : $this->getRankOther();
-            $message = "<p>There is a new job posting by {$this->getUniversity()} for {$rank} in {$this->getDepartment()}</p>
+            $message = "<p>There is a new job posting by {$this->getUniversity()} for {$rank} in the {$this->getDepartment()}</p>
 
                         <p>Details are available on the CS-Can | Info-Can website:</p>
 
