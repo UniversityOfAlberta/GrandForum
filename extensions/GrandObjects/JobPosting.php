@@ -240,6 +240,9 @@ class JobPosting extends BackboneModel {
     
     function sendEmail(){
         global $config, $wgServer, $wgScriptPath;
+        if($wgScriptPath != ""){
+            return;
+        }
         if($this->getVisibility() == "Publish" && !$this->emailSent){
             // Always set content-type when sending HTML email
             $headers = "MIME-Version: 1.0" . "\r\n";
