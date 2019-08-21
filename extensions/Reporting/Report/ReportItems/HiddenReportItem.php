@@ -17,6 +17,15 @@ class HiddenReportItem extends TextReportItem {
 		$item = $this->processCData($item);
 		$wgOut->addHTML("$item");
 	}
+	
+	function renderForPDF(){
+	    $default = $this->getAttr('default', '');
+		if($default != ''){
+		    $value = $default;
+		    $this->setBlobValue($value);
+		}
+	    parent::renderForPDF();
+	}
 }
 
 ?>
