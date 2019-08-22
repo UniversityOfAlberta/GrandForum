@@ -49,7 +49,7 @@
                 <h3>Program Requirements</h3>
 
                 <p><i>Training</i><br />
-                Recipients will have access to our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
+                Recipients will have access to our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship).</p>
 
                 <p><i>Reporting</i><br />
                     <ol>
@@ -199,14 +199,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="goals" type="Textarea" blobItem="GOALS" rich="true" limit="150">
+        <ReportItem id="goals" type="Textarea" blobItem="GOALS" rich="true" limit="200">
             <![CDATA[
                 <tr>
                     <th colspan='2'>FEASIBILITY</th>
                 </tr>
                 <tr>
                     <td valign='top'>
-                        <b>How will you achieve your project goals? (150 words max)</b><br />
+                        <b>How will you achieve your project goals? (200 words max)</b><br />
                         In this section describe the following aspects of your research: 
                         <ol>
                             <li>Brief overview of the approach (design/methods) you will use to meet your project objectives</li>
@@ -219,14 +219,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="bio" type="Textarea" blobItem="BIO" rich="true">
+        <ReportItem id="bio" type="Textarea" blobItem="BIO" rich="true" limit="150">
             <![CDATA[
                 <tr>
                     <th colspan='2'>FIT WITH AGE-WELL</th>
                 </tr>
                 <tr>
                     <td valign='top'>
-                        <b>Biography and career goals (1/2 page)</b><br />
+                        <b>Biography and career goals (150 words)</b><br />
                         In this section briefly describe:
                         <ol>
                             <li>Your current goals</li>
