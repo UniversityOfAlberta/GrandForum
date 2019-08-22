@@ -12,7 +12,7 @@
         </tr>
         <tr>
             <td class="label">Language:</td>
-            <td><%= HTML.Select(this, 'language', {options: ['English', 'French']}) %></td>
+            <td><%= HTML.Select(this, 'language', {options: ['English', 'French', 'Bilingual']}) %></td>
         </tr>
         <tr>
             <td class="label">Article Link:</td>
@@ -50,7 +50,7 @@
     </div>
 </div>
 <div style="width:180px;display:inline-block;">
-    <button id="saveNewsPosting">
+    <button id="savePosting">
         <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> News Posting
     </button><span class="throbber" style="display:none;"></span>
 </div>
