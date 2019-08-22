@@ -194,6 +194,7 @@ function createModels(){
     addScript("MailingList");
     addScript("Freeze");
     addScript("Journal");
+    addScript("Posting");
     addScript("JobPosting");
     addScript("NewsPosting");
     

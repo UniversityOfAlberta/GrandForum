@@ -1,0 +1,265 @@
+<?php
+
+/**
+ * @package GrandObjects
+ */
+
+class Posting extends BackboneModel {
+    
+    static $dbTable = "";
+    
+    var $id;
+    var $userId;
+    var $visibility;
+    var $language;
+    var $title;
+    var $articleLink;
+    var $startDate;
+    var $endDate;
+    var $summary;
+    var $image;
+    var $imageCaption;
+    var $created;
+    var $deleted;
+    
+    static function newFromId($id){
+        $data = DBFunctions::select(array(static::$dbTable),
+                                    array('*'),
+                                    array('id' => EQ($id)));
+        $news = new static($data);
+        if($news->isAllowedToView()){
+            return $news;
+        }
+        else{
+            return new self(array());
+        }
+    }
+    
+    /**
+     * Returns an array of all Postings which this user is able to view
+     */
+    static function getAllPostings(){
+        $data = DBFunctions::select(array(static::$dbTable),
+                                    array('*'),
+                                    array('deleted' => EQ(0)));
+        $postings = array();
+        foreach($data as $row){
+            $posting = new static(array($row));
+            if($posting->isAllowedToView()){
+                $postings[] = $posting;
+            }
+        }
+        return $postings;
+    }
+    
+    function Posting($data){
+        if(count($data) > 0){
+            $row = $data[0];
+            $this->id = $row['id'];
+            $this->userId = $row['user_id'];
+            $this->visibility = $row['visibility'];
+            $this->language = $row['language'];
+            $this->title = $row['title'];
+            $this->articleLink = $row['article_link'];
+            $this->startDate = $row['start_date'];
+            $this->endDate = $row['end_date'];
+            $this->summary = $row['summary'];
+            $this->image = $row['image'];
+            $this->imageCaption = $row['image_caption'];
+            $this->created = $row['created'];
+            $this->deleted = $row['deleted'];
+        }
+    }
+    
+    function getId(){
+        return $this->id;
+    }
+    
+    function getUserId(){
+        return $this->userId;
+    }
+    
+    function getVisibility(){
+        return $this->visibility;
+    }
+    
+    function getLanguage(){
+        return $this->language;
+    }
+    
+    function getTitle(){
+        return $this->title;
+    }
+    
+    function getArticleLink(){
+        return $this->articleLink;
+    }
+    
+    function getStartDate(){
+        return substr($this->startDate, 0, 10);
+    }
+    
+    function getEndDate(){
+        return substr($this->endDate, 0, 10);
+    }
+    
+    function getSummary(){
+        return $this->summary;
+    }
+    
+    function getSourceName(){
+        return $this->sourceName;
+    }
+    
+    function getSourceLink(){
+        return $this->sourceLink;
+    }
+    
+    function getImage(){
+        return $this->image;
+    }
+    
+    function getImageUrl(){
+        global $wgServer, $wgScriptPath;
+        $image = $this->getImage();
+        if($image != ""){
+            $md5 = md5($this->getImage());
+            $class = strtolower(get_class($this));
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.{$class}/{$this->getId()}/image&$md5";
+        }
+        return "";
+    }
+    
+    function getImageCaption(){
+        return $this->imageCaption;
+    }
+    
+    function getCreated(){
+        return $this->created;
+    }
+    
+    function isDeleted(){
+        return $this->deleted;
+    }
+    
+    /**
+     * Returns the url of this NewsPosting's page
+     * @return string The url of this NewsPosting's page
+     */
+    function getUrl(){
+        global $wgServer, $wgScriptPath;
+        $class = get_class($this);
+        if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:{$class}Page#/{$this->getId()}";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:{$class}Page?embed#/{$this->getId()}";
+    }
+    
+    function isAllowedToEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF));
+    }
+    
+    function isAllowedToView(){
+        $me = Person::newFromWgUser();
+        if($this->getVisibility() == "Publish"){
+            // News is Public
+            return true;
+        }
+        if($me->getId() == $this->getUserId()){
+            // News was created by the logged in user
+            return true;
+        }
+    }
+    
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return ($me->isLoggedIn() && ($me->isRoleAtLeast(MANAGER) || $me->isRole(PL) || $me->isRole(PA)));
+    }
+    
+    function toArray(){
+        $json = array('id' => $this->getId(),
+                      'userId' => $this->getUserId(),
+                      'visibility' => $this->getVisibility(),
+                      'language' => $this->getLanguage(),
+                      'title' => $this->getTitle(),
+                      'articleLink' => $this->getArticleLink(),
+                      'startDate' => $this->getStartDate(),
+                      'endDate' => $this->getEndDate(),
+                      'summary' => $this->getSummary(),
+                      'image' => $this->getImageUrl(),
+                      'imageCaption' => $this->getImageCaption(),
+                      'created' => $this->getCreated(),
+                      'deleted' => $this->isDeleted(),
+                      'isAllowedToEdit' => $this->isAllowedToEdit(),
+                      'url' => $this->getUrl());
+        return $json;
+    }
+    
+    function create(){
+        if(self::isAllowedToCreate()){
+            $status = DBFunctions::insert(static::$dbTable,
+                                          array('user_id' => $this->userId,
+                                                'visibility' => $this->visibility,
+                                                'language' => $this->language,
+                                                'title' => $this->title,
+                                                'article_link' => $this->articleLink,
+                                                'start_date' => $this->startDate,
+                                                'end_date' => $this->endDate,
+                                                'summary' => $this->summary,
+                                                'image' => $this->image,
+                                                'image_caption' => $this->imageCaption,
+                                                'created' => $this->created,
+                                                'deleted' => $this->deleted));
+            if($status){
+                $this->id = DBFunctions::insertId();
+            }
+            return $status;
+        }
+        return false;
+    }
+    
+    function update(){
+        if($this->isAllowedToEdit()){
+            $status = DBFunctions::update(static::$dbTable,
+                                          array('user_id' => $this->userId,
+                                                'visibility' => $this->visibility,
+                                                'language' => $this->language,
+                                                'title' => $this->title,
+                                                'article_link' => $this->articleLink,
+                                                'start_date' => $this->startDate,
+                                                'end_date' => $this->endDate,
+                                                'summary' => $this->summary,
+                                                'image' => $this->image,
+                                                'image_caption' => $this->imageCaption,
+                                                'created' => $this->created,
+                                                'deleted' => $this->deleted),
+                                          array('id' => $this->id));
+            return $status;
+        }
+        return false;
+    }
+    
+    function delete(){
+        if($this->isAllowedToEdit()){
+            $status = DBFunctions::update(static::$dbTable,
+                                          array('deleted' => 1),
+                                          array('id' => $this->id));
+            if($status){
+                $this->deleted = true;
+            }
+            return $status;
+        }
+        return false;
+    }
+    
+    function exists(){
+        return true;
+    }
+    
+    function getCacheId(){
+        global $wgSitename;
+    }
+}
+
+?>

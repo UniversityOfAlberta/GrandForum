@@ -14,19 +14,13 @@
             <td class="label">Language:</td>
             <td><%= HTML.Select(this, 'language', {options: ['English', 'French']}) %></td>
         </tr>
-        <% if(id == null && translatedId == 0){ %>
-            <tr>
-                <td class="label">Bilingual:</td>
-                <td><%= HTML.Radio(this, 'bilingual', {options: ['Yes', 'No']}) %></td>
-            </tr>
-        <% } %>
         <tr>
             <td class="label">Article Link:</td>
             <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
         </tr>
         <tr>
             <td class="label">Posted Date:</td>
-            <td valign="top"><%= HTML.DatePicker(this, 'postedDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+            <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
         </tr>
         <tr>
             <td class="label">Author:</td>

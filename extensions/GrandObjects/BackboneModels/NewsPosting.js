@@ -18,27 +18,12 @@ NewsPosting = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.newsposting',
 
-    defaults: {
-        id: null,
-        translatedId: 0,
-        userId: "",
-        visibility: "Draft",
-        language: "English",
-        bilingual: "No",
-        title: "",
-        articleLink: "",
-        postedDate: new Date().toLocaleDateString(),
-        summary: "",
+    defaults: _.extend(Posting.prototype.defaults, {
         author: "CS-Can/Info-Can",
         sourceName: "",
-        sourceLink: "",
-        image: "",
-        imageCaption: "",
-        created: "",
-        deleted: false,
-        isAllowedToEdit: true,
-        url: ""
-    }
+        sourceLink: ""
+    })
+    
 });
 
 NewsPostings = Backbone.Collection.extend({

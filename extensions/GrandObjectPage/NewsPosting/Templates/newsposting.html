@@ -5,12 +5,6 @@
             <td class="label">Visibility:</td>
             <td><%= visibility %></td>
         </tr>
-        <% if(translatedId != 0 && this.translated.get('language') != ""){ %>
-            <tr>
-                <td class="label">Translated:</td>
-                <td><a href="<%= this.translated.get('url') %>"><%= this.translated.get('language') %></a></td>
-            </tr>
-        <% } %>
         <% if(articleLink != ""){ %>
             <tr>
                 <td class="label">Article Link:</td>
@@ -19,7 +13,7 @@
         <% } %>
         <tr>
             <td class="label">Posted:</td>
-            <td><%= postedDate %></td>
+            <td><%= startDate %></td>
         </tr>
         <tr>
             <td class="label">Author:</td>
