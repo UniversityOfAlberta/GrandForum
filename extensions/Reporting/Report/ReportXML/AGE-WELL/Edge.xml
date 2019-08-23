@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EEAPDF" year="2019" ajax="true" disabled="false">
+<Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EdgePDF" year="2019" ajax="true" disabled="false">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -241,7 +241,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
-        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20">
             <![CDATA[
                 <h3>Curriculum Vitae:</h3>
                 Please upload curriculum vitae in PDF form.
