@@ -55,6 +55,13 @@ class Posting extends BackboneModel {
         return $postings;
     }
     
+    /**
+     * Returns an array of Postings which have not yet expired
+     */
+    static function getCurrentPostings(){
+        return static::getAllPostings();
+    }
+    
     function Posting($data){
         if(count($data) > 0){
             $row = $data[0];
