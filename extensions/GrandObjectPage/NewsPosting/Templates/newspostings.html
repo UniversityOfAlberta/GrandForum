@@ -26,7 +26,7 @@
                     <%= news.get('author') %>
                 </td>
                 <td>
-                    <a href="<%= news.get('url') %>" ><%= news.get('title') %></a>
+                    <a href="<%= news.get('url') %>" ><%= showLanguage(news.get('language'), news.get('title'), news.get('titleFr')) %></a>
                 </td>
                 <% if(isAllowedToCreateNewsPostings){ %>
                     <td align="center">

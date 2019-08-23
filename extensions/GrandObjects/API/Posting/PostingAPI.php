@@ -66,12 +66,15 @@ abstract class PostingAPI extends RESTAPI {
             $posting->visibility = $this->POST('visibility');
             $posting->language = $this->POST('language');
             $posting->title = $this->POST('title');
+            $posting->titleFr = $this->POST('titleFr');
             $posting->articleLink = $this->POST('articleLink');
             $posting->startDate = $this->POST('startDate');
             $posting->endDate = $this->POST('endDate');
             $posting->summary = $this->POST('summary');
+            $posting->summaryFr = $this->POST('summaryFr');
             $posting->image = $image;
             $posting->imageCaption = $this->POST('imageCaption');
+            $posting->imageCaptionFr = $this->POST('imageCaptionFr');
             $this->extraVars($posting);
             $posting->create();
             return $posting->toJSON();
@@ -94,12 +97,15 @@ abstract class PostingAPI extends RESTAPI {
                 $posting->visibility = $this->POST('visibility');
                 $posting->language = $this->POST('language');
                 $posting->title = $this->POST('title');
+                $posting->titleFr = $this->POST('titleFr');
                 $posting->articleLink = $this->POST('articleLink');
                 $posting->startDate = $this->POST('startDate');
                 $posting->endDate = $this->POST('endDate');
                 $posting->summary = $this->POST('summary');
+                $posting->summaryFr = $this->POST('summaryFr');
                 $posting->image = $image;
                 $posting->imageCaption = $this->POST('imageCaption');
+                $posting->imageCaptionFr = $this->POST('imageCaptionFr');
                 $this->extraVars($posting);
                 
                 $posting->update();

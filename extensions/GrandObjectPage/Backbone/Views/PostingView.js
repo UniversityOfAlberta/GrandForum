@@ -1,7 +1,6 @@
 PostingView = Backbone.View.extend({
 
     initialize: function(){
-        console.log("HELLO");
         this.model.fetch({
             error: function(e){
                 this.$el.html("This Posting does not exist");
@@ -53,7 +52,7 @@ PostingView = Backbone.View.extend({
     },
     
     render: function(){
-        main.set('title', this.model.get('title'));
+        main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
         this.$el.empty();
         var data = this.model.toJSON();
         _.extend(data, dateTimeHelpers);

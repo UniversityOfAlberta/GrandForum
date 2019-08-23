@@ -2,7 +2,12 @@
     <h3>News Title <small>(max 300 characters)</small>:</h3>
     <table>
         <tr>
-            <td colspan="2"><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+            <td class="label">English:</td>
+            <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">French:</td>
+            <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
         </tr>
     </table>
     <table>
@@ -40,13 +45,26 @@
         </tr>
         <tr>
             <td class="label">Image Caption:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'imageCaption', {}) %></td>
+            <td style="vertical-align: baseline;">
+                <u><b>English</b></u><br />
+                <%= HTML.TextBox(this, 'imageCaption', {}) %>
+                <br />
+                <u><b>French</b></u><br />
+                <%= HTML.TextBox(this, 'imageCaptionFr', {}) %>
+            </td>
         </tr>
     </table>
     <h3>Summary <small>(max 2000 characters)</small>:</h3>
-    <div style="display:inline-block; text-align:right; margin-top: -2em;">
+    <u><b>English</b></u><br />
+    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
         <small><span id="characterCount"></span>/2000 characters</small><br />
         <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
+    </div><br /><br />
+    
+    <u><b>French</b></u><br />
+    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
+        <small><span id="characterCountFr"></span>/2000 characters</small><br />
+        <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
     </div>
 </div>
 <div style="width:180px;display:inline-block;">

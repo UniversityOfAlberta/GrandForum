@@ -9,26 +9,25 @@ PostingEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", function(){
             this.render();
         }.bind(this));
+        this.listenTo(this.model, "change:language", function(){
+            main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
+        });
         this.listenTo(this.model, "change:title", function(){
-            main.set('title', this.model.get('title'));
+            main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
+        });
+        this.listenTo(this.model, "change:titleFr", function(){
+            main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
         });
     },
     
     savePosting: function(){
-        if (this.model.get("title").trim() == '') {
-            clearWarning();
-            addWarning('Title must not be empty', true);
-            return;
-        }
         this.$(".throbber").show();
         this.$("#savePosting").prop('disabled', true);
-        var bilingual = this.model.get('bilingual');
         this.model.save(null, {
             success: function(){
                 this.$(".throbber").hide();
                 this.$("#savePosting").prop('disabled', false);
                 clearAllMessages();
-                addSuccess("Posting created.", true);
                 document.location = this.model.get('url');
             }.bind(this),
             error: function(o, e){
@@ -54,6 +53,10 @@ PostingEditView = Backbone.View.extend({
         "cut textarea[name=summary]": "characterCount",
         "paste textarea[name=summary]": "characterCount",
         
+        "keyup textarea[name=summaryFr]": "characterCount",
+        "cut textarea[name=summaryFr]": "characterCount",
+        "paste textarea[name=summaryFr]": "characterCount",
+        
         "click #savePosting": "savePosting",
         "click #cancel": "cancel"
     },
@@ -61,6 +64,7 @@ PostingEditView = Backbone.View.extend({
     characterCount: function(){
         _.defer(function(){
             this.$("#characterCount").text(this.$("textarea[name=summary]").val().length);
+            this.$("#characterCountFr").text(this.$("textarea[name=summaryFr]").val().length);
         }.bind(this));
     },
     
@@ -96,7 +100,7 @@ PostingEditView = Backbone.View.extend({
             main.set('title', 'New Posting');
         }
         else {
-            main.set('title', 'Edit Posting');
+            main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
         }
         this.$el.html(this.template(this.model.toJSON()));
         //this.renderTinyMCE();

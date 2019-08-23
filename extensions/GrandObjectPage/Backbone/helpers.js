@@ -63,6 +63,27 @@ function abbr(str, nChars){
     return $(abbr).parent().html();
 }
 
+function showLanguage(language, textEn, textFr, delimiter=' / '){
+    if(language == "English"){
+        return textEn;
+    }
+    else if(language == "French"){
+        return textFr;
+    }
+    else if(language == "Bilingual"){
+        if(textEn != "" && textFr != ""){
+            return textEn + delimiter + textFr;
+        }
+        else if(textEn != ""){
+            return textEn;
+        }
+        else if(textFr != ""){
+            return textFr;
+        }
+    }
+    return "";
+}
+
 function subview(subviewName){
     return "<div data-subview='" + subviewName + "'></div>";
 }

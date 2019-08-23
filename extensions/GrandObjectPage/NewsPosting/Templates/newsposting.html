@@ -28,7 +28,7 @@
         <% if(image != ""){ %>
             <tr>
                 <td class="label">Image:</td>
-                <td align="center"><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-height: 200px; max-width: 300px;" /></a><br /><%= imageCaption %></td>
+                <td align="center"><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-height: 200px; max-width: 300px;" /></a><br /><%= showLanguage(language, imageCaption, imageCaptionFr) %></td>
             </tr>
         <% } %>
         <% if(visibility == "Publish"){ %>
@@ -39,7 +39,7 @@
         <% } %>
     </table>
     <h3>Summary</h3>
-    <%= nl2br(summary) %>
+    <%= showLanguage(language, nl2br(summary), nl2br(summaryFr), "<br /><br />") %>
 </div>
 <% if(isAllowedToEdit){ %>
     <br />

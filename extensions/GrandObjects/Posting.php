@@ -13,12 +13,15 @@ class Posting extends BackboneModel {
     var $visibility;
     var $language;
     var $title;
+    var $titleFr;
     var $articleLink;
     var $startDate;
     var $endDate;
     var $summary;
+    var $summaryFr;
     var $image;
     var $imageCaption;
+    var $imageCaptionFr;
     var $created;
     var $deleted;
     
@@ -60,12 +63,15 @@ class Posting extends BackboneModel {
             $this->visibility = $row['visibility'];
             $this->language = $row['language'];
             $this->title = $row['title'];
+            $this->titleFr = $row['title_fr'];
             $this->articleLink = $row['article_link'];
             $this->startDate = $row['start_date'];
             $this->endDate = $row['end_date'];
             $this->summary = $row['summary'];
+            $this->summaryFr = $row['summary_fr'];
             $this->image = $row['image'];
             $this->imageCaption = $row['image_caption'];
+            $this->imageCaptionFr = $row['image_caption_fr'];
             $this->created = $row['created'];
             $this->deleted = $row['deleted'];
         }
@@ -91,6 +97,10 @@ class Posting extends BackboneModel {
         return $this->title;
     }
     
+    function getTitleFr(){
+        return $this->titleFr;
+    }
+    
     function getArticleLink(){
         return $this->articleLink;
     }
@@ -105,6 +115,10 @@ class Posting extends BackboneModel {
     
     function getSummary(){
         return $this->summary;
+    }
+    
+    function getSummaryFr(){
+        return $this->summaryFr;
     }
     
     function getSourceName(){
@@ -132,6 +146,10 @@ class Posting extends BackboneModel {
     
     function getImageCaption(){
         return $this->imageCaption;
+    }
+    
+    function getImageCaptionFr(){
+        return $this->imageCaptionFr;
     }
     
     function getCreated(){
@@ -183,12 +201,15 @@ class Posting extends BackboneModel {
                       'visibility' => $this->getVisibility(),
                       'language' => $this->getLanguage(),
                       'title' => $this->getTitle(),
+                      'titleFr' => $this->getTitleFr(),
                       'articleLink' => $this->getArticleLink(),
                       'startDate' => $this->getStartDate(),
                       'endDate' => $this->getEndDate(),
                       'summary' => $this->getSummary(),
+                      'summaryFr' => $this->getSummaryFr(),
                       'image' => $this->getImageUrl(),
                       'imageCaption' => $this->getImageCaption(),
+                      'imageCaptionFr' => $this->getImageCaptionFr(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
@@ -203,12 +224,15 @@ class Posting extends BackboneModel {
                                                 'visibility' => $this->visibility,
                                                 'language' => $this->language,
                                                 'title' => $this->title,
+                                                'title_fr' => $this->titleFr,
                                                 'article_link' => $this->articleLink,
                                                 'start_date' => $this->startDate,
                                                 'end_date' => $this->endDate,
                                                 'summary' => $this->summary,
+                                                'summary_fr' => $this->summaryFr,
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
+                                                'image_caption_fr' => $this->imageCaptionFr,
                                                 'created' => $this->created,
                                                 'deleted' => $this->deleted));
             if($status){
@@ -226,12 +250,15 @@ class Posting extends BackboneModel {
                                                 'visibility' => $this->visibility,
                                                 'language' => $this->language,
                                                 'title' => $this->title,
+                                                'title_fr' => $this->titleFr,
                                                 'article_link' => $this->articleLink,
                                                 'start_date' => $this->startDate,
                                                 'end_date' => $this->endDate,
                                                 'summary' => $this->summary,
+                                                'summary_fr' => $this->summaryFr,
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
+                                                'image_caption_fr' => $this->imageCaptionFr,
                                                 'created' => $this->created,
                                                 'deleted' => $this->deleted),
                                           array('id' => $this->id));
