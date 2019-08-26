@@ -370,7 +370,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     }
                 }
                 if($edit && $config->getValue('networkName') == "FES" && $editable){
-                    $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
+                    if(preg_match("/.*-T.*/", $this->project->getName())){
+                        $template = "Tsinghua.xlsx";
+                    }
+                    else {
+                        $template = "FES_Project_Budget.xlsx";
+                    }
+                    $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/{$template}'>Budget Template</a>";
                     $this->html .= "<h3>Budget Justification</h3>
                                     <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
                 }
