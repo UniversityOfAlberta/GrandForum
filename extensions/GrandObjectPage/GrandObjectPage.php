@@ -20,7 +20,7 @@
         require_once("Collaborations/Collaboration.php");
     }
     require_once("Bibliography/Bibliography.php");
-    require_once("AddMultimediaPage.php");
+    //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
     $wgHooks['UnknownAction'][] = 'noCreate';

@@ -938,7 +938,7 @@ class CavendishTemplate extends QuickTemplate {
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        if($config->getValue("showUploadFile")){
-	            $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
+	            //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Members' Intranet", "$wgServer$wgScriptPath/index.php/Resources");
@@ -948,7 +948,7 @@ class CavendishTemplate extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        //$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){

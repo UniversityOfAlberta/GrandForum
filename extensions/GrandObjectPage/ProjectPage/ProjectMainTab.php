@@ -152,7 +152,6 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenge = $this->project->getChallenge();
         
         $challenges = Theme::getAllThemes();
@@ -171,7 +170,6 @@ class ProjectMainTab extends AbstractEditableTab {
 EOF;
         }
         else{
-            $this->html .= "{$challenge->getName()} ({$challenge->getAcronym()})";
         }
         $this->html .= "</td></tr>";
     }

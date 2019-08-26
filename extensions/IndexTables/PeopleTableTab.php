@@ -78,7 +78,7 @@ class PeopleTableTab extends AbstractTab {
             }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
+            $projectsHeader = "<th style='white-space: nowrap;'>Committees</th>";
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){

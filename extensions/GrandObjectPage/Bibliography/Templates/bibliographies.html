@@ -1,6 +1,7 @@
 <% if(me.isLoggedIn()){ %>
     <a href="#/new" class="button" id="add">Add Meeting</a><br /><br />
 <% } %>
+<div style="display:none;">
 <h3>Filter Options &nbsp;</h3>
 <div id="faceted-bib-search">
     <div class="title-editor-desc-search">
@@ -29,6 +30,7 @@
     <tr>
         <td><button id="clearFiltersButton">Clear Filters</button>
     </tr>
+</div>
 </div>
 </br>
 <table id="bibliographies" frame="box" rules="all">
