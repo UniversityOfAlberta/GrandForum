@@ -81,8 +81,8 @@ function clearAllMessages(selector){
     clearError(selector);
 	clearSuccess(selector);
 	clearWarning(selector);
-	clearInfo(selector);
-	clearPurpleInfo(selector);
+	//clearInfo(selector);
+	//clearPurpleInfo(selector);
 }
 
 function addClose(messageBox){
