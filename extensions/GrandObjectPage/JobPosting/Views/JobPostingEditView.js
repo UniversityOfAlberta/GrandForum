@@ -229,6 +229,7 @@ JobPostingEditView = Backbone.View.extend({
         //this.renderTinyMCE();
         this.characterCount();
         this.$('[name=projectId]').chosen();
+        this.updateRank();
         return this.$el;
     }
 
