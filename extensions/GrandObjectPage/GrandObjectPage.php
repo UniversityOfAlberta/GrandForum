@@ -22,6 +22,7 @@
     require_once("Bibliography/Bibliography.php");
     require_once("JobPosting/JobPostingPage.php");
     require_once("NewsPosting/NewsPostingPage.php");
+    require_once("EventPosting/EventPostingPage.php");
     require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

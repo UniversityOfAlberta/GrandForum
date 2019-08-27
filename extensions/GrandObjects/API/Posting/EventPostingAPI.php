@@ -1,8 +1,8 @@
 <?php
 
-class NewsPostingAPI extends PostingAPI {
+class EventPostingAPI extends PostingAPI {
     
-    static $className = "NewsPosting";
+    static $className = "EventPosting";
     
     function validate(){
         $language = $this->POST('language');
@@ -40,22 +40,32 @@ class NewsPostingAPI extends PostingAPI {
         if(strlen($this->POST('imageCaptionFr')) > 70){
             $this->throwError("The french image caption must be no longer than 70 characters");
         }
-        if(strlen($this->POST('author')) > 70){
-            $this->throwError("The author must be no longer than 70 characters");
+        if(strlen($this->POST('address')) > 70){
+            $this->throwError("The address must be no longer than 70 characters");
         }
-        if(strlen($this->POST('sourceName')) > 70){
-            $this->throwError("The source name must be no longer than 70 characters");
+        if(strlen($this->POST('city')) > 70){
+            $this->throwError("The city must be no longer than 70 characters");
         }
-        if(trim($this->POST('sourceName')) == "" && trim($this->POST('sourceLink')) != ""){
-            $this->throwError("The source name must be not be empty when a source link is provided");
+        if(strlen($this->POST('country')) > 70){
+            $this->throwError("The country must be no longer than 70 characters");
+        }
+        if(trim($this->POST('address')) == ""){
+            $this->throwError("An address must be provided");
+        }
+        if(trim($this->POST('city')) == ""){
+            $this->throwError("A city must be provided");
+        }
+        if(trim($this->POST('country')) == ""){
+            $this->throwError("A country must be provided");
         }
         $this->checkFile();
     }
     
     function extraVars($posting){
-        $posting->author = $this->POST('author');
-        $posting->sourceName = $this->POST('sourceName');
-        $posting->sourceLink = $this->POST('sourceLink');
+        $posting->address = $this->POST('address');
+        $posting->city = $this->POST('city');
+        $posting->province = $this->POST('province');
+        $posting->country = $this->POST('country');
     }
 	
 }

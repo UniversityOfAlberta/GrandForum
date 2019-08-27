@@ -1,0 +1,47 @@
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:EventPostingPage#" style="float: right;">Back to Event Postings</a>
+<div>
+    <table>
+        <tr>
+            <td class="label">Visibility:</td>
+            <td><%= visibility %></td>
+        </tr>
+        <% if(articleLink != ""){ %>
+            <tr>
+                <td class="label">Article Link:</td>
+                <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
+            </tr>
+        <% } %>
+        <tr>
+            <td class="label">Posted:</td>
+            <td><%= startDate %></td>
+        </tr>
+        <tr>
+            <td class="label">Author:</td>
+            <td><%= author %></td>
+        </tr>
+        <% if(sourceLink != "" && sourceName != ""){ %>
+            <tr>
+                <td class="label">Source Link:</td>
+                <td><a href="<%= sourceLink %>" target="_blank"><%= sourceName %></a></td>
+            </tr>
+        <% } %>
+        <% if(image != ""){ %>
+            <tr>
+                <td class="label">Image:</td>
+                <td align="center"><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-height: 200px; max-width: 300px;" /></a><br /><%= showLanguage(language, imageCaption, imageCaptionFr) %></td>
+            </tr>
+        <% } %>
+        <% if(visibility == "Publish"){ %>
+            <tr>
+                <td class="label"><a href="<%= this.model.getWebsiteUrl() %>" target="_blank">Website Page</a></td>
+                <td></td>
+            </tr>
+        <% } %>
+    </table>
+    <h3>Summary</h3>
+    <%= showLanguage(language, nl2br(summary), nl2br(summaryFr), "<br /><br />") %>
+</div>
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='editPosting'>Edit Event Posting</button>&nbsp;<button id='deletePosting'>Delete Event Posting</button>
+<% } %>

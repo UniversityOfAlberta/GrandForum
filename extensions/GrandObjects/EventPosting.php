@@ -13,7 +13,7 @@ class EventPosting extends Posting {
     var $province;
     var $country;
     
-    function NewsPosting($data){
+    function EventPosting($data){
         if(count($data) > 0){
             $row = $data[0];
             parent::posting($data);

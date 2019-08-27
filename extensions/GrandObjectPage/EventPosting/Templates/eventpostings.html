@@ -1,0 +1,42 @@
+<% if(isAllowedToCreateEventPostings){ %>
+    <a href="#/new" class="button" id="add">Create an Event Item</a><br /><br />
+<% } %>
+<table id="postings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="5%" style="white-space: nowrap;">Posting Date</th>
+            <th width="5%" style="white-space: nowrap;">Language</th>
+            <th width="25%">Author</th>
+            <th width="64%">Posting</th>
+            <% if(isAllowedToCreateEventPostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(event){ %>
+            <tr>
+                <td align="center">
+                    <%= event.get('startDate') %>
+                </td>
+                <td align="center">
+                    <%= event.get('language') %>
+                </td>
+                <td>
+                    <%= event.get('author') %>
+                </td>
+                <td>
+                    <a href="<%= event.get('url') %>" ><%= showLanguage(event.get('language'), event.get('title'), event.get('titleFr')) %></a>
+                </td>
+                <% if(isAllowedToCreateEventPostings){ %>
+                    <td align="center">
+                        <% if(event.get('isAllowedToEdit')){ %>
+                            <span id="<%= event.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New Event Posting"></div>

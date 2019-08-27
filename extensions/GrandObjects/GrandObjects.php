@@ -164,6 +164,10 @@ $apiRequest->addAction('Hidden','newsposting', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/current', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:id', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:id/image', 'NewsPostingAPI');
+$apiRequest->addAction('Hidden','eventposting', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/current', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
 
 function createModels(){
 
@@ -197,6 +201,7 @@ function createModels(){
     addScript("Posting");
     addScript("JobPosting");
     addScript("NewsPosting");
+    addScript("EventPosting");
     
     return true;
 }
