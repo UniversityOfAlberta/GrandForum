@@ -136,6 +136,12 @@ class UploadCCVAPI extends API{
                     $first = @trim($names[1]);
                     $author = "$first $last";
                 }
+                else{
+                    $names = explode(" ", $author, 2);
+                    $last = @trim($names[0]);
+                    $first = @trim($names[1]);
+                    $author = "$first $last";
+                }
                 $obj = new stdClass;
                 $obj->name = trim($author);
                 $product->authors[] = $obj;
