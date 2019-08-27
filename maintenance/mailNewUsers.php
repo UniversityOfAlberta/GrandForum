@@ -35,7 +35,7 @@ foreach($lines as $line){
             $person = Person::newFromName($username);
         }
         // --------------------------UNCOMMENT THIS TO CREATE USERS-------------------//
-/*
+
 	if($person == null || $person->getId() == ""){
             // Create New User
             User::createNew($username, array('real_name' => "$first $last", 
@@ -102,7 +102,7 @@ foreach($lines as $line){
             }
         }
         //-----------------------COMMENT ENDS HERE------------------------------//
-*/	
+
 	// Now Send the Email
         $token = $person->getUser()->getToken();
         $deleteUrl = "https://forum.cscan-infocan.ca/index.php?action=deleteUser&user={$token}";

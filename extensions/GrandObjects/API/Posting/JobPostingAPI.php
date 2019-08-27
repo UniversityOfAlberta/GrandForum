@@ -8,14 +8,12 @@ class JobPostingAPI extends RESTAPI {
         if($id != ""){
             $previewCode = explode("-", $id);
             $previewCode = @$previewCode[1];
+            $_GET['previewCode'] = $previewCode;
             $job = JobPosting::newFromId($id);
-            if($previewCode != "" && $previewCode == $job->getPreviewCode()){
+            if(($previewCode != "" && $previewCode == $job->getPreviewCode()) || 
+               ($previewCode == "" && $previewCode == $job->getPreviewCode())){
                 $job->visibility = "Publish";
                 $job->generatePreviewCode();
-            }
-            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
-                // Accessed using API Key, so restrict to Published only
-                $job = new JobPosting(array());
             }
             return $job->toJSON();
         }

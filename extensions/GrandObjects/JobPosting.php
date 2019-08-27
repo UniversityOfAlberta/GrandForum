@@ -319,7 +319,9 @@ class JobPosting extends BackboneModel {
             // Job is Public
             return true;
         }
-        if($me->getId() == $this->getUserId()){
+        if(($me->getId() == $this->getUserId() && !isset($_GET['apiKey'])) ||  
+           ($me->isRoleAtLeast(STAFF) && $this->getPreviewCode() == @$_GET['previewCode']) ||
+           ($me->isRoleAtLeast(STAFF) && !isset($_GET['apiKey']))){
             // Job was created by the logged in user
             return true;
         }
