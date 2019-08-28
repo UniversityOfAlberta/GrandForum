@@ -561,22 +561,22 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <!--ReportItemSet id="if" type="If" if="{&lt;({$timestamp},2019-01-23 00:59:59 MST)}"-->
-            <ReportItemSet id="ifTotal" type="If" if="{>({getNumber(RP_CRP,COVER,TOTAL,0,{$user_id},{$project_id})},600000)}">
+        <!--If id="if" if="{&lt;({$timestamp},2019-01-23 00:59:59 MST)}"-->
+            <If id="ifTotal" if="{>({getNumber(RP_CRP,COVER,TOTAL,0,{$user_id},{$project_id})},600000)}">
                 <ReportItem id="warning" type="Static">
                     <![CDATA[
                         <div id="totalWarning" class="warning">You cannot request a value greater than $600,000.</div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </If>
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
         <!--/ReportItemSet-->
-        <!--ReportItemSet id="else" type="If" if="{&gt;({$timestamp},2019-01-23 00:59:59 MST)}">
+        <!--If id="else" if="{&gt;({$timestamp},2019-01-23 00:59:59 MST)}">
             <ReportItem id="review" type="Static">
                 <![CDATA[
                     <div class="info">This application is currently closed.</div>
                 ]]>
             </ReportItem>
-        </ReportItemSet-->
+        </If-->
     </ReportSection>
 </Report>

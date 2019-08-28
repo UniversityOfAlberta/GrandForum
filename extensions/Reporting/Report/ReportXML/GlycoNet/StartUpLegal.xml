@@ -180,9 +180,9 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca,glyconet@ualberta.ca" />
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the Acknowledgment before you can submit your application.</p>

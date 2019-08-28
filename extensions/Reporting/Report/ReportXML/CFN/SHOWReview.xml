@@ -37,7 +37,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="SHOW_EX_REVIEW" tooltip="Review of SHOW Grants" type="EditableReportSection" saveText="Save &amp; Submit">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="All Applications">
                 <ReportItem type="Static">
                     <![CDATA[
@@ -264,7 +264,7 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>

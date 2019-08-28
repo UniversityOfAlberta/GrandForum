@@ -56,11 +56,11 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({or({==({getText(RP_KT_INTENT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                          {contains({$user_full_roles},ISAC)}
-                                                         )},
-                                                      {contains({$user_full_roles},KTC)})},
-                                                  {contains({$user_full_roles},RMC)})}">
+        <If id="if_eula" if="{or({or({or({==({getText(RP_KT_INTENT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                         {contains({$user_full_roles},ISAC)}
+                                     )},
+                                  {contains({$user_full_roles},KTC)})},
+                              {contains({$user_full_roles},RMC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT_INTENT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,TITLE,0,{$user_id},0)} - {$user_name}">
                     <ReportItem id="table" type="PDFReportItem" reportType="KT2019Intent" buttonName="Download Application">
@@ -317,7 +317,7 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{and({and({and({!=({getText(RP_KT_INTENT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                             {!contains({$user_full_roles},ISAC)}
                                                            )},

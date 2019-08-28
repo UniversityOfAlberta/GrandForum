@@ -470,7 +470,11 @@ class ReportXMLParser {
                     else if($c->getName() == "ReportItem"){
                         $this->parseReportItem($section, $c);
                     }
-                    else if($c->getName() == "ReportItemSet"){
+                    else if($c->getName() == "ReportItemSet" || 
+                            $c->getName() == "If" ||
+                            $c->getName() == "ElseIf" ||
+                            $c->getName() == "Else" ||
+                            $c->getName() == "For"){
                         $projectId = 0;
                         if(!$this->report->topProjectOnly && $this->report->project != null){
                             $projectId = $this->report->project->getId();
@@ -506,6 +510,12 @@ class ReportXMLParser {
         $attributes = $node->attributes();
         $children = $node->children();
         $itemset = $section->getReportItemById("{$attributes->id}");
+        if($node->getName() == "If" ||
+           $node->getName() == "ElseIf" ||
+           $node->getName() == "Else" ||
+           $node->getName() == "For"){
+           @$node->addAttribute("type", $node->getName());
+        }
         if($itemset != null){
             $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
             $itemset->iteration = 0;
@@ -585,7 +595,11 @@ class ReportXMLParser {
                     if($c->getName() == "ReportItem"){
                         $item = $this->parseReportItem($itemset, $c, $value);
                     }
-                    else if($c->getName() == "ReportItemSet"){
+                    else if($c->getName() == "ReportItemSet" || 
+                            $c->getName() == "If" ||
+                            $c->getName() == "ElseIf" ||
+                            $c->getName() == "Else" ||
+                            $c->getName() == "For"){
                         $item = $this->parseReportItemSet($itemset, $c, $value);
                     }
                     if($item == null){

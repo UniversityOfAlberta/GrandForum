@@ -171,7 +171,7 @@
                             </tr>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Commercialization)}">
+                <If id="commercialization" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Commercialization)}">
                     <ReportItem id="6" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="6" blobSubItem="{$user_id}" options="1|2|3|4|5">
                         <![CDATA[
                             <tr>
@@ -247,8 +247,8 @@
                                 </tr>
                         ]]>
                     </ReportItem>
-                </ReportItemSet>
-                <ReportItemSet id="commercialization" type="If" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Knowledge Mobilization)}">
+                </If>
+                <If id="commercialization" if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, TYPE, 0, {$user_id}, {$project_id})},Knowledge Mobilization)}">
                     <ReportItem id="11" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="11" blobSubItem="{$user_id}" options="1|2|3|4|5">
                         <![CDATA[
                             <tr>
@@ -319,7 +319,7 @@
                                 </tr>
                         ]]>
                     </ReportItem>
-                </ReportItemSet>
+                </If>
                 <ReportItem id="16" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="16" blobSubItem="{$user_id}" options="1|2|3|4|5">
                     <![CDATA[
                         <tr>

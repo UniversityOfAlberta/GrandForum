@@ -51,7 +51,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
+        <If id="if_eula" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                       {contains({$user_full_roles},ISAC)}
                                                      )},
                                                   {contains({$user_full_roles},CAT)})}">
@@ -508,7 +508,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                         {!contains({$user_full_roles},ISAC)}
                                                        )},

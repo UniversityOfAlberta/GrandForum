@@ -126,7 +126,7 @@
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
+            <If id="if" if="{!=({$user_id},{$my_id})}">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational" includeSelf="true">
                         <ReportItem id="review" type="StaticReportItem">
@@ -150,7 +150,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

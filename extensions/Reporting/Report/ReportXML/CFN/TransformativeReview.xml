@@ -81,9 +81,9 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )}">
+        <If id="if_eula" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                 {contains({$user_full_roles},ISAC)}
+                             )}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                     <ReportItem id="table" type="StaticReportItem">
@@ -292,7 +292,7 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
                                                         {!contains({$user_full_roles},ISAC)}
                                                        )}">

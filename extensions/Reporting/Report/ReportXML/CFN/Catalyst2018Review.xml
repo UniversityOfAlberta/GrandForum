@@ -51,7 +51,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CATALYST_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                     <ReportItem id="table" type="PDFReportItem" reportType="Catalyst2018Application" buttonName="Download Application">
@@ -465,7 +465,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>

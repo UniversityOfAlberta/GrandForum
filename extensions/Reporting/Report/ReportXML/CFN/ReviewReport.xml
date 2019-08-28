@@ -1945,7 +1945,7 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                    <ReportItemSet id="if" type="IfReportItemSet" if="{and({!=({$user_name},Josef Amann)},
+                    <If id="if" if="{and({!=({$user_name},Josef Amann)},
                                                                            {!=({$user_name},Denise Stockley)}
                                                                       )}">
                         <ReportItem id="row" type="StaticReportItem">
@@ -1988,7 +1988,7 @@
                                 </tr>
                             ]]>
                         </ReportItem>
-                    </ReportItemSet>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table_foot" type="StaticReportItem">
                     <![CDATA[
@@ -2074,7 +2074,7 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                    <ReportItemSet id="if" type="IfReportItemSet" if="{and({!=({$user_name},Josef Amann)},
+                    <If id="if" if="{and({!=({$user_name},Josef Amann)},
                                                                            {!=({$user_name},Denise Stockley)}
                                                                       )}">
                         <ReportItem id="row" type="StaticReportItem">
@@ -2099,7 +2099,7 @@
                                 </tr>
                             ]]>
                         </ReportItem>
-                    </ReportItemSet>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table_foot" type="StaticReportItem">
                     <![CDATA[

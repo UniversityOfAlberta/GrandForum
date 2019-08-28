@@ -49,18 +49,18 @@
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+            <If id="if" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <ReportItemSet id="if" type="If" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+            <If id="if" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
@@ -166,7 +166,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
@@ -577,29 +577,29 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if" type="If" if="{and({==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
+        <If id="if" if="{and({==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-        </ReportItemSet>
-        <ReportItemSet id="if_not" type="If" if="{or({!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
+        </If>
+        <If id="if_not" if="{or({!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
             <ReportItem id="message" type="Static">
                 <![CDATA[
                     <div class="error">Your supervisor needs to approve your application before you are able to submit.</div>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
 </Report>

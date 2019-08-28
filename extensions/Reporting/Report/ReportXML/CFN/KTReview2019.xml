@@ -64,10 +64,10 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )},
-                                                  {contains({$user_full_roles},KTC)})}">
+        <If id="if_eula" if="{or({or({==({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                          {contains({$user_full_roles},ISAC)}
+                                         )},
+                                      {contains({$user_full_roles},KTC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                     <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
@@ -473,7 +473,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </If>
         <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                         {!contains({$user_full_roles},ISAC)}
                                                        )},
