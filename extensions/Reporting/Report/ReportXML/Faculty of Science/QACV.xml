@@ -440,7 +440,7 @@
         </ReportItem>
         
         <!-- Honors and Awards -->
-        <ReportItemSet id="award_if" type="If" if="{>({getNProducts(1900-01-01, {$next_year}-12-31, Award, all,, false)}, 0)}">
+        <If id="award_if" if="{>({getNProducts(1900-01-01, {$next_year}-12-31, Award, all,, false)}, 0)}">
             <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
                 <![CDATA[
                     <h2>Honors and Awards</h2>
@@ -474,10 +474,10 @@
                     </table><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <!-- Courses Taught -->
-        <ReportItemSet id="courses_if" type="If" if="{>({$user_courses_count},0)}">
+        <If id="courses_if" if="{>({$user_courses_count},0)}">
             <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses Taught">
                 <![CDATA[
                     <h2>Courses Taught</h2>
@@ -488,10 +488,10 @@
                     {$item}<br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <!-- Supervision and Training Responsibilities -->
-        <ReportItemSet id="supervision_if" type="If" if="{>({add({$user_grad_count},{$user_fellow_count},{$user_tech_count},{$user_ugrad_count})},0)}">
+        <If id="supervision_if" if="{>({add({$user_grad_count},{$user_fellow_count},{$user_tech_count},{$user_ugrad_count})},0)}">
             <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
                 <![CDATA[
                     <h2>Supervision and Training Responsibilities</h2>
@@ -502,10 +502,10 @@
                     {$item}<br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <!-- Publications -->
-        <ReportItemSet id="publications_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, all,, false)}, 0)}">
+        <If id="publications_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, all,, false)}, 0)}">
             <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
                 <![CDATA[
                     <h2>Publications</h2>
@@ -513,7 +513,7 @@
                     <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="publications_if1" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Journal Paper|Journal Abstract|Collections Paper,, false, true)}, 0)}">
+            <If id="publications_if1" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Journal Paper|Journal Abstract|Collections Paper,, false, true)}, 0)}">
                 <ReportItem id="journalbookmark" type="SubBookmarkReportItem" title="Journals">
                     <![CDATA[
                         <h3>Journals</h3>
@@ -532,8 +532,8 @@
                         </ul><br />
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="publications_if2" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Conference Paper|Proceedings Paper|Workshop Paper,, false, true)}, 0)}">
+            </If>
+            <If id="publications_if2" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Conference Paper|Proceedings Paper|Workshop Paper,, false, true)}, 0)}">
                 <ReportItem id="conferencebookmark" type="SubBookmarkReportItem" title="Conference Papers">
                     <![CDATA[
                         <h3>Conference Papers</h3>
@@ -552,8 +552,8 @@
                         </ul><br />
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="publications_if3" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
+            </If>
+            <If id="publications_if3" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
                     <![CDATA[
                         <h3>Other</h3>
@@ -572,11 +572,11 @@
                         </ul><br />
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
+            </If>
+        </If>
 
         <!-- Presentations -->
-        <ReportItemSet id="presentations_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
+        <If id="presentations_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
             <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
                 <![CDATA[
                     <h2>Invited Presentations <i>(by staff member)</i></h2>
@@ -595,10 +595,10 @@
                     </ul><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <!-- Grants -->
-        <ReportItemSet id="grants_if" type="If" if="{>({$user_cv_grant_count},0)}">
+        <If id="grants_if" if="{>({$user_cv_grant_count},0)}">
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
                     <h2>Research Funding</h2>
@@ -636,10 +636,10 @@
                     </tbody></table><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
 
         <!-- Patents -->
-        <ReportItemSet id="patents_if" type="If" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
+        <If id="patents_if" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
             <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
                 <![CDATA[
                     <h2>Patents/Spin-Offs</h2>
@@ -658,10 +658,10 @@
                     </ul><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <!-- Service to the University and the Profession -->
-        <ReportItemSet id="committees_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental|Faculty|University|Scientific|Community Outreach|Other,, false)}, 0)}">
+        <If id="committees_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental|Faculty|University|Scientific|Community Outreach|Other,, false)}, 0)}">
             <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service to the University and the Profession">
                 <![CDATA[
                     <h2>Service to the University and the Profession</h2>
@@ -669,7 +669,7 @@
             </ReportItem>
             
             <!-- Departmental -->
-            <ReportItemSet id="departmental_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental,, false)}, 0)}">
+            <If id="departmental_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental,, false)}, 0)}">
                 <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Departmental</h3>
@@ -682,10 +682,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
             
             <!-- Faculty -->
-            <ReportItemSet id="faculty_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Faculty,, false)}, 0)}">
+            <If id="faculty_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Faculty,, false)}, 0)}">
                 <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Faculty</h3>
@@ -698,10 +698,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
             
             <!-- University -->
-            <ReportItemSet id="university_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, University,, false)}, 0)}">
+            <If id="university_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, University,, false)}, 0)}">
                 <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> University</h3>
@@ -714,10 +714,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
             
             <!-- Scientific -->
-            <ReportItemSet id="scientific_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific,, false)}, 0)}">
+            <If id="scientific_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific,, false)}, 0)}">
                 <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Scientific</h3>
@@ -730,10 +730,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
             
             <!-- Outreach and Community Engagement -->
-            <ReportItemSet id="community_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach,, false)}, 0)}">
+            <If id="community_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach,, false)}, 0)}">
                 <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
                     <![CDATA[
                         <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Outreach and Community Engagement</h3>
@@ -746,10 +746,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
             
             <!-- Other -->
-            <ReportItemSet id="other_if" type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other,, false)}, 0)}">
+            <If id="other_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other,, false)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
                     <![CDATA[
                     	<h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Other</h3>
@@ -762,8 +762,8 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
-        </ReportItemSet>
+            </If>
+        </If>
         
         <!-- Footer -->
         <ReportItem id="cv_footer" type="Static">

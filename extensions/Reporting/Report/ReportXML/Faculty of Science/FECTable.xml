@@ -64,7 +64,7 @@
                         {$item} Recommendation<br />
                 ]]>
             </ReportItem>
-            <ReportItemSet id="if" type="If" if="{or({contains({$my_roles},ADMIN)},
+            <If if="{or({contains({$my_roles},ADMIN)},
                                                      {contains({$my_roles},DEAN)},
                                                      {contains({$my_roles},VDEAN)},
                                                      {contains({$my_roles},HR)})}">
@@ -78,36 +78,35 @@
                             {$item} Dean's Decision<br />
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet type="If" if="{or({contains({getExtra()}, A)},
-                                             {contains({getExtra()}, B)},
-                                             {contains({getExtra()}, C)},
-                                             {contains({getExtra()}, N)}
-                                         )}">
-                <ReportItemSet type="If" if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!contains({$my_roles},Chair)}
-                                             )}">
-                    
+            </If>
+            <If if="{or({contains({getExtra()}, A)},
+                        {contains({getExtra()}, B)},
+                        {contains({getExtra()}, C)},
+                        {contains({getExtra()}, N)}
+                    )}">
+                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!contains({$my_roles},Chair)}
+                        )}">
                     <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
                         <![CDATA[
                             {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
                             {set(nFaculty, {add({get(nFaculty)}, 1)})}
                         ]]>
                     </ReportItem>
-                </ReportItemSet>
-            </ReportItemSet>
-            <ReportItemSet type="If" if="{or({contains({getExtra()}, D)},
-                                             {contains({getExtra()}, E)},
-                                             {contains({getExtra()}, F)},
-                                             {contains({getExtra()}, M)}
-                                         )}">
-                <ReportItemSet type="If" if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                                                  {!contains({$my_roles},Chair)}
-                                             )}">
+                </If>
+            </If>
+            <If if="{or({contains({getExtra()}, D)},
+                        {contains({getExtra()}, E)},
+                        {contains({getExtra()}, F)},
+                        {contains({getExtra()}, M)}
+                    )}">
+                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!contains({$my_roles},Chair)}
+                        )}">
                     
                     <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
                         <![CDATA[
@@ -115,38 +114,38 @@
                             {set(nFSO, {add({get(nFSO)}, 1)})}
                         ]]>
                     </ReportItem>
-                </ReportItemSet>
-            </ReportItemSet>
+                </If>
+            </If>
             <ReportItem id="comments_start" type="Static">
                 <![CDATA[
                         </td>
                         <td>
                 ]]>
             </ReportItem>
-            <ReportItemSet type="If" if="{contains({$my_roles},ViceDean)}">
+            <If if="{contains({$my_roles},ViceDean)}">
                 <ReportItemSet id="fec_comments" type="FECReportItemSet">
                     <ReportItem id="vars" type="Static">
                         <![CDATA[
                             {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
                         ]]>
                     </ReportItem>
-                    <ReportItemSet id="comment_if" type="If" if="{!=({getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)},)}">
+                    <If id="comment_if" if="{!=({getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)},)}">
                         <ReportItem id="fec_comment" type="Static">
                             <![CDATA[
                                 <b>{$user_name}:</b> {get(comment)}
                                 <hr />
                             ]]>
                         </ReportItem>
-                    </ReportItemSet>
+                    </If>
                 </ReportItemSet>
-            </ReportItemSet>
-            <ReportItemSet type="If" if="{contains({$my_sub_roles},Faculty Evaluation Committee)}">
+            </If>
+            <If if="{contains({$my_sub_roles},Faculty Evaluation Committee)}">
                 <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px">
                     <![CDATA[
                         {$item}
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </If>
             <ReportItem id="row_end" type="Static">
                 <![CDATA[
                         </td>

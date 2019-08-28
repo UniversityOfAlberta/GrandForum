@@ -76,13 +76,13 @@
                 <div style='margin-left:25px;'>{$item}
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_INFORMATION,FEC_INFO_RESP,0,{$user_id},0)},Yes)}">
+        <If if="{==({getText(RP_FEC,FEC_INFORMATION,FEC_INFO_RESP,0,{$user_id},0)},Yes)}">
             <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" orientation="list" showLabels="true">
                 <![CDATA[
                     &nbsp;-&nbsp;{$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
             <![CDATA[
                 </div>
@@ -118,7 +118,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
+        <If if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
             <ReportItem id="projectCourses_header" type="Static">
                 <![CDATA[
                     <h3>Project Courses</h3>
@@ -144,7 +144,7 @@
                     </table>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" multiple="true" optional="true">
             <![CDATA[
                 <h3>Teaching Development and Innovation</h3>
@@ -468,7 +468,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Minor SPA)},
+        <If if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Minor SPA)},
                                          {==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Major SPA)})}">
             <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
                 <![CDATA[
@@ -476,22 +476,22 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Major SPA)}">
+            <If if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL,0,{$user_id},0)},Major SPA)}">
                 <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
                     <![CDATA[
                         <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </If>
             <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT">
                 <![CDATA[
                     <h3>Describe the SPA below</h3>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet type="If" if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Minor SPA)},
+        </If>
+        <If if="{or({==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Minor SPA)},
                                          {==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Major SPA)})}">
             <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
                 <![CDATA[
@@ -506,21 +506,21 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItemSet type="If" if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Major SPA)}">
+            <If if="{==({getText(RP_FEC,FEC_ADDITIONAL_INFO,FEC_SPA_LEVEL2,0,{$user_id},0)},Major SPA)}">
                 <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT" options="Yes|No">
                     <![CDATA[
                         <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </If>
             <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobSection="FEC_ADDITIONAL_INFO" blobType="BLOB_TEXT">
                 <![CDATA[
                     <h3>Describe the SPA below</h3>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
