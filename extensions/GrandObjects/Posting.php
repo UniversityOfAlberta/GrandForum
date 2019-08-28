@@ -29,9 +29,9 @@ class Posting extends BackboneModel {
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
                                     array('id' => EQ($id)));
-        $news = new static($data);
-        if($news->isAllowedToView()){
-            return $news;
+        $posting = new static($data);
+        if($posting->isAllowedToView()){
+            return $posting;
         }
         else{
             return new self(array());
@@ -48,6 +48,10 @@ class Posting extends BackboneModel {
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
+            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
+                // Accessed using API Key, so restrict to Published only
+                continue;
+            }
             if($posting->isAllowedToView()){
                 $postings[] = $posting;
             }
@@ -168,8 +172,8 @@ class Posting extends BackboneModel {
     }
     
     /**
-     * Returns the url of this NewsPosting's page
-     * @return string The url of this NewsPosting's page
+     * Returns the url of this Posting's page
+     * @return string The url of this Posting's page
      */
     function getUrl(){
         global $wgServer, $wgScriptPath;
@@ -188,11 +192,13 @@ class Posting extends BackboneModel {
     function isAllowedToView(){
         $me = Person::newFromWgUser();
         if($this->getVisibility() == "Publish"){
-            // News is Public
+            // Posting is Public
             return true;
         }
-        if($me->getId() == $this->getUserId()){
-            // News was created by the logged in user
+        if(($me->getId() == $this->getUserId() && !isset($_GET['apiKey'])) ||  
+           ($me->isRoleAtLeast(STAFF) && $this->getPreviewCode() == @$_GET['previewCode']) ||
+           ($me->isRoleAtLeast(STAFF) && !isset($_GET['apiKey']))){
+            // Posting was created by the logged in user (or is Staff)
             return true;
         }
     }

@@ -18,7 +18,7 @@ EventPosting = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.eventposting',
 
-    defaults: _.extend(Posting.prototype.defaults, {
+    defaults: _.extend(Object.assign({}, Posting.prototype.defaults), {
         address: "CS-Can/Info-Can",
         city: "",
         province: "",

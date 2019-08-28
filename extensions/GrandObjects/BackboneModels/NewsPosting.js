@@ -18,7 +18,7 @@ NewsPosting = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.newsposting',
 
-    defaults: _.extend(Posting.prototype.defaults, {
+    defaults: _.extend(Object.assign({}, Posting.prototype.defaults), {
         author: "CS-Can/Info-Can",
         sourceName: "",
         sourceLink: ""

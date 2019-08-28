@@ -16,15 +16,23 @@
             <td><%= startDate %></td>
         </tr>
         <tr>
-            <td class="label">Author:</td>
-            <td><%= author %></td>
+            <td class="label">Address:</td>
+            <td><%= address %></td>
         </tr>
-        <% if(sourceLink != "" && sourceName != ""){ %>
+        <tr>
+            <td class="label">City:</td>
+            <td><%= city %></td>
+        </tr>
+        <% if(province != ""){ %>
             <tr>
-                <td class="label">Source Link:</td>
-                <td><a href="<%= sourceLink %>" target="_blank"><%= sourceName %></a></td>
+                <td class="label">Province:</td>
+                <td><%= province %></td>
             </tr>
         <% } %>
+        <tr>
+            <td class="label">Country:</td>
+            <td><%= country %></td>
+        </tr>
         <% if(image != ""){ %>
             <tr>
                 <td class="label">Image:</td>
