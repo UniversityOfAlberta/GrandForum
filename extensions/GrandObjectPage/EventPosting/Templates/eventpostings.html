@@ -6,7 +6,7 @@
         <tr>
             <th width="5%" style="white-space: nowrap;">Posting Date</th>
             <th width="5%" style="white-space: nowrap;">Language</th>
-            <th width="25%">Author</th>
+            <th width="25%">Address</th>
             <th width="64%">Posting</th>
             <% if(isAllowedToCreateEventPostings){ %>
                 <th width="1%">Delete?</th>
@@ -23,7 +23,8 @@
                     <%= event.get('language') %>
                 </td>
                 <td>
-                    <%= event.get('author') %>
+                    <%= event.get('address') %><br />
+                    <%= event.get('city') %>, <% if(event.get('province') != ''){ %> <%= event.get('province') %>, <% } %> <%= event.get('country') %>
                 </td>
                 <td>
                     <a href="<%= event.get('url') %>" ><%= showLanguage(event.get('language'), event.get('title'), event.get('titleFr')) %></a>
