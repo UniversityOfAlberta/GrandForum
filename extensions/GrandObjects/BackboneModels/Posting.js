@@ -15,6 +15,7 @@ Posting = Backbone.Model.extend({
         image: "",
         imageCaption: "",
         imageCaptionFr: "",
+        previewCode: "",
         created: "",
         deleted: false,
         isAllowedToEdit: true,

@@ -10,7 +10,15 @@ abstract class PostingAPI extends RESTAPI {
         $image = ($this->getParam('image') != "");
         $className = static::$className;
         if($id != ""){
+            $previewCode = explode("-", $id);
+            $previewCode = @$previewCode[1];
+            $_GET['previewCode'] = $previewCode;
             $posting = $className::newFromId($id);
+            if(($previewCode != "" && $previewCode == $posting->getPreviewCode()) || 
+               ($previewCode == "" && $previewCode == $posting->getPreviewCode())){
+                $posting->visibility = "Publish";
+                $posting->generatePreviewCode();  
+            }
             if($image){
                 header('Content-Type: image/png;base64');
                 $exploded = explode("base64,", $posting->getImage());

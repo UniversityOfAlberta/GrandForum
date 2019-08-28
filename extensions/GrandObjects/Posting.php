@@ -22,6 +22,7 @@ class Posting extends BackboneModel {
     var $image;
     var $imageCaption;
     var $imageCaptionFr;
+    var $previewCode;
     var $created;
     var $deleted;
     
@@ -83,6 +84,7 @@ class Posting extends BackboneModel {
             $this->image = $row['image'];
             $this->imageCaption = $row['image_caption'];
             $this->imageCaptionFr = $row['image_caption_fr'];
+            $this->previewCode = $row['preview_code'];
             $this->created = $row['created'];
             $this->deleted = $row['deleted'];
         }
@@ -132,11 +134,6 @@ class Posting extends BackboneModel {
         return $this->summaryFr;
     }
     
-    function getPreviewCode(){
-        return "";
-        //return $this->previewCode;
-    }
-    
     function getImage(){
         return $this->image;
     }
@@ -160,12 +157,23 @@ class Posting extends BackboneModel {
         return $this->imageCaptionFr;
     }
     
+    function getPreviewCode(){
+        return $this->previewCode;
+    }
+    
     function getCreated(){
         return $this->created;
     }
     
     function isDeleted(){
         return $this->deleted;
+    }
+    
+    function generatePreviewCode(){
+        $this->previewCode = md5(microtime() + rand(0,1000));
+        DBFunctions::update(static::$dbTable,
+                            array('preview_code' => $this->previewCode),
+                            array('id' => $this->id));
     }
     
     /**
@@ -222,6 +230,7 @@ class Posting extends BackboneModel {
                       'imageCaptionFr' => $this->getImageCaptionFr(),
                       'created' => $this->getCreated(),
                       'deleted' => $this->isDeleted(),
+                      'previewCode' => $this->getPreviewCode(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
                       'url' => $this->getUrl());
         return $json;
@@ -247,6 +256,7 @@ class Posting extends BackboneModel {
                                                 'deleted' => $this->deleted));
             if($status){
                 $this->id = DBFunctions::insertId();
+                $this->generatePreviewCode();
             }
             return $status;
         }
@@ -272,6 +282,7 @@ class Posting extends BackboneModel {
                                                 'created' => $this->created,
                                                 'deleted' => $this->deleted),
                                           array('id' => $this->id));
+            $this->generatePreviewCode();
             return $status;
         }
         return false;
