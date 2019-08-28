@@ -16,10 +16,10 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
+                    <If id="script" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
                         <![CDATA[
                             {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
                             {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
@@ -27,7 +27,7 @@
                             {set(q5, {add({get(q5)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)})})}
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
-                    </ReportItem>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
@@ -146,10 +146,10 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT_INTENT-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
+                <If id="script" if="{and({!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
                         {set(q2, {add({get(q2)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
                         {set(q3, {add({get(q3)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)})})}
@@ -157,7 +157,7 @@
                         {set(q5, {add({get(q5)},{getNumber(RP_KT_INTENT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
@@ -220,16 +220,16 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-EX" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)}
-                                                          )}">
+                    <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)}
+                                        )}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
                             {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
@@ -243,7 +243,7 @@
 
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
-                    </ReportItem>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
@@ -391,17 +391,17 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-KTC" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},)}
-                                                          )}">
+                    <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},)}
+                                        )}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)})})}
                             {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)})})}
@@ -416,7 +416,7 @@
 
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
-                    </ReportItem>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
@@ -569,15 +569,15 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-RMC" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},)}
-                                                          )}">
+                    <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},)}
+                                        )}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)})})}
                             {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)})})}
@@ -590,7 +590,7 @@
 
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
-                    </ReportItem>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
@@ -749,15 +749,15 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)})}">
+                <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)})})}
@@ -770,7 +770,7 @@
                         {set(q9, {add({get(q9)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -790,16 +790,16 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <If id="if" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#008800)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+            </If>
+            <If id="if" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FF0000)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -890,16 +890,16 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-KTC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},)})}">
+                <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)})})}
@@ -913,7 +913,7 @@
                         {set(q10, {add({get(q10)},{getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -934,16 +934,16 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <If id="if" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#008800)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+            </If>
+            <If id="if" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FF0000)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -1033,14 +1033,14 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="KT-RMC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},)})}">
+                <If id="script" if="{and({!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)})})}
@@ -1052,7 +1052,7 @@
                         {set(q8, {add({get(q8)},{getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -1071,16 +1071,16 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
+            <If id="if" if="{and({&gt;({get(total)},4.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#008800)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
+            </If>
+            <If id="if" if="{and({&lt;({get(total)},3.25)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FF0000)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -1142,11 +1142,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="IFP-ETC" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)},)})}">
+                    <If id="script" if="{and({!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)},)})}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)})})}
                             {set(q2, {add({get(q2)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)})})}
@@ -1155,7 +1155,7 @@
                             {set(q5, {add({get(q5)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)})})}
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
-                    </ReportItem>
+                    </If>
                 </ReportItemSet>
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
@@ -1278,11 +1278,11 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="IFP-ETC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)},)})}">
+                <If id="script" if="{and({!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)},)})}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)})})}
@@ -1291,7 +1291,7 @@
                         {set(q5, {add({get(q5)},{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[

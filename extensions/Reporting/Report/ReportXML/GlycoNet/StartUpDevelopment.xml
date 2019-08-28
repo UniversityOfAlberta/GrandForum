@@ -228,10 +228,10 @@
         <If id="if_eula" if="{==({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca,glyconet@ualberta.ca" />
         </If>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_not_eula" if="{!=({getText(RP_START_UP_DEV,ACK,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the Acknowledgment before you can submit your application.</p>
             ]]>
-        </ReportItem>
+        </If>
     </ReportSection>
 </Report>

@@ -39,7 +39,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <If id="3_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
+        <If id="3_if" if="{>(2019-09-25 17:00:00,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
                     <div id="3_accordion">

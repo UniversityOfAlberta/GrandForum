@@ -475,14 +475,14 @@
                 </ReportItemSet>
             </ReportItemSet>
         </If>
-        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                        {!contains({$user_full_roles},ISAC)}
-                                                       )},
-                                                   {!contains({$user_full_roles},KTC)})}">
+        <If id="if_not_eula" if="{and({and({!=({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                      {!contains({$user_full_roles},ISAC)}
+                                     )},
+                                 {!contains({$user_full_roles},KTC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
             <![CDATA[
                 {$item}

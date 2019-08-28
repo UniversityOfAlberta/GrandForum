@@ -265,11 +265,11 @@
                 </ReportItemSet>
             </ReportItemSet>
         </If>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_not_eula" if="{!=({getText(RP_SHOW_REVIEW,SHOW_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
             <![CDATA[
                 {$item}
