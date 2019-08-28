@@ -161,6 +161,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $adminGenericNoChecked = ($this->project->getAdminUseGeneric()) ? "" : "checked='checked'";
             $techGenericYesChecked = ($this->project->getTechUseGeneric()) ? "checked='checked'" : "";
             $techGenericNoChecked = ($this->project->getTechUseGeneric()) ? "" : "checked='checked'";
+            $provinceSelect = new SelectBox("address_province", "address_province", $address->getProvince(), array('AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'));
             $this->html .= "<table>";
             $this->html .= "<tr>
                                 <td align='right' valign='top' colspan='2'>
@@ -172,7 +173,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                         <b>Line 4:</b><input type='text' size='35' name='address_line4' placeholder='200 Main Street' value='".str_replace("'", "&#39;", $address->getLine4())."' /><br />
                                         <b>Postal Code:</b><input type='text' size='35' name='address_code' value='".str_replace("'", "&#39;", $address->getPostalCode())."' /><br />
                                         <b>City:</b><input type='text' size='35' name='address_city' value='".str_replace("'", "&#39;", $address->getCity())."' /><br />
-                                        <b>Province:</b><input type='text' size='35' name='address_province' value='".str_replace("'", "&#39;", $address->getProvince())."' /><br />
+                                        <b>Province:</b><div style='width: 306px;display:inline-block;text-align:left;vertical-align:middle;'>{$provinceSelect->render()}</div><br />
                                         <b>Country:</b><input type='text' size='35' name='address_country' value='".str_replace("'", "&#39;", $address->getCountry())."' />
                                     </fieldset>
                                 </td>
