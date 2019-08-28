@@ -132,12 +132,9 @@ class Posting extends BackboneModel {
         return $this->summaryFr;
     }
     
-    function getSourceName(){
-        return $this->sourceName;
-    }
-    
-    function getSourceLink(){
-        return $this->sourceLink;
+    function getPreviewCode(){
+        return "";
+        //return $this->previewCode;
     }
     
     function getImage(){
