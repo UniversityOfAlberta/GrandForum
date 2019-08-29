@@ -51,7 +51,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItemSet id="if_michael" type="If" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_MICHAEL, 0, {$user_id}, 0, MICHAEL)},)}">
+        <If id="if_michael" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_MICHAEL, 0, {$user_id}, 0, MICHAEL)},)}">
             <ReportItem id="MICHAEL_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_MICHAEL_DESC" optional="true" rich="true" limit="750">
                 <![CDATA[
                     <div style='margin-left:4em;'>
@@ -60,7 +60,7 @@
                     </div>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[

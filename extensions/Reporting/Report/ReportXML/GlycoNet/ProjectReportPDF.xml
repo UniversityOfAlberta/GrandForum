@@ -109,14 +109,14 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
                 <![CDATA[
                     <h3>Comments</h3>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="appendix" type="EditableReportSection" blobSection="MILESTONES" name="Last Year's Milestones" title="Last Year's Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
@@ -225,7 +225,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
-        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <ReportItem id="just" type="StaticReportItem">
                 <![CDATA[
                     {set(just,)}
@@ -247,7 +247,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
             <![CDATA[
                 {$item}
@@ -355,7 +355,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="extension" type="HeaderReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants" pagebreak="false">
-        <ReportItemSet id="if" type="If" if="{!=({getText(RP_PROGRESS,EXTENSION,OBJECTIVES,0,0,{$project_id})},)}">
+        <If id="if" if="{!=({getText(RP_PROGRESS,EXTENSION,OBJECTIVES,0,0,{$project_id})},)}">
             <ReportItem id="pagebreak" type="PageBreak">
                 <![CDATA[
                     {$item}
@@ -416,6 +416,6 @@
                     <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
 </Report>

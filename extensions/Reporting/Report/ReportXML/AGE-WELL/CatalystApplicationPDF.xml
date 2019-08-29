@@ -105,7 +105,7 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{==({getText(RP_CAT, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
+        <If if="{==({getText(RP_CAT, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
             <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
                 <![CDATA[
                     <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
@@ -143,7 +143,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
         <ReportItem id="header1" type="Static">

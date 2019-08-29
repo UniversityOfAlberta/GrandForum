@@ -44,26 +44,26 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_primary_other" type="If" if="{==({getText(RP_LOI,PROP_DESC,PRIMARY,0,{$user_id},0)},Other)}">
+        <If id="if_primary_other" if="{==({getText(RP_LOI,PROP_DESC,PRIMARY,0,{$user_id},0)},Other)}">
             <ReportItem id="primary_other" type="Text" blobItem="PRIMARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
                 <![CDATA[
                     <i>&nbsp;-&nbsp;{$item}</i>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="secondary" type="Select" blobItem="SECONDARY" blobType="BLOB_TEXT" options="CV/CG: trade-off between high performance chipsets and power consumption|CV/CG: machine vistion low-level computer vision problems|CV/CG: 3D realistic scene understanding complexity|CV/CG: video content analysis beyond hardware compatibility and algorithms|CV/CG: employing TOF/SL cellphone camera use for 2D to 3D conversion|CV/CG: training model compression/optimization for resource-constrained mobiles|CV/CG: video indexing/retrieval/classification|CV/CG: picture texture synthesis and style transform|CV/CG: efficient image/video compression/encoding/decoding technologies|HCI: trade-off exploration for useability vs. affordability|HCI: ubiquitous computing on small screen size and limited mobile bandwidth|HCI: frameworks for real-time data processing on edge nodes|Photo: identifying sweet spot for features to cover amateur- to pro-photograhy|Compilers: programmer productivty in multi-language environments|Compilers: models and languages for productivity/performance on heterogeneous architectures|Compilers: code generation &amp; compiler optimization for performance, energy, portability, etc.|Compilers: static, dynamic, and hybrid analysis for performance, energy, memory locality, etc.|Compilers: performance auto-tuning, Whole stack performance analysis and optimization|Compilers: AI software stack, AI enabled compiler technologies, usable AI|Compilers: Software-defined architecture, software tooling for reconfigurable architecture|Distr.Sys: distributed computation for AI algorithm training and inference|Distr.Sys: data platform/application development for training data management|Distr.Sys: data platform/application development for training meta-data management|Distr.Sys: data platform/application development for training data analysis &amp; recommendation|Distr.Sys: data platform/application development for training data processing|Distr.Sys: data platform/application development security &amp; privacy|Distr.sys: data platform/application development for auto/semi-auto labelling|Distr.Sys: permissioned Blockchain systems for enterprise applications|Distr.Sys: smart contracts and verification|Distr.sys: on-chain and off-chain complex transactions and semantics|Distr.Sys: blockchain hardware acceleration|Distr.sys: data privacy and security, and trusted execution environment|Distr.Sys: privacy-preserving transactions|Other" optional="true">
             <![CDATA[
                 <h3>Topic Alignment (secondary)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if_secondary_other" type="If" if="{==({getText(RP_LOI,PROP_DESC,SECONDARY,0,{$user_id},0)},Other)}">
+        <If id="if_secondary_other" if="{==({getText(RP_LOI,PROP_DESC,SECONDARY,0,{$user_id},0)},Other)}">
             <ReportItem id="secondary_other" type="Text" blobItem="SECONDARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
                 <![CDATA[
                     <i>&nbsp;-&nbsp;{$item}</i>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h3>Proposal Summary</h3>

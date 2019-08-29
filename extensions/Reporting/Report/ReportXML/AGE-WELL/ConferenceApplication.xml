@@ -39,13 +39,13 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="3_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="3_if" if="{>(2019-09-25 17:00:00,{$timestamp})}">
             <ReportItem id="3_head" type="Static">
                 <![CDATA[
                     <div id="3_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="3_for" type="For" from="0" to="5">
+            <For id="3_for" from="0" to="5">
                 <ReportItem id="3_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -143,7 +143,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="3_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -158,7 +158,7 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="application2" tooltip="Innovation Talks" name="Innovation Talks" title="Innovation Talks" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 2 -->
@@ -180,13 +180,13 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="2_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="2_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
             <ReportItem id="2_head" type="Static">
                 <![CDATA[
                     <div id="2_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="2_for" type="For" from="0" to="5">
+            <For id="2_for" from="0" to="5">
                 <ReportItem id="2_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -272,7 +272,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="2_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -287,7 +287,7 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="application1" tooltip="HQP Science Slam Competition" name="HQP Science Slam" title="HQP Science Slam Competition" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 1 -->
@@ -313,13 +313,13 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItemSet id="1_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="1_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
             <ReportItem id="1_head" type="Static">
                 <![CDATA[
                     <div id="1_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="1_for" type="For" from="0" to="5">
+            <For id="1_for" from="0" to="5">
                 <ReportItem id="1_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -385,7 +385,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="1_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -400,7 +400,7 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="application6" tooltip="HQP Short Talks" name="HQP Short Talks" title="HQP Short Talks" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 6 -->
@@ -422,13 +422,13 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="6_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="6_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
             <ReportItem id="6_head" type="Static">
                 <![CDATA[
                     <div id="6_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="6_for" type="For" from="0" to="5">
+            <For id="6_for" from="0" to="5">
                 <ReportItem id="6_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -514,7 +514,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="6_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -529,7 +529,7 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="application4" tooltip="Poster Session" name="Poster Session" title="Poster Session" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 4 -->
@@ -550,13 +550,13 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="4_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="4_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
             <ReportItem id="4_head" type="Static">
                 <![CDATA[
                     <div id="4_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="4_for" type="For" from="0" to="5">
+            <For id="4_for" from="0" to="5">
                 <ReportItem id="4_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -642,7 +642,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="4_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -657,7 +657,7 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="application5" tooltip="Drinks &amp; Demos" name="Drinks &amp; Demos" title="Drinks &amp; Demos" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 5 -->
@@ -679,13 +679,13 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="5_if" type="If" if="{>(2019-08-24,{$timestamp})}">
+        <If id="5_if" if="{>(2019-08-25 17:00:00,{$timestamp})}">
             <ReportItem id="5_head" type="Static">
                 <![CDATA[
                     <div id="5_accordion">
                 ]]>
             </ReportItem>
-            <ReportItemSet id="5_for" type="For" from="0" to="5">
+            <For id="5_for" from="0" to="5">
                 <ReportItem id="5_start" type="Static">
                     <![CDATA[
                         <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
@@ -789,7 +789,7 @@
                         </div>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </For>
             <ReportItem id="5_foot" type="Static">
                 <![CDATA[
                     </div>
@@ -804,6 +804,6 @@
                     </script>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
 </Report>

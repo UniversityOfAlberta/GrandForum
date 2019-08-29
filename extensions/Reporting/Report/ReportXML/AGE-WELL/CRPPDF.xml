@@ -101,13 +101,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="section5_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION5_CHECK,0,{$my_id},{$project_id},section5_check)},)}">
+        <If id="section5_if" if="{==({getArray(RP_CRP,PART1,SECTION5_CHECK,0,{$my_id},{$project_id},section5_check)},)}">
             <ReportItem id="section5_no" type="Static">
                 <![CDATA[
                     <p><i>No, we do not wish to be considered for additional funding from MEDTEQ.</i></p>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1100">
             <![CDATA[
                 <h2>Section 6: Knowledge and Technology Exchange and Exploitation (KTEE)</h2>
@@ -126,13 +126,13 @@
                 
             ]]>
         </ReportItem>
-        <ReportItemSet id="section7_if" type="If" if="{==({getArray(RP_CRP,PART1,SECTION7_CHECK,0,{$my_id},{$project_id},section7_check)},)}">
+        <If id="section7_if" if="{==({getArray(RP_CRP,PART1,SECTION7_CHECK,0,{$my_id},{$project_id},section7_check)},)}">
             <ReportItem id="section7_no" type="Static">
                 <![CDATA[
                     <p><i>No, we do not wish to be considered for Mitacs funding.</i></p>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
             <![CDATA[
                 {$item}

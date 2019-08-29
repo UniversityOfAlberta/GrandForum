@@ -39,16 +39,16 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qa1, {add({get(qa1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})})})}
                         {set(qa2, {add({get(qa2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})})})}
@@ -61,7 +61,7 @@
                         {set(qa9, {add({get(qa9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})})})}
                         {set(nAReviewers, {add({get(nAReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -88,11 +88,11 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
+            <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -165,17 +165,17 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qb1, {add({get(qb1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})})})}
                         {set(qb2, {add({get(qb2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})})})}
                         {set(qb3, {add({get(qb3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
                         {set(nBReviewers, {add({get(nBReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -190,11 +190,11 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
+            <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -261,16 +261,16 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qa1, {add({get(qa1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})})})}
                         {set(qa2, {add({get(qa2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})})})}
@@ -283,7 +283,7 @@
                         {set(qa9, {add({get(qa9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})})})}
                         {set(nAReviewers, {add({get(nAReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -310,11 +310,11 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
+            <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -387,17 +387,17 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qb1, {add({get(qb1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})})})}
                         {set(qb2, {add({get(qb2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})})})}
                         {set(qb3, {add({get(qb3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
                         {set(nBReviewers, {add({get(nBReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -412,11 +412,11 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
+            <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -481,15 +481,15 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},{$project_id})})})}
@@ -501,7 +501,7 @@
                         {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItem id="total" type="StaticReportItem">
                 <![CDATA[
@@ -526,11 +526,11 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nReviewers)},0)})}">
+            <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
-            </ReportItem>
+            </If>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>

@@ -297,7 +297,12 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
                     if($config->getValue('networkName') == "FES"){
-                        $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $xls);
+                        if(preg_match("/.*-T.*/", $this->project->getName())){
+                            $multiBudget = new MultiBudget(array($structure, FES_EXTERNAL_STRUCTURE), $xls);
+                        }
+                        else{
+                            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $xls);
+                        }
                     }
                     else {
                         $multiBudget = new MultiBudget(array($structure, $niStructure), $xls);
@@ -370,7 +375,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     }
                 }
                 if($edit && $config->getValue('networkName') == "FES" && $editable){
-                    $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
+                    if(preg_match("/.*-T.*/", $this->project->getName())){
+                        $template = "FES_Project_Budget_Tsinghua.xlsx";
+                    }
+                    else {
+                        $template = "FES_Project_Budget.xlsx";
+                    }
+                    $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/{$template}'>Budget Template</a>";
                     $this->html .= "<h3>Budget Justification</h3>
                                     <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
                 }

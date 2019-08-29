@@ -90,21 +90,21 @@
                         {set(highlight,)}
                     ]]>
                 </ReportItem>
-                <ReportItem id="high_if" type="If" if="{==({get(rank)},High)}">
+                <If id="high_if" if="{==({get(rank)},High)}">
                     <![CDATA[
                         {set(highlight,background:#00CC00)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="medium_if" type="If" if="{==({get(rank)},Medium)}">
+                </If>
+                <If id="medium_if" if="{==({get(rank)},Medium)}">
                     <![CDATA[
                         {set(highlight,background:#FF8800)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="low_if" type="If" if="{==({get(rank)},Low)}">
+                </If>
+                <If id="low_if" if="{==({get(rank)},Low)}">
                     <![CDATA[
                         {set(highlight,background:#FF0000)}
                     ]]>
-                </ReportItem>
+                </If>
                 <ReportItem id="row_footer" type="Static">
                     <![CDATA[
                         <td style="{get(highlight)}">{$user_name}</td>
@@ -126,7 +126,7 @@
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
+            <If id="if" if="{!=({$user_id},{$my_id})}">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational" includeSelf="true">
                         <ReportItem id="review" type="StaticReportItem">
@@ -150,7 +150,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

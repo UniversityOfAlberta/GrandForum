@@ -89,10 +89,10 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )},
-                                                  {contains({$user_full_roles},SRC)})}">
+        <If id="if_eula" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                      {contains({$user_full_roles},ISAC)}
+                                     )},
+                                  {contains({$user_full_roles},SRC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                     <ReportItem id="table" type="StaticReportItem">
@@ -593,15 +593,15 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                        {!contains({$user_full_roles},ISAC)}
-                                                       )},
-                                                   {!contains({$user_full_roles},SRC)})}">
+        </If>
+        <If id="if_not_eula" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                            {!contains({$user_full_roles},ISAC)}
+                                           )},
+                                       {!contains({$user_full_roles},SRC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
             <![CDATA[
                 {$item}

@@ -34,7 +34,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItemSet id="coi" type="If" if="{or({!=({$my_id},1596)},{!=({$user_id},389)})}"> 
+            <If id="coi" if="{or({!=({$my_id},1596)},{!=({$user_id},389)})}"> 
                 <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
                     <![CDATA[
                         <tr>
@@ -45,7 +45,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
         <ReportItem id="footer" type="Static">
             <![CDATA[

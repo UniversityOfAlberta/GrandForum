@@ -139,14 +139,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_CATALYST,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+        <If id="if" if="{==({getText(RP_CATALYST,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
             <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
                 <![CDATA[
                     <p><b>Please provide a response to the previous reviews</b></p>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">

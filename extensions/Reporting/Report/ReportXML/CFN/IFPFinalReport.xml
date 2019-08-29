@@ -71,14 +71,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if" type="If" if="{!=({$user_id},235)}">
+        <If id="if" if="{!=({$user_id},235)}">
             <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
                 <![CDATA[
                     <h3>Year 2</h3>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELETED" labels="Incomplete or New Deliverable|Reasons for Incompletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
             <![CDATA[
                 <h2>Incomplete, New or Deleted Deliverables</h2>
@@ -348,7 +348,7 @@
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{!contains({$getProjects},IFP2016)}">
+            <If id="if" if="{!contains({$getProjects},IFP2016)}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
                         <![CDATA[
@@ -381,7 +381,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
         <ReportItem id="reminder" type="StaticReportItem">
             <![CDATA[

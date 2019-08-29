@@ -137,22 +137,22 @@
             ]]>
         </ReportItem>
         <ReportItem id="bookmark" type="BookmarkReportItem" title="CV" />
-        <ReportItemSet id="cv_if" type="If" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
+        <If id="cv_if" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
             <ReportItem id="cv" type="StaticReportItem">
                 <![CDATA[
                     {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
                     <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="cv_ifelse" type="If" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
-                                                     {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
+        </If>
+        <If id="cv_ifelse" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
+                                    {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
             <ReportItem id="cv" type="StaticReportItem">
                 <![CDATA[
                     {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
                     <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
 </Report>

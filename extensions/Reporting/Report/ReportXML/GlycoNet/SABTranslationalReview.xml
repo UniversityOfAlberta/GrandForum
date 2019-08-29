@@ -69,13 +69,13 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItemSet type="If" if="{==({getText(RP_SAB_TRANS_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <If if="{==({getText(RP_SAB_TRANS_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
             <ReportItem id="status" type="StaticReportItem">
                 <![CDATA[
                     <div class="success">Your review(s) have been submitted.</div>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         <ReportItem id="script" type="StaticReportItem">
             <![CDATA[
                 <div>
