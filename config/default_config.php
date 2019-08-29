@@ -156,8 +156,6 @@
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'ScreenCapture',
-        //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
         'MyThreads'
