@@ -251,7 +251,7 @@
                     </tbody></table><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
 
         <!-- Patents -->
         <If id="patents_if" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
