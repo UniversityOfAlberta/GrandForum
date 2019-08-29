@@ -1,6 +1,6 @@
 <?php
 
-class ElseReportItemSet extends IfReportItemSet {
+class ElseReportItem extends IfReportItem {
     
     function checkCondition(){
         $prev = $this->getPrev();

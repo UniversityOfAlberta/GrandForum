@@ -39,79 +39,59 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="section4" type="EditableReportSection" blobSection="SEC4" name="Section 4" title="Section 4">
-        <ReportItemSet id="if0" type="If" if="{==(0,0)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    A0<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="else0" type="Else">
-            <ReportItem id="else" type="Static">
-                <![CDATA[
-                    B0<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
+        <If if="{==(0,0)}">
+            <![CDATA[
+                A0<br />
+            ]]>
+        </If>
+        <Else>
+            <![CDATA[
+                B0<br />
+            ]]>
+        </Else>
         
-        <ReportItemSet id="if1" type="If" if="{==(1,0)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    A1<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="else1" type="Else">
-            <ReportItem id="else" type="Static">
-                <![CDATA[
-                    B1<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A1<br />
+            ]]>
+        </If>
+        <Else id="else1" type="Else">
+            <![CDATA[
+                B1<br />
+            ]]>
+        </Else>
         
-        <ReportItemSet id="if2" type="If" if="{==(1,0)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    A2<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="elseif2" type="ElseIf" if="{==(1,1)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    B2<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="else2" type="Else">
-            <ReportItem id="else" type="Static">
-                <![CDATA[
-                    C2<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A2<br />
+            ]]>
+        </If>
+        <ElseIf if="{==(1,1)}">
+            <![CDATA[
+                B2<br />
+            ]]>
+        </ElseIf>
+        <Else>
+            <![CDATA[
+                C2<br />
+            ]]>
+        </Else>
         
-        <ReportItemSet id="if3" type="If" if="{==(1,0)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    A3<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="elseif3" type="ElseIf" if="{==(1,2)}">
-            <ReportItem id="if" type="Static">
-                <![CDATA[
-                    B3<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="else3" type="Else">
-            <ReportItem id="else" type="Static">
-                <![CDATA[
-                    C3<br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet> 
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A3<br />
+            ]]>
+        </If>
+        <ElseIf if="{==(1,2)}">
+            <![CDATA[
+                B3<br />
+            ]]>
+        </ElseIf>
+        <Else id="else3" type="Else">
+            <![CDATA[
+                C3<br />
+            ]]>
+        </Else> 
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="ReviewSubmitReportItem" />
