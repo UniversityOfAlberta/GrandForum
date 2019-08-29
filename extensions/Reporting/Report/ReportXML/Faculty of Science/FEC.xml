@@ -269,19 +269,24 @@ Add a new teaching development entry to create a new paragraph.<br />
                             delimiter: '@'
                         }
                     };
-                    $('table#table_{$post_id} textarea').tinymce(tinyMCESettings);
-                    $("#table_{$post_id} tbody").on( "sortstart", function(event, ui){
-                        var textarea = $(ui.item.context).find('textarea');
+                    $('table#table_{$post_id} textarea').hide();
+                    $('table#table_{$post_id} textarea').parent().height(155);
+                    _.defer(function(){
+                        $('table#table_{$post_id} textarea').show();
+                        $('table#table_{$post_id} textarea').tinymce(tinyMCESettings);
+                    });
+                    $("#table_{$post_id} tbody").on("sortstart", function(event, ui){
+                        var textarea = $(ui.item).find('textarea');
                         textarea.each(function(){
                             tinyMCE.execCommand('mceRemoveEditor', false, $(this).attr('id') );
                         });
                         textarea.after("<div>" + textarea.val() + "</div>");
                         textarea.next().css("width", textarea.width());
-                        textarea.next().css("height", parseInt($(ui.item.context).height()) - 10);
+                        textarea.next().css("height", parseInt($(ui.item).height()) - 10);
                         textarea.hide();
                     });
                     $("#table_{$post_id} tbody").on("sortstop", function(event, ui){
-                        var textarea = $(ui.item.context).find('textarea');
+                        var textarea = $(ui.item).find('textarea');
                         textarea.next().remove();
                         textarea.show();
                         textarea.each(function(){
