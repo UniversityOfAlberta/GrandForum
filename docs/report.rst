@@ -98,6 +98,31 @@ State can also be stored by calling the ``{set(var,val)}`` function.  The state 
     
 It should be noted that strings are not wrapped in quotes or anything like that, and are instead interpreted literally.  Arguments for functions are separated by a comma.
 
+Conditionals
+------------
+
+A special type of ReportItem & ReportItemSet are conditionals.  If, ElseIf, Else and For are supported to create more dynamic reporting structures.  Here are some examples:
+
+.. code-block:: xml
+
+    <If if="{condition}">
+        ...
+    </If>
+    <ElseIf if="{condition}">
+        ...
+    </ElseIf>
+    <Else>
+        ...
+    </Else>
+    
+.. code-block:: xml
+
+    <For from="0" to="100">
+        ...
+    </For>
+    
+If, ElseIf and Else can be either a ReportItem or a ReportItemSet.  For is only a ReportItemSet.
+
 PDF Generation
 --------------
 
