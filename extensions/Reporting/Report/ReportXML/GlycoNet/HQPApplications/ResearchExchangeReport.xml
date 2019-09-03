@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id="profile" name="Final Report" title="Research Exchange Program - Final Report" tooltip="Research Exchange Program - Final Report" type="EditableReportSection" blobSection="REPORT">
-        <ReportItem id="trainee_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Trainee</h2>
                 <table class='wikitable'>
@@ -18,7 +18,7 @@
                     <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
                         
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
             <![CDATA[
                 <tr>
@@ -33,20 +33,20 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
+        <Static>
             <![CDATA[
                         <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
-        <ReportItem id="sup_head" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h2>Current Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="sup_name" type="Text" blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
@@ -103,18 +103,18 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
-        <ReportItem id="host_head" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h2>Host Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="host_name" type="Text" blobType="BLOB_TEXT" blobItem="HOSTNAME">
             <![CDATA[
                 <tr>
@@ -178,12 +178,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="host_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="acronym" type="Text" blobItem="ACRONYM">
             <![CDATA[
                 <h2>Project Information</h2>

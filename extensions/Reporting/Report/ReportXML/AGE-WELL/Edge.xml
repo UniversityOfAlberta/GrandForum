@@ -24,7 +24,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="AGE-WELL Edge Award (2019)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Edge Award (2019)">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
                 <p>AGE-WELL Edge Awards support full-time students at a Canadian college, polytechnic, or cégep embarking upon a “capstone” or final project in the field of technology and aging.  AGE-WELL Edge is a $1000 award designed to support the creation of innovative products that have the potential to improve the lives of older adults and caregivers in Canada.</p>
@@ -83,10 +83,10 @@
                 Results Available: 15 November, 2019<br />
                 Funding Commences: January 2020
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
-        <ReportItem id="identity_start" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <table class="wikitable" frame="box" rules="all">
                     <tr>
@@ -97,7 +97,7 @@
                         <td>{$user_name}</td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="status" type="Text" blobItem="STATUS" width="400px" placeholder="e.g. PhD Year 1, Occupational therapy">
             <![CDATA[
                 <tr>
@@ -248,12 +248,12 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Letter of Reference:</h3>
                 <p>A letter of reference from the trainee’s supervisor must be sent directly to <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>. The letter must confirm that the institution and supervisor are eligible to hold and disburse Tri-Council funds.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

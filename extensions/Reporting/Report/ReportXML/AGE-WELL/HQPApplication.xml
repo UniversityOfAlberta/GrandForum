@@ -38,7 +38,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
-        <ReportItem id="background" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
 <p>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging provide partial funding to highly qualified master’s, doctoral and postdoctoral candidates and provide them with access to training and mentorship opportunities through the AGE-WELL Network of Centres of Excellence. AGE-WELL aims to provide a unique training environment that exposes trainees to multi-disciplinary research environments and to its industry and community partners. AGE-WELL is committed to attracting, developing, and retaining outstanding Highly Qualified Personnel (HQP) in Canada.</p>
@@ -144,22 +144,22 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
 </ul>
 <p>Funding for this award runs from September 1, 2019 – March 31, 2020. Funding is non-renewable. AGE-WELL and TRP will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
         ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
-        <ReportItem id="tableHead" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <table>
                     <tr>
                         <td colspan='2'><h3>BACKGROUND INFORMATION</h3></td>
                     </tr>
             ]]>
-        </ReportItem>
-        <ReportItem id="name" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <tr><td align='right'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT" width="180px" placeholder="e.g. PhD Year 1, Occupational therapy">
             <![CDATA[
                 <tr><td align='right'><b>Academic Status and Department:</b></td><td>{$item}</td></tr>
@@ -229,7 +229,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="tableFoot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
                 <script type='text/javascript'>
@@ -247,7 +247,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
                 <p>N.B.: If successful, funding will be disbursed to the named primary supervisor at the institution listed.</p>
                 <h3>SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="2200" recommended="true">
             <![CDATA[
                 <b>Statement of research focus (1/2 page)</b>
@@ -420,7 +420,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
-        <ReportItem id="support1" type="StaticReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
+        <Static blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Two Confidential Letters of Support (one must be from your proposed supervisor)</h2>
                 <p>Letters must be sent via email (<a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>) directly by the referee using their department letterhead. Electronic signature or scanned signed documents are accepted. </p> 
@@ -431,7 +431,7 @@ Award term: 1 September 2019 - 31 March 2020*<br /><br />
     <li>a letter from your proposed academic supervisor.</li>
 </ul>{$item}
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="admission" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Formal evidence of admission to a Master's or Doctoral program or Postdoctoral position</h2>

@@ -7,7 +7,7 @@
         </Role>
     </Permissions>
     <ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
-        <ReportItem id="head" type="Static">
+        <Static>
             <![CDATA[
                 <script type="text/javascript">
                     var tableToExcel = (function () {
@@ -84,9 +84,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" startDate="0000-00-00" endDate="2100-00-00">
-            <ReportItem id="row" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style="white-space:nowrap;">{$project_name}</td>
@@ -130,16 +130,16 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="foot" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         
-        <ReportItem id="head2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Transdisciplinary Metrics</h2>
                 <input id="btnExport2" type="button" onclick="tableToExcel('summary2', 'Project Evaluation Summary', 'ProjectEvaluationSummary_Transdisciplinary.xls')" value="Download as Spreadsheet" />
@@ -189,9 +189,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="projects2" type="AllProjectsReportItemSet" startDate="0000-00-00" endDate="2100-00-00">
-            <ReportItem id="row" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style="white-space:nowrap;">{$project_name}</td>
@@ -230,18 +230,18 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_3_5_M2D,0,0,{$project_id})}</td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="foot2" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         
     </ReportSection>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
-        <ReportItem id="head" type="Static">
+        <Static>
             <![CDATA[
                 <table id="summary" class='wikitable small'>
                     <thead>
@@ -249,9 +249,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" startDate="0000-00-00" endDate="2100-00-00">
-            <ReportItem id="row" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$project_name}</td>
@@ -285,9 +285,9 @@
                                         <th style="border: 1.00pt solid #000000;font-family: Arial">PRL Level (projected)</th>
                                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="prl" type="ArrayReportItemSet" array="{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id})}" index="prl">
-                <ReportItem id="prl_row" type="Static">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRL_LEVEL,0,0,{$project_id},prl|{$extraIndex}|product)}</td>
@@ -298,9 +298,9 @@
                             <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid; #000000;font-family: Arial"></td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="row_continue" type="Static">
+            <Static>
                 <![CDATA[
                                 </table>
                                 <br />
@@ -342,16 +342,16 @@
                                 </table>
                                 </div>
                 ]]>          
-            </ReportItem>
-            <ReportItem id="foot" type="Static">
+            </Static>
+            <Static>
                 <![CDATA[
                             </div>
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="foot" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table><script type="text/javascript">
@@ -377,6 +377,6 @@
                     })();
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
 </Report>

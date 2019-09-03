@@ -15,7 +15,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qaex1, 0)}
                     {set(qaex2, 0)}
@@ -60,7 +60,7 @@
                     {set(nBReviewers, 0)}
                     {set(nReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
@@ -156,7 +156,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>A. Scientific Excellence (Ex/ISAC/SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -177,9 +177,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -214,9 +214,9 @@
                         </tr>
                         <tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -275,16 +275,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>B. Project Feasibility (Ex/ISAC/SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -299,9 +299,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -317,9 +317,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -348,16 +348,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>A. Scientific Excellence (RMC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -378,9 +378,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -414,9 +414,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -475,16 +475,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>B. Project Feasibility (RMC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -499,9 +499,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -517,9 +517,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -548,16 +548,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>RMC Review</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -577,9 +577,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -610,9 +610,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -666,9 +666,9 @@
                         </tfoot>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b><br />
                         <small><b>Comments:</b><br />
@@ -677,7 +677,7 @@
                         <b>Suggestions:</b><br />
                         {getHTML(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>

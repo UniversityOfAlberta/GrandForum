@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Workpackage Report" reportType="RP_WP_REPORT" pdfType="RPTP_WP_REPORT" personId="0" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static id="report_info_head">
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Workpackage Report</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -18,7 +18,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="summary" tooltip="Executive Summary" name="Executive Summary" title="1. Executive Summary" blobSection="SUMMARY" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY">

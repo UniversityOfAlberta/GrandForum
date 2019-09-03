@@ -6,7 +6,7 @@
         </Role>
     </Permissions>
     <ReportSection id="information" type="ReportSection" blobSection="SEC_NONE" name="Information">
-        <ReportItem id="information" type="Static">
+        <Static>
             <![CDATA[
                 <p>Please read the Program Guidelines and Application Instructions before completing this application.</p>
                 <p>CFN funding competitions follow the Tri-Council Guidelines.  All questions related to partner eligibility, budget considerations (e.g. in-kind eligibility) and HQP follow the Tri-Council Guidelines (<a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp</a>).  Applicants should also direct these and similar questions to their host institution’s research services office/unit for further assistance.</p>
@@ -14,10 +14,10 @@
                 <p>Completed application packages are due by 5 pm ET on November 9th, 2015.</p>
                 <p style='font-size:1.5em;'>Please note that all information must be provided in English.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="intent" type="EditableReportSection" blobSection="OVERVIEW" name="Intent to Apply" title="Intent to Apply">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <ol>
                     <li>This document is necessary to assign reviewers for final proposals and determine conflicts of interest.  This document will not be adjudicated.</li>
@@ -28,7 +28,7 @@
                     <li>Please note that all information must be provided in English.</li>
                 </ol>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="lay_title" type="Text" blobItem="LAY_TITLE">
             <![CDATA[
                 <h3>Project Information</h3>
@@ -213,17 +213,17 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="intentSubmit" type="ReportSection" name="Intent to Apply Submit">
-        <ReportItem id="warning" type="Static">
+        <Static>
             <![CDATA[
                 <div class="warning" id="incompleteWarning" style="display:none;"></div>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false" emails="perry@cfn-nce.ca,mat@cfn-nce.ca,kate@cfn-nce.ca">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="script" type="Static">
+        <Static>
             <![CDATA[
                 <div id="nsr" style="display:none;">{getArray(RP_CATALYST_APPLICATION, OVERVIEW, NSR, 0, {$user_id}, 0, nsr)}</div>
                 <div id="isr"  style="display:none;">{getArray(RP_CATALYST_APPLICATION, OVERVIEW, ISR, 0, {$user_id}, 0, isr)}</div>
@@ -236,7 +236,7 @@
                     }
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="overview" type="EditableReportSection" blobSection="OVERVIEW" name="Project Overview" title="Project Overview">
         <ReportItem id="lay_title" type="Text" blobItem="LAY_TITLE">
@@ -535,7 +535,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection is="budget" type="ReportSection" blobSection="BUDGET" name="Budget" titl="Budget" tooltip="Budget">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <div class='pdfnodisplay'>
                 <p>CFN is supported by the Networks of Centres of Excellence (NCE).  NCE programs are administered jointly by the federal Tri-Council agencies (Natural Sciences and Engineering Research Council, Canadian Institutes of Health Research and Social Sciences and Humanities Research Council).  As a result, CFN funding competitions follow Tri-Council Guidelines and related  partner eligibility, budgetary (e.g in-kind eligibility) and HQP considerations follow Tri-Council Guidelines (<a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp</a>).  Applicants should also direct these and similar questions to their host institution’s research services office for further assistance.</p>
@@ -555,7 +555,7 @@ If any modification on the template is required, please contact the CFN admin ce
                 <p>Please carefully review information on expense eligibility, partner eligibility, and contribution eligibility and valuation.</p>
                 </div>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="TVN_CATALYST_STRUCTURE" template="CFN_CAT_Budget_Template.xlsx">
             <![CDATA[
                 {$item}

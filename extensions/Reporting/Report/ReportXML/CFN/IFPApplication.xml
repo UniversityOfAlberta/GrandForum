@@ -322,11 +322,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant's Research Project">
         <!--ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
@@ -535,7 +535,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="sup_review" type="ReportSection" name="Supervisor Review" title="Supervisor Review">
-        <ReportItem id="approvals" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Section 1 - Information about the Applicant and Supervisor</h3>
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)}<br />
@@ -569,7 +569,7 @@
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8_COMMENT,{$user_id},*,0)}
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
@@ -595,11 +595,11 @@
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
-            <ReportItem id="message" type="Static">
+            <Static>
                 <![CDATA[
                     <div class="error">Your supervisor needs to approve your application before you are able to submit.</div>
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
     </ReportSection>
 </Report>

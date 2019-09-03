@@ -33,7 +33,7 @@
         </Role>
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL's Project Scorecard and Reporting Framework">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <p>Please complete the project scorecard provided. You should specifically respond to the reviewer feedback from the Core Research Program (CRP) Request for Proposals, identifying areas of strength and weakness of the project and identifying concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the Catalyst year.</p>
                 
@@ -82,10 +82,10 @@
                 <p><b>Project and Management and Team</b><br />
                     Projects need to have effective management and team-working processes in place and to demonstrate that the team possesses the necessary expertise and capacity to successfully complete their project</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard">
-        <ReportItem id="TableHeader" type="Static">
+        <Static>
             <![CDATA[
                 <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Referencing CRP reviewer feedback, please identify the project’s key areas of strength and weakness, and identify concrete goals for the Catalyst year. Keep it brief and realistic. 
                 <table class="wikitable small" width="100%">
@@ -103,7 +103,7 @@
                         <th>Key outcomes</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Scientific Excellence -->
         <ReportItem id="sci_1" type="Textarea" blobItem="SCI_1" height="100%">
             <![CDATA[
@@ -249,11 +249,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="TableFooter" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
             <![CDATA[
                 <p>Considering the expectations of the Catalyst year, and the weaknesses listed above, please highlight areas of support that may be required. Supports and resources needed from AGE-WELL:</p>

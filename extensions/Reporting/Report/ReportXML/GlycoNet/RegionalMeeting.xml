@@ -15,7 +15,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>GlycoNet’s Annual General Meeting & Symposium will expose Network investigators and trainees alike to the breadth of glycomics research being carried out in the Network and internationally. To complement the annual meeting, both GlycoNet investigators and trainees have called for smaller 1-2 day regional meetings or discussion groups in areas of Canada with significant glycomics expertise. The purpose of these meetings would be to foster regional collaborations within the larger Network, and to facilitate knowledge exchange, project communication, and professional development.</p>
@@ -38,7 +38,7 @@
                 <h3>Deadline</h3>
                 <p>Application deadlines are <b>January 15, May 15, and September 15</b> each year.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="proposal" name="Meeting Proposal" title="Regional Meeting Proposal" tooltip="Regional Meeting Proposal" type="EditableReportSection" blobSection="PROPOSAL">
         <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">

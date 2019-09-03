@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" pdfType="RPTP_SIP">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Strategic Investment Program Application</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="HeaderReportSection">
         <ReportItem id="cover" type="BookmarkReportItem" title="Cover Sheet">
@@ -67,11 +67,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
-        <ReportItem id="header1" type="Static">
+        <Static>
             <![CDATA[
                 <h2>1) RATIONALE AND APPROACH</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <style>
@@ -100,11 +100,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>2) IMPACT AND EVALUTION</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="impact" type="TextareaReportItem" rich="true" blobItem="IMPACT">
             <![CDATA[
                 <ol id='list' type="i">
@@ -121,11 +121,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>3) PROJECT TEAM AND PARTNERSHIPS</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
             <![CDATA[
                 <ol id='list' type="i">

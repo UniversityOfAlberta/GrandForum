@@ -17,7 +17,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
-        <ReportItem id="background" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>Through our <a href='http://agewell-nce.ca/affiliates' target='_blank'>Affiliates Program</a>, AGE-WELL offers membership in a pan-Canadian knowledge community, access to our exclusive programming, and the opportunity to complete our <a href='http://agewell-nce.ca/epic-program' target='_blank'>EPIC</a> research and career development program to earn the <a href='http://agewell-nce.ca/epic-program#cert' target='_blank'>AGE-WELL Innovators of Tomorrow</a> certificate.</p>
 
@@ -27,7 +27,7 @@
                 
                 <p>Applications are accepted on a rolling basis.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="1000" recommended="true">

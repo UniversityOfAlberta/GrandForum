@@ -18,7 +18,7 @@
         </Role>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="project_materials_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <table align="left" class="wikitable">
                 <tr>
@@ -27,17 +27,17 @@
                     <th style="min-width:125px;">Project Proposal PDF</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Alberta">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="AlbertaReport" project="false">
                 <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_ALBERTA,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Alberta">
@@ -70,13 +70,11 @@
             ]]>
         </ReportItem>
         <If if="{==({getText(RP_SAB_ALBERTA_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
-            <ReportItem id="status" type="StaticReportItem">
-                <![CDATA[
-                    <div class="success">Your review(s) have been submitted.</div>
-                ]]>
-            </ReportItem>
+            <![CDATA[
+                <div class="success">Your review(s) have been submitted.</div>
+            ]]>
         </If>
-        <ReportItem id="script" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div>
                     Submitting your review will mark your reviews as 'submitted', however you may continue to edit your reviews after submitting if needed.
@@ -91,6 +89,6 @@
                     });
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
 </Report>

@@ -8,7 +8,7 @@
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet type="DateReportItemSet" start="{$this_year}-01-01" end="{$this_year}-05-23">
-            <ReportItem id="project_materials_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                 <table align="left">
                     <tr>
@@ -16,22 +16,22 @@
                         <th style="min-width:125px;">Project Proposal PDF</th>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB">
                 <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectProposal" width="100%" project="true">
                     <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="project_materials_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItemSet type="DateReportItemSet" start="{$this_year}-05-24" end="9999-12-31">
-            <ReportItem type="StaticReportItem">
+            <Static>
                 <![CDATA[Access to Project Proposals is not available after May 23rd]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
@@ -40,7 +40,7 @@
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                     <ReportItemSet type="DateReportItemSet" start="{$this_year}-05-19" end="{$this_year}-05-23">
                         <ReportItemSet id="evaluators" type="SABReportItemSet">
-                            <ReportItem id="review" type="StaticReportItem">
+                            <Static>
                                 <![CDATA[
                                     <h2>Reviewer {$index}</h2>
                                     <div style='margin-left:15px;'>
@@ -52,7 +52,7 @@
                                         <p>{$sab_ranking}</p>
                                     </div>
                                 ]]>
-                            </ReportItem>
+                            </Static>
                         </ReportItemSet>
                     </ReportItemSet>
                     <ReportItemSet type="DateReportItemSet" start="{$this_year}-05-21" end="{$this_year}-05-23">
@@ -85,9 +85,9 @@
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet type="DateReportItemSet" start="{$this_year}-05-24" end="9999-12-31">
-            <ReportItem type="StaticReportItem">
+            <Static>
                 <![CDATA[Access to Project Proposals is not available after May 23rd]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
 </Report>

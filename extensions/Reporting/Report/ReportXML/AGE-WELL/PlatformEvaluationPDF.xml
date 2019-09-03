@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Platform Project Scorecard (2019-2020)" reportType="RP_PLAT_SCORECARD" pdfType="RPTP_PLAT_SCORECARD" pdfFiles="PlatformEvaluationPDF" personId="0" ajax="true" disabled="false" year="2018" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30" orientation="landscape">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Platform Project Scorecard (2019-2020)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,10 +16,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard" pagebreak="false">
-        <ReportItem id="TableHeader" type="Static">
+        <Static>
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller" width="100%">
                     <tr>
@@ -36,7 +36,7 @@
                         <th>Completed Outputs -<br />Deliverables meeting the project objectives</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Scientific Excellence -->
         <ReportItem id="sci_1" type="Textarea" blobItem="SCI_1" height="100%">
             <![CDATA[
@@ -182,11 +182,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="TableFooter" type="Static">
+        <Static>
             <![CDATA[
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="align" type="Textarea" blobItem="ALIGN" rich="true">
             <![CDATA[
                 <h3>How will you re-align your project with the Network objectives for Platform Projects (i.e. the main “customer” for the Platform Projects is AGE-WELL itself):</h3>

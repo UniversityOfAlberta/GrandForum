@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Alberta Partnership Projects RFP" reportType="RP_ALBERTA" pdfType="RPTP_ALBERTA" pdfFiles="AlbertaReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2019">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                     <h4 style='font-size:1.40em;'>Alberta Partnership Projects RFP</h4>
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="HeaderReportSection">
         <!-- Theme -->

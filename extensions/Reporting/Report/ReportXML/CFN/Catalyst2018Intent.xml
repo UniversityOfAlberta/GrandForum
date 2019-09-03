@@ -9,7 +9,7 @@
         </Role>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="Intent To Apply">
-        <ReportItem id="information" type="Static">
+        <Static>
             <![CDATA[
                 <ul>
                     <li>All sections of this document must be completed.</li>
@@ -25,7 +25,7 @@
                         <th>Enter information in this column</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
             <![CDATA[
                 <tr>
@@ -188,10 +188,10 @@ Note: Please indicate the frailty assessment tool that will be utilized in the s
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="footer" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem> 
+        </Static> 
     </ReportSection>
 </Report>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL SIP Accelerator" reportType="RP_SIP_ACC" pdfType="RPTP_SIP_ACC" allowIdProjects="true" year="2017">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL SIP Accelerator</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="HeaderReportSection">
         <ReportItem id="cover" type="BookmarkReportItem" title="Cover Sheet">
@@ -86,11 +86,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
-        <ReportItem id="header1" type="Static">
+        <Static>
             <![CDATA[
                 <h2>1) RATIONALE AND APPROACH</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <style>
@@ -126,11 +126,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>2) PROJECT OPPORTUNITY</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET">
             <![CDATA[
                 <ol id='list' type="i">
@@ -154,11 +154,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header3" type="Static">
+        <Static>
             <![CDATA[
                 <h2>3) INTELLECTUAL PROPERTY</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY">
             <![CDATA[
                 <ol id='list' type="i">
@@ -175,11 +175,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header4" type="Static">
+        <Static>
             <![CDATA[
                 <h2>4) PROJECT OPPORTUNITY</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE">
             <![CDATA[
                 <ol id='list' type="i">
@@ -217,11 +217,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header5" type="Static">
+        <Static>
             <![CDATA[
                 <h2>5) PROJECT TEAM</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
             <![CDATA[
                 <ol id='list' type="i">
@@ -231,11 +231,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header6" type="Static">
+        <Static>
             <![CDATA[
                 <h2>6) PARTNERSHIPS</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED">
             <![CDATA[
                 <ol id='list' type="i">
@@ -252,11 +252,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header7" type="Static">
+        <Static>
             <![CDATA[
                 <h2>7) POTENTIAL IMPACT</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS">
             <![CDATA[
                 <ol id='list' type="i">

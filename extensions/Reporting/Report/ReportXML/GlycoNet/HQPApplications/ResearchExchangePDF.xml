@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Research Exchange Program" reportType="RP_HQP_EXCHANGE" pdfType="HQP_EXCHANGE" ajax="true" disabled="false" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.40em;'>Research Exchange Program<br />
@@ -14,10 +14,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="profile" name="Profile" title="Applicant Profile" tooltip="Applicant Profile" type="EditableReportSection" blobSection="PROFILE">
-        <ReportItem id="trainee" type="Static">
+        <Static>
             <![CDATA[
                 <h4>Trainee</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -43,8 +43,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Current Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -70,8 +70,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Proposed Host Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -99,7 +99,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="site" type="Radio" blobType="BLOB_TEXT" blobItem="SITE" orientation="vertical" options="In the same province as the home institution (up to $500 travel allowance)|In a different province than the home institution (up to $1000 travel allowance)|Outside of Canada (up to $2000 travel allowance)">
             <![CDATA[
                 <table class='smaller'>
@@ -148,7 +148,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="Editable" name="Proposal" tooltip="Exchange Proposal" title="Exchange Proposal" blobSection="PROPOSAL" pagebreak="false">
-        <ReportItem id="acronym" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable'>
                     <tr>
@@ -173,7 +173,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h2>Exchange Description</h2>
@@ -186,7 +186,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expenses" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Estimated Expenses</h2>
                 <table id='budget' frame='box' rules='all' class='wikitable' width='100%'>
@@ -237,7 +237,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="figures" type="UploadPDF" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Uploads</h2>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Start-Up Company Funding 2017-2018 Company Targeted Development Support" reportType="RP_START_UP_DEV" pdfType="RP_START_UP_DEV" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <span style='font-size: 1.5em;font-weight:bold'>Start-Up Company Funding 2017-2018<br />Company Targeted Development Support</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="information" name="Applicant Information" title="Applicant Information" tooltip="Applicant Information" type="EditableReportSection" blobSection="INFORMATION">
         <ReportItem id="name" type="Text" blobItem="NAME">

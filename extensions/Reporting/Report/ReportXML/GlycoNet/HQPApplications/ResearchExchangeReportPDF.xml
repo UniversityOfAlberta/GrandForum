@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Research Exchange Program Report" reportType="RP_HQP_EXCHANGE_REPORT" pdfType="HQP_EXCHANGE_REPORT" ajax="true" disabled="false" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.40em;'>Research Exchange Program<br />
@@ -13,10 +13,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="profile" name="Report" title="Report" tooltip="Report" type="HeaderReportSection" blobSection="REPORT" pagebreak="false">
-        <ReportItem id="trainee" type="Static">
+        <Static>
             <![CDATA[
                 <h4>Trainee</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -42,8 +42,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Current Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -69,8 +69,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Proposed Host Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -98,8 +98,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="acronym" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h1><center>Project Information</center></h1>
                 <table class='wikitable'>
@@ -121,7 +121,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true" recommended="true">
             <![CDATA[
                 <h2>Exchange Summary</h2>

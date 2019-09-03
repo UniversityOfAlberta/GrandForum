@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Access Award" reportType="RP_ACCESS_04_2019" pdfType="RPTP_ACCESS_04_2019" pdfFiles="AccessApplication042019PDF" year="2019" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Access Award Application</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -18,10 +18,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
-        <ReportItem id="identity_start" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>Applicant Information</h3>
                 <table style="white-space:nowrap;">
@@ -30,8 +30,8 @@
                         <td>{$user_name}</td>
                     </tr>
             ]]>
-        </ReportItem>
-        <ReportItem id="info" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <tr>
                     <td><b>University/Institution:&nbsp;</b></td>
@@ -46,7 +46,7 @@
                     <td>{$user_email}</td>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="telephone" type="TextReportItem" blobItem="TELEPHONE">
             <![CDATA[
                 <tr>
@@ -63,14 +63,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="supervisor_start" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table><br />
                 <h3>Supervisor Information</h3>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="supervisors" type="PersonSupervisors" startDate="2018-04-15" endDate="2019-04-15">
-            <ReportItem id="supervisor" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <table style="white-space:nowrap;">
                         <tr>
@@ -87,7 +87,7 @@
                         </tr>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItem id="activity" type="TextReportItem" blobItem="ACTIVITY">
             <![CDATA[
@@ -131,28 +131,24 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="cv" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h2>Current CV</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="bookmark" type="BookmarkReportItem" title="CV" />
         <If id="cv_if" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
-            <ReportItem id="cv" type="StaticReportItem">
-                <![CDATA[
-                    {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
-                    <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
-                ]]>
-            </ReportItem>
+            <![CDATA[
+                {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
+                <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+            ]]>
         </If>
         <If id="cv_ifelse" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
                                     {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
-            <ReportItem id="cv" type="StaticReportItem">
-                <![CDATA[
-                    {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
-                    <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
-                ]]>
-            </ReportItem>
+            <![CDATA[
+                {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
+                <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+            ]]>
         </If>
     </ReportSection>
 </Report>

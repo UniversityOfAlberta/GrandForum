@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Affiliate Program" ajax="true" disabled="false" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_AFFILIATE" year="0">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL HQP Affiliate Application</h4></div>
                 <div class='logo_div' style="height:20px;">
@@ -15,7 +15,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Application" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">

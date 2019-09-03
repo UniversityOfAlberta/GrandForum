@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2019 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" year="2019">
     <ReportSection id="information" type="HeaderReportSection" blobSection="INTENT" name="1 - Admin Information" title="Section 1 - Administrative Information">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.20em;'>2019 Knowledge Translation Competition</h4>
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="bookmark" type="Bookmark" title="Section 1 - Administrative Information">
         </ReportItem>
         <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
@@ -227,12 +227,10 @@
             </ReportItem>
         </If>
         <If id="builds_else" if="{!=({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
-            <ReportItem id="builds" type="Static">
-                <![CDATA[
-                    <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
-                    Not applicable<br /><br />
-                ]]>
-            </ReportItem>
+            <![CDATA[
+                <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
+                Not applicable<br /><br />
+            ]]>
         </If>
         
         <ReportItem id="another" type="Radio" blobItem="ANOTHER" options="No|Yes">

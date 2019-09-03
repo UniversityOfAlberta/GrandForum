@@ -19,7 +19,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>Senior graduate students, postdoctoral fellowship and research associate programs represent the highest stages of training, where senior trainees are developing skills that will allow them to become independent scientists.</p>
@@ -44,7 +44,7 @@
                 <h3>Deadline</h3>
                 <p>Proposals must be submitted through the Forum no later than <b>January 15</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
         <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Program/Position|Department|Institution|City|Province|Phone|Email" types="Text|Select(MSc,PhD,PDF,Technician,RA)|Text|Text|Text|Text|Text|Text" sizes="125|125|125|125|100|100|100|125">

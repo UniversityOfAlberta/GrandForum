@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfType="RPTP_SSA_FINAL_REPORT" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                     <h4 style='font-size:1.40em;'>{$this_year} HQP Report</h4><br />
@@ -13,7 +13,7 @@
                     <br />
                     <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="report" type="HeaderReportSection" blobSection="SSA_REPORT" name="SSA Report" pagebreak="false">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="SSA">
@@ -30,7 +30,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="identity_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <small><table class='wikitable' frame='box' rules='all' width="100%">
                             <tr>
@@ -46,7 +46,7 @@
                                 <td style='white-space:nowrap;'>{$my_first_name}</td>
                             </tr>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START" blobSubItem="{$user_id}">
                     <![CDATA[
                         <tr>
@@ -82,11 +82,11 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="identity_foot" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table></small><br />
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="achievements" type="TextareaReportItem" rich="true" height="400px" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h3>Describe the student’s major research activities and related key achievements over this reporting period and if applicable, emphasize collaborative achievements.</h3>
@@ -99,12 +99,12 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="assessment_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h3>Please assess your student’s activities/project against the following</h3>
                         <table class='wikitable' rules="all" box="all" width="100%">
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="priorities" type="RadioReportItem" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_PRIORITIES" blobSubItem="{$user_id}">
                     <![CDATA[
                         <tr>

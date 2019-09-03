@@ -418,7 +418,7 @@
                         ]]>
                     </ReportItem>
                     
-                    <ReportItem id="total1" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total">
@@ -466,7 +466,7 @@
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="ex_comments" type="Textarea" blobItem="KT_EX_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -923,7 +923,7 @@
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -975,7 +975,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="ktc_comments" type="Textarea" blobItem="KT_KTC_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -1418,7 +1418,7 @@
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -1470,7 +1470,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="rmc_comments" type="Textarea" blobItem="KT_RMC_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}

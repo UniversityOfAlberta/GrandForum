@@ -49,7 +49,7 @@
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="feedback" name="RMC Review" tooltip="RMC Review" title="RMC Review" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
-        <ReportItem id="table_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <style>
                     th.light {
@@ -79,17 +79,17 @@
                         <th class='dark' width='50%'>My October 2015 Responses</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="reviewers" type="ProjectReviewersReportItemSet">
             <ReportItemSet id="comments" type="ArrayReportItemSet" array="{getArray(RP_PROJ_REVIEW,PROJ_REVIEW_COMMENTS,PROJ_REVIEW_COMM,0,{$user_id},{$project_id})}" index="comments">
-                <ReportItem id="comments" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td valign='top' class='dark'>
                                 <p>{getExtra(comment)}</p>
                             </td>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
                     <![CDATA[
                         <td valign='top' class='dark'>
@@ -100,15 +100,15 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
                 </td>
                 
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <td valign='top'>
                     <table class='wikitable' width='600px'>
@@ -117,7 +117,7 @@
                             <th class='light' width='50%'>My Responses</th>
                         </tr>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="array" type="ArrayReportItemSet" array="{getArray(RP_PROJ_REVIEW,PROJ_REVIEW_FEEDBACK,PROJ_FEEDBACK_COMM,0,0,{$project_id},feedback)}" blobIndex="extraIndex">
                 <ReportItem id="feedback" type="TextareaReportItem" height="100px" blobType="BLOB_ARRAY" blobItem="PROJ_FEEDBACK_COMM2">
                     <![CDATA[
@@ -132,23 +132,23 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </table>
                     </td>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cc1" tooltip="CC1 Feedback" name="CC1 Feedback" blobSection="SEC_NONE" type="ReportSection">
         <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <table class='wikitable'>
                         <tr>
@@ -201,10 +201,10 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
@@ -258,12 +258,12 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
          </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc2" tooltip="CC2 Feedback" name="CC2 Feedback" blobSection="SEC_NONE" type="ReportSection">
         <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <table class='wikitable'>
                         <tr>
@@ -322,10 +322,10 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
@@ -385,12 +385,12 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc3" tooltip="CC3 Feedback" name="CC3 Feedback" blobSection="SEC_NONE" type="ReportSection">
         <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <table class='wikitable'>
                         <tr>
@@ -442,10 +442,10 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
@@ -495,12 +495,12 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc4" tooltip="CC4 Feedback" name="CC4 Feedback" blobSection="SEC_NONE" type="ReportSection">
         <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <table class='wikitable'>
                         <tr>
@@ -539,10 +539,10 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
-            <ReportItem id="table" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
@@ -582,7 +582,7 @@
                         </tr>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

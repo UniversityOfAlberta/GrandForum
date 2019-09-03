@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" ajax="true" disabled="false" year="2015">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <span style='font-size: 1.5em;font-weight:bold'>Technology Workshop Proposal</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -15,7 +15,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="proposal" name="Workshop Proposal" tooltip="Workshop Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
         <ReportItem id="title" type="Text" blobItem="TITLE">

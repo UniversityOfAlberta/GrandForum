@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" ajax="true" disabled="false" year="2019">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <span style='font-size: 1.5em;font-weight:bold'>Canadian Science Policy Conference (CSPC) Competition</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -19,7 +19,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION" pagebreak="false">
         <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" class="wikitable">

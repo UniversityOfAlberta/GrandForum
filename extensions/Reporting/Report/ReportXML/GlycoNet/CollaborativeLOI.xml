@@ -176,7 +176,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
-        <ReportItem id="info" type="Static">
+        <Static>
             <![CDATA[
                 <p>A preliminary budget request should be summarized in the LOI.</p>
                 Budget Guidelines:
@@ -188,7 +188,7 @@
                     <li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li>
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
             <![CDATA[
                 {$item}

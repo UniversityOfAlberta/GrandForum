@@ -10,7 +10,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" type="ReportSection">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <b>Key objectives:</b><br />
                 <ul>
@@ -22,10 +22,10 @@
                 <p>Thank you for agreeing to complete the Early Professionals, Inspired Careers (EPIC) exit survey.  This survey comprises the final report listed on your EPIC tab.  This survey should only take 10-15 minutes to complete.  As a graduate of the EPIC program, we value your opinions on the program’s strengths and areas for potential growth.</p>
                 <p>As a reminder, the AGE-WELL EPIC Program intends to expose Highly Qualified Personnel (HQP) to multi-disciplinary research environments, industry, and community partners. Through funding opportunities and experiential learning opportunities - including courses, workshops, collaboration opportunities, and mentorship - the program emphasizes the development of skills, ideas, teamwork, and relationship-building that are the building blocks of a successful career.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="survey" tooltip="Survey" name="Survey" type="EditableReportSection" blobSection="SURVEY">
-        <ReportItem id="info" type="Static">
+        <Static>
             <![CDATA[
                 <table>
                     <tr>
@@ -48,7 +48,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="1a" type="RadioReportItem" blobItem="1A" options="Strongly Disagree|Disagree|Neutral|Agree|Strongly Agree" orientation="horizontal">
             <![CDATA[
                 <h2>Survey</h2>
@@ -286,7 +286,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="appendix" tooltip="Appendix" name="Appendix" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItem id="appendix" type="Static">
+        <Static>
             <![CDATA[
                 <p>Relevant performance indicators from <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Website</a></p>
                 <h3>Expected results and outcomes</h3>
@@ -315,7 +315,7 @@
                     </ul>
                 </p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

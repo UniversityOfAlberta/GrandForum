@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Transformative Review Summary" ajax="true" pdfType="RPTP_TRANS_REVIEW_SUMMARY" personId="0" disabled="false">
     <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (External/ISAC)" type="ReportSection" pagebreak="true">
-        <ReportItem id="table_head" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <tr>
@@ -18,9 +18,9 @@
                         <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qa1, 0)}
                     {set(qa2, 0)}
@@ -34,7 +34,7 @@
                     
                     {set(nAReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
@@ -60,7 +60,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(total, 
                         {add({get(qa1)}, 
@@ -84,13 +84,13 @@
                     {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
                     {set(highlight,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
             </If>
-            <ReportItem id="table_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
@@ -126,16 +126,16 @@
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (External/ISAC)" type="ReportSection" pagebreak="true">
-        <ReportItem id="table_head" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <tr>
@@ -146,9 +146,9 @@
                         <th>Avg. Total (out of 5)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qb1, 0)}
                     {set(qb2, 0)}
@@ -156,7 +156,7 @@
                     
                     {set(nBReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
@@ -170,7 +170,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(total, 
                         {add({get(qb1)}, 
@@ -182,13 +182,13 @@
                     {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
                     {set(highlight,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
             </If>
-            <ReportItem id="table_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
@@ -206,16 +206,16 @@
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (SRC)" type="ReportSection" pagebreak="true">
-        <ReportItem id="table_head" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <tr>
@@ -232,9 +232,9 @@
                         <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qa1, 0)}
                     {set(qa2, 0)}
@@ -248,7 +248,7 @@
                     
                     {set(nAReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
@@ -274,7 +274,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(total, 
                         {add({get(qa1)}, 
@@ -298,13 +298,13 @@
                     {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
                     {set(highlight,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
             </If>
-            <ReportItem id="table_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
@@ -340,16 +340,16 @@
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (SRC)" type="ReportSection" pagebreak="true">
-        <ReportItem id="table_head" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <tr>
@@ -360,9 +360,9 @@
                         <th>Avg. Total (out of 5)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qb1, 0)}
                     {set(qb2, 0)}
@@ -370,7 +370,7 @@
                     
                     {set(nBReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
@@ -384,7 +384,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(total, 
                         {add({get(qb1)}, 
@@ -396,13 +396,13 @@
                     {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
                     {set(highlight,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
             </If>
-            <ReportItem id="table_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
@@ -420,16 +420,16 @@
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="trans_review_summary3" name="RMC Summary" type="ReportSection" pagebreak="false">
-        <ReportItem id="table_head" type="Static">
+        <Static>
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <tr>
@@ -446,9 +446,9 @@
                         <th>Avg. Total (out of 5)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-RMC" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(q1, 0)}
                     {set(q2, 0)}
@@ -462,7 +462,7 @@
                     
                     {set(nReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
                 <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},)},
                                          {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},)},
@@ -488,7 +488,7 @@
                     ]]>
                 </If>
             </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(total, 
                         {add({get(q1)}, 
@@ -512,13 +512,13 @@
                     {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},1)})}
                     {set(highlight,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
             </If>
-            <ReportItem id="table_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
@@ -554,12 +554,12 @@
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
 </Report>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Catalyst Application: Intent to Apply" reportType="RP_CATALYST_APPLICATION" pdfType="RPTP_CAT_INTENT" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <div style='font-size:1.5em;'><b>Catalyst Application</b><br />Intent to Apply</div>
@@ -11,7 +11,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="intent" type="HeaderReportSection" blobSection="OVERVIEW" name="Intent to Apply" title="Intent to Apply" pagebreak="false">
         <ReportItem id="lay_title" type="Text" blobItem="LAY_TITLE">

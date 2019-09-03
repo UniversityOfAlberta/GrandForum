@@ -71,7 +71,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>The objectives of the NCE program are to mobilize multi-disciplinary research capacity from across Canada, engage partners from multiple academic institutions and various public and private-sector organizations, train the next generation of highly qualified people, work with end users to accelerate the creation and application of new knowledge as well as increase collaboration between research in Canada and abroad.</p>
  
@@ -97,14 +97,14 @@
                 </p>
                 <p>For more information on the development of this evaluation or instructions please watch the <a href='https://youtu.be/xYA7mANKkhM' target='_blank'>Webinar</a> posted on the Intranet. You can also find a Word version of the form <a href='http://members.agewell-nce.ca/login/?redirect_to=/network-management/annual-project-progress-evaluation/' target='_blank'>here</a> if you would like to work offline.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="narrative1" type="EditableReportSection" blobSection="NARRATIVE1" tooltip="Project Assessment and Readiness Level" name="Assessment &amp; Readiness" title="Project Assessment and Readiness Level">
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>Projects can be at different stages of product readiness, from concept to deployment and adoption.  Please refer to the guidelines in order to define which stage best characterises your project.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="product" type="Checkbox" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product - a service or information product that will be used by another entity">
             <![CDATA[
                 <h2>Product Description</h2>
@@ -193,11 +193,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="research" type="EditableReportSection" blobSection="RESEARCH" tooltip="Scientific Excellence" name="Scientific Excellence">
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>The AGE-WELL research program is expected to address Canadian needs and problems and to demonstrate world-class scientific achievements.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
@@ -206,7 +206,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -223,7 +223,7 @@
                         <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,RESEARCH,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
@@ -430,13 +430,13 @@
                     policymaker: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Poster' with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                         </td>
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="file1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="FILE1" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
                 <h3>Please attach 1 or 2 of the project’s most significant scientific outputs from the past year for reviewers (optional).</h3>
@@ -450,7 +450,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>AGE-WELL Network is expected to demonstrate that the projects have brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It should be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project. </p>
                 <ul>
@@ -459,7 +459,7 @@
                     <li>the extent to which the Network will help the partners develop strong receptor capacity to exploit current and future research breakthroughs;</li>
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
@@ -468,7 +468,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -485,7 +485,7 @@
                         <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,NETWORKING,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
@@ -576,18 +576,18 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge &amp; Technology Exchange and Exploitation" name="KTEE" title="Knowledge &amp; Technology Exchange and Exploitation">
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
@@ -596,7 +596,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -613,7 +613,7 @@
                         <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_3_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
@@ -665,13 +665,13 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Static">
+        <Static id="rev_3_5_m3" blobItem="REV_3_5_M3">
             <![CDATA[
                     Project has a website or other online presence? <b title="The project website from the project profile">{$project_website}</b>
                     </td>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,KTEE1,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
@@ -752,18 +752,18 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" tooltip="HQP Training" name="HQP Training">
-        <ReportItem id="instructions" type="Static">
+        <Static id="instructions">
             <![CDATA[
                 <p>Training is expected to add value to the formal training initiatives already available through the academic community and should aim at helping HQP find employment in the Canadian economy, particularly in sectors related to technology and aging.  HQP should be directly involved in the range of activities in a multi-disciplinary team research project and should work closely with industry and community partners and be involved in collaborating within the Age-Well research network and partner universities.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
@@ -772,7 +772,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -789,7 +789,7 @@
                         <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%" default="{getText(RP_PROJ_EVALUATION,HQP,PLAN_1_1,0,0,{$project_id},{$last_year})}">
             <![CDATA[
                 <tr style='height:100%;'>
@@ -844,11 +844,11 @@
                  </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Next Steps" name="PRL Justifications" title="PRL Justifications &amp; Next Steps">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
