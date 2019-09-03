@@ -66,7 +66,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" type="ReportSection" tooltip="Program Description" name="Program Description" title="AGE-WELL Core Research Program 2020">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <p>Researchers based at Canadian institutions and working in the field of technology and aging are invited to apply for funding through <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020</a> Request for Proposals. Successful applications will be included as part of AGE-WELL’s renewal application for funding through 2020-2023.</p>
 
@@ -101,15 +101,15 @@
 
                 <p>For more information on the program, eligibility criteria and application guidelines, please visit the <a href='https://agewell-nce.ca/crp2020' target='_blank'>AGE-WELL’s Core Research Program 2020 Request for Proposals</a> web page.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
-        <ReportItem id="leader" type="Static" blobItem="LEADER">
+        <Static blobItem="LEADER">
             <![CDATA[
                 <h2>Project Lead Name</h2>
                 {$user_name}
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
             <![CDATA[
                 <h2>Project Title</h2>
@@ -137,12 +137,12 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="length" type="Static">
+        <Static>
             <![CDATA[
                 <br />
                 <b>Length of proposed project:</b> 3 years
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="total" type="Text" blobItem="TOTAL" width="60px">
             <![CDATA[
                 <br />
@@ -563,20 +563,16 @@
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <!--If id="if" if="{&lt;({$timestamp},2019-01-23 00:59:59 MST)}"-->
             <If id="ifTotal" if="{>({getNumber(RP_CRP,COVER,TOTAL,0,{$user_id},{$project_id})},600000)}">
-                <ReportItem id="warning" type="Static">
-                    <![CDATA[
-                        <div id="totalWarning" class="warning">You cannot request a value greater than $600,000.</div>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <div id="totalWarning" class="warning">You cannot request a value greater than $600,000.</div>
+                ]]>
             </If>
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
         <!--/ReportItemSet-->
         <!--If id="else" if="{&gt;({$timestamp},2019-01-23 00:59:59 MST)}">
-            <ReportItem id="review" type="Static">
-                <![CDATA[
-                    <div class="info">This application is currently closed.</div>
-                ]]>
-            </ReportItem>
+            <![CDATA[
+                <div class="info">This application is currently closed.</div>
+            ]]>
         </If-->
     </ReportSection>
 </Report>

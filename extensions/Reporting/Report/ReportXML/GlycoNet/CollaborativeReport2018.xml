@@ -18,7 +18,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 Please read the following instructions carefully. A complete application consists of:
                 <ol>
@@ -38,7 +38,7 @@
                 </ol>
                 <p><b>Deadline: 23:59 PST on Friday, February 15, 2019</b></p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
         <!-- Theme -->
@@ -221,7 +221,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
-        <ReportItem id="info" type="Static">
+        <Static>
             <![CDATA[
                 <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file</i></b>. The first page also contains the budget for the use of the core services in the project. <b><i>The project leader should coordinate the core services budget for the project</i></b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate. </p>
 
@@ -261,7 +261,7 @@
                     <li>Questions on eligibility of matching can be directed to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a>.</li>
                  </ul>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
                 <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>

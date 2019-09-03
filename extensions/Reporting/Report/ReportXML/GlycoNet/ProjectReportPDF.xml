@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" personId="0" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>Project Report {$this_year}</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -11,16 +11,16 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="information" type="HeaderReportSection" name="Project Information" blobSection="INFORMATION">
-        <ReportItem id="info" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p><b>Theme:</b>           {$project_theme}</p>
                 <p><b>Project Title:</b>   {$project_name}</p>
                 <p><b>Project Leader:</b>  {$project_leaders}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="leaders" type="ProjectLeaders">
             <ReportItem id="leader_info">
                 <![CDATA[
@@ -29,7 +29,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="co-investigators_table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </p><br />
                 <p><b>Investigators:</b>
@@ -41,7 +41,7 @@
                         <th>% Time Devoted<br />to Project</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="co-investigators" type="ProjectPeople" role="PL,NFI,NI" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItem id="investigators_info" type="IntegerReportItem" min="0" max="100" size="3" blobItem="TIME" blobSubItem="{$user_id}">
                 <![CDATA[
@@ -54,7 +54,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="hqp_table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
                 </p><br />
@@ -69,9 +69,9 @@
                         <th>Supervisor(s)</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <ReportItem id="hqp_info" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
@@ -82,14 +82,14 @@
                         <td>{$user_supervisors}</td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="hqp_table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
                 </p><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Partners and Collaborators:</b>
@@ -226,13 +226,13 @@
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <ReportItem id="just" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(just,)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
-                <ReportItem id="comments" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         {set(just,{concat({get(just)}, 
                             {concat(<h3>{$user_name}</h3>,
@@ -240,7 +240,7 @@
                             )}
                         )})}
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
             <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
                 <![CDATA[
@@ -253,7 +253,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp_table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>HQP Contribution Table</h3>
                 <table class='wikitable small' rules="all" frame="box" width="100%">
@@ -274,15 +274,15 @@
                         <th>Paid from<br />other funds</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <ReportItem id="hqp_info" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
                         <td align='left'>{$user_level}</td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
                 <![CDATA[
                         <td align='center'>{$item}</td>
@@ -313,19 +313,19 @@
                         <td align='right' class='other'>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="hqp_years" type="Static">
+            <Static>
                 <![CDATA[
                         <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
                         <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="hqp_table" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
         <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">

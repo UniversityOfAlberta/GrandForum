@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" ajax="true" personId="0" year="2019">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                     <h4 style='font-size:1.40em;'>{$this_year} SSA Report</h4><br />
@@ -13,10 +13,10 @@
                     <br />
                     <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="report" type="HeaderReportSection" blobSection="SSA_REPORT" name="SSA Report" pagebreak="false">
-        <ReportItem id="identity_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h2>Section 1 - Project Information</h2>
                 <small><table class='wikitable' frame='box' rules='all' width="100%">
@@ -29,7 +29,7 @@
                         <td style='white-space:nowrap;' colspan='3'>{$project_nis}</td>
                      </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START">
             <![CDATA[
                 <tr>
@@ -65,11 +65,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="identity_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table></small><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="achievements" type="TextareaReportItem" rich="true" height="400px" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS">
             <![CDATA[
                 <h4>Describe the major research activities and related key achievements over this reporting period and if applicable, emphasize collaborative achievements.</h4>
@@ -106,12 +106,12 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="assessment_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h2>Section 3 - Alignment with CFN</h2>
                 <table class='wikitable' rules="all" box="all" width="100%">
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="priorities" type="RadioReportItem" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_PRIORITIES">
             <![CDATA[
                 <tr>
@@ -165,11 +165,11 @@
                 {$item}% Knowledge mobilization<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="assessment_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="learning" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_LEARNING" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Section 4 - Learning Plan</h2>

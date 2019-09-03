@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EdgePDF" year="2019" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Edge Award (2019)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -18,10 +18,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="identity_start" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>BACKGROUND INFORMATION</h3>
                 <table class="wikitable" frame="box" rules="all" width="100%">
@@ -30,7 +30,7 @@
                         <td>{$user_name}</td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="status" type="Text" blobItem="STATUS">
             <![CDATA[
                 <tr>

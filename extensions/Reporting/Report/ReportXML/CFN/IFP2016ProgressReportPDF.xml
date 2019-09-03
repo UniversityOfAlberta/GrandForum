@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfType="RPTP_IFP_PROGRESS" year ="2016" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="collab" title="Online Collaborative Project" blobSection="IFP_PROG_COLLAB" type="HeaderReportSection">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h4 style='font-size:1.40em;'>IFP Progress Report<br />Period Ending {getText(RP_IFP_PROGRESS,IFP_PROG_COLLAB,IFP_PROG_MIL_END,0,{$user_id},0}</h4><br />
                 <p><b><u>Name</u></b></p>{$user_name}<br /><br />
                 <br /><br /><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Status of OCP Milestones</h3>
@@ -194,19 +194,19 @@
         <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet"
                        startDate="{getText(RP_IFP_PROGRESS,IFP_PROG_COLLAB,IFP_PROG_MIL_START,0,{$user_id},0)}" 
                        endDate="{getText(RP_IFP_PROGRESS,IFP_PROG_COLLAB,IFP_PROG_MIL_END,0,{$user_id},0)}">
-            <ReportItem id="assessment" type="StaticReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+            <Static id="assessment" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
                 <![CDATA[
                     <h2>{$user_name}</h2>
                     <h3>What is your overall assessment of the Fellow’s progress during the past three months?</h3>
                     <i>{getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
                 ]]>
-            </ReportItem>
-            <ReportItem id="elaborate" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>Please elaborate:</h3>
                     {getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ELABORATE,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
 </Report>

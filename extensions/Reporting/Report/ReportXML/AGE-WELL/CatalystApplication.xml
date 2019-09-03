@@ -59,7 +59,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="2018 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2018 AGE-WELL Catalyst Program">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <p>AGE-WELL is excited to launch its 3rd Catalyst Funding competition to support innovative research projects aimed at generating, promoting or accelerating economic and social benefit in the field of technology and aging.</p> 
                 <p>The Catalyst Funding Program represents the first-stage in AGE-WELL’s innovation funding stream. Catalyst grants will support early-stage, scalable research projects including pilot studies, feasibility studies and novel approaches that are aligned with AGE-WELL’s mission and vision. Projects must demonstrate strong potential for real-world impact.</p>
@@ -108,7 +108,7 @@
                 <h3>Key Contact:</h3>
                 <p>Questions about the Catalyst Funding Program should be directed to Jeanie Zabukovec, AGE-WELL Research Program Manager (<a href='mailto:Jeanie@agewell-nce.ca'>Jeanie@agewell-nce.ca</a>). If you would like to discuss an idea for a strategic project, please get in touch with J. Zabukovec and one of the Scientific Directors would be happy to talk further.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="EditableReportSection">
         <ReportItem id="ia" type="TextReportItem" width="200px" blobItem="LEADERS">
@@ -248,11 +248,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
-        <ReportItem id="header1" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Section 1- Overview</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="background" type="TextareaReportItem" rich="true" blobItem="BACKGROUND">
             <![CDATA[
                 <style>
@@ -284,11 +284,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Section 2 – Innovation and Impact</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="novelty" type="TextareaReportItem" rich="true" blobItem="NOVELTY">
             <![CDATA[
                 <ol id='list' type="i">
@@ -322,11 +322,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header3" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Section 3 – Research Plan</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="timeline" type="TextareaReportItem" rich="true" blobItem="TIMELINE">
             <![CDATA[
                 <ol id='list' type="i">
@@ -345,11 +345,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header4" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Section 4 – Project team and Networking</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="networking" type="TextareaReportItem" rich="true" blobItem="NETWORKING">
             <![CDATA[
                 <ol id='list' type="i">

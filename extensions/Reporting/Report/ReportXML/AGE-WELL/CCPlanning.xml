@@ -40,7 +40,7 @@
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>CC Activity Planning</h3>
                 <p>The Crosscutting activities in the AGE-WELL network are designed to encourage and support research projects within AGE-WELL to achieve our key network goals. As such there are 4 CCs: Knowledge Mobilization (CC1), Commercialization and Technology Transfer (CC2), Transdisciplinary Working (CC3) and Training and Mentorship (CC4). As an initial step in meeting our Network Goals, we are asking all Project Leads to fill in a activity plan for each CC activity. These are designed to put our key network goals to the forefront of projects by:</p>
@@ -156,7 +156,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <h3>Filling in the activity plans</h3>
 <p>The activity plans are designed to help Project Leads to articulate their ideas and provide detailed plans for their activities in the various CC areas. The bullet points are provided as prompts/guides for your plans, but you are not confined to these points however, you should use the sub-headings provided. The activity plans contain instructions indicating maximum pages to be submitted.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cc1" tooltip="Knowledge Mobilization and Translation" name="CC1 K-MOB" blobSection="CC_PLANNING_1" type="EditableReportSection">
         <Instructions>
@@ -179,12 +179,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>Involvement of Knowledge Users and Partners in Research is crucial: "a dynamic and iterative process that includes synthesis, dissemination, exchange and ethically sound application of knowledge to improve the health of Canadians, provide more effective health services and products and strengthen the health care system." <a target='_blank' href='http://www.cihr-irsc.gc.ca/e/45321.html'>http://www.cihr-irsc.gc.ca/e/45321.html</a></p>
             ]]>
         </Instructions>
-        <ReportItem id="objectives_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_1,CC_1_OBJECTIVES,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_1,CC_1_OBJECTIVES,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Objectives</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="objectives" type="TextareaReportItem" blobItem="CC_1_OBJECTIVES" rich="true">
             <![CDATA[
                 <small>
@@ -195,12 +195,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="mobilize_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MOBILIZE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MOBILIZE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What knowledge will you mobilize?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="mobilize" type="TextareaReportItem" blobItem="CC_1_MOBILIZE" rich="true">
             <![CDATA[
                 <small>
@@ -215,12 +215,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partners_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_PARTNERS,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_PARTNERS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Who are your knowledge partners?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_1_PARTNERS" rich="true">
             <![CDATA[
                 <small>
@@ -234,12 +234,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="engage_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ENGAGE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ENGAGE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Who are you trying to reach and engage?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="engage" type="TextareaReportItem" blobItem="CC_1_ENGAGE" rich="true">
             <![CDATA[
                     <small>
@@ -252,12 +252,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="achieve_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ACHIEVE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ACHIEVE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you achieve your knowledge mobilization objectives?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE" rich="true">
             <![CDATA[
                     <small>
@@ -274,12 +274,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expertise_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_EXPERTISE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_EXPERTISE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What expertise do you need?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expertise" type="TextareaReportItem" blobItem="CC_1_EXPERTISE" rich="true">
             <![CDATA[<small>
                         <ul>
@@ -291,12 +291,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expertise_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_RESOURCES,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_RESOURCES,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What resources do you need for your knowledge mobilization plan?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="resources" type="TextareaReportItem" blobItem="CC_1_RESOURCES" rich="true">
             <![CDATA[
                     <small>
@@ -309,12 +309,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="measure_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MEASURE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MEASURE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you measure the impact of your knowledge?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_1_MEASURE" rich="true">
             <![CDATA[
                     <small>
@@ -329,12 +329,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support_head" type="StaticReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_SUPPORT,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How do you think AGE-WELL as an organization could help or support your knowledge mobilization efforts?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="support" type="TextareaReportItem" blobItem="CC_1_SUPPORT" rich="true">
             <![CDATA[
                     <small>
@@ -401,23 +401,23 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>We especially would like to see HQPs involved in commercialization activities and, indeed, HQPs may be the major catalyst for commercialization in some projects. Consider providing training opportunities and release time for HQPs beyond their typical disciplinary training to attend for example courses on technology commercialization.</p>
             ]]>
         </Instructions>
-        <ReportItem id="products_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PRODUCTS,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PRODUCTS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What products or services do you intend to commercialize? (please refer to briefing notes for detailed explanation)</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS" rich="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="commercialize_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_COMMERCIALIZE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_COMMERCIALIZE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>If your project is planning to directly commercialize a product(s):</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="commercialize" type="TextareaReportItem" blobItem="CC_2_COMMERCIALIZE" rich="true">
             <![CDATA[
                 <small>
@@ -430,12 +430,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="provide_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PROVIDE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PROVIDE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>If your project is providing support to commercialization within AGE-WELL:</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="provide" type="TextareaReportItem" blobItem="CC_2_PROVIDE" rich="true">
             <![CDATA[
                 <small>
@@ -449,12 +449,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partners_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PARTNERS,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PARTNERS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Who are your partners?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_2_PARTNERS" rich="true">
             <![CDATA[
                 <small>
@@ -469,12 +469,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="stage_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_STAGE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_STAGE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What stage is your product at?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="stage" type="TextareaReportItem" blobItem="CC_2_STAGE" rich="true">
             <![CDATA[
                 <small>
@@ -488,12 +488,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="market_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MARKET,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MARKET,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What is your market?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="market" type="TextareaReportItem" blobItem="CC_2_MARKET" rich="true">
             <![CDATA[
                 <small>
@@ -509,12 +509,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ip_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_IP,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_IP,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Intellectual property</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="ip" type="TextareaReportItem" blobItem="CC_2_IP" rich="true">
             <![CDATA[
                 <small>
@@ -526,12 +526,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="achieve_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_ACHIEVE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_ACHIEVE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you achieve your commercialization objectives?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_2_ACHIEVE" rich="true">
             <![CDATA[
                 <small>
@@ -547,12 +547,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="measure_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MEASURE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MEASURE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you measure the effectiveness of your commercialization activities?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_2_MEASURE" rich="true">
             <![CDATA[
                 <small>
@@ -563,12 +563,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_SUPPORT,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How do you think AGE-WELL as an organization could help or support commercialization within the network?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="support" type="TextareaReportItem" blobItem="CC_2_SUPPORT" rich="true">
             <![CDATA[
                 <small>
@@ -605,13 +605,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>In addition we need to map the opportunities we have in AGE-WELL to work in transdisciplinary ways and how this can be best supported within the AGE-WELL Network. The activity plan is designed to help with the mapping exercise and the development of the support mechanisms needed to facilitate transdisciplinary working within AGE-WELL.</p>
             ]]>
         </Instructions>
-        <ReportItem id="trans_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 1: KNOWLEDGE</h2>
                 <h3>What do you know about transdisciplinarity?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS" rich="true">
             <![CDATA[
                 <small>
@@ -625,13 +625,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="adopt_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 2: EXPERIENCE</h2>
                 <h3>Have you previously worked on projects that adopted a transdisciplinary approach?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT" rich="true">
             <![CDATA[
                 <small>
@@ -645,12 +645,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="teamwork_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Please outline your experience of teamwork within large, complex projects</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK" rich="true">
             <![CDATA[
                 <small>
@@ -663,13 +663,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="network_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 3: IMPLEMENTATION</h2>
                 <h3>What are your plans to contribute to the wider network?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK" rich="true">
             <![CDATA[
                 <small>
@@ -683,12 +683,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="synergy_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Synergies between projects</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY" rich="true">
             <![CDATA[
                 <small>
@@ -708,12 +708,12 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="accept_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT" rich="true">
             <![CDATA[
                 <small>
@@ -730,13 +730,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 4: SUPPORT AND EVALUATION</h2>
                 <h3>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT" rich="true">
             <![CDATA[
                 <small>
@@ -754,12 +754,12 @@ network level.
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="eval_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL" rich="true">
             <![CDATA[
                 <small>
@@ -805,12 +805,12 @@ our trainees moving into receptor industries and government agencies represent a
 <p>To accomplish our training goals it is important for Project Leads to recognize that HQPs who are supported by AGE-WELL funds will need release time to participate in network activities outside of their research projects.</p>
             ]]>
         </Instructions>
-        <ReportItem id="train_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_TRAIN,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_TRAIN,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Description of type of HQP training activities will be conducted within your research project.</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN" rich="true">
             <![CDATA[
                 <small>
@@ -823,12 +823,12 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_KNOW,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_KNOW,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>The AGE-WELL training program needs to emphasize the knowledge and skills for successful knowledge mobilization, commercialization and transdisciplinary working.</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="know" type="TextareaReportItem" blobItem="CC_4_KNOW" rich="true">
             <![CDATA[
                 <small>
@@ -848,12 +848,12 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="outcome_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OUTCOME,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OUTCOME,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>An important outcome for AGE-WELL is to create training initiatives that encourage HQPs to consider the economic, social, environmental and ethical implications of their work.</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="outcome" type="TextareaReportItem" blobItem="CC_4_OUTCOME" rich="true">
             <![CDATA[
                 <small>
@@ -862,12 +862,12 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="industry_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_INDUSTRY,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_INDUSTRY,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>The majority of our HQPs will not pursue academic careers but will be employed by industry or government or start their own business.</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="industry" type="TextareaReportItem" blobItem="CC_4_INDUSTRY" rich="true">
             <![CDATA[
                 <small>
@@ -879,23 +879,23 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="other_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OTHER,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OTHER,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What other knowledge, skills or training should AGE-WELL as an organization be providing to HQPs within the network?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="other" type="TextareaReportItem" blobItem="CC_4_OTHER" rich="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="measure_head" type="StaticReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_MEASURE,0,0,{$project_id})}" title="Feedback">
+        <Static text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_MEASURE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How should we measure the effectiveness of the HQP training program?</h3>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_4_MEASURE" rich="true">
             <![CDATA[
                 <small>

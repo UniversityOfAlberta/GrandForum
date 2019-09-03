@@ -241,7 +241,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="foot" type="Static">
+        <Static>
             <![CDATA[
                     <tr>
                         <td><b>Total Amount</b></td>
@@ -268,7 +268,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" optional="true" position="100">
             <![CDATA[
                 <h3>Budget Justification</h3>

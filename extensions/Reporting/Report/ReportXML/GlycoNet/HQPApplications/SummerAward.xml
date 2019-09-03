@@ -48,7 +48,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3> 
                 <p>The Summer Awards program provides undergraduate students the opportunity to pursue summer research projects supervised by GlycoNet Network Investigators.</p>
@@ -83,17 +83,17 @@
                 
                 <p>Deadline for application is <b>February 1</b> each year.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" title="Application Form" tooltip="Application Form" type="EditableReportSection" blobSection="APPLICATION">
-        <ReportItem id="trainee_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Trainee</h2>
                 <table class='wikitable'>
                     <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
                     <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
             <![CDATA[
                 <tr>
@@ -108,12 +108,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
+        <Static>
             <![CDATA[
                         <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident|International" blobType="BLOB_TEXT" blobItem="RESIDENCY">
             <![CDATA[
                 <tr>
@@ -122,12 +122,12 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Proposed Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="sup_name" type="NISelect" placeholder="Choose NI..." blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
@@ -177,12 +177,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="background" type="MultiText" blobType="BLOB_ARRAY" blobItem="BACKGROUND" 
                     multiple="true" 
                     labels="Degree|Department|Institution|Country|Date Started&lt;br /&gt;(MM/YYYY)|Date Completed/Expected Date of Completion&lt;br /&gt;(MM/YYYY)" 
@@ -227,7 +227,7 @@
     </ReportSection>
     <ReportSection id="hqp_description" type="ReportSection" name="Description"  tooltip="Project Description" title="Project Description" blobSection="DESCRIPTION">
         <ReportItemSet id="supervisor" type="PersonReportItemSet" userName="{getText(RP_HQP_SUMMER, APPLICATION, SUPNAME, 0, {$user_id}, 0}">
-            <ReportItem id="body" type="Static">
+            <Static>
                 <![CDATA[
                     <p><i>(to be completed by the proposed supervisor)</i></p>
                     <h2>Supervisor</h2>
@@ -287,7 +287,7 @@
                     <h2>Project Description</h2>
                     {getHTML(RP_HQP_SUMMER, DESCRIPTION, DESCRIPTION, {$parent_id}, {$user_id}, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="figures" type="UploadPDF" blobItem="FIGURES" personId="{$user_id}" blobSubItem="{$parent_id}" mimeType="application/pdf" fileSize="5">
                 <![CDATA[
                     <h2>Uploads</h2>
@@ -363,7 +363,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="declaration" type="ReportSection" name="Declaration" tooltip="Applicant Declaration" title="Applicant Declaration">
-        <ReportItem id="declaration" type="Static">
+        <Static>
             <![CDATA[
                 <p>By submitting this Research Exchange Program 2018-2019 Application Form I agree with GlycoNet that:</p>
                 <ol>
@@ -375,7 +375,7 @@
                     <li>I will comply with the final reporting requirements of the Summer Awards Program required by GlycoNet.</li>
                 </ol>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

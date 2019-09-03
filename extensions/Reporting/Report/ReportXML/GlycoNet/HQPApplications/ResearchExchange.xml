@@ -19,7 +19,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>The Research Exchange Program provides financial support to graduate students, postdoctoral fellows, technicians, and research associates within GlycoNet who are working on multi-investigator projects. These funds are intended to contribute towards trainee living and travel expenses.</p>
@@ -59,10 +59,10 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="profile" name="Profile" title="Applicant Profile" tooltip="Applicant Profile" type="EditableReportSection" blobSection="PROFILE">
-        <ReportItem id="trainee_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Trainee</h2>
                 <table class='wikitable'>
@@ -71,7 +71,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                     <tr><td align='right' style='font-weight:bold;'>Department:</td><td>{$user_dept}</td></tr>
                     <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
             <![CDATA[
                 <tr>
@@ -86,20 +86,20 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
+        <Static>
             <![CDATA[
                         <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
-        <ReportItem id="sup_head" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h2>Current Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="sup_name" type="Text" blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
@@ -156,18 +156,18 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
-        <ReportItem id="host_head" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h2>Proposed Host Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="host_name" type="Text" blobType="BLOB_TEXT" blobItem="HOSTNAME">
             <![CDATA[
                 <tr>
@@ -231,12 +231,12 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="host_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="site" type="Radio" blobType="BLOB_TEXT" blobItem="SITE" orientation="vertical" options="In the same province as the home institution (up to $500 travel allowance)|In a different province than the home institution (up to $1000 travel allowance)|Outside of Canada (up to $2000 travel allowance)">
             <![CDATA[
                 <table>
@@ -331,7 +331,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expenses_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Estimated Expenses</h2>
                 <table id='budget' frame='box' rules='all'>
@@ -346,7 +346,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                         <td style='background:#CCCCCC;'></td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="airfare" type="Integer" blobItem="AIRFARE" min="0" max="10000000" width="70px">
             <![CDATA[
                     <tr>
@@ -426,7 +426,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="expenses_foot" type="Static">
+        <Static>
             <![CDATA[
                 </table>
                 <script type='text/javascript'>
@@ -448,7 +448,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                     $('table#budget td:not(#total) input').keyup(calcTotal);
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="figures" type="Upload" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Uploads</h2>
@@ -473,7 +473,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
         </ReportItem>
     </ReportSection>
     <ReportSection id="declaration" type="ReportSection" name="Declaration" tooltip="Applicant Declaration" title="Applicant Declaration">
-        <ReportItem id="declaration" type="Static">
+        <Static>
             <![CDATA[
                 <p>By submitting this Research Exchange Program 2018-2019 Application Form I agree with GlycoNet that:</p>
                 <ol>
@@ -485,7 +485,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                     <li>I will comply with the final reporting requirements of the Research Exchange Program required by GlycoNet.</li>
                 </ol>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

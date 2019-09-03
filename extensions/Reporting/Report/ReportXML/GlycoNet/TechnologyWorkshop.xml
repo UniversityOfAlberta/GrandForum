@@ -9,7 +9,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>Technology workshops will provide Network HQP with hands-on training in specialized lab techniques, delivered in an interactive small group format and led by a GlycoNet Network Investigator.</p>
@@ -28,7 +28,7 @@
                 <h3>Deadline</h3>
                 <p>Application deadlines are <b>January 15, May 15, and September 15</b> each year.</p></p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="proposal" name="Workshop Proposal" tooltip="Workshop Proposal" type="EditableReportSection" blobSection="PROPOSAL">
         <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">

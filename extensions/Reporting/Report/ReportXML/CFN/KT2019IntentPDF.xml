@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2019 Knowledge Translation Competition Intent to Apply" reportType="RP_KT_APPLICATION" pdfType="RP_KT_INTENT" pdfFiles="KT2019IntentPDF" year="2019" ajax="true" disabled="false">
     <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Intent To Apply" title="2019 Knowledge Translation Competition Intent to Apply" pagebreak="false">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.20em;'>2019 Knowledge Translation Competition Intent to Apply</h4>
@@ -14,7 +14,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
             <![CDATA[
                 <h4>Title of KT Proposal</h4>

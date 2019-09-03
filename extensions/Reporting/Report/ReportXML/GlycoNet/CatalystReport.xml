@@ -39,7 +39,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>Background and Description of Opportunity</h3>
                 <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence (NCE) that focuses on the role of glycans (carbohydrates) in health. Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
@@ -79,7 +79,7 @@
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
         <!-- Theme -->
@@ -269,11 +269,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
-        <ReportItem id="info" type="Static">
+        <Static>
             <![CDATA[
                 <p><b>Note:</b> Only 1 year should be filled out for the Catalyst Grant.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
             <![CDATA[
                 {$item}

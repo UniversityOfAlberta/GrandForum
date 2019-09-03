@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" personId="0" ajax="true" disabled="false" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>Project Milestones Report {$this_year}</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="HeaderReportSection" blobSection="REPORT" pagebreak="false">
         <ReportItem id="table" type="ProjectMilestoneTable">

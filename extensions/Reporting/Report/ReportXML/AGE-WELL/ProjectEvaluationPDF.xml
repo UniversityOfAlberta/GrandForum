@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static id="report_info_head">
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL's Project Scorecard and<br /> Reporting Framework: {$project_name}</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -17,7 +17,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="narrative1" type="HeaderReportSection" blobSection="NARRATIVE1" tooltip="Project Assessment and Readiness Level" name="Assessment &amp; Readiness" title="Project Assessment and Readiness Level">
         <ReportItem id="product" type="Checkbox" delimiter="&lt;br /&gt;" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product - a service or information product that will be used by another entity">
@@ -71,7 +71,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
@@ -82,7 +82,7 @@
                         <th>Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -289,13 +289,13 @@
                     policymaker: <b>{$item}</b>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                         </td>
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="file1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="FILE1" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
                 <h3>Please attach 1 or 2 of the project’s most significant scientific outputs from the past year for reviewers.</h3>
@@ -316,7 +316,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                  <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
@@ -327,7 +327,7 @@
                         <th>Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -418,11 +418,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge &amp; Technology Exchange and Exploitation" name="KTEE" title="Knowledge &amp; Technology Exchange and Exploitation">
         <!-- Table 1 -->
@@ -432,7 +432,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
@@ -443,7 +443,7 @@
                         <th>Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -495,13 +495,13 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Static">
+        <Static id="rev_3_5_m3" blobItem="REV_3_5_M3">
             <![CDATA[
                     Project has a website or other online presence? <b>{$project_website}</b>
                     </td>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -582,11 +582,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" tooltip="HQP Training" name="HQP Training">
         <!-- Table 1 -->
@@ -596,7 +596,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <Static id="rev_head">
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
@@ -607,7 +607,7 @@
                         <th>Metrics</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -662,11 +662,11 @@
                  </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
+        <Static id="rev_foot">
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Next Steps" name="PRL Justifications" title="PRL Justifications &amp; Next Steps" pagebreak="false">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">

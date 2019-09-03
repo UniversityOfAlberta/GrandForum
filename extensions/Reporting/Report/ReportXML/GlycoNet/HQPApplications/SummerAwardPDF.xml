@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" ajax="true" disabled="false" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.40em;text-align:left;'>GlycoNet Summer Awards For<br />Undergraduate Students</h4>
@@ -12,10 +12,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" title="Application Form" tooltip="Application Form" type="EditableReportSection" blobSection="APPLICATION">
-        <ReportItem id="trainee" type="Static">
+        <Static>
             <![CDATA[
                 <h4>Trainee</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -39,8 +39,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Proposed Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -64,7 +64,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="background" type="MultiText" blobType="BLOB_ARRAY" blobItem="BACKGROUND" 
                     multiple="true" 
                     labels="Degree|Department|Institution|Country|Date Started&lt;br /&gt;(MM/YYYY)|Date Completed/Expected Date of Completion&lt;br /&gt;(MM/YYYY)" 
@@ -105,7 +105,7 @@
     </ReportSection>
     <ReportSection id="hqp_description" type="ReportSection" name="Description"  tooltip="Project Description" title="Project Description" blobSection="DESCRIPTION" pagebreak="false">
         <ReportItemSet id="supervisor" type="PersonReportItemSet" userName="{getText(RP_HQP_SUMMER, APPLICATION, SUPNAME, 0, {$user_id}, 0}">
-            <ReportItem id="body" type="Static">
+            <Static>
                 <![CDATA[
                     <h2>Supervisor</h2>
                     <table class='wikitable smaller' width='100%' frame='box' rules='all'>
@@ -163,7 +163,7 @@
                     <h2>Project Description</h2>
                     {getHTML(RP_HQP_SUMMER, DESCRIPTION, DESCRIPTION, {$parent_id}, {$user_id}, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="figures" type="UploadPDF" blobItem="FIGURES" personId="{$user_id}" blobSubItem="{$parent_id}" mimeType="application/pdf" fileSize="5">
                 <![CDATA[
                     <h2>Uploads</h2>

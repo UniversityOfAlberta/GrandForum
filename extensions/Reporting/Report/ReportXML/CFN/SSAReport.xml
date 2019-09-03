@@ -14,7 +14,7 @@
         <Project deleted="false" />
     </Permissions>
     <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="SSA Report">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>For final funding to be released, the following conditions must be met by September 30, 2019:</p>
                 <ul>
@@ -23,8 +23,8 @@
                     <li>the “Learning Plan” document you submitted at the time of application must be completed, signed and received by CFN</li>
                 </ul>
             ]]>
-        </ReportItem>
-        <ReportItem id="identity_head" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <h1><b>Section 1 - Project Information</b></h1>
                 <table class='wikitable'>
@@ -37,7 +37,7 @@
                         <td colspan='3'>{$project_nis}</td>
                      </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START">
             <![CDATA[
                 <tr>
@@ -73,11 +73,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="identity_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="achievements" type="TextareaReportItem" rich="true" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS">
             <![CDATA[
                 <h3>Describe the major research activities and related key achievements over this reporting period and if applicable, emphasize collaborative achievements.</h3>
@@ -125,13 +125,13 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="assessment_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h1><b>Section 3 - Alignment with CFN</b></h1>
                 <p>Please assess your student’s activities/project against the following</p>
                 <table class='wikitable' width="650px">
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="priorities" type="RadioReportItem" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_PRIORITIES">
             <![CDATA[
                 <tr>
@@ -198,11 +198,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="assessment_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="learning" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_LEARNING" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h1><b>Section 4 - Learning Plan</b></h1>

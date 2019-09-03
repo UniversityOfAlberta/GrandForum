@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>Review Form and Instructions</h3>
                 <p>All applications will be reviewed by the HQP Advisory Committee based on the following criteria:</p>
@@ -77,7 +77,7 @@ Major: weakness that severely limits the quality of the proposal or potential of
 
 <p>A key aspect of AGE-WELL’s training philosophy is that we have the ability to fund HQP who may not be funded through traditional funding sources (e.g. CIHR, NSERC, SSHRC). We are looking to fund individuals who are thinking “outside of the box”, and who are interested in pursuing non-traditional roles within their training program. For example we will strongly consider and encourage applicants focusing on developing new products and start-up companies, or someone who is not interested in pursuing a traditional academic position but would rather work in industry, governmental, or other community-based positions.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="materials" tooltip="Download HQP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
@@ -85,7 +85,7 @@ Major: weakness that severely limits the quality of the proposal or potential of
                 You can download the HQP Application PDFs for reference.
             ]]>
         </Instructions>
-        <ReportItem id="project_materials_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <table align="left">
                 <tr>
@@ -93,17 +93,17 @@ Major: weakness that severely limits the quality of the proposal or potential of
                     <th style="min-width:125px;">Application PDF</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2019">
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="HQPApplication" width="100%" project="true">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="HQP Review" name="HQP Review" blobSection="HQP_REVIEW" type="EditableReportSection">
         <Instructions>

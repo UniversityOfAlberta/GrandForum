@@ -473,7 +473,7 @@ abstract class AbstractReportSection {
         }
         else{
             $found = $this->getParent()->setVariable($key, $value, $depth + 1);
-            if(!$found && $depth == 0){
+            if(!$found){
                 $this->variables[$key] = $value;
                 return true;
             }

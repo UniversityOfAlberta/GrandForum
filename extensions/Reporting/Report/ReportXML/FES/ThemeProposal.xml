@@ -9,7 +9,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" type="ReportSection" renderpdf="false">
-        <ReportItem id="background" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>Based on input received at the Champions Workshop and discussions within the Research Advisory Committee, here are instructions for submitting theme-based work plans. Please submit these no later than February 27. The Research Advisory Committee will then provide feedback on the plans with the explicit goal of helping meet the overall goals of Future Energy Systems.</p>
                 <p>Based on their assessment of the potential of making a strong contribution to the theme, the Theme Champions are expected to include projects, in consultation with individual researchers, associated with their theme.  Champions are also encouraged to look for individuals associated with other themes to find opportunities for inter-theme work projects.</p>
@@ -98,7 +98,7 @@
                     <li>Appendix B – The Abridged Four-Times Work Plan (1 page maximum)</li>
                 </ol>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="overview" tooltip="Theme Overview (2/3 page maximum)" name="Overview" title="Theme Overview (2/3 page maximum)" type="EditableReportSection" blobSection="OVERVIEW">
         <ReportItem id="overview" type="Textarea" blobItem="OVERVIEW" rich="true">
@@ -340,7 +340,7 @@ Chose titles that will make sense to the public.</small>
         </ReportItem>
     </ReportSection>
     <ReportSection id="budgeting" tooltip="Project Resources Needed / Budgeting" name="Budgeting" title="Project Resources Needed / Budgeting" type="EditableReportSection" blobSection="BUDGETING"  delete="true">
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 <p>To have a common basis for budgeting, please use the following nominal amounts for the <b>different HQP compensation-related expenses</b>:
                     <ul>
@@ -363,7 +363,7 @@ Chose titles that will make sense to the public.</small>
                         <th>Services</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="1_1" type="Integer" size="4" blobItem="1_1">
             <![CDATA[
                 <tr>
@@ -499,11 +499,11 @@ Chose titles that will make sense to the public.</small>
                 <td>${$item}k/year</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="equipment" type="MultiText" blobItem="EQUIPMENT" labels="Equipment|Year1|Year2|Year3|Year4|Year5|Year6|Year7" types="Text|Integer|Integer|Integer|Integer|Integer|Integer|Integer" sizes="|60|60|60|60|60|60|60" multiple="true">
             <![CDATA[
                 <h3>List the equipment required, and the estimated year it will be required.</h3>
@@ -511,7 +511,7 @@ Chose titles that will make sense to the public.</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 <p>Add all these expenses together to get a project budget.  For each year, multiple the number of each type of HQP by their compensation-related expenses, and then sum these together to generate that year’s line item for the project.  Perform similarly calculations for all other yearly line items, but include the projected expenses for all the academics involved in the project.</p>
                 <h3>Summary Project Budget</h3>
@@ -529,7 +529,7 @@ Keep numbers in thousands of dollars.</small>
                         <th>Year7</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="1a_1" type="Integer" size="4" blobItem="1a_1">
             <![CDATA[
                 <tr>
@@ -872,11 +872,11 @@ Keep numbers in thousands of dollars.</small>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="decision" tooltip="Project Key Decision Point" title="Project Key Decision Point" name="Decision Point" blobSection="DECISION" type="EditableReportSection" renderpdf="false"  delete="true">
         <ReportItem id="decision" type="Textarea" blobItem="DECISION" rich="true">

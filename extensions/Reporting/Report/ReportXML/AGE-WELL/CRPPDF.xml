@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL NCE Core Research Program 2020" reportType="RP_CRP" pdfType="RPTP_CRP" ajax="true" year="2018" allowIdProjects="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL NCE<br />Core Research Program 2020</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -18,15 +18,15 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="COVER SHEET" name="Cover Sheet" type="EditableReportSection" title="COVER SHEET" blobSection="COVER">
-        <ReportItem id="leader" type="Static" blobItem="LEADER">
+        <Static blobItem="LEADER">
             <![CDATA[
                 <h2>Project Lead Name</h2>
                 {$user_name}<br /><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
             <![CDATA[
                 <h2>Project Title</h2>
@@ -52,12 +52,12 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="length" type="Static">
+        <Static>
             <![CDATA[
                 <br />
                 <b>Length of proposed project:</b> 3 years
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="total" type="Text" blobItem="TOTAL">
             <![CDATA[
                 <br />
@@ -102,11 +102,11 @@
             ]]>
         </ReportItem>
         <If id="section5_if" if="{==({getArray(RP_CRP,PART1,SECTION5_CHECK,0,{$my_id},{$project_id},section5_check)},)}">
-            <ReportItem id="section5_no" type="Static">
+            <Static>
                 <![CDATA[
                     <p><i>No, we do not wish to be considered for additional funding from MEDTEQ.</i></p>
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         <ReportItem id="section6" type="Textarea" blobItem="SECTION6" rich="true" limit="1100">
             <![CDATA[
@@ -127,11 +127,11 @@
             ]]>
         </ReportItem>
         <If id="section7_if" if="{==({getArray(RP_CRP,PART1,SECTION7_CHECK,0,{$my_id},{$project_id},section7_check)},)}">
-            <ReportItem id="section7_no" type="Static">
+            <Static>
                 <![CDATA[
                     <p><i>No, we do not wish to be considered for Mitacs funding.</i></p>
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         <ReportItem id="section7_upload" type="Upload" blobItem="SECTION7_UPLOAD" blobType="BLOB_RAW" rich="true" fileSize="5">
             <![CDATA[
