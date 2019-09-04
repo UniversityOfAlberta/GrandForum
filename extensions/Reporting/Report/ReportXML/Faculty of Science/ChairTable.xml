@@ -75,7 +75,7 @@
         </Role-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="thead" type="Static">
+        <Static>
             <![CDATA[
                 <style>
                     table#chairTable * {
@@ -103,16 +103,16 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
-            <ReportItem id="name" type="Static">
+            <Static>
                 <![CDATA[
                     <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}</td>
@@ -142,11 +142,9 @@
                 </ReportItem>
             </If>
             <If id="if_not_lock" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
-                <ReportItem id="lock" type="Static">
-                    <![CDATA[
-                        <td align='center'>Not Locked</td>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <td align='center'>Not Locked</td>
+                ]]>
             </If>
             <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                 <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
@@ -264,7 +262,7 @@
                 </If>
             </If>
         </ReportItemSet>
-        <ReportItem id="tfoot" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table><br />
@@ -415,10 +413,10 @@
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="dean_evaluations" tooltip="Dean's Evaluations" name="Dean Evaluations" title="Dean's Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="thead" type="Static">
+        <Static>
             <![CDATA[
                 <style>
                     table#chairTable * {
@@ -447,9 +445,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="faculty" type="DeansPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
-            <ReportItem id="name" type="Static">
+            <Static>
                 <![CDATA[
                     <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
@@ -457,7 +455,7 @@
                         <td>{$user_level}</td>
                         <td>{$user_sub_roles}</td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}</td>
@@ -487,17 +485,15 @@
                 </ReportItem>
             </If>
             <If id="if_not_lock" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
-                <ReportItem id="lock" type="Static">
-                    <![CDATA[
-                        <td align='center'>Not Locked</td>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <td align='center'>Not Locked</td>
+                ]]>
             </If>
-            <ReportItem id="recommendation" type="static">
+            <Static>
                 <![CDATA[
                         <td align='center'>
                 ]]>
-            </ReportItem>
+            </Static>
             <If id="if_dr" if="{contains({$user_sub_roles},Dean's Recommendation)}">
                 <ReportItem id="dr" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
@@ -669,7 +665,7 @@
                 </If>
             </If>
         </ReportItemSet>
-        <ReportItem id="tfoot" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table><br />
@@ -820,27 +816,27 @@
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <If id="if" if="{isAllowedToViewRecommendation()}">
-                <ReportItem id="code" type="Static">
+                <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
                             $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
                         </script>
                     ]]>
-                </ReportItem>
-                <ReportItem id="download" type="Static">
+                </Static>
+                <Static>
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
@@ -947,33 +943,31 @@
                 </ReportItem>
             </If>
             <Else id="else">
-                <ReportItem id="else" type="Static">
-                    <![CDATA[
-                        <p>You are not allowed to view the recommendations for this user.</p>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
             </Else>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <If id="if" if="{isAllowedToViewRecommendation()}">
-                <ReportItem id="code" type="Static">
+                <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
                             $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
                         </script>
                     ]]>
-                </ReportItem>
-                <ReportItem id="download" type="Static">
+                </Static>
+                <Static>
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
@@ -1080,33 +1074,31 @@
                 </ReportItem>
             </If>
             <Else id="else">
-                <ReportItem id="else" type="Static">
-                    <![CDATA[
-                        <p>You are not allowed to view the recommendations for this user.</p>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
             </Else>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <If id="if" if="{isAllowedToViewRecommendation()}">
-                <ReportItem id="code" type="Static">
+                <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
                             $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
                         </script>
                     ]]>
-                </ReportItem>
-                <ReportItem id="download" type="Static">
+                </Static>
+                <Static>
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
@@ -1213,33 +1205,31 @@
                 </ReportItem>
             </If>
             <Else id="else">
-                <ReportItem id="else" type="Static">
-                    <![CDATA[
-                        <p>You are not allowed to view the recommendations for this user.</p>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
             </Else>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="" blobSection="FEC_CHAIR_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
             <If id="if" if="{isAllowedToViewRecommendation()}">
-                <ReportItem id="code" type="Static">
+                <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
                             $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
                         </script>
                     ]]>
-                </ReportItem>
-                <ReportItem id="download" type="Static">
+                </Static>
+                <Static>
                     <![CDATA[
                         <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
@@ -1346,23 +1336,21 @@
                 </ReportItem>
             </If>
             <Else id="else">
-                <ReportItem id="else" type="Static">
-                    <![CDATA[
-                        <p>You are not allowed to view the recommendations for this user.</p>
-                    ]]>
-                </ReportItem>
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
             </Else>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="dept_hqp" tooltip="HQP Inconsistencies" name="HQP Inconsistencies" title="{$my_dept} HQP Inconsistencies" blobSection="BLOB_NONE" type="ReportSection">
-        <ReportItem id="header" type="Static">
+        <Static>
             <![CDATA[
                 <p>
                     Some inconsistencies related to HQP relations will be shown below<br />
                     <i><b>Note:</b> Because of how some relations may overlap, there could be some false positives.</i>
                 </p>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
             <ReportItem id="hqp" type="HQPInconsistencies" start="{$last_year}-07-01" end="{$this_year}-07-01">
                 <![CDATA[

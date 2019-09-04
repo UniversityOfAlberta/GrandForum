@@ -492,7 +492,8 @@ class ReportXMLParser {
                     else if($c->getName() == "ReportItem" ||
                             ($c->getName() == "If" ||
                              $c->getName() == "ElseIf" ||
-                             $c->getName() == "Else") && trim("{$c}") !== ""){
+                             $c->getName() == "Else" ||
+                             $c->getName() == "Static") && trim("{$c}") !== ""){
                         $this->parseReportItem($section, $c);
                     }
                     else if($c->getName() == "ReportItemSet" || 
@@ -534,17 +535,17 @@ class ReportXMLParser {
     function parseReportItemSet(&$section, $node, $data=array()){
         $attributes = $node->attributes();
         $children = $node->children();
-        $itemset = $section->getReportItemById("{$attributes->id}");
+        //$itemset = $section->getReportItemById("{$attributes->id}");
         if($node->getName() == "If" ||
            $node->getName() == "ElseIf" ||
            $node->getName() == "Else" ||
            $node->getName() == "For"){
            @$node->addAttribute("type", $node->getName());
         }
-        if($itemset != null){
+        /*if($itemset != null){
             $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
             $itemset->iteration = 0;
-        }
+        }*/
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
             if(class_exists($type)){
@@ -573,7 +574,7 @@ class ReportXMLParser {
             $itemset->setId("{$attributes->id}");
         }
         else{
-            $this->errors[] = "ReportItemSet does not contain an id";
+            $this->errors[] = "{$type} does not contain an id";
         }
         if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
             $section->deleteReportItem($itemset);
@@ -620,7 +621,8 @@ class ReportXMLParser {
                     if($c->getName() == "ReportItem" ||
                         ($c->getName() == "If" ||
                          $c->getName() == "ElseIf" ||
-                         $c->getName() == "Else") && trim("{$c}") !== ""){
+                         $c->getName() == "Else" ||
+                         $c->getName() == "Static") && trim("{$c}") !== ""){
                         $item = $this->parseReportItem($itemset, $c, $value);
                     }
                     else if($c->getName() == "ReportItemSet" || 
@@ -659,7 +661,8 @@ class ReportXMLParser {
         $item = $section->getReportItemById("{$attributes->id}");
         if($node->getName() == "If" ||
            $node->getName() == "ElseIf" ||
-           $node->getName() == "Else"){
+           $node->getName() == "Else" ||
+           $node->getName() == "Static"){
            @$node->addAttribute("type", $node->getName());
         }
         if(isset($attributes->type) || $item != null){
@@ -686,7 +689,9 @@ class ReportXMLParser {
                 $item->setId("{$attributes->id}");
             }
             else{
-                $this->errors[] = "ReportItem does not contain an id";
+                if($type != "StaticReportItem"){
+                    $this->errors[] = "{$type} does not contain an id";
+                }
             }
             if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
                 $section->deleteReportItem($item);

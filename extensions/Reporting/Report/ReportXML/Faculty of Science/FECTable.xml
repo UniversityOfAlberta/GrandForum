@@ -18,7 +18,7 @@
         </Role>
     </Permissions>
     <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
-        <ReportItem id="thead" type="Static">
+        <Static>
             <![CDATA[
                 {set(sumFaculty, 0)}
                 {set(sumFSO, 0)}
@@ -42,9 +42,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
-            <ReportItem id="name" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'>{getExtra()}</td>
@@ -52,7 +52,7 @@
                         <td>{$user_level}</td>
                         <td>{$user_dept}</td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}</td>
@@ -89,12 +89,12 @@
                              {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
-                    <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
                         <![CDATA[
                             {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
                             {set(nFaculty, {add({get(nFaculty)}, 1)})}
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </If>
             </If>
             <If if="{or({contains({getExtra()}, D)},
@@ -107,35 +107,30 @@
                              {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
-                    
-                    <ReportItem id="increment" type="Static" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
-                        <![CDATA[
-                            {set(sumFSO, {add({get(sumFSO)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
-                            {set(nFSO, {add({get(nFSO)}, 1)})}
-                        ]]>
-                    </ReportItem>
+                    <![CDATA[
+                        {set(sumFSO, {add({get(sumFSO)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                        {set(nFSO, {add({get(nFSO)}, 1)})}
+                    ]]>
                 </If>
             </If>
-            <ReportItem id="comments_start" type="Static">
+            <Static>
                 <![CDATA[
                         </td>
                         <td>
                 ]]>
-            </ReportItem>
+            </Static>
             <If if="{contains({$my_roles},ViceDean)}">
                 <ReportItemSet id="fec_comments" type="FECReportItemSet">
-                    <ReportItem id="vars" type="Static">
+                    <Static>
                         <![CDATA[
                             {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <If id="comment_if" if="{!=({getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)},)}">
-                        <ReportItem id="fec_comment" type="Static">
-                            <![CDATA[
-                                <b>{$user_name}:</b> {get(comment)}
-                                <hr />
-                            ]]>
-                        </ReportItem>
+                        <![CDATA[
+                            <b>{$user_name}:</b> {get(comment)}
+                            <hr />
+                        ]]>
                     </If>
                 </ReportItemSet>
             </If>
@@ -146,14 +141,14 @@
                     ]]>
                 </ReportItem>
             </If>
-            <ReportItem id="row_end" type="Static">
+            <Static>
                 <![CDATA[
                         </td>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="tfoot" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table>
@@ -178,6 +173,6 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
 </Report>

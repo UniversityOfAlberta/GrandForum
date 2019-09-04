@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC" reportType="RP_FEC" pdfType="RPTP_FEC" headerName="{strip_html({$user_case_number})} / {$user_name}" ajax="true">
     <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member - Faculty of Science" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <table style="line-height:1.75em;">
                     <tr>
@@ -68,7 +68,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <h3>Responsibilities Variation</h3>
@@ -119,14 +119,14 @@
             ]]>
         </ReportItem>
         <If if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
-            <ReportItem id="projectCourses_header" type="Static">
+            <Static>
                 <![CDATA[
                     <h3>Project Courses</h3>
                     <table class="wikitable" frame="box" rules="all" width="100%">
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="projectCourses_array" type="ArrayReportItemSet" array="{getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0)}" index="projectCourses">
-                <ReportItem id="course_data" type="Static">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td style="white-space:nowrap;width:10%;">
@@ -137,13 +137,13 @@
                             <td style="width:45%;"><b>{getExtra(term)}</b>: 1 {getExtra(type)} ({getExtra(enrolment)})</td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="projectCourses_footer" type="Static">
+            <Static>
                 <![CDATA[
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Description" types="Textarea" showHeader="false" multiple="true" optional="true">
             <![CDATA[
@@ -220,11 +220,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Presentations -->
         <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
@@ -258,11 +258,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="presentationfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Patents/Spin-Offs -->
         <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">
@@ -284,11 +284,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="patentsfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Awards Received -->
         <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
@@ -316,11 +316,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="awardfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Grants -->
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
@@ -354,11 +354,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="grantsfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </tbody></table><br />
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Services -->
         <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
@@ -373,12 +373,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
             
         <!-- Faculty -->
@@ -388,12 +388,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
             
         <!-- University -->
@@ -403,12 +403,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         
         <!-- Scientific -->
@@ -418,12 +418,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {getProductData(organization)} (<b>{$product_scope}</b>)</p>
                     <p style='margin-left:4em;'>{$product_title}<br />{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         
         <!-- Outreach and Community Engagement -->
@@ -433,12 +433,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         
         <!-- Other -->
@@ -448,12 +448,12 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="committee" type="Static">
+            <Static>
                 <![CDATA[
                     <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
                     <p style='margin-left:4em;'>{$product_description}</p>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
         
         <!-- Additional Info -->
@@ -557,11 +557,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- HQP Presentations -->
         <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="HQP Presentations">
@@ -597,11 +597,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="hqppresentationfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         
         <ReportItem id="footnotesbookmark" type="BookmarkReportItem" title="Footnotes">
             <![CDATA[
@@ -695,11 +695,11 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Only Used to Mark Products as Submitted -->
         <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
         <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />

@@ -8,23 +8,23 @@
         </Role>
     </Permissions>
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>NETWORK Graduate Student and Postdoctoral Awards in Technology and Aging</h4></div>
                 <div class='logo_div' style="height:20px;margin-top:30px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="NETWORK Graduate Student and Postdoctoral Awards in Technology and Aging" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
-        <ReportItem id="name" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h4>Applicant Name</h4>
                 <p>{$user_name}</p><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI">
             <![CDATA[
                 <h4>University</h4>

@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="BLOB_NONE" type="ReportSection">
-        <ReportItem id="introduction" type="Static">
+        <Static>
             <![CDATA[
                 <p>The information about a faculty member under the “My Profile” tab reflects the period from {time2date({$startYear})} to {time2date({$endYear})} and is organized into the following general categories.</p>
                 <ol>
@@ -24,10 +24,10 @@
                 </ol>
                 <p>All this data can be updated from the corresponding tabs under "My Profile"; relevant instructions on how to update each type of data is available on each tab</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review" name="Review" title="QA CV" blobSection="FEC_INFORMATION" type="EditableReportSection">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <style type='text/css'>
                     body, html {
@@ -415,7 +415,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         
         <!-- Employment/Education History -->
         <ReportItem id="educationbookmark" type="BookmarkReportItem" title="Education History">
@@ -457,7 +457,7 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="1900-01-01" end="{$next_year}-12-31">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td>{$product_title}</td>
@@ -467,13 +467,13 @@
                             <td align='center'>{$award_year_range}</td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="awardfooter" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         
         <!-- Courses Taught -->
@@ -527,11 +527,11 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="productsfooter" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </ul><br />
                     ]]>
-                </ReportItem>
+                </Static>
             </If>
             <If id="publications_if2" if="{>({getNProducts({$start_year}, {$this_year}, Publication, Conference Paper|Proceedings Paper,, false, true)}, 0)}">
                 <ReportItem id="conferencebookmark" type="SubBookmarkReportItem" title="Conference Papers">
@@ -547,11 +547,11 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="conferencefooter" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </ul><br />
                     ]]>
-                </ReportItem>
+                </Static>
             </If>
             <If id="publications_if3" if="{>({getNProducts({$start_year}, {$this_year}, Publication, Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Masters Dissertation|Misc|Other|PHD Thesis|PHD Dissertation|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
@@ -567,11 +567,11 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="otherfooter" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </ul><br />
                     ]]>
-                </ReportItem>
+                </Static>
             </If>
         </If>
 
@@ -584,17 +584,17 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" status="Invited" includeHQP="false" start="{$start_year}" end="{$this_year}">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="presentationfooter" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </ul><br />
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         
         <!-- Grants -->
@@ -617,7 +617,7 @@
                 ]]>
             </ReportItem> 
             <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="{$start_year}" end="{$this_year}">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td align='left'>{$grant_project_id}<br />
@@ -629,13 +629,13 @@
                             <td align='right'>${$grant_total}</td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="grantsfooter" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </tbody></table><br />
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
 
         <!-- Patents -->
@@ -653,11 +653,11 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="patentsfooter" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </ul><br />
                 ]]>
-            </ReportItem>
+            </Static>
         </If>
         
         <!-- Service to the University and the Profession -->
@@ -676,11 +676,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
             
@@ -692,11 +692,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
             
@@ -708,11 +708,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
             
@@ -724,11 +724,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title} - {getProductData(organization)} (<b>{$product_scope}</b>), {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
             
@@ -740,11 +740,11 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
             
@@ -756,24 +756,24 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="{$start_year}" end="{$this_year}">
-                    <ReportItem id="committee" type="Static">
+                    <Static>
                         <![CDATA[
                             <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                 </ReportItemSet>
             </If>
         </If>
         
         <!-- Footer -->
-        <ReportItem id="cv_footer" type="Static">
+        <Static>
             <![CDATA[
                 <br /><br /><br />
                 <div style="page-break-inside:avoid; position: absolute; bottom:0;">
                     <i>Generated: {$timestamp}</i>
                 </div>
             ]]>
-         </ReportItem>
+         </Static>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="PDF Generation" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />

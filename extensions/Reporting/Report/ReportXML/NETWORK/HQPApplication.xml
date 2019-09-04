@@ -21,7 +21,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>About NETWORK</h3>
 <p>The NETWORK Training Program in Technology and Aging awards partial funding to highly qualified master’s, doctoral and postdoctoral candidates and provides them with access to training and mentorship opportunities through the NETWORK Network of Centres of Excellence. NETWORK aims to provide a unique training environment that exposes trainees to multi-disciplinary research environments and to its industry and community partners. NETWORK is committed to attracting, developing, and retaining outstanding Highly Qualified Personnel (HQP) in Canada.</p>
@@ -81,7 +81,7 @@ Applications Due: June 30, 2015<br />
 Results Available: July 31, 2015<br />
 Funding Commences: September 1, 2015<br />
         ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
         <Instructions>
@@ -95,16 +95,16 @@ Funding Commences: September 1, 2015<br />
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="tableHead" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <table>
             ]]>
-        </ReportItem>
-        <ReportItem id="name" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <tr><td align='right'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" width="180px">
             <![CDATA[
                 <tr><td align='right'><b>University:</b></td><td>{$item}</td></tr>
@@ -135,11 +135,11 @@ Funding Commences: September 1, 2015<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="tableFoot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="2200" recommended="true">
             <![CDATA[
                 <h2>Statement of research focus (1/2 page)</h2>
