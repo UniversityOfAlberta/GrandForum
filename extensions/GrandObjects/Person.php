@@ -1297,8 +1297,7 @@ class Person extends BackboneModel {
         foreach($this->getRoles() as $role){
             if($role->getId() != -1){
                 $roles[] = array('id' => $role->getId(),
-                                 'role' => $role->getRole(),
-                                 'title' => $role->getTitle());
+                                 'role' => $role->getRole());
             }
         }
         $universities = $this->getUniversities();

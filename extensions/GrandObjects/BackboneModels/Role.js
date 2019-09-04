@@ -10,7 +10,6 @@ Role = Backbone.Model.extend({
         id: null,
         userId: "",
         name: "",
-        title: "",
         comment: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
