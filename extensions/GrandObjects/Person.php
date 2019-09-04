@@ -481,11 +481,13 @@ class Person extends BackboneModel {
                 self::$rolesCache = Cache::fetch("rolesCache");
             }
             else{
-                $sql = "SELECT *
-                        FROM grand_roles
+                $sql = "SELECT r.*
+                        FROM grand_roles r, mw_user u
                         WHERE (end_date = '0000-00-00 00:00:00'
                                OR end_date > CURRENT_TIMESTAMP)
-                        AND start_date <= CURRENT_TIMESTAMP";
+                        AND start_date <= CURRENT_TIMESTAMP
+                        AND r.user_id = u.user_id
+                        AND u.deleted = 0";
                 $data = DBFunctions::execSQL($sql);
                 if(count($data) > 0){
                     foreach($data as $row){
