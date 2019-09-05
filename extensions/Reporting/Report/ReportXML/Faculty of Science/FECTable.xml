@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="true">
+<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+" subRole="FEC">
             <SectionPermission id="fec" permissions="rw" />
@@ -65,9 +65,9 @@
                 ]]>
             </ReportItem>
             <If if="{or({contains({$my_roles},ADMIN)},
-                                                     {contains({$my_roles},DEAN)},
-                                                     {contains({$my_roles},VDEAN)},
-                                                     {contains({$my_roles},HR)})}">
+                        {contains({$my_roles},DEAN)},
+                        {contains({$my_roles},VDEAN)},
+                        {contains({$my_roles},HR)})}">
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             {$item} Dean's Advice<br />
@@ -126,7 +126,7 @@
                             {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
                         ]]>
                     </Static>
-                    <If id="comment_if" if="{!=({getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)},)}">
+                    <If id="comment_if" if="{!=({get(comment)},)}">
                         <![CDATA[
                             <b>{$user_name}:</b> {get(comment)}
                             <hr />

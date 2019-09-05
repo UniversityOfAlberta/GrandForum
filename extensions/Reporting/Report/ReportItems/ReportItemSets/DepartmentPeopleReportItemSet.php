@@ -11,8 +11,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $includeDeansPeople = (strtolower($this->getAttr("includeDeansPeople", "false")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
-        
-        $me = Person::newFromWgUser();
+
         if(!$me->isRole(ISAC) && !$me->isRole(IAC) && !$me->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             // Person isn't a Chair/EA, so don't return anyone
             return $data;
@@ -20,6 +19,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         foreach($allPeople as $person){
+            if($person->getCaseNumber($this->getReport()->year) == ""){
+                continue;
+                // Don't show if no case number
+            }
             $found = false;
             if($includeDeansPeople){
                 $found = ($person->isSubRole("DD") || 
@@ -53,7 +56,6 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if(($me->getName() == "Ioanis.Nikolaidis" || $me->getName() == "CS.ExecutiveAssistant") && $person->getName() == "Eleni.Stroulia"){
                     continue;
                 }
-                $fecType = $person->getFECType($end);
                 $tuple = self::createTuple();
                 $tuple['person_id'] = $person->getId();
                 $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);

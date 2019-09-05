@@ -15,6 +15,10 @@ class DeansPeopleReportItemSet extends ReportItemSet {
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $data = array();
         foreach($allPeople as $person){
+            if($person->getCaseNumber($this->getReport()->year) == ""){
+                continue;
+                // Don't show if no case number
+            }
             $found = ($person->isSubRole("DD") || 
                       $person->isSubRole("DA") ||
                       $person->isSubRole("DR"));
@@ -24,7 +28,6 @@ class DeansPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 $tuple = self::createTuple();
-                $fecType = $person->getFECType($end);
                 $tuple['person_id'] = $person->getId();
                 $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
                 $data[] = $tuple;

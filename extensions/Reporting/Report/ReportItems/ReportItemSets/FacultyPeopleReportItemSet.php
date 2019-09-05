@@ -8,15 +8,37 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
+        $me = Person::newFromWgUser();
         
         $data = array();
         foreach($allPeople as $person){
+            if($person->getCaseNumber($this->getReport()->year) == ""){
+                continue;
+                // Don't show if no case number
+            }
             if(!$includeDean && $person->isRoleDuring(DEAN, $start, $end)){
                 // Don't show Deans
                 continue;
             }
+            if(($person->isSubRole("DD")) && 
+                !$me->isRole(DEAN) &&
+                !$me->isRole(DEANEA) &&
+                !$me->isRole(VDEAN) && 
+                !$me->isRole(HR) &&
+                !$me->isRole(ADMIN)){
+                // Don't show DD people unless user is Dean, Vice Dean, HR
+                continue;
+            }
+            if(($person->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(ISAC)) && 
+                !$me->isRole(DEAN) &&
+                !$me->isRole(DEANEA) &&
+                !$me->isRole(VDEAN) && 
+                !$me->isRole(HR) &&
+                !$me->isRole(ADMIN)){
+                // Secondary check for Chairs.  Chairs should only show up for Dean, Vice Dean, HR
+                continue;
+            }
             $index = @$fec[$person->getId()];
-            $fecType = $person->getFECType($end);
             $tuple = self::createTuple();
             $tuple['person_id'] = $person->getId();
             $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
