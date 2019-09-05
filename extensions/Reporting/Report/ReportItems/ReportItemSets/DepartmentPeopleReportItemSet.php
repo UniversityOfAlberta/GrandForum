@@ -30,7 +30,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                           $person->isSubRole("DR"));
             }
             if(($dept == "") || 
-               ($person->isInDepartment($dept, $uni, $start, $end) && $person->getFECType($end) != "") || 
+               ($person->isInDepartment($dept, $uni, $start, $end)) || 
                ($found)){
                 if($excludeMe && $person->isMe()){
                     // Should not see themselves in recommendations
