@@ -158,6 +158,10 @@
                         "iDisplayLength": -1
                     });
                 </script>
+            ]]>
+        </Static>
+        <If if="{>({get(nFaculty)},0)}">
+            <![CDATA[
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
                         <th>Average<br />Faculty Increment</th>
@@ -173,6 +177,6 @@
                     </tr>
                 </table>
             ]]>
-        </Static>
+        </If>
     </ReportSection>
 </Report>
