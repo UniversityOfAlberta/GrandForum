@@ -94,6 +94,7 @@
                             <th>Case#</th>
                             <th>Name</th>
                             <th>Rank</th>
+                            <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
                             <th>Evaluation</th>
@@ -113,9 +114,18 @@
                         <td>{$user_level}</td>
                 ]]>
             </Static>
+            <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center'>
+                            {$item}
+                        </td>
                 ]]>
             </ReportItem>
             <If id="if_lock" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
