@@ -56,7 +56,7 @@
                             <div style="width:50%;padding-right:5px;">
                     ]]>
                 </Static>
-                <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{getTimestamp(Y-m-d)}" end="{getTimestamp(Y-m-d)}">
+                <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
                     <Static>
                         <![CDATA[
                             <table width='100%'>
