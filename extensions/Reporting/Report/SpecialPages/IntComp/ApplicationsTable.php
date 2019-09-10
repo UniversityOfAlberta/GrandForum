@@ -30,12 +30,11 @@ class ApplicationsTable extends SpecialPage{
     function initArrays(){
         $this->allPeople = Person::getAllCandidates(); 
         $this->nis = Person::getAllPeople(NI);
-        $this->nis[] = Person::newFromId(1);
         $this->allNis = array_merge($this->nis, 
                                     Person::getAllCandidates(NI), 
                                     Person::getAllPeople(EXTERNAL), 
                                     Person::getAllCandidates(EXTERNAL));
-
+        
         $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         $this->projects = Project::getAllProjectsEver();
     }
@@ -190,7 +189,7 @@ class ApplicationsTable extends SpecialPage{
         $tab1 = new ApplicationTab('RP_HUAWEI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title));
         $tab1->idProjectRange = array(0,1);
         
-        $tab2 = new ApplicationTab('RP_HUAWEI_FALL_2019', $this->allPeople, 2017, "Fall 2019", array('Title' => $title));
+        $tab2 = new ApplicationTab('RP_HUAWEI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title));
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         $tabbedPage->addTab($tab2);
         $tabbedPage->addTab($tab1);
