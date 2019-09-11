@@ -125,7 +125,7 @@
     <ReportSection id="decision" tooltip="Final Decision" name="Final Decision" title="Final Decision" blobSection="DECISION" type="EditableReportSection">
         <ReportItemSet id="proposals" type="PDFReportItemSet" pdf="RPTP_HUAWEI_FALL_2019">
             <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
-                <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{getTimestamp(Y-m-d)}" end="{getTimestamp(Y-m-d)}">
+                <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
                     <Static>
                         <![CDATA[
                             <table width='100%'>
