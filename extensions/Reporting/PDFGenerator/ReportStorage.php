@@ -371,7 +371,7 @@ class ReportStorage {
         return $res;
     }
     
-    static function list_user_project_reports($sub_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER){
+    static function list_user_project_reports($sub_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year = null){
         if($user_id == ""){
             $user_id = 0;
         }
@@ -381,12 +381,16 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
+        if($year !== null || $year !== ""){
+            $year = "AND r.year = '$year'";
+        }
         $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
                 AND r.user_id = {$user_id}
                 AND r.type = '{$type}'
+                {$year}
                 ORDER BY timestamp DESC
                 {$lim}";
         $res = DBFunctions::execSQL($sql);
@@ -396,6 +400,7 @@ class ReportStorage {
                     WHERE r.report_id NOT IN (SELECT report_id FROM grand_pdf_index)
                     AND r.user_id = {$user_id}
                     AND r.type = '{$type}'
+                    {$year}
                     ORDER BY timestamp DESC
                     {$lim}";
             $res = DBFunctions::execSQL($sql);
