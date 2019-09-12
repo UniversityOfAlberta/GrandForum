@@ -61,12 +61,12 @@ class CCVExport extends SpecialPage {
             if(isset($_GET['dateto']) && $_GET['dateto'] !=""){
                  $dateto = $_GET['dateto'];
             }
-            //$wgOut->addHTML("<form><p><b>Date:</b> <input type='date' format='yy-mm-dd' id='datefrom' value={$datefrom} name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' value={$dateto} class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            $wgOut->addHTML("<form><p><b>Date:</b> <input type='date' format='yy-mm-dd' id='datefrom' value={$datefrom} name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' value={$dateto} class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
             $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML&datefrom={$datefrom}&dateto={$dateto}'>Download XML</a></p>");
 
         }
         else{
-            //$wgOut->addHTML("<form><p>Date: <input type='date' format='yy-mm-dd' id='datefrom' name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            $wgOut->addHTML("<form><p>Date: <input type='date' format='yy-mm-dd' id='datefrom' name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
             $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>Download XML</a></p>");
         }
         // Display export preview
@@ -129,19 +129,8 @@ class CCVExport extends SpecialPage {
 
     static function exportXML(){
         global $wgOut, $wgUser, $config, $userID;
-        $datefrom = "";
-        $dateto = "";
-        $filtered = false;
-        if(isset($_GET['datefrom']) && $_GET['datefrom'] != ""){
-            $filtered = true;
-            $datefrom = strtotime($_GET['datefrom']);
-            if(isset($_GET['dateto']) && $_GET['dateto'] !=""){
-                 $dateto = strtotime($_GET['dateto']);
-            }
-            else{
-                $dateto= strtotime(date("Y-m-d"));
-            }
-        }
+        $datefrom = @$_GET['datefrom'];
+        $dateto = @$_GET['dateto'];
         $dom = new DOMDocument(); 
         $person = Person::newFromId($userID);
         $personCCV = "";
@@ -182,8 +171,20 @@ class CCVExport extends SpecialPage {
         $funding_year_map = simplexml_load_file($funding_year_file);
         $funding_source_map = simplexml_load_file($funding_source_file);
 
-        $all_products = $person->getPapers("Publication", true, "both",true,"Public");
-        $all_presentations = $person->getPapers("Presentation", true, "both", true, "Public");
+        if($datefrom != "" && $dateto != ""){
+            $all_products = $person->getPapersAuthored("Publication", $datefrom, $dateto, true);
+            $all_presentations = $person->getPapersAuthored("Presentation", $datefrom, $dateto, true);
+            $grants = $person->getGrantsBetween($datefrom, $dateto);
+            $rels = array_merge($person->getRelationsDuring(SUPERVISES, $datefrom, $dateto),
+                                $person->getRelationsDuring(CO_SUPERVISES, $datefrom, $dateto));
+        }
+        else{
+            $all_products = $person->getPapers("Publication", true, "both",true,"Public");
+            $all_presentations = $person->getPapers("Presentation", true, "both", true, "Public");
+            $grants = $person->getGrants();
+            $rels = array_merge($person->getRelations(SUPERVISES, true),
+                                $person->getRelations(CO_SUPERVISES, true));
+        }
         $prod_sorted = array();
         $pres_sorted = array();
 
@@ -207,38 +208,13 @@ class CCVExport extends SpecialPage {
             }
         }
         self::setAttribute($ccv, 'dateTimeGenerated', date('Y-m-d H:i:s'));
-/*
-        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']");
-        $res = CCVExport::mapId($person, 
-                                $id_map, 
-                                $section[0]);
-        
-        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']");
-        foreach($person->getAddresses() as $address){
-            $res = CCVExport::mapAddress($person,
-                                         $addr_map,
-                                         $address,
-                                         $section[0]);
-        }
-        
-        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']");
-        foreach($person->getTelephones() as $phone){
-            $res = CCVExport::mapTelephone($person,
-                                           $phone_map,
-                                           $phone,
-                                           $section[0]);
-        }*/
+
         // Publications
         $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
             foreach($products as $product){
                 // CCV does not include 'Rejected' Publishing Status
                 if($product->getStatus() == 'Rejected'){
-                    continue;
-                }
-                $start_date_array = explode(" ",$product->getDate());
-                $start_date = strtotime($start_date_array[0]);
-                if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
                     continue;
                 }
                 $res = CCVExport::mapItem($person, 
@@ -256,11 +232,6 @@ class CCVExport extends SpecialPage {
                 if($product->getStatus() == 'Rejected'){
                     continue;
                 }
-                $start_date_array = explode(" ",$product->getDate());
-                $start_date = strtotime($start_date_array[0]);
-                if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
-                    continue;
-                }
                 $res = CCVExport::mapItem($person, 
                                           $map->Presentations->Presentation, 
                                           $product, 
@@ -268,15 +239,8 @@ class CCVExport extends SpecialPage {
             }
         }
 
-        $rels = array_merge($person->getRelations(SUPERVISES, true),
-                            $person->getRelations(CO_SUPERVISES, true));
         $sortedRels = array();
         foreach($rels as $rel){
-            $start_date_array = explode(" ",$rel->getStartDate());
-            $start_date = strtotime($start_date_array[0]);
-            if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
-                continue;
-            }
             $sortedRels[$rel->getStartDate().$rel->getId()] = $rel;
         }
         ksort($sortedRels);
@@ -291,13 +255,7 @@ class CCVExport extends SpecialPage {
         }
 
         //=== Grants Start == //
-        //change next line into getGrants() once the table has been switched
-        foreach($person->getGrants() as $grant){
-            $start_date_array = explode(" ",$grant->getStartDate());
-            $start_date = strtotime($start_date_array[0]);
-            if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
-                continue;
-            }
+        foreach($grants as $grant){
             $ccv_item = $ccv->addChild("section");
             $ccv_id = "aaedc5454412483d9131f7619d10279e";
             $ccv_name = "Research Funding History";
