@@ -504,7 +504,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             if(skin == 'cavendish2'){
                                 extraHeight = $('#bodyContent').position().top;
                             }
-                            if(!found && (($(el).offset().top - extraHeight - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
+                            if(!found && (($(el).offset().top - 100 - extraHeight - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
                                 toShow.push($('tr[data-activity=' + activityId + ']', table));
                                 found = true;
                             }
