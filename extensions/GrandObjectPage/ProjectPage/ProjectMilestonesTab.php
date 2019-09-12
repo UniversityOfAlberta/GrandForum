@@ -379,10 +379,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $deleteColspan += 2;
             }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
+            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             $this->html .= "<tr class='top_border' data-id='$activityId'>
                                 <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1-$deleteColspan+($this->nYears*4) + $yearOffset)."'>{$activity}</td>{$deleteActivity}
                             </tr>";
-            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            
             if(count($milestones) == 0){
                 $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
             }
