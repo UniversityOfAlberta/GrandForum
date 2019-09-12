@@ -24,8 +24,12 @@
             <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
         </tr>
         <tr>
-            <td class="label">Posted Date:</td>
+            <td class="label">Start Date:</td>
             <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">End Date:</td>
+            <td valign="top"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
         </tr>
         <tr>
             <td class="label">Address:</td>

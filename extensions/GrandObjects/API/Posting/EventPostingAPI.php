@@ -34,11 +34,11 @@ class EventPostingAPI extends PostingAPI {
         if(strlen($this->POST('summaryFr')) > 2000){
             $this->throwError("The french summary must be no longer than 2000 characters");
         }
-        if(strlen($this->POST('imageCaption')) > 70){
-            $this->throwError("The english image caption must be no longer than 70 characters");
+        if(strlen($this->POST('imageCaption')) > 500){
+            $this->throwError("The english image caption must be no longer than 500 characters");
         }
-        if(strlen($this->POST('imageCaptionFr')) > 70){
-            $this->throwError("The french image caption must be no longer than 70 characters");
+        if(strlen($this->POST('imageCaptionFr')) > 500){
+            $this->throwError("The french image caption must be no longer than 500 characters");
         }
         if(strlen($this->POST('address')) > 70){
             $this->throwError("The address must be no longer than 70 characters");

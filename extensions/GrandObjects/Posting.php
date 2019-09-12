@@ -252,7 +252,6 @@ class Posting extends BackboneModel {
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
-                                                'created' => $this->created,
                                                 'deleted' => $this->deleted));
             if($status){
                 $this->id = DBFunctions::insertId();
@@ -279,7 +278,6 @@ class Posting extends BackboneModel {
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
-                                                'created' => $this->created,
                                                 'deleted' => $this->deleted),
                                           array('id' => $this->id));
             $this->generatePreviewCode();
