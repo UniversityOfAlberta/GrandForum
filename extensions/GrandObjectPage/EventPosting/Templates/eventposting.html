@@ -44,6 +44,11 @@
                 <td class="label"><a href="<%= this.model.getWebsiteUrl() %>" target="_blank">Website Page</a></td>
                 <td></td>
             </tr>
+        <% } else { %>
+            <tr>
+                <td class="label"><a id="previewLink" href="<%= this.model.getWebsiteUrl() + '-' + this.model.get('previewCode') %>" target="_blank">Preview on Website</a></td>
+                <td></td>
+            </tr>
         <% } %>
     </table>
     <h3>Summary</h3>
