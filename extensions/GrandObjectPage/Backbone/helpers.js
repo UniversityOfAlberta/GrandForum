@@ -63,7 +63,10 @@ function abbr(str, nChars){
     return $(abbr).parent().html();
 }
 
-function showLanguage(language, textEn, textFr, delimiter=' / '){
+function showLanguage(language, textEn, textFr, delimiter){
+    if(delimiter == undefined){
+        delimiter = ' / ';
+    }
     if(language == "English"){
         return textEn;
     }

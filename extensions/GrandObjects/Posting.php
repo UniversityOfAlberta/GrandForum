@@ -49,7 +49,7 @@ class Posting extends BackboneModel {
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
-            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
+            if(isset($_GET['apiKey']) && $posting->visibility != "Publish"){
                 // Accessed using API Key, so restrict to Published only
                 continue;
             }
