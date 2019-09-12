@@ -10,7 +10,6 @@ PostingsView = Backbone.View.extend({
     events: {
         "click #add": "addPostings",
         "click .delete-icon": "delete",
-        "click #previewLink": "clickPreviewLink"
     },
 
     showAllRows: function() {
@@ -45,12 +44,6 @@ PostingsView = Backbone.View.extend({
                 }
             });
         }
-    },
-    
-    clickPreviewLink: function(){
-        _.delay(function(){
-            this.model.fetch();
-        }.bind(this), 3000);
     },
     
     render: function(){

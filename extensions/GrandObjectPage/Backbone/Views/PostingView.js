@@ -13,7 +13,8 @@ PostingView = Backbone.View.extend({
     
     events: {
         "click #editPosting": "editPosting",
-        "click #deletePosting": "deletePosting"
+        "click #deletePosting": "deletePosting",
+        "click #previewLink": "clickPreviewLink"
     },
     
     deletePosting: function(){
@@ -49,6 +50,12 @@ PostingView = Backbone.View.extend({
     
     editPosting: function(){
         document.location = document.location + '/edit';
+    },
+    
+    clickPreviewLink: function(){
+        _.delay(function(){
+            this.model.fetch();
+        }.bind(this), 3000);
     },
     
     render: function(){
