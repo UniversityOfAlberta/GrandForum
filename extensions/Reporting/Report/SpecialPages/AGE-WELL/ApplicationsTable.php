@@ -105,6 +105,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>Entrepreneur</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=edge'>Edge</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
@@ -139,6 +140,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "eea" && $me->isRoleAtLeast(SD)){
             $this->generateEEA();
+        }
+        else if($program == "edge" && $me->isRoleAtLeast(SD)){
+            $this->generateEdge();
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
@@ -391,6 +395,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2019, "2019"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateEdge(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EDGE', $this->hqps, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
