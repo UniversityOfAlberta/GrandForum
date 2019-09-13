@@ -22,7 +22,7 @@
                     (Posted: <%= dateTimeHelpers.formatDate(event.get('created')) %> by <a href="<%= event.get('user').url %>"><%= event.get('user').fullName %></a>)
                 </td>
                 <td align="center">
-                    <%= event.get('language') %>
+                    <%= event.getLanguage() %>
                 </td>
                 <td>
                     <%= event.get('address') %><br />

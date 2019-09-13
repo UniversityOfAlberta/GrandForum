@@ -3,6 +3,18 @@ JobPosting = Backbone.Model.extend({
     initialize: function(){
         
     },
+
+    getLanguage: function(){
+        if(this.get('language') == "en"){
+            return "English";
+        }
+        else if(this.get('language') == "fr"){
+            return "Français";
+        }
+        else if(this.get('language') == "en"){
+            return "Bilingual/Bilingue";
+        }
+    },
     
     getWebsiteUrl: function(){
         return "https://cscan-infocan.ca/careers/?job_id=" + this.get('id');

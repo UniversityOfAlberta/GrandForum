@@ -1,5 +1,20 @@
 Posting = Backbone.Model.extend({
 
+    getLanguage: function(){
+        if(this.get('language') == "en"){
+            return "English";
+        }
+        else if(this.get('language') == "fr"){
+            return "Français";
+        }
+        else if(this.get('language') == "en"){
+            return "Bilingual/Bilingue";
+        }
+        else{
+            return this.get('language');
+        }
+    },
+
     defaults: {
         id: null,
         userId: "",

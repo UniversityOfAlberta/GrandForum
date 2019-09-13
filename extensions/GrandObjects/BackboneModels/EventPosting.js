@@ -1,4 +1,4 @@
-EventPosting = Backbone.Model.extend({
+EventPosting = Posting.extend({
 
     initialize: function(){
         

@@ -1,4 +1,4 @@
-NewsPosting = Backbone.Model.extend({
+NewsPosting = Posting.extend({
 
     initialize: function(){
         
