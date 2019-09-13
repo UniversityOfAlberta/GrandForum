@@ -6,7 +6,7 @@ class EventPostingAPI extends PostingAPI {
     
     function validate(){
         $language = $this->POST('language');
-        if($language == "English" || $language == "Bilingual"){
+        if($language == "en" || $language == "bi"){
             if(trim($this->POST('title')) == ""){
                 $this->throwError("An english title must be provided");
             }
@@ -14,7 +14,7 @@ class EventPostingAPI extends PostingAPI {
                 $this->throwError("The english summary must not be empty");
             }
         }
-        if($language == "French" || $language == "Bilingual"){
+        if($language == "fr" || $language == "bi"){
             if(trim($this->POST('titleFr')) == ""){
                 $this->throwError("A french title must be provided");
             }

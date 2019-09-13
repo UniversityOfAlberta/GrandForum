@@ -43,7 +43,9 @@
         </tr>
         <tr>
             <td class="label">Language of instruction:</td>
-            <td><%= HTML.Select(this, 'language', {options: ['English', 'French', 'Bilingual']}) %></td>
+            <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
+                                                             {value: 'fr', option: 'Français'},
+                                                             {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
         </tr>
         <tr>
             <td class="label">Position Type:</td>

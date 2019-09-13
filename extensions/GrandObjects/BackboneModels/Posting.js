@@ -4,7 +4,7 @@ Posting = Backbone.Model.extend({
         id: null,
         userId: "",
         visibility: "Draft",
-        language: "English",
+        language: "en",
         title: "",
         titleFr: "",
         articleLink: "",

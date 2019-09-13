@@ -64,13 +64,13 @@ function abbr(str, nChars){
 }
 
 function showLanguage(language, textEn, textFr, delimiter=' / '){
-    if(language == "English"){
+    if(language == "English" || language == "en"){
         return textEn;
     }
-    else if(language == "French"){
+    else if(language == "French" || language == "fr"){
         return textFr;
     }
-    else if(language == "Bilingual"){
+    else if(language == "Bilingual" || language == "bi"){
         if(textEn != "" && textFr != ""){
             return textEn + delimiter + textFr;
         }
