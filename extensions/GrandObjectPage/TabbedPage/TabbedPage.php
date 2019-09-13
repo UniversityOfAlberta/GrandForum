@@ -129,8 +129,8 @@ class TabbedPage {
                 }
             }
             $pdfHtml = "<img style='position: fixed; height:75px; bottom:-75px; left:0; opacity: 1; z-index:-1;' src='{$wgServer}{$wgScriptPath}/skins/{$config->getValue('networkName')}_Logo.png' />{$pdfHtml}";
-            $pdfHtml = str_replace("class='smallest dashboard", "class='small dashboard", $pdfHtml);
-            $pdfHtml = str_replace("<td class='smallest'>", "<td class='small'>", $pdfHtml);
+            $pdfHtml = str_replace("class='smallest dashboard", "class='smallest dashboard", $pdfHtml);
+            $pdfHtml = str_replace("<td class='smallest'>", "<td class='smallest'>", $pdfHtml);
             $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false, 'landscape');
             if(!isset($_GET['preview'])){
                 $len = strlen($pdf['pdf']);

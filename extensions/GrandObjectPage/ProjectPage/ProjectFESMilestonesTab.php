@@ -6,7 +6,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         parent::ProjectMilestonesTab($project, $visibility);
         parent::AbstractTab("Schedule");
         $this->maxNYears = 7;
-        $this->nYears = (isset($_GET['generatePDF'])) ? 3 : $this->maxNYears;
+        $this->nYears = (isset($_GET['generatePDF'])) ? 7 : $this->maxNYears;
     }
     
     function handleEdit(){
@@ -469,10 +469,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             if($pdf){
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
-            $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
-                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1+($this->nYears*4))."' style='white-space:nowrap;{$height};'>{$title}</td>
-                            </tr>";
+            $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
+                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1-2+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title}</td>
+                            </tr>";
+            
             $this->html .= "<tr>
                                 <td>{$description}</td>";
             $this->showQuartersCells($milestone, $activityId);

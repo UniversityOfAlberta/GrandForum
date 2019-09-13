@@ -1835,8 +1835,8 @@ class ReportItemCallback {
         return $this->reportItem->getPostId();
     }
     
-    function getTimestamp(){ 
-        return date("Y-m-d H:i:s T", time()); 
+    function getTimestamp($format="Y-m-d H:i:s T"){ 
+        return date($format, time()); 
     }
     
     function getReportName(){

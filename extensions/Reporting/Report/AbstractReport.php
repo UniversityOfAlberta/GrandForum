@@ -365,7 +365,7 @@ abstract class AbstractReport extends SpecialPage {
         $sto = new ReportStorage($this->person);
         if($this->project != null){
             if($this->pdfAllProjects || $this->allowIdProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
+                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
             }
             else{
                 $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
@@ -399,7 +399,7 @@ abstract class AbstractReport extends SpecialPage {
         $foundSubmitted = false;
         if($this->project != null){
             if($this->pdfAllProjects || $this->allowIdProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
+                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
             }
             else{
                 $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
