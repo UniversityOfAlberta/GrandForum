@@ -997,12 +997,15 @@ EOF;
      */
     function getPhoto($cached=false){
         global $wgServer, $wgScriptPath;
-        if($this->photo == null || !$cached){
+        if($this->photo == null){
             if(file_exists("Photos/{$this->getName()}_{$this->getId()}.jpg")){
                 $this->photo = "$wgServer$wgScriptPath/Photos/{$this->getName()}_{$this->getId()}.jpg";
-                if(!$cached){
-                    return $this->photo."?".microtime(true);
-                }
+            }
+        }
+        if(!$cached){
+            if(file_exists("Photos/{$this->getName()}_{$this->getId()}.jpg")){
+                $md5 = md5_file("Photos/{$this->getName()}_{$this->getId()}.jpg");
+                return "{$wgServer}{$wgScriptPath}/index.php?action=api.project/{$this->getId()}/image&{$md5}";
             }
         }
         return $this->photo;
@@ -1015,12 +1018,15 @@ EOF;
      */
     function getLogo($cached=false){
         global $wgServer, $wgScriptPath;
-        if($this->logo == null || !$cached){
+        if($this->logo == null){
             if(file_exists("Photos/{$this->getName()}_Logo_{$this->getId()}.png")){
                 $this->logo = "$wgServer$wgScriptPath/Photos/{$this->getName()}_Logo_{$this->getId()}.png";
-                if(!$cached){
-                    return $this->logo."?".microtime(true);
-                }
+            }
+        }
+        if(!$cached){
+            if(file_exists("Photos/{$this->getName()}_Logo_{$this->getId()}.png")){
+                $md5 = md5_file("Photos/{$this->getName()}_Logo_{$this->getId()}.png");
+                return "{$wgServer}{$wgScriptPath}/index.php?action=api.project/{$this->getId()}/logo&{$md5}";
             }
         }
         return $this->logo;
