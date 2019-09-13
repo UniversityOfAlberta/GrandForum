@@ -49,7 +49,7 @@ class Posting extends BackboneModel {
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
-            if(isset($_GET['apiKey']) && $job->visibility != "Publish"){
+            if(isset($_GET['apiKey']) && $posting->visibility != "Publish"){
                 // Accessed using API Key, so restrict to Published only
                 continue;
             }
@@ -96,6 +96,10 @@ class Posting extends BackboneModel {
     
     function getUserId(){
         return $this->userId;
+    }
+    
+    function getUser(){
+        return Person::newFromId($this->getUserId());
     }
     
     function getVisibility(){
@@ -216,6 +220,7 @@ class Posting extends BackboneModel {
     function toArray(){
         $json = array('id' => $this->getId(),
                       'userId' => $this->getUserId(),
+                      'user' => $this->getUser()->toArray(),
                       'visibility' => $this->getVisibility(),
                       'language' => $this->getLanguage(),
                       'title' => $this->getTitle(),

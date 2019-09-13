@@ -4,10 +4,10 @@
 <table id="postings" frame="box" rules="all">
     <thead>
         <tr>
-            <th width="5%" style="white-space: nowrap;">Posting Date</th>
+            <th width="25%" style="white-space: nowrap;">Event Date</th>
             <th width="5%" style="white-space: nowrap;">Language</th>
-            <th width="25%">Address</th>
-            <th width="64%">Posting</th>
+            <th width="15%">Address</th>
+            <th width="54%">Posting</th>
             <% if(isAllowedToCreateEventPostings){ %>
                 <th width="1%">Delete?</th>
             <% } %>
@@ -16,8 +16,10 @@
     <tbody>
         <% this.model.each(function(event){ %>
             <tr>
-                <td align="center">
-                    <%= event.get('startDate') %>
+                <td>
+                    <span style="display:none;"><%= event.get('startDate') %></span>
+                    <%= dateTimeHelpers.formatDate(event.get('startDate')) %><br />
+                    (Posted: <%= dateTimeHelpers.formatDate(event.get('created')) %> by <a href="<%= event.get('user').url %>"><%= event.get('user').fullName %></a>)
                 </td>
                 <td align="center">
                     <%= event.get('language') %>
