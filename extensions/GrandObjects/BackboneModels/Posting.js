@@ -7,7 +7,7 @@ Posting = Backbone.Model.extend({
         else if(this.get('language') == "fr"){
             return "Français";
         }
-        else if(this.get('language') == "en"){
+        else if(this.get('language') == "bi"){
             return "Bilingual/Bilingue";
         }
         else{
