@@ -19,14 +19,14 @@ class ProjectAPI extends RESTAPI {
             if($image){
                 header('Content-Type: image/jpg');
                 $photo = explode("/Photos/", $project->getPhoto(true));
-                $content = file_get_contents("Photos/{$photo[1]}");
+                $content = @file_get_contents("Photos/{$photo[1]}");
                 echo $content;
                 exit;
             }
             if($logo){
                 header('Content-Type: image/png');
                 $logo = explode("/Photos/", $project->getLogo(true));
-                $content = file_get_contents("Photos/{$logo[1]}");
+                $content = @file_get_contents("Photos/{$logo[1]}");
                 echo $content;
                 exit;
             }
