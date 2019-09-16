@@ -45,7 +45,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     function getItems(){
         if($this->items == null){
             $this->items = array();
-            $this->parser->parseReportItemSet($this->section, $this->node, $this->data, false);
+            $this->parser->parseReportItemSet($this->section, $this->node, $this->data, false, $this);
         }
         return $this->items;
     }

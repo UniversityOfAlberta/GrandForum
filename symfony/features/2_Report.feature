@@ -24,6 +24,12 @@ Feature: Reporting
         And I should not see "A3"
         And I should not see "B3"
         And I should see "C3"
+        
+    Scenario: Testing ReportItemSets with the same id
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+5"
+        Then I should see "Hello World"
+        And I should not see "World World"
 
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"

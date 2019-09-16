@@ -510,10 +510,9 @@ class ReportXMLParser {
     }
 
     // Parses the <ReportItemSet> element of the XML
-    function parseReportItemSet(&$section, $node, $data=array(), $lazy=true){
+    function parseReportItemSet(&$section, $node, $data=array(), $lazy=true, $itemset=null){
         $attributes = $node->attributes();
         $children = $node->children();
-        $itemset = $section->getReportItemById("{$attributes->id}");
         if($lazy === true || $lazy == 'both'){
             if($node->getName() == "If" ||
                $node->getName() == "ElseIf" ||
