@@ -445,7 +445,7 @@
                                             <b>Facility Requirements:</b>
                                         </td>
                                         <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_REQUIREMENTS,{$extraIndex},{$user_id},0)}
+                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_REQUIREMENTS,{$extraIndex},{$user_id},0,5_requirements)}
                                         </td>
                                     </tr>
                                     <tr>
