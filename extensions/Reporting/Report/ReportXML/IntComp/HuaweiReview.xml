@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="UofA-Huawei JIC Application" reportType="RP_HUAWEI_REVIEW" ajax="true" disabled="false">
     <Permissions>
+        <Role role="MANAGER">
+            <SectionPermission id="feedback" permissions="rw" />
+            <SectionPermission id="discussion" permissions="rw" />
+            <SectionPermission id="decision" permissions="rw" />
+        </Role>
         <Role role="UAHJIC">
             <SectionPermission id="feedback" permissions="rw" />
             <SectionPermission id="discussion" permissions="" />
@@ -94,10 +99,6 @@
                                         <tr>
                                             <td class='label' width='1%'>Reviewer:</td>
                                             <td>Anonymous</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Date:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
                                         </tr>
                                         <tr>
                                             <td class='label'>Descision:</td>
