@@ -51,9 +51,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     },
     
     saveAll: function(refresh){
-        console.log(refresh);
         var refresh = (refresh === undefined) ? true : refresh;
-        console.log(refresh);
         var copy = this.universities.toArray();
         clearAllMessages();
         var requests = new Array();

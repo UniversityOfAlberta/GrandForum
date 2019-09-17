@@ -481,7 +481,7 @@ class Person extends BackboneModel {
                 self::$rolesCache = Cache::fetch("rolesCache");
             }
             else{
-                $sql = "SELECT r.*
+                $sql = "SELECT r.id, r.user_id, r.role
                         FROM grand_roles r, mw_user u
                         WHERE (end_date = '0000-00-00 00:00:00'
                                OR end_date > CURRENT_TIMESTAMP)
@@ -491,10 +491,7 @@ class Person extends BackboneModel {
                 $data = DBFunctions::execSQL($sql);
                 if(count($data) > 0){
                     foreach($data as $row){
-                        if(!isset(self::$rolesCache[$row['user_id']])){
-                            self::$rolesCache[$row['user_id']] = array();
-                        }
-                        self::$rolesCache[$row['user_id']][] = $row;
+                        self::$rolesCache[$row['user_id']][$row['id']] = $row['role'];
                     }
                 }
                 Cache::store("rolesCache", self::$rolesCache);
@@ -1067,7 +1064,7 @@ class Person extends BackboneModel {
                 if($filter != null && $filter != "all"){
                     $found = false;
                     foreach(self::$rolesCache[$row] as $role){
-                        if($role['role'] == $filter){
+                        if($role == $filter){
                             $found = true;
                         }
                     }
@@ -2342,15 +2339,15 @@ class Person extends BackboneModel {
         if($this->roles == null && $this->id != null){
             $this->roles = array();
             if(isset(self::$rolesCache[$this->id])){
-                foreach(self::$rolesCache[$this->id] as $row){
-                    $this->roles[] = new Role(array(0 => $row));
+                foreach(self::$rolesCache[$this->id] as $id => $row){
+                    $this->roles[] = Role::newFromId($id);
+                    //$this->roles[] = new Role(array(0 => $row));
                 }
             }
             else{
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => INACTIVE,
-                                                           'title' => '',
                                                            'start_date' => '0000-00-00 00:00:00',
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));
