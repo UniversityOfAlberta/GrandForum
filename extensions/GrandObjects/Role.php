@@ -150,6 +150,12 @@ class Role extends BackboneModel {
 	    return $this->role;
 	}
 	
+	function isAlias(){
+	    global $config;
+	    $aliases = $config->getValue('roleAliases');
+	    return (isset($aliases[$this->getRole()]));
+	}
+	
 	// Returns the full name of this Role
 	function getRoleFullName(){
 	    global $config;
