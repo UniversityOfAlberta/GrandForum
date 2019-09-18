@@ -291,6 +291,12 @@ class DepartmentTab extends AbstractTab {
         foreach($hqps as $hqp){
             $papers = $hqp->getPapersAuthored("Publication", ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
+                if(($paper->getType() == "Conference Paper" || 
+                    $paper->getType() == "Proceedings Paper" || 
+                    $paper->getType() == "Poster") && 
+                    $this->department == "Biological Sciences"){
+                    continue;
+                }
                 if($paper->getData('peer_reviewed') == "Yes"){
                     $yearAgo = strtotime("{$paper->getDate()} -1 year"); // Extend the year to last year so that publications after graduation are still counted
                     $yearAgo = date('Y-m-d', $yearAgo);
