@@ -2255,11 +2255,21 @@ class Person extends BackboneModel {
      * @return string One of the roles that this person is
      */
     function getType(){
+        global $wgRoleValues;
         $roles = $this->getRoles();
-        if($roles != null && count($roles) > 0){
-            return $roles[count($roles) - 1]->getRole();
+        $maxRole = null;
+        $maxRoleValue = 0;
+        if(count($roles) > 0){
+            foreach($roles as $role){
+                if(!$role->isAlias() || count($roles) == 1){
+                    if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
+                        $maxRoleValue = $wgRoleValues[$role->getRole()];
+                        $maxRole = $role->getRole();
+                    }
+                }
+            }
         }
-        return null;
+        return $maxRole;
     }
     
     /**
