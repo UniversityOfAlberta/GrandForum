@@ -2,9 +2,9 @@
 
 /// Encapsulates the storage and retrieval of reports generated as PDF files.
 class ReportStorage {
+
     private $_uid;
     private $_person;
-
     private $_cache;
 
     function __construct($person) {
@@ -94,30 +94,6 @@ class ReportStorage {
         $this->_cache['submission_user_id'] = $res[0]['submission_user_id'];
         
         return $res[0]['pdf'];
-    }
-    
-    function fetch_html($tok){
-        $tok = DBFunctions::escape($tok);
-        $sql = "SELECT html FROM grand_pdf_report WHERE token = '{$tok}';";
-        $res = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() <= 0) {
-            return false;
-        }
-
-        // FIXME: dangerous.
-        return $res[0]['html'];
-    }
-
-    function fetch_data($tok) {
-        $tok = DBFunctions::escape($tok);
-        $sql = "SELECT data FROM grand_pdf_report WHERE token = '{$tok}';";
-        $res = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() <= 0) {
-            return false;
-        }
-
-        // FIXME: dangerous.
-        return unserialize($res[0][0]);
     }
 
     function mark_submitted($tok) {
@@ -245,43 +221,6 @@ class ReportStorage {
         }
     }
 
-
-    /// Trigger the downloading of a PDF.  If the user is not the owner of
-    /// the report, the request is denied and the state of the object is
-    /// not changed.
-    /// The download is offered using #fname as filename.  If empty, it is
-    /// assumed to be "<user_name>_<#tok>.pdf".
-    /// If successful, the state of the object is changed to that of the
-    /// requested report (#tok).
-    function trigger_download($tok, $fname, $strict = true) {
-        if ($this->_cache['token'] !== $tok) {
-            if ($this->select_report($tok) === false && $strict === true) {
-                // This user cannot download this report.
-                return false;
-            }
-        }
-
-        $pdf = $this->fetch_pdf($tok, $strict);
-        if ($pdf === false) {
-            return false;
-        }
-        if (empty($fname)) {
-            $fname = $this->_person->getNameForPost() . "_{$tok}.pdf";
-        }
-
-        // XXX: wgOut must be *disabled*.
-        ob_clean();
-        header('Content-Type: application/pdf');
-        header('Content-Length: ' . $this->_cache['len_pdf']);
-        header('Content-Disposition: attachment; filename="'.$fname.'"');
-        header('Cache-Control: private, max-age=0, must-revalidate');
-        header('Pragma: public');
-        ini_set('zlib.output_compression','0');
-        echo $pdf;
-        // This avoids mediawiki sending stuff regardless of $wgOut being disabled.
-        exit;
-    }
-
     function get_report_project_id(){
         $report_id = $this->_cache['report_id'];
         $sql = "SELECT sub_id FROM grand_pdf_index WHERE report_id={$report_id}";
@@ -323,32 +262,6 @@ class ReportStorage {
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
                 ORDER BY timestamp DESC
                 {$lim};";
-        return DBFunctions::execSQL($sql);
-    }
-    
-    static function list_reports_past($uarr, $year, $subm = 1, $lim = 1, $special = 0, $type = 0) {
-        if (is_array($uarr)) {
-            $uarr = implode(', ', $uarr);
-        }
-
-        if (strlen($uarr) === 0)
-            return array();
-        if($lim == 0){
-            $lim = "";
-        }
-        else{
-            $lim = "LIMIT {$lim}";
-        }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
-                FROM grand_pdf_report 
-                WHERE user_id IN ({$uarr}) 
-                AND submitted = {$subm} 
-                AND type = '{$type}' 
-                AND year = {$year} 
-                AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
-                ORDER BY timestamp DESC
-                {$lim};";
-       
         return DBFunctions::execSQL($sql);
     }
     
@@ -406,32 +319,6 @@ class ReportStorage {
             $res = DBFunctions::execSQL($sql);
         }
         return $res;
-    }
-
-
-    /// Returns a resultset with the latest report for each user in #uarr.
-    /// The flags #subm (for submitted reports) and #special (for input
-    /// reports for project leaders) refine the search.
-    /// Columns: user_id, report_id, token, timestamp.
-    static function list_latest_reports($uarr, $subm = 1, $special = 0, $type = 0) {
-        if (is_array($uarr)) {
-            $uarr = implode(', ', $uarr);
-        }
-
-        if (strlen($uarr) === 0)
-            return array();
-
-        $sql = "SELECT p1.user_id, p1.report_id, p1.auto, p1.token, p1.timestamp, p1.year 
-                FROM grand_pdf_report p1 
-                WHERE p1.user_id IN ({$uarr}) 
-                AND p1.timestamp IN (SELECT MAX(p2.timestamp) 
-                                     FROM grand_pdf_report p2 
-                                     WHERE p1.user_id = p2.user_id 
-                                     AND p2.submitted = {$subm} 
-                                     AND p2.type = '{$type}' 
-                                     AND p2.timestamp < '2011-08-01') 
-                ORDER BY p1.user_id;";
-        return DBFunctions::execSQL($sql);
     }
 
 }

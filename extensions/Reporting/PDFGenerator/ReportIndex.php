@@ -71,14 +71,4 @@ class ReportIndex {
         }
     }
 
-    function trigger_download(&$repo, $tok, $fname) {
-        $rid = $repo->metadata('report_id');
-        if (is_numeric($rid)) {
-            DBFunctions::execSQL("UPDATE grand_pdf_index 
-                                  SET nr_download = nr_download + 1, last_download = CURRENT_TIMESTAMP() 
-                                  WHERE report_id = {$rid};", true);
-        }
-
-        return $repo->trigger_download($tok, $fname);
-    }
 }
