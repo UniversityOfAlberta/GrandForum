@@ -3,13 +3,21 @@
 /// Encapsulates the storage and retrieval of reports generated as PDF files.
 class ReportStorage {
 
-    private $_uid;
+    private $_uid = 0;
+    private $_pid = 0;
     private $_person;
+    private $_project;
     private $_cache;
 
-    function __construct($person) {
+    function __construct($person, $project){
         $this->_person = $person;
-        $this->_uid = $person->getId();
+        $this->_project = $project;
+        if($person != null){
+            $this->_uid = $person->getId();
+        }
+        if($project != null){
+            $this->_pid = $project->getId();
+        }
         $this->_cache = null;
     }
 
@@ -17,18 +25,14 @@ class ReportStorage {
     /// match, the request is denied and the state of the object is not
     /// changed.
     function select_report($tok, $strict = true) {
-        $uid = ($this->_uid == "") ? 0 : $this->_uid;
-        if ($strict)
-            $ext = "user_id = $uid AND";
-        else
-            $ext = "";
-
-        $res = DBFunctions::execSQL("SELECT user_id FROM grand_pdf_report WHERE {$ext} token = '{$tok}';");
-        if (DBFunctions::getNRows() > 0) {
+        $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
+        $res = DBFunctions::execSQL("SELECT user_id 
+                                     FROM grand_pdf_report 
+                                     WHERE {$ext} token = '{$tok}'");
+        if(DBFunctions::getNRows() > 0){
             $this->load_metadata($tok, $strict);
             return $this->_cache['token'];
         }
-
         return false;
     }
 
@@ -55,10 +59,11 @@ class ReportStorage {
         // the hash of the data and the hash of PDF file.
         $tok = md5($this->_uid . $uname . $tst . $hdata . $hpdf);
 
-        $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
+        $sql = "INSERT INTO grand_pdf_report (user_id, proj_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) 
+                VALUES ({$this->_uid}, {$this->_pid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
             DBFunctions::escape($sdata) . "', '" .
             DBFunctions::escape(utf8_decode($html)) . "', '" .
-            DBFunctions::escape($pdf) . "');";
+            DBFunctions::escape($pdf) . "')";
 
         DBFunctions::execSQL($sql, true);
         DBFunctions::commit();
@@ -74,8 +79,11 @@ class ReportStorage {
             return $this->_cache['pdf'];
         }
 
-        $user = ($strict) ? "user_id = {$this->_uid} AND" : '';
-        $sql = "SELECT report_id, user_id, type, submitted, auto, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$user} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
+        $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
+        $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year 
+                FROM grand_pdf_report 
+                WHERE {$ext} token = '{$tok}' 
+                ORDER BY timestamp DESC LIMIT 1";
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
             return false;
@@ -83,6 +91,7 @@ class ReportStorage {
 
         $this->_cache['report_id'] = $res[0]['report_id'];
         $this->_cache['user_id'] = $res[0]['user_id'];
+        $this->_cache['proj_id'] = $res[0]['proj_id'];
         $this->_cache['type'] = $res[0]['type'];
         $this->_cache['submitted'] = $res[0]['submitted'];
         $this->_cache['auto'] = $res[0]['auto'];
@@ -107,7 +116,11 @@ class ReportStorage {
             $impersonateId = $wgRealUser->getId();
         }
         
-        $res = DBFunctions::execSQL("SELECT special, submitted FROM grand_pdf_report WHERE token = '{$tok}' AND user_id = {$this->_uid};");
+        $res = DBFunctions::execSQL("SELECT special, submitted 
+                                     FROM grand_pdf_report 
+                                     WHERE token = '{$tok}' 
+                                     AND user_id = {$this->_uid} 
+                                     AND proj_id = {$this->_pid}");
         if (DBFunctions::getNRows() <= 0) {
             return 0;
         }
@@ -123,7 +136,9 @@ class ReportStorage {
                               SET submitted = 1,
                                   submission_user_id = $impersonateId,
                                   timestamp = timestamp
-                              WHERE token = '{$tok}' AND user_id = {$this->_uid};", true);
+                              WHERE token = '{$tok}' 
+                              AND user_id = {$this->_uid}
+                              AND proj_id = {$this->_pid}", true);
         DBFunctions::commit();
         // Refresh.
         $this->load_metadata($tok);
@@ -143,7 +158,9 @@ class ReportStorage {
             $impersonateId = $wgRealUser->getId();
         }
         
-        $res = DBFunctions::execSQL("SELECT special, submitted FROM grand_pdf_report WHERE token = '{$tok}'");
+        $res = DBFunctions::execSQL("SELECT special, submitted 
+                                     FROM grand_pdf_report 
+                                     WHERE token = '{$tok}'");
         if (DBFunctions::getNRows() <= 0) {
             return 0;
         }
@@ -168,19 +185,22 @@ class ReportStorage {
     }
 
     private function load_metadata($tok = false, $strict = false) {
-        $uid = ($this->_uid == "") ? 0 : $this->_uid;
-        if ($strict)
-            $ext = "user_id = {$uid} AND";
-        else
-            $ext = "";
+        $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
 
         // Load data from the DB.
         if ($tok === false) {
             // FIXME: token must be enforced --- no token-use must be removed.
-            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$uid} ORDER BY timestamp DESC LIMIT 1;";
+            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year 
+                    FROM grand_pdf_report 
+                    WHERE user_id = {$this->_uid}
+                    AND proj_id = {$this->_pid}
+                    ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
-            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$ext} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
+            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year 
+                    FROM grand_pdf_report 
+                    WHERE {$ext} token = '{$tok}' 
+                    ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
@@ -192,6 +212,7 @@ class ReportStorage {
         $this->_cache['report_id'] = $res[0]['report_id'];
         $this->_cache['type'] = $res[0]['type'];
         $this->_cache['user_id'] = $res[0]['user_id'];
+        $this->_cache['proj_id'] = $res[0]['proj_id'];
         $this->_cache['submitted'] = $res[0]['submitted'];
         $this->_cache['auto'] = $res[0]['auto'];
         $this->_cache['token'] = $res[0]['token'];
@@ -208,8 +229,6 @@ class ReportStorage {
     /// the state is considered stale and a DB request is made.
     function metadata($field) {
         if ($this->_cache === null || !isset($this->_cache[$field])) {
-            // FIXME / XXX:
-            // With multiple report types, this is dangerous:
             $this->load_metadata();
         }
 
@@ -222,15 +241,7 @@ class ReportStorage {
     }
 
     function get_report_project_id(){
-        $report_id = $this->_cache['report_id'];
-        $sql = "SELECT sub_id FROM grand_pdf_index WHERE report_id={$report_id}";
-        $res = DBFunctions::execSQL($sql);
-        $sub_id = 0;
-        if (count($res) > 0) {
-            $sub_id = $res[0]['sub_id'];
-        }
-
-        return $sub_id;
+        return $this->metadata('proj_id');
     }
 
     /// Returns an array of report entries for users #uarr with as many as #lim
@@ -253,38 +264,37 @@ class ReportStorage {
         if($year !== ""){
             $year = "AND year = {$year}";
         }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
                 AND type = '{$type}' 
                 {$year}
-                AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
+                AND proj_id = 0
                 ORDER BY timestamp DESC
                 {$lim};";
         return DBFunctions::execSQL($sql);
     }
     
-    static function list_project_reports($sub_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
+    static function list_project_reports($proj_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
         if($lim == 0){
             $lim = "";
         }
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
-                FROM grand_pdf_report r, grand_pdf_index i 
-                WHERE r.report_id = i.report_id
-                AND i.sub_id = {$sub_id}
-                AND r.type = '{$type}' 
-                AND r.year = {$year} 
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+                FROM grand_pdf_report
+                WHERE proj_id = {$proj_id}
+                AND type = '{$type}' 
+                AND year = {$year} 
                 ORDER BY timestamp DESC
                 {$lim}";
         $res = DBFunctions::execSQL($sql);
         return $res;
     }
     
-    static function list_user_project_reports($sub_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year = null){
+    static function list_user_project_reports($proj_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year = null){
         if($user_id == ""){
             $user_id = 0;
         }
@@ -295,29 +305,17 @@ class ReportStorage {
             $lim = "LIMIT {$lim}";
         }
         if($year !== null || $year !== ""){
-            $year = "AND r.year = '$year'";
+            $year = "AND year = '$year'";
         }
-        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
-                FROM grand_pdf_report r, grand_pdf_index i 
-                WHERE r.report_id = i.report_id
-                AND i.sub_id = {$sub_id}
-                AND r.user_id = {$user_id}
-                AND r.type = '{$type}'
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+                FROM grand_pdf_report
+                WHERE proj_id = {$proj_id}
+                AND user_id = {$user_id}
+                AND type = '{$type}'
                 {$year}
                 ORDER BY timestamp DESC
                 {$lim}";
         $res = DBFunctions::execSQL($sql);
-        if($sub_id === 0 && count($res) == 0){
-            $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
-                    FROM grand_pdf_report r
-                    WHERE r.report_id NOT IN (SELECT report_id FROM grand_pdf_index)
-                    AND r.user_id = {$user_id}
-                    AND r.type = '{$type}'
-                    {$year}
-                    ORDER BY timestamp DESC
-                    {$lim}";
-            $res = DBFunctions::execSQL($sql);
-        }
         return $res;
     }
 

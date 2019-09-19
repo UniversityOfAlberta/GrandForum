@@ -121,7 +121,6 @@ EOF;
         foreach($pdfFiles as $file){
             $tok = false;
             $tst = '';
-            $sto = new ReportStorage($person);
             $project = null;
             if($this->getReport()->project instanceof Project){
                 $project = $this->getReport()->project;

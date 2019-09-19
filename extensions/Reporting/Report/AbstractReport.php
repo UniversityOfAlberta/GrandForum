@@ -65,7 +65,7 @@ abstract class AbstractReport extends SpecialPage {
     static function newFromToken($tok, $type=""){
         global $wgUser;
         $person = Person::newFromId($wgUser->getId());
-        $sto = new ReportStorage($person);
+        $sto = new ReportStorage($person, null);
         $sto->select_report($tok, false);
         
         $pers = Person::newFromId($sto->metadata('user_id'));
@@ -75,21 +75,7 @@ abstract class AbstractReport extends SpecialPage {
             $type = $sto->metadata('type');
             $type = ReportXMLParser::findPDFReport($type, true);
         }
-        $proj = null;
-        $rp_index = new ReportIndex($pers);
-        $projects = $rp_index->list_projects();
-        foreach($projects as $project){
-            $reports = $rp_index->list_reports($project, 0, 0);
-            foreach($reports as $report){
-                if($report['token'] == $tok){
-                    $proj = Project::newFromId($project);
-                    break;
-                }
-            }
-            if($proj != null){
-                break;
-            }
-        }
+        $proj = Project::newFromId($sto->get_report_project_id());
         return new DummyReport($type, $pers, $proj, $year);
     }
     
@@ -362,18 +348,17 @@ abstract class AbstractReport extends SpecialPage {
             $report->year = $this->year;
             return $report->getLatestPDF();
         }
-        $sto = new ReportStorage($this->person);
         if($this->project != null){
             if($this->pdfAllProjects || $this->allowIdProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
+                $check = ReportStorage::list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
             }
             else{
-                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+                $check = ReportStorage::list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
             }
         }
         else{
-            $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
-                                 $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
+            $check = array_merge(ReportStorage::list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
+                                 ReportStorage::list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
         }
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
@@ -394,15 +379,14 @@ abstract class AbstractReport extends SpecialPage {
             $report->year = $this->year;
             return $report->getPDF();
         }
-        $sto = new ReportStorage($this->person);
         $foundSameUser = false;
         $foundSubmitted = false;
         if($this->project != null){
             if($this->pdfAllProjects || $this->allowIdProjects){
-                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
+                $check = ReportStorage::list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType, $this->year);
             }
             else{
-                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+                $check = ReportStorage::list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
                 $check2 = array();
                 foreach($check as $c){
                     if($c['submitted'] == 1){
@@ -416,8 +400,8 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             // First check submitted
-            $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
-            $check2 = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
+            $check = ReportStorage::list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
+            $check2 = ReportStorage::list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
             if(count($check) == 0){
                 // If found none, then look for any generated PDF
                 $check = $check2;
@@ -933,13 +917,8 @@ abstract class AbstractReport extends SpecialPage {
                         $report->renderForPDF();
                         $data = "";
                         $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report, false, $report->orientation);
-                        $sto = new ReportStorage($this->person);
+                        $sto = new ReportStorage($this->person, $project);
                         $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
-                        if($project != null){
-                            $ind = new ReportIndex($this->person);
-                            $rid = $sto->metadata('report_id');
-                            $ind->insert_report($rid, $report->project);
-                        }
                         if($submit){
                             $report->submitReport($person);
                         }
@@ -957,13 +936,8 @@ abstract class AbstractReport extends SpecialPage {
             if($preview){
                 exit;
             }
-            $sto = new ReportStorage($this->person);
+            $sto = new ReportStorage($this->person, $this->project);
             $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
-            if($report->project != null){
-                $ind = new ReportIndex($this->person);
-                $rid = $sto->metadata('report_id');
-                $ind->insert_report($rid, $report->project);
-            }
             $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
@@ -1000,19 +974,15 @@ abstract class AbstractReport extends SpecialPage {
         else{
             $me = $person;
         }
-        $sto = new ReportStorage($me);
+        $sto = new ReportStorage($me, $this->project);
         $check = $this->getLatestPDF();
         if(count($check) > 0){
             $sto->mark_submitted_ns($check[0]['token']);
-            if(($this->xmlName == "HQPReport" || $this->xmlName == "HQPReportPDF") && $this->project == null){
-                $this->notifySupervisors($check[0]['token']);
-            }
         }
     }
     
     // Checks whether or not this report has been submitted or not
     function isSubmitted(){
-        //$sto = new ReportStorage($sto = new ReportStorage($this->person));
         $check = $this->getPDF();
         if(isset($check[0])){
             return (isset($check[0]['submitted']) && $check[0]['submitted'] == 1);
