@@ -11,7 +11,7 @@ PDF.php
 
 Description
 -----------
-The PDF class is used to access data from the ``grand_pdf_index`` and ``grand_pdf_report`` tables.  A PDF will contain metadata about the PDF like the reporting year, generation date, submission date and report type.  When a PDF is instantiated, the download url can be accessed by calling the ``getUrl()`` method.  There are also some permissions to help prevent people who should not be seeing a PDF document by callin the ``canUserRead()`` method.
+The PDF class is used to access data from the ``grand_pdf_report`` tables.  A PDF will contain metadata about the PDF like the reporting year, generation date, submission date and report type.  When a PDF is instantiated, the download url can be accessed by calling the ``getUrl()`` method.  There are also some permissions to help prevent people who should not be seeing a PDF document by callin the ``canUserRead()`` method.
 
 Static Factory Methods
 ----------------------
