@@ -28,7 +28,7 @@ class PDFReportItem extends StaticReportItem {
         $tst = '';
         $len = 0;
         $sub = 0;
-        $sto = new ReportStorage($person);
+        $sto = new ReportStorage($person, $project);
     	$check = $report->getPDF();
     	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
     		$tok = $check[0]['token'];
