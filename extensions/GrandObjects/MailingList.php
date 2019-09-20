@@ -331,6 +331,7 @@ class MailingList extends BackboneModel {
      */ 
     static function subscribe($project, $person, &$out=""){
         global $wgImpersonating, $wgMessage;
+        echo "SUBSCRIBE: $project\n";
         $listname = MailingList::listName($project);
         if($wgImpersonating){
             return 1;
@@ -378,6 +379,7 @@ class MailingList extends BackboneModel {
      */
     static function unsubscribe($project, $person, &$out=""){
         global $wgImpersonating, $wgMessage;
+        echo "UNSUBSCRIBE: $project\n";
         if($wgImpersonating){
             return 1;
         }
