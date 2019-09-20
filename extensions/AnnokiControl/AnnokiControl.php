@@ -8,9 +8,6 @@ define('ANNOKI', true);
 
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
-require_once($egAnnokiCommonPath.'/AnnokiArticleEditor.php');
-require_once($egAnnokiCommonPath.'/AnnokiDatabaseFunctions.php');
-require_once($egAnnokiCommonPath.'/AnnokiHTMLUtils.php');
 require_once($egAnnokiCommonPath.'/AnnokiUtils.php');
 
 /** Enumerate Annoki-based extensions.  Add new ones in a similar fashion. Example:
