@@ -977,7 +977,7 @@ abstract class AbstractReport extends SpecialPage {
         $sto = new ReportStorage($me, $this->project);
         $check = $this->getLatestPDF();
         if(count($check) > 0){
-            $sto->mark_submitted_ns($check[0]['token']);
+            $sto->mark_submitted($check[0]['token']);
         }
     }
     

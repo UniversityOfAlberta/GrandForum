@@ -104,53 +104,8 @@ class ReportStorage {
         
         return $res[0]['pdf'];
     }
-
-    function mark_submitted($tok) {
-        // XXX: workaround for an odd bug where a previous token is sent.
-        // Unfortunately, it does not solve the issue, which seems to be
-        // due to stale client-side cache.
-        $tok = DBFunctions::escape($tok);
-        global $wgImpersonating, $wgRealUser;
-        $impersonateId = $this->_uid;
-        if($wgImpersonating){
-            $impersonateId = $wgRealUser->getId();
-        }
-        
-        $res = DBFunctions::execSQL("SELECT special, submitted 
-                                     FROM grand_pdf_report 
-                                     WHERE token = '{$tok}' 
-                                     AND user_id = {$this->_uid} 
-                                     AND proj_id = {$this->_pid}");
-        if (DBFunctions::getNRows() <= 0) {
-            return 0;
-        }
-        if ($res[0]['special'] == 1) {
-            return 0;
-        }
-        if ($res[0]['submitted'] == 1) {
-            // Already submitted.
-            return 2;
-        }
-
-        DBFunctions::execSQL("UPDATE grand_pdf_report 
-                              SET submitted = 1,
-                                  submission_user_id = $impersonateId,
-                                  timestamp = timestamp
-                              WHERE token = '{$tok}' 
-                              AND user_id = {$this->_uid}
-                              AND proj_id = {$this->_pid}", true);
-        DBFunctions::commit();
-        // Refresh.
-        $this->load_metadata($tok);
-        // Either 0 or 1.
-        return $this->_cache['submitted'];
-    }
     
-    /* Not strict version of the function above. Used for submitting project report PDFs. Both leader and co-leader can submit */
-    function mark_submitted_ns($tok) {
-        // XXX: workaround for an odd bug where a previous token is sent.
-        // Unfortunately, it does not solve the issue, which seems to be
-        // due to stale client-side cache.
+    function mark_submitted($tok) {
         global $wgImpersonating, $wgRealUser;
         $tok = DBFunctions::escape($tok);
         $impersonateId = $this->_uid;
