@@ -51,7 +51,6 @@ $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI
 $apiRequest->addAction('Hidden','person/:id/products/all', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/:productId', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/contributions', 'PersonContributionsAPI');
-$apiRequest->addAction('Hidden','person/:id/allocations', 'PersonAllocationsAPI');
 $apiRequest->addAction('Hidden','personRoleString/:id', 'PersonRoleStringAPI');
 $apiRequest->addAction('Hidden','people', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/managed', 'PeopleManagedAPI');
@@ -73,7 +72,6 @@ $apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');
 $apiRequest->addAction('Hidden','project/:id/members/:role', 'ProjectMembersAPI');
 $apiRequest->addAction('Hidden','project/:id/contributions', 'ProjectContributionsAPI');
-$apiRequest->addAction('Hidden','project/:id/allocations', 'ProjectAllocationsAPI');
 $apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','project/:id/products/bibtex', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
