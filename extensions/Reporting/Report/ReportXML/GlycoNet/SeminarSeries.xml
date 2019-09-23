@@ -10,7 +10,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>Recognition of GlycoNet as an international leader in glycomics research is a key component of the Network’s mission. To this end, the GlycoNet Departmental Seminar Series will assist in the dissemination of Network knowledge to the broader scientific community, as well as raise the profile and visibility of GlycoNet researchers and provide excellent opportunities for networking and collaborative discussions.</p>
@@ -30,7 +30,7 @@
                 <h3>Deadline</h3>
                 <p>Application deadlines are <b>November 1</b> and <b>March 1</b> each year.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
         <ReportItem id="host" type="MultiText" blobType="BLOB_ARRAY" blobItem="LEAD" labels="Name|Department|Institution|City|Province|Phone|Email" sizes="125|125|125|100|100|100|125">
@@ -155,13 +155,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        </If>
+        <If id="if_not_eula" if="{!=({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the declaration before you can submit your application.</p>
             ]]>
-        </ReportItem>
+        </If>
     </ReportSection>
 </Report>

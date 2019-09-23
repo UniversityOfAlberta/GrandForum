@@ -8,14 +8,14 @@
         </Role>
     </Permissions>
     <ReportSection id="report" tooltip="Final Report" name="Final Report" title="Summer Award - Final Report" type="EditableReportSection" blobSection="REPORT">
-        <ReportItem id="trainee_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Trainee</h2>
                 <table class='wikitable'>
                     <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
                     <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
             <![CDATA[
                 <tr>
@@ -30,12 +30,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
+        <Static>
             <![CDATA[
                         <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
             <![CDATA[
                 <tr>
@@ -44,12 +44,12 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_head" type="Static">
+        <Static>
             <![CDATA[
                 <h2>Supervisor</h2>
                 <table class='wikitable'>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="sup_name" type="NISelect" placeholder="Choose NI..." blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
@@ -99,12 +99,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_foot" type="Static">
+        <Static>
             <![CDATA[
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="acronym" type="Text" blobItem="ACRONYM">
             <![CDATA[
                 <h2>Project Information</h2>

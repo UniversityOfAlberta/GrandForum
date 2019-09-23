@@ -89,13 +89,13 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )},
-                                                  {contains({$user_full_roles},SRC)})}">
+        <If id="if_eula" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                      {contains({$user_full_roles},ISAC)}
+                                     )},
+                                  {contains({$user_full_roles},SRC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                    <ReportItem id="table" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <div id="proj{$project_id}">
                             <table class='wikitable'>
@@ -106,7 +106,7 @@
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                             <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="topic" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <div class="scientific">
@@ -379,7 +379,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="total1" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <h2>Scientific Excellence</h2>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -442,7 +442,7 @@
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_COMMENTS1" rich="true">
                         <![CDATA[
                             <h2>Comments</h2>
@@ -542,7 +542,7 @@
                             </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="total2" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <h2>Project Feasibility</h2>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -582,7 +582,7 @@
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="comments2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_COMMENTS2" rich="true">
                         <![CDATA[
                             <h2>Comments</h2>
@@ -593,15 +593,15 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                        {!contains({$user_full_roles},ISAC)}
-                                                       )},
-                                                   {!contains({$user_full_roles},SRC)})}">
+        </If>
+        <If id="if_not_eula" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                            {!contains({$user_full_roles},ISAC)}
+                                           )},
+                                       {!contains({$user_full_roles},SRC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
             <![CDATA[
                 {$item}
@@ -631,7 +631,7 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="table" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <div id="proj{$project_id}">
                         <table class='wikitable'>
@@ -642,7 +642,7 @@
                         <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="topic" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <div class="scientific">
@@ -915,7 +915,7 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -978,7 +978,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_COMMENTS1" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
@@ -1078,7 +1078,7 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="total2" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Project Feasibility</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -1117,7 +1117,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="comments2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_COMMENTS2" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
@@ -1128,11 +1128,11 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="footnote" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p style='font-size:1.5em;'>Please continue to the Fit Review</p>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your Scientific Review.  &lt;br /&gt;Please continue to the Fit Review">
             <![CDATA[
                 {$item}
@@ -1159,12 +1159,12 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="table" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <div id="proj{$project_id}">
                         <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="impact" blobType="BLOB_TEXT" blobItem="CAT_RMC_IMPACT" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>1. Contribution to Long Term Impact of CFN</h2>
@@ -1419,7 +1419,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Overall Score</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -1479,7 +1479,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your Fit Review.">

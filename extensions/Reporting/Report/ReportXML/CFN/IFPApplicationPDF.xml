@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2019 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2019">
     <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.20em;'>2019 Interdisciplinary Fellowship Program<br />Application</h4>
@@ -12,7 +12,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="bookmark" type="Bookmark" title="Section 1 - Information about the Applicant and Supervisor">
         </ReportItem>
         <ReportItem id="number" type="Text" blobItem="NUMBER">
@@ -167,11 +167,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant's Research Project">
         <!--ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">

@@ -21,7 +21,7 @@
         </Role>
     </Permissions>
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;">
                     <h4 style='font-size:1.5em;'>AGE-WELL 2018 Policy Challenge Application</h4>
@@ -34,10 +34,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="name" type="Static">
+        <Static>
             <![CDATA[
                 <table>
                     <tr>
@@ -57,7 +57,7 @@
                         </td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="supervisor" type="Text" blobType="BLOB_TEXT" blobItem="SUPERVISOR">
             <![CDATA[
                 <tr>

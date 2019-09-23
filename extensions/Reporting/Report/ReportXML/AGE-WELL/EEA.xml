@@ -24,7 +24,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="AGE-WELL Emerging Entrepreneur Award (2019)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2019)">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
                 <p>The AGE-WELL Emerging Entrepreneur Award supports the development of emerging entrepreneurs to create and grow an innovative start-up with potential social and economic impact in Canada. The innovation must address one of <a href='https://agewell-nce.ca/wp-content/uploads/2019/01/Booklet_8_Challenges_English_5_final_PROOF_rev.pdf'>AGE-WELL’s 8 Challenge Areas</a> to shape the future of technology and aging research in Canada.</p>
@@ -91,10 +91,10 @@
                 Results Available: 27 March, 2019<br />
                 Funding Commences: April 2019<br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
-        <ReportItem id="identity_start" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <table class="wikitable" frame="box" rules="all">
                     <tr>
@@ -105,7 +105,7 @@
                         <td>{$user_name}</td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="status" type="Text" blobItem="STATUS" width="400px" placeholder="e.g. PhD Year 1, Occupational therapy">
             <![CDATA[
                 <tr>

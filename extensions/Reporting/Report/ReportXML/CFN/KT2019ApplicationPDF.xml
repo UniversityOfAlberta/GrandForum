@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2019 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" year="2019">
     <ReportSection id="information" type="HeaderReportSection" blobSection="INTENT" name="1 - Admin Information" title="Section 1 - Administrative Information">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.20em;'>2019 Knowledge Translation Competition</h4>
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="bookmark" type="Bookmark" title="Section 1 - Administrative Information">
         </ReportItem>
         <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
@@ -218,22 +218,20 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="builds_if" type="If" if="{==({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
+        <If id="builds_if" if="{==({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
             <ReportItem id="builds" type="MultiText" class="wikitable" blobItem="BUILDS" blobType="BLOB_ARRAY" labels="Name of Funding Agency|Grant Project Title|Grant Principal Investigator" multiple="true">
                 <![CDATA[
                     <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
                     {$item}<br /><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="builds_else" type="If" if="{!=({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
-            <ReportItem id="builds" type="Static">
-                <![CDATA[
-                    <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
-                    Not applicable<br /><br />
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
+        </If>
+        <If id="builds_else" if="{!=({getArray(RP_KT_APPLICATION,INTENT,BUILDS_NOT,0,{$user_id},0,builds_not)},)}">
+            <![CDATA[
+                <h4>1. Indicate the research project(s) that this KT proposal builds upon</h4>
+                Not applicable<br /><br />
+            ]]>
+        </If>
         
         <ReportItem id="another" type="Radio" blobItem="ANOTHER" options="No|Yes">
             <![CDATA[
@@ -241,7 +239,7 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItemSet id="builds_if" type="If" if="{==({getText(RP_KT_APPLICATION,INTENT,ANOTHER,0,{$user_id},0)},Yes)}">
+        <If id="builds_if" if="{==({getText(RP_KT_APPLICATION,INTENT,ANOTHER,0,{$user_id},0)},Yes)}">
             <ReportItem id="another_yes" type="MultiText" class="wikitable" blobItem="ANOTHER_YES" blobType="BLOB_ARRAY" labels="Name of Funding Agency|Grant Project Title|Grant Principal Investigator">
                 <![CDATA[
                     Please provide the following information:<br />
@@ -249,7 +247,7 @@
                 ]]>
                 
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <ReportItem id="ethics" blobItem="ETHICS" type="Radio" options="Yes, I expect that this research will require an ethics review|No, I do not expect that this research will require an ethics review">
             <![CDATA[

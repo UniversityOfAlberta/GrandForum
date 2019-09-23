@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Regional Meeting" reportType="RP_REGIONAL_MEETING" pdfType="REGIONAL_MEETING" ajax="true" disabled="false" year="2015">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <span style='font-size: 1.5em;font-weight:bold'>Regional Meeting Proposal</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -15,7 +15,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="proposal" name="Meeting Proposal" title="Regional Meeting Proposal" tooltip="Regional Meeting Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
         <ReportItem id="title" type="Text" blobItem="TITLE">

@@ -6,7 +6,7 @@
         </Role>
     </Permissions>
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div class='logo_div' style="height:20px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -14,7 +14,7 @@
                 <div class='report_info'>
                 </div>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" pagebreak="false" type="HeaderReportSection">
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" subType="SAB">
@@ -25,14 +25,14 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="project_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <p style="font-size:150%;font-weight:bold;">{$project_name}</p>
                     <h1>Reviewer Comments</h1>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="SABReportItemSet">
-                <ReportItem id="review" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Reviewer {$index}</h2>
                         <div style='margin-left:15px;'>
@@ -44,7 +44,7 @@
                             <p>{$sab_ranking}</p>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
             <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
                 <![CDATA[

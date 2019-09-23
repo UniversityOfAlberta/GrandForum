@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" year="2017">
     <ReportSection id="information" type="HeaderReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.20em;'>2017 Knowledge Translation Competition</h4>
@@ -14,7 +14,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="bookmark" type="Bookmark" title="Section 1 - Administrative Information">
         </ReportItem>
         <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">

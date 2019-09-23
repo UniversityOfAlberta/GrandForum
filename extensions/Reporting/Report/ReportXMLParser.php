@@ -467,10 +467,18 @@ class ReportXMLParser {
                     if($c->getName() == "Instructions"){
                         $section->setInstructions("{$children->Instructions}");
                     }
-                    else if($c->getName() == "ReportItem"){
+                    else if($c->getName() == "ReportItem" ||
+                            ($c->getName() == "If" ||
+                             $c->getName() == "ElseIf" ||
+                             $c->getName() == "Else" ||
+                             $c->getName() == "Static") && trim("{$c}") !== ""){
                         $this->parseReportItem($section, $c);
                     }
-                    else if($c->getName() == "ReportItemSet"){
+                    else if($c->getName() == "ReportItemSet" || 
+                            $c->getName() == "If" ||
+                            $c->getName() == "ElseIf" ||
+                            $c->getName() == "Else" ||
+                            $c->getName() == "For"){
                         $projectId = 0;
                         if(!$this->report->topProjectOnly && $this->report->project != null){
                             $projectId = $this->report->project->getId();
@@ -506,6 +514,12 @@ class ReportXMLParser {
         $attributes = $node->attributes();
         $children = $node->children();
         $itemset = $section->getReportItemById("{$attributes->id}");
+        if($node->getName() == "If" ||
+           $node->getName() == "ElseIf" ||
+           $node->getName() == "Else" ||
+           $node->getName() == "For"){
+           @$node->addAttribute("type", $node->getName());
+        }
         if($itemset != null){
             $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
             $itemset->iteration = 0;
@@ -582,10 +596,18 @@ class ReportXMLParser {
         if(count($newData) > 0){
             foreach($newData as $value){
                 foreach($children as $c){
-                    if($c->getName() == "ReportItem"){
+                    if($c->getName() == "ReportItem" ||
+                        ($c->getName() == "If" ||
+                         $c->getName() == "ElseIf" ||
+                         $c->getName() == "Else" ||
+                         $c->getName() == "Static") && trim("{$c}") !== ""){
                         $item = $this->parseReportItem($itemset, $c, $value);
                     }
-                    else if($c->getName() == "ReportItemSet"){
+                    else if($c->getName() == "ReportItemSet" || 
+                            $c->getName() == "If" ||
+                            $c->getName() == "ElseIf" ||
+                            $c->getName() == "Else" ||
+                            $c->getName() == "For"){
                         $item = $this->parseReportItemSet($itemset, $c, $value);
                     }
                     if($item == null){
@@ -615,6 +637,12 @@ class ReportXMLParser {
     function parseReportItem(&$section, $node, $value=array()){
         $attributes = $node->attributes();
         $item = $section->getReportItemById("{$attributes->id}");
+        if($node->getName() == "If" ||
+           $node->getName() == "ElseIf" ||
+           $node->getName() == "Else" ||
+           $node->getName() == "Static"){
+           @$node->addAttribute("type", $node->getName());
+        }
         if(isset($attributes->type) || $item != null){
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";

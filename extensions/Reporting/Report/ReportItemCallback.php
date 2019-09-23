@@ -152,6 +152,7 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "replace" => "replace",
             "set" => "set",
@@ -1732,6 +1733,10 @@ class ReportItemCallback {
         return number_format(round($val, $dec), $dec, ".", "");
     }
     
+    function number_format($val, $decimals=0, $dec_point="." , $thousands_sep=","){
+        return (is_numeric($val)) ? number_format($val, $decimals, $dec_point, $thousands_sep) : $val;
+    }
+    
     function replace($pattern, $replacement, $string){
         return str_replace($pattern, $replacement, $string);
     }
@@ -1818,8 +1823,8 @@ class ReportItemCallback {
         return $this->reportItem->getPostId();
     }
     
-    function getTimestamp(){ 
-        return date("Y-m-d H:i:s T", time()); 
+    function getTimestamp($format="Y-m-d H:i:s T"){ 
+        return date($format, time()); 
     }
     
     function getReportName(){

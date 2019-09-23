@@ -17,7 +17,7 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Background</h3>
                 <p>Delivering on the GlycoNet vision, to find solutions to important health issues and improve the quality of life of Canadians through glycomics, requires an understanding of how fundamental scientific discoveries are translated into health innovations and how these innovations can most positively impact the health and well-being of the nation. In order to introduce GlycoNet HQP to these concepts, the Network will sponsor two graduate students or postdoctoral fellows annually to attend the Canadian Science Policy Conference and then share their experience broadly with the GlycoNet community.</p>
@@ -36,7 +36,7 @@
                 <h3>Deadline</h3>
                 <p>Application deadline is <b>September 15th</b>. Network management will strive to notify successful applicants by mid-October.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
         <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" sizes="125|125|150|150|100|100|125">
@@ -98,13 +98,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        </If>
+        <If id="if_not_eula" if="{!=({getText(RP_CSPC,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the declaration before you can submit your application.</p>
             ]]>
-        </ReportItem>
+        </If>
     </ReportSection>
 </Report>

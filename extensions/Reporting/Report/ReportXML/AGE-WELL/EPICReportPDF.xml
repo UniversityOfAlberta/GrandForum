@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Annual Report - EPIC Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>Annual Report - EPIC Survey</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -10,10 +10,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="survey" tooltip="Survey" name="Survey" type="HeaderReportSection" blobSection="SURVEY" pagebreak="false">
-        <ReportItem id="info" type="Static">
+        <Static>
             <![CDATA[
                 <table>
                     <tr>
@@ -36,7 +36,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="1a" type="RadioReportItem" blobItem="1A" options="Strongly Disagree|Disagree|Neutral|Agree|Strongly Agree" orientation="horizontal">
             <![CDATA[
                 <h2>Survey</h2>

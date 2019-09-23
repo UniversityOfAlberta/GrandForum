@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>Prior to undertaking the reviews, please familiarize yourself with the <a href='https://agewell-nce.ca/crp2020'>AGE-WELL Core Research Program (CRP) 2020 Request for Proposals</a> and the <a href='https://agewell-nce.ca/wp-content/uploads/2018/09/AGE-WELL-Challenge-Areas.pdf'>Challenge Areas document</a> that were provided to applicants.</p>
                 <p>AGE-WELL CRP projects will be reviewed to determine potential impact across key areas, including the NCE Program Criteria.</p>
@@ -85,10 +85,10 @@
                 Moderate: weakness that lessens the impact of the project.<br />
                 Major: weakness that severely limits the impact of the project.<br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="materials" tooltip="Download CRP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="project_materials_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <table align="left" class="wikitable" frame="box" rules="all">
                 <tr>
@@ -102,21 +102,21 @@
                     <th style="min-width:125px;" align='center'>Letters</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
-            <ReportItem id="table_row" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
                         <td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="array" type="Array" index="team" array="{getArray(RP_CRP,PART1,TEAM,0,{$user_id},{$project_id})}">
-                <ReportItem id="team_member" type="Static">
+                <Static>
                     <![CDATA[
                         {getArray(RP_CRP,PART1,TEAM,0,{$user_id},{$project_id},team|{$extraIndex}|teammembername)}, {getArray(RP_CRP,PART1,TEAM,0,{$user_id},{$project_id},team|{$extraIndex}|role)}<br />
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
             <ReportItem id="crp_pdf" type="PDFReportItem" reportType="CRP" project="true">
                 <![CDATA[
@@ -154,20 +154,20 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="CRP Review" name="CRP Review" blobSection="CRP_REVIEW" type="EditableReportSection">
-        <ReportItem id="script" type="Static">
+        <Static>
             <![CDATA[
                 <script type="text/javascript">
                     var nReviews = 0;
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="crp_materials" type="MaterialsReportItemSet" subType="CRP-2018">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="alignment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="ALIGNMENT" blobSubItem="{$user_id}" descriptions="Strongly Disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree" options="1|2|3|4|5" orientation="horizontal">
@@ -345,7 +345,7 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="completion" type="Static">
+        <Static>
             <![CDATA[
                 <div id="reviewCompletion" class="warning" style="display:none;">
                     Not all scores have been entered
@@ -363,6 +363,6 @@
                     reviewCompletionFn();
                 </script>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
 </Report>

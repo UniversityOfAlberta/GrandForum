@@ -59,7 +59,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="2018 AGE-WELL SIP Accelerator Program Description" name="Program Description" type="ReportSection" title="2018 AGE-WELL SIP Accelerator Program Description">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <p>AGE-WELL’s "SIP Accelerator" supports innovative post-discovery projects focused on the commercialization and/or knowledge mobilization of solutions (e.g. technologies, services or policies) aligned with <a href='http://agewell-nce.ca/about-us' target='_blank'>AGE-WELL’s mission and vision</a>.</p>
                 <p>The program provides:</p>
@@ -72,7 +72,7 @@
                 <p>Please refer to the SIP Accelerator webpage on the AGE-WELL website (<a href='http://www.agewell-nce.ca' target='_blank'>www.agewell-nce.ca</a>) for information about investigator eligibility, partnerships, award amount etc. </p>
                 <p>Questions about this funding program can be directed to Jennifer Wong, AGE-WELL Research Program Administrator (<a href='mailto:jennifer@agewell-nce.ca'>jennifer@agewell-nce.ca</a>).</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="EditableReportSection">
         <ReportItem id="i" type="TextReportItem" blobItem="PROJECT">
@@ -201,7 +201,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
-        <ReportItem id="header1" type="Static">
+        <Static>
             <![CDATA[
                 <script type='text/javascript'>
                     $('#reportProgress').hide();
@@ -213,7 +213,7 @@
                 </style>
                 <h2>1) RATIONALE AND APPROACH (1 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <ol id='list' type="i">
@@ -258,11 +258,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>2) PROJECT OPPORTUNITY - Commercialization Projects Only (1 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET" optional="true">
             <![CDATA[
                 <ol id='list' type="i">
@@ -296,11 +296,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header3" type="Static">
+        <Static>
             <![CDATA[
                 <h2>3) INTELLECTUAL PROPERTY - Commercialization Projects Only (1/2 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY"  optional="true">
             <![CDATA[
                 <ol id='list' type="i">
@@ -317,11 +317,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header4" type="Static">
+        <Static>
             <![CDATA[
                 <h2>4) PROJECT OPPORTUNITY - Knowledge Mobilization Projects Only (1.5 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE"  optional="true">
             <![CDATA[
                 <ol id='list' type="i">
@@ -372,11 +372,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header5" type="Static">
+        <Static>
             <![CDATA[
                 <h2>5) PROJECT TEAM (1/2 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
             <![CDATA[
                 <ol id='list' type="i">
@@ -389,11 +389,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header6" type="Static">
+        <Static>
             <![CDATA[
                 <h2>6) PARTNERSHIPS (1/2 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED">
             <![CDATA[
                 <ol id='list' type="i">
@@ -417,11 +417,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header7" type="Static">
+        <Static>
             <![CDATA[
                 <h2>7) POTENTIAL IMPACT (1 page)</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS">
             <![CDATA[
                 <ol id='list' type="i">

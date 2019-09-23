@@ -35,7 +35,7 @@
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="2016 AGE-WELL Collaborative Impact Program" name="Program Description" type="ReportSection" title="2016 AGE-WELL Collaborative Impact Program">
-        <ReportItem id="description" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Program Description</h3>
                 
@@ -85,7 +85,7 @@
                 <p>Upload any letters of support from partners described in Part 2. Submit as PDF(s).</p>
                 <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="EditableReportSection">
         <ReportItem id="i" type="TextReportItem" width="300px" blobItem="PROJECT">
@@ -148,11 +148,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
-        <ReportItem id="header1" type="Static">
+        <Static>
             <![CDATA[
                 <h2>1) RATIONALE AND APPROACH</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <style>
@@ -200,11 +200,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>2) IMPACT AND EVALUTION</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="impact" type="TextareaReportItem" rich="true" blobItem="IMPACT">
             <![CDATA[
                 <ol id='list' type="i">
@@ -231,11 +231,11 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header2" type="Static">
+        <Static>
             <![CDATA[
                 <h2>3) PROJECT TEAM AND PARTNERSHIPS</h2>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
             <![CDATA[
                 <ol id='list' type="i">

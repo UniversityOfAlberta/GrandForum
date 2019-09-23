@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.40em;'>GlycoNet Summer Awards for<br />
@@ -12,10 +12,10 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="report" tooltip="Final Report" name="Final Report" title="Summer Award - Final Report" type="HeaderReportSection" blobSection="REPORT" pagebreak="false">
-        <ReportItem id="trainee_head" type="Static">
+        <Static>
             <![CDATA[
                 <h4>Trainee</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -39,8 +39,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="sup_head" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h4>Supervisor</h4>
                 <table class='wikitable smaller' frame='box' rules='all' width='100%'>
@@ -64,8 +64,8 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="project" type="Static">
+        </Static>
+        <Static>
             <![CDATA[
                 <h1><center>Project Information</center></h1>
                 <table class='wikitable'>
@@ -96,7 +96,7 @@
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true" recommended="true" height="400px">
             <![CDATA[
                 <h2>Exchange Summary</h2>

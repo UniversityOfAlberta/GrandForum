@@ -7,7 +7,7 @@
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div class='logo_div' style="height:0;margin-top:0;">
                     <img class='logo' style="margin-top:0;position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png?3' />
@@ -17,7 +17,7 @@
                 <h4>Project Title</h4>
                 <p>{$project_name}&nbsp;</p><br /><br /><br /><br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="cc3" tooltip="Transdisciplinary Working" name="CC3 T-WORK: Transdisciplinary Working" blobSection="CC_PLANNING_3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">

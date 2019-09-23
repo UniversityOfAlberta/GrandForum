@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Collaborative Team Grant Application" reportType="RP_COLLAB_08_2017" pdfType="RPTP_COLLAB_08_2017" ajax="true" disabled="false" year="2017">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Information" blobSection="CAT_DESC" type="HeaderReportSection">
         <!-- Theme -->
@@ -139,14 +139,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+        <If id="if" if="{==({getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
             <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
                 <![CDATA[
                     <p><b>Please provide a response to the previous reviews</b></p>
                     {$item}
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">

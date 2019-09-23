@@ -51,7 +51,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ex_review" name="External Review" blobSection="CAT_EX_REVIEW" tooltip="Review of CAT Grants" type="EditableReportSection" saveText="Save &amp; Submit">
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
+        <If id="if_eula" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                       {contains({$user_full_roles},ISAC)}
                                                      )},
                                                   {contains({$user_full_roles},CAT)})}">
@@ -450,7 +450,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         ]]>
                     </ReportItem>
                     
-                    <ReportItem id="total1" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total">
@@ -500,7 +500,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="ex_comments" type="Textarea" blobItem="CAT_EX_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -508,15 +508,15 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
+        </If>
+        <If id="if_not_eula" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_EULA,EULA,0,{$user_id},0)},Yes)},
                                                         {!contains({$user_full_roles},ISAC)}
                                                        )},
                                                    {!contains({$user_full_roles},SRC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
             <![CDATA[
                 {$item}
@@ -994,7 +994,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -1048,7 +1048,7 @@ Note: The project schedule is mandatory and will be used by CFN to track progres
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="src_comments" type="Textarea" blobItem="CAT_SRC_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -1398,7 +1398,7 @@ The partner is an academic investigator/institution or a very small regional org
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -1444,7 +1444,7 @@ The partner is an academic investigator/institution or a very small regional org
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="rmc_suggestions" type="Textarea" blobItem="CAT_RMC_SUGGESTIONS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>What suggestions do you have that would make this proposal more acceptable for funding?</b> {$item}

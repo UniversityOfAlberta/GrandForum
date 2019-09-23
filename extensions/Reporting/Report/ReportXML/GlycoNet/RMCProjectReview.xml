@@ -16,7 +16,7 @@
                <p>You can download the Project Proposal and SAB Report PDFs for review.</p>
             ]]>
         </Instructions>
-        <ReportItem id="project_materials_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <table>
                 <tr>
@@ -25,7 +25,7 @@
                     <th style="min-width:125px;">SAB Report PDF</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItem id="project_pdf1" type="PDFReportItem" reportType="ProjectProposal" width="100%" project="true">
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
@@ -34,13 +34,13 @@
                 <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="All Project Proposal PDFs">
-            <ReportItem id="project_materials_head2" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                 <table>
                     <tr>
@@ -48,17 +48,17 @@
                         <th style="min-width:125px;">Project Proposal PDF</th>
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="projects" type="AllProjectsReportItemSet">
                 <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectProposal" width="100%" project="true">
                     <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="project_materials_foot2" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
 
@@ -69,7 +69,7 @@
                
             ]]>
         </Instructions>
-        <ReportItem id="project_review_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -77,7 +77,7 @@
                 })
             </script>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItemSet id="project_materials" type="NIReviewReportItemSet" subType="Project">
                 <ReportItem id="sab_comments" type="PopupReportItem" title="See SAB Comments" text="{$report_sab_comments}">

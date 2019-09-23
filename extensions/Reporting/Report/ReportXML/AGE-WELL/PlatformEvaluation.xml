@@ -33,7 +33,7 @@
         </Role>
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL Platform Project Scorecard (2019-2020)">
-        <ReportItem id="instructions" type="Static">
+        <Static>
             <![CDATA[
                 <p>Please complete the project scorecard provided. You should identify concrete goals, activities and deliverables (e.g. a plan, report/paper, market analysis, environmental scan) for the year in order to strengthen your Platform Project as they pertain to NCE Program Criteria.</p>
                 
@@ -80,10 +80,10 @@
                 <p><b>Project and Management and Team</b><br />
                     Projects need to have effective management and team-working processes in place and to demonstrate that the team possesses the necessary expertise and capacity to successfully complete their project</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard">
-        <ReportItem id="TableHeader" type="Static">
+        <Static>
             <![CDATA[
                 <b>Instructions:</b> Project Leads can find the following scorecard on Forum under “My Reports”. Please identify the project’s goals, activities, and deliverables for the seed funding year. Keep it brief and realistic.
                 <table class="wikitable small" width="100%">
@@ -101,7 +101,7 @@
                         <th>Completed Outputs -<br />Deliverables meeting the project objectives</th>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <!-- Scientific Excellence -->
         <ReportItem id="sci_1" type="Textarea" blobItem="SCI_1" height="100%">
             <![CDATA[
@@ -247,11 +247,11 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="TableFooter" type="Static">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="align" type="Textarea" blobItem="ALIGN" rich="true">
             <![CDATA[
                 <p>How will you re-align your project with the Network objectives for Platform Projects (i.e. the main “customer” for the Platform Projects is AGE-WELL itself):</p>

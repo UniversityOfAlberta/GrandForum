@@ -7,6 +7,7 @@ class AllPeopleReportItemSet extends ReportItemSet {
         $roles = explode(",",$this->getAttr("roles", ""));
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $randomize = (strtolower($this->getAttr("randomize", "false")) == "true");
         $allPeople = Person::getAllPeople();
         foreach($allPeople as $person){
             $found = true;
@@ -21,6 +22,9 @@ class AllPeopleReportItemSet extends ReportItemSet {
                 $tuple['person_id'] = $person->getId();
                 $data[] = $tuple;
             }
+        }
+        if($randomize){
+            shuffle($data);
         }
         return $data;
     }

@@ -33,11 +33,11 @@
         </Role>
     </Permissions>
     <ReportSection id="collab" name="Collaborative Project" tooltip="1. Online Collaborative Project" title="1. Online Collaborative Project" blobSection="IFP_PROG_COLLAB" type="EditableReportSection">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <b>Name:&nbsp;</b>{$user_name}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_START" width="100px">
             <![CDATA[
                 <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
@@ -254,32 +254,32 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="supervisor1" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_PROG_SUPERVISOR" type="ReportSection">
-        <ReportItem id="header" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <i style='font-size:1.2em;'>This section is to be completed by the Fellowship Supervisor</i>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet" 
                        startDate="{getText(RP_IFP_PROGRESS,IFP_PROG_COLLAB,IFP_PROG_MIL_START,0,{$user_id},0)}" 
                        endDate="{getText(RP_IFP_PROGRESS,IFP_PROG_COLLAB,IFP_PROG_MIL_END,0,{$user_id},0)}">
-            <ReportItem id="assessment" type="StaticReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+            <Static id="assessment" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
                 <![CDATA[
                     <h2>{$user_name}</h2>
                     <h3>What is your overall assessment of the Fellow’s progress during the past three months?</h3>
                     <i>{getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
                 ]]>
-            </ReportItem>
-            <ReportItem id="elaborate" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>Please elaborate:</h3>
                     {getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ELABORATE,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_PROG_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{contains({$getProjects},IFP2016)}">
+            <If id="if" if="{contains({$getProjects},IFP2016)}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
                         <![CDATA[
@@ -294,14 +294,14 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
-        <ReportItem id="reminder" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <br />
                 <p><b>Note:</b> Once you have completed your comments for each IFP, remind the IFP to generate a PDF of their report since your comments will now appear in them.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

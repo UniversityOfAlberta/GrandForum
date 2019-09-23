@@ -21,7 +21,7 @@
         </Role>
     </Permissions>
     <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
-        <ReportItem id="name" type="Static">
+        <Static>
             <![CDATA[
                 <table>
                     <tr>
@@ -41,7 +41,7 @@
                         </td>
                     </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="supervisor" type="Text" blobType="BLOB_TEXT" blobItem="SUPERVISOR">
             <![CDATA[
                 <tr>

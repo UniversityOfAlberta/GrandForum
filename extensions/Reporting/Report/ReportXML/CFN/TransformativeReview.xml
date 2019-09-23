@@ -81,12 +81,12 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )}">
+        <If id="if_eula" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                 {contains({$user_full_roles},ISAC)}
+                             )}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                    <ReportItem id="table" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <div id="proj{$project_id}">
                             <table class='wikitable'>
@@ -96,7 +96,7 @@
                             </table>
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
                         <![CDATA[
                             <div class="scientific">
@@ -153,7 +153,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="total1" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <h2>Scientific Excellence</h2>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -215,7 +215,7 @@
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS1" rich="true">
                         <![CDATA[
                             <h2>Comments</h2>
@@ -243,7 +243,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="total2" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <h2>Project Feasibility</h2>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -281,7 +281,7 @@
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="comments2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS2" rich="true">
                         <![CDATA[
                             <h2>Comments</h2>
@@ -292,14 +292,14 @@
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                        {!contains({$user_full_roles},ISAC)}
-                                                       )}">
+        </If>
+        <If id="if_not_eula" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                        {!contains({$user_full_roles},ISAC)}
+                                       )}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
@@ -328,7 +328,7 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="table" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <div id="proj{$project_id}">
                         <table class='wikitable'>
@@ -338,7 +338,7 @@
                         </table>
                         <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
                     <![CDATA[
                         <div class="scientific">
@@ -395,7 +395,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -457,7 +457,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS1" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
@@ -485,7 +485,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total2" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Project Feasibility</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -523,7 +523,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="comments2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS2" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
@@ -572,7 +572,7 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="table" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <div id="proj{$project_id}">
                         <table class='wikitable'>
@@ -582,7 +582,7 @@
                         </table>
                         <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="grant" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_RMC_GRANT" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposal does not have the potential to revolutionize the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  CFN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a relatively large research project but lacks the capacity to be truly tranformative and thus has minimal potential to revolutionize the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  CFN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a large research project that has good potential to revolutionize and transform the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  CFN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a large research project that has excellent potential to revolutionize and transform the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  CFN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices. " orientation="horizontal" showScore="true">
                     <![CDATA[
                         <h2>1. Transformative Grant?</h2>
@@ -651,7 +651,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h2>Overall Score</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -713,7 +713,7 @@
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>

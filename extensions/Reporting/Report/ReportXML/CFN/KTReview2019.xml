@@ -64,10 +64,10 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                      {contains({$user_full_roles},ISAC)}
-                                                     )},
-                                                  {contains({$user_full_roles},KTC)})}">
+        <If id="if_eula" if="{or({or({==({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                          {contains({$user_full_roles},ISAC)}
+                                         )},
+                                      {contains({$user_full_roles},KTC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-EX" class="Person">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INTENT,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                     <ReportItem id="table" type="PDFReportItem" reportType="KT2019Application" buttonName="Download Application">
@@ -417,7 +417,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         ]]>
                     </ReportItem>
                     
-                    <ReportItem id="total1" type="StaticReportItem">
+                    <Static>
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total">
@@ -465,7 +465,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                             </script>
                             </div>
                         ]]>
-                    </ReportItem>
+                    </Static>
                     <ReportItem id="ex_comments" type="Textarea" blobItem="KT_EX_COMMENTS" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -473,15 +473,15 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
-                                                        {!contains({$user_full_roles},ISAC)}
-                                                       )},
-                                                   {!contains({$user_full_roles},KTC)})}">
+        </If>
+        <If id="if_not_eula" if="{and({and({!=({getText(RP_KT_REVIEW,KT_EULA,EULA,0,{$user_id},0)},Yes)},
+                                      {!contains({$user_full_roles},ISAC)}
+                                     )},
+                                 {!contains({$user_full_roles},KTC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
-        </ReportItem>
+        </If>
         <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review." emails="{$my_email},research@cfn-nce.ca">
             <![CDATA[
                 {$item}
@@ -899,7 +899,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         <b>Comments: Please provide comments to justify your score:</b> {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -949,7 +949,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="ktc_comments" type="Textarea" blobItem="KT_KTC_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
@@ -1287,7 +1287,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="total1" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$user_id}_total">
@@ -1333,7 +1333,7 @@ Note: KT proposals must include partners who have committed cash or eligible in-
                         </script>
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="rmc_comments" type="Textarea" blobItem="KT_RMC_COMMENTS" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}

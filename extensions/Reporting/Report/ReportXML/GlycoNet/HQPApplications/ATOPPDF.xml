@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Advanced Training Opportunity Program" reportType="RP_ATOP" pdfType="ATOP" ajax="true" disabled="false" year="2018">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <span style='font-size: 1.5em;font-weight:bold'>Advanced Training Opportunity Program</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -16,7 +16,7 @@
                 <br />
                 <br />
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
         <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Program/Position|Department|Institution|City|Province|Phone|Email" types="Text|Select(MSc,PhD,PDF,Technician,RA)|Text|Text|Text|Text|Text|Text" class="wikitable">

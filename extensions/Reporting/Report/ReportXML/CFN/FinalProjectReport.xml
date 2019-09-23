@@ -49,13 +49,13 @@
         <Project deleted="false" />
     </Permissions>
     <ReportSection id="information" tooltip="1. Project and Team Information" name="Project Information" title="1. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <b>CFN Project File Number:&nbsp;</b>{$project_name}<br />
                 <b>Project Title:&nbsp;</b>{$project_full_name}<br />
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="FINAL_INFORMATION_START" width="100px">
             <![CDATA[
                 <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
@@ -66,7 +66,7 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="team" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h3>Project Team and Roles</h3>
                     <span>Please list all team members that participated in the project, including new members added since the last reporting period.  To add or remove a member from the project, go to <a href='./Special:ManagePeople' target='_blank'>Edit Roles</a>.  If the person does not yet exist on the Forum, then you will need to go to <a href='./Special:AddMember' target='_blank'>Add Member</a>.  Both actions require staff/admin approval so expect some delay for the table to be updated.</span>
@@ -78,28 +78,28 @@
                         <th>Status<br /><small>(Indicate original,<br /> removed, or new member)</small></th>
                     </tr>
             ]]>
-        </ReportItem>
-        <ReportItem id="funded_head" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <tr>
                     <th colspan='4'>CFN Funded Investigators</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId"
                        startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                        endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
-            <ReportItem id="funded_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
-            </ReportItem>
-            <ReportItem id="role" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
@@ -111,27 +111,27 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="nonfunded_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <tr>
                     <th colspan='4'>Non-CFN Funded Investigators</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI"
                        startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                        endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
-            <ReportItem id="nonfunded_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
-            </ReportItem>
-            <ReportItem id="role" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
@@ -143,27 +143,27 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="hqp_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <tr>
                     <th colspan='4'>Other</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,PS,Collaborator,Knowledge,Partner"
                        startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                        endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
-            <ReportItem id="hqp_row" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
-            </ReportItem>
-            <ReportItem id="role" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
@@ -175,11 +175,11 @@
                 ]]>
             </ReportItem> 
         </ReportItemSet>
-        <ReportItem id="people_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="milestones" name="Research Progress" title="1. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1. Project Milestones and Deliverables" type="EditableReportSection">
         <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
@@ -520,11 +520,11 @@
                 ]]>
             </ReportItem>
             <ReportItemSet id="additional" type="ToggleHeader" title="Additional Leader Financial Reports">
-                <ReportItem id="additional_text" type="Static">
+                <Static>
                     <![CDATA[
                         <p>If there are multiple leaders for this project, you can upload those budgets here.</p>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="upload1" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD1" template="" budgetText="Financial Report">
                     <![CDATA[
                         {$item}
@@ -536,25 +536,25 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem id="nis_title" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h2>PI Financial Reports</h2>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI" 
                            startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                            endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
-                <ReportItem id="header" type="Static">
+                <Static>
                     <![CDATA[
                         <h3>{$user_name}</h3>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="ni_download" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" blobSubItem="{$user_id}" budgetText="Financial Report">
                     <![CDATA[
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="script" type="Static">
+                <Static>
                     <![CDATA[
                         <script type='text/javascript'>
                             $('#reportBody > div').each(function(i, el){
@@ -565,7 +565,7 @@
                             });
                         </script>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet id="notIsPL" type="IsPLReportItemSet" not="true">
@@ -577,54 +577,54 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="FINAL_HQP" name="HQP Trainees">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>Click on the HQP's header and fill in any relevant information.  You may need to edit the HQP's profile in order for all of the information to show up.  If some HQP are missing, or none are showing up, then you will need to either <a href='https://forum.tvn-nce.ca/index.php/Special:AddMember' target='_blank'>create the HQP</a> or <a href='https://forum.tvn-nce.ca/index.php/Special:ManagePeople' target='_blank'>edit the roles</a> of an existing HQP so that they are listed as a member of {$project_name}.</p>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP"
                        startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                        endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="demographic_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h3>Demographic Information</h3>
                         <a href='{$user_url}' target='_blank'>Profile</a>
                         <table class='wikitable'>
                     ]]>
-                </ReportItem>
-                <ReportItem id="grant" type="StaticReportItem">
+                </Static>
+                <Static>
                     <![CDATA[
                         <tr>
                             <td class='label'>Grant Title:</td>
                             <td>{$project_name}</td>
                         </tr>
                     ]]>
-                </ReportItem>
-                <ReportItem id="uni" type="StaticReportItem">
+                </Static>
+                <Static>
                     <![CDATA[
                         <tr>
                             <td class='label'>University Attended:</td>
                             <td>{$user_uni}</td>
                         </tr>
                     ]]>
-                </ReportItem>
-                <ReportItem id="category" type="StaticReportItem">
+                </Static>
+                <Static>
                     <![CDATA[
                         <tr>
                             <td class='label'>HQP Category:</td>
                             <td>{$user_level}</td>
                         </tr>
                     ]]>
-                </ReportItem>
-                <ReportItem id="gender" type="StaticReportItem">
+                </Static>
+                <Static>
                     <![CDATA[
                         <tr>
                             <td class='label'>Gender:</td>
                             <td>{$user_gender}</td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="start" type="CalendarReportItem" width="80px" blobType="BLOB_TEXT" blobItem="SSA_HQP_START" blobSubItem="{$user_id}">
                     <![CDATA[
                         <tr>
@@ -633,14 +633,14 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="nationality" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                             <td class='label'>Nationality:</td>
                             <td>{$user_nationality}</td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_TERM" blobSubItem="{$user_id}" min="0" max="100" width="30px">
                     <![CDATA[
                         <tr>
@@ -657,14 +657,14 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="additional_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table>
                         <h2>Dissemination of Project Research Results</h2>
                         <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  
                            Make sure that the product is associated with the project '{$project_name}'.</p>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="person"
                             start="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
                             end="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
@@ -673,13 +673,13 @@
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="additional_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table>
                         <h3>Additional Information</h3>
                         <table class='wikitable'>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="training" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
                     <![CDATA[
                         <tr>
@@ -728,11 +728,11 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="additional_foot" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>

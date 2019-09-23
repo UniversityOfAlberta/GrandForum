@@ -33,16 +33,16 @@
         </Role>
     </Permissions>
     <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
-        <ReportItem id="information" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <b>Name:&nbsp;</b>{$user_name}<br />
             ]]>
-        </ReportItem>
-        <ReportItem id="number" type="StaticReportItem">
+        </Static>
+        <Static>
             <![CDATA[
                 <b>CFN File#:&nbsp;</b>{$user_tvn_file_number}<br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_START" width="100px">
             <![CDATA[
                 <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
@@ -284,62 +284,62 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="supervisor1" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_FINAL_SUPERVISOR" type="ReportSection">
-        <ReportItem id="header" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <i style='font-size:1.2em;'>This section is to be completed by the Fellowship Supervisor</i>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet" 
                        startDate="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_START,0,{$user_id},0)}" 
                        endDate="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_END,0,{$user_id},0)}">
-            <ReportItem id="training" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h2>{$user_name}</h2>
                     <h3>How has CFN training modules (frailty assessment, citizen engagement, interdisciplinary collaboration, and professional development) enhanced the fellow’s learning?</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_TRAIN,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="multidisciplinary" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_MULTI,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="social" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_SOCIAL,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="leadership" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_LEADER,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="assessment" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
                     <i>{getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
                 ]]>
-            </ReportItem>
-            <ReportItem id="elaborate" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>Please elaborate:</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ELABORATE,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
-            <ReportItem id="comments" type="StaticReportItem">
+            </Static>
+            <Static>
                 <![CDATA[
                     <h3>Comments & Feedback</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_COMMENTS,{$parent_id},{$user_id},0)}
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{contains({$getProjects},IFP2017)}">
+            <If id="if" if="{contains({$getProjects},IFP2017)}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_TRAIN" blobSubItem="{$user_id}" rich="true">
                         <![CDATA[
@@ -386,14 +386,14 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
-        <ReportItem id="reminder" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <br />
                 <p><b>Note:</b> Once you have completed your comments for each IFP, remind the IFP to generate a PDF of their report since your comments will now appear in them.</p>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

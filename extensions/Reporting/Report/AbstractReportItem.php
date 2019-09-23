@@ -539,7 +539,7 @@ abstract class AbstractReportItem {
         }
         else{
             $found = $this->getParent()->setVariable($key, $value, $depth + 1);
-            if(!$found && $depth == 1 && $this instanceof ReportItemSet){
+            if(!$found && $this instanceof ReportItemSet){
                 $this->variables[$key] = $value;
                 return true;
             }

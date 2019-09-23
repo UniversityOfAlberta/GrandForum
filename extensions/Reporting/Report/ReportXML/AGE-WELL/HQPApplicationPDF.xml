@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Award 2019" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" ajax="true" disabled="false" year="2019">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging</h4></div>
                 <div class='logo_div' style="height:20px;margin-top:30px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Application" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
-        <ReportItem id="name" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <h4>Applicant Name</h4>
                 <p>{$user_name}</p><br />
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT">
             <![CDATA[
                 <h4>Academic status and Department</h4>
@@ -51,7 +51,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItemSet id="if_michael" type="If" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_MICHAEL, 0, {$user_id}, 0, MICHAEL)},)}">
+        <If id="if_michael" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_MICHAEL, 0, {$user_id}, 0, MICHAEL)},)}">
             <ReportItem id="MICHAEL_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_MICHAEL_DESC" optional="true" rich="true" limit="750">
                 <![CDATA[
                     <div style='margin-left:4em;'>
@@ -60,7 +60,7 @@
                     </div>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
+        </If>
         
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[

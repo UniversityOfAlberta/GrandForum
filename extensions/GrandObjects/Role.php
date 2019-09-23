@@ -90,6 +90,12 @@ class Role extends BackboneModel {
 	    Person::$rolesCache = array();
 	    Person::$leaderCache = array();
 	    $this->getPerson()->roles = null;
+	    $this->getPerson()->projectCache = array();
+        Cache::delete("personRolesDuring{$this->getPerson()->getId()}*", true);
+        Cache::delete("rolesCache");
+        foreach($this->getPerson()->getProjects(true) as $project){
+            Cache::delete("project{$project->getId()}_people*", true);
+        }
 	    if($status){
             $this->id = $id;
             if(is_array($this->projects)){
@@ -118,12 +124,6 @@ class Role extends BackboneModel {
                     Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
                 }
             }
-        }
-        $this->getPerson()->projectCache = array();
-        Cache::delete("personRolesDuring{$this->getPerson()->getId()}*", true);
-        Cache::delete("rolesCache");
-        foreach($this->getPerson()->getProjects(true) as $project){
-            Cache::delete("project{$project->getId()}_people*", true);
         }
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
@@ -186,10 +186,13 @@ class Role extends BackboneModel {
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    Person::$leaderCache = array();
+	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
 	    foreach($this->getPerson()->getProjects(true) as $project){
             Cache::delete("project{$project->getId()}_people*", true);
         }
+        Cache::delete("personRolesDuring{$this->getPerson()->getId()}*", true);
+	    Cache::delete("rolesCache");
 	    if($status){
 	        Notification::addNotification($me, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        if($config->getValue("networkName") == "CFN" && ($this->getPerson()->isRoleDuring(HQP, "1900-01-01", "2100-01-01") || $this->getRole() == "HQP") && $wgScriptPath == ""){
@@ -203,8 +206,6 @@ class Role extends BackboneModel {
                 }
             }
 	    }
-	    Cache::delete("personRolesDuring{$this->getPerson()->getId()}*", true);
-	    Cache::delete("rolesCache");
         MailingList::subscribeAll($this->getPerson());
 	    return false;
 	}

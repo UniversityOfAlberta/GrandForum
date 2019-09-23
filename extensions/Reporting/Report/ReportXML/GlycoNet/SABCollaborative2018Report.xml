@@ -33,7 +33,7 @@
         </Person>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="project_materials_head" type="StaticReportItem">
+        <Static>
             <![CDATA[
             <table align="left" class='wikitable'>
                 <tr>
@@ -42,20 +42,20 @@
                     <th style="min-width:125px;">Project Proposal PDF</th>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2018">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2018" project="false">
                 <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="table" name="Summary Table" blobSection="SEC_NONE" tooltip="Summary Table" type="ReportSection">
-        <ReportItem id="header" type="Static">
+        <Static>
             <![CDATA[
                 <table width="100%" class="wikitable" rules="all" frame="box">
                     <thead>
@@ -72,9 +72,9 @@
                     </thead>
                     <tbody>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2018">
-            <ReportItem id="row_header" type="Static">
+            <Static>
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
@@ -82,54 +82,54 @@
                             {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
                         </td>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative2018" includeSelf="true">
-                <ReportItem id="default" type="Static">
+                <Static>
                     <![CDATA[
                         {set(rank,{getText(RP_SAB_COLLAB_2018_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
                         {set(highlight,)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="high_if" type="If" if="{==({get(rank)},High)}">
+                </Static>
+                <If id="high_if" if="{==({get(rank)},High)}">
                     <![CDATA[
                         {set(highlight,background:#00CC00)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="medium_if" type="If" if="{==({get(rank)},Medium)}">
+                </If>
+                <If id="medium_if" if="{==({get(rank)},Medium)}">
                     <![CDATA[
                         {set(highlight,background:#FF8800)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="low_if" type="If" if="{==({get(rank)},Low)}">
+                </If>
+                <If id="low_if" if="{==({get(rank)},Low)}">
                     <![CDATA[
                         {set(highlight,background:#FF0000)}
                     ]]>
-                </ReportItem>
-                <ReportItem id="row_footer" type="Static">
+                </If>
+                <Static>
                     <![CDATA[
                         <td style="{get(highlight)}">{$user_name}</td>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="row_footer" type="Static">
+            <Static>
                 <![CDATA[
                     </tr>
                 ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <ReportItem id="footer" type="Static">
+        <Static>
             <![CDATA[
                     </tbody>
                 </table>
             ]]>
-        </ReportItem>
+        </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2018">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
+            <If id="if" if="{!=({$user_id},{$my_id})}">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative2018" includeSelf="true">
-                        <ReportItem id="review" type="StaticReportItem">
+                        <Static>
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
@@ -141,7 +141,7 @@
                                     <p>{getText(RP_SAB_COLLAB_2018_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)}</p>
                                 </div>
                             ]]>
-                        </ReportItem>
+                        </Static>
                     </ReportItemSet>
                     <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
                         <![CDATA[
@@ -150,7 +150,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-            </ReportItemSet>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

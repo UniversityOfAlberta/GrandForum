@@ -7,14 +7,14 @@
         </Role>
     </Permissions>
     <ReportSection id="video1" type="EditableReportSection" blobSection="SURVEY1" name="Opening Remarks" tooltip="Opening remarks" title="Dr. John Muscedere, CFN Scientific Director" >
-        <ReportItem id="video" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Opening Remarks</h3>
                 <video width="640" height="360" poster="https://forum.tvn-nce.ca/skins/CFN_Logo.png" controls>
                     <source src="https://forum.tvn-nce.ca/data/tvn_hqp2.mp4" type="video/mp4" />
                 </video>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="technology" type="Radio" orientation="vertical" options="A ramp, a wheelchair, or a walker|A protocol, a medication, or a study looking at the setting of care|Hearing aids, corrective lenses, or a screen reader|All of the above" blobType="BLOB_TEXT" blobItem="TECHNOLOGY">
             <![CDATA[
                 <h3>Dr. Muscedere defines "technology" as "Anything that can be used for the care of a patient."<br />
@@ -61,14 +61,14 @@ What examples does he give?</h3>
         </ReportItem>
     </ReportSection>
     <ReportSection id="video2" type="EditableReportSection" blobSection="SURVEY2" name="Don't Fail the Frail" tooltip="Don&#39;t Fail the Frail - What does patient-centred care mean for the frail elderly?" title="Mr. André Picard, Globe and Mail health columnist" >
-        <ReportItem id="video" type="Static">
+        <Static>
             <![CDATA[
                 <h3>Don't Fail the Frail - What does patient-centred care mean for the frail elderly?</h3>
                 <video width="640" height="360" poster="https://forum.tvn-nce.ca/skins/CFN_Logo.png" controls>
                     <source src="https://forum.tvn-nce.ca/data/tvn_hqp1.mp4" type="video/mp4" />
                 </video>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItem id="technology" type="Radio" orientation="vertical" options="The collection of techniques, methods or processes used in the production of goods or services and the accomplishment of scientific investigation|The tools we use to adapt nature to our needs, and to help people live in their homes longer|The use of science to invent useful things or to solve problems|All of the above" blobType="BLOB_TEXT" blobItem="TECHNOLOGY">
             <![CDATA[
                 <h3>How does Mr. Picard define "technology"?</h3>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EdgePDF" year="2019" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="STAFF">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="AGE-WELL Edge Award (2019)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Edge Award (2019)">
+        <Static>
+            <![CDATA[
+                <h3>About AGE-WELL</h3>
+                <p>AGE-WELL Edge Awards support full-time students at a Canadian college, polytechnic, or cégep embarking upon a “capstone” or final project in the field of technology and aging.  AGE-WELL Edge is a $1000 award designed to support the creation of innovative products that have the potential to improve the lives of older adults and caregivers in Canada.</p>
+
+                <p>The innovation must address one of <a href='https://agewell-nce.ca/wp-content/uploads/2019/01/Booklet_8_Challenges_English_5_final_PROOF_rev.pdf'>AGE-WELL’s 8 Challenge Areas</a> to shape the future of technology and aging research in Canada.</p>
+
+                <p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
+                
+                <h3>Eligibility</h3>
+
+                In order to be considered for an AGE-WELL Edge Award funding applicants must:
+                <ol>
+                    <li>Be full-time students at a Canadian college, polytechnic, or cégep</li>
+                    <li>Be completing a capstone or final project in the field of technology and aging</li>
+                </ol>
+                
+                <h3>The Awards</h3>
+                <p>$1,000 (3 month; not renewable). Award funds will flow as salary support in compliance with AGE-WELL grant administration guidelines and practices.</p>
+
+                <p>Recipients will have access to AGE-WELL member benefits and specialized services such as commercialization and knowledge mobilization support and entrepreneurship training via the EPIC program.</p>
+               
+                <h3>Program Requirements</h3>
+
+                <p><i>Training</i><br />
+                Recipients will have access to our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship).</p>
+
+                <p><i>Reporting</i><br />
+                    <ol>
+                        <li>Recipients are required to complete a final report on outcomes and impact in April 2020.</li>
+                    </ol>
+                </p>
+
+                <p><i>Acknowledging AGE-WELL</i><br />
+                Recipients will acknowledge the AGE-WELL Edge Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Recipients are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period and cooperate in the publicising of any success stories arising from this award.</p>
+                
+                <h3>Review Criteria</h3> 
+                All applications will be reviewed by a team of field experts using the following criteria:
+                <ul>
+                    <li>rationale and approach</li>
+                    <li>novelty</li>
+                    <li>feasibility</li>
+                    <li>fit with AGE-WELL vision and mission</li>
+                </ul>
+                
+                <h3>Required Documents</h3>
+                Award applicants must submit the following: 
+                <ol>
+                    <li>Online Application Form</li>
+                    <li>Curriculum Vitae</li>
+                    <li>A letter of reference from your supervisor must be sent directly to <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>.</li> 
+                </ol>
+                
+                <h3>Important Dates </h3>
+                Applications Open: 15 September, 2019<br />
+                Completed Applications Due:  15 October, 2019<br />
+                Results Available: 15 November, 2019<br />
+                Funding Commences: January 2020
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <th colspan="2">BACKGROUND INFORMATION</th>
+                    </tr>
+                    <tr>
+                        <td style='width:250px;'><b>Applicant Name</b></td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="status" type="Text" blobItem="STATUS" width="400px" placeholder="e.g. PhD Year 1, Occupational therapy">
+            <![CDATA[
+                <tr>
+                    <td width='100px'><b>Academic status and Department</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup" type="Text" blobItem="SUP" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>Supervisor Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="Text" blobItem="UNI" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>Institution</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>Project Title</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Text" blobItem="CHALLENGE" width="400px">
+            <![CDATA[
+                <tr>
+                    <td><b>AGE-WELL Challenge Area of best fit (max. 2)</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <th colspan='2'>PLAIN LANGUAGE SUMMARY</th>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        Provide a 150-word plain language summary that includes a problem statement, description of innovation and its anticipated impact(s). This summary will be provided to network stakeholders in order to facilitate a relevancy review to determine the potential for uptake and impact if funded. This description will also be used for future communications if the proposal is successful.
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rationale" type="Textarea" blobItem="RATIONALE" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <th colspan='2'>RATIONALE AND APPROACH</th>
+                </tr>
+                <tr>
+                    <td valign='top'>
+                        <b>Summarize the rationale for the solution(150 words max)</b>
+                        <ol>
+                            <li>Why is your project important?</li>
+                            <li>Who is your target user population(s)?</li>
+                            <li>What is the expected impact of your research?</li>
+                        </ol>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="100">
+            <![CDATA[
+                <tr>
+                    <td valign='top'>
+                        <b>What is the value of the solution for older adults and/or caregivers? (100 words max)</b>
+                        <ul>
+                            <li>What problem does this project solve?</li>
+                            <li>How have older adults or caregivers been involved or integrated in your project’s development?</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="unique" type="Textarea" blobItem="UNIQUE" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <th colspan='2'>NOVELTY</th>
+                </tr>
+                <tr>
+                    <td valign='top'>
+                        <b>What is unique or innovative about this innovation/solution? (150 words max)</b>
+                        <ul>
+                            <li>What sets your innovation apart?</li>
+                        </ul>
+                    </td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="goals" type="Textarea" blobItem="GOALS" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <th colspan='2'>FEASIBILITY</th>
+                </tr>
+                <tr>
+                    <td valign='top'>
+                        <b>How will you achieve your project goals? (200 words max)</b><br />
+                        In this section describe the following aspects of your research: 
+                        <ol>
+                            <li>Brief overview of the approach (design/methods) you will use to meet your project objectives</li>
+                            <li>Describe the type of research being undertaken e.g. technology development, review, feasibility study, pilot study, requirements analysis, prototype development, intervention study, evaluation study, etc.</li>
+                            <li>Describe the tasks and activities planned (provide detail on specific tasks to be carried out to meet the project objectives you identified above). “Activities” may include research activities, KT, innovation, commercialization, team-building and training, etc.</li>
+                            <li>Provide specific timing of the various tasks, activities and milestones, where milestones are critical points in the project (e.g. completion of a task)</li>
+                        </ol>
+                    </td>
+                    <td valign='top'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="bio" type="Textarea" blobItem="BIO" rich="true" limit="150">
+            <![CDATA[
+                <tr>
+                    <th colspan='2'>FIT WITH AGE-WELL</th>
+                </tr>
+                <tr>
+                    <td valign='top'>
+                        <b>Biography and career goals (150 words)</b><br />
+                        In this section briefly describe:
+                        <ol>
+                            <li>Your current goals</li>
+                            <li>Where you see yourself in 5-10 years</li>
+                            <li>How you see AGE-WELL helping you to achieve your goals</li>
+                        </ol>
+                    </td>
+                    <td valign="top">{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20">
+            <![CDATA[
+                <h3>Curriculum Vitae:</h3>
+                Please upload curriculum vitae in PDF form.
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h3>Letter of Reference:</h3>
+                <p>A letter of reference from the trainee’s supervisor must be sent directly to <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>. The letter must confirm that the institution and supervisor are eligible to hold and disburse Tri-Council funds.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

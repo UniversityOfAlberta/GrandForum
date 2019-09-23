@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="SSA Report">
-        <ReportItem id="instructions" type="StaticReportItem">
+        <Static>
             <![CDATA[
                 <p>For final funding to be released, the following conditions must be met by October 30, 2015:</p>
                 <ul>
@@ -17,10 +17,10 @@
                     <li>the “Learning Plan” document you submitted at the time of application must be completed, signed and received by CFN</li>
                 </ul>
             ]]>
-        </ReportItem>
+        </Static>
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="SSA">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="identity_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <i style='font-size:1.5em;'>To be completed by Supervisor</i>
                         <table class='wikitable'>
@@ -38,7 +38,7 @@
                             </tr>
                         
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START" blobSubItem="{$user_id}">
                     <![CDATA[
                         <tr>
@@ -74,11 +74,11 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="identity_foot" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="achievements" type="TextareaReportItem" rich="true" height="400px" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h3>Describe the student’s major research activities and related key achievements over this reporting period and if applicable, emphasize collaborative achievements.</h3>
@@ -92,12 +92,12 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="assessment_head" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <h3>Please assess your student’s activities/project against the following</h3>
                         <table class='wikitable' width="650px">
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="priorities" type="RadioReportItem" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_PRIORITIES" blobSubItem="{$user_id}">
                     <![CDATA[
                         <tr>
@@ -164,11 +164,11 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="assessment_foot" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         </table>
                     ]]>
-                </ReportItem>
+                </Static>
                 <ReportItem id="learning" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_LEARNING" mimeType="application/pdf" fileSize="5" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h3>Learning Plan</h3>

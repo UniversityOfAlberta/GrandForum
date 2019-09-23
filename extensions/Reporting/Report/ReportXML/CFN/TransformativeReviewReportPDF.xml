@@ -15,7 +15,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="script_init" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     {set(qaex1, 0)}
                     {set(qaex2, 0)}
@@ -61,18 +61,18 @@
                     {set(nBReviewers, 0)}
                     {set(nReviewers, 0)}
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qaex1, {add({get(qaex1)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})})})}
                         {set(qaex2, {add({get(qaex2)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})})})}
@@ -85,30 +85,30 @@
                         {set(qaex9, {add({get(qaex9)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})})})}
                         {set(nAExReviewers, {add({get(nAExReviewers)},1)})}
                     ]]>
-                </ReportItem>
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                </If>
+                <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qbex1, {add({get(qbex1)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})})})}
                         {set(qbex2, {add({get(qbex2)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})})})}
                         {set(qbex3, {add({get(qbex3)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
                         {set(nBExReviewers, {add({get(nBExReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qa1, {add({get(qa1)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})})})}
                         {set(qa2, {add({get(qa2)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})})})}
@@ -121,30 +121,30 @@
                         {set(qa9, {add({get(qa9)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})})})}
                         {set(nAReviewers, {add({get(nAReviewers)},1)})}
                     ]]>
-                </ReportItem>
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                </If>
+                <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(qb1, {add({get(qb1)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})})})}
                         {set(qb2, {add({get(qb2)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})})})}
                         {set(qb3, {add({get(qb3)},{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
                         {set(nBReviewers, {add({get(nBReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
-                                                      )}">
+                <If id="script" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},0)},{$project_id})},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})},)},
+                                         {!=({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
+                                    )}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})})})}
                         {set(q2, {add({get(q2)},{getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})})})}
@@ -157,9 +157,9 @@
                         {set(q9, {add({get(q9)},{getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})})})}
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
-                </ReportItem>
+                </If>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>A. Scientific Excellence (External/ISAC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -180,9 +180,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -216,9 +216,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -277,16 +277,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>B. Project Feasibility (External/ISAC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -301,9 +301,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -319,9 +319,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -350,16 +350,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>A. Scientific Excellence (SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -380,9 +380,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -416,9 +416,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -477,16 +477,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>B. Project Feasibility (SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -501,9 +501,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -519,9 +519,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -550,16 +550,16 @@
                         </tfoot>
                     </table><br />
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b>
                         <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_head" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                     <h4>RMC Review</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
@@ -580,9 +580,9 @@
                         </thead>
                         <tbody>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <tr>
                         <td>{$user_name}</td>
@@ -616,9 +616,9 @@
                         </td>
                         </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
-            <ReportItem id="table_foot" type="StaticReportItem">
+            <Static>
                 <![CDATA[
                         </tbody>
                         <tfoot>
@@ -677,9 +677,9 @@
                         </tfoot>
                     </table>
                 ]]>
-            </ReportItem>
+            </Static>
             <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
-                <ReportItem id="row" type="StaticReportItem">
+                <Static>
                     <![CDATA[
                         <b>{$user_name}</b><br />
                         <small><b>Comments:</b><br />
@@ -689,7 +689,7 @@
                             {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
                         </small>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
