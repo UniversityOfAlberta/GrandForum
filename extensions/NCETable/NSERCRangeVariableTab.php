@@ -74,9 +74,6 @@ function showDiv(div_id, details_div_id){
                     self::showArtDisseminations();
                     self::showActDisseminations();
                     self::showPublicationList();
-                    if(isExtensionEnabled('Reporting')){
-                        self::showProjectRequests();
-                    }
                     break;
             }
         }
@@ -106,9 +103,6 @@ function showDiv(div_id, details_div_id){
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>";
-                if(isExtensionEnabled('Reporting')){
-                    $this->html .= "<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table8'><span class='tocnumber'>4.7</span> <span class='toctext'>Table 8: Project Budget Requests</span></a></li>";
-                }
                 $this->html .= "</ul>
             </li>
             </ul>
@@ -292,88 +286,6 @@ EOF;
             </script>
 EOF;
         $this->html .= $html .  $dialog_js ;   
-    }
-    
-    function showProjectRequests(){
-        ini_set("memory_limit","256M");
-        $html = "";
-        $allProjects = Project::getAllProjectsEver();
-        $table = "<table cellpadding='3' frame='box' rules='all'><tr><th>&nbsp;</th>";
-        for($y=$this->startYear+1;$y<=$this->endYear-1;$y++){
-            $table .= "<th colspan='3'>$y</th>";
-        }
-        $table .= "<th colspan='3'>".($this->startYear+1)." - ".($this->endYear-1)."</th></tr>";
-        $table .= "<tr><th>Project</th>";
-        for($y=$this->startYear+1;$y<=$this->endYear-1;$y++){
-            $table .= "<th>".NI."</th>";
-            $table .= "<th>Total</th>";
-        }
-        $table .= "<th>".NI."</th>";
-        $table .= "<th>Total</th>";
-        $table .= "</tr>";
-        $overallNITotals = array();
-        $overallTotals = array();
-        foreach($allProjects as $project){
-            if($project->getPhase() == 1 && $project->getStatus() == "Ended"){
-                $niTotals = array();
-                for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-                    $niTotals[$y] = array();
-                    $people = array();
-                    foreach($project->getAllPeopleDuring(NI, $y."-04-01", ($y+1)."-03-31") as $person){
-                        if(!isset($people[$person->getId()])){
-                            $budget = $person->getRequestedBudget($y);
-                            if($budget != null){
-                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->limit(22, 1);
-                                if($b->nCols() > 0 && $b->nRows() > 0){
-                                    $niTotals[$y][] = $b;
-                                    $people[$person->getId()] = true;
-                                }
-                            }
-                        }
-                    }
-                }
-                $niSums = array();
-                foreach($niTotals as $year => $budgets){
-                    $joined = Budget::join_tables($budgets);
-                    $niSums[] = $joined->sum()->xls[0][0]->getValue();
-                }
-                $niTotalTotal = 0;
-                $totalTotal = 0;
-                $table .= "<tr><td><b>{$project->getName()}</b></td>";
-                for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-                    $niTotal = $niSums[$y-$this->startYear];
-                    $total = $niSums[$y-$this->startYear];
-                    $table .= "<td align='right'>\$".number_format(intval($niTotal), 2)."</td>
-                               <td align='right'>\$".number_format(intval($total), 2)."</td>";
-                    $niTotalTotal += $niTotal;
-                    $totalTotal += $total;
-                    
-                    @$overallNITotals[$y] += $niTotal;
-                    @$overallTotals[$y] += $total;
-                }
-                $table .= "<td align='right'>\$".number_format($niTotalTotal, 2)."</td>
-                           <td align='right'>\$".number_format($totalTotal, 2)."</td></tr>";
-            }
-        }
-        $niTotalTotal = 0;
-        $totalTotal = 0;
-        $table .= "<tr><td><b>Total</b></td>";
-        for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-            $niTotal = @$overallNITotals[$y];
-            $total = @$overallNITotals[$y];
-            $table .= "<td align='right'>\$".number_format(intval($niTotal), 2)."</td>
-                       <td align='right'>\$".number_format(intval($total), 2)."</td>";
-            $niTotalTotal += $niTotal;
-            $totalTotal += $total;
-        }
-        $table .= "<td align='right'>\$".number_format(intval($niTotalTotal), 2)."</td>
-                   <td align='right'>\$".number_format(intval($totalTotal), 2)."</td></tr>";
-        $table .= "</table>";
-        
-        $this-> html .= <<<EOF
-            <a id='Table8'></a><h3>Table 8: Project Budget Requests</h3>
-            $table
-EOF;
     }
 }    
     

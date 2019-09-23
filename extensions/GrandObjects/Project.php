@@ -1714,51 +1714,6 @@ EOF;
         return $alloc;
     }
     
-    /**
-     * Returns the allocated Budget for this Project
-     * @param integer $year The allocation year
-     * @return Budget A new allocated Budget
-     */
-    function getAllocatedBudget($year){
-        global $config;
-
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_ALLOC;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
-    }
-    
-    function getRequestedBudget($year, $role='all'){
-        global $config;
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_UPLOAD;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
-    }
 }
 
 ?>

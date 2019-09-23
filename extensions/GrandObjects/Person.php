@@ -616,7 +616,7 @@ class Person extends BackboneModel {
     
     /**
      * Returns all the People who currently have at least the Staff role
-     * @return array The People who currently have at least the Staff fole
+     * @return array The People who currently have at least the Staff role
      */
     static function getAllStaff(){
         self::generateAllPeopleCache();
@@ -2334,15 +2334,6 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
             $this->roles = array();
-            /*if($this->isProjectLeader()){
-                $this->roles[] = new Role(array(0 => array('id' => -1,
-                                                           'user_id' => $this->id,
-                                                           'role' => PL,
-                                                           'title' => '',
-                                                           'start_date' => '0000-00-00 00:00:00',
-                                                           'end_date' => '0000-00-00 00:00:00',
-                                                           'comment' => '')));
-            }*/
             if($this->isThemeLeader()){
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
@@ -3905,19 +3896,6 @@ class Person extends BackboneModel {
                         $papersArray[] = $p;
                     }
                 }
-                /*$dates = $hqp->getSupervisorDates($this);
-                foreach($dates as $date){
-                    if($date['end'] == '0000-00-00 00:00:00'){
-                        $date['end'] = '2100-01-01 00:00:00';
-                    }
-                    $ps = $hqp->getPapersAuthored($category, $date['start'], $date['end'], false, ($grand=='grand'));
-                    foreach($ps as $p){
-                        if(!isset($processed[$p->getId()])){
-                            $processed[$p->getId()] = true;
-                            $papersArray[] = $p;
-                        }
-                    }
-                }*/
             }
         }
         if(isset(self::$authorshipCache[$this->id])){
@@ -3976,7 +3954,6 @@ class Person extends BackboneModel {
         $papers = array();
         if($includeHQP && $config->getValue("includeHQPProducts")){
             foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
-                // Probably need to add $dates = $hqp->getSupervisorDates($this); like in the previous function
                 $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
@@ -4415,89 +4392,6 @@ class Person extends BackboneModel {
             }
         }
         return $alloc;
-    }
-    
-    /**
-     * Returns the allocated Budget for this Person for the given year
-     * @param int $year The reporting year that the budget was requested
-     * @return Budget The allocated Budget for this Person for the given year
-     */
-    function getAllocatedBudget($year){
-        global $wgServer,$wgScriptPath;
-        return $this->getRequestedBudget($year, 'RES_ALLOC_BUDGET');
-    }
-    
-    /**
-     * Returns the requested Budget for this Person for the given year
-     * @param int $year The reporting year that the budget was requested
-     * @param int $type Can be either RES_BUDGET or RES_ALLOC_BUDGET
-     * @return Budget The requested Budget for this Person for the given year
-     */
-    function getRequestedBudget($year, $type='RES_BUDGET'){
-        global $wgServer,$wgScriptPath, $reporteeId;
-        if($type == 'RES_BUDGET'){
-            $index = 'r'.$year;
-        }
-        else{
-            $index = 's'.$year;
-        }
-        $uid = $this->id;
-       
-        $blob_type=BLOB_EXCEL;
-        $rptype = 'RP_RESEARCHER';
-        $section = $type;
-        $item = 0;
-        $subitem = 0;
-        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-        $budget_blob = new ReportBlob($blob_type, $year, $uid, 0);
-        $budget_blob->load($rep_addr);
-        $lastChanged = $budget_blob->getLastChanged();
-        $fileName = CACHE_FOLDER."personBudget{$this->id}_$index";
-        if(Cache::exists($fileName)){
-            $contents = Cache::fetch($fileName);
-            if(strcmp($contents[0], $lastChanged) == 0){
-                return $contents[1];
-            }
-        }
-        if(file_exists($fileName)){
-            // Check file cache as backup
-            $contents = unserialize(implode("", gzfile($fileName)));
-            if(strcmp($contents[0], $lastChanged) == 0){
-                Cache::store($fileName, $contents);
-                return $contents[1];
-            }
-        }
-        $data = $budget_blob->getData();
-        if (! empty($data)) {
-            if($year != 2010 && $type == 'RES_BUDGET'){
-                $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-            }
-            else if($year == 2010 && $type == 'RES_BUDGET'){
-                $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
-            }
-            else {
-                if($type == 'RES_ALLOC_BUDGET' && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-                }
-                else{
-                    $budget = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-                }
-            }
-            if($budget->nRows()*$budget->nCols() > 1){
-                $budget->xls[0][1]->setValue($this->getNameForForms());
-            }
-            $contents = array($lastChanged, $budget);
-            Cache::store($fileName, $contents);
-            if(is_writable(CACHE_FOLDER)){
-                $zp = gzopen($fileName, "w9");
-                gzwrite($zp, serialize($contents));
-                gzclose($zp);
-            }
-            return $budget;
-        }
-        else{
-            return null;
-        }
     }
     
     /**
