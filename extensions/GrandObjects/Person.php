@@ -4562,30 +4562,6 @@ class Person extends BackboneModel {
         }
         return $subs;
     }
-
-    /**
-     * Returns the allocation for this Person for year $year
-     * @param string $year The allocation year to use
-     * @return array The allocation information
-     */
-    function getAllocation($year) {
-        $allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
-
-        if (!is_numeric($year)) {
-            return $allocation;
-        }
-
-        $query = "SELECT * FROM grand_review_results WHERE user_id = '{$this->id}' AND year='{$year}'";
-        $res = DBFunctions::execSQL($query);
-
-        if (count($res) > 0) {
-            $allocation['allocated_amount'] = $res[0]['allocated_amount'];
-            $allocation['overall_score'] = $res[0]['overall_score'];
-            $allocation['email_sent'] = $res[0]['email_sent'];
-        }
-        
-        return $allocation;
-    }
     
     /**
      * Returns whether or not this Person is the author of the given Product
