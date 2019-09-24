@@ -4639,45 +4639,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether or not this Person has the specified reporting ticket
-     * @param mised $project The report's Project (can also be an id or name)
-     * @param string $year The year of the report
-     * @param string $reportType The type of report
-     * @param string $ticket The ticket string
-     * @return boolean Whether or not this Person has the specified reporting ticket
-     */
-    function hasReportingTicket($project, $year, $reportType, $ticket){
-        $year = str_replace("'", "", $year);
-        $ticket = str_replace("'", "", $ticket);
-        if(!($project instanceof Project)){
-            if(is_numeric($project)){
-                $project = Project::newFromId($project);
-            }
-            else{
-                $project = Project::newFromName($project);
-            }
-            if($project == null){
-                $project = new Project(array());
-                $project->id = 0;
-            }
-        }
-        $sql = "SELECT *
-                FROM `grand_reporting_year_ticket`
-                WHERE `year` = '$year'
-                AND `report_type` = '$reportType'
-                AND `ticket` = '$ticket'
-                AND `user_id` = '{$this->id}'
-                AND `project_id` = '{$project->getId()}'
-                AND `expires` >= CURRENT_TIMESTAMP
-                LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        return false;
-    }
-    
-    /**
      * Returns the birth date of this Person
      * @return string The birth date of this Person
      */
