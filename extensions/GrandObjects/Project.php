@@ -1088,30 +1088,6 @@ EOF;
         return $ret;
     }
     
-    function getLeadersHistory(){
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getLeadersHistory() as $leader){
-                    $ret[$leader->getId()] = $leader;
-                }
-            }
-        }
-        $sql = "SELECT r.user_id
-                FROM grand_roles r, grand_role_projects rp, mw_user u
-                WHERE r.id = rp.role_id
-                AND rp.project_id = '{$this->id}'
-                AND r.role = '".PL."'
-                AND u.user_id = r.user_id
-                AND u.deleted != '1'";
-        $data = DBFunctions::execSQL($sql);
-        foreach ($data as &$row){
-            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
-        return $ret;
-    }
-    
     /**
      * Returns whether or not the logged in user can edit this project
      * @return boolean Whether or not the logged in user can edit this project
