@@ -1065,7 +1065,7 @@ class Person extends BackboneModel {
                                               array('user_id' => EQ($this->getId())));
                 if($candidate[0]['candidate'] != $this->candidate){
                     if(!$this->candidate){
-                        Notification::addNotification($me, Person::newFromId(0), "Candidate Changed", "<b>{$this->getNameForForms()}</b> is no longer <b>Candidate</b>", "{$this->getUrl()}");
+                        Notification::addNotification($me, Person::newFromId(0), "Candidate Changed", "<b>{$this->getNameForForms()}</b> is no longer a <b>Candidate</b>", "{$this->getUrl()}");
                     }
                     else{
                         Notification::addNotification($me, Person::newFromId(0), "Candidate Changed", "<b>{$this->getNameForForms()}</b> is now a <b>Candidate</b>", "{$this->getUrl()}");
