@@ -1416,19 +1416,17 @@ class Paper extends BackboneModel{
     function getCompleteness(){
         $noVenue = $noPublisher = $noPages = false;
         $completeness = array("venue"=>true, 'pages'=>true, 'publisher'=>true);
-
-        $data = $this->getData();
         $vn = $this->getVenue();
         if($this->getType() == "Proceedings Paper" && $vn == ""){
             $completeness['venue'] = false;
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtil::get_string($data, 'pages');
+            $pg = $this->getData('pages');
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtil::get_string($data, 'publisher', '');
+            $pb = $this->getData('publisher');
             if($pb == ''){
                 $completeness['publisher'] = false;
             }
