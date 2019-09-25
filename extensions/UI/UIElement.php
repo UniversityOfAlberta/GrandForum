@@ -31,9 +31,12 @@ initValidations();
  * as well as simple validation checks
  */
  
-require_once("UIElementArray.php");
-require_once("UIValidation.php");
-
+define('VALIDATION_NEGATION', true);
+define('VALIDATION_POSITIVE', false);
+define('VALIDATION_WARNING', true);
+define('VALIDATION_ERROR', false);
+ 
+autoload_register('UI');
 autoload_register('UI/Arrays');
 autoload_register('UI/Elements');
 autoload_register('UI/Validations');
