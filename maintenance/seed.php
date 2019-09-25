@@ -114,7 +114,6 @@ Cache::delete("*", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_universities` SELECT * FROM `{$config->getValue('dbName')}`.`grand_universities`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_provinces` SELECT * FROM `{$config->getValue('dbName')}`.`grand_provinces`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_positions` SELECT * FROM `{$config->getValue('dbName')}`.`grand_positions`", true);
-DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_disciplines_map` SELECT * FROM `{$config->getValue('dbName')}`.`grand_disciplines_map`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_partners` SELECT * FROM `{$config->getValue('dbName')}`.`grand_partners`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_page` SELECT * FROM `{$config->getValue('dbName')}`.`mw_page` WHERE page_id < 10", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_revision` SELECT * FROM `{$config->getValue('dbName')}`.`mw_revision` WHERE rev_page < 10", true);
