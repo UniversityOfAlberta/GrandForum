@@ -26,7 +26,6 @@ class ProjectLeaderRole extends AbstractMigration
         foreach($output as $out){
             echo $out."\n";
         }
-        $this->table('grand_project_leaders')->drop()->save();
     }
 
     /**
