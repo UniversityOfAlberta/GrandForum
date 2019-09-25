@@ -16,7 +16,6 @@ class Person extends BackboneModel {
     static $namesCache = array();
     static $idsCache = array();
     static $allocationsCache = array();
-    static $disciplineMap = array();
     static $allPeopleCache = array();
 
     var $user = null;
@@ -457,21 +456,6 @@ class Person extends BackboneModel {
                               "position"   => $row['position'],
                               "date"       => $row['end_date']);
                 }
-            }
-        }
-    }
-    
-    /**
-     * Caches the resultset of the disciplines map
-     */
-    static function generateDisciplineMap(){
-        if(empty(self::$disciplineMap)){
-            $sql = "SELECT m.department, d.discipline
-                    FROM `grand_disciplines_map` m, `grand_disciplines` d
-                    WHERE m.discipline = d.id";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                self::$disciplineMap[strtolower($row['department'])] = $row['discipline'];
             }
         }
     }
@@ -2157,39 +2141,6 @@ class Person extends BackboneModel {
             }
         }
         return $array;
-    }
-    
-    /**
-     * Returns the discipline of this Person
-     * @return string The name of the discipline that this Person belongs to
-     */
-    function getDiscipline(){
-        self::generateDisciplineMap();
-        $dept = strtolower($this->getDepartment());
-        if(isset(self::$disciplineMap[$dept])){
-            return self::$disciplineMap[$dept];
-        }
-        return "Other";
-    }
-    
-    /**
-     * Returns the discipline of this Person during the given start and end dates
-     * @param string $startRange The start date to look at
-     * @param string $endRange The end date to look at
-     * @param boolean $checkLater Whether or not to check the current Discipline if the range specified does not return any results
-     * @return string The name of the discipline that this Person belongs to during the specified dates
-     */
-    function getDisciplineDuring($startRange, $endRange, $checkLater=false){
-        self::generateDisciplineMap();
-        $university = $this->getUniversityDuring($startRange, $endRange);
-        if($checkLater && $university['department'] == "" || $university['university'] == ""){
-            $university = $this->getUniversity();
-        }
-        $dept = strtolower($university['department']);
-        if(isset(self::$disciplineMap[$dept])){
-            return self::$disciplineMap[$dept];
-        }
-        return "Other";
     }
     
     /**

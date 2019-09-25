@@ -4,7 +4,6 @@ autoload_register('Reporting/AdminVisualizations/Tabs');
 
 $wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
 $wgHooks['UnknownAction'][] = 'AdminUniTreeTab::getAdminUniTreeData';
-$wgHooks['UnknownAction'][] = 'AdminDiscTreeTab::getAdminDiscTreeData';
 $wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
 $wgHooks['UnknownAction'][] = 'AdminUniversityMapTab::getAdminUniversityMapData';
 $wgHooks['UnknownAction'][] = 'HQPPromotionsTab::getHQPPromotionsData';
@@ -31,7 +30,6 @@ class AdminVisualizations extends SpecialPage{
         $tabbedPage = new TabbedPage("adminVis");
         $tabbedPage->addTab(new AdminChordTab());
         $tabbedPage->addTab(new AdminUniTreeTab());
-        $tabbedPage->addTab(new AdminDiscTreeTab());
         $tabbedPage->addTab(new AdminProjTreeTab());
         $tabbedPage->addTab(new AdminUniversityMapTab());
         $tabbedPage->addTab(new HQPPromotionsTab());
