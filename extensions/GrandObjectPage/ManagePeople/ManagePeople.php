@@ -58,7 +58,6 @@ class ManagePeople extends BackbonePage {
                      'ManagePeopleEditUniversitiesView',
                      'ManagePeopleEditRelationsView',
                      'ManagePeopleEditSubRolesView',
-                     'ManagePeopleEditProjectLeadersView',
                      'ManagePeopleEditThemesView');
     }
     

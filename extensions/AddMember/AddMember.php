@@ -152,7 +152,7 @@ class AddMember extends SpecialPage{
             $roles = array();
             if($req_user->getRoles() != null){
                 foreach($req_user->getRoles() as $role){
-                    $roles[] = $role->getRole();
+                    $roles[$role->getRole()] = $role->getRole();
                 }
             }
             $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>

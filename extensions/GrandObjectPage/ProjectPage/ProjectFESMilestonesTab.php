@@ -293,7 +293,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#schedule'));
                                 $(this).dialog('close');
-                                $('input[value=\"Save Schedule\"]').click();
+                                $('button[value=\"Save Schedule\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
@@ -312,7 +312,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                                 $('#addFESMilestoneDialog').remove();
                                 $(this).parent().prependTo($('#schedule'));
                                 $(this).dialog('close');
-                                $('input[value=\"Save Schedule\"]').click();
+                                $('button[value=\"Save Schedule\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
@@ -665,7 +665,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 
                 $('#addFESMilestone').click(function(){
                     $('input[name=new_milestone_title]').val('New Milestone');
-                    $('input[value=\"Save Schedule\"]').click();
+                    $('button[value=\"Save Schedule\"]').click();
                 });
                 
                 var clickFn = function(){

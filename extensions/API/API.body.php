@@ -120,7 +120,6 @@ class APIRequest{
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
 		$this->addAction('User Accounts', 'addUserRequest', 'RequestUserAPI');
-		$this->addAction('User Accounts', 'addProjectLeader', 'AddProjectLeaderAPI');
 		$this->addAction('User Accounts', 'addThemeLeader', 'AddThemeLeaderAPI');
 		$this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
 		$this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');

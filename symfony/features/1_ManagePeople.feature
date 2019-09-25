@@ -2,6 +2,74 @@ Feature: Manage People
     In order to edit user's roles/projects/relations/universities
     As a User I need to be able to request role/project changes
     As an Admin I need to be able to accept role/project changes
+        
+    Scenario: Checking Admin allowedRoles
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should see "Manager"
+        When I log "allowedRoles" I should see "Admin"
+        
+    Scenario: Checking Manager allowedRoles
+        Given I am logged in as "Manager.User1" using password "Manager.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should see "Manager"
+        When I log "allowedRoles" I should not see "Admin"
+        
+    Scenario: Checking Staff allowedRoles
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I log "allowedRoles" I should see "PL"
+        When I log "allowedRoles" I should see "Staff"
+        When I log "allowedRoles" I should not see "Manager"
+        When I log "allowedRoles" I should not see "Admin"
+        
+    Scenario: Checking PL allowedRoles and allowedProjects
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I log "allowedRoles" I should see "CI"
+        When I log "allowedRoles" I should see "AR"
+        When I log "allowedRoles" I should see "PS"
+        When I log "allowedRoles" I should not see "PL"
+        When I log "allowedProjects" I should see "Phase2Project1"
+        When I log "allowedProjects" I should not see "Phase2Project2"
+        
+    Scenario: Checking NI allowedRoles
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I log "allowedRoles" I should see "HQP"
+        When I log "allowedRoles" I should see "External"
+        When I log "allowedRoles" I should see "AR"
+        When I log "allowedRoles" I should see "CI"
+        When I log "allowedRoles" I should not see "PL"
+        
+    Scenario: Checking HQP allowedRoles
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I log "allowedRoles" I should see "HQP"
+        When I log "allowedRoles" I should not see "External"
+        When I log "allowedRoles" I should not see "PS"
+        
+    Scenario: Checking HQP-Candidate allowedRoles
+        Given I am logged in as "HQP-Candidate.User1" using password "HQP-Candidate.Pass1"
+        When I log "allowedRoles" I should not see "HQP"
+        
+    Scenario: Checking Inactive allowedRoles
+        Given I am logged in as "Inactive.User1" using password "Inactive.Pass1"
+        When I log "allowedRoles" I should not see "HQP"
+
+    Scenario: PL adding NI to project
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I follow "Manage People"
+        And I press "Edit Existing Member"
+        And I select "NI User5" from "select"
+        And I click "Add"
+        And I wait "1000"
+        And I fill in "Search:" with "NI User5"
+        And I click by css "#editRoles"
+        And I select "Phase2Project1" from "selectedProject"
+        And I click by css "#addProject"
+        And I press "Save"
+        And I wait "1000"
+        When I go to "index.php/Phase2Project1:Main"
+        Then I should see "User5, NI"
 
     Scenario: Staff Making HQP a candidate
         Given I am logged in as "Staff.User1" using password "Staff.Pass1"
@@ -62,14 +130,12 @@ Feature: Manage People
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage People"
         Then I should not see "Sub-Roles"
-        And I should not see "Project Leadership"
         And I should not see "Theme Leadership"
         
     Scenario Outline: Admin users should see Admin editing options
         Given I am logged in as <user> using password <pass>
         When I follow "Manage People"
         Then I should see "Sub-Roles"
-        And I should see "Project Leadership"
         And I should see "Theme Leadership"
         
         Examples:
@@ -81,23 +147,27 @@ Feature: Manage People
     Scenario: Admin Adding PL (Make sure PL is also added to project, and subscribed to mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "Manage People"
-        And I fill in "Search:" with "NI User3"
-        And I click by css "#editProjectLeadership"
-        And I press "Add Project"
-        And I select "Phase2Project5" from "name"
+        And I fill in "Search:" with "PL User3"
+        And I click by css "#editRoles"
+        And I press "Add Role"
+        And I select "PL" from "name"
+        Then I should see "There should be a project associated with this role"
+        And I select "Phase2Project5" from "selectedProject"
+        And I click by css "#addProject"
+        Then I should not see "There should be a project associated with this role"
         And I press "Save"
         And I wait "1000"
         When I go to "index.php/Phase2Project5:Main"
-        Then I should see "User3, NI"
-        When I go to "index.php/CI:NI.User3?tab=projects"
+        Then I should see "User3, PL"
+        When I go to "index.php/PL:PL.User3?tab=projects"
         Then I should see "Phase2Project5"
-        And "ni.user3@behat-test.com" should be subscribed to "test-leaders"
+        And "pl.user3@behat-test.com" should be subscribed to "test-leaders"
         
     Scenario: Admin Removing PL (Make sure that PL is also removed from the mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "Manage People"
-        And I fill in "Search:" with "NI User3"
-        And I click by css "#editProjectLeadership"
+        And I fill in "Search:" with "PL User3"
+        And I click by css "#editRoles"
         And I click by css "input[name=deleted]"
         And I press "Save"
         And I wait "1000"

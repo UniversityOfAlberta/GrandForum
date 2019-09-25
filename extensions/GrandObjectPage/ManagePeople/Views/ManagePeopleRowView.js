@@ -270,56 +270,7 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editSubRoles = new ManagePeopleEditSubRolesView({model: this.model.subRoles,
                                                               el: this.subRolesDialog});
     },
-    
-    openProjectLeadersDialog: function(){
-        if(this.projectLeadersDialog == null){
-            this.projectLeadersDialog = this.$("#projectLeadershipDialog").dialog({
-	            autoOpen: false,
-	            modal: true,
-	            show: 'fade',
-	            resizable: false,
-	            draggable: false,
-	            width: 800,
-	            position: {
-                    my: "center bottom",
-                    at: "center center"
-                },
-	            open: function(){
-	                $("html").css("overflow", "hidden");
-	            },
-	            beforeClose: function(){
-	                $("html").css("overflow", "auto");
-	                this.editProjectLeaders.stopListening();
-	                this.editProjectLeaders.undelegateEvents();
-	                clearInterval(this.editProjectLeaders.interval);
-	                this.editProjectLeaders.interval = null;
-	            }.bind(this),
-	            buttons: {
-	                "+": { 
-	                    text: "Add Project", 
-	                    click: function(e){
-	                        this.editProjectLeaders.addProject();
-	                    }.bind(this),
-	                    disabled: (allowedProjects.length == 0),
-	                    style: "float: left;"
-	                },
-	                "Save": function(e){
-	                    this.editProjectLeaders.saveAll();
-                        this.projectLeadersDialog.dialog('close');
-	                }.bind(this),
-	                "Cancel": function(){
-	                    this.projectLeadersDialog.dialog('close');
-	                }.bind(this)
-	            }
-	        });
-        }
-        this.projectLeadersDialog.empty();
-        this.projectLeadersDialog.dialog('open');
-        this.editProjectLeaders = new ManagePeopleEditProjectLeadersView({model: this.model.leaderships, 
-                                                                          person:this.model, 
-                                                                          el: this.projectLeadersDialog});
-    },
-    
+
     openThemeLeadersDialog: function(){
         if(this.themeLeadersDialog == null){
             this.themeLeadersDialog = this.$("#themeLeadershipDialog").dialog({
@@ -390,7 +341,6 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog",
         "click #editSubRoles": "openSubRolesDialog",
-        "click #editProjectLeadership": "openProjectLeadersDialog",
         "click #editThemeLeadership": "openThemeLeadersDialog"
     },
     

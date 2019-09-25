@@ -412,6 +412,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});');
     }
     
+    /**
+    * @When /^I log "([^"]*)" I should see "([^"]*)"$/
+    */
+    public function iLogIShouldSee($js, $text)
+    {
+        $value = $this->getSession()->evaluateScript('return '.$js);
+        $json = json_encode($value);
+        assertTrue((strpos($json, $text) !== false));
+    }
+    
+    /**
+    * @When /^I log "([^"]*)" I should not see "([^"]*)"$/
+    */
+    public function iLogIShouldNotSee($js, $text)
+    {
+        $value = $this->getSession()->evaluateScript('return '.$js);
+        $json = json_encode($value);
+        assertTrue((strpos($json, $text) === false));
+    }
+    
     static function listFiles($dir){
         global $config;
         $return = array();

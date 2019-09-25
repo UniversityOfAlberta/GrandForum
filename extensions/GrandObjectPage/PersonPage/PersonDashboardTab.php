@@ -18,8 +18,8 @@ class PersonDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
-            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
-            $('input[value=\"Save Dashboard\"]').css('display', 'none');
+            $('button[value=\"Edit Dashboard\"]').css('display', 'none');
+            $('button[value=\"Save Dashboard\"]').css('display', 'none');
         });";
     }
     
@@ -61,7 +61,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                 $('#ajax_dashboard').html(response);
             });
             _.defer(function(){
-                $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+                $('button[value=\"Edit Dashboard\"]').css('display', 'none');
             });</script>";
         }
         return $this->html;
@@ -98,7 +98,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
-                $('input[value=\"Save Dashboard\"]').css('display', 'none');
+                $('button[value=\"Save Dashboard\"]').css('display', 'none');
             });
         </script>";
     }
