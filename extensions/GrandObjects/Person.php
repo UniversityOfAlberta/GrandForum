@@ -15,7 +15,6 @@ class Person extends BackboneModel {
     static $authorshipCache = array();
     static $namesCache = array();
     static $idsCache = array();
-    static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
 
@@ -64,10 +63,8 @@ class Person extends BackboneModel {
     var $degreeStartDate;
     var $movedOn;
     var $thesis;
-    var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
-    var $coordCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
@@ -4362,40 +4359,6 @@ class Person extends BackboneModel {
                     else{
                         $alloc += $row['amount'];
                     }
-                }
-            }
-        }
-        else {
-            // Check if there was an allocated budget uploaded for this Person
-            $allocated = $this->getAllocatedBudget($year-1);
-            if($allocated != null){
-                if($project == null){
-                    if($byProject){
-                        $projects = $allocated->copy()->rasterize()->select(V_PROJ, array(".+"))->where(V_PROJ);
-                        
-                        
-                        foreach($projects->xls as $rowN => $row){
-                            foreach($row as $colN => $cell){
-                                $projectName = $cell->getValue();
-                                $proj = Project::newFromName($projectName);
-                                if($proj != null){
-                                    $alloc[$proj->getId()] = str_replace(",", "", 
-                                                             str_replace("$", "", $allocated->copy()->rasterize()->select(V_PROJ, array("$projectName"))->where(COL_TOTAL)->toString()));
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
-                    }
-                }
-                else {
-                    $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL)->toString();
-                }
-                if(!$byProject){
-                    $alloc = str_replace("$", "", $alloc);
-                    $alloc = str_replace(",", "", $alloc);
-                    $alloc = intval($alloc);
                 }
             }
         }
