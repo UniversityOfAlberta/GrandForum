@@ -71,11 +71,10 @@ function addUserUniversity($name, $uni, $dept, $pos){
 }
 
 function addProjectLeader($name, $project, $coLead='False', $manager='False'){
-    $_POST['user'] = $name;
-    $_POST['role'] = $project;
-    $_POST['co_lead'] = $coLead;
-    $_POST['manager'] = $manager;
-    APIRequest::doAction('AddProjectLeader', true);
+    $x = new stdClass();
+    $x->name = $project;
+    $_POST['projects'] = array($x);
+    addUserRole($name, PL);
 }
 
 function addThemeLeader($name, $theme, $coLead='False', $coord='False'){
@@ -115,7 +114,6 @@ Cache::delete("*", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_universities` SELECT * FROM `{$config->getValue('dbName')}`.`grand_universities`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_provinces` SELECT * FROM `{$config->getValue('dbName')}`.`grand_provinces`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_positions` SELECT * FROM `{$config->getValue('dbName')}`.`grand_positions`", true);
-DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_disciplines_map` SELECT * FROM `{$config->getValue('dbName')}`.`grand_disciplines_map`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_partners` SELECT * FROM `{$config->getValue('dbName')}`.`grand_partners`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_page` SELECT * FROM `{$config->getValue('dbName')}`.`mw_page` WHERE page_id < 10", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_revision` SELECT * FROM `{$config->getValue('dbName')}`.`mw_revision` WHERE rev_page < 10", true);
@@ -209,6 +207,7 @@ User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"
 User::createNew("Staff.User1", array('password' => User::crypt("Staff.Pass1"), 'email' => "staff.user1@behat-test.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
 User::createNew("PL.User2", array('password' => User::crypt("PL.Pass2"), 'email' => "pl.user2@behat-test.com"));
+User::createNew("PL.User3", array('password' => User::crypt("PL.Pass3"), 'email' => "pl.user3@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
 User::createNew("TC.User1", array('password' => User::crypt("TC.Pass1"), 'email' => "tc.user1@behat-test.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
@@ -219,13 +218,16 @@ User::createNew("NI.User1", array('password' => User::crypt("NI.Pass1"), 'email'
 User::createNew("NI.User2", array('password' => User::crypt("NI.Pass2"), 'email' => "ni.user2@behat-test.com"));
 User::createNew("NI.User3", array('password' => User::crypt("NI.Pass3"), 'email' => "ni.user3@behat-test.com"));
 User::createNew("NI.User4", array('password' => User::crypt("NI.Pass4"), 'email' => "ni.user4@behat-test.com"));
+User::createNew("NI.User5", array('password' => User::crypt("NI.Pass5"), 'email' => "ni.user5@behat-test.com"));
 User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat-test.com"));
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat-test.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat-test.com"));
 User::createNew("HQP.User4", array('password' => User::crypt("HQP.Pass4"), 'email' => "hqp.user4@behat-test.com"));
+User::createNew("HQP-Candidate.User1", array('password' => User::crypt("HQP-Candidate.Pass1"), 'email' => "hqp-candidate.user1@behat-test.com"));
 User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat-test.com"));
 User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat-test.com"));
 User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat-test.com"));
+User::createNew("Inactive.User1", array('password' => User::crypt("Inactive.User1"), 'email' => "Inactive.User1@behat-test.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
@@ -239,6 +241,10 @@ DBFunctions::insert('mw_user_groups',
                     array('ug_user' => 1,
                           'ug_group' => 'sysop'));
 $wgUser = User::newFromName("Admin.User1");
+
+DBFunctions::update('mw_user',
+                    array('candidate' => 1),
+                    array('user_name' => 'HQP-Candidate.User1'));
 
 createProject("Phase1Project1", "Phase 1 Project 1", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
 createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
@@ -268,10 +274,12 @@ addUserRole("NI.User1", CI);
 addUserRole("NI.User2", CI);
 addUserRole("NI.User3", CI);
 addUserRole("NI.User4", CI);
+addUserRole("NI.User5", CI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
 addUserRole("HQP.User4", HQP);
+addUserRole("HQP-Candidate.User1", HQP);
 addUserRole("HQP.ToBeInactivated", HQP);
 
 addUserProject("NI.User1", "Phase1Project1");

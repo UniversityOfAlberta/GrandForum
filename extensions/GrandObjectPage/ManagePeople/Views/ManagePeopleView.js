@@ -25,7 +25,7 @@ ManagePeopleView = Backbone.View.extend({
         var searchStr = "";
         var order = [4, 'asc'];
         if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
-            order = [8, 'asc'];
+            order = [7, 'asc'];
         }
         
         if(this.table != undefined){

@@ -3,9 +3,6 @@ Feature: Search
     As a User
     I need to be able to type into the global search and get relevant results
     
-    Scenario: Indexing Expert Search
-        Given I index expert search
-    
     Scenario: NI searches for User
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I fill in "globalSearchInput" with "NI"
@@ -34,11 +31,6 @@ Feature: Search
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I fill in "globalSearchInput" with "Hello World"
         Then I wait until I see "Publication with Tags" up to "10000"
-        
-    Scenario: NI searches for person by expertise
-        Given I am logged in as "NI.User2" using password "NI.Pass2"
-        When I fill in "globalSearchInput" with "Test1"
-        Then I wait until I see "NI User1" up to "10000"
         
     Scenario: Guest searches for HQP
         Given I am on "index.php"

@@ -1,6 +1,6 @@
 <% if(_.contains(allowedRoles, name) && (!this.person.get('candidate') || _.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0)){ %>
     <td><%= HTML.Select(this, 'name', {style: 'max-width:150px;text-overflow: ellipsis;', options: _.map(allowedRoles, function(role){ return {option: roleDefs[role], value: role} })}) %></td>
-    <td style="white-space:nowrap;">
+    <td style="white-space:nowrap;" class="projectsCell">
         <table id="projects" style="width:100%;">
 
         </table>
@@ -15,6 +15,7 @@
                 &#65291;
             </span>
         </div>
+        <div class="projError" style="display:none;"></div>
     </td>
     <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
     <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>

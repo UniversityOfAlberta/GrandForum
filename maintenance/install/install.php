@@ -37,7 +37,7 @@ function addUserProfile($name, $profile){
     $person->update();
 }
 
-function addUserRole($name, $role){
+function addUserRole($name, $role, $projects=null){
     Person::$cache = array();
     Person::$namesCache = array();
     $person = Person::newFromName($name);
@@ -45,6 +45,9 @@ function addUserRole($name, $role){
     $r->user = $person->getId();
     $r->role = $role;
     $r->startDate = date('Y-m-d 00:00:00');
+    if($projects != null){
+        $r->projects = $projects;
+    }
     $r->create();
 }
 
@@ -94,12 +97,9 @@ function addUserProject($name, $project, $role){
 }
 
 function addProjectLeader($name, $project, $coLead='False', $manager='False'){
-    $_POST['user'] = $name;
-    $_POST['role'] = $project;
-    $_POST['project'] = $project;
-    $_POST['co_lead'] = $coLead;
-    $_POST['manager'] = $manager;
-    APIRequest::doAction('AddProjectLeader', true);
+    $x = new stdClass();
+    $x->name = $project;
+    addUserRole($name, PL, array($x));
 }
 
 echo "\nInitializing Tables...";
