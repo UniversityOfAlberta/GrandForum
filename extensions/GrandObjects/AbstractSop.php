@@ -165,7 +165,7 @@ abstract class AbstractSop extends BackboneModel{
    * SOP constructor.
    * @param $data
    */
-    function SOP($data){
+    function AbstractSOP($data){
         if(count($data) > 0){
             $row = $data[0];
             $this->id = $row['id'];
@@ -181,7 +181,7 @@ abstract class AbstractSop extends BackboneModel{
             $this->disgust_score = $emotions_array['disgust'];
             $this->fear_score = $emotions_array['fear'];
             $this->joy_score = $emotions_array['joy'];
-            $this->sadness_score = $emotions_array['sadness'];            
+            $this->sadness_score = $emotions_array['sadness'];
 
             $this->readability_score = $row['readability_score'];
             $this->reading_ease = $row["reading_ease"];
@@ -202,7 +202,7 @@ abstract class AbstractSop extends BackboneModel{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-            $this->pdf = $row['pdf_data'];
+            //$this->pdf = $row['pdf_data'];
             $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);

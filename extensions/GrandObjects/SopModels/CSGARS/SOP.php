@@ -8,54 +8,6 @@ class SOP extends AbstractSop{
 
     static $hasGsmsCache = array();
 
-  /**
-   * SOP constructor.
-   * @param $data
-   */
-    function SOP($data){
-        if(count($data) > 0){
-            $row = $data[0];
-            $this->id = $row['id'];
-            $this->content = $row['content'];
-            $this->user_id = $row['user_id'];
-            $this->date_created = $row['date_created'];
-
-            $this->sentiment_val = $row['sentiment_val'];
-            $this->sentiment_type = $row['sentiment_type'];
-            $this->personality_stats = unserialize($row['personality_stats']);
-            $emotions_array = unserialize($row['emotion_stats']);
-            $this->anger_score = $emotions_array['anger'];
-            $this->disgust_score = $emotions_array['disgust'];
-            $this->fear_score = $emotions_array['fear'];
-            $this->joy_score = $emotions_array['joy'];
-            $this->sadness_score = $emotions_array['sadness'];
-
-            $this->readability_score = $row['readability_score'];
-            $this->reading_ease = $row["reading_ease"];
-            $this->ari_grade = $row["ari_grade"];
-            $this->ari_age = $row["ari_age"];
-            $this->colemanliau_grade = $row["colemanliau_grade"];
-            $this->colemanliau_age = $row["colemanliau_age"];
-            $this->dalechall_index = $row["dalechall_index"];
-            $this->dalechall_grade = $row["dalechall_grade"];
-            $this->dalechall_age = $row["dalechall_age"];
-            $this->fleschkincaid_grade = $row["fleschkincaid_grade"];
-            $this->fleschkincaid_age = $row["fleschkincaid_age"];
-            $this->smog_grade = $row["smog_grade"];
-            $this->smog_age = $row["smog_age"];
-            $this->errors = $row['errors'];
-            $this->sentlen_ave = $row['sentlen_ave'];
-            $this->wordletter_ave = $row['wordletter_ave'];
-            $this->min_age = $row['min_age'];
-            $this->word_count = $row['word_count'];
-
-            //$this->pdf = $row['pdf_data'];
-            $this->visible = $row['reviewer'];
-        }
-        $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
-    }
-
-
     function getColumns() {
         $year = ($this->year != "") ? $this->year : YEAR;
         $moreJson = array();
