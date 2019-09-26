@@ -64,6 +64,10 @@ class UpdateUserDepartmentAPI extends API{
                             array('user_id' => EQ($person->getId())));
 
         $person->getUser()->invalidateCache();
+        
+        $gsmsId = $person->getGSMS()->id;
+        Cache::delete("gsms_{$gsmsId}");
+        Cache::delete("gsms_user_{$person->getId()}");
         if(!$noEcho){
             echo "User's Department Information updated \n";
         }
