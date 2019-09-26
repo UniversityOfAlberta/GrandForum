@@ -25,8 +25,8 @@
             $('#reportTabs').hide();
             $('#reportHeader').hide();
             $('#reportBody').css('min-height',0);
-            setInterval(function(){ 
-                parent.alertsize($("body").height()); 
+            setInterval(function(){
+                //parent.alertsize($("body").height()); 
             }, 100);
             
             </script>

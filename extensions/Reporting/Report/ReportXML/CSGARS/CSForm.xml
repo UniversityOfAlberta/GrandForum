@@ -28,6 +28,30 @@
                 <h3>Applicant ID</h3>
                 <p>Please enter your 8-digit Admissions Number (beginning with '160') from your FGSR application. This number is available once you have submitted your application to FGSR.</p>
                 {$item}
+                <div id='gsmsIdError1' class='error' style='display:none;'>An ID must be provided</div>
+                <div id='gsmsIdError2' class='error' style='display:none;'>The ID entered is not in the format 160XXXXX</div>
+                <script type="text/javascript">
+                    var checkGSMSId = function(){
+                        var el = $('input[name=ApplicantID_gsmsIDCS]');
+                        if(el.val().length == 0){
+                            $('#gsmsIdError1').show();
+                            $('#gsmsIdError2').hide();
+                        }
+                        else if(el.val().length != 8 || el.val().indexOf('160') !== 0){
+                            $('#gsmsIdError1').hide();
+                            $('#gsmsIdError2').show();
+                        }
+                        else{
+                            $('#gsmsIdError1').hide();
+                            $('#gsmsIdError2').hide();
+                        }
+                    }
+                    
+                    $('input[name=ApplicantID_gsmsIDCS]').change(checkGSMSId)
+                                                         .keyup(checkGSMSId);
+                    
+                    checkGSMSId();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -76,6 +100,7 @@
         <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
             <![CDATA[
                     <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
         </ReportItem>

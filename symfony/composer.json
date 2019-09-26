@@ -1,13 +1,7 @@
 {
     "require": {
-        "phpunit/phpunit": "4.1.*",
-        "behat/behat": "2.4.*@stable",
-        "behat/mink": "1.4@stable",
-        "behat/mink-extension": "*",
         "behat/mink": "1.4.*",
-        "behat/mink-selenium2-driver": "*",
-        "robmorgan/phinx": "*",
-        "sami/sami": "*"
+        "robmorgan/phinx": "*"
     },
 
     "config": {

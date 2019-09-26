@@ -46,18 +46,18 @@ ThreadEditView = Backbone.View.extend({
         this.$(".throbber").show();
         this.$("#saveThread").prop('disabled', true);
         this.model.save(null, {
-            success: $.proxy(function(){
+            success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveThread").prop('disabled', false);
                 clearAllMessages();
                 document.location = this.model.get('url');
-            }, this),
-            error: $.proxy(function(){
+            }.bind(this),
+            error: function(){
                 this.$(".throbber").hide();
                 this.$("#saveThread").prop('disabled', false);
                 clearAllMessages();
                 addError("There was a problem saving the Thread", true);
-            }, this)
+            }.bind(this)
         });
     },
     

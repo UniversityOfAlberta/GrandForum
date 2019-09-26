@@ -41,13 +41,13 @@ ManageProductsViewRow = Backbone.View.extend({
 
         // Unselect all subprojects as well
         if(project != undefined){
-            _.each(project.get('subprojects'), $.proxy(function(sub){
+            _.each(project.get('subprojects'), function(sub){
                 var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
                 if(index != -1){
                     projects.splice(index, 1);
                     this.$("input[data-project=" + sub.id + "]").prop('checked', false);
                 }
-            }, this));
+            }.bind(this));
         }
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent

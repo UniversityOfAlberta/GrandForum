@@ -418,3 +418,88 @@ table.gsms-mini-table tr:nth-child(odd) {
 .flex-item p{
   margin-left: 20px;
 }
+
+/* Online Interview */
+.video {
+    position: relative;
+}
+
+.videoHead {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+}
+
+.videoPrev {
+    width: 100px;
+    min-width: 100px;
+    position: absolute;
+    top: 50px;
+    bottom: 4px;
+    left: 0;
+    transition: 0.2s;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222222;
+    color: #FFFFFF;
+    border-color: #000000;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    z-index: 100;
+}
+
+.videoPrev.disabled {
+    color: #888888;
+    cursor: default;
+}
+
+.videoPrev:not(.disabled):hover {
+    background: #333333;
+}
+
+.videoFrame {
+    width: auto;
+    padding-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.videoNext {
+    width: 100px;
+    min-width: 100px;
+    position: absolute;
+    top: 50px;
+    bottom: 4px;
+    right: 0;
+    transition: 0.2s;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222222;
+    color: #FFFFFF;
+    border-color: #000000;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    z-index: 100;
+}
+
+.videoNext.disabled {
+    color: #888888;
+    cursor: default;
+}
+
+.videoNext:not(.disabled):hover {
+    background: #333333;
+}

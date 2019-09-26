@@ -3,8 +3,8 @@ GsmsData = Backbone.Model.extend({
     initialize: function(){ 
     },
 
-    urlRoot: function(){
-        var url = 'index.php?action=api.gsmsdata';
+    url: function(){
+        var url = 'index.php?action=api.gsmsdata/' + this.get('user_id');
         if(this.get('year') != ''){
             url += '/' + this.get('year');
         }
@@ -16,6 +16,7 @@ GsmsData = Backbone.Model.extend({
     defaults: function() {
         return {
             id:null,
+            ois_id: "",
             review_status: null,
             applicant_number: null,
             gender: "",

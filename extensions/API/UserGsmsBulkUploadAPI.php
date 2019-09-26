@@ -47,8 +47,15 @@ class UserGsmsBulkUploadAPI extends API{
             if($in_data_array){
                 continue;
             }
+            foreach($row as $k => $cell){
+                $row[$k] = trim($cell);
+            }
             //set student
             $array_info = array();
+            if($row[11] == "Multimedia"){
+                // Ignore Multimedia rows
+                continue;
+            }
             $array_info['name'] = $student_name;
             $array_info['department'] = $row[0];
             $array_info['gsms_id'] = $row[3];

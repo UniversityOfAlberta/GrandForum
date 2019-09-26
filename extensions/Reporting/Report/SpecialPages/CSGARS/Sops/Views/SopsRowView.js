@@ -13,6 +13,20 @@ SopsRowView = Backbone.View.extend({
 
     events: {
         'click #additionalNotes': 'addNotes',
+        'change input[name=hidden]': 'changeHidden'
+    },
+    
+    changeHidden: function(){
+        if(this.$("input[name=hidden]").is(":checked")){
+            this.model.hidden = true;
+        }
+        else{
+            this.model.hidden = false;
+        }
+        this.$("#hiddenThrobber").show();
+        $.post(wgServer + wgScriptPath + '/index.php?action=api.sophidden/' + this.model.get('user_id') + '/' + this.model.get('year'), {hidden: this.model.hidden}, function(response){
+            this.$("#hiddenThrobber").hide();
+        }.bind(this));
     },
 
     addNotes: function() {

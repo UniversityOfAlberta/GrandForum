@@ -8,6 +8,7 @@ class GsmsData extends BackboneModel{
     var $id;
     var $user_id;
     var $gsms_id;
+    var $ois_id;
     var $student_id;
     var $year;
 
@@ -64,6 +65,7 @@ class GsmsData extends BackboneModel{
             $this->gender = $data[0]['gender'];
             $this->student_id = $data[0]['student_id'];
             $this->gsms_id = $data[0]['gsms_id'];
+            $this->ois_id = $data[0]['ois_id'];
             $this->applicant_number = $data[0]['applicant_number'];
             $dob = explode(" ", $data[0]['date_of_birth']);
             $this->date_of_birth = $dob[0];
@@ -131,7 +133,7 @@ class GsmsData extends BackboneModel{
 
     static function getAllVisibleGsms($year=""){
         global $wgRoleValues;
-        $dbyear = ($year != "") ? "_$year" : "";
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
         $gsms_array = array();
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(EVALUATOR)){
@@ -166,6 +168,27 @@ class GsmsData extends BackboneModel{
         $gsms->year = $year;
         return $gsms;
     }
+    
+    /**
+   * newFromId Returns an Gsms object from a given ois id
+   * @param $id
+   * @return $gsms Gsms object
+   */
+    static function newFromOisId($id, $year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        if(Cache::exists("gsms_$id{$dbyear}")){
+            $data = Cache::fetch("gsms_$id{$dbyear}");
+        }
+        else{
+            $data = DBFunctions::select(array("grand_gsms$dbyear"),
+                                        array('*'),
+                                        array('ois_id' => EQ($id)));
+            Cache::store("gsms_$id{$dbyear}", $data);
+        }
+        $gsms = new GsmsData($data);
+        $gsms->year = $year;
+        return $gsms;
+    }
 
     /**
      * Returns True if the course is saved correctly to the course table in the database
@@ -179,6 +202,7 @@ class GsmsData extends BackboneModel{
                                           '`student_id`' => $this->student_id,
                                           '`gender`' => $this->gender,
                                           '`gsms_id`' => $this->gsms_id,
+                                          '`ois_id`' => $this->ois_id,
                                           '`applicant_number`' => $this->applicant_number,
                                           '`date_of_birth`' => $this->date_of_birth." 00:00:00",
                                           '`program_name`' => $this->program_name,
@@ -235,6 +259,7 @@ class GsmsData extends BackboneModel{
                                 array('`gender`' => $this->gender,
                                       '`student_id`' => $this->student_id,
                                       '`gsms_id`' => $this->gsms_id,
+                                      '`ois_id`' => $this->ois_id,
                                       '`applicant_number`' => $this->applicant_number,
                                       '`date_of_birth`' => $this->date_of_birth." 00:00:00",
                                       '`program_name`' => $this->program_name,
@@ -272,8 +297,8 @@ class GsmsData extends BackboneModel{
                                       '`general_notes`' => $this->general_notes,
                                       '`visible`' => $this->visible),
 			     array('user_id' => EQ($this->user_id)));
-                Cache::delete("gsms_{$this->id}");
-                Cache::delete("gsms_user_{$this->user_id}");
+                Cache::delete("gsms_", true);
+                Cache::delete("gsms_user_", true);
         }
         return true;
     }
@@ -321,7 +346,9 @@ class GsmsData extends BackboneModel{
             $degrees = $this->education_history;
         }
         $json = array('id' =>$this->id,
+                  'ois_id' => $this->ois_id,
                   'user_id' =>$this->user_id,
+                  'year' => $year,
                   'status' => $this->status,
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
@@ -358,11 +385,12 @@ class GsmsData extends BackboneModel{
         foreach($reviewer_array as $reviewer){
             $person = $reviewer;
             $reviewers[] = array('id' => $person->getId(),
-                             'name' => $person->getNameForForms(),
-                             'url' => $person->getUrl(),
-                             'decision' => $sop->getAdmitResult($reviewer->getId()),
-                             'comments' => $sop->getReviewComments($reviewer->getId()),
-                             'rank' => $sop->getReviewRanking($reviewer->getId()));
+                                 'name' => $person->getNameForForms(),
+                                 'url' => $person->getUrl(),
+                                 'decision' => $sop->getAdmitResult($reviewer->getId()),
+                                 'comments' => $sop->getReviewComments($reviewer->getId()),
+                                 'rank' => $sop->getReviewRanking($reviewer->getId()),
+                                 'hidden' => $sop->getHiddenStatus($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
 
@@ -372,10 +400,11 @@ class GsmsData extends BackboneModel{
         $other_array = $student->getOtherEvaluators($year);
         foreach($other_array as $other){
             $otherReviewers[] = array('id' => $other->getId(),
-                             'name' => $other->getNameForForms(),
-                             'url' => $other->getUrl(),
-                             'decision' => $sop->getAdmitResult($other->getId()),
-                             'rank' => $sop->getReviewRanking($other->getId()));
+                                      'name' => $other->getNameForForms(),
+                                      'url' => $other->getUrl(),
+                                      'decision' => $sop->getAdmitResult($other->getId()),
+                                      'rank' => $sop->getReviewRanking($other->getId()),
+                                      'hidden' => $sop->getHiddenStatus($other->getId()));
         }
         
         $json['other_reviewers'] = $otherReviewers;

@@ -7,7 +7,7 @@
     <% } else { %>
         <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
     <% } %>
-    (<%=student_data.email %>)<br /><%= gender %>  
+    (<%=student_data.email %>)<br /><%= gender %>
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
@@ -18,9 +18,9 @@
     <%= applicant_number %><br />
   <% } %>
   <% if(student_id != 0){ %>
-    <%= student_id %>
+    <%= student_id %><br />
   <% } %>
-
+  <input type="checkbox" name="hidden" value="Hidden by me" <% if(this.model.hidden){ %> checked <% } %> /> Hidden by me <span id="hiddenThrobber" style="display:none;vertical-align:top;" class="throbber"></span>
 </td>
 
 <td style="white-space: nowrap;" id="gsms_pdf">
@@ -98,7 +98,7 @@
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <% if (reviewers[i].rank == "-1") { %>
-            <%= reviewers[i].name %> (<span style="color: red;">-1</span>)
+            <!--%= reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
             <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
         <% } %>
@@ -129,7 +129,7 @@
 <td style="white-space: nowrap;">
   <% for(var i=0; i < other_reviewers.length;i++){ %>
         <% if (other_reviewers[i].rank == "-1") { %>
-            <%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)
+            <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
             <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
         <% } %>

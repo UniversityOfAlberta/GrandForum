@@ -68,6 +68,10 @@ abstract class AbstractSop extends BackboneModel{
     function getReviewRanking() {
         return '--';
     }
+    
+    function getHiddenStatus(){
+        return false;
+    }
 
   /**
    * newFromId Returns an SOP object from a given id

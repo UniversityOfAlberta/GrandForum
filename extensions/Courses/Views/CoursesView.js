@@ -33,11 +33,11 @@ CoursesView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
-        this.sops.each($.proxy(function(p, i){
+        this.sops.each(function(p, i){
             var row = new CoursesRowView({model: p, parent: this});
             this.$("#coursesRows").append(row.$el);
             row.render();
-        }, this));
+        }.bind(this));
         this.createDataTable();
     },
     
@@ -66,16 +66,16 @@ CoursesView = Backbone.View.extend({
                 open: function(){
                     $("html").css("overflow", "hidden");
                 },
-                beforeClose: $.proxy(function(){
+                beforeClose: function(){
                     this.editDialog.view.stopListening();
                     this.editDialog.view.undelegateEvents();
                     this.editDialog.view.$el.empty();
                     $("html").css("overflow", "auto");
-                }, this),
+                }.bind(this),
                 buttons: [
                     {
                         text: "Save Course",
-                        click: $.proxy(function(){
+                        click: function(){
                         var validation = "";
                         if(validation != ""){
                             clearAllMessages("#dialogMessages");
@@ -83,10 +83,10 @@ CoursesView = Backbone.View.extend({
                             return "";
                         }
                         this.editDialog.view.model.save(null, {
-                            success: $.proxy(function(){
+                            success: function(){
                                 var product = this.editDialog.view.model;
-                            }, this),
-                            error: $.proxy(function(o, e){
+                            }.bind(this),
+                            error: function(o, e){
                                 clearAllMessages("#dialogMessages");
                                 if(e.responseText != ""){
                                     addError(e.responseText, true, "#dialogMessages");
@@ -94,17 +94,17 @@ CoursesView = Backbone.View.extend({
                                 else{
                                     addError("There was a problem saving the course", true, "#dialogMessages");
                                 }
-                            }, this)
+                            }.bind(this)
                         });
-                    }, this)
+                    }.bind(this)
                 }
             ]
             });
 
         this.addRows();
-        $(window).resize($.proxy(function(){
+        $(window).resize(function(){
             this.editDialog.dialog({height: $(window).height()*0.75});
-        }, this));
+        }.bind(this));
         return this.$el;
     }
 });

@@ -38,7 +38,7 @@ class Report extends AbstractReport{
             redirect($me->getUrl());
         }
         else if(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI)  && $_GET['action'] != "viewNotifications"){
-                redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
+            redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=CSForm");
         }
     } 
 

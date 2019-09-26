@@ -16,12 +16,12 @@ DuplicatesDialogView = Backbone.View.extend({
 	        draggable: false,
 	        show: 'fade',
 	        width: "800px",
-	        beforeClose: $.proxy(function(){
+	        beforeClose: function(){
 	            $("html").css("overflow", "auto");
-	        }, this),
+	        }.bind(this),
 	        buttons: {
-	            "Not Duplicates": $.proxy(this.notDuplicates, this),
-	            "Delete Selected": $.proxy(this.deleteSelectedProducts, this)
+	            "Not Duplicates": this.notDuplicates.bind(this),
+	            "Delete Selected": this.deleteSelectedProducts.bind(this)
 	        }
 	    });
     },
@@ -34,8 +34,8 @@ DuplicatesDialogView = Backbone.View.extend({
         }
         var duplicates = firstProduct.duplicates;
         firstProduct.save(null, {
-            success: $.proxy(function(){
-                duplicates.each($.proxy(function(duplicate){
+            success: function(){
+                duplicates.each(function(duplicate){
                     var url = wgServer + wgScriptPath + "/index.php?action=ignoreDuplicates&handler=my" + firstProduct.get('category');
                     $.post(url, {
                         id1: firstProduct.get('id'), 
@@ -46,7 +46,7 @@ DuplicatesDialogView = Backbone.View.extend({
                         return (firstProduct.get('id') != dup.get('id'));
                     }));
                     if(duplicates != undefined){
-                        duplicates.each($.proxy(function(dupe){
+                        duplicates.each(function(dupe){
                             if(dupe.get('id') != duplicate.get('id')){
                                 $.post(url, {
                                     id1: dupe.get('id'), 
@@ -60,9 +60,9 @@ DuplicatesDialogView = Backbone.View.extend({
                                     return (dupe.get('id') != dup.get('id'));
                                 }));
                             }
-                        }, this));
+                        }.bind(this));
                     }
-                }, this));
+                }.bind(this));
                 firstProduct.dirty = false;
                 firstProduct.trigger("dirty");
 
@@ -70,10 +70,10 @@ DuplicatesDialogView = Backbone.View.extend({
                     this.products.add(firstProduct);
                 }
                 this.next();
-            }, this),
-            error: $.proxy(function(){
+            }.bind(this),
+            error: function(){
                 this.next();
-            }, this)
+            }.bind(this)
         });
     },
     
@@ -90,7 +90,7 @@ DuplicatesDialogView = Backbone.View.extend({
                 }
             });
         }
-        this.$("input[type=checkbox]:checked").each($.proxy(function(i, box){
+        this.$("input[type=checkbox]:checked").each(function(i, box){
             var id = $(box).val();
             var duplicate = null;
             if(firstProduct.get('id') == id){
@@ -108,7 +108,7 @@ DuplicatesDialogView = Backbone.View.extend({
                 
                 }
             });
-        }, this));
+        }.bind(this));
         this.next();
     },
     

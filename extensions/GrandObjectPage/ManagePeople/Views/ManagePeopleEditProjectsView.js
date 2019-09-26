@@ -11,20 +11,20 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         this.projectViews = new Array();
         this.template = _.template($('#edit_projects_template').html());
         this.person.getRoles();
-        this.model.ready().then($.proxy(function(){
+        this.model.ready().then(function(){
             this.projects = this.model;
             this.listenTo(this.projects, "add", this.addRows);
             this.projects.each(function(p){
                 p.startTracking();
             });
             this.render();
-        }, this));
+        }.bind(this));
         // Reposition the dialog when the window is resized or the dialog is resized
         var dim = {w1: 0,
                    h1: 0,
                    w2: 0,
                    h2: 0};
-        this.interval = setInterval($.proxy(function(){
+        this.interval = setInterval(function(){
             if(this.$el.width() != dim.w1 ||
                this.$el.height() != dim.h1 ||
                $(window).width() != dim.w2 ||
@@ -44,14 +44,14 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
             dim.h1 = this.$el.height();
             dim.w2 = $(window).width();
             dim.h2 = $(window).height();
-	    }, this), 100);
+	    }.bind(this), 100);
     },
     
     saveAll: function(){
         var copy = this.projects.toArray();
         clearAllMessages();
         var requests = new Array();
-        _.each(copy, $.proxy(function(project){
+        _.each(copy, function(project){
             if(_.contains(allowedProjects, project.get('name')) && project.unsavedAttributes() != false){
                 if(project.get('deleted') != "true"){
                     requests.push(project.save(null));
@@ -60,7 +60,7 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
                     requests.push(project.destroy(null));
                 }
             }
-        }, this));
+        }.bind(this));
         $.when.apply($, requests).done(function(){
             addSuccess("Projects saved");
         }).fail(function(){
@@ -79,7 +79,7 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     },
     
     addRows: function(){
-        this.projects.each($.proxy(function(project, i){
+        this.projects.each(function(project, i){
             if(this.projectViews[i] == null){
                 var view = new ManagePeopleEditProjectsRowView({model: project});
                 this.$("#project_rows").append(view.render());
@@ -91,7 +91,7 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
                 }
                 this.projectViews[i] = view;
             }
-        }, this));
+        }.bind(this));
     },
     
     showCard: function(){
