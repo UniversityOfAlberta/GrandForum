@@ -34,14 +34,12 @@ $wgGroupPermissions['*']['createaccount'] = false;
 $wgExtensionFunctions[] = "initializeAccessControls";
 $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";
 
-//$wgHooks['ParserAfterTidy'][] = 'showQueryCounter';
 $wgHooks['userCan'][] = 'onUserCan';
 $wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
 $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['AbortLogin'][] = 'onAbortLogin';
 $wgHooks['TitleMoveComplete'][] = 'onTitleMoveComplete';
 $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
-$wgHooks['UnknownAction'][] = 'listStragglers';
 $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';

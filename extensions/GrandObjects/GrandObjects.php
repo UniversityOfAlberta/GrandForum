@@ -33,6 +33,7 @@ autoload_register('GrandObjects/API/Journal');
 
 global $apiRequest;
 // Person
+
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');

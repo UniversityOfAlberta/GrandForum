@@ -8,20 +8,10 @@ $egAlwaysAllow = array();
    */
 function initializeAccessControls(){
   global $egAnnokiNamespaces, $wgExtraNamespaces;
-
-  //createExtraTables();
   
   createRoleNamespaces();
   
   $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
-  
-  //addMenuJavascript();
-}
-
-function addMenuJavascript() {
-	global $wgOut, $wgScriptPath;
-	$script = "<script type='text/javascript' src='$wgScriptPath/extensions/AccessControls/selectMenu.js'></script>\n";
-	$wgOut->addScript($script);	
 }
 
 function createRoleNamespaces(){
@@ -60,61 +50,6 @@ function createRoleNamespaces(){
                                       'public' => 0));
         }
     }
-}
-
-/**
- * Creates extra tables that are required by this extension, including custom page permissions, extra namespaces, and custom upload permissions.
- * TODO: this should be moved into a .sql script and should be called only once
- */
-function createExtraTables() {
-  global $wgDBprefix, $wgUnitTestMode, $egAnnokiTablePrefix;
-
-	$tableType = ""; //regular table by default
-	if ($wgUnitTestMode) {
-		$tableType = "TEMPORARY"; //for unit tests we want the table to only exist for the duration of the test
-	}
-
-	$pagePerm = "
-	 CREATE $tableType TABLE IF NOT EXISTS `${wgDBprefix}${egAnnokiTablePrefix}pagepermissions` (
-	 `page_id` int(11) NOT NULL,
-	 `group_id` int(11) NOT NULL,
-	 PRIMARY KEY  (`page_id`,`group_id`)
-	 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-         ";
-	
-	$extraNS = "
-	 CREATE $tableType TABLE IF NOT EXISTS `${wgDBprefix}${egAnnokiTablePrefix}extranamespaces` (
-	 `nsId` int(11) NOT NULL auto_increment,
-	 `nsName` varchar(50) NOT NULL,
-	 `nsUser` int(11) default NULL,
-	 `public` tinyint(1) NOT NULL,
-	 PRIMARY KEY  (`nsId`),
-	 UNIQUE KEY `nsName` (`nsName`),
-	 UNIQUE KEY `nsUser` (`nsUser`)
-	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100
-	 ";
-
-	$uploadPerm = "
-         CREATE $tableType TABLE IF NOT EXISTS `${wgDBprefix}${egAnnokiTablePrefix}upload_permissions` (
-	 `upload_name` VARCHAR( 255 ) NOT NULL ,
-	 `nsName` VARCHAR( 50 ) NULL ,
-	 PRIMARY KEY ( `upload_name` )
-	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
-         ";
-
-	$uploadPermTemp = "
-         CREATE $tableType TABLE IF NOT EXISTS `${wgDBprefix}${egAnnokiTablePrefix}upload_perm_temp` (
-	 `upload_name` VARCHAR( 255 ) NOT NULL ,
-	 `nsName` VARCHAR( 50 ) NULL ,
-	 PRIMARY KEY ( `upload_name` )
-	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
-         ";
-
-	$dbw =& wfGetDB(DB_MASTER);
-	$dbw->query($pagePerm);	
-	$dbw->query($extraNS);
-	$dbw->query($uploadPerm);
-	$dbw->query($uploadPermTemp);
 }
 
 function checkPublicSections(&$parser, &$text){
@@ -536,15 +471,6 @@ function getExtraPermissions($title) {
 	return $extraPerm;
 }
 
-function showQueryCounter(&$parser, &$text) {
-	global $queryCounter, $wgUnitTestMode;
-	if (!$wgUnitTestMode) {
-		echo "$queryCounter queries<br>\n";
-	}
-		
-	return true;
-}
-
 function preventUnauthorizedTransclusionOnPreview(&$parser, &$text, &$strip_state){
 	return true;
   //return performActionOnTransclusion($text, $error, false); //$error is not used here.
@@ -580,39 +506,6 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
   }
 
   return true;
-}
-
-/* function preventUnauthorizedWatching(&$user, &$article){
-  if (!$article->getTitle()->userCan('read')){
-    $article->doUnwatch();
-    return false;
-  }
-  return true;
-  } */
-
-function listStragglers($action, $article){
-  global $wgScriptPath;
-  
-  if ($action=='listStragglers'){
-      $query = "SELECT `page_title`
-FROM `mw_page`
-WHERE `page_namespace` =0
-AND `page_is_redirect` =0";
-      $dbr =& wfGetDB( DB_SLAVE );
-      $res = $dbr->query($query);
-      print '<html>';
-
-      while ( $row = $dbr->fetchObject( $res ) ) {
-	$page = $row->page_title;
-	print "<a href=\"$wgScriptPath/index.php/$page\">$page</a><br>";
-      }
-      print '</html>';
-      $dbr->freeResult( $res );
-
-      exit;
-    }
-
-    return true;
 }
 
 ?>
