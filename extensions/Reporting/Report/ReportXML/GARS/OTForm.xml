@@ -32,7 +32,7 @@
                 <div id='gsmsIdError2' class='error' style='display:none;'>The ID entered is not in the format 160XXXXX</div>
                 <script type="text/javascript">
                     var checkGSMSId = function(){
-                        var el = $('input[name=ApplicantID_gsmsIDCS]');
+                        var el = $('input[name=ApplicantID_gsmsID_OT]');
                         if(el.val().length == 0){
                             $('#gsmsIdError1').show();
                             $('#gsmsIdError2').hide();
@@ -47,8 +47,8 @@
                         }
                     }
                     
-                    $('input[name=ApplicantID_gsmsIDCS]').change(checkGSMSId)
-                                                         .keyup(checkGSMSId);
+                    $('input[name=ApplicantID_gsmsID_OT]').change(checkGSMSId)
+                                                          .keyup(checkGSMSId);
                     
                     checkGSMSId();
                 </script>
