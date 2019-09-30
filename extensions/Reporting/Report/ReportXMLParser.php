@@ -245,21 +245,23 @@ class ReportXMLParser {
                 }
             }
             if(isset($attributes->year)){
+                $year = $this->report->varSubstitute("{$attributes->year}");
                 if(intval("{$attributes->year}") < 0){
-                    $this->report->year = YEAR + intval("{$attributes->year}");
+                    $this->report->year = YEAR + intval("{$year}");
                 }
                 else{
-                    $this->report->year = "{$attributes->year}";
+                    $this->report->year = "{$year}";
                 }
                 $this->report->startYear = $this->report->year - 1;
             }
             if(isset($attributes->startYear)){
-                if(intval("{$attributes->startYear}") < 0){
+                $startYear = $this->report->varSubstitute("{$attributes->startYear}");
+                if(intval("{$startYear}") < 0){
                     // A negative number was provided, subtract that from the year
-                    $this->report->startYear = intval($this->report->year) + intval("{$attributes->startYear}");
+                    $this->report->startYear = intval($this->report->year) + intval("{$startYear}");
                 }
                 else{
-                    $this->report->startYear = "{$attributes->startYear}";
+                    $this->report->startYear = "{$startYear}";
                 }
             }
             if(isset($attributes->name)){
