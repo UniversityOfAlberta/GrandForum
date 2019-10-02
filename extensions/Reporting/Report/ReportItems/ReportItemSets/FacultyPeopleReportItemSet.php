@@ -38,6 +38,12 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Secondary check for Chairs.  Chairs should only show up for Dean, Vice Dean, HR
                 continue;
             }
+            // SPECIAL CASES BELOW
+            if($person->getName() == "Douglas.Wylie" &&
+               !$me->isRole(DEAN) &&
+               !$me->isRole(DEANEA)){
+                continue;
+            }
             $index = @$fec[$person->getId()];
             $tuple = self::createTuple();
             $tuple['person_id'] = $person->getId();
