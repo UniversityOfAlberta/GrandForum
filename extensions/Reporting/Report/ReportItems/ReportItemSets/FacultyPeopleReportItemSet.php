@@ -41,7 +41,8 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             // SPECIAL CASES BELOW
             if($person->getName() == "Douglas.Wylie" &&
                !$me->isRole(DEAN) &&
-               !$me->isRole(DEANEA)){
+               !$me->isRole(DEANEA) &&
+               !$me->isRole(HR)){
                 continue;
             }
             $index = @$fec[$person->getId()];
