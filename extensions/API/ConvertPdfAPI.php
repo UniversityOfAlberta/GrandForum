@@ -160,7 +160,6 @@ class ConvertPdfAPI extends API{
             exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output);
             $contents = file_get_contents("{$tmpfile}.out");
             unlink("{$tmpfile}.out");
-            $data = $this->extract_pdf_data($contents);
             if(isset($_POST['id'])){
                 $userId = $_POST['id'];
             }
@@ -180,24 +179,17 @@ class ConvertPdfAPI extends API{
                 unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
-                $sdata = serialize($data);
-                unset($data);
 		        if(count(DBFunctions::select(array('grand_sop'),
 		                                     array('user_id'),
 		                                     array('user_id' => EQ($userId)))) > 0){
 		            $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
-                    DBFunctions::update('grand_sop',
-                                        array('pdf_data' => $sdata),
-                                        array('user_id' => EQ($userId)));
             
                     $sql = "update grand_sop 
 	                    set pdf_contents = '$content_parsed'
 	                    where user_id = '$userId'";
 	                unset($content_parsed);
-                    $data = DBFunctions::execSQL($sql, true);
-                    if($data){
-	                    DBFunctions::commit();
-                    }
+                    DBFunctions::execSQL($sql, true);
+	                DBFunctions::commit();
                 }
                 else{
                     // SOP Not Found

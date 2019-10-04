@@ -67,7 +67,8 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                   color: #444444;
                 }
                 </style>";
-                $gsms = $this->person->getGSMS()->toArray();
+                $gsmsObj = $this->person->getGSMS();
+                $gsms = $gsmsObj->toArray();
                 $this->html .= "<div>";
                 $this->html .= "<div style='padding-bottom: 30px'>";
                 $this->html .= "<div style='display: inline-block; width: 100%;'>";
@@ -75,23 +76,23 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 if ($gsms['gsms_id'] != 0) {
                     $this->html .= " ({$gsms['gsms_id']})";
                 }
-                if ($gsms['program_name'] != '') {
-                    $this->html .= " applying to {$gsms['program_name']}";
+                if ($gsmsObj->getAdditional('program_name') != '') {
+                    $this->html .= " applying to {$gsmsObj->getAdditional('program_name')}";
                 }
                 $this->html .= "</h3>";
                 
                 $this->html .= "<h3 style='float:right;'>GPA (normalized): {$gsms['additional']['gpaNormalized']}</h3></div>";
-                $this->html .= "{$gsms['student_data']['email']}   {$gsms['gender']}";
+                $this->html .= "{$gsms['student_data']['email']}   {$gsmsObj->getAdditional('gender')}";
                 
                 $this->html .= "<div class='flex-container' style='display: block;'>
                     <div class='flex-item' style='width:44%; min-width: 400px;'>";
-                $this->html .= "<b>Folder:</b> {$gsms['folder']}<br/>";
-                $this->html .= "<b>Date of Birth:</b> {$gsms['date_of_birth']}<br/>";
-                $this->html .= "<b>Country:</b> {$gsms['additional']['country_of_citizenship_full']}<br/>";
-                $this->html .= "<b>Applicant Type:</b> {$gsms['applicant_type']}<br/><br/>";
+                $this->html .= "<b>Folder:</b> {$gsmsObj->getAdditional('folder')}<br/>";
+                $this->html .= "<b>Date of Birth:</b> {$gsmsObj->getAdditional('date_of_birth')}<br/>";
+                $this->html .= "<b>Country:</b> {$gsmsObj->getAdditional('country_of_citizenship_full')}<br/>";
+                $this->html .= "<b>Applicant Type:</b> {$gsmsObj->getAdditional('applicant_type')}<br/><br/>";
 
                 $this->html .= "<b>Education History:</b><br/>";
-                $ed_hist = preg_replace('/<br \/><br \/>/', '<br />', $gsms['education_history']);
+                $ed_hist = preg_replace('/<br \/><br \/>/', '<br />', $gsmsObj->getAdditional('education_history'));
                 $ed_hist = preg_replace('/<b>/', '', $ed_hist);
                 $ed_hist = preg_replace('/<\/b>/', '', $ed_hist);
                 $this->html .= "{$ed_hist}<br/><br/>";
@@ -118,37 +119,31 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "Applied: {$applied}<br/><br/>";
                 $this->html .= "<div style='display:inline-block;'>
                             <table style='float: left'>";
-                $this->html .= "<tr>";
-                $epltest = ($gsms['epl_test'] != "") ? $gsms['epl_test'] : '--';
-                $this->html .= "<td><b>EPL Test:</b></td>
-                                    <td align='right'>{$epltest}</td>
+                $this->html .= "<tr>
+                                    <td><b>EPL Test:</b></td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_test', '--')}</td>
                                 </tr>
-                                <tr>";
-                $listening = ($gsms['epl_listen'] != "") ? $gsms['epl_listen'] : '--';
-                $this->html .= "<td>Listening:</td>
-                                    <td align='right'>{$listening}</td>
+                                <tr>
+                                    <td>Listening:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_listen', '--')}</td>
                                 </tr>
-                                <tr>";
-                $writing = ($gsms['epl_write'] != "") ? $gsms['epl_write'] : '--';
-                $this->html .= "<td>Writing:</td>
-                                    <td align='right'>{$writing}</td>
+                                <tr>
+                                    <td>Writing:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_write', '--')}</td>
                                 </tr>
-                            </table>";
-                $this->html .= "<table style='float: left; margin-left:5px;'>
-                                <tr>";
-                $score = ($gsms['epl_score'] != "") ? $gsms['epl_score'] : '--';
-                $this->html .= "<td><b>EPL Score:</b></td>
-                                    <td align='right'>{$score}</td>
+                            </table>
+                            <table style='float: left; margin-left:5px;'>
+                                <tr>
+                                    <td><b>EPL Score:</b></td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_score', '--')}</td>
                                 </tr>
-                                <tr>";
-                $reading = ($gsms['epl_read'] != "") ? $gsms['epl_read'] : '--';
-                $this->html .= "<td>Reading:</td>
-                                    <td align='right'>{$reading}</td>
+                                <tr>
+                                    <td>Reading:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_read', '--')}</td>
                                 </tr>
-                                <tr>";
-                $speaking = ($gsms['epl_speaking'] != "") ? $gsms['epl_speaking'] : '--';
-                $this->html .= "<td>Speaking:</td>
-                                    <td align='right'>{$speaking}</td>
+                                <tr>
+                                    <td>Speaking:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('epl_speaking', '--')}</td>
                                 </tr>
                             </table>
                         </div><br/><br/>
@@ -273,51 +268,51 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>CS app#</td>";
-                $this->html .= "<td class='text'>{$gsms->cs_app}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('cs_app')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Gender</td>";
-                $this->html .= "<td class='text'>{$gsms->gender}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('gender')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>DOB</td>";
-                $this->html .= "<td class='text'>{$gsms->date_of_birth}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('date_of_birth')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Country of Birth</td>";
-                $this->html .= "<td class='text'>{$gsms->country_of_birth}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('country_of_birth')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Country of Citizenship</td>";
-                $this->html .= "<td class='text'>{$gsms->country_of_citizenship}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('country_of_citizenship')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Applicant Type</td>";
-                $this->html .= "<td class='text'>{$gsms->applicant_type}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('applicant_type')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Folder</td>";
-                $this->html .= "<td class='text'>{$gsms->folder}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('folder')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Education History</td>";
-                $this->html .= "<td class='text'>{$gsms->education_history}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('education_history')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>EPL Test</td>";
-                $this->html .= "<td class='text'>{$gsms->epl_test}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('epl_test')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>EPL Score</td>";
-                $this->html .= "<td class='text'>{$gsms->epl_score}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('epl_score')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Listen</td>";
-                $this->html .= "<td class='text'>{$gsms->epl_listen}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('epl_listen')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Write</td>";
-                $this->html .= "<td class='text'>{$gsms->epl_write}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditioinal('epl_write')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Read</td>";
@@ -329,27 +324,27 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Academic Year</td>";
-                $this->html .= "<td class='text'>{$gsms->academic_year}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('academic_year')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Term</td>";
-                $this->html .= "<td class='text'>{$gsms->term}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('term')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Program Subplan Name</td>";
-                $this->html .= "<td class='text'>{$gsms->subplan_name}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('subplan_name')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Degree Code</td>";
-                $this->html .= "<td class='text'>{$gsms->degree_code}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('degree_code')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Program Name</td>";
-                $this->html .= "<td class='text'>{$gsms->program_name}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('program_name')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Admission Program Name</td>";
-                $this->html .= "<td class='text'>{$gsms->admission_program_name}</td>";
+                $this->html .= "<td class='text'>{$gsms->getAdditional('admission_program_name')}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
                 $this->html .= "<td class='label'>Submitted Date</td>";
@@ -390,22 +385,22 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 vertical-align: bottom;
             }
         </style>";
-            $fSelected = ($gsms->term == "fall") ? "selected='selected'" : "";
-            $wSelected = ($gsms->term == "winter") ? "selected='selected'" : "";
-            $sSelected = ($gsms->term == "spring") ? "selected='selected'" : "";
-            $suSelected = ($gsms->term == "summer") ? "selected='selected'" : "";
+            $fSelected = ($gsms->getAdditional('term') == "fall") ? "selected='selected'" : "";
+            $wSelected = ($gsms->getAdditional('term') == "winter") ? "selected='selected'" : "";
+            $sSelected = ($gsms->getAdditional('term') == "spring") ? "selected='selected'" : "";
+            $suSelected = ($gsms->getAdditional('term') == "summer") ? "selected='selected'" : "";
 
-            $bSelected = ($gsms->folder == "") ? "selected='selected'" : "";
-            $progSelected = ($gsms->folder == "In Progress") ? "selected='selected'" : "";
-            $rprogrSelected = ($gsms->folder == "Review in Progress") ? "selected='selected'" : "";
-            $newappSelected = ($gsms->folder == "New Applications") ? "selected='selected'" : "";
+            $bSelected = ($gsms->getAdditional('folder') == "") ? "selected='selected'" : "";
+            $progSelected = ($gsms->getAdditional('folder') == "In Progress") ? "selected='selected'" : "";
+            $rprogrSelected = ($gsms->getAdditional('folder') == "Review in Progress") ? "selected='selected'" : "";
+            $newappSelected = ($gsms->getAdditional('folder') == "New Applications") ? "selected='selected'" : "";
 
 
-            $rejSelected = ($gsms->folder == "Rejected Apps") ? "selected='selected'" : "";
-            $declinedSelected = ($gsms->folder == "Offer Declined") ? "selected='selected'" : "";
-            $withSelected = ($gsms->folder == "Withdrawn") ? "selected='selected'" : "";
-            $waitSelected = ($gsms->folder == "Waitlist") ? "selected='selected'" : "";
-            $acceptedSelected = ($gsms->folder == "Offer Accepted") ? "selected='selected'" : "";
+            $rejSelected = ($gsms->getAdditional('folder') == "Rejected Apps") ? "selected='selected'" : "";
+            $declinedSelected = ($gsms->getAdditional('folder') == "Offer Declined") ? "selected='selected'" : "";
+            $withSelected = ($gsms->getAdditional('folder') == "Withdrawn") ? "selected='selected'" : "";
+            $waitSelected = ($gsms->getAdditional('folder') == "Waitlist") ? "selected='selected'" : "";
+            $acceptedSelected = ($gsms->getAdditional('folder') == "Offer Accepted") ? "selected='selected'" : "";
 
 ///----------------------------START HERE -------///
 
@@ -445,32 +440,32 @@ class PersonApplicantDataTab extends AbstractEditableTab {
         $this->html .= "<tr>";
 
         $this->html .= "<td class='label'>CS App#: </td>";
-        $this->html .= "<td><input name='cs_app' style='width:100px' type='number' value='{$gsms->cs_app}'/></td>";
+        $this->html .= "<td><input name='cs_app' style='width:100px' type='number' value='{$gsms->getAdditional('cs_app')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Gender: </td>";
-        $this->html .= "<td><input name='gender' type='text' value='{$gsms->gender}' /></td>";
+        $this->html .= "<td><input name='gender' type='text' value='{$gsms->getAdditional('gender')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>DOB: </td>";
-        $this->html .= "<td><input name='dob' type='date' value='{$gsms->date_of_birth}' /></td>";
+        $this->html .= "<td><input name='dob' type='date' value='{$gsms->getAdditional('date_of_birth')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Country of Birth: </td>";
-        $this->html .= "<td><input name='country_birth' type='text' value='{$gsms->country_of_birth}' /></td>";
+        $this->html .= "<td><input name='country_birth' type='text' value='{$gsms->getAdditional('country_of_birth')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Country of Citizenship: </td>";
-        $this->html .= "<td><input name='country_citizenship' type='text' value='{$gsms->country_of_citizenship}' /></td>";
+        $this->html .= "<td><input name='country_citizenship' type='text' value='{$gsms->getAdditional('country_of_citizenship')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Applicant Type:  </td>";
-        $this->html .= "<td><input name='applicant_type' type='text' value='{$gsms->applicant_type}' /></td>";
+        $this->html .= "<td><input name='applicant_type' type='text' value='{$gsms->getAdditional('applicant_type')}' /></td>";
         $this->html .= "</tr>";
 
 
@@ -492,42 +487,42 @@ class PersonApplicantDataTab extends AbstractEditableTab {
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Education History: </td>";
-        $this->html .= "<td><input name='education_history' type='text' value='{$gsms->education_history}' /></td>";
+        $this->html .= "<td><input name='education_history' type='text' value='{$gsms->getAdditional('education_history')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>EPL Test: </td>";
-        $this->html .= "<td><input name='epl_test' style='width:100px' type='number' value='{$gsms->epl_test}' /></td>";
+        $this->html .= "<td><input name='epl_test' style='width:100px' type='number' value='{$gsms->getAdditional('epl_test')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>EPL Score: </td>";
-        $this->html .= "<td><input name='epl_score' style='width:100px' type='number' value='{$gsms->epl_score}' /></td>";
+        $this->html .= "<td><input name='epl_score' style='width:100px' type='number' value='{$gsms->getAdditional('epl_score')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Listen: </td>";
-        $this->html .= "<td><input name='listen' style='width:100px' type='number' value='{$gsms->epl_listen}' /></td>";
+        $this->html .= "<td><input name='listen' style='width:100px' type='number' value='{$gsms->getAdditional('epl_listen')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Write: </td>";
-        $this->html .= "<td><input name='write' style='width:100px' type='number' value='{$gsms->epl_write}' /></td>";
+        $this->html .= "<td><input name='write' style='width:100px' type='number' value='{$gsms->getAdditional('epl_write')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Read: </td>";
-        $this->html .= "<td><input name='read' style='width:100px' type='number' value='{$gsms->epl_read}' /></td>";
+        $this->html .= "<td><input name='read' style='width:100px' type='number' value='{$gsms->getAdditional('epl_read')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Speaking: </td>";
-        $this->html .= "<td><input name='speaking' style='width:100px' type='number' value='{$gsms->epl_speaking}' /></td>";
+        $this->html .= "<td><input name='speaking' style='width:100px' type='number' value='{$gsms->getAdditional('epl_speaking')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Academic Year: </td>";
-        $this->html .= "<td><input name='academic_year' type='text' value='{$gsms->academic_year}' /></td>";
+        $this->html .= "<td><input name='academic_year' type='text' value='{$gsms->getAdditional('academic_year')}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
@@ -541,22 +536,22 @@ class PersonApplicantDataTab extends AbstractEditableTab {
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Program Subplan Name: </td>";
-        $this->html .= "<td> <input name='program_subplan' type='text' value='{$gsms->subplan_name}'/></td>";
+        $this->html .= "<td> <input name='program_subplan' type='text' value='{$gsms->getAdditional('subplan_name')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Degree Code: </td>";
-        $this->html .= "<td> <input name='degree_code' style='width:100px' type='number' value='{$gsms->degree_code}'/></td>";
+        $this->html .= "<td> <input name='degree_code' style='width:100px' type='number' value='{$gsms->getAdditional('degree_code')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Program Name: </td>";
-        $this->html .= "<td> <input name='program_name' type='text' value='{$gsms->program_name}'/></td>";
+        $this->html .= "<td> <input name='program_name' type='text' value='{$gsms->getAdditional('program_name')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Admission Program Name: </td>";
-        $this->html .= "<td> <input name='admission_program' type='text' value='{$gsms->admission_program_name}'/></td>";
+        $this->html .= "<td> <input name='admission_program' type='text' value='{$gsms->getAdditional('admission_program_name')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";

@@ -95,11 +95,11 @@ class SOP extends AbstractSop{
 
     function getGSMSUrl(){
             $data = DBFunctions::select(array('grand_sop'),
-                                    array('pdf_contents', 'pdf_data'),
+                                    array('pdf_contents'),
                                     array('user_id' => EQ($this->user_id)));
             if(count($data) > 0){
-                $pdf_data = $data[0]['pdf_data'];
-                if($pdf_data != ""){
+                $pdf_contents = $data[0]['pdf_contents'];
+                if($pdf_contents != ""){
                     global $wgServer, $wgScriptPath;
                     return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
                 }
@@ -144,8 +144,8 @@ class SOP extends AbstractSop{
                                           'year' => YEAR));
 
         if(count($data) > 0){
-            $pdf_data = $data[0]['pdf'];
-            if($pdf_data != ""){
+            $pdf = $data[0]['pdf'];
+            if($pdf != ""){
                 global $wgServer, $wgScriptPath;
                 return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&last=true&user=".$this->user_id;
             }

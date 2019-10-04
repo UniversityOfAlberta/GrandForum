@@ -1,7 +1,7 @@
 <table id="profile1" style="width: 100%">
     <tr>
         <td>
-            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %> (<%= folder %>)</a></h1>
+            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %> (<%= this.gsmsdata.getAdditional('folder') %>)</a></h1>
         </td>
         <td>
             <a id="link_to_table" class="button" style="float:right;">Show in Overview Table</a>
@@ -29,77 +29,69 @@
         <div style="padding-bottom: 30px">
             <div style="display: inline-block; width: 100%;">
                 <h3 style="float:left;"><%= student_data.name %> <% if(gsms_id != 0){ %>(<%= gsms_id %>)<% } %>
-                    <% if(program_name != ''){ %>applying to <%= program_name %> <% } %>
+                    <% if(this.gsmsdata.getAdditional('program_name') != ''){ %>applying to <%= this.gsmsdata.getAdditional('program_name') %> <% } %>
                 </h3>
-                <h3 style="float:right;">GPA (normalized): <%= additional.gpaNormalized %></h3>
+                <h3 style="float:right;">GPA (normalized): <%= this.gsmsdata.getAdditional('gpaNormalized') %></h3>
             </div>
             <br/>
-            <%=student_data.email %>   <%= gender %>
+            <%=student_data.email %>   <%= this.gsmsdata.getAdditional('gender') %>
             <div class="flex-container" style="display: block;">
                 <div class="flex-item" style="width:44%; min-width: 400px;">
-                    <b>Folder:</b> <%= folder %><br/>
-                    <b>Date of Birth:</b> <%= date_of_birth %><br/>
-                    <b>Country:</b> <%= additional.country_of_citizenship_full %><br/>
-                    <b>Applicant Type:</b> <%= applicant_type %><br/><br/>
+                    <b>Folder:</b> <%= this.gsmsdata.getAdditional('folder') %><br/>
+                    <b>Date of Birth:</b> <%= this.gsmsdata.getAdditional('date_of_birth') %><br/>
+                    <b>Country:</b> <%= this.gsmsdata.getAdditional('country_of_citizenship_full') %><br/>
+                    <b>Applicant Type:</b> <%= this.gsmsdata.getAdditional('applicant_type') %><br/><br/>
 
                     <b>Education History:</b><br/>
-                    <% var ed_hist = education_history.replace(/<br \/><br \/>/g, '<br />'); %>
+                    <% var ed_hist = this.gsmsdata.getAdditional('education_history').replace(/<br \/><br \/>/g, '<br />'); %>
                     <% ed_hist = ed_hist.replace(/<b>/g, ''); %>
                     <% ed_hist = ed_hist.replace(/<\/b>/g, ''); %>
                     <%= ed_hist %><br/><br/>
 
                     <b>Areas of Study:</b><br/>
-                    <%= additional.areas_of_study %><br/>
+                    <%= this.gsmsdata.getAdditional('areas_of_study') %><br/>
                     <b>Supervisors:</b><br/>
-                    <% var supers = additional.supervisors.replace(/<br \/>/g, ''); %>
+                    <% var supers = this.gsmsdata.getAdditional('supervisors').replace(/<br \/>/g, ''); %>
                     <%= supers %><br/><br/>
 
                     <b>Courses:</b><br/>
-                    <% if (additional.courses == "") { %>No courses were listed<% } else { %>
-                        <div title="<%= additional.courses %>" style="border-bottom: none; max-height: 100px; overflow-y: auto;">
-                            <%= additional.courses %>
+                    <% if (this.gsmsdata.getAdditional('courses') == "") { %>No courses were listed<% } else { %>
+                        <div title="<%= this.gsmsdata.getAdditional('courses') %>" style="border-bottom: none; max-height: 100px; overflow-y: auto;">
+                            <%= this.gsmsdata.getAdditional('courses') %>
                         </div>
                     <% } %>
                 </div>
                 <div class="flex-item" style="width:24%;">
                     <b>Scholarships</b><br/>
-                    <% var held = (additional.scholarships_held != "") ? additional.scholarships_held : "--" %>
-                    Held: <%= held %><br/>
-                    <% var applied = (additional.scholarships_applied != "") ? additional.scholarships_applied : "--" %>
-                    Applied: <%= applied %><br/><br/>
+                    Held: <%= this.gsmsdata.getAdditional('scholarships_held', '--') %><br/>
+                    Applied: <%= this.gsmsdata.getAdditional('scholarships_applied', '--') %><br/><br/>
                     <div style="display:inline-block;">
                         <table style="float: left">
                             <tr>
-                                <% var epltest = (epl_test != "") ? epl_test : "--" %>
                                 <td><b>EPL Test:</b></td>
-                                <td align="right"><%=epltest%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epltest', '--') %></td>
                             </tr>
                             <tr>
-                                <% var listening = (epl_listen != "") ? epl_listen : "--" %>
                                 <td>Listening:</td>
-                                <td align="right"><%=listening%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epl_listen', '--') %></td>
                             </tr>
                             <tr>
-                                <% var writing = (epl_write != "") ? epl_write : "--" %>
                                 <td>Writing:</td>
-                                <td align="right"><%=writing%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epl_write', '--') %></td>
                             </tr>
                         </table>
                         <table style="float: left; margin-left:5px;">
                             <tr>
-                                <% var score = (epl_score != "") ? epl_score : "--" %>
                                 <td><b>EPL Score:</b></td>
-                                <td align="right"><%=score%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epl_score', '--') %></td>
                             </tr>
                             <tr>
-                                <% var reading = (epl_read != "") ? epl_read : "--" %>
                                 <td>Reading:</td>
-                                <td align="right"><%=reading%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epl_read', '--') %></td>
                             </tr>
                             <tr>
-                                <% var speaking = (epl_speaking != "") ? epl_speaking : "--" %>
                                 <td>Speaking:</td>
-                                <td align="right"><%=speaking%></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('epl_speaking', '--') %></td>
                             </tr>
                         </table>
                     </div><br/><br/>
@@ -107,31 +99,27 @@
                         <b>GRE</b><br/>
                         <table>
                             <tr>
-                                <% var gre = (additional.gre1 != null) ? additional.gre1 : "--" %>
                                 <td>Verbal:</td>
-                                <td align="right"><%= gre %></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('gre1', '--') %></td>
                             </tr>
                             <tr>
-                                <% var gre = (additional.gre2 != null) ? additional.gre2 : "--" %>
                                 <td>Quantitative:</td>
-                                <td align="right"><%= gre %></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('gre2', '--') %></td>
                             </tr>
                             <tr>
-                                <% var gre = (additional.gre3 != null) ? additional.gre3 : "--" %>
                                 <td>Analytical:</td>
-                                <td align="right"><%= gre %></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('gre3', '--') %></td>
                             </tr>
                             <tr>
-                                <% var gre = (additional.gre4 != null) ? additional.gre4 : "--" %>
                                 <td>CS:</td>
-                                <td align="right"><%= gre %></td>
+                                <td align="right"><%= this.gsmsdata.getAdditional('gre4', '--') %></td>
                             </tr>
                         </table>
                     </div>
                     <br/>
 
-                    <b>Number of Publications: </b><%= additional.num_publications %><br/>
-                    <b>Number of Awards: </b> <%= additional.num_awards %><br/>
+                    <b>Number of Publications: </b><%= this.gsmsdata.getAdditional('num_publications') %><br/>
+                    <b>Number of Awards: </b> <%= this.gsmsdata.getAdditional('num_awards') %><br/>
                 </div>
                 <div class="flex-item" style="width:24%;">
                     <% if (reviewers.length == 0) { %>
@@ -213,10 +201,10 @@
                     <br/>
 
                     <b>Notes:</b><br/>
-                    <% if (additional.notes.length == 0) { %>
+                    <% if (this.gsmsdata.getAdditional('notes').length == 0) { %>
                         No notes to show
                     <% } else { %>
-                        <% _.each(additional.notes, function(note, key) { %>
+                        <% _.each(this.gsmsdata.getAdditional('notes'), function(note, key) { %>
                             <%= key %>: <%= note %>
                             <br />
                         <% }); %>

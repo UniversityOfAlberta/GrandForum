@@ -940,7 +940,7 @@ abstract class AbstractReport extends SpecialPage {
                 $sop = SOP::newFromUserId($me->getId());
                 $gsms_data = new GsmsData(array());
                 $gsms_data->user_id = $me->getId();
-                $gsms_data->status = "Application Completed";
+                $gsms_data->setAdditional("status", "Application Completed");
                 $gsms_data->visible = "true";
                 $gsms_data->gsms_id = $gsms_id;
                 $gsms_data->create();

@@ -202,7 +202,6 @@ abstract class AbstractSop extends BackboneModel{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-            //$this->pdf = $row['pdf_data'];
             $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
@@ -391,7 +390,6 @@ abstract class AbstractSop extends BackboneModel{
                       'min_age' => number_format($this->min_age,2,'.',','),
                       'word_count' => $this->word_count,
                       'annotations' => $this->annotations,
-                      'pdf_data' => $this->getPdf(true),
                       'gsms_data' => $this->checkGSMS(),
                       'sop_check' => $this->checkSOP(),
                       'sop_url' => $this->getSopUrl(),
@@ -439,27 +437,6 @@ abstract class AbstractSop extends BackboneModel{
         return $this->user_id;
     }
 
-
-    /**
-     * Returns information taken from PDF uploaded as an array
-     * @param bool $asHtml if response should replace new lines with <br />
-     * @return $pdf the array of information previously parsed from PDF upload
-     */
-    function getPdf($asHtml=false){
-      $pdf = unserialize($this->pdf);
-      if($asHtml && isset($pdf['Referees'])){
-                $refs = $pdf['Referees'];
-                $i = 0;
-                if(is_array($refs)){
-                    foreach($refs as $ref){
-                        $pdf['Referees'][$i]['responses'] = @nl2br($ref['responses']);
-                        $i++;
-                    }
-                }
-      }
-      return $pdf;
-    }
-
    /**
     * returns array that is returned from Watson personality analysis
     * @return array
@@ -502,7 +479,7 @@ abstract class AbstractSop extends BackboneModel{
     function getFinalAdmit(){
         $hqp = Person::newFromId($this->getUser());
         $gsms = $hqp->getGSMS($this->year);
-        $dec = $gsms->folder;
+        $dec = $gsms->getAdditional('folder');
         if(strstr($dec, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
            strstr($dec, "Coder") !== false ||
            strstr($dec, "Offer Accepted") !== false ||

@@ -13,28 +13,23 @@ GsmsData = Backbone.Model.extend({
     
     idAttribute: 'user_id',
 
+    getAdditional: function(field, def){
+        if(def == undefined){
+            def = "";
+        }
+        if(this.get('additional')[field] != undefined &&
+           this.get('additional')[field] != ""){
+            return this.get('additional')[field];
+        }
+        return def;
+    },
+
     defaults: function() {
         return {
             id:null,
             ois_id: "",
-            review_status: null,
-            applicant_number: null,
-            gender: "",
             year: "",
-            data_of_birth: "",
-            program_name: "",
-            country_of_birth: "",
-            country_of_citizenship: "",
-            applicant_type: "",
-            education_history: "",
-            department: "",
             history: "",
-            epl_test: "",
-            epl_score: "",
-            epl_listen: "",
-            epl_write: "",
-            epl_read: "",
-            epl_speaking: "",
             additional: new Array(),
             gsms_url: "",
             sop_url: "",

@@ -13,97 +13,25 @@ class GsmsData extends BackboneModel{
     var $year;
 
 //General data
-    var $status;
     var $visible;
-    var $applicant_number;
-    var $gender;
-    var $date_of_birth;
-    var $program_name;
-    var $country_of_birth;
-    var $country_of_citizenship;
-    var $applicant_type;
-    var $education_history;
-    var $department;
-    var $epl_test;
-    var $epl_score;
-    var $epl_listen;
-    var $epl_write;
-    var $epl_read;
-    var $epl_speaking;
     var $additional = array(); 
     var $gsms_url;
 
 //added just incase
-    var $cs_app;
-    var $academic_year;
-    var $term;
-    var $subplan_name;
-    var $program;
-    var $degree_code;
-    var $admission_program_name;
     var $submitted_date;
-    var $folder;
-    var $department_gpa;
-    var $department_gpa_scale;
-    var $department_normalized_gpa;
-    var $fgsr_gpa;
-    var $fgsr_gpa_scale;
-    var $fgsr_normalized_gpa;
-    var $funding_note;
-    var $department_decision;
-    var $fgsr_decision;
-    var $decision_response;
-    var $general_notes;
 
     function GsmsData($data){
         global $config;
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->user_id = $data[0]['user_id'];
-            $this->status = $data[0]['status'];
             $this->visible = $data[0]['visible'];
-            $this->gender = $data[0]['gender'];
             $this->student_id = $data[0]['student_id'];
             $this->gsms_id = $data[0]['gsms_id'];
             $this->ois_id = $data[0]['ois_id'];
-            $this->applicant_number = $data[0]['applicant_number'];
-            $dob = explode(" ", $data[0]['date_of_birth']);
-            $this->date_of_birth = $dob[0];
-            $program_name = nl2br(implode("\n", explode("; ", $data[0]['program_name'])));
-            $this->program_name = $data[0]['program_name'];
-            $this->country_of_birth = $data[0]['country_of_birth'];
-            $this->country_of_citizenship = $data[0]['country_of_citizenship'];
-            $this->applicant_type = $data[0]['applicant_type'];
-            $this->education_history = $data[0]['education_history'];
-            $this->department = $data[0]['department'];
-            $this->epl_test = $data[0]['epl_test'];
-            $this->epl_score = $data[0]['epl_score'];
-            $this->epl_listen = $data[0]['epl_listen'];
-            $this->epl_write = $data[0]['epl_write'];
-            $this->epl_read = $data[0]['epl_read'];
-            $this->epl_speaking = $data[0]['epl_speaking'];
-            $this->additional = unserialize($data[0]['additional']);
-            $this->cs_app = $data[0]['cs_app'];
-            $this->academic_year = $data[0]['academic_year'];
-            $this->term = $data[0]['term'];
-            $this->subplan_name = $data[0]['subplan_name'];
-            $this->program = $data[0]['program'];
-            $this->degree_code = $data[0]['degree_code'];
-            $this->admission_program_name = $data[0]['admission_program_name'];
+            $this->additional = json_decode($data[0]['additional'], true);
             $sub = explode(" ",$data[0]['submitted_date']);
             $this->submitted_date = $sub[0];
-            $this->folder = $data[0]['folder']; 
-            $this->department_gpa = $data[0]['department_gpa'];
-            $this->department_gpa_scale = $data[0]['department_gpa_scale'];
-            $this->department_normalized_gpa = $data[0]['department_normalized_gpa'];
-            $this->fgsr_gpa = $data[0]['fgsr_gpa'];
-            $this->fgsr_gpa_scale = $data[0]['fgsr_gpa_scale'];
-            $this->fgsr_normalized_gpa = $data[0]['fgsr_normalized_gpa'];
-            $this->funding_note = $data[0]['funding_note'];
-            $this->department_decision = $data[0]['department_decision'];
-            $this->fgsr_decision = $data[0]['fgsr_decision'];
-            $this->decision_response = $data[0]['decision_response'];
-            $this->general_notes = $data[0]['general_notes'];
         }
     }
 
@@ -200,43 +128,9 @@ class GsmsData extends BackboneModel{
                 DBFunctions::insert('grand_gsms',
                                     array('`user_id`' => $this->user_id,
                                           '`student_id`' => $this->student_id,
-                                          '`gender`' => $this->gender,
                                           '`gsms_id`' => $this->gsms_id,
                                           '`ois_id`' => $this->ois_id,
-                                          '`applicant_number`' => $this->applicant_number,
-                                          '`date_of_birth`' => $this->date_of_birth." 00:00:00",
-                                          '`program_name`' => $this->program_name,
-                                          '`country_of_birth`' => $this->country_of_birth,
-                                          '`country_of_citizenship`' => $this->country_of_citizenship,
-                                          '`applicant_type`' => $this->applicant_type,
-                                          '`education_history`' => $this->education_history,
-                                          '`department`' => $this->department,
-                                          '`epl_test`' => $this->epl_test,
-                                          '`epl_score`' => $this->epl_score,
-                                          '`epl_listen`' => $this->epl_listen,
-                                          '`epl_write`' => $this->epl_write,
-                                          '`epl_read`' => $this->epl_read,
-                                          '`epl_speaking`' => $this->epl_speaking,
-                                          '`additional`' => serialize($this->additional),
-                                          '`cs_app`' => $this->cs_app,
-                                          '`academic_year`' => $this->academic_year,
-                                          '`term`' => $this->term,
-                                          '`subplan_name`' => $this->subplan_name,
-                                          '`program`' => $this->program,
-                                          '`degree_code`' => $this->degree_code,
-                                          '`admission_program_name`' => $this->admission_program_name,
-                                          '`folder`' => $this->folder,
-                                          '`department_gpa`' => $this->department_gpa,
-                                          '`department_gpa_scale`' => $this->department_gpa_scale,
-                                          '`department_normalized_gpa`' => $this->department_normalized_gpa,
-                                          '`fgsr_gpa`' => $this->fgsr_gpa,
-                                          '`fgsr_gpa_scale`' => $this->fgsr_gpa_scale,
-                                          '`fgsr_normalized_gpa`' => $this->fgsr_normalized_gpa,
-                                          '`funding_note`' => $this->funding_note,
-                                          '`department_decision`' => $this->department_decision,
-                                          '`fgsr_decision`' => $this->fgsr_decision,
-                                          '`decision_response`' => $this->decision_response,
-                                          '`general_notes`' => $this->general_notes,
+                                          '`additional`' => json_encode($this->additional),
                                           '`visible`' => $this->visible));
             Cache::delete("gsms_user_{$this->user_id}");
         }
@@ -256,67 +150,17 @@ class GsmsData extends BackboneModel{
         }*/
         if($me->isLoggedIn()){
             $status = DBFunctions::update('grand_gsms',
-                                array('`gender`' => $this->gender,
-                                      '`student_id`' => $this->student_id,
+                                array('`student_id`' => $this->student_id,
                                       '`gsms_id`' => $this->gsms_id,
                                       '`ois_id`' => $this->ois_id,
-                                      '`applicant_number`' => $this->applicant_number,
-                                      '`date_of_birth`' => $this->date_of_birth." 00:00:00",
-                                      '`program_name`' => $this->program_name,
-                                      '`country_of_birth`' => $this->country_of_birth,
-                                      '`country_of_citizenship`' => $this->country_of_citizenship,
-                                      '`applicant_type`' => $this->applicant_type,
-                                      '`education_history`' => $this->education_history,
-                                      '`department`' => $this->department,
-                                      '`epl_test`' => $this->epl_test,
-                                      '`epl_score`' => $this->epl_score,
-                                      '`epl_listen`' => $this->epl_listen,
-                                      '`epl_write`' => $this->epl_write,
-                                      '`epl_read`' => $this->epl_read,
-                                      '`epl_speaking`' => $this->epl_speaking,
-                                      '`additional`' => serialize($this->additional),
-                                      '`cs_app`' => $this->cs_app,
-                                      '`academic_year`' => $this->academic_year,
-                                      '`term`' => $this->term,
-                                      '`subplan_name`' => $this->subplan_name,
-                                      '`program`' => $this->program,
-                                      '`degree_code`' => $this->degree_code,
-                                      '`admission_program_name`' => $this->admission_program_name,
+                                      '`additional`' => json_encode($this->additional),
                                       '`submitted_date`' => $this->submitted_date." 00:00:00",
-                                      '`folder`' => $this->folder,
-                                      '`department_gpa`' => $this->department_gpa,
-                                      '`department_gpa_scale`' => $this->department_gpa_scale,
-                                      '`department_normalized_gpa`' => $this->department_normalized_gpa,
-                                      '`fgsr_gpa`' => $this->fgsr_gpa,
-                                      '`fgsr_gpa_scale`' => $this->fgsr_gpa_scale,
-                                      '`fgsr_normalized_gpa`' => $this->fgsr_normalized_gpa,
-                                      '`funding_note`' => $this->funding_note,
-                                      '`department_decision`' => $this->department_decision,
-                                      '`fgsr_decision`' => $this->fgsr_decision,
-                                      '`decision_response`' => $this->decision_response,
-                                      '`general_notes`' => $this->general_notes,
                                       '`visible`' => $this->visible),
 			     array('user_id' => EQ($this->user_id)));
                 Cache::delete("gsms_", true);
                 Cache::delete("gsms_user_", true);
         }
         return true;
-    }
-
-    function getProgramName($br = true){
-        if($this->program_name != ""){
-            // Try Program Name First
-            if($br){
-                return implode("<br />", explode(", ", $this->program_name));
-            }
-            return $this->program_name;
-        }
-        else {
-            // Fallback to program
-            $program = explode(" in", $this->program);
-            $program = @$program[0];
-            return $program;
-        }
     }
     
     function getSOP(){
@@ -340,35 +184,15 @@ class GsmsData extends BackboneModel{
         $sop = $this->getSOP();
         $this->gsms_url = $sop->getGSMSUrl();
         if($config->getValue('networkName') == 'CSGARS'){
-            $degrees = $sop->getCSEducationalHistory(true);
-        }
-        else{
-            $degrees = $this->education_history;
+            $this->setAdditional("education_history", $sop->getCSEducationalHistory(true));
         }
         $json = array('id' =>$this->id,
                   'ois_id' => $this->ois_id,
                   'user_id' =>$this->user_id,
                   'year' => $year,
-                  'status' => $this->status,
                   'student_data' => $student_data,
                   'gsms_id' => $this->gsms_id,
                   'student_id' => $this->student_id,
-                  'applicant_number' => $this->applicant_number,
-                  'gender' => $this->gender,
-                  'date_of_birth' => $this->date_of_birth,
-                  'program_name' => $this->getProgramName(true),
-                  'country_of_birth' => $this->country_of_birth,
-                  'country_of_citizenship' => $this->country_of_citizenship,
-                  'applicant_type' => $this->applicant_type,
-                  'education_history' => $degrees,
-                  'department' => $this->department,
-                  'epl_test' => $this->epl_test,
-                  'epl_score' => $this->epl_score,
-                  'epl_listen' => $this->epl_listen,
-                  'epl_write' => $this->epl_write,
-                  'epl_read' => $this->epl_read,
-                  'epl_speaking' => $this->epl_speaking,
-                  'folder' => $this->folder,
                   'additional' => $this->getAdditional(),
                   'gsms_url' => $this->gsms_url);
 
@@ -393,7 +217,6 @@ class GsmsData extends BackboneModel{
                                  'hidden' => $sop->getHiddenStatus($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
-
 
         $otherReviewers = array();
         
@@ -439,10 +262,6 @@ class GsmsData extends BackboneModel{
             $json['additional'] = array_merge($json['additional'],$sop->getColumns());
         }
 
-        // Needed by exportAdmittedStudents
-        $json['academic_year'] = $this->academic_year;
-        $json['term'] = $this->term;
-
         return $json;
 
     }
@@ -459,7 +278,7 @@ class GsmsData extends BackboneModel{
         return $data;
     }
 
-    function getOTColumns(){
+    /*function getOTColumns(){
         $gsms_array = array('gpa60' => "",
                             'gpafull' => "",
                             'gpafull_credits' => "",
@@ -477,7 +296,7 @@ class GsmsData extends BackboneModel{
                             'failures' => "",
                             'degrees' => array());
         return $gsms_array;
-    }
+    }*/
 
     function getCSColumns() {
         $year = ($this->year != "") ? $year : YEAR;
@@ -534,12 +353,20 @@ class GsmsData extends BackboneModel{
 
     }
 
-    function getAdditional(){
-        if($this->additional == "" || !is_array($this->additional) || count($this->additional) == 0){
-            return $this->getOTColumns(); //!!!! THIS NEEDS TO CHANGE ONCE CS HAS THEIR OWN STUFF. ALSO, NEED TO FIGURE OUT HOW TO DEAL WITH INDEXES THAT DON'T EXIST IN ADDITIONALS !!!! /////
+    function getAdditional($field="", $default=""){
+        if($field == ""){
+            return $this->additional;
         }
-        return $this->additional;
-
+        else{
+            return (isset($this->additional[$field]) && $this->additional[$field] != "") ? $this->additional[$field] : $default;
+        }
+    }
+    
+    function setAdditional($field, $value){
+        if(!is_array($this->additional)){
+            $this->additional = array();
+        }
+        $this->additional[$field] = $value;
     }
 
     function delete(){
@@ -553,7 +380,7 @@ class GsmsData extends BackboneModel{
     }
 
     function getFinalProgram() {
-        $prog = $this->admission_program_name;
+        $prog = $this->getAdditional('admission_program_name');
         if (strpos($prog, "Master of Science (Thes)") !== false) {
             return "MSc";
         } else if (strpos($prog, "Master of Science (Crse)") !== false) {
@@ -565,7 +392,7 @@ class GsmsData extends BackboneModel{
     }
 
     function getFullTimePartTime() {
-        $prog = $this->program;
+        $prog = $this->getAdditional("program");
         $progSplit = explode(" - ", $prog);
         $time = isset($progSplit[1]) ? $progSplit[1] : "";
         if (strtolower($time) == "full time") {

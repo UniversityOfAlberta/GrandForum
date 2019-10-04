@@ -33,22 +33,22 @@ class PersonFinalAdjudicationTab extends AbstractEditableTab {
 	    $this->html .= "<table class='gsms'>";
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Funding Note</td>";
-            $this->html .= "<td class='text'>{$gsms->funding_note}</td>";
+            $this->html .= "<td class='text'>{$gsms->getAdditional('funding_note')}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Department Decision</td>";
-            $this->html .= "<td class='text'>{$gsms->department_decision}</td>";
+            $this->html .= "<td class='text'>{$gsms->getAdditional('department_decision')}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>FGSR Decision</td>";
-            $this->html .= "<td class='text'>{$gsms->fgsr_decision}</td>";
+            $this->html .= "<td class='text'>{$gsms->getAdditional('fgsr_decision')}</td>";
             $this->html .= "</tr>";
 
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Decision Response</td>";
-            $this->html .= "<td class='text'>{$gsms->decision_response}</td>";
+            $this->html .= "<td class='text'>{$gsms->getAdditional('decision_response')}</td>";
             $this->html .= "</tr>";
 
 	    $this->html .= "</table>";

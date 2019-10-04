@@ -36,20 +36,20 @@ for($y=2017;$y<=YEAR;$y++){
 		    // Only export Admitted students
 		    if ($sop->getFinalAdmit() == "Admit") {
 			    $array = $gsms->toArray();
-			    if ($array['term'] == "Fall Term") {
-				    $year = explode("/", $array['academic_year'])[0];
+			    if ($array['additional']['term'] == "Fall Term") {
+				    $year = explode("/", $array['additional']['academic_year'])[0];
 				    $term = "F" . substr($year, 2); // '2018' becomes '18'
-			    } else if ($array['term'] == "Winter Term") {
-				    $year = explode("/", $array['academic_year'])[1];
+			    } else if ($array['additional']['term'] == "Winter Term") {
+				    $year = explode("/", $array['additional']['academic_year'])[1];
 				    $term = "W" . $year;
 			    }
 			
-			    if ($array['gender'] == "M") {
+			    if ($array['additional']['gender'] == "M") {
 				    $gender = "Male";
-			    } else if ($array['gender'] == "F") {
+			    } else if ($array['additional']['gender'] == "F") {
 				    $gender = "Female";
 			    } else {
-				    $gender = $array['gender'];
+				    $gender = $array['additional']['gender'];
 			    }
 
                 $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);

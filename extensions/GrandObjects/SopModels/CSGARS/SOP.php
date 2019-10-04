@@ -106,7 +106,7 @@ class SOP extends AbstractSop{
         if(count(@self::$hasGsmsCache[$year]) == 0){
             $data = DBFunctions::execSQL("SELECT DISTINCT user_id
                                           FROM grand_sop$dbyear
-                                          WHERE pdf_data != ''");
+                                          WHERE pdf_contents != ''");
             foreach($data as $row){
                 self::$hasGsmsCache[$year][$row['user_id']] = true;
             }

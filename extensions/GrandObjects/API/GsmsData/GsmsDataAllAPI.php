@@ -20,13 +20,13 @@ class GsmsDataAllAPI extends RESTAPI {
         foreach($gsms as $g){
             $found = false;
             foreach($folders as $folder){
-                if($g->folder == $folder || 
-                   ($folder == "Admit" && (strstr($g->folder, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
-                                           strstr($g->folder, "Coder") !== false ||
-                                           strstr($g->folder, "Offer Accepted") !== false ||
-                                           strstr($g->folder, "Waiting for Response") !== false ||
-                                           strstr($g->folder, "Incoming") !== false)) || 
-                   ($folder == "Rejected Apps" && (strstr($g->folder, "Ready for Decision") !== false)) || 
+                if($g->getAdditional('folder') == $folder || 
+                   ($folder == "Admit" && (strstr($g->getAdditional('folder'), "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
+                                           strstr($g->getAdditional('folder'), "Coder") !== false ||
+                                           strstr($g->getAdditional('folder'), "Offer Accepted") !== false ||
+                                           strstr($g->getAdditional('folder'), "Waiting for Response") !== false ||
+                                           strstr($g->getAdditional('folder'), "Incoming") !== false)) || 
+                   ($folder == "Rejected Apps" && (strstr($g->getAdditional('folder'), "Ready for Decision") !== false)) || 
                    $folder == 'all'){
                     foreach($programs as $program){
                         if($program == '' || $program == 'all' || strstr($g->getProgramName(true), $program) !== false){

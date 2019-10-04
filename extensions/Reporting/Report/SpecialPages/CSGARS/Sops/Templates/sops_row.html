@@ -7,16 +7,14 @@
     <% } else { %>
         <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
     <% } %>
-    (<%=student_data.email %>)<br /><%= gender %>
+    (<%=student_data.email %>)<br /><%= this.model.getAdditional('gender') %>
 </td>
 
 <td style="white-space: nowrap;" id='nationality_notes'>
   <% if(gsms_id != 0){ %>
     <%= gsms_id %><br />
   <% } %>
-  <% if(applicant_number != 0){ %>
-    <%= applicant_number %><br />
-  <% } %>
+  <%= this.model.getAdditional('applicant_number') %><br />
   <% if(student_id != 0){ %>
     <%= student_id %><br />
   <% } %>
@@ -30,67 +28,66 @@
 </td>
 
 <td style="white-space: wrap;" id='folder'>
-    <%= folder %>
+    <%= this.model.getAdditional('folder') %>
 </td>
 
 <td style="white-space: nowrap;" id='dob'>
-    <%= date_of_birth %>
+    <%= this.model.getAdditional('date_of_birth') %>
 </td>
 
 <td id='citizenship'>
-    <%= additional.country_of_citizenship_full %>
+    <%= this.model.getAdditional('country_of_citizenship_full') %>
 </td>
 
 <td style="white-space: nowrap;" id='applicant_type'>
-    <%= applicant_type %>
+    <%= this.model.getAdditional('applicant_type') %>
 </td>
 
 <td id='education_history' class="scrollableCell">
-    <div class="scrollableCell"><%= education_history %></div>
+    <div class="scrollableCell"><%= this.model.getAdditional('education_history') %></div>
 </td>
 
 <td style="white-space: nowrap;" id='program_name'>
-    <% var t = program_name.replace(/Master of Science/g, 'MSc.'); %>
+    <% var t = this.model.getAdditional('program_name').replace(/Master of Science/g, 'MSc.'); %>
     <%= t.replace(/Doctor of Philosophy/g, 'PhD') %>
-  
 </td>
 
 <td style="white-space: nowrap;" id='epl'>
-    <%= epl_test %> <br /><%= epl_score %> <br /><%= epl_listen %> <br /><%= epl_write %> <br /><%= epl_read %> <br /><%= epl_speaking %>
+    <%= this.model.getAdditional('epl_test') %> <br /><%= this.model.getAdditional('epl_score') %> <br /><%= this.model.getAdditional('epl_listen') %> <br /><%= this.model.getAdditional('epl_write') %> <br /><%= this.model.getAdditional('epl_read') %> <br /><%= this.model.getAdditional('epl_speaking') %>
 </td>
 
 <!--  department specific -->
 <td id='aos' class="scrollableCell">
-    <div class="scrollableCell"><%= additional.areas_of_study %></div>
+    <div class="scrollableCell"><%= this.model.getAdditional('areas_of_study') %></div>
 </td>
 
 <td id='supervisors' class="scrollableCell">
-    <div class="scrollableCell"><%= additional.supervisors %></div>
+    <div class="scrollableCell"><%= this.model.getAdditional('supervisors') %></div>
 </td>
 
 <td id='scholarships'>
-    <%= additional.scholarships_held %>/<%= additional.scholarships_applied %>
+    <%= this.model.getAdditional('scholarships_held') %>/<%= this.model.getAdditional('scholarships_applied') %>
 </td>
 
 <td align="right" id='gpaNormalized'>
-    <%= additional.gpaNormalized %>
+    <%= this.model.getAdditional('gpaNormalized') %>
 </td>
 
 <td id='gres'>
-    <%= additional.gre1 %>, <%= additional.gre2 %>, <%= additional.gre3 %>, <%= additional.gre4 %>
+    <%= this.model.getAdditional('gre1') %>, <%= this.model.getAdditional('gre2') %>, <%= this.model.getAdditional('gre3') %>, <%= this.model.getAdditional('gre4') %>
 </td>
 
 <td align="right" id='pubs'>
-    <%= additional.num_publications %>
+    <%= this.model.getAdditional('num_publications') %>
 </td>
 
 <td align="right" id='awards'>
-    <%= additional.num_awards %>
+    <%= this.model.getAdditional('num_awards') %>
 </td>
 
 <td align="right" id='courses' class="scrollableCell">
   <div class="scrollableCell">
-    <%= additional.courses %>
+    <%= this.model.getAdditional('courses') %>
   </div>
 </td>
 
@@ -154,7 +151,7 @@
 
 <td id='notes' class="scrollableCell">
   <div class="scrollableCell" style="height:124px; max-height:124px;">
-      <% _.each(additional.notes, function(note, key) { %>
+      <% _.each(this.model.getAdditional('notes'), function(note, key) { %>
         <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
         <% if (key == lastname) { %>
           <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>

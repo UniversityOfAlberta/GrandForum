@@ -1334,7 +1334,7 @@ class ReportItemCallback {
 
     function getFinalProgram() {
         $gsms = GsmsData::newFromId($this->getProjectId());
-        $prog = $gsms->admission_program_name;
+        $prog = $gsms->getAdditional('admission_program_name');
         if (strpos($prog, "Master of Science (Thes)") !== false) {
             return "Master of Science (Thes)";
         } else if (strpos($prog, "Master of Science (Crse)") !== false) {
@@ -1358,7 +1358,7 @@ class ReportItemCallback {
 
     function getFullTimePartTime() {
         $gsms = GsmsData::newFromId($this->getProjectId());
-        $prog = $gsms->program;
+        $prog = $gsms->getAdditional('program');
         $progSplit = explode(" - ", $prog);
         $time = "";
         $time = @$progSplit[1];
