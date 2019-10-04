@@ -81,7 +81,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 }
                 $this->html .= "</h3>";
                 
-                $this->html .= "<h3 style='float:right;'>GPA (normalized): {$gsms['additional']['gpaNormalized']}</h3></div>";
+                $this->html .= "<h3 style='float:right;'>GPA (normalized): {$gsmsObj->getAdditional('gpaNormalized')}</h3></div>";
                 $this->html .= "{$gsms['student_data']['email']}   {$gsmsObj->getAdditional('gender')}";
                 
                 $this->html .= "<div class='flex-container' style='display: block;'>
@@ -98,25 +98,23 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "{$ed_hist}<br/><br/>";
 
                 $this->html .= "<b>Areas of Study:</b><br/>";
-                $this->html .= "{$gsms['additional']['areas_of_study']}<br/>";
+                $this->html .= "{$gsmsObj->getAdditional('areas_of_study')}<br/>";
                 $this->html .= "<b>Supervisors:</b><br/>";
-                $supers = preg_replace('/<br \/>/', '', $gsms['additional']['supervisors']);
+                $supers = preg_replace('/<br \/>/', '', $gsmsObj->getAdditional('supervisors'));
                 $this->html .= "{$supers}<br/><br/>";
                 $this->html .= "<b>Courses:</b><br/>";
-                if ($gsms['additional']['courses'] == "") {
+                if ($gsmsObj->getAdditional('courses') == "") {
                     $this->html .= "No courses were listed";
                 } else {
-                    $this->html .= "<div title='{$gsms['additional']['courses']}' style='border-bottom: none; max-height: 100px; overflow-y: auto;'>";
-                    $this->html .= "{$gsms['additional']['courses']}</div>";
+                    $this->html .= "<div title='{$gsmsObj->getAdditional('courses')}' style='border-bottom: none; max-height: 100px; overflow-y: auto;'>";
+                    $this->html .= "{$gsmsObj->getAdditional('courses')}</div>";
                     
                 }
                 $this->html .= "</div>";
 
                 $this->html .= "<div class='flex-item' style='width:24%;'><b>Scholarships</b><br/>";
-                $held = ($gsms['additional']['scholarships_held'] != "") ? $gsms['additional']['scholarships_held'] : '--';
-                $this->html .= "Held: {$held}<br/>";
-                $applied = ($gsms['additional']['scholarships_applied'] != "") ? $gsms['additional']['scholarships_applied'] : '--';
-                $this->html .= "Applied: {$applied}<br/><br/>";
+                $this->html .= "Held: {$gsmsObj->getAdditional('scholarships_held', '--')}<br/>";
+                $this->html .= "Applied: {$gsmsObj->getAdditional('scholarships_applied', '--')}<br/><br/>";
                 $this->html .= "<div style='display:inline-block;'>
                             <table style='float: left'>";
                 $this->html .= "<tr>
@@ -150,32 +148,28 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                         <div>
                             <b>GRE</b><br/>
                             <table>
-                                <tr>";
-                $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre1'] : '--';
-                $this->html .= "<td>Verbal:</td>
-                                    <td align='right'>{$gre}</td>
+                                <tr>
+                                    <td>Verbal:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('gre1', '--')}</td>
                                 </tr>
-                                <tr>";
-                $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre2'] : '--';
-                $this->html .= "<td>Quantitative:</td>
-                                    <td align='right'>{$gre}</td>
+                                <tr>
+                                    <td>Quantitative:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('gre2', '--')}</td>
                                 </tr>
-                                <tr>";
-                $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre3'] : '--';
-                $this->html .= "<td>Analytical:</td>
-                                    <td align='right'>{$gre}</td>
+                                <tr>
+                                    <td>Analytical:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('gre3', '--')}</td>
                                 </tr>
-                                <tr>";
-                $gre = ($gsms['additional']['gre1'] != null) ? $gsms['additional']['gre4'] : '--';
-                $this->html .= "<td>CS:</td>
-                                    <td align='right'>{$gre}</td>
+                                <tr>
+                                    <td>CS:</td>
+                                    <td align='right'>{$gsmsObj->getAdditional('gre4', '--')}</td>
                                 </tr>
                             </table>
                         </div>
                         <br/>";
 
-                $this->html .= "<b>Number of Publications: </b> {$gsms['additional']['num_publications']}<br/>";
-                $this->html .= "<b>Number of Awards: </b> {$gsms['additional']['num_awards']}<br/></div>";
+                $this->html .= "<b>Number of Publications: </b> {$gsmsObj->getAdditional('num_publications')}<br/>";
+                $this->html .= "<b>Number of Awards: </b> {$gsmsObj->getAdditional('num_awards')}<br/></div>";
                 $this->html .= "<div class='flex-item' style='width:24%;'>";
                 if (empty($gsms['reviewers'])) {
                     $this->html .= "<b>Reviewers</b><br/>No assigned reviewers<br/>";
@@ -241,10 +235,10 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                             </table>";
                 }
                 $this->html .= "<br/><b>Notes:</b><br/>";
-                if (empty($gsms['additional']['notes'])) {
+                if ($gsmsObj->getAdditional('notes') == "" || count($gsmsObj->getAdditional('notes')) == 0) {
                     $this->html .= "No notes to show";
                 } else {
-                    foreach ($gsms['additional']['notes'] as $key => $value) {
+                    foreach ($gsmsObj->getAdditional('notes') as $key => $value) {
                         $this->html .= "{$key}: {$value}<br />";
                     }
                 }                
