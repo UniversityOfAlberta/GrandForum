@@ -118,18 +118,14 @@ class PersonPage {
                 self::showTitle($person, $visibility);
 		
                 $tabbedPage = new TabbedPage("person");
-		$tabbedPage->addTab(new PersonSopTab($person, $visibility));
+                $tabbedPage->addTab(new PersonSopTab($person, $visibility));
                 if($me->isRoleAtLeast(MANAGER) && $config->getValue('networkName') == 'GARS'){
                     $tabbedPage->addTab(new PersonOTGSMSTab($person, $visibility, 'Gsms Data'));
                 }
                 if($person->getGSMSPdfUrl() != "" && $me->isRoleAtLeast(MANAGER)){
                     $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
                 }
-
-                    $tabbedPage->addTab(new PersonApplicantDataTab($person, $visibility));
-		if($me->isRoleAtLeast(MANAGER)){
-                    //$tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
-		}
+                $tabbedPage->addTab(new PersonApplicantDataTab($person, $visibility));
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                 }
@@ -141,12 +137,12 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-		if($me->isRoleAtLeast("Admin")){
+                if($me->isRoleAtLeast("Admin")){
                     $tabbedPage->addTab(new PersonFinalAdjudicationTab($person, $visibility));
-		}
+                }
                 if(!$person->isRoleAtLeast("Staff")){
                     $tabbedPage->showPage();
-		}
+                }
                 self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();

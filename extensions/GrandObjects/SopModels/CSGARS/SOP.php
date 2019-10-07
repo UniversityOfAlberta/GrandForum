@@ -68,38 +68,6 @@ class SOP extends AbstractSop{
         return $moreJson;
 
     }
-
-    function getContent($asString=false){
-        if($this->questions == null){
-            $qs = array('Q1');
-            $qstrings = array("(Applicant's Statement of Purpose)");
-
-            $questions = array();
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
-            $qnumber = 0;
-            foreach($qs as $q){
-                $blob_address = ReportBlob::create_address('RP_CS', 'CS_QUESTIONS_tab2', 'QSOP', 0);
-                $blob->load($blob_address);
-                $data = $blob->getData();
-                $questions[$q.' '.$qstrings[$qnumber]] = $data;
-                $qnumber++;
-            }
-            $this->questions = $questions;
-        }
-	    $this->content = $this->questions;
-	    if($asString){
-             $string = "";
-             foreach($this->content as $question => $answer){
-                $answer = str_replace("\r", "", $answer);
-                $answer = str_replace("\00", "", $answer);
-                //$length = strlen(utf8_decode($answer));
-                //$lengthDiff = strlen($answer) - $length;
-                $string = $string."<b>". $question."</b>"."<br /><br />".nl2br(mb_substr($answer, 0, 4500))."<br /><br />";
-             }
-             return $string;
-	    }
-        return $this->content;
-    }
     
     static function generateHasGSMSCache($year=""){
         $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";

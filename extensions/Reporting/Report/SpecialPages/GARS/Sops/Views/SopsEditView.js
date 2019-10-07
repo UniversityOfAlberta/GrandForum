@@ -336,11 +336,11 @@ SopsEditView = Backbone.View.extend({
       var w = 80,h = 80;
       var d = [
             [
-              {axis:"Conscientiousness",value:self.model.get('conscientiousness')},
-              {axis:"Openness",value:self.model.get('openness')},
-              {axis:"Agreeableness",value:self.model.get('agreeableness')},
-              {axis:"Neuroticism",value:self.model.get('neurotism')},
-              {axis:"Extraversion",value:self.model.get('extraversion')},
+              {axis:"Openness", value:self.gsmsdata.getAdditional('personality_stats.personality.0.percentile')},
+              {axis:"Conscientiousness", value:self.gsmsdata.getAdditional('personality_stats.personality.1.percentile')},
+              {axis:"Extraversion", value:self.gsmsdata.getAdditional('personality_stats.personality.2.percentile')},
+              {axis:"Agreeableness", value:self.gsmsdata.getAdditional('personality_stats.personality.3.percentile')},
+              {axis:"Neuroticism", value:self.gsmsdata.getAdditional('personality_stats.personality.4.percentile')}
             ]
       ];
 

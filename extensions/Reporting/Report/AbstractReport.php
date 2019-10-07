@@ -945,6 +945,8 @@ abstract class AbstractReport extends SpecialPage {
                 $gsms_data->gsms_id = $gsms_id;
                 $gsms_data->create();
                 
+                //$gsms_data->updateStatistics();
+                
                 // Check of OIS is enabled
                 if($config->getValue("oisEnabled")){
                     // Do OIS Request
@@ -955,7 +957,7 @@ abstract class AbstractReport extends SpecialPage {
                     //set POST variables
                     $fields = array(
                         'ccid' => $ccid,
-                        'sop' => array(implode("\n", $sop->getContent()))
+                        'sop' => array(implode("\n", $gsms_data->getContent()))
                     );
                     
                     //url-ify the data for the POST
@@ -997,7 +999,6 @@ abstract class AbstractReport extends SpecialPage {
                     }
                 }
             }
-            //$sop->updateStatistics(); //This SHOULD call TASHA
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
                 $url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";

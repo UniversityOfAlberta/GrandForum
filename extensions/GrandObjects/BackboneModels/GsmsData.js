@@ -13,13 +13,32 @@ GsmsData = Backbone.Model.extend({
     
     idAttribute: 'user_id',
 
-    getAdditional: function(field, def){
+    getAdditional: function(field, def, decimals){
         if(def == undefined){
             def = "";
         }
-        if(this.get('additional')[field] != undefined &&
-           this.get('additional')[field] != ""){
-            return this.get('additional')[field];
+        var fields = field.split(".");
+        var additional = this.get('additional');
+        for(var i=0; i < fields.length; i++){
+            field = fields[i];
+            if(additional[field] != undefined &&
+               additional[field] != ""){
+                var val = additional[field];
+                if(!_.isArray(val) && !_.isObject(val)){
+                    if(decimals != undefined &&
+                       (_.isNumber(val) || (_.isString(val) && val.match(/[0-9\.]+/)))){
+                        val = parseFloat(val);
+                        return val.toFixed(decimals);
+                    }
+                    return val;
+                }
+                else{
+                    additional = val;
+                    if(i == fields.length - 1){
+                        return val;
+                    }
+                }
+            }
         }
         return def;
     },

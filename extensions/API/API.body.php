@@ -170,7 +170,6 @@ class APIRequest{
 		// HIDDENS
 
         //POST
-        $this->addAction('Hidden', 'updateSop', 'UpdateSopStatisticsAPI');
         $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
 		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
