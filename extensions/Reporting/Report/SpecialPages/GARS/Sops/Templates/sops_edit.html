@@ -10,10 +10,10 @@
 <!--  href="#/hidden" -->
 </table>
   <% if(sop_check){ %>
-   <b>GARS PDF : </b><a href="<%= sop_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GARS PDF : </b><a href="<%= this.gsmsdata.get('sop_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
   <% if(gsms_data){ %>
-   <b>GSMS PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GSMS PDF : </b><a href="<%= this.gsmsdata.get('gsms_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
 <div id="accordion" style="width:100%; margin-top:50px">
     <div>
@@ -31,7 +31,7 @@
                     <b>Folder:</b> <%= this.gsmsdata.getAdditional('folder') %><br />
                     <b>Date of Birth:</b> <%= date_of_birth %><br />
                     <b>Nationality:</b>
-                        <% docDesc = nationality_note.replace(/[<]br[^>]*[>]/gi,' '); %>  <!- replaces breaks in nationality note to space ->
+                        <% docDesc = this.gsmsdata.nationality_note.replace(/[<]br[^>]*[>]/gi,' '); %>  <!- replaces breaks in nationality note to space ->
                         <%= docDesc %><br />
                     <b>Degrees:</b><br />
                         <% if(this.gsmsdata.getAdditional('degree_text') != ''){%>

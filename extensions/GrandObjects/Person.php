@@ -4687,8 +4687,7 @@ class Person extends BackboneModel {
      * @return text stream of SoP PDF
    **/
     function getSopPdf($year=""){
-        $sop=SOP::newFromUserId($this->id, $year);
-        return $sop->getSopPdf();
+        return $this->getGSMS($year)->getSopPdf();
     }
 
     /**
@@ -4696,8 +4695,7 @@ class Person extends BackboneModel {
      * @return String url of SoP pdf
    **/
     function getSopPdfUrl($year=""){
-        $sop=SOP::newFromUserId($this->id, $year);
-        return $sop->getSopUrl();
+        return $this->getGSMS($year)->getSopUrl();
     }
 
     /**

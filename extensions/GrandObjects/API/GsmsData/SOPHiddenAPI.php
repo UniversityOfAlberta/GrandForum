@@ -35,7 +35,7 @@ class SOPHiddenAPI extends RESTAPI {
             if(!$me->isLoggedIn()){
                 $this->throwError("You must be logged in to view this GSMS data.");
             }
-            $info_sheet->getSOP()->setHiddenStatus($me, ($this->POST('hidden') == "true"));
+            $info_sheet->setHiddenStatus($me, ($this->POST('hidden') == "true"));
             return $info_sheet->toJSON();
         }
     }

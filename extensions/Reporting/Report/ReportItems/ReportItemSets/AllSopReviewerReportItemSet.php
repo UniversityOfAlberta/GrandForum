@@ -11,8 +11,7 @@ class AllSopReviewerReportItemSet extends ReportItemSet {
             $sopId = $sopString[1];
         }
         $gsms = GsmsData::newFromId($sopId);
-        $sop = SOP::newFromUserId($gsms->user_id);
-        $reviewers = $sop->getReviewers();
+        $reviewers = $gsms->getReviewers();
         $allPeople = array();
         foreach($reviewers as $pId){
              $allPeople[] = Person::newFromId($pId);

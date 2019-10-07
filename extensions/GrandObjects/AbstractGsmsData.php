@@ -16,7 +16,20 @@ abstract class AbstractGsmsData extends BackboneModel{
     var $gsms_url;
     var $submitted_date;
 
+    abstract function checkGSMS();
+    abstract function getSopPdf();
+    abstract function getGSMSUrl();
+    abstract function getSopUrl();
+    abstract function checkSop();
     abstract function getContent($asString=false);
+    abstract function getExtraColumns();
+    abstract function getEducationalHistory($html_string=false);
+    abstract function getReviewers();
+    abstract function getAdmitResult($user);
+    abstract function getReviewComments($user);
+    abstract function getReviewRanking($user);
+    abstract function getHiddenStatus($user);
+    abstract function setHiddenStatus($user, $value="");
 
     function AbstractGsmsData($data){
         global $config;
@@ -115,6 +128,18 @@ abstract class AbstractGsmsData extends BackboneModel{
         $gsms->year = $year;
         return $gsms;
     }
+    
+    /**
+     * getUrl Returns the url of this Paper's page
+     * @return string The url of this Paper's page
+     */
+    function getUrl(){
+        global $wgServer, $wgScriptPath;
+        if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops#/{$this->getId()}/edit";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops?embed#/{$this->getId()}/edit";
+    }
 
     /**
      * Returns True if the course is saved correctly to the course table in the database
@@ -175,10 +200,9 @@ abstract class AbstractGsmsData extends BackboneModel{
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
         $sop = $this->getSOP();
-        $this->gsms_url = $sop->getGSMSUrl();
-        if($config->getValue('networkName') == 'CSGARS'){
-            $this->setAdditional("education_history", $sop->getCSEducationalHistory(true));
-        }
+
+        $this->setAdditional("education_history", $this->getEducationalHistory(true));
+        
         $json = array('id' =>$this->id,
                       'ois_id' => $this->ois_id,
                       'user_id' =>$this->user_id,
@@ -189,13 +213,15 @@ abstract class AbstractGsmsData extends BackboneModel{
                       'additional' => $this->getAdditional(),
                       'content' => $this->getContent(),
                       'content_string' => $this->getContent(true),
-                      'gsms_url' => $this->gsms_url);
+                      'gsms_data' => $this->checkGSMS(),
+                      'sop_check' => $this->checkSOP(),
+                      'sop_pdf' => $this->getSopUrl(),
+                      'gsms_pdf' => $this->getGSMSUrl(),
+                      'sop_url' => $this->getUrl());
 
         // Not sure if specific from here
         // sop information needed in table
         $json['sop_id'] = $sop->getId();
-        $json['sop_url'] = $sop->getUrl();
-        $json['sop_pdf'] = $sop->getSopUrl();
         $json['annotations'] = $sop->annotations;
 
         //adding reviewers array so can have on overview table
@@ -206,10 +232,10 @@ abstract class AbstractGsmsData extends BackboneModel{
             $reviewers[] = array('id' => $person->getId(),
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
-                                 'decision' => $sop->getAdmitResult($reviewer->getId()),
-                                 'comments' => $sop->getReviewComments($reviewer->getId()),
-                                 'rank' => $sop->getReviewRanking($reviewer->getId()),
-                                 'hidden' => $sop->getHiddenStatus($reviewer->getId()));
+                                 'decision' => $this->getAdmitResult($reviewer->getId()),
+                                 'comments' => $this->getReviewComments($reviewer->getId()),
+                                 'rank' => $this->getReviewRanking($reviewer->getId()),
+                                 'hidden' => $this->getHiddenStatus($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
 
@@ -220,17 +246,17 @@ abstract class AbstractGsmsData extends BackboneModel{
             $otherReviewers[] = array('id' => $other->getId(),
                                       'name' => $other->getNameForForms(),
                                       'url' => $other->getUrl(),
-                                      'decision' => $sop->getAdmitResult($other->getId()),
-                                      'rank' => $sop->getReviewRanking($other->getId()),
-                                      'hidden' => $sop->getHiddenStatus($other->getId()));
+                                      'decision' => $this->getAdmitResult($other->getId()),
+                                      'rank' => $this->getReviewRanking($other->getId()),
+                                      'hidden' => $this->getHiddenStatus($other->getId()));
         }
         
         $json['other_reviewers'] = $otherReviewers;
         
 
         //adding decisions by boards
-        $json['admit'] = $sop->getFinalAdmit();
-        $json['comments'] = $sop->getFinalComments();
+        $json['admit'] = $this->getFinalAdmit();
+        $json['comments'] = $this->getFinalComments();
         $json['area'] = "";
         $json['degree'] = $this->getFinalProgram();
         $json['ftpt'] = $this->getFullTimePartTime();
@@ -251,10 +277,8 @@ abstract class AbstractGsmsData extends BackboneModel{
             }
             $json['nationality_note'] = $nationality_note;
         }
-        if($config->getValue('networkName') == 'CSGARS'){
-            $json['additional'] = array_merge($json['additional'],$sop->getColumns());
-        }
 
+        $json['additional'] = array_merge($json['additional'], $this->getExtraColumns());
         return $json;
 
     }
@@ -325,6 +349,42 @@ abstract class AbstractGsmsData extends BackboneModel{
           $time = "PT";
         }
         return $time;
+    }
+    
+    /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getFinalAdmit(){
+        $dec = $this->getAdditional('folder');
+        if(strstr($dec, "Evaluator") !== false || // Need to handle some extra folders from FGSR (gross!)
+           strstr($dec, "Coder") !== false ||
+           strstr($dec, "Offer Accepted") !== false ||
+           strstr($dec, "Waiting for Response") !== false ||
+           strstr($dec, "Incoming") !== false){
+            $dec = "Admit";   
+        }
+        if(strstr($dec, "Ready for Decision") !== false){ // Need to handle some extra folders from FGSR (gross!)
+            $dec = "Reject";   
+        }
+        if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
+            return $dec;
+        } else {
+            return "Undecided";
+        }
+    }
+    
+    /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getFinalComments(){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $blob = new ReportBlob(BLOB_TEXT, $year, 0, $this->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q2', $this->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        return $data;
     }
 
     function getAssignedSupervisors() {

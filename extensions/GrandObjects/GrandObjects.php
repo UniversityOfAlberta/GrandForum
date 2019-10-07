@@ -23,7 +23,7 @@ autoload_register('GrandObjects/API/Course');
 autoload_register('GrandObjects/API/GsmsData');
 
 require_once("AbstractGsmsData.php");
-require_once("AbstractSop.php");
+require_once("Sop.php");
 
 
 global $apiRequest;

@@ -2,7 +2,82 @@
 
 class GsmsData extends AbstractGsmsData {
 
+    static $hasGsmsCache = array();
+
     var $questions;
+    
+    static function generateHasGSMSCache($year=""){
+        $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
+        if(count(@self::$hasGsmsCache[$year]) == 0){
+            $data = DBFunctions::execSQL("SELECT DISTINCT user_id
+                                          FROM grand_sop$dbyear
+                                          WHERE pdf_contents != ''");
+            foreach($data as $row){
+                self::$hasGsmsCache[$year][$row['user_id']] = true;
+            }
+        }
+    }
+    
+    function checkGSMS(){
+        $url = $this->getGSMSUrl();
+        if($url != ""){
+            return true;
+        }
+        return false;
+    }
+
+    function getGSMSUrl(){
+        global $wgServer, $wgScriptPath;
+        self::generateHasGSMSCache($this->year);
+        if(isset(self::$hasGsmsCache[$this->year][$this->user_id])){
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&year={$this->year}&user={$this->user_id}";
+        }
+	    return "";
+    }
+
+    function checkSOP(){
+        $person = Person::newFromId($this->user_id);
+        $url = $this->getSopUrl();
+        if($url != ""){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns PDF stream of Statement of Purpose pdf 
+     * @return text stream of SoP PDF
+     **/
+    function getSopPdf(){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('pdf'),
+                                    array('user_id' => EQ($this->user_id),
+                                          'type' => 'RPTP_CS_FULL',
+                                          'year' => $year));
+        if(count($data) > 0){
+            return $data[0]['pdf'];
+        }
+        return false;
+    }
+
+    /**
+     * Returns url of Statement of Purpose pdf 
+     * @return String url of SoP pdf
+     **/
+    function getSopUrl(){
+        global $wgServer, $wgScriptPath;
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('report_id'),
+                                    array('user_id' => EQ($this->user_id),
+                                          'type' => 'RPTP_CS_FULL',
+                                          'year' => $year));
+        if(count($data) > 0){
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&year={$year}&last=true&user={$this->user_id}";
+        }
+        return "";
+    }
     
     function getContent($asString=false){
         if($this->questions == null){
@@ -33,7 +108,147 @@ class GsmsData extends AbstractGsmsData {
              return $string;
 	    }
         return $this->questions;
-    }   
+    }
+    
+    function getExtraColumns() {
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $moreJson = array();
+        $AoS = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q13");
+        $moreJson['areas_of_study'] = @implode(", ", $AoS['q13']);
+        //var_dump($moreJson['areas_of_study']);
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q14");
+        #$moreJson['supervisors'] = @implode(";\n", explode(" ", $blob['q14'])[1]);
+        $supervisors = "";
+        if (isset($blob['q14'])) {
+          foreach ($blob['q14'] as $el) {
+            $sup_array = explode(" ", $el);
+            $supervisors[] = $sup_array[1];
+          }
+        }
+        $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
+        $moreJson['scholarships_held'] = @implode(", ", $blob['q16']);
+
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q15");
+        $moreJson['scholarships_applied'] = @implode(", ", $blob['q15']);
+
+        $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
+        $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
+        $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
+        $moreJson['gre4'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q27");
+
+        // Immigration status
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "qImmigrationStatus");
+        $moreJson['immigration'] = $blob;
+
+        // # of Publications
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab3", "qPublications");
+        $moreJson['num_publications'] = @count($blob['qResExp2']);
+
+        // # of awards
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab4", "qAwards");
+        $moreJson['num_awards'] = @count($blob['qAwards']);
+
+        // Courses (number of courses, number of areas)
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab6", "qCourses");
+        $courses = array();
+        //var_dump($blob);
+        //exit;
+        if (isset($blob['qEducation2'])) {
+          foreach ($blob['qEducation2'] as $el) {
+            $courses[] = $el['course'];
+          }
+        }
+        $moreJson['courses'] = @implode(", ", $courses);
+        //$moreJson['courses'] = @implode(", ", $blob['qEducation2'][0]);
+
+        $moreJson['country_of_citizenship_full'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "qCountry");
+
+        return $moreJson;
+    }
+    
+    function getEducationalHistory($html_string=false){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab6", "qDegrees");
+        $degrees = $blob['qEducation1'];
+        if($html_string){
+           if(count($degrees) >0){
+               $html_array = array();
+               foreach($degrees as $degree){
+                   $html_array[] = "<b>{$degree['degree']}</b> ({$degree['university']})";
+               }
+               return implode("<br /><br />", $html_array);
+           }
+           return "";
+        }
+        return $degrees;
+    }
+    
+    /**
+    * returns an array of the faculty staff that have finished reviewing this SOP.
+    * this checks only if the last question was answered which is 'admit or not admit?'
+    * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
+    */
+    function getReviewers(){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $sql = "SELECT DISTINCT(user_id), data
+                FROM grand_report_blobs
+                WHERE rp_section = 'OT_REVIEW'
+                        AND data != ''
+                        AND year = $year
+                        AND proj_id = {$this->id}";
+        $data = DBFunctions::execSQL($sql);
+        $reviewers = array();
+        if(count($data)>0){
+            foreach($data as $user){
+                if($user['data'] != ''){
+                    $reviewers[$user['user_id']] = $user['user_id'];
+                }
+            }
+        }
+        return $reviewers;
+    }
+    
+    /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getAdmitResult($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $this->id);
+        if($blob == ''){
+            return '--';
+        }
+        return $blob;
+    }
+    
+    function getReviewComments($user){
+        return "";
+    }
+   
+    function getReviewRanking($user) {
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $user, $this->id);
+        $uninteresting = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $user, $this->id);
+        if ($blob == '' && isset($uninteresting['q0'][1])) { 
+            return "-1";
+        }
+        if($blob == ''){
+            return '--';
+        }
+        return $blob;
+    }
+    
+    function getHiddenStatus($user){
+        return false;
+    }
+    
+    function setHiddenStatus($user, $value=""){
+        
+    }
     
 }
 

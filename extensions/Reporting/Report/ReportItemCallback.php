@@ -1327,8 +1327,7 @@ class ReportItemCallback {
 
     function getFinalDecision() {
         $gsms = GsmsData::newFromId($this->getProjectId());
-        $sop = $gsms->getSOP();
-        return $sop->getFinalAdmit();
+        return $gsms->getFinalAdmit();
     }
 
     function getFinalProgram() {
@@ -1861,8 +1860,7 @@ class ReportItemCallback {
 
     function getReviewCount(){
         $gsms = GsmsData::newFromId($this->getProjectId());
-        $sop = SOP::newFromUserId($gsms->user_id);
-        $reviewers = $sop->getReviewers();
+        $reviewers = $gsms->getReviewers();
         return count($reviewers);
     }
 

@@ -10,17 +10,17 @@
 <!--  href="#/hidden" -->
 </table>
   <% if(sop_check){ %>
-   <b>GARS PDF : </b><a href="<%= sop_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GARS PDF : </b><a href="<%= this.gsmsdata.get('sop_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
   <% if(gsms_data){ %>
-   <b>GSMS PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GSMS PDF : </b><a href="<%= this.gsmsdata.get('gsms_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
 <div id="accordion" style="width:100%; margin-top:50px">
     <!--
     <div>
         <h3><a href="#">GARS PDF</a></h3>
         <div>
-            <iframe style="width:70%;height:700px;border:0px;margin: 0 auto; display:block;" src="<%= sop_url %>#zoom=80"></iframe>
+            <iframe style="width:70%;height:700px;border:0px;margin: 0 auto; display:block;" src="<%= this.gsmsdata.get('sop_pdf') %>#zoom=80"></iframe>
         </div>
     </div>
     -->
