@@ -4654,7 +4654,7 @@ class Person extends BackboneModel {
    **/
     function getGSMSPdfUrl($year=""){
         $dbyear = ($year != "") ? "_$year" : "";
-        $data = DBFunctions::select(array("grand_sop$dbyear"),
+        $data = DBFunctions::select(array("grand_gsms$dbyear"),
                                     array('pdf_contents'),
                                     array('user_id' => EQ($this->getId())));
         if(count($data) > 0){

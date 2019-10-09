@@ -14,9 +14,9 @@ class GsmsData extends AbstractGsmsData {
     }
 
     function getGSMSUrl(){
-        $data = DBFunctions::select(array('grand_sop'),
-                                array('pdf_contents'),
-                                array('user_id' => EQ($this->user_id)));
+        $data = DBFunctions::select(array('grand_gsms'),
+                                    array('pdf_contents'),
+                                    array('user_id' => EQ($this->user_id)));
         if(count($data) > 0){
             $pdf_contents = $data[0]['pdf_contents'];
             if($pdf_contents != ""){

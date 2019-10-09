@@ -10,7 +10,7 @@ class GsmsData extends AbstractGsmsData {
         $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
         if(count(@self::$hasGsmsCache[$year]) == 0){
             $data = DBFunctions::execSQL("SELECT DISTINCT user_id
-                                          FROM grand_sop$dbyear
+                                          FROM grand_gsms$dbyear
                                           WHERE pdf_contents != ''");
             foreach($data as $row){
                 self::$hasGsmsCache[$year][$row['user_id']] = true;

@@ -101,16 +101,6 @@ class UploadReviewersAPI extends API{
                                                           'type' => "sop",
                                                           'year' => $file_year),
                                                           true);
-                            $sop_id = DBFunctions::select(array('grand_sop'),
-                                                          array('id'),
-                                                          array('user_id' => EQ($student_id)));
-
-                            if(count($sop_id) == 0){
-                                $status = DBFunctions::insert('grand_sop',
-                                                        array('user_id' => $student_id),
-                                                              true);
-
-                            }
                             $gsms->setAdditional('reviewer', "true");
                             $gsms->update();
                         }

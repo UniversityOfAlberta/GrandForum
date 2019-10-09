@@ -179,14 +179,14 @@ class ConvertPdfAPI extends API{
                 unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
-		        if(count(DBFunctions::select(array('grand_sop'),
+		        if(count(DBFunctions::select(array('grand_gsms'),
 		                                     array('user_id'),
 		                                     array('user_id' => EQ($userId)))) > 0){
 		            $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
             
-                    $sql = "update grand_sop 
-	                    set pdf_contents = '$content_parsed'
-	                    where user_id = '$userId'";
+                    $sql = "UPDATE grand_gsms
+	                        SET pdf_contents = '$content_parsed'
+	                        WHERE user_id = '$userId'";
 	                unset($content_parsed);
                     DBFunctions::execSQL($sql, true);
 	                DBFunctions::commit();
