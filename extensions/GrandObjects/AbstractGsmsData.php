@@ -396,21 +396,17 @@ abstract class AbstractGsmsData extends BackboneModel{
     */
     function getFinalComments(){
         $year = ($this->year != "") ? $this->year : YEAR;
-        $blob = new ReportBlob(BLOB_TEXT, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q2', $this->getId());
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        return $data;
+        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q2", 0, $this->getId(), $this->getId());
     }
 
     function getAssignedSupervisors() {
         $year = ($this->year != "") ? $year : YEAR;
-        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getId());
+        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getId(), $this->getId());
     }
 
     function getFunding() {
         $year = ($this->year != "") ? $year : YEAR;
-        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->id, $this->getId());
+        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->getId(), $this->getId());
     }
     
     /**
