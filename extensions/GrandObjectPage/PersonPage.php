@@ -73,26 +73,7 @@ class PersonPage {
                         break;
                     }
                 }
-                $isChampion = $person->isRole(CHAMP);
-                if($isChampion){
-                    $creators = $person->getCreators();
-                    foreach($creators as $creator){
-                        if($creator->getId() == $me->getId()){
-                            $isSupervisor = true;
-                        }
-                    }
-                    foreach($person->getProjects() as $project){
-                        if(($project->isSubProject() && $me->leadershipOf($project->getParent())) || $me->leadershipOf($project)){
-                            $isSupervisor = true;
-                        }
-                    }
-                }
-                foreach($me->getThemeProjects() as $project){
-                    if($person->isMemberOf($project)){
-                        $isSupervisor = true;
-                        break;
-                    }
-                }
+
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
@@ -113,7 +94,6 @@ class PersonPage {
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
                 $visibility['isSupervisor'] = $isSupervisor;
-                $visibility['isChampion'] = $isChampion;
                 
                 self::showTitle($person, $visibility);
 		
@@ -126,17 +106,6 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonGsmsPdfTab($person, $visibility, 'GSMS PDF'));
                 }
                 $tabbedPage->addTab(new PersonApplicantDataTab($person, $visibility));
-                if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
-                    $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
-                }
-                if($config->getValue('networkName') == 'AGE-WELL' && 
-                    ($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00') || 
-                     $person->isRoleDuring(HQP."-Candidate", '0000-00-00 00:00:00', '2030-00-00 00:00:00'))){
-                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
-                }
-                if($config->getValue('projectsEnabled')){
-                    $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
-                }
                 if($me->isRoleAtLeast("Admin")){
                     $tabbedPage->addTab(new PersonFinalAdjudicationTab($person, $visibility));
                 }

@@ -1,7 +1,6 @@
 SopsView = Backbone.View.extend({
 
     table: null,
-    sops: null,
     editDialog: null,
     lastTimeout: null,
     expanded: false,
@@ -15,7 +14,6 @@ SopsView = Backbone.View.extend({
         this.template = _.template($('#sops_template').html());
         $(this).data('name', 'show');
         this.listenToOnce(this.model, "sync", function(){
-            this.sops = this.model;
             this.render();
         }, this);  
         setInterval(function () {
@@ -66,21 +64,21 @@ SopsView = Backbone.View.extend({
             this.table.destroy();
         }
         
-        // Filter the Sops
-        var sops = new Sops(this.sops.filter(function(sop) {
-            sop.hidden = !this.hidden;
-            var reviewers = sop.attributes.reviewers;
-            var other_reviewers = sop.attributes.other_reviewers;
+        // Filter the GSMS
+        var gsmsDatas = new GsmsDataAll(this.model.filter(function(gsms) {
+            gsms.hidden = !this.hidden;
+            var reviewers = gsms.attributes.reviewers;
+            var other_reviewers = gsms.attributes.other_reviewers;
             for (var i = 0; i < reviewers.length; i++) {
                 if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1" || reviewers[i].hidden == true)) {
-                    sop.hidden = !this.hidden;
+                    gsms.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
 
             for (var i = 0; i < other_reviewers.length; i++) {
                 if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1" || other_reviewers[i].hidden == true)) {
-                    sop.hidden = !this.hidden;
+                    gsms.hidden = !this.hidden;
                     return !this.hidden;
                 }
             }
@@ -89,7 +87,7 @@ SopsView = Backbone.View.extend({
         
         // Render the SopsRows
         var fragment = document.createDocumentFragment();
-        sops.each(function(p, i){
+        gsmsDatas.each(function(p, i){
             var row = new SopsRowView({model: p, parent: this});
             row.render();
             fragment.appendChild(row.el);

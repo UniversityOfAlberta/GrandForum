@@ -26,11 +26,11 @@ class PersonFinalAdjudicationTab extends AbstractEditableTab {
             $gsms = $this->person->getGSMS();
             $this->html .= "<table class='gsms'>";
 
-	    $this->html .= "<th>Final Applicant Adjudication </th>";
+            $this->html .= "<th>Final Applicant Adjudication </th>";
 
-	    $this->html .= "<tr>";
-	    $this->html .= "<td>";
-	    $this->html .= "<table class='gsms'>";
+            $this->html .= "<tr>";
+            $this->html .= "<td>";
+            $this->html .= "<table class='gsms'>";
             $this->html .= "<tr>";
             $this->html .= "<td class='label'>Funding Note</td>";
             $this->html .= "<td class='text'>{$gsms->getAdditional('funding_note')}</td>";
@@ -51,7 +51,7 @@ class PersonFinalAdjudicationTab extends AbstractEditableTab {
             $this->html .= "<td class='text'>{$gsms->getAdditional('decision_response')}</td>";
             $this->html .= "</tr>";
 
-	    $this->html .= "</table>";
+            $this->html .= "</table>";
 
             $this->html .= "</td>";
             $this->html .= "<td>";
@@ -104,29 +104,28 @@ class PersonFinalAdjudicationTab extends AbstractEditableTab {
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Funding Note: </td>";
-        $this->html .= "<td><input name='funding_note' type='text' value='{$gsms->funding_note}' /></td>";
+        $this->html .= "<td><input name='funding_note' type='text' value='{$gsms->getAdditional('funding_note')}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Department Decision: </td>";
-        $this->html .= "<td><input name='department_decision' type='text' value='{$gsms->department_decision}' /></td>";
+        $this->html .= "<td><input name='department_decision' type='text' value='{$gsms->getAdditional('department_decision')}' /></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
 
         $this->html .= "<td class='label'>FGSR Decision: </td>";
-        $this->html .= "<td><input name='fgsr_decision' type='text' value='{$gsms->fgsr_decision}'/></td>";
+        $this->html .= "<td><input name='fgsr_decision' type='text' value='{$gsms->getAdditional('fgsr_decision')}'/></td>";
         $this->html .= "</tr>";
         
         $this->html .= "<tr>";
         $this->html .= "<td class='label'>Decision Response: </td>";
-        $this->html .= "<td> <input name='decision_response' type='text' value='{$gsms->decision_response}'/></td>";
+        $this->html .= "<td> <input name='decision_response' type='text' value='{$gsms->getAdditional('decision_response')}'/></td>";
         $this->html .= "</tr>";
 
         $this->html .= "</table>";
         
         $this->html .= "<script type='text/javascript'>
-
                 $(document).ready(function(){
                     $('.ui-state-default').hide();
                 });

@@ -4,14 +4,8 @@
     
     require_once("Backbone/BackbonePage.php");
     require_once("PersonPage.php");
-    require_once("ProjectPage.php");
-    require_once("ThemePage.php");
-    require_once("ContributionPage.php");
-    require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");
     require_once("ManageProducts/ManageProducts.php");
-    require_once("AddContributionPage.php");
-    require_once("AddMultimediaPage.php");
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
     

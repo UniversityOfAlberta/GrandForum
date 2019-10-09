@@ -17,7 +17,6 @@ class PeopleTableTab extends AbstractTab {
         $data = Person::getAllPeople($this->table);
         $emailHeader = "";
         $idHeader = "";
-        $epicHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
@@ -34,9 +33,6 @@ class PeopleTableTab extends AbstractTab {
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
-            if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
-                $epicHeader = "<th style='white-space: nowrap;'>EPIC Due Date</th>";
-            }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -51,7 +47,6 @@ class PeopleTableTab extends AbstractTab {
                                     <th style='white-space: nowrap;'>University</th>
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
-                                    {$epicHeader}
                                     {$contactHeader}
                                     {$emailHeader}
                                     {$idHeader}
@@ -98,11 +93,6 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left'>{$university['university']}</td>";
                 $this->html .= "<td align='left'>{$university['department']}</td>";
                 $this->html .= "<td align='left'>{$university['position']}</td>";
-                if($epicHeader != ''){
-                    $hqpTab = new HQPEpicTab($person, array());
-                    $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
-                    $this->html .= "<td align='left'>{$date}</td>";
-                }
                 if($contactHeader != ''){
                     $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                     $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";

@@ -29,7 +29,6 @@ class PersonApplicantDataTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath, $config;
         if($this->canEdit()) { 
             if($config->getValue('networkName') == 'CSGARS') {
-
                 $this->html .= "<style>
                 .flex-container {
                   width: 100%;
@@ -243,6 +242,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                     }
                 }                
                 $this->html .= "</div>
+                </div>
                 </div>
                 </div>";
             } else { // On OT Forum
