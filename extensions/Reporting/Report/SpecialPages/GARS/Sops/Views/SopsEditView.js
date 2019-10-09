@@ -1,22 +1,16 @@
 SopsEditView = Backbone.View.extend({
-
-    gsmsdata: null,
     
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
-            this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
-            var xhr = this.gsmsdata.fetch();
-            $.when(xhr).then(function(){
-                this.render();
-            }.bind(this));
+            this.render();
         }, this);
         Backbone.Subviews.add(this);
     },
     
     subviewCreators: {
         "oisView" : function() {
-            return new OISView({model: this.gsmsdata});
+            return new OISView({model: this.model});
         }
     },
     
@@ -194,7 +188,7 @@ SopsEditView = Backbone.View.extend({
 
     set_link_to_table: function() {
         var suffix = "#";
-        switch(this.gsmsdata.attributes.folder) {
+        switch(this.model.attributes.folder) {
           case "Review in Progress":
             suffix += "/reviewInProgress";
             break;
@@ -208,19 +202,19 @@ SopsEditView = Backbone.View.extend({
             suffix += "/newApplications";
             break;
         }
-        var reviewers = this.gsmsdata.attributes.reviewers;
+        var reviewers = this.model.attributes.reviewers;
         for (var i = 0; i < reviewers.length; i++) {
             if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
-        var other_reviewers = this.gsmsdata.attributes.other_reviewers;
+        var other_reviewers = this.model.attributes.other_reviewers;
         for (var i = 0; i < other_reviewers.length; i++) {
             if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
-        suffix += "/"+this.gsmsdata.attributes.student_data.email;
+        suffix += "/"+this.model.attributes.student_data.email;
         $('#link_to_table').attr('href', wgServer+wgScriptPath+'/index.php/Special:Sops'+suffix);
     },
     
@@ -361,7 +355,7 @@ SopsEditView = Backbone.View.extend({
         }     
       }, 100);
       
-      var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
+      var mod = this.model.toJSON();
       mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
       this.set_link_to_table();
