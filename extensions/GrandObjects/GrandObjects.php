@@ -18,13 +18,10 @@ autoload_register('GrandObjects/API/MessageBoard');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/MailingList');
 autoload_register('GrandObjects/API/Search');
-autoload_register('GrandObjects/API/Sop');
 autoload_register('GrandObjects/API/Course');
 autoload_register('GrandObjects/API/GsmsData');
 
 require_once("AbstractGsmsData.php");
-require_once("Sop.php");
-
 
 global $apiRequest;
 // Person
@@ -109,13 +106,6 @@ $apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
 
-//Sop
-$apiRequest->addAction('Hidden','sop/:id', 'SopAPI');
-$apiRequest->addAction('Hidden','sops', 'SopsAPI');
-$apiRequest->addAction('Hidden','sop/:sop_id/annotations', 'SopAnnotationAPI');
-$apiRequest->addAction('Hidden','sop/:sop_id/annotations/:annotation_id', 'SopAnnotationAPI');
-$apiRequest->addAction('Hidden','sop/annotations/:annotation_id', 'SopAnnotationAPI');
-$apiRequest->addAction('Hidden','sop/annotations', 'SopAnnotationAPI');
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 $apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
@@ -123,6 +113,10 @@ $apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
 $apiRequest->addAction('Hidden','course/:id', 'CourseAPI');
 $apiRequest->addAction('Hidden','courses', 'CoursesAPI');
 //GsmsData
+$apiRequest->addAction('Hidden','gsmsdata/:id/annotations', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','gsmsdata/:id/annotations/:annotation_id', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','gsmsdata/annotations/:annotation_id', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','gsmsdata/annotations', 'SopAnnotationAPI');
 $apiRequest->addAction('Hidden','gsmsdata/:id', 'GsmsDataAPI');
 $apiRequest->addAction('Hidden','gsmsdata/:id/:year', 'GsmsDataAPI');
 $apiRequest->addAction('Hidden','gsmsdatas', 'GsmsDataAllAPI');
@@ -130,6 +124,7 @@ $apiRequest->addAction('Hidden','gsmsdatas/:folder', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision/:year', 'GsmsDataAllAPI');
+
 $apiRequest->addAction('Hidden','sophidden/:id/year', 'SOPHiddenAPI');
 
 function createModels(){
@@ -150,7 +145,6 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Sop.js?".filemtime("extensions/GrandObjects/BackboneModels/Sop.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Course.js?".filemtime("extensions/GrandObjects/BackboneModels/Course.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GsmsData.js?".filemtime("extensions/GrandObjects/BackboneModels/GsmsData.js")."'></script>\n";
     return true;

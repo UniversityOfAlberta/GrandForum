@@ -4649,21 +4649,6 @@ class Person extends BackboneModel {
     }
 
     /**
-     * Returns Sop object of person
-     * @return Sop SoP object of person
-   **/
-    function getSop($year=""){
-        $dbyear = ($year != "") ? "_$year" : "";
-        $data = DBFunctions::select(array("grand_sop$dbyear"),
-                                    array('id'),
-                                    array('user_id' => EQ($this->getId())));
-        if(count($data) > 0){
-            $sop_id = $data[0]['id'];
-            return SOP::newFromId($sop_id, $year);
-        }
-        return "";
-    }
-    /**
      * Returns url of GSMS pdf that was uploaded by Admin of person
      * @return String url of GSMS pdf (Including their resume, ref letters, etc)
    **/
@@ -4703,8 +4688,8 @@ class Person extends BackboneModel {
      * @return String url of SoP
     **/
     function getSopUrl() {
-        $sop = $this->getSop();
-        return $sop == "" ? "" : $sop->getUrl();
+        $gsms = $this->getGsms();
+        return $gsms->getId() == 0 ? "" : $gsms->getUrl();
     }
 
     /**

@@ -15,6 +15,7 @@ abstract class AbstractGsmsData extends BackboneModel{
     var $additional = array(); 
     var $gsms_url;
     var $submitted_date;
+    var $annotations = array();
 
     abstract function checkGSMS();
     abstract function getSopPdf();
@@ -43,6 +44,7 @@ abstract class AbstractGsmsData extends BackboneModel{
             $this->additional = json_decode($data[0]['additional'], true);
             $sub = explode(" ",$data[0]['submitted_date']);
             $this->submitted_date = $sub[0];
+            $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
         }
     }
 
@@ -59,7 +61,14 @@ abstract class AbstractGsmsData extends BackboneModel{
         }
         else{
             $data = DBFunctions::select(array("grand_gsms$dbyear"),
-                                        array('*'),
+                                        array('id',
+                                              'user_id',
+                                              'gsms_id',
+                                              'ois_id',
+                                              'student_id',
+                                              'additional',
+                                              'submitted_date',
+                                              'visible'),
                                         array('user_id' => EQ($id)),
                                         array('submitted_date' => 'DESC'),
                                         array(1));
@@ -99,7 +108,14 @@ abstract class AbstractGsmsData extends BackboneModel{
         }
         else{
             $data = DBFunctions::select(array("grand_gsms$dbyear"),
-                                        array('*'),
+                                        array('id',
+                                              'user_id',
+                                              'gsms_id',
+                                              'ois_id',
+                                              'student_id',
+                                              'additional',
+                                              'submitted_date',
+                                              'visible'),
                                         array('id' => EQ($id)));
             Cache::store("gsms_$id{$dbyear}", $data);
         }
@@ -120,13 +136,24 @@ abstract class AbstractGsmsData extends BackboneModel{
         }
         else{
             $data = DBFunctions::select(array("grand_gsms$dbyear"),
-                                        array('*'),
+                                        array('id',
+                                              'user_id',
+                                              'gsms_id',
+                                              'ois_id',
+                                              'student_id',
+                                              'additional',
+                                              'submitted_date',
+                                              'visible'),
                                         array('ois_id' => EQ($id)));
             Cache::store("gsms_$id{$dbyear}", $data);
         }
         $gsms = new GsmsData($data);
         $gsms->year = $year;
         return $gsms;
+    }
+    
+    function getId(){
+        return $this->id;
     }
     
     /**
@@ -136,9 +163,9 @@ abstract class AbstractGsmsData extends BackboneModel{
     function getUrl(){
         global $wgServer, $wgScriptPath;
         if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
-            return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops#/{$this->getId()}/edit";
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops#/{$this->user_id}/edit";
         }
-        return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops?embed#/{$this->getId()}/edit";
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:Sops?embed#/{$this->user_id}/edit";
     }
 
     /**
@@ -180,10 +207,6 @@ abstract class AbstractGsmsData extends BackboneModel{
         }
         return true;
     }
-    
-    function getSOP(){
-        return SOP::newFromUserId($this->user_id, $this->year);
-    }
 
     /**
      * Returns an array of this object
@@ -199,7 +222,6 @@ abstract class AbstractGsmsData extends BackboneModel{
                         'name' => $student->getReversedName(),
                         'url' => $student->getUrl(),
                         'email' => $student->getEmail());
-        $sop = $this->getSOP();
 
         $this->setAdditional("education_history", $this->getEducationalHistory(true));
         
@@ -218,11 +240,6 @@ abstract class AbstractGsmsData extends BackboneModel{
                       'sop_pdf' => $this->getSopUrl(),
                       'gsms_pdf' => $this->getGSMSUrl(),
                       'sop_url' => $this->getUrl());
-
-        // Not sure if specific from here
-        // sop information needed in table
-        $json['sop_id'] = $sop->getId();
-        $json['annotations'] = $sop->annotations;
 
         //adding reviewers array so can have on overview table
         $reviewers = array();
@@ -253,7 +270,6 @@ abstract class AbstractGsmsData extends BackboneModel{
         
         $json['other_reviewers'] = $otherReviewers;
         
-
         //adding decisions by boards
         $json['admit'] = $this->getFinalAdmit();
         $json['comments'] = $this->getFinalComments();
@@ -279,8 +295,8 @@ abstract class AbstractGsmsData extends BackboneModel{
         }
 
         $json['additional'] = array_merge($json['additional'], $this->getExtraColumns());
+        $json['annotations'] = $this->annotations;
         return $json;
-
     }
 
     function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
@@ -389,12 +405,12 @@ abstract class AbstractGsmsData extends BackboneModel{
 
     function getAssignedSupervisors() {
         $year = ($this->year != "") ? $year : YEAR;
-        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
+        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getId());
     }
 
     function getFunding() {
         $year = ($this->year != "") ? $year : YEAR;
-        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
+        return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->id, $this->getId());
     }
     
     /**

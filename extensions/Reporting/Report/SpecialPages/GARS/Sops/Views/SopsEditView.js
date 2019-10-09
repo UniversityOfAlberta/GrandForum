@@ -1,12 +1,10 @@
 SopsEditView = Backbone.View.extend({
 
-    sops: null,
     gsmsdata: null,
     
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
-            this.sops = this.model;
             this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
             var xhr = this.gsmsdata.fetch();
             $.when(xhr).then(function(){

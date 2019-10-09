@@ -17,13 +17,12 @@ class PersonSopTab extends AbstractEditableTab {
         $gsms = GsmsData::newFromUserId($person->id);
     	$url = $person->getSopPdfUrl();
 
-        $sop = $person->getSop();
-        $admissionStatus = ($sop != null) ? $sop->getFinalAdmit() : "Not Submitted";
+        $gsms = $person->getGSMS();
+        $admissionStatus = ($gsms != null) ? $gsms->getFinalAdmit() : "Not Submitted";
         $this->html .= "<div name='container' style='display:flex;'>";
         $this->html .= "<div style='margin: 6px;padding: 0px 12px 15px 12px;'><h3>Application Decision</h3>$admissionStatus</div>";
 
         if ($admissionStatus == "Admit") {
-
             $supers = $gsms->getAssignedSupervisors();
             $supers = @$supers['q5'];
             $this->html .= "<div style='margin: 6px;padding: 0px 12px 15px 12px;'><h3>Assigned Supervisor(s)</h3>";
@@ -46,17 +45,12 @@ class PersonSopTab extends AbstractEditableTab {
                 $this->html .= $funding;
             }
             $this->html .= "</div>";
-            
         }
         $this->html .= "</div>";
 
     	if(!($url === false)){
             $this->html .= "<div style='min-width:825px; max-width: 1000px; width:66%; height:500px;'><iframe style='width:100%; height:100%;' frameborder='0' src='$url'></iframe></div>";
-    	} 
-
-        
-
-
+    	}
         return $this->html;
     }
 

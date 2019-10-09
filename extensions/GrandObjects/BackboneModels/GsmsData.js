@@ -46,13 +46,15 @@ GsmsData = Backbone.Model.extend({
     defaults: function() {
         return {
             id:null,
+            student_data: {id: 0, name: "", url: ""},
             ois_id: "",
             year: "",
             history: "",
             additional: new Array(),
             gsms_url: "",
             sop_url: "",
-            sop_pdf: ""
+            sop_pdf: "",
+            annoations: new Array()
         };
     }
 

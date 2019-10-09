@@ -13,7 +13,7 @@ class UserPdfAPI extends API{
         $me = Person::newFromId($wgUser->getId());
         $user_id = $_GET["user"];
         $year = (isset($_GET["year"]) && $_GET["year"] != "") ? "_{$_GET["year"]}" : "";
-        $data = DBFunctions::select(array("grand_sop{$year}"),
+        $data = DBFunctions::select(array("grand_gsms{$year}"),
                                     array('pdf_contents'),
                                     array('user_id' => EQ($user_id)));
 	    $pdf = @gzinflate($data[0]['pdf_contents']);

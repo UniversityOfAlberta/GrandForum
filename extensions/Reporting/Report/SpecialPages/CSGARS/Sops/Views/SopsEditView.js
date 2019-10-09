@@ -1,15 +1,9 @@
 SopsEditView = Backbone.View.extend({
 
-    sops: null,
-    gsmsdata: null,
     initialize: function(){
         this.template = _.template($('#sops_edit_template').html());
         this.listenTo(this.model, "sync", function(){
-            this.sops = this.model;
-            this.gsmsdata = new GsmsData({user_id: this.model.get('user_id')});
-            var xhr = this.gsmsdata.fetch();
-            $.when(xhr).then(this.render);
-            //this.render();
+            this.render();
         }, this);
     },
     
@@ -31,9 +25,8 @@ SopsEditView = Backbone.View.extend({
         "click #check_personality" : "check_personality",
         "click #hide_stats": "hide_stats",
         "click #sop_statistics2": "show_stats",
-
-
     },
+    
     check_joy: function(){                $('#joy_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
                             'OK': function () {
                                 $(this).dialog('close')
@@ -163,7 +156,7 @@ SopsEditView = Backbone.View.extend({
     },
 
     openDialog: function(div){
-  $('#'+div).dialog({width:'200px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+        $('#'+div).dialog({width:'200px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
                             'OK': function () {
                                 $(this).dialog('close')
                             }
@@ -173,21 +166,21 @@ SopsEditView = Backbone.View.extend({
 
     hide_stats: function(){
         $('#sop_statistics').animate({width:'0%'});
-  $("#sop_statistics").hide();
-  $("#sop_statistics2").show();
-  $('#sop_div').animate({width:'95%'});
+        $("#sop_statistics").hide();
+        $("#sop_statistics2").show();
+        $('#sop_div').animate({width:'95%'});
     },
 
     show_stats: function(){
         $("#sop_statistics2").hide();
         $('#sop_div').animate({width:'80%'});
-  $('#sop_statistics').animate({width:'15%'});
-  $('#sop_statistics').show();
+        $('#sop_statistics').animate({width:'15%'});
+        $('#sop_statistics').show();
     },
 
     set_link_to_table: function() {
         var suffix = "#";
-        switch(this.gsmsdata.get('folder')) {
+        switch(this.model.get('folder')) {
           case "Review in Progress":
             suffix = "#/reviewInProgress";
             break;
@@ -202,7 +195,7 @@ SopsEditView = Backbone.View.extend({
             suffix = "#/rejected";
             break;
         }
-        switch(this.gsmsdata.get('admit')){
+        switch(this.model.get('admit')){
           case "Admit":
             suffix = "#/admitted";
             break;
@@ -210,21 +203,21 @@ SopsEditView = Backbone.View.extend({
             suffix = "#/rejected";
             break;
         }
-        var reviewers = this.gsmsdata.attributes.reviewers;
+        var reviewers = this.model.attributes.reviewers;
         //console.log(reviewers);
         for (var i = 0; i < reviewers.length; i++) {
             if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
-        var other_reviewers = this.gsmsdata.attributes.other_reviewers;
+        var other_reviewers = this.model.attributes.other_reviewers;
         //console.log(other_reviewers);
         for (var i = 0; i < other_reviewers.length; i++) {
             if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1")) {
                 suffix = "#/hidden";
             }
         }
-        suffix += "/"+this.gsmsdata.attributes.student_data.email;
+        suffix += "/"+this.model.attributes.student_data.email;
         $('#link_to_table').attr('href', wgServer+wgScriptPath+'/index.php/Special:Sops'+suffix);
     },
 
@@ -273,7 +266,7 @@ SopsEditView = Backbone.View.extend({
                     ], // use tags
                   })
                   .annotator( 'addPlugin', 'Store', {
-                      prefix: wgServer+wgScriptPath+"/index.php?action=api.sop/" + self.model.id,
+                      prefix: wgServer+wgScriptPath+"/index.php?action=api.gsmsdata/" + self.model.get('id'),
                       urls: {
                           create: '/annotations',
                           update: '/annotations/:id',
@@ -341,11 +334,11 @@ SopsEditView = Backbone.View.extend({
       //Data
       var d = [
             [
-              {axis:"Openness", value:self.gsmsdata.getAdditional('personality_stats.personality.0.percentile')},
-              {axis:"Conscientiousness", value:self.gsmsdata.getAdditional('personality_stats.personality.1.percentile')},
-              {axis:"Extraversion", value:self.gsmsdata.getAdditional('personality_stats.personality.2.percentile')},
-              {axis:"Agreeableness", value:self.gsmsdata.getAdditional('personality_stats.personality.3.percentile')},
-              {axis:"Neuroticism", value:self.gsmsdata.getAdditional('personality_stats.personality.4.percentile')}
+              {axis:"Openness", value:self.model.getAdditional('personality_stats.personality.0.percentile')},
+              {axis:"Conscientiousness", value:self.model.getAdditional('personality_stats.personality.1.percentile')},
+              {axis:"Extraversion", value:self.model.getAdditional('personality_stats.personality.2.percentile')},
+              {axis:"Agreeableness", value:self.model.getAdditional('personality_stats.personality.3.percentile')},
+              {axis:"Neuroticism", value:self.model.getAdditional('personality_stats.personality.4.percentile')}
             ]
       ];
 
@@ -369,7 +362,7 @@ SopsEditView = Backbone.View.extend({
         }     
       }, 100)
 
-      var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
+      var mod = _.extend(this.model.toJSON(), this.model.toJSON());
       mod.sop_url = this.model.get("sop_url");
       this.el.innerHTML = this.template(mod);
       $("#accordion > div").accordion({

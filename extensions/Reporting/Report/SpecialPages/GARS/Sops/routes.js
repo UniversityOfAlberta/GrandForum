@@ -39,9 +39,9 @@ pageRouter.on('route:defaultRoute', function (actions) {
 pageRouter.on('route:editSop', function (id) {
     main.set('title', '');
     this.closeCurrentView();
-    var sop = new Sop({'id':id});
-    sop.fetch();
-    this.currentView = new SopsEditView({el: $("#currentView"), model: sop});
+    var gsms = new GsmsData({'user_id':id});
+    gsms.fetch();
+    this.currentView = new SopsEditView({el: $("#currentView"), model: gsms});
 });
 
 

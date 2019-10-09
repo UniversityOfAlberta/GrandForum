@@ -16,29 +16,28 @@ class UpdateUserFinalAdjudicationAPI extends API{
         }   
         $person = Person::newFromName($_POST['user_name']);
         $data = DBFunctions::select(array('grand_gsms'),
-                            array('user_id'),
-                            array('user_id'=> EQ($person->getId())));
+                                    array('user_id'),
+                                    array('user_id'=> EQ($person->getId())));
         if(count($data)==0){
             DBFunctions::insert('grand_gsms',
                                 array('user_id' => $person->getId()),
                                 true);
         }
-                  $gsms_sheet = GsmsData::newFromUserId($person->getId());
-                              $gsms_sheet->funding_note = trim($_POST['funding_note']);
-                              $gsms_sheet->department_decision = trim($_POST['department_decision']);
-                              $gsms_sheet->fgsr_decision = $_POST['fgsr_decision'];
-                              $gsms_sheet->decision_response = trim($_POST['decision_response']);
-
-            $gsms_sheet->update();
+        $gsms = GsmsData::newFromUserId($person->getId());
+        $gsms->setAdditional('funding_note', trim($_POST['funding_note']));
+        $gsms->setAdditional('department_decision', trim($_POST['department_decision']));
+        $gsms->setAdditional('fgsr_decision', $_POST['fgsr_decision']);
+        $gsms->setAdditional('decision_response', trim($_POST['decision_response']));
+        $gsms->update();
 
         $person->getUser()->invalidateCache();
         if(!$noEcho){
             echo "User's Final Adjudication updated \n";
         }
-        }
+    }
 
-        function isLoginRequired(){
-                return true;
-        }
+    function isLoginRequired(){
+            return true;
+    }
 }
 ?>

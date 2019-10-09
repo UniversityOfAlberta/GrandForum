@@ -1,7 +1,7 @@
 <table id="profile1" style="width: 100%">
     <tr>
         <td>
-            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %> (<%= this.gsmsdata.getAdditional('folder') %>)</a></h1>
+            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%= student_data.url%>'><%= student_data.name %> (<%= this.model.getAdditional('folder') %>)</a></h1>
         </td>
         <td>
             <a id="link_to_table" class="button" style="float:right;">Show in Overview Table</a>
@@ -10,17 +10,17 @@
 <!--  href="#/hidden" -->
 </table>
   <% if(sop_check){ %>
-   <b>GARS PDF : </b><a href="<%= this.gsmsdata.get('sop_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GARS PDF : </b><a href="<%= sop_pdf %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
   <% if(gsms_data){ %>
-   <b>GSMS PDF : </b><a href="<%= this.gsmsdata.get('gsms_pdf') %>" target="_blank"><span class="pdf_gif"></span></a><br />
+   <b>GSMS PDF : </b><a href="<%= gsms_pdf %>" target="_blank"><span class="pdf_gif"></span></a><br />
     <% } %>
 <div id="accordion" style="width:100%; margin-top:50px">
     <!--
     <div>
         <h3><a href="#">GARS PDF</a></h3>
         <div>
-            <iframe style="width:70%;height:700px;border:0px;margin: 0 auto; display:block;" src="<%= this.gsmsdata.get('sop_pdf') %>#zoom=80"></iframe>
+            <iframe style="width:70%;height:700px;border:0px;margin: 0 auto; display:block;" src="<%= sop_pdf %>#zoom=80"></iframe>
         </div>
     </div>
     -->
@@ -29,69 +29,69 @@
         <div style="padding-bottom: 30px">
             <div style="display: inline-block; width: 100%;">
                 <h3 style="float:left;"><%= student_data.name %> <% if(gsms_id != 0){ %>(<%= gsms_id %>)<% } %>
-                    <% if(this.gsmsdata.getAdditional('program_name') != ''){ %>applying to <%= this.gsmsdata.getAdditional('program_name') %> <% } %>
+                    <% if(this.model.getAdditional('program_name') != ''){ %>applying to <%= this.model.getAdditional('program_name') %> <% } %>
                 </h3>
-                <h3 style="float:right;">GPA (normalized): <%= this.gsmsdata.getAdditional('gpaNormalized') %></h3>
+                <h3 style="float:right;">GPA (normalized): <%= this.model.getAdditional('gpaNormalized') %></h3>
             </div>
             <br/>
-            <%=student_data.email %>   <%= this.gsmsdata.getAdditional('gender') %>
+            <%=student_data.email %>   <%= this.model.getAdditional('gender') %>
             <div class="flex-container" style="display: block;">
                 <div class="flex-item" style="width:44%; min-width: 400px;">
-                    <b>Folder:</b> <%= this.gsmsdata.getAdditional('folder') %><br/>
-                    <b>Date of Birth:</b> <%= this.gsmsdata.getAdditional('date_of_birth') %><br/>
-                    <b>Country:</b> <%= this.gsmsdata.getAdditional('country_of_citizenship_full') %><br/>
-                    <b>Applicant Type:</b> <%= this.gsmsdata.getAdditional('applicant_type') %><br/><br/>
+                    <b>Folder:</b> <%= this.model.getAdditional('folder') %><br/>
+                    <b>Date of Birth:</b> <%= this.model.getAdditional('date_of_birth') %><br/>
+                    <b>Country:</b> <%= this.model.getAdditional('country_of_citizenship_full') %><br/>
+                    <b>Applicant Type:</b> <%= this.model.getAdditional('applicant_type') %><br/><br/>
 
                     <b>Education History:</b><br/>
-                    <% var ed_hist = this.gsmsdata.getAdditional('education_history').replace(/<br \/><br \/>/g, '<br />'); %>
+                    <% var ed_hist = this.model.getAdditional('education_history').replace(/<br \/><br \/>/g, '<br />'); %>
                     <% ed_hist = ed_hist.replace(/<b>/g, ''); %>
                     <% ed_hist = ed_hist.replace(/<\/b>/g, ''); %>
                     <%= ed_hist %><br/><br/>
 
                     <b>Areas of Study:</b><br/>
-                    <%= this.gsmsdata.getAdditional('areas_of_study') %><br/>
+                    <%= this.model.getAdditional('areas_of_study') %><br/>
                     <b>Supervisors:</b><br/>
-                    <% var supers = this.gsmsdata.getAdditional('supervisors').replace(/<br \/>/g, ''); %>
+                    <% var supers = this.model.getAdditional('supervisors').replace(/<br \/>/g, ''); %>
                     <%= supers %><br/><br/>
 
                     <b>Courses:</b><br/>
-                    <% if (this.gsmsdata.getAdditional('courses') == "") { %>No courses were listed<% } else { %>
-                        <div title="<%= this.gsmsdata.getAdditional('courses') %>" style="border-bottom: none; max-height: 100px; overflow-y: auto;">
-                            <%= this.gsmsdata.getAdditional('courses') %>
+                    <% if (this.model.getAdditional('courses') == "") { %>No courses were listed<% } else { %>
+                        <div title="<%= this.model.getAdditional('courses') %>" style="border-bottom: none; max-height: 100px; overflow-y: auto;">
+                            <%= this.model.getAdditional('courses') %>
                         </div>
                     <% } %>
                 </div>
                 <div class="flex-item" style="width:24%;">
                     <b>Scholarships</b><br/>
-                    Held: <%= this.gsmsdata.getAdditional('scholarships_held', '--') %><br/>
-                    Applied: <%= this.gsmsdata.getAdditional('scholarships_applied', '--') %><br/><br/>
+                    Held: <%= this.model.getAdditional('scholarships_held', '--') %><br/>
+                    Applied: <%= this.model.getAdditional('scholarships_applied', '--') %><br/><br/>
                     <div style="display:inline-block;">
                         <table style="float: left">
                             <tr>
                                 <td><b>EPL Test:</b></td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epltest', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epltest', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Listening:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epl_listen', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epl_listen', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Writing:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epl_write', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epl_write', '--') %></td>
                             </tr>
                         </table>
                         <table style="float: left; margin-left:5px;">
                             <tr>
                                 <td><b>EPL Score:</b></td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epl_score', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epl_score', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Reading:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epl_read', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epl_read', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Speaking:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('epl_speaking', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('epl_speaking', '--') %></td>
                             </tr>
                         </table>
                     </div><br/><br/>
@@ -100,26 +100,26 @@
                         <table>
                             <tr>
                                 <td>Verbal:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('gre1', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('gre1', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Quantitative:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('gre2', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('gre2', '--') %></td>
                             </tr>
                             <tr>
                                 <td>Analytical:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('gre3', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('gre3', '--') %></td>
                             </tr>
                             <tr>
                                 <td>CS:</td>
-                                <td align="right"><%= this.gsmsdata.getAdditional('gre4', '--') %></td>
+                                <td align="right"><%= this.model.getAdditional('gre4', '--') %></td>
                             </tr>
                         </table>
                     </div>
                     <br/>
 
-                    <b>Number of Publications: </b><%= this.gsmsdata.getAdditional('num_publications') %><br/>
-                    <b>Number of Awards: </b> <%= this.gsmsdata.getAdditional('num_awards') %><br/>
+                    <b>Number of Publications: </b><%= this.model.getAdditional('num_publications') %><br/>
+                    <b>Number of Awards: </b> <%= this.model.getAdditional('num_awards') %><br/>
                 </div>
                 <div class="flex-item" style="width:24%;">
                     <% if (reviewers.length == 0) { %>
@@ -201,10 +201,10 @@
                     <br/>
 
                     <b>Notes:</b><br/>
-                    <% if (this.gsmsdata.getAdditional('notes').length == 0) { %>
+                    <% if (this.model.getAdditional('notes').length == 0) { %>
                         No notes to show
                     <% } else { %>
-                        <% _.each(this.gsmsdata.getAdditional('notes'), function(note, key) { %>
+                        <% _.each(this.model.getAdditional('notes'), function(note, key) { %>
                             <%= key %>: <%= note %>
                             <br />
                         <% }); %>
@@ -253,8 +253,8 @@
                                         <p>Scores higher than 12 depict 'College' level writing.</p>
                                     </div>
                                 </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('ari_grade', "", 2) %></td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('ari_age', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('ari_grade', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('ari_age', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Coleman-Liau
@@ -269,8 +269,8 @@
                                         <p>Scores higher than 12 depict college-level writing.</p>
                                     </div>
                                 </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('colemanliau_grade', "", 2) %></td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('colemanliau_age', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('colemanliau_grade', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('colemanliau_age', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Dalechall
@@ -285,8 +285,8 @@
                                         <p>Score higher than 10 depict College Graduate writing</p>
                                     </div>
                                 </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('dalechall_grade', "", 2) %></td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('dalechall_age', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('dalechall_grade', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('dalechall_age', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Flesch-Kincaid
@@ -302,8 +302,8 @@
                                         The lowest grade level score in theory is −3.40</p>
                                     </div>
                                 </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('fleschkincaid_grade', "", 2) %></td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('fleschkincaid_age', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('fleschkincaid_grade', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('fleschkincaid_age', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td>SMOG
@@ -316,13 +316,13 @@
                                         <p>Score ranges between 4(worst)-18(best).</p>
                                     </div>
                                 </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('smog_grade', "", 2) %></td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('smog_age', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('smog_grade', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('smog_age', "", 2) %></td>
                             </tr>
                         </tbody>
                     </table>
                     
-                    <p>Flesch Reading Ease: <%= this.gsmsdata.getAdditional('reading_ease', "", 2) %>
+                    <p>Flesch Reading Ease: <%= this.model.getAdditional('reading_ease', "", 2) %>
                     <span style='text-align:right; font-size:0.7em'>
                         <a href='#!' id='check_readingease'>[?]</a>
                     </span>
@@ -331,7 +331,7 @@
 			<p>Formula: 206.835 - 1.015(total words/total sentences) - 84.6(total syllables/total words)</p>
                         <p>Score ranges between 0(hardest to read)-100(easiest to read)</p>
                     </div></p>
-                    <p>Dalechall Readability Index: <%= this.gsmsdata.getAdditional('dalechall_index', "", 2) %>
+                    <p>Dalechall Readability Index: <%= this.model.getAdditional('dalechall_index', "", 2) %>
                     <span style='text-align:right; font-size:0.7em;'>
                         <a href='#!' id='check_dalechall_reading'>[?]</a>
                     </span>
@@ -342,14 +342,14 @@
                         <p>Score ranges between 1(worst)-10+(best).</p>
 			<p>Grades higher than 10 depict college graduate writing.</p>
                     </div></p>
-                    <p>Sentiment Type: <%= this.gsmsdata.getAdditional('sentiment_type') %>
+                    <p>Sentiment Type: <%= this.model.getAdditional('sentiment_type') %>
                     <span style='text-align:right; font-size:0.7em;'>
                         <a href='#!' id='check_sentiment'>[?]</a>
                     </span>
                     <div id='sentiment_index' title='Sentiment' style='display:none'>
                         <p>Sentiment analysis gives an idea of whether the text uses mostly positive language, negative language, or neutral language.</p><p>This is the sentiment value</p>
                     </div></p>
-                    <p>Sentiment Score: <%= this.gsmsdata.getAdditional('sentiment_val', "", 2) %>
+                    <p>Sentiment Score: <%= this.model.getAdditional('sentiment_val', "", 2) %>
                     <span style='text-align:right; font-size:0.7em;'>
                         <a href='#!' id='check_sentiment_score'>[?]</a>
                     </span>
@@ -381,7 +381,7 @@
                                         </p>
                                         
                                         </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('emotion_stats.anger', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('emotion_stats.anger', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Disgust
@@ -393,7 +393,7 @@
                                         <p>An emotional response of revulsion to something considered offensive or unpleasant. It is a sensation that refers to something revolting.
                                         </p>
                                         </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('emotion_stats.disgust', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('emotion_stats.disgust', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Fear
@@ -405,7 +405,7 @@
                                         <p>A response to impending danger. It is a survival mechanism that is a reaction to some negative stimulus. It may be a mild caution or an extreme phobia.
                                         </p>
                                         </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('emotion_stats.fear', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('emotion_stats.fear', "", 2) %></td>
                             </tr>
                             <tr class="style1">
                                 <td class="style1">Joy
@@ -418,7 +418,7 @@
                                         </p>
                                         
                                         </td>
-                                <td align="right" class="style1"><%= this.gsmsdata.getAdditional('emotion_stats.joy', "", 2) %></td>
+                                <td align="right" class="style1"><%= this.model.getAdditional('emotion_stats.joy', "", 2) %></td>
                             </tr>
                         </tbody>
                     </table>

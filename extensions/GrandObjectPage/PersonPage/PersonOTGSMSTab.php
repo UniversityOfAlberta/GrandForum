@@ -168,8 +168,7 @@ class PersonOTGSMSTab extends AbstractEditableTab {
         $gsms_data = $this->person->getGSMS();
         $gsms = $gsms_data->getAdditional();
         $gsms_degrees = $gsms['degrees'];
-	$sop = $this->person->getSOP();
-	$visible = $gsms_data->visible;
+        $visible = $gsms_data->visible;
         
         $this->html .= "<style>
             input[type=number]::-webkit-inner-spin-button, 
@@ -339,16 +338,16 @@ class PersonOTGSMSTab extends AbstractEditableTab {
     /**
      * Displays Sop Review of user
      */
-    function showSop($person,$visibility){
+    function showSop($person, $visibility){
         global $wgUser;
         if(isExtensionEnabled('Sops')){
             $me = Person::newFromWgUser();
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
-                if($person->getSop()){
-                    $sop_url = $person->getSop()->getUrl();
-            if(!$this->canEdit()){
-            $this->html .= "<br /><br />";
-            }
+                if($person->getGSMS()){
+                    $sop_url = $person->getGSMS()->getUrl();
+                    if(!$this->canEdit()){
+                        $this->html .= "<br /><br />";
+                    }
                     $this->html .= "<a class='button' href='$sop_url'>Review</a>";
                 }
                 if($person->getGSMSPdfUrl() != ""){

@@ -925,8 +925,8 @@ abstract class AbstractReport extends SpecialPage {
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
             //When they submit, an SoP is added to the table
-            $sop =  SOP::newFromUserId($me->getId());
-            if(!is_array($sop)){
+            $gsms =  GsmsData::newFromUserId($me->getId());
+            if(!is_array($gsms)){
                 $gsms_id = "";
                 if($config->getValue('networkName') == 'GARS') {
                     $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_OT', 'CS_Questions_tab0', 'gsmsID_OT');
@@ -934,18 +934,14 @@ abstract class AbstractReport extends SpecialPage {
                     $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_CS', 'CS_Questions_tab0', 'gsmsIDCS');
                 }
 
-                $sop = new SOP(array());
-                $sop->user_id = $me->getId();
-                $sop->create();
-                $sop = SOP::newFromUserId($me->getId());
-                $gsms_data = new GsmsData(array());
-                $gsms_data->user_id = $me->getId();
-                $gsms_data->setAdditional("status", "Application Completed");
-                $gsms_data->visible = "true";
-                $gsms_data->gsms_id = $gsms_id;
-                $gsms_data->create();
+                $gsms = new GsmsData(array());
+                $gsms->user_id = $me->getId();
+                $gsms->setAdditional("status", "Application Completed");
+                $gsms->visible = "true";
+                $gsms->gsms_id = $gsms_id;
+                $gsms->create();
                 
-                //$gsms_data->updateStatistics();
+                //$gsms->updateStatistics();
                 
                 // Check of OIS is enabled
                 if($config->getValue("oisEnabled")){
@@ -957,7 +953,7 @@ abstract class AbstractReport extends SpecialPage {
                     //set POST variables
                     $fields = array(
                         'ccid' => $ccid,
-                        'sop' => array(implode("\n", $gsms_data->getContent()))
+                        'sop' => array(implode("\n", $gsms->getContent()))
                     );
                     
                     //url-ify the data for the POST
@@ -987,8 +983,8 @@ abstract class AbstractReport extends SpecialPage {
                     if($response !== false && $response != null){
                         $url = $response->link;
                         $token = $response->applicantToken;
-                        $gsms_data->ois_id = $token;
-                        $gsms_data->update();
+                        $gsms->ois_id = $token;
+                        $gsms->update();
                         // To send HTML mail, the Content-type header must be set
                         $headers[] = 'MIME-Version: 1.0';
                         $headers[] = 'Content-type: text/html; charset=utf-8';

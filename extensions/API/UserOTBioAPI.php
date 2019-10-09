@@ -191,15 +191,14 @@ class UserOTBioAPI extends API{
                                      array('user_id' => $student_id),
                                            true);
                    }
+                   $gsms = GsmsData::newFromUserId($student_id);
+                   foreach($student as $field => $value){
+                        $gsms->setAdditional($field, $add);
+                   }
+                   $gsms->student_id = $student['student_id'];
+                   $gsms->update();
                    
-                   DBFunctions::update('grand_gsms',
-                            array('student_id' => $student['student_id'],
-                                  'gsms_id' => $student['gsms_id'],
-                                  'country_of_citizenship' => $student['country'],
-                                  'additional' => serialize($student)),
-                            array('user_id' => EQ($student_id)));
-                   
-                   $gsmsId = $student_obj->getGSMS()->id;
+                   $gsmsId = $gsms->getId();
                    Cache::delete("gsms_{$gsmsId}");
                    Cache::delete("gsms_user_{$student_id}");
                     /*$reviewers = $student['reviewers'];
