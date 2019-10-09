@@ -14,7 +14,9 @@
   <% if(gsms_id != 0){ %>
     <%= gsms_id %><br />
   <% } %>
-  <%= this.model.getAdditional('applicant_number') %><br />
+  <% if(this.model.getAdditional('applicant_number') != 0){ %>
+    <%= this.model.getAdditional('applicant_number') %><br />
+  <% } %>
   <% if(student_id != 0){ %>
     <%= student_id %><br />
   <% } %>
@@ -78,7 +80,7 @@
 </td>
 
 <td align="right" id='pubs'>
-    <%= this.model.getAdditional('num_publications') %>
+    <%= this.model.getAdditional('num_publications', 0) %>
 </td>
 
 <td align="right" id='awards'>
@@ -139,7 +141,7 @@
     <% var avg=0; %>
     <% var ignore=0; %>
     <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if (other_reviewers[i].rank != "-1") { %>
+        <% if (other_reviewers[i].rank != "-1" && other_reviewers[i].rank != "--") { %>
           <% avg += parseInt(other_reviewers[i].rank); %>
         <% } else { %>
           <% ignore += 1; %>

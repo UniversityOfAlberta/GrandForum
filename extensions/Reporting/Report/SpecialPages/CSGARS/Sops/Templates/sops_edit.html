@@ -184,7 +184,7 @@
                                 <% var avg=0; %>
                                 <% var ignore=0; %>
                                 <% for(var i=0; i < other_reviewers.length;i++){ %>
-                                  <% if (other_reviewers[i].rank != "-1") { %>
+                                  <% if (other_reviewers[i].rank != "-1" && other_reviewers[i].rank != "--") { %>
                                     <% avg += parseInt(other_reviewers[i].rank); %>
                                   <% } else { %>
                                     <% ignore += 1; %>
