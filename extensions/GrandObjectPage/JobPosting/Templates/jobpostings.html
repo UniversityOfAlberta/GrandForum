@@ -17,6 +17,7 @@
             <tr>
                 <td>
                     <% if(job.get('deadlineType') == 'Open'){ %>
+                        <span style="display:none;"><%= job.get('created') %></span>
                         Open<br />
                     <% } else { %>
                         <span style="display:none;"><%= job.get('deadlineDate') %></span>
