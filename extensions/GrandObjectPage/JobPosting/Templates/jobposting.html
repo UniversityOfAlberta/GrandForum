@@ -9,10 +9,12 @@
             <td class="label">Application Deadline Type:</td>
             <td><%= deadlineType %></td>
         </tr>
-        <tr>
-            <td class="label">Application Deadline Date:</td>
-            <td><%= formatDate(deadlineDate) %></td>
-        </tr>
+        <% if(deadlineType != 'Open'){ %>
+            <tr>
+                <td class="label">Application Deadline Date:</td>
+                <td><%= formatDate(deadlineDate) %></td>
+            </tr>
+        <% } %>
         <tr>
             <td class="label">Job Start Date Type:</td>
             <td ><%= startDateType %></td>

@@ -16,8 +16,12 @@
         <% this.model.each(function(job){ %>
             <tr>
                 <td>
-                    <span style="display:none;"><%= job.get('deadlineDate') %></span>
-                    <%= dateTimeHelpers.formatDate(job.get('deadlineDate')) %><br />
+                    <% if(job.get('deadlineType') == 'Open'){ %>
+                        Open<br />
+                    <% } else { %>
+                        <span style="display:none;"><%= job.get('deadlineDate') %></span>
+                        <%= dateTimeHelpers.formatDate(job.get('deadlineDate')) %><br />
+                    <% } %>
                     (Posted: <%= dateTimeHelpers.formatDate(job.get('created')) %> by <a href="<%= job.get('user').url %>"><%= job.get('user').fullName %></a>)
                 </td>
                 <td>
