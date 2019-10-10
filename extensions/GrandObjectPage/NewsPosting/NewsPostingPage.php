@@ -2,7 +2,7 @@
 
 BackbonePage::register('NewsPostingPage', 'News Posting', 'network-tools', dirname(__FILE__));
 
-//$wgHooks['ToolboxLinks'][] = 'NewsPostingPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'NewsPostingPage::createToolboxLinks';
 
 class NewsPostingPage extends BackbonePage {
     

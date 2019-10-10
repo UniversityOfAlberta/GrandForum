@@ -2,7 +2,7 @@
 
 BackbonePage::register('EventPostingPage', 'Event Posting', 'network-tools', dirname(__FILE__));
 
-//$wgHooks['ToolboxLinks'][] = 'EventPostingPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'EventPostingPage::createToolboxLinks';
 
 class EventPostingPage extends BackbonePage {
     
