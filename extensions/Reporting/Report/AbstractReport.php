@@ -925,8 +925,8 @@ abstract class AbstractReport extends SpecialPage {
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
             //When they submit, an SoP is added to the table
-            $gsms =  GsmsData::newFromUserId($me->getId());
-            if(!is_array($gsms)){
+            $gsms = GsmsData::newFromUserId($me->getId());
+            if($gsms->getId() == 0){
                 $gsms_id = "";
                 if($config->getValue('networkName') == 'GARS') {
                     $gsms_id = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_OT', 'CS_Questions_tab0', 'gsmsID_OT');
