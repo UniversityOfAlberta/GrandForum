@@ -2,11 +2,11 @@
 
 require_once('commandLine.inc');
 
-$sops = DBFunctions::select(array('grand_sop'),
+$sops = DBFunctions::select(array('grand_gsms'),
                             array('id'));
 
 foreach($sops as $sop){
-    $data = DBFunctions::select(array('grand_sop'),
+    $data = DBFunctions::select(array('grand_gsms'),
                                 array('*'),
                                 array('id' => $sop['id']));
     $data = $data[0];
@@ -22,7 +22,7 @@ foreach($sops as $sop){
             if(strlen($contents) > 0){
                 $contents = gzdeflate($contents);
                 $size2 = strlen($contents);
-                DBFunctions::update('grand_sop',
+                DBFunctions::update('grand_gsms',
                                     array('pdf_contents' => $contents),
                                     array('id' => $sop['id']));
                 echo "Update {$sop['id']}: {$size1} -> {$size2}\n";
