@@ -64,7 +64,6 @@ class PersonProfileTab extends AbstractEditableTab {
                 }
             }, 33);
         </script>";*/
-        //$this->showCCV($this->person, $this->visibility);
         $this->showSop($this->person, $this->visibility);
         return $this->html;
     }
@@ -446,19 +445,6 @@ EOF;
                 </script>";
         }
         return $string;
-    }
-   
-    /**
-     * Displays the profile for this user
-     */
-    function showCCV($person, $visibility){
-        global $wgUser, $wgServer, $wgScriptPath;
-        if(isExtensionEnabled('CCVExport')){
-            $me = Person::newFromWgUser();
-            if(($person->isRole(NI)) && $me->getId() == $person->getId()){
-                $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
-            }
-        }
     }
 
     /**

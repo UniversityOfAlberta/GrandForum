@@ -3,9 +3,6 @@
 autoload_register('GrandObjectPage/PersonPage');
 
 $wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
 
 $wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
 $wgHooks['userCan'][] = 'PersonPage::userCanExecute';

@@ -143,11 +143,8 @@
         'AddMember',
         'EditMember',
         //'HQPRegister',
-        'Poll',
-        'QueryableTable',
         'IndexTables',
         'Reporting',
-        'NCETable',
         'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
@@ -156,8 +153,6 @@
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'AdvancedSearch',
-        'CCVExport',
         'MyThreads'
     ));
     

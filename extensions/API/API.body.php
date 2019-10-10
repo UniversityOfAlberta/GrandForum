@@ -171,7 +171,6 @@ class APIRequest{
 
         //POST
         $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
-		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
 		$this->addAction('Hidden', 'sendOISEmail', 'OISEmailAPI');

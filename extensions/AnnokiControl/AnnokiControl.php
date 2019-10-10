@@ -89,15 +89,6 @@ $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
 $egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
                                           'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
-$egAnnokiExtensions['Poll'] = array('name' => 'Poll',
-                                    'path' => "$IP/extensions/Poll/Poll.body.php");
-
-$egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
-                                              'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
-
-$egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
-                                        'path' => "$IP/extensions/NCETable/NCETable.php");
-
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
 
@@ -121,24 +112,22 @@ $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
 
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-
-$egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
-                                              'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
-
-$egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
-                                         'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                          
 $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue', 
                                            'path' => "$IP/extensions/ReportIssue/ReportIssue.php");
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
+                                         
 $egAnnokiExtensions['AdminTabs'] = array('name' => 'AdminTabs',
                                          'path' => "$IP/extensions/AdminTabs/AdminTabs.php");
+                                         
 $egAnnokiExtensions['Courses'] = array('name' => 'Courses',
                                          'path' => "$IP/extensions/Courses/Courses.php");
+                                         
 $egAnnokiExtensions['AssignReviewer'] = array('name' => 'AssignReviewer',
                                          'path' => "$IP/extensions/AssignReviewer/AssignReviewer.php");
+                                         
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
