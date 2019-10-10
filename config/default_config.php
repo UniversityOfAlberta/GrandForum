@@ -145,7 +145,6 @@
         //'HQPRegister',
         'IndexTables',
         'Reporting',
-        'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
