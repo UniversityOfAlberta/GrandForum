@@ -133,8 +133,6 @@ $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue',
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
-$egAnnokiExtensions['PdfConversion'] = array('name' => 'PdfConversion',
-                                         'path' => "$IP/extensions/PdfConversion/PdfConversion.php");
 $egAnnokiExtensions['AdminTabs'] = array('name' => 'AdminTabs',
                                          'path' => "$IP/extensions/AdminTabs/AdminTabs.php");
 $egAnnokiExtensions['Courses'] = array('name' => 'Courses',
@@ -194,7 +192,7 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
              $key == "CreateAccount" || $key == 'Sops' || 
-	     $key == 'PdfConversion'|| $key == 'AdminTabs')){
+             $key == 'AdminTabs')){
             unset($aSpecialPages[$key]);
             continue;
         }
