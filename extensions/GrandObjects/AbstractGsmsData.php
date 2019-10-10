@@ -42,6 +42,8 @@ abstract class AbstractGsmsData extends BackboneModel{
             $this->gsms_id = $data[0]['gsms_id'];
             $this->ois_id = $data[0]['ois_id'];
             $this->additional = json_decode($data[0]['additional'], true);
+            $dob = explode(" ", $this->getAdditional("date_of_birth"));
+            $this->setAdditional("date_of_birth", @$dob[0]);
             $sub = explode(" ",$data[0]['submitted_date']);
             $this->submitted_date = $sub[0];
             $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);

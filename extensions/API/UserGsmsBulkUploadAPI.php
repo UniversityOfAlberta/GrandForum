@@ -61,7 +61,7 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['gsms_id'] = $row[3];
             $array_info['student_id'] = "{$row[4]}";
             $array_info['cs_app'] = $row[5];
-            $array_info['date_of_birth'] = $row[6]." 00:00:00";
+            $array_info['date_of_birth'] = str_replace("/", "-", $row[6])." 00:00:00";
             $array_info['email'] = $row[7];
             $array_info['academic_year'] = $row[8];
             $array_info['term'] = $row[9];
