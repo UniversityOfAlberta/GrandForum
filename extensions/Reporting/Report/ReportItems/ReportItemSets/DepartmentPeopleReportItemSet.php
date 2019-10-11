@@ -32,7 +32,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             if(($dept == "") || 
                ($person->isInDepartment($dept, $uni, $start, $end)) || 
                ($found) ||
-               (($person->isName("Eleni.Stroulia") && $me->isName("Mauricio.Sacchi")))){
+               (($person->getName() == "Eleni.Stroulia" && $me->getName() == "Mauricio.Sacchi"))){
                 if($excludeMe && $person->isMe()){
                     // Should not see themselves in recommendations
                     continue;
