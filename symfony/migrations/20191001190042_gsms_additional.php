@@ -63,6 +63,7 @@ class GsmsAdditional extends AbstractMigration
                         'decision_response',
                         'general_notes');
                         
+        // CURRENT
         $stmt = $this->query("SELECT * 
                               FROM grand_gsms");
         $rows = $stmt->fetchAll();
@@ -85,7 +86,7 @@ class GsmsAdditional extends AbstractMigration
                             WHERE id = '{$row['id']}'");
         }
         
-        
+        // 2017
         $stmt = $this->query("SELECT * 
                               FROM grand_gsms_2017");
         $rows = $stmt->fetchAll();
@@ -108,13 +109,47 @@ class GsmsAdditional extends AbstractMigration
                             SET additional = {$serialized}
                             WHERE id = '{$row['id']}'");
         }
+        
+        // 2018
+        $stmt = $this->query("SELECT * 
+                              FROM grand_gsms_2018");
+        $rows = $stmt->fetchAll();
+        foreach($rows as $row){
+            $row['additional'] = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $row['additional']);
+            $additional = @unserialize($row['additional']);
+            if($additional === false){
+                $additional = json_decode($row['additional'], true);
+            }
+            foreach($fields as $field){
+                if($row[$field] !== '' && 
+                   $row[$field] !== 0 &&
+                   $row[$field] !== "0" &&
+                   $row[$field] !== "0000-00-00 00:00:00"){
+                    $additional[$field] = str_replace(" 00:00:00", "", $row[$field]);
+                }
+            }
+            $serialized = $conn->quote(json_encode($additional));
+            $this->execute("UPDATE grand_gsms_2018
+                            SET additional = {$serialized}
+                            WHERE id = '{$row['id']}'");
+        }
+        
+        // CURRENT
         $table = $this->table('grand_gsms');
         foreach($fields as $field){
             $table->removeColumn($field);
         }
         $table->save();
         
+        // 2017
         $table = $this->table('grand_gsms_2017');
+        foreach($fields as $field){
+            $table->removeColumn($field);
+        }
+        $table->save();
+        
+        // 2018
+        $table = $this->table('grand_gsms_2018');
         foreach($fields as $field){
             $table->removeColumn($field);
         }

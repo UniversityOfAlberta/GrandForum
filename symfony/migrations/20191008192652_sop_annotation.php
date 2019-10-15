@@ -28,6 +28,7 @@ class SopAnnotation extends AbstractMigration
      */
     public function change()
     {
+        // CURRENT
         $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
                               FROM grand_sop s, grand_gsms g 
                               WHERE g.user_id = s.user_id");
@@ -38,12 +39,24 @@ class SopAnnotation extends AbstractMigration
                             WHERE sop_id = '{$row['sop_id']}'");
         }
         
+        // 2017
         $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
                               FROM grand_sop_2017 s, grand_gsms_2017 g 
                               WHERE g.user_id = s.user_id");
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
             $this->execute("UPDATE grand_sop_annotation_2017
+                            SET sop_id = {$row['gsms_id']}
+                            WHERE sop_id = '{$row['sop_id']}'");
+        }
+        
+        // 2018
+        $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
+                              FROM grand_sop_2018 s, grand_gsms_2018 g 
+                              WHERE g.user_id = s.user_id");
+        $rows = $stmt->fetchAll();
+        foreach($rows as $row){
+            $this->execute("UPDATE grand_sop_annotation_2018
                             SET sop_id = {$row['gsms_id']}
                             WHERE sop_id = '{$row['sop_id']}'");
         }

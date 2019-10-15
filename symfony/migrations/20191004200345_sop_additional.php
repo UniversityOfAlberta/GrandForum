@@ -53,7 +53,8 @@ class SopAdditional extends AbstractMigration
                         'reviewer',
                         'emotion_stats',
                         'personality_stats');
-                        
+        
+        // CURRENT
         $rows = $this->fetchAll("SELECT * 
                                  FROM grand_sop");
         foreach($rows as $row){
@@ -81,6 +82,7 @@ class SopAdditional extends AbstractMigration
                             WHERE id = '{$gsms['id']}'");
         }
         
+        // 2017
         $rows = $this->fetchAll("SELECT * 
                                  FROM grand_sop_2017");
         foreach($rows as $row){
@@ -108,13 +110,50 @@ class SopAdditional extends AbstractMigration
                             WHERE id = '{$gsms['id']}'");
         }
         
+        // 2018
+        $rows = $this->fetchAll("SELECT * 
+                                 FROM grand_sop_2018");
+        foreach($rows as $row){
+            $gsms = $this->fetchRow("SELECT * 
+                                     FROM grand_gsms_2018
+                                     WHERE user_id = {$row['user_id']}");
+            $additional = json_decode($gsms['additional'], true);
+            foreach($fields as $field){
+                if(($field == "emotion_stats" ||
+                    $field == "personality_stats") &&
+                   $row[$field] != ""){
+                    $obj = unserialize($row[$field]);
+                    $additional[$field] = $obj;
+                }
+                else if($row[$field] !== '' && 
+                   $row[$field] !== 0 &&
+                   $row[$field] !== "0" &&
+                   $row[$field] !== "0000-00-00 00:00:00"){
+                    $additional[$field] = str_replace(" 00:00:00", "", $row[$field]);
+                }
+            }
+            $serialized = $conn->quote(json_encode($additional));
+            $this->execute("UPDATE grand_gsms_2018
+                            SET additional = {$serialized}
+                            WHERE id = '{$gsms['id']}'");
+        }
+        
+        // CURRENT
         $table = $this->table('grand_sop');
         foreach($fields as $field){
             $table->removeColumn($field);
         }
         $table->save();
         
+        // 2017
         $table = $this->table('grand_sop_2017');
+        foreach($fields as $field){
+            $table->removeColumn($field);
+        }
+        $table->save();
+        
+        // 2018
+        $table = $this->table('grand_sop_2018');
         foreach($fields as $field){
             $table->removeColumn($field);
         }

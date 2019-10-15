@@ -30,5 +30,6 @@ class DropSop extends AbstractMigration
     {
         $this->table('grand_sop')->drop();
         $this->table('grand_sop_2017')->drop();
+        $this->table('grand_sop_2018')->drop();
     }
 }

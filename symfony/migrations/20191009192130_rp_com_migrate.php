@@ -28,6 +28,7 @@ class RpComMigrate extends AbstractMigration
      */
     public function change()
     {
+        // CURRENT
         $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
                               FROM grand_sop s, grand_gsms g 
                               WHERE g.user_id = s.user_id");
@@ -50,6 +51,7 @@ class RpComMigrate extends AbstractMigration
             }
         }
         
+        // 2017
         $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
                               FROM grand_sop_2017 s, grand_gsms_2017 g 
                               WHERE g.user_id = s.user_id");
@@ -61,6 +63,29 @@ class RpComMigrate extends AbstractMigration
         $stmt = $this->query("SELECT * 
                               FROM grand_report_blobs
                               WHERE year = 2017
+                              AND rp_type = 'RP_COM'");
+        $rows = $stmt->fetchAll();
+        foreach($rows as $row){
+            if(isset($idMap[$row['proj_id']])){
+                $this->execute("UPDATE grand_report_blobs
+                                SET proj_id    = {$idMap[$row['proj_id']]},
+                                    rp_subitem = {$idMap[$row['proj_id']]}
+                                WHERE blob_id = {$row['blob_id']}");
+            }
+        }
+        
+        // 2018
+        $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
+                              FROM grand_sop_2018 s, grand_gsms_2018 g 
+                              WHERE g.user_id = s.user_id");
+        $rows = $stmt->fetchAll();
+        $idMap = array();
+        foreach($rows as $row){
+            $idMap[$row['sop_id']] = $row['gsms_id'];
+        }
+        $stmt = $this->query("SELECT * 
+                              FROM grand_report_blobs
+                              WHERE year = 2018
                               AND rp_type = 'RP_COM'");
         $rows = $stmt->fetchAll();
         foreach($rows as $row){

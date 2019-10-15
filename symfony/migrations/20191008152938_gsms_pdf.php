@@ -29,6 +29,8 @@ class GsmsPdf extends AbstractMigration
     public function change()
     {
         $conn = $this->getAdapter()->getConnection();
+        
+        // CURRENT
         $table = $this->table('grand_gsms');
         $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
               ->save();
@@ -43,6 +45,8 @@ class GsmsPdf extends AbstractMigration
                             WHERE user_id = '{$row['user_id']}'");
         }
         
+        
+        // 2017
         $table = $this->table('grand_gsms_2017');
         $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
               ->save();
@@ -53,6 +57,21 @@ class GsmsPdf extends AbstractMigration
         foreach($rows as $row){
             $pdf_contents = $conn->quote($row['pdf_contents']);
             $this->execute("UPDATE grand_gsms_2017
+                            SET pdf_contents = {$pdf_contents}
+                            WHERE user_id = '{$row['user_id']}'");
+        }
+        
+        // 2018
+        $table = $this->table('grand_gsms_2018');
+        $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
+              ->save();
+    
+        $stmt = $this->query("SELECT * 
+                              FROM grand_sop_2018");
+        $rows = $stmt->fetchAll();
+        foreach($rows as $row){
+            $pdf_contents = $conn->quote($row['pdf_contents']);
+            $this->execute("UPDATE grand_gsms_2018
                             SET pdf_contents = {$pdf_contents}
                             WHERE user_id = '{$row['user_id']}'");
         }
