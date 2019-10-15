@@ -535,7 +535,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 var logoutFn = function(redirect){
                     $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
                         $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").load(function(){
+                        $("#logoutFrame").on('load', function(){
                             $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
                                 if(redirect){
                                     document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
