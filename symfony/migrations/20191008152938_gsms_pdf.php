@@ -35,10 +35,13 @@ class GsmsPdf extends AbstractMigration
         $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
               ->save();
     
-        $stmt = $this->query("SELECT * 
+        $stmt = $this->query("SELECT id 
                               FROM grand_sop");
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
+            $row = $this->fetchRow("SELECT id, user_id, pdf_contents 
+                                    FROM grand_sop
+                                    WHERE id = {$row['id']}");
             $pdf_contents = $conn->quote($row['pdf_contents']);
             $this->execute("UPDATE grand_gsms
                             SET pdf_contents = {$pdf_contents}
@@ -51,10 +54,13 @@ class GsmsPdf extends AbstractMigration
         $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
               ->save();
     
-        $stmt = $this->query("SELECT * 
+        $stmt = $this->query("SELECT id
                               FROM grand_sop_2017");
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
+            $row = $this->fetchRow("SELECT id, user_id, pdf_contents 
+                                    FROM grand_sop_2017
+                                    WHERE id = {$row['id']}");
             $pdf_contents = $conn->quote($row['pdf_contents']);
             $this->execute("UPDATE grand_gsms_2017
                             SET pdf_contents = {$pdf_contents}
@@ -66,10 +72,13 @@ class GsmsPdf extends AbstractMigration
         $table->addColumn('pdf_contents', 'blob', array('limit' => MysqlAdapter::BLOB_LONG, 'after' => 'additional'))
               ->save();
     
-        $stmt = $this->query("SELECT * 
+        $stmt = $this->query("SELECT id
                               FROM grand_sop_2018");
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
+            $row = $this->fetchRow("SELECT id, user_id, pdf_contents 
+                                    FROM grand_sop_2018
+                                    WHERE id = {$row['id']}");
             $pdf_contents = $conn->quote($row['pdf_contents']);
             $this->execute("UPDATE grand_gsms_2018
                             SET pdf_contents = {$pdf_contents}

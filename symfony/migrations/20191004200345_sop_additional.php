@@ -53,9 +53,8 @@ class SopAdditional extends AbstractMigration
                         'reviewer',
                         'emotion_stats',
                         'personality_stats');
-        
         // CURRENT
-        $rows = $this->fetchAll("SELECT * 
+        $rows = $this->fetchAll("SELECT user_id, ".implode(",", $fields)."
                                  FROM grand_sop");
         foreach($rows as $row){
             $gsms = $this->fetchRow("SELECT * 
@@ -83,7 +82,7 @@ class SopAdditional extends AbstractMigration
         }
         
         // 2017
-        $rows = $this->fetchAll("SELECT * 
+        $rows = $this->fetchAll("SELECT user_id, ".implode(",", $fields)."
                                  FROM grand_sop_2017");
         foreach($rows as $row){
             $gsms = $this->fetchRow("SELECT * 
@@ -111,7 +110,7 @@ class SopAdditional extends AbstractMigration
         }
         
         // 2018
-        $rows = $this->fetchAll("SELECT * 
+        $rows = $this->fetchAll("SELECT user_id, ".implode(",", $fields)."
                                  FROM grand_sop_2018");
         foreach($rows as $row){
             $gsms = $this->fetchRow("SELECT * 
@@ -137,26 +136,5 @@ class SopAdditional extends AbstractMigration
                             SET additional = {$serialized}
                             WHERE id = '{$gsms['id']}'");
         }
-        
-        // CURRENT
-        $table = $this->table('grand_sop');
-        foreach($fields as $field){
-            $table->removeColumn($field);
-        }
-        $table->save();
-        
-        // 2017
-        $table = $this->table('grand_sop_2017');
-        foreach($fields as $field){
-            $table->removeColumn($field);
-        }
-        $table->save();
-        
-        // 2018
-        $table = $this->table('grand_sop_2018');
-        foreach($fields as $field){
-            $table->removeColumn($field);
-        }
-        $table->save();
     }
 }
