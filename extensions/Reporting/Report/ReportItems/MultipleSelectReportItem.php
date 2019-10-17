@@ -9,6 +9,10 @@ class MultipleSelectReportItem extends SelectReportItem {
         $max_options = $this->getAttr('max', '0');
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
 
+        if(!is_array($value)){
+            $value = array();
+        }
+
         $output = "<input id='{$this->getPostId()}' type='text' name='{$this->getPostId()}[]' value='".implode(",", $value)."' />
         <script type='text/javascript'>
             $('input#{$this->getPostId()}').tagit({
