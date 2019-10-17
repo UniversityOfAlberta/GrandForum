@@ -28,7 +28,20 @@ class RpComMigrate extends AbstractMigration
      */
     public function change()
     {
-        // TODO: DELETE REPORT BLOB ENTRIES THAT DO NOT HAVE CORRESPONDING GSMS ID
+        $this->execute("DELETE FROM `grand_report_blobs` 
+                        WHERE rp_type = 'RP_COM' 
+                        AND year = 2019
+                        AND proj_id NOT IN (SELECT id FROM grand_sop)");
+        
+        $this->execute("DELETE FROM `grand_report_blobs` 
+                        WHERE rp_type = 'RP_COM' 
+                        AND year = 2017
+                        AND proj_id NOT IN (SELECT id FROM grand_sop_2017)");
+                        
+        $this->execute("DELETE FROM `grand_report_blobs` 
+                        WHERE rp_type = 'RP_COM' 
+                        AND year = 2018
+                        AND proj_id NOT IN (SELECT id FROM grand_sop_2018)");
     
         // CURRENT
         $stmt = $this->query("SELECT s.user_id, g.id as gsms_id, s.id as sop_id 
@@ -46,12 +59,6 @@ class RpComMigrate extends AbstractMigration
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
             if(isset($idMap[$row['proj_id']])){
-                $this->execute("DELETE FROM grand_report_blobs
-                                WHERE proj_id = {$idMap[$row['proj_id']]}
-                                AND year = {$row['year']}
-                                AND rp_type = {$row['rp_type']}
-                                AND rp_section = {$row['rp_section']}
-                                AND rp_item = {$row['rp_item']}");
                 $this->execute("UPDATE grand_report_blobs
                                 SET proj_id    = {$idMap[$row['proj_id']]},
                                     rp_subitem = {$idMap[$row['proj_id']]}
@@ -75,12 +82,6 @@ class RpComMigrate extends AbstractMigration
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
             if(isset($idMap[$row['proj_id']])){
-                $this->execute("DELETE FROM grand_report_blobs
-                                WHERE proj_id = {$idMap[$row['proj_id']]}
-                                AND year = {$row['year']}
-                                AND rp_type = {$row['rp_type']}
-                                AND rp_section = {$row['rp_section']}
-                                AND rp_item = {$row['rp_item']}");
                 $this->execute("UPDATE grand_report_blobs
                                 SET proj_id    = {$idMap[$row['proj_id']]},
                                     rp_subitem = {$idMap[$row['proj_id']]}
@@ -104,12 +105,6 @@ class RpComMigrate extends AbstractMigration
         $rows = $stmt->fetchAll();
         foreach($rows as $row){
             if(isset($idMap[$row['proj_id']])){
-                $this->execute("DELETE FROM grand_report_blobs
-                                WHERE proj_id = {$idMap[$row['proj_id']]}
-                                AND year = {$row['year']}
-                                AND rp_type = {$row['rp_type']}
-                                AND rp_section = {$row['rp_section']}
-                                AND rp_item = {$row['rp_item']}");
                 $this->execute("UPDATE grand_report_blobs
                                 SET proj_id    = {$idMap[$row['proj_id']]},
                                     rp_subitem = {$idMap[$row['proj_id']]}
