@@ -191,7 +191,7 @@
                     ]]>
                 </ReportItem>
             </If>
-            <If id="if_chair" if="{or({contains({$my_roles},Chair)},{contains({$user_sub_roles},Chair's Recommendation)})}">
+            <If id="if_chair" if="{and({!contains({$my_roles},EA)},{or({contains({$my_roles},Chair)},{contains({$user_sub_roles},Chair's Recommendation)})})}">
                 <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
                         <![CDATA[
