@@ -8,19 +8,25 @@ class MultipleSelectReportItem extends SelectReportItem {
         $value = $this->getBlobValue();
         $max_options = $this->getAttr('max', '0');
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
-        $items = array();
-		foreach($options as $key => $option){
-		    $selected = "";
-		    if (is_array($value) && in_array($option, $value)) {
-		        $selected = "selected";
-		    }
-		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<option value='{$option}' $selected >{$option}</option>";
-		}
 
-        $output = "<input type='hidden' name='{$this->getPostId()}[]' /><select id='{$this->getPostId()}' style='width:{$width};' name='{$this->getPostId()}[]' multiple>".implode("\n", $items)." </select>
+        $output = "<input id='{$this->getPostId()}' type='text' name='{$this->getPostId()}[]' value='".implode(",", $value)."' />
         <script type='text/javascript'>
-            $('select#{$this->getPostId()}').chosen({ max_selected_options: {$max_options} });
+            $('input#{$this->getPostId()}').tagit({
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 0){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                },
+                availableTags: ".json_encode($options).",
+                caseSensitive: false,
+                singleField: true,
+                allowSpaces: true,
+                removeConfirmation: true,
+                tagLimit: {$max_options}
+            });
         </script>";
         
         $output = $this->processCData("<div>{$output}</div>");
