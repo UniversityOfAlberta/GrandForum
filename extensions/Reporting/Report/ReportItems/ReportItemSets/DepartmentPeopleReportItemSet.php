@@ -33,6 +33,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                ($person->isInDepartment($dept, $uni, $start, $end)) || 
                ($found) ||
                (($person->getName() == "Eleni.Stroulia" && $me->getName() == "Mauricio.Sacchi"))){
+                if(($me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Anthony.Singhal"){
+                    // This is also a special case, but needs to be put here
+                    goto create;
+                }
                 if($excludeMe && $person->isMe()){
                     // Should not see themselves in recommendations
                     continue;
@@ -57,16 +61,20 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if(($me->getName() == "Ioanis.Nikolaidis" || $me->getName() == "CS.ExecutiveAssistant") && $person->getName() == "Eleni.Stroulia"){
                     continue;
                 }
-                if(($me->getName() == "Anthony.Singhal" || $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Deanna.Singhal"){
+                if(($me->getName() == ".Psychair") && $person->getName() == "Anthony.Singhal"){
                     continue;
                 }
-                if(($me->getName() == "Anthony.Singhal" || $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Douglas.Wylie"){
+                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair") && $person->getName() == "Deanna.Singhal"){
                     continue;
                 }
-                $tuple = self::createTuple();
-                $tuple['person_id'] = $person->getId();
-                $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
-                $data[] = $tuple;
+                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair" || $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Douglas.Wylie"){
+                    continue;
+                }
+                create:
+                    $tuple = self::createTuple();
+                    $tuple['person_id'] = $person->getId();
+                    $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
+                    $data[] = $tuple;
             }
         }
         usort($data, function($a, $b){
