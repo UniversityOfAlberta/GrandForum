@@ -58,6 +58,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 // SPECIAL CASES BELOW
+                if(($me->getName() == "Linda.Christensen" || $me->getName() == "David.Coltman") && $person->getName() == "Mark.Lewis"){
+                    // Not reviewed by BioSci, only Math
+                    continue;
+                }
                 if(($me->getName() == "Ioanis.Nikolaidis" || $me->getName() == "CS.ExecutiveAssistant") && $person->getName() == "Eleni.Stroulia"){
                     continue;
                 }
