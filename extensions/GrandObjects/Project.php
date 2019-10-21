@@ -437,6 +437,7 @@ class Project extends BackboneModel {
                 $this->effectiveDate = "0000-00-00 00:00:00";
             }
             $this->fullName = false;
+            $this->getTechnology();
         }
     }
     
@@ -1254,6 +1255,48 @@ EOF;
             }
         }
         return $articles;
+    }
+    
+    /**
+     * Returns an array containing responses for Technology Evaluation/Adoption
+     */
+    function getTechnology(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH1', 0);
+        $result = $blb->load($addr);
+        $t1 = $blb->getData();
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
+        $result = $blb->load($addr);
+        $t2 = $blb->getData();
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
+        $result = $blb->load($addr);
+        $t3 = $blb->getData();
+        
+        $this->technology = array('response1' => $t1,
+                                  'response2' => $t2,
+                                  'response3' => $t3);
+        return $this->technology;
+    }
+    
+    /**
+     * Saves the array containing responses for Technology Evaluation/Adoption
+     */
+    function saveTechnology(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH1', 0);
+        $blb->store($this->technology['response1'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
+        $blb->store($this->technology['response2'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
+        $blb->store($this->technology['response3'], $addr);
     }
     
     // Returns an array of papers relating to this project
