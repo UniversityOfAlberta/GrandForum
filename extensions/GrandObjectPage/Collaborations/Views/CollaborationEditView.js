@@ -5,8 +5,6 @@ CollaborationEditView = Backbone.View.extend({
     initialize: function(){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:personName", this.updateContactWarning);
-        this.listenTo(this.model, "change:position", this.updateContactWarning);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -27,6 +25,16 @@ CollaborationEditView = Backbone.View.extend({
         if (this.model.get("title").trim() == '') {
             clearWarning();
             addWarning('Organization name must not be empty', true);
+            return;
+        }
+        if(!this.updateContactWarning()){
+            clearWarning();
+            addWarning("This "+  this.model.getType().toLowerCase() + " does not have a contact name and position specified", true);
+            return;
+        }
+        if(!this.updateDescriptionWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have a description specified", true);
             return;
         }
         this.$(".throbber").show();
@@ -84,12 +92,18 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     updateContactWarning: function(){
-        if(this.contactWarning != null){
-            if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
-                this.contactWarning.show();
-            } else {
-                this.contactWarning.hide();
-            }
+        if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+    updateDescriptionWarning: function(){
+        if(this.model.get('other').trim() == ''){
+            return false;
+        } else {
+            return true;
         }
     },
 
@@ -102,10 +116,8 @@ CollaborationEditView = Backbone.View.extend({
             main.set('title', 'Edit ' + formType);
         }
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
-        this.contactWarning = this.$("#contactWarning");
         this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
-        this.updateContactWarning();
         return this.$el;
     },
 });
