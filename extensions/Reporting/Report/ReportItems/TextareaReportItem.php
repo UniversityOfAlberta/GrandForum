@@ -287,6 +287,12 @@ EOF;
             $blobValue = str_replace("<p>", "", "{$blobValue}");
             $blobValue = str_replace("</p>", "", "{$blobValue}");
             $blobValue = str_replace("<", "&lt;", $blobValue);
+            $blobValue = str_replace("&lt;b>", "<b>", $blobValue);
+            $blobValue = str_replace("&lt;u>", "<u>", $blobValue);
+            $blobValue = str_replace("&lt;i>", "<i>", $blobValue);
+            $blobValue = str_replace("&lt;/b>", "</b>", $blobValue);
+            $blobValue = str_replace("&lt;/u>", "</u>", $blobValue);
+            $blobValue = str_replace("&lt;/i>", "</i>", $blobValue);
             $html .= nl2br($blobValue);
         }
         return $html;
