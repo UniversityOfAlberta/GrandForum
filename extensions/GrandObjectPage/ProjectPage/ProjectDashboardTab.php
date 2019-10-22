@@ -225,7 +225,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             $response3 .= "<option value='$option' $selected>$option</option>";
                         }
         $response3 .= "</select>";
-        $this->html .= "<h2>Technology Evaluation/Adoption</h2>
+        $this->html .= "<br /><br />
+                        <h2>Technology Evaluation/Adoption</h2>
                         <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
                         {$response1}
                         <div id='tech_yes' style='display:none;'>
@@ -249,7 +250,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             $('[name=response1]').change();
                         </script>";
         $this->html .= "<br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Save Dashboard' name='submit'>Save</button>
-                        <input id='cancelTechnologyEvaluationAdoption' type='submit' value='Cancel' name='submit' />";
+                        <input id='cancelTechnologyEvaluationAdoption' type='submit' value='Cancel' name='submit' /><br /><br />";
     }
     
     function showTopProducts($project, $visibility){
@@ -305,7 +306,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
             return;
         }
         $technology = $project->getTechnology();
-        $this->html .= "<h2>Technology Evaluation/Adoption</h2>
+        $this->html .= "<br /><br />
+                        <h2>Technology Evaluation/Adoption</h2>
                         <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
                         {$technology['response1']}";
         if($technology['response1'] != "" && $technology['response1'] != "No"){
@@ -318,8 +320,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         {$technology['response3']}";
         }
         if($this->canEdit()){
-            $this->html .= "<br /><br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button>";
+            $this->html .= "<br /><br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
         }
+        $this->html .= "<br />";
     }
     
     function showDashboard($project, $visibility){
