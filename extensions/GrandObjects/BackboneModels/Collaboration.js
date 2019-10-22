@@ -27,6 +27,7 @@ Collaboration = Backbone.Model.extend({
             userKnowledge: "",
             other: "",
             funding: 0,
+            existed: "",
             year: YEAR,
             endYear: "0",
             knowledgeUser: 0, // true or false

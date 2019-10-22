@@ -1,12 +1,12 @@
 <div>
-	<p>This <%= formType.toLowerCase() %> is for the <i><%= year - 1 %>/<%= year.toString().substr(2, 2) %> fiscal year</i></p>
-	<h3>End Year:</h3>
-	<%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year), parseInt(YEAR)+5), function(y){
-	    return {option: (y - 1) + "/" + y.toString().substr(2, 2), value: y};
-	}))}) %><br />
-	
-	<h3>Organization:</h3>
-	<%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
+    <p>This <%= formType.toLowerCase() %> is for the <i><%= year - 1 %>/<%= year.toString().substr(2, 2) %> fiscal year</i></p>
+    <h3>End Year:</h3>
+    <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year), parseInt(YEAR)+5), function(y){
+        return {option: (y - 1) + "/" + y.toString().substr(2, 2), value: y};
+    }))}) %><br />
+
+    <h3>Organization:</h3>
+    <%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
 
     <div style="margin-bottom: 10px; display:flex">
         <div style="max-width:400px;width:50%">
@@ -27,6 +27,10 @@
             </table>
         </div>
         <div style="max-width:400px; width:50%; display:inline-block; margin-left:18px;">
+            <% if (knowledgeUser != 1) { %>
+                <h3>Collaboration existed prior to FES grant?</h3>
+                <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
+            <% } %>
             <h3>Have you received funds from this organization?</h3>
             <div style="margin-left:15px;">
                 <% if(funding == 0) { %>
@@ -50,109 +54,108 @@
                         </div>
                     </div>
                 <% } %>
+            </div>
+        </div>
+    </div>
 
-			</div>
-		</div>
-	</div>
+    <div style="margin-bottom: 10px;">
+        <div style="display:inline-block;">
+            <h3>Country:</h3>
+            <%= HTML.Select(this, 'country',
+            {options: [
+                "Canada", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Cabo Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Democratic Republic of the Congo", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territories", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+            ]}) %>
+        </div>
+        <div style="display:inline-block; margin-left:10px;">
+            <h3>Sector:</h3>
+            <% if (knowledgeUser != 1) { %>
+                <%= HTML.Select(this, 'sector', 
+                {options: [
+                    "Lead Institution",
+                    "Partner Institutions",
+                    "Other Canadian Research Organizations (including research hospitals)",
+                    "Academic and Research Institutes Abroad (including research hospitals)",
+                    "Private Sector in Canada",
+                    "Private Sector Abroad",
+                    "Public Sector in Canada",
+                    "Public Sector Abroad",
+                    "Philanthropic/not-for-profit/Other in Canada",
+                    "Philanthropic/not-for-profit/Other Abroad"
+                ]}) %>
+            <% } else { %> 
+                <%= HTML.Select(this, 'sector', 
+                {options: [
+                    "Non-partner Canadian Academic Institution",
+                    "Other Canadian Research Organizations",
+                    "Academic and Research Institutes Abroad",
+                    "Private Sector in Canada",
+                    "Private Sector Abroad",
+                    "Public Sector in Canada",
+                    "Public Sector Abroad",
+                    "Philanthropic/not-for-profit/Other in Canada",
+                    "Philanthropic/not-for-profit/Other Abroad"
+                ]}) %>
+            <% } %>
+        </div>
+        </div>
 
-	<div style="margin-bottom: 10px;">
-		<div style="display:inline-block;">
-			<h3>Country:</h3>
-			<%= HTML.Select(this, 'country',
-			{options: [
-				"Canada", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Cabo Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Democratic Republic of the Congo", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territories", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-			]}) %>
-		</div>
-		<div style="display:inline-block; margin-left:10px;">
-			<h3>Sector:</h3>
-			<% if (!knowledgeUser) { %>
-				<%= HTML.Select(this, 'sector', 
-				{options: [
-					"Lead Institution",
-					"Partner Institutions",
-					"Other Canadian Research Organizations (including research hospitals)",
-					"Academic and Research Institutes Abroad (including research hospitals)",
-					"Private Sector in Canada",
-					"Private Sector Abroad",
-					"Public Sector in Canada",
-					"Public Sector Abroad",
-					"Philanthropic/not-for-profit/Other in Canada",
-					"Philanthropic/not-for-profit/Other Abroad"
-				]}) %>
-			<% } else { %> 
-				<%= HTML.Select(this, 'sector', 
-				{options: [
-					"Non-partner Canadian Academic Institution",
-					"Other Canadian Research Organizations",
-					"Academic and Research Institutes Abroad",
-					"Private Sector in Canada",
-					"Private Sector Abroad",
-					"Public Sector in Canada",
-					"Public Sector Abroad",
-					"Philanthropic/not-for-profit/Other in Canada",
-					"Philanthropic/not-for-profit/Other Abroad"
-				]}) %>
-			<% } %>
-		</div>
-	</div>
+    <% if (knowledgeUser != 1) { %>
+        <div class="flex-container" style="max-width:820px;">
+            <div class="collab_check" style="max-width: 20%;">
+                <b>Planning of Research</b><br />
+                <%= HTML.CheckBox(this, 'planning', {value: 1}) %>
+            </div>
 
-	<% if (knowledgeUser != 1) { %>
-		<div class="flex-container" style="max-width:820px;">
-			<div class="collab_check" style="max-width: 20%;">
-				<b>Planning of Research</b><br />
-				<%= HTML.CheckBox(this, 'planning', {value: 1}) %>
-			</div>
+            <div class="collab_check" style="max-width: 20%;">
+                <b>Design/Data Collection</b><br />
+                <%= HTML.CheckBox(this, 'designDataCollection', {value: 1}) %>
+            </div>
 
-			<div class="collab_check" style="max-width: 20%;">
-				<b>Design/Data Collection</b><br />
-				<%= HTML.CheckBox(this, 'designDataCollection', {value: 1}) %>
-			</div>
+            <div class="collab_check" style="max-width: 20%">
+                <b>Analysis of Results</b><br />
+                <%= HTML.CheckBox(this, 'analysisOfResults', {value: 1}) %>
+            </div>
 
-			<div class="collab_check" style="max-width: 20%">
-				<b>Analysis of Results</b><br />
-				<%= HTML.CheckBox(this, 'analysisOfResults', {value: 1}) %>
-			</div>
+            <div class="collab_check" style="max-width: 20%;">
+                <b>Exchange/Disseminate Research Knowledge</b><br />
+                <%= HTML.CheckBox(this, 'exchangeKnowledge', {value: 1}) %>
+            </div>
 
-			<div class="collab_check" style="max-width: 20%;">
-				<b>Exchange/Disseminate Research Knowledge</b><br />
-				<%= HTML.CheckBox(this, 'exchangeKnowledge', {value: 1}) %>
-			</div>
+            <div class="collab_check" style="max-width: 20%;">
+                <b>User of Research Knowledge</b><br />
+                <%= HTML.CheckBox(this, 'userKnowledge', {value: 1}) %>
+            </div>
+        </div>
+    <% } %>
 
-			<div class="collab_check" style="max-width: 20%;">
-				<b>User of Research Knowledge</b><br />
-				<%= HTML.CheckBox(this, 'userKnowledge', {value: 1}) %>
-			</div>
-		</div>
-	<% } %>
+    <div style="width:820px;padding-right:10px;">
+        <div style="width:73%; height:150px; display:inline-block">
+            <% if (knowledgeUser != 1) { %>
+                <h3>Brief Description:</h3>
+            <% } else { %>
+                <h3>Brief Description</h3>
+            <% } %>
+            <%= HTML.TextArea(this, 'other', {style: 'height:100%;width:100%;'}) %>
+        </div>
 
-	<div style="width:820px;padding-right:10px;">
-		<div style="width:73%; height:150px; display:inline-block">
-			<% if (knowledgeUser != 1) { %>
-				<h3>Other (specify):</h3>
-			<% } else { %>
-				<h3>Brief Description</h3>
-			<% } %>
-			<%= HTML.TextArea(this, 'other', {style: 'height:100%;width:100%;'}) %>
-		</div>
-
-		<div style="width:25%; max-width:400px; display:inline-block; float:right; margin-top:15px;">
-			<h3 style="margin-top:0;padding-top:0;">Related Projects</h3>
-			<div><%= HTML.ProjectSelector(this, 'projects') %></div>
-		</div>
-	</div>
-	<br/>
+        <div style="width:25%; max-width:400px; display:inline-block; float:right; margin-top:15px;">
+            <h3 style="margin-top:0;padding-top:0;">Related Projects</h3>
+            <div><%= HTML.ProjectSelector(this, 'projects') %></div>
+        </div>
+    </div>
+    <br/>
 </div>
 <div id="contactWarning" class="warning" style="display:none; margin-bottom: 0;">This <%= formType.toLowerCase() %> does not have a contact name and position specified</div>
 <% if(!this.isDialog){ %>
     <br />
 <% } %>
 <% if(!this.isDialog){ %>
-	<div style="display:inline-block;">
-		<button id="saveCollaboration">
-			<% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> <%= formType %>
-		</button><span class="throbber" style="display:none;"></span>
-	</div>
-	<div style="display:inline-block;">
-		<button id="cancel">Cancel</button>
-	</div>
+    <div style="display:inline-block;">
+        <button id="saveCollaboration">
+            <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> <%= formType %>
+        </button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
 <% } %>

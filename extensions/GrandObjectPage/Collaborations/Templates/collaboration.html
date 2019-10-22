@@ -36,6 +36,13 @@
                 <td></td>
                 <td><%= sector %></td>
             </tr>
+            <% if (knowledgeUser != 1) { %>
+                <tr>
+                    <td><b>Existed prior to FES grant?</b></td>
+                    <td></td>
+                    <td><%= existed %></td>
+                </tr>
+            <% } %>
             <tr>
                 <td><b>Funding</b></td>
                 <td></td>
@@ -97,12 +104,12 @@
 
 <div style="margin-left:10px;">
     <% if (knowledgeUser != 1) { %>
-        <h3>Other</h3>
+        <h3>Brief Description</h3>
     <% } else { %>
         <h3>Brief Description</h3>
     <% } %>
     <% if (other == "") { %>
-        <span style="color: #AAAAAA">No 'other' comments provided</span>
+        <span style="color: #AAAAAA">No 'Brief Description' provided</span>
     <% } else { %>
         <%= nl2br(striphtml(other)) %>
     <% } %>
