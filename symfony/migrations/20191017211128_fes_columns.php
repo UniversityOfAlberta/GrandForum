@@ -23,7 +23,7 @@ class FesColumns extends AbstractMigration
     public function up()
     {
         $table = $this->table('mw_user', array('id' => 'id'));
-        $table->addColumn('user_crc', 'blob', array('after' => 'user_stakeholder'))
+        $table->addColumn('user_crc', 'text', array('after' => 'user_stakeholder'))
               ->addColumn('user_ecr', 'string', array('after' => 'user_stakeholder', 'limit' => 128))
               ->save();
     }
