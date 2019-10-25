@@ -33,9 +33,11 @@
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Institutions"></span>
 </td>
-<td align="center">
-    <span id="editAlumni" class="edit-icon" title="Edit Alumni"></span>
-</td>
+<% if(alumniEnabled){ %>
+    <td align="center">
+        <span id="editAlumni" class="edit-icon" title="Edit Alumni"></span>
+    </td>
+<% } %>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
     <td style="border-left: 2px solid #AAAAAA;" align="center">
         <% if(me.get('id') != id){ %>
