@@ -10,6 +10,9 @@
 <div id="universitiesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Institutions">
     
 </div>
+<div id="alumniDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Recruitment/Alumni">
+    
+</div>
 <div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Sub-Roles">
     
 </div>
@@ -29,6 +32,9 @@
 </td>
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Institutions"></span>
+</td>
+<td align="center">
+    <span id="editAlumni" class="edit-icon" title="Edit Alumni"></span>
 </td>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
     <td style="border-left: 2px solid #AAAAAA;" align="center">

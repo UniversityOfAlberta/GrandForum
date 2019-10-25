@@ -134,6 +134,11 @@ $apiRequest->addAction('Hidden','post', 'PostAPI');
 $apiRequest->addAction('Hidden','post/:id', 'PostAPI');
 $apiRequest->addAction('Hidden','posts', 'PostsAPI');
 
+// Alumni
+$apiRequest->addAction('Hidden','alumni', 'AlumniAPI');
+$apiRequest->addAction('Hidden','alumni/:id', 'AlumniAPI');
+$apiRequest->addAction('Hidden','person/:personId/alumni', 'AlumniAPI');
+
 // PDF
 $apiRequest->addAction('Hidden','pdf/:id', 'PDFAPI');
 
@@ -183,6 +188,7 @@ function createModels(){
     addScript("MailingList");
     addScript("Freeze");
     addScript("Journal");
+    addScript("Alumni");
     
     return true;
 }

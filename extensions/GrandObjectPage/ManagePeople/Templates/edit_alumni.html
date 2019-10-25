@@ -1,0 +1,31 @@
+<div style="padding:5px;">
+    <h3 style="margin-top:0; margin-bottom:0;">Recruitment</h3>
+    <%= HTML.Select(this, 'recruited', {options: ['',
+                                                  'Recruited from within UAlberta',
+                                                  'Recruited from within Canada (outside UAlberta)',
+                                                  'Recruited from outside Canada']}) %>
+    <br />
+    <div id="recruitedCountry">
+        <b>Country:</b><br /><%= HTML.TextBox(this, 'recruited_country', {}) %>
+    </div>
+    
+    <h3 style="margin-bottom:0;">Alumni</h3>
+    <b>Has this person moved on to a job in Canada or abroad?</b><br />
+    <%= HTML.Select(this, 'alumni', {options: ['',
+                                               'No',
+                                               'Yes, in Canada',
+                                               'Yes, abroad']}) %>
+    <br />
+    <div id="alumniCountry">
+        <b>Country:</b><br /><%= HTML.TextBox(this, 'alumni_country', {}) %>
+    </div>
+    <div id="alumniSector">
+        <b>Sector:</b><br /><%= HTML.Select(this, 'alumni_sector', {options: ['',
+                                                                              'Academic/Research Institution',
+                                                                              'Private Sector',
+                                                                              'Public Sector',
+                                                                              'Philanthropic/not-for-profit',
+                                                                              'Other']}) %>
+    </div>
+    <br />
+</div>
