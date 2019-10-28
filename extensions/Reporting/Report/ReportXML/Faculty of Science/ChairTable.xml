@@ -356,6 +356,9 @@
                         var fso_count = 0;
                         $(".increment select").each(function(i, el){
                             var tr = $(el).closest("tr");
+                            if($($("td", tr)[1]).text() == "Stroulia, Eleni"){
+                                return;
+                            }
                             if($(el).val() != "" && $(el).val() != "0.00 (PTC)"){
                                 if($(tr).attr('data-fecid').includes("A") ||
                                    $(tr).attr('data-fecid').includes("B") ||
