@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Start-Up Company Funding 2017-2018 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2018">
+<Report name="Start-Up Company Funding 2019-2020 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2019">
     <Permissions>
-        <Role role="INACTIVE+" subRole="StartUpLegal2018">
+        <Role role="INACTIVE+" subRole="StartUpLegal2019">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="opportunity" permissions="rw" />
             <SectionPermission id="project" permissions="rw" />

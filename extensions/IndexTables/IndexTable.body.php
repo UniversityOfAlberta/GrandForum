@@ -55,12 +55,15 @@ class IndexTable {
         
         if($config->getValue('projectsEnabled') && Project::areThereNonAdminProjects()){
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
-            $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects") && 
+            $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects" || $wgTitle->getText() == "CompletedProjects" || $wgTitle->getText() == "ProposedProjects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || $me->isThemeCoordinatorOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
             $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
             if(Project::areThereDeletedProjects()){
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+            }
+            if(Project::areThereProposedProjects() && $me->isRoleAtLeast(STAFF)){
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Proposed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ProposedProjects", $selected);
             }
         }
         
@@ -186,6 +189,10 @@ class IndexTable {
                 case 'CompletedProjects':
                     $wgOut->setPageTitle("Completed Projects");
                     self::generateProjectsTable('Ended', 'Research');
+                    break;
+                case 'ProposedProjects':
+                    $wgOut->setPageTitle("Proposed Projects");
+                    self::generateProjectsTable('Proposed', 'Research');
                     break;
                 case 'AdminProjects':
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));

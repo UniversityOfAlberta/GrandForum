@@ -23,6 +23,7 @@ class Collaboration extends BackboneModel{
     var $funding = 0;
     var $year = YEAR;
     var $endYear = 0;
+    var $existed = "";
     var $knowledgeUser = false;
     var $accessId = 0;
     var $changed = "";
@@ -133,6 +134,7 @@ class Collaboration extends BackboneModel{
             $this->position = $data[0]['position'];
             $this->other = $data[0]['other'];
             $this->funding = $data[0]['funding'];
+            $this->existed = $data[0]['existed'];
             $this->knowledgeUser = $data[0]['knowledge_user'];
             $this->projectsWaiting = true;
             $this->accessId = $data[0]['access_id'];
@@ -190,6 +192,10 @@ class Collaboration extends BackboneModel{
 
     function getFunding() {
         return $this->funding;
+    }
+    
+    function getExisted(){
+        return $this->existed;
     }
 
     function getKnowledgeUser() {
@@ -289,6 +295,7 @@ class Collaboration extends BackboneModel{
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
                                   'funding' => $this->funding,
+                                  'existed' => $this->existed,
                                   'knowledge_user' => $this->knowledgeUser,
                                   'access_id' => $me->getId()));
         if($status){
@@ -342,6 +349,7 @@ class Collaboration extends BackboneModel{
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
                                   'funding' => $this->funding,
+                                  'existed' => $this->existed,
                                   'knowledge_user' => $this->knowledgeUser),
                             array('id' => EQ($this->getId())));
 
@@ -434,6 +442,7 @@ class Collaboration extends BackboneModel{
             'funding' => $this->getFunding(),
             'year' => $this->getYear(),
             'endYear' => $this->getEndYear(),
+            'existed' => $this->getExisted(),
             'knowledgeUser' => $this->getKnowledgeUser(),
             'projects' => $projects,
             'changed' => $this->getChanged()
