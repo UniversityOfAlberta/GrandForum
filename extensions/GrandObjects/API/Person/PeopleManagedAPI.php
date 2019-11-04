@@ -43,7 +43,7 @@ class PeopleManagedAPI extends RESTAPI {
                 // Handle Project Assistants and Project Support
                 foreach($me->getProjects() as $project){
                     if($me->isRole(PA, $project) || $me->isRole(PS, $project)){
-                        foreach($project->getPeople() as $person){
+                        foreach($project->getAllPeople() as $person){
                             $people[$person->getReversedName()] = $person;
                         }
                     }
