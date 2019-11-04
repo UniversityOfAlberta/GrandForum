@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2019 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2019">
+<Report name="2020 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2020">
     <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
         <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <h4 style='font-size:1.20em;'>2019 Interdisciplinary Fellowship Program<br />Application</h4>
+                <h4 style='font-size:1.20em;'>2020 Interdisciplinary Fellowship Program<br />Application</h4>
                 <br />
                 <br />
                 <br />
@@ -159,14 +159,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Select" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care">
+        <!--ReportItem id="theme" type="Select" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care">
             <![CDATA[
                 <tr>
                     <td align="right"><b>Select the ONE CFN research theme your research most closely aligns with:</b></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <Static>
             <![CDATA[
                 </table>
@@ -216,7 +216,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review." showDescription="true">
+        <!--ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review." showDescription="true">
             <![CDATA[
                 <h3>Research Ethics</h3>
                 {$item}
@@ -234,9 +234,9 @@
                 <p><small>Does any phase or part of the research project take place outside an office or laboratory, or involve an undertaking as described in part 1 of Appendix B of the Natural Science and Engineering Research Council of Canada (NSERC) Form 101?</small></p>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
-    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Benefit" title="Section 3 - Interest and Benefit">
+    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Value" title="Section 3 - Interest and Value">
         <ReportItem id="expression" type="Textarea" blobItem="EXPRESSION" rich="true" limit="250">
             <![CDATA[
                 <h3>Expression of Interest</h3>
@@ -255,12 +255,12 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
+        <!--ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
             <![CDATA[
                 <h3>Career Aspirations</h3>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="partners" type="EditableReportSection" blobSection="PARTNERS" name="Partnership Funding" title="Section 4 - Partnership Funding">
         <ReportItem id="partners" type="MultiText" blobItem="PARTNERS" blobType="BLOB_ARRAY" class="wikitable" labels="Partner Organization|Potential Conflict of Interest|$ Amount of cash contribution|Type of Contribution" types="Text|Radio(Yes,No)|Integer|Radio(Cash,In-Kind)" multiple="true" optional="true">
@@ -295,13 +295,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true" limit="250">
+        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true" limit="150">
             <![CDATA[
                 <h3>Professional employment and volunteer experience</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
+        <!--ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
             <![CDATA[
                 <h3>Specialized Training</h3>
                 {$item}
@@ -312,36 +312,22 @@
                 <h3>Publications and presentations</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="distinctions" type="Textarea" blobItem="DISTINCTIONS" rich="true" limit="125">
+        </ReportItem-->
+        <ReportItem id="distinctions" type="Textarea" blobItem="DISTINCTIONS" rich="true" limit="150">
             <![CDATA[
                 <h3>Distinctions and other relevant information</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="learning" type="EditableReportSection" blobSection="LEARNING" name="Learning Plan" title="Section 6 - Learning Plan">
-        <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" class="wikitable" labels="Learning Outcome|Activity|Anticipated Completion" types="Text|Text|Select(---,6 months,12 months)" multiple="true">
-            <![CDATA[
-                <h3>Desired Learning Outcomes</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="outcomes" type="MultiText" blobItem="OUTCOMES" blobType="BLOB_ARRAY" class="wikitable" labels="Learning Outcome|Proposed Activity (if known)" types="Text|Text" multiple="true">
-            <![CDATA[
-                <h3>Other Outcomes</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure">
+    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 6 - Applicant and Supervisor Capacity Disclosure">
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" class="wikitable" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" multiple="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 8 - References" pagebreak="false">
+    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 7 - References" pagebreak="false">
         <ReportItem id="references" type="MultiText" blobItem="REFERENCES" blobType="BLOB_ARRAY" class="wikitable smaller" labels="First Name|Surname|Designations|Organization|Title|Email Address|Applicant relationship to Reference|Why applicant feels Reference relevant to Fellowship application (50 words)" types="Text|Text|Text|Text|Text|Text|Text|Textarea" multiple="true" max="2">
             <![CDATA[
                 {$item}
