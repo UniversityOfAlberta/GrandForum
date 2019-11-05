@@ -22,7 +22,8 @@ class SOP extends AbstractSop{
           foreach ($blob['q14'] as $el) {
             $sup_array = explode(",", $el);
             foreach($sup_array as $sup){
-                $supervisors[] = $sup;
+                $sup = explode(" ", $sup);
+                $supervisors[] = (isset($sup[1])) ? $sup[1] : $sup[0];
             }
           }
         }
