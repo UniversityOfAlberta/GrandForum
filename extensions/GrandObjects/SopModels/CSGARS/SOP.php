@@ -20,8 +20,10 @@ class SOP extends AbstractSop{
         $supervisors = "";
         if (isset($blob['q14'])) {
           foreach ($blob['q14'] as $el) {
-            $sup_array = explode(" ", $el);
-            $supervisors[] = $sup_array[1];
+            $sup_array = explode(",", $el);
+            foreach($sup_array as $sup){
+                $supervisors[] = $sup;
+            }
           }
         }
         $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));
