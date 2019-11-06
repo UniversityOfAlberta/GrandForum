@@ -49,6 +49,10 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             $tuple = self::createTuple();
             $tuple['person_id'] = $person->getId();
             $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
+            if(strstr($tuple['extra'], "N1") !== false){
+                // New people should show first
+                $tuple['extra'] = "<span style='display:none;'>0</span>".$tuple['extra'];
+            }
             $data[] = $tuple;
         }
         usort($data, function($a, $b){
