@@ -3,15 +3,19 @@
     require_once("../commandLine.inc");
     $wgUser = User::newFromId(1);
     
+    $tiny  = array_slice(explode("\n", file_get_contents("science_".YEAR."_1to9.csv")), 17);
     $small  = array_slice(explode("\n", file_get_contents("science_".YEAR."_10to35.csv")), 17);
     $medium = array_slice(explode("\n", file_get_contents("science_".YEAR."_36to100.csv")), 17);
     $large  = array_slice(explode("\n", file_get_contents("science_".YEAR."_100plus.csv")), 17);
     
-    $evals = array_merge($small, $medium, $large);
+    $evals = array_merge($tiny, $small, $medium, $large);
     
+    $report = new DummyReport('FECTable', Person::newFromWgUser());
+    $section = $report->sections[0];
     $facultyPeople = new FacultyPeopleReportItemSet();
     $facultyPeople->attributes['start'] = (YEAR-1)."-07-01";
     $facultyPeople->attributes['end'] = (YEAR)."-07-01";
+    $facultyPeople->parent = $section;
     
     $faculty = array();
     

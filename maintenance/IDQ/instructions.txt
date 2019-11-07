@@ -1,7 +1,8 @@
 1. Put the raw data csvs in the directory.  They should be labeled:
+    - science_YYYY_1to9.csv
     - science_YYYY_10to35.csv
     - science_YYYY_36to100.csv
-    - science_YYYY_36to100.csv
+    - science_YYYY_100plus.csv
 
 2. 3 files will be generated, copy the contents of each into the jcr_template.xls (3 separate files)
 
