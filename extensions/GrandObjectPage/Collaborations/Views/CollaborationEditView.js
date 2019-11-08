@@ -32,9 +32,34 @@ CollaborationEditView = Backbone.View.extend({
             addWarning("This "+  this.model.getType().toLowerCase() + " does not have a contact name and position specified", true);
             return;
         }
+        if(!this.updateCountryWarning()){
+            clearWarning();
+            addWarning("This "+  this.model.getType().toLowerCase() + " does not have a country and sector specified", true);
+            return;
+        }
         if(!this.updateDescriptionWarning()){
             clearWarning();
             addWarning("This " + this.model.getType().toLowerCase() + " does not have a description specified", true);
+            return;
+        }
+        if(!this.updateExistedWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " is incomplete.", true);
+            return;
+        }
+        if(!this.updateFundsWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have funding information, or is not in the form of a number.", true);
+            return;
+        }
+        if(!this.updateThemesWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have theme information.", true);
+            return;
+        }
+        if(!this.updateProjects()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have any associated projects.", true);
             return;
         }
         this.$(".throbber").show();
@@ -103,6 +128,57 @@ CollaborationEditView = Backbone.View.extend({
         if(this.model.get('other').trim() == ''){
             return false;
         } else {
+            return true;
+        }
+    },
+    
+    updateCountryWarning: function(){
+        if(this.model.get('country').trim() == '' || this.model.get('sector').trim() == ''){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+    updateExistedWarning: function(){
+        if(this.model.get('knowledgeUser') != 1 && this.model.get('existed') == ""){
+            return false;
+        } 
+        else {
+            return true;
+        }
+    },
+    
+    updateFundsWarning: function(){
+        if($("[name='fund']:checked").val().trim() == 'yes' && (this.model.get('funding') == "" || 
+                                                                parseInt(this.model.get('funding')) == 0 || 
+                                                                _.isNaN(parseInt(this.model.get('funding'))))){
+            return false;
+        } 
+        else {
+            return true;
+        }
+    },
+    
+    updateThemesWarning: function(){
+        if(this.model.get('knowledgeUser') != 1 &&
+           this.model.get('planning') != "1" &&
+           this.model.get('designDataCollection') != "1" &&
+           this.model.get('analysisOfResults') != "1" &&
+           this.model.get('exchangeKnowledge') != "1" &&
+           this.model.get('userKnowledge') != "1"){
+            return false;
+        }
+        else {
+            return true;
+        }
+    },
+    
+    updateProjects: function(){
+        if(this.model.get('projects').length == 0){
+            return false;
+        }
+        else {
             return true;
         }
     },
