@@ -13,12 +13,14 @@ class SOP extends AbstractSop{
     * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
     */
     function getReviewers(){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
-        $gsms = $hqp->getGSMS();
+        $gsms = $hqp->getGSMS($this->year);
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section = 'OT_REVIEW'
                         AND data != ''
+                        AND year = '{$year}'
                         AND rp_item = 'Q13'
                         AND proj_id =".$gsms->getId();
 
@@ -39,6 +41,7 @@ class SOP extends AbstractSop{
    * @return array with answers to questions
    */
     function getContent($asString=false){
+        $year = ($this->year != "") ? $this->year : YEAR;
         if($this->questions == null){
             $qs = array('Q1','Q2','Q4','Q5');
             $qstrings = array('(Describe how your personal work and volunteer experiences will contribute towards making you an effective occupational therapist.)',
@@ -55,7 +58,7 @@ class SOP extends AbstractSop{
                     WHERE rp_section = 'OT_QUESTIONS'
                         AND rp_item = '$q'
                         AND proj_id =0
-                        AND year =".YEAR."
+                        AND year = ".$year."
                         AND user_id = {$this->getUser()}";
 
                 $data = DBFunctions::execSQL($sql);
@@ -101,7 +104,7 @@ class SOP extends AbstractSop{
                 $pdf_data = $data[0]['pdf_data'];
                 if($pdf_data != ""){
                     global $wgServer, $wgScriptPath;
-                    return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->user_id;
+                    return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&year={$this->year}&user=".$this->user_id;
                 }
 
             }
@@ -121,11 +124,12 @@ class SOP extends AbstractSop{
      * @return text stream of SoP PDF
    **/
     function getSopPdf(){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('pdf'),
                                     array('user_id' => EQ($this->user_id),
                                           'type' => 'RPTP_OT',
-                                          'year' => YEAR));
+                                          'year' => $year));
         if(count($data) > 0){
             return $data[0]['pdf'];
         }
@@ -137,17 +141,18 @@ class SOP extends AbstractSop{
      * @return String url of SoP pdf
    **/
     function getSopUrl(){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('*'),
                                     array('user_id' => EQ($this->user_id),
                                           'type' => 'RPTP_OT',
-                                          'year' => YEAR));
+                                          'year' => $year));
 
         if(count($data) > 0){
             $pdf_data = $data[0]['pdf'];
             if($pdf_data != ""){
                 global $wgServer, $wgScriptPath;
-                return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&last=true&user=".$this->user_id;
+                return "{$wgServer}{$wgScriptPath}/index.php?action=api.getSopPdf&year={$year}&last=true&user=".$this->user_id;
             }
         }
         return false;
@@ -157,9 +162,10 @@ class SOP extends AbstractSop{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
-        $gsms = $hqp->getGSMS();
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = new ReportBlob(BLOB_TEXT, $year, $user, $gsms->getId());
         $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $gsms->getId());
         $blob->load($blob_address);
         $data = $blob->getData();
@@ -182,10 +188,11 @@ class SOP extends AbstractSop{
 
 
     function getReviewComments($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
         $comments = array();
         $hqp = Person::newFromId($this->user_id);
-        $gsms = $hqp->getGSMS();
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $gsms->getId());
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = new ReportBlob(BLOB_TEXT, $year, $user, $gsms->getId());
         $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q9', $gsms->getId());
         $blob->load($blob_address);
         $comments['documents'] = $blob->getData();
