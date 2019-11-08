@@ -54,7 +54,7 @@ CollaborationEditView = Backbone.View.extend({
         }
         if(!this.updateThemesWarning()){
             clearWarning();
-            addWarning("This " + this.model.getType().toLowerCase() + " does not have theme information.", true);
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have any attributes selected.", true);
             return;
         }
         if(!this.updateProjects()){
