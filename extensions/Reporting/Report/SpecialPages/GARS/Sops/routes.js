@@ -19,7 +19,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        "": "defaultRoute",
+        "(:year)": "defaultRoute",
         ":id/edit": "editSop",
     }
 });
@@ -27,11 +27,12 @@ PageRouter = Backbone.Router.extend({
 // Initiate the router
 var pageRouter = new PageRouter;
 
-pageRouter.on('route:defaultRoute', function (actions) {
+pageRouter.on('route:defaultRoute', function (year) {
     main.set('title', '');
     this.closeCurrentView();
     var gsms = new GsmsDataAll();
     gsms.folder = 'all';
+    gsms.year = (year != null) ? year : "";
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
 });
