@@ -3,7 +3,7 @@
     <table>
         <tr>
             <td class="label">Visibility:</td>
-            <td><%= visibility %></td>
+            <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
         </tr>
         <tr>
             <td class="label">Application Deadline Type:</td>
@@ -81,3 +81,4 @@
     <br />
     <button id='editJobPosting'>Edit Job Posting</button>&nbsp;<button id='deleteJobPosting'>Delete Job Posting</button>
 <% } %>
+<p><a href="https://cscan-infocan.ca/members/forum/forum-job-posting/" target="_blank">Instructions for creating and publishing job postings are on the main (public) website.</a></p>

@@ -3,7 +3,7 @@
     <table>
         <tr>
             <td class="label">Visibility:</td>
-            <td><%= visibility %></td>
+            <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
         </tr>
         <% if(articleLink != ""){ %>
             <tr>
@@ -50,3 +50,4 @@
     <br />
     <button id='editPosting'>Edit News Posting</button>&nbsp;<button id='deletePosting'>Delete News Posting</button>
 <% } %>
+<p><a href="https://cscan-infocan.ca/members/forum/forum-news-item-posting/" target="_blank">Instructions for creating and publishing news postings are on the main (public) website.</a></p>
