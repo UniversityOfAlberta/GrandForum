@@ -74,6 +74,10 @@ JobPostingView = Backbone.View.extend({
             clearInfo();
             addInfo('This Job Posting has been deleted, and will not show up anywhere else on the forum.  You may still edit the Job Posting.');
         }
+        if(this.model.get('visibility') == 'Draft'){
+            clearWarning();
+            addWarning('This job ad is in Draft form. It must be Published before it will be visible to the public. To do this, click the Edit Job Posting button below, change Visiblity to Published on the posting form, and then click the Save Job Posting button.');
+        }
         return this.$el;
     }
 

@@ -69,6 +69,10 @@ PostingView = Backbone.View.extend({
             clearInfo();
             addInfo('This Posting has been deleted, and will not show up anywhere else on the forum.  You may still edit the Posting.');
         }
+        if(this.model.get('visibility') == 'Draft'){
+            clearWarning();
+            addWarning('This posting is in Draft form. It must be Published before it will be visible to the public. To do this, click the Edit Posting button below, change Visiblity to Published on the posting form, and then click the Save Posting button.');
+        }
         return this.$el;
     }
 
