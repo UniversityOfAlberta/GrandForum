@@ -101,7 +101,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '200px' },  // Reviewers
                                                         { 'width': '200px' },  // Reviewer Decision
                                                         { 'width': '200px' },  // Notes
-                                                        { 'width': '120px' },  // Comments
+                                                        //{ 'width': '120px' },  // Comments
                                                         { 'width': '120px' },  // Decision
                                                       ],
                                                      'buttons': [
@@ -136,6 +136,7 @@ SopsView = Backbone.View.extend({
         "click #selectTagBox" : "showCheckboxes",
         "click #showfilter" : "showFilter",
         "click #hidefilter" : "showFilter",
+        "change #year": "changeYear"
     },
 
     reloadTable: function(){
@@ -347,6 +348,12 @@ SopsView = Backbone.View.extend({
         };
 
         return operation[operator](birthday, filterdate);
+    },
+    
+    changeYear: function(){
+        var year = this.$("#year").val();
+        var frag = Backbone.history.fragment.split("/")[0];
+        document.location = wgServer + wgScriptPath + '/index.php/Special:Sops#/' + year;
     },
 
     render: function(){
