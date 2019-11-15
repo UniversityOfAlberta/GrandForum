@@ -26,7 +26,7 @@
         <ReportItem id="gsmsIDCS" idLabel="Applicant ID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
                 <h3>Applicant ID</h3>
-                <p>Please enter your 8-digit Admissions Number (beginning with '16') from your FGSR application. This number is available once you have submitted your application to FGSR.</p>
+                <p>Please enter your 8-digit Admissions Number (beginning with '16') from your FGSR application. This number is available once you have submitted your application to FGSR.  It can be found on the receipt you received from GSMS.</p>
                 {$item}
                 <div id='gsmsIdError1' class='error' style='display:none;'>An ID must be provided</div>
                 <div id='gsmsIdError2' class='error' style='display:none;'>The ID entered is not in the format 16XXXXXX</div>
@@ -57,8 +57,7 @@
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
-
-        <ReportItem id="q13" idLabel="Research Area" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="Q13" limit="900" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" limit="900" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
             <![CDATA[
             <style>
                     .flex-container {
