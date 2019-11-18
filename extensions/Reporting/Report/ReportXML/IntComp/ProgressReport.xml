@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProgressReportPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="PL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" tooltip="Project Progress Report" name="Progress Report" title="Project Progress Report" blobSection="REPORT" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Title of Project:</h3>
+                {$project_full_name}
+            ]]>
+        </Static>
+        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+            <![CDATA[
+                <h3>UofA Principal Investigator:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" optional="true">
+            <![CDATA[
+                <h3>UofA Co-Principal Investigators (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+            <![CDATA[
+                <h3>Huawei Technical Lead:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan" type="Textarea" blobItem="PLAN" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Overall project plan</h3>
+                There are x stages for this project: A, B, C, D...
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="progress" type="Textarea" blobItem="PROGRESS" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Overall project plan</h3>
+                We are currently at stage x. The progress has been made last year is...
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="future" type="Textarea" blobItem="FUTURE" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Future plan</h3>
+                We will be moving toward to stage x next year/ we plan to accomplish stage x by the year xxxx...
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" emails="{$my_email}" />
+    </ReportSection>
+</Report>

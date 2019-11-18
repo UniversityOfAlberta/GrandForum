@@ -15,6 +15,7 @@ class Project extends BackboneModel {
     var $name;
     var $status;
     var $type;
+    var $private;
     var $parentId;
     var $bigbet;
     var $people;
@@ -56,7 +57,7 @@ class Project extends BackboneModel {
             self::$cache[$project->name] = &$project;
             return $project;
         }
-        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.bigbet
+        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -65,7 +66,7 @@ class Project extends BackboneModel {
                  AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.bigbet
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -77,7 +78,7 @@ class Project extends BackboneModel {
                 // This project has a history
                 $project = Project::newFromHistoricId($data[0]['id']);
             }
-            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1)){
                 $project = new Project($data);
             }
             else{
@@ -118,6 +119,7 @@ class Project extends BackboneModel {
                                           'e.id' => 'evolutionId',
                                           'e.clear',
                                           's.type',
+                                          's.private',
                                           's.status',
                                           's.bigbet'),
                                     array('LOWER(p.name)' => strtolower(trim($name)),
@@ -139,7 +141,7 @@ class Project extends BackboneModel {
                 self::$cache[$name] = &$project;
                 return $project;
             }
-            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1)){
                 $project = new Project($data);
             }
             else{
@@ -182,6 +184,7 @@ class Project extends BackboneModel {
                                           'e.id' => 'evolutionId',
                                           'e.clear',
                                           's.type',
+                                          's.private',
                                           's.status',
                                           's.bigbet'),
                                     array('LOWER(d.full_name)' => strtolower(trim($title)),
@@ -204,7 +207,7 @@ class Project extends BackboneModel {
                 self::$cache[$name] = &$project;
                 return $project;
             }
-            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1)){
                 $project = new Project($data);
             }
             else{
@@ -234,7 +237,7 @@ class Project extends BackboneModel {
             return Project::newFromId($id);
         }
         $sqlExtra = ($evolutionId != null) ? $sqlExtra = "AND e.id = $evolutionId" : "";
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -242,7 +245,7 @@ class Project extends BackboneModel {
                 $sqlExtra
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed')){
+        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1))){
             $project = new Project($data);
             $project->evolutionId = $evolutionId;
             self::$cache[$id.'_'.$evolutionId] = $project;
@@ -265,14 +268,14 @@ class Project extends BackboneModel {
             return Project::newFromName($name);
         }
         $name = DBFunctions::escape($name);
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
                 AND s.evolution_id = e.id
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed')){
+        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1))){
             $project = new Project($data);
             self::$cache['h_'.$name] = &$project;
             return $project;
@@ -301,7 +304,7 @@ class Project extends BackboneModel {
             foreach($data as $row){
                 $project = Project::newFromId($row['id']);
                 if($project != null && $project->getName() != ""){
-                    if(!isset($projects[$project->name]) && !$project->isDeleted() && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
+                    if(!isset($projects[$project->name]) && !$project->isDeleted() && (($me->isLoggedIn() && !$me->isCandidate()) || ($project->getStatus() != 'Proposed' && !$project->isPrivate()))){
                         $projects[$project->getName()] = $project;
                     }
                 }
@@ -334,7 +337,7 @@ class Project extends BackboneModel {
                         substr($project->effectiveDate, 0, 10) >= $endDate || 
                         (substr($project->effectiveDate, 0, 10) <= $endDate && substr($project->effectiveDate, 0, 10) >= $startDate)) ||
                        !$project->deleted){
-                        if(substr($project->getCreated(), 0, 10) <= $endDate && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
+                        if(substr($project->getCreated(), 0, 10) <= $endDate && (($me->isLoggedIn() && !$me->isCandidate()) || ($project->getStatus() != 'Proposed') && !$project->isPrivate())){
                             $projects[$project->getName()] = $project;
                         }
                     }
@@ -363,7 +366,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromId($row['id']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
+                if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || ($project->getStatus() != 'Proposed' && !$project->isPrivate()))){
                     $projects[$project->getName()] = $project;
                 }
             }
@@ -417,6 +420,7 @@ class Project extends BackboneModel {
             $this->evolutionId = $data[0]['evolutionId'];
             $this->status = $data[0]['status'];
             $this->type = $data[0]['type'];
+            $this->private = $data[0]['private'];
             $this->bigbet = $data[0]['bigbet'];
             $this->phase = $data[0]['phase'];
             $this->parentId = $data[0]['parent_id'];
@@ -466,6 +470,7 @@ class Project extends BackboneModel {
                        'website' => $this->getWebsite(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
+                       'private' => $this->isPrivate(),
                        'theme' => $theme,
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
@@ -616,6 +621,10 @@ EOF;
     // Returns the type of this Project
     function getType(){
         return $this->type;
+    }
+    
+    function isPrivate(){
+        return $this->private;
     }
     
     function isBigBet(){
