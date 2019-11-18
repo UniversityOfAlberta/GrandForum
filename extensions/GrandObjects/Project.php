@@ -377,37 +377,67 @@ class Project extends BackboneModel {
     }
     
     static function areThereDeletedProjects(){
+        $me = Person::newFromWgUser();
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                            array('id'),
+                                            array('id', 'private'),
                                             array('status' => EQ('Ended')));
+        foreach($data as $key => $row){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+                unset($data[$key]);
+            }
+        }
         return (count($data) > 0);
     }
     
     static function areThereAdminProjects(){
+        $me = Person::newFromWgUser();
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                            array('id'),
+                                            array('id', 'private'),
                                             array('type' => EQ('Administrative')));
+        foreach($data as $key => $row){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+                unset($data[$key]);
+            }
+        }
         return (count($data) > 0);
     }
 
     static function areThereNonAdminProjects(){
+        $me = Person::newFromWgUser();
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                            array('id'),
+                                            array('id', 'private'),
                                             array('type' => NEQ('Administrative')));
+        foreach($data as $key => $row){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $row['private'] != 1)){
+                unset($data[$key]);
+            }
+        }
         return (count($data) > 0);
     }
     
     static function areThereInnovationHubs(){
+        $me = Person::newFromWgUser();
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                            array('id'),
+                                            array('id', 'private'),
                                             array('type' => EQ('Innovation Hub')));
+        foreach($data as $key => $row){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+                unset($data[$key]);
+            }
+        }
         return (count($data) > 0);
     }
     
     static function areThereProposedProjects(){
+        $me = Person::newFromWgUser();
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                            array('id'),
+                                            array('id', 'private'),
                                             array('status' => EQ('Proposed')));
+        foreach($data as $key => $row){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+                unset($data[$key]);
+            }
+        }
         return (count($data) > 0);
     }
     
