@@ -382,7 +382,7 @@ class Project extends BackboneModel {
                                             array('id', 'private'),
                                             array('status' => EQ('Ended')));
         foreach($data as $key => $row){
-            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $row['private'] != 1)){
                 unset($data[$key]);
             }
         }
@@ -395,7 +395,7 @@ class Project extends BackboneModel {
                                             array('id', 'private'),
                                             array('type' => EQ('Administrative')));
         foreach($data as $key => $row){
-            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $row['private'] != 1)){
                 unset($data[$key]);
             }
         }
@@ -421,7 +421,7 @@ class Project extends BackboneModel {
                                             array('id', 'private'),
                                             array('type' => EQ('Innovation Hub')));
         foreach($data as $key => $row){
-            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $row['private'] != 1)){
                 unset($data[$key]);
             }
         }
@@ -434,7 +434,7 @@ class Project extends BackboneModel {
                                             array('id', 'private'),
                                             array('status' => EQ('Proposed')));
         foreach($data as $key => $row){
-            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['private'] != 1)){
+            if(!(($me->isLoggedIn() && !$me->isCandidate()) || $row['private'] != 1)){
                 unset($data[$key]);
             }
         }
