@@ -7,9 +7,6 @@ Person = Backbone.Model.extend({
         this.projects = new PersonProjects();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
         
-        this.leaderships = new PersonLeaderships();
-        this.leaderships.url = this.urlRoot + '/' + this.get('id') + '/leaderships';
-        
         this.themes = new PersonThemes();
         this.themes.url = this.urlRoot + '/' + this.get('id') + '/themes';
         
@@ -26,6 +23,9 @@ Person = Backbone.Model.extend({
         
         this.universities = new PersonUniversities();
         this.universities.url = this.urlRoot + '/' + this.get('id') + '/universities';
+        
+        this.alumni = new Alumni();
+        this.alumni.personId = this.get('id');
         
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
@@ -74,11 +74,6 @@ Person = Backbone.Model.extend({
     getProjects: function(){
         this.projects.fetch();
         return this.projects;
-    },
-    
-    getLeaderships: function(){
-        this.leaderships.fetch();
-        return this.leaderships;
     },
     
     getThemes: function(){
@@ -255,52 +250,6 @@ PersonProjects = RangeCollection.extend({
 });
 
 /**
- * PersonLeadership RelationModel
- */
-PersonLeadership = RelationModel.extend({
-    initialize: function(){
-        
-    },
-
-    urlRoot: function(){
-        return 'index.php?action=api.person/' + this.get('personId') + '/leaderships'
-    },
-    
-    getOwner: function(){
-        var person = new Person({id: this.get('personId')});
-        return person;
-    },
-    
-    getTarget: function(){
-        var project = new Project({id: this.get('projectId')});
-        return project;
-    },
-    
-    defaults: {
-        id: null,
-        personId: "",
-        projectId: "",
-        type: 'leader',
-        startDate: new Date().toISOString().substr(0, 10),
-        endDate: "",
-        name: "",
-        comment: "",
-        deleted: false
-    }
-});
-
-/**
- * PersonLeaderships RangeCollection
- */
-PersonLeaderships = RangeCollection.extend({
-    model: PersonLeadership,
-    
-    newModel: function(){
-        return new Projects();
-    },
-});
-
-/**
  * PersonThemesLeadership RelationModel
  */
 PersonTheme = RelationModel.extend({
@@ -336,7 +285,7 @@ PersonTheme = RelationModel.extend({
 });
 
 /**
- * PersonLeaderships RangeCollection
+ * PersonThemes RangeCollection
  */
 PersonThemes = RangeCollection.extend({
     model: PersonTheme,

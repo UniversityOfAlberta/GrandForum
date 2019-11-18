@@ -272,6 +272,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    skin = "<?php echo $config->getValue('skin'); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
+		    alumniEnabled = <?php var_export($config->getValue('alumniEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";

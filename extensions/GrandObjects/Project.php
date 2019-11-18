@@ -401,6 +401,13 @@ class Project extends BackboneModel {
         return (count($data) > 0);
     }
     
+    static function areThereProposedProjects(){
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                            array('id'),
+                                            array('status' => EQ('Proposed')));
+        return (count($data) > 0);
+    }
+    
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
     function Project($data){
@@ -430,6 +437,7 @@ class Project extends BackboneModel {
                 $this->effectiveDate = "0000-00-00 00:00:00";
             }
             $this->fullName = false;
+            $this->getTechnology();
         }
     }
     
@@ -1061,13 +1069,15 @@ EOF;
                 }
             }
         }
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'leader'
-                AND u.user_id = pl.user_id
+        $sql = "SELECT r.user_id
+                FROM grand_roles r, grand_role_projects rp, mw_user u
+                WHERE r.id = rp.role_id
+                AND rp.project_id = '{$this->id}'
+                AND r.role = '".PL."'
+                AND u.user_id = r.user_id
                 AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
+                AND (r.end_date = '0000-00-00 00:00:00'
+                     OR r.end_date > CURRENT_TIMESTAMP)";
         $data = DBFunctions::execSQL($sql);
         if ($onlyid) {
             foreach ($data as &$row){
@@ -1083,28 +1093,6 @@ EOF;
         }
         ksort($ret);
         $this->leaderCache['leaders'.$onlyIdStr] = $ret;
-        return $ret;
-    }
-    
-    function getLeadersHistory(){
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getLeadersHistory() as $leader){
-                    $ret[$leader->getId()] = $leader;
-                }
-            }
-        }
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'";
-        $data = DBFunctions::execSQL($sql);
-        foreach ($data as &$row){
-            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
         return $ret;
     }
     
@@ -1267,6 +1255,48 @@ EOF;
             }
         }
         return $articles;
+    }
+    
+    /**
+     * Returns an array containing responses for Technology Evaluation/Adoption
+     */
+    function getTechnology(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH1', 0);
+        $result = $blb->load($addr);
+        $t1 = $blb->getData();
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
+        $result = $blb->load($addr);
+        $t2 = $blb->getData();
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
+        $result = $blb->load($addr);
+        $t3 = $blb->getData();
+        
+        $this->technology = array('response1' => $t1,
+                                  'response2' => $t2,
+                                  'response3' => $t3);
+        return $this->technology;
+    }
+    
+    /**
+     * Saves the array containing responses for Technology Evaluation/Adoption
+     */
+    function saveTechnology(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH1', 0);
+        $blb->store($this->technology['response1'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
+        $blb->store($this->technology['response2'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
+        $blb->store($this->technology['response3'], $addr);
     }
     
     // Returns an array of papers relating to this project
@@ -1710,51 +1740,6 @@ EOF;
         return $alloc;
     }
     
-    /**
-     * Returns the allocated Budget for this Project
-     * @param integer $year The allocation year
-     * @return Budget A new allocated Budget
-     */
-    function getAllocatedBudget($year){
-        global $config;
-
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_ALLOC;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
-    }
-    
-    function getRequestedBudget($year, $role='all'){
-        global $config;
-        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-
-        $budget = null;
-        $type = BLOB_EXCEL;
-        $report = RP_LEADER;
-        $section = LDR_BUDGET;
-        $item = LDR_BUD_UPLOAD;
-        $subitem = 0;
-        $blob = new ReportBlob($type, $year, 0, $this->getId());
-        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if($data != null){
-            $budget = new Budget("XLS", $structure, $data);
-        }
-        return $budget;
-    }
 }
 
 ?>

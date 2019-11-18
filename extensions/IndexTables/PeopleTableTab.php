@@ -83,6 +83,12 @@ class PeopleTableTab extends AbstractTab {
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
             $statusHeader .= "<th>Gender</th>";
+            if($config->getValue('crcEnabled')){
+                $statusHeader .= "<th>CRC</th>";
+            }
+            if($config->getValue('ecrEnabled')){
+                $statusHeader .= "<th>ECR</th>";
+            }
             if($me->isRoleAtLeast(MANAGER)){
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
@@ -188,6 +194,13 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Inactive";                
                 }
                 $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                if($config->getValue('crcEnabled')){
+                    $crcObj = $person->getCanadaResearchChair();
+                    $this->html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
+                }
+                if($config->getValue('ecrEnabled')){
+                    $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
                 if($me->isRoleAtLeast(MANAGER)){
                     $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
                     $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";

@@ -8,6 +8,7 @@ ManagePeopleRowView = Backbone.View.extend({
     editProjects: null,
     editRelations: null,
     editUniversities: null,
+    editAlumni: null,
     editSubRoles: null,
     editProjectLeaders: null,
     editThemeLeaders: null,
@@ -16,6 +17,7 @@ ManagePeopleRowView = Backbone.View.extend({
     projectsDialog: null,
     relationsDialog: null,
     universitiesDialog: null,
+    editAlumni: null,
     subRolesDialog: null,
     projectLeadersDialog: null,
     themeLeadersDialog: null,
@@ -222,6 +224,55 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                       el: this.universitiesDialog});
     },
     
+    openAlumniDialog: function(){
+        if(this.alumniDialog == null){
+            this.alumniDialog = this.$("#alumniDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            width: 800,
+	            position: {
+                    my: "center bottom",
+                    at: "center center"
+                },
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: function(){
+	                $("html").css("overflow", "auto");
+	                this.editAlumni.stopListening();
+	                this.editAlumni.undelegateEvents();
+	                clearInterval(this.editAlumni.interval);
+	                this.editAlumni.interval = null;
+	            }.bind(this),
+	            buttons: {
+	                "Save": function(e){
+	                    this.editAlumni.model.save(null, {
+	                        success: function(){
+	                            clearAllMessages();
+	                            addSuccess("Recruitment / Alumni saved");
+	                        },
+	                        error: function(){
+	                            clearAllMessages();
+	                            addError("Could not modify Recruitment / Alumni");
+	                        }
+	                    });
+                        this.alumniDialog.dialog('close');
+	                }.bind(this),
+	                "Cancel": function(){
+	                    this.alumniDialog.dialog('close');
+	                }.bind(this)
+	            }
+	        });
+	    }
+        this.alumniDialog.empty();
+        this.alumniDialog.dialog('open');
+        this.editAlumni = new ManagePeopleEditAlumniView({model: this.model.alumni,
+                                                          el: this.alumniDialog});
+    },
+    
     openSubRolesDialog: function(){
         if(this.subRolesDialog == null){
             this.subRolesDialog = this.$("#subRolesDialog").dialog({
@@ -270,56 +321,7 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editSubRoles = new ManagePeopleEditSubRolesView({model: this.model.subRoles,
                                                               el: this.subRolesDialog});
     },
-    
-    openProjectLeadersDialog: function(){
-        if(this.projectLeadersDialog == null){
-            this.projectLeadersDialog = this.$("#projectLeadershipDialog").dialog({
-	            autoOpen: false,
-	            modal: true,
-	            show: 'fade',
-	            resizable: false,
-	            draggable: false,
-	            width: 800,
-	            position: {
-                    my: "center bottom",
-                    at: "center center"
-                },
-	            open: function(){
-	                $("html").css("overflow", "hidden");
-	            },
-	            beforeClose: function(){
-	                $("html").css("overflow", "auto");
-	                this.editProjectLeaders.stopListening();
-	                this.editProjectLeaders.undelegateEvents();
-	                clearInterval(this.editProjectLeaders.interval);
-	                this.editProjectLeaders.interval = null;
-	            }.bind(this),
-	            buttons: {
-	                "+": { 
-	                    text: "Add Project", 
-	                    click: function(e){
-	                        this.editProjectLeaders.addProject();
-	                    }.bind(this),
-	                    disabled: (allowedProjects.length == 0),
-	                    style: "float: left;"
-	                },
-	                "Save": function(e){
-	                    this.editProjectLeaders.saveAll();
-                        this.projectLeadersDialog.dialog('close');
-	                }.bind(this),
-	                "Cancel": function(){
-	                    this.projectLeadersDialog.dialog('close');
-	                }.bind(this)
-	            }
-	        });
-        }
-        this.projectLeadersDialog.empty();
-        this.projectLeadersDialog.dialog('open');
-        this.editProjectLeaders = new ManagePeopleEditProjectLeadersView({model: this.model.leaderships, 
-                                                                          person:this.model, 
-                                                                          el: this.projectLeadersDialog});
-    },
-    
+
     openThemeLeadersDialog: function(){
         if(this.themeLeadersDialog == null){
             this.themeLeadersDialog = this.$("#themeLeadershipDialog").dialog({
@@ -389,8 +391,8 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editProjects": "openProjectsDialog",
         "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog",
+        "click #editAlumni": "openAlumniDialog",
         "click #editSubRoles": "openSubRolesDialog",
-        "click #editProjectLeadership": "openProjectLeadersDialog",
         "click #editThemeLeadership": "openThemeLeadersDialog"
     },
     

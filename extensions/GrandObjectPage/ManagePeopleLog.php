@@ -35,7 +35,8 @@ class ManagePeopleLog extends SpecialPage{
 	                                       name = 'Project Membership Changed' OR
 	                                       name = 'Project Membership Removed' OR
 	                                       name = 'Project Membership Added' OR
-	                                       name = 'Alumni Changed')
+	                                       name = 'Alumni Changed' OR
+	                                       name = 'Candidate Changed')
 	                                  ORDER BY time DESC");
 	    foreach($data as $row){
 	        $notifications[] = Notification::newFromId($row['id']);

@@ -8,10 +8,6 @@ define('ANNOKI', true);
 
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
-require_once($egAnnokiCommonPath.'/AnnokiArticleEditor.php');
-require_once($egAnnokiCommonPath.'/AnnokiDatabaseFunctions.php');
-require_once($egAnnokiCommonPath.'/AnnokiHTMLUtils.php');
-require_once($egAnnokiCommonPath.'/AnnokiUtils.php');
 
 /** Enumerate Annoki-based extensions.  Add new ones in a similar fashion. Example:
 $egAnnokiExtensions['MyAnnokiExtension'] = array( 'name' => 'My Annoki Extension', //This show up in the Annoki extension list
@@ -159,7 +155,6 @@ foreach($egAnnokiExtensions as $key => $extension){
 }
 
 require_once("AnnokiControl_body.php");
-$wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
 $wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
 

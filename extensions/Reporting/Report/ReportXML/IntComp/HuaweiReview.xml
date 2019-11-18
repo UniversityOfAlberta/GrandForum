@@ -89,7 +89,7 @@
                                     <div style="width:50%;padding-right:5px;">
                             ]]>
                         </Static>
-                        <If id="if1" if="{!=({$user_name},Randy Goebel)}">
+                        <If id="if1" if="{and({!=({$user_name},Randy Goebel)},{!=({$user_name},Mario Nascimento)})}">
                             <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
                                 <If if="{!contains({$user_roles}, Manager)}">
                                     <![CDATA[
@@ -116,9 +116,9 @@
                                 </If>
                             </ReportItemSet>
                         </If>
-                        <If id="if2"  if="{==({$user_name},Randy Goebel)}">
+                        <If id="if2"  if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
                             <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
-                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)})}">
+                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)},{!contains({$user_name}, Mario Nascimento)})}">
                                     <![CDATA[
                                         <table width='100%'>
                                             <tr>
@@ -198,7 +198,7 @@
                              {!=({$user_id},54)}
                         )}">
                     <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
-                        <If id="if1" if="{!=({$user_name},Randy Goebel)}">
+                        <If id="if1" if="{and({!=({$user_name},Randy Goebel)},{!=({$user_name},Mario Nascimento)})}">
                             <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
                                 <If if="{!contains({$user_roles}, Manager)}">
                                     <![CDATA[
@@ -221,9 +221,9 @@
                                 </If>
                             </ReportItemSet>
                         </If>
-                        <If id="if2" if="{==({$user_name},Randy Goebel)}">
+                        <If id="if2" if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
                             <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
-                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)})}">
+                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)},{!contains({$user_name}, Mario Nascimento)})}">
                                     <![CDATA[
                                         <table width='100%'>
                                             <tr>

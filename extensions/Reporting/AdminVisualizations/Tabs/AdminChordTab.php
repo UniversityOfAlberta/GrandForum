@@ -61,75 +61,6 @@ class AdminChordTab extends AbstractTab {
                     $agency = $person->getPrimaryFundingAgency();
                     $sortedPeople[$agency][] = $person;
                 }
-                else if($_GET['sortBy'] == 'proj_req'){
-                    $budget = $person->getRequestedBudget($year);
-                    if($budget != null){
-                        $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
-                        $rowBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(COL_TOTAL);
-                        
-                        $largest = 0;
-                        $largestProj = '';
-                        foreach($rowBudget->xls as $nRow => $row){
-                            foreach($row as $nCol => $value){
-                                if($value->getValue() > $largest){
-                                    $largest = $value->getValue();
-                                    $largestProj = $projBudget->copy()->limitCols($nCol-1, 1)->toString();
-                                }
-                            }
-                        }
-                        $sortedPeople[$largestProj][] = $person;
-                    }
-                    else{
-                        $sortedPeople['No Project'][] = $person;
-                    }
-                }
-                else if($_GET['sortBy'] == 'proj_alloc'){
-                    $budget = $person->getAllocatedBudget($year-1);
-                    if($budget != null){
-                        $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
-                        $rowBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(COL_TOTAL);
-                        
-                        $largest = 0;
-                        $largestProj = '';
-                        foreach($rowBudget->xls as $nRow => $row){
-                            foreach($row as $nCol => $value){
-                                if($value->getValue() > $largest){
-                                    $largest = $value->getValue();
-                                    $largestProj = $projBudget->copy()->limitCols($nCol-1, 1)->toString();
-                                }
-                            }
-                        }
-                        $sortedPeople[$largestProj][] = $person;
-                    }
-                    else{
-                        $sortedPeople['No Project'][] = $person;
-                    }
-                }
-                else if($_GET['sortBy'] == 'proj_both'){
-                    $budget = $person->getRequestedBudget($year);
-                    if($budget == null){
-                        $budget = $person->getAllocatedBudget($year-1);
-                    }
-                    if($budget != null){
-                        $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
-                        $rowBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(COL_TOTAL);
-                        
-                        $largest = 0;
-                        $largestProj = '';
-                        foreach($rowBudget->xls as $nRow => $row){
-                            foreach($row as $nCol => $value){
-                                if($value->getValue() > $largest){
-                                    $largest = $value->getValue();
-                                    $largestProj = $projBudget->copy()->limitCols($nCol-1, 1)->toString();
-                                }
-                            }
-                        }
-                        $sortedPeople[$largestProj][] = $person;
-                    }
-                    else{
-                        $sortedPeople['No Project'][] = $person;
-                    }
-                }
                 else if($_GET['sortBy'] == 'name'){
                     $sortedPeople[$person->getReversedName()][] = $person;
                 }
@@ -232,9 +163,6 @@ class AdminChordTab extends AbstractTab {
                                           array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
                                           array('name' => 'Title', 'value' => 'position', 'checked' => ''),
                                           array('name' => 'Primary Funding Agency', 'value' => 'fund', 'checked' => ''),
-                                          array('name' => 'Primary Project (Requested Budget)', 'value' => 'proj_req', 'checked' => ''),
-                                          array('name' => 'Primary Project (Allocated Budget)', 'value' => 'proj_alloc', 'checked' => ''),
-                                          array('name' => 'Primary Project (RequestedBudget OR Allocated Budget)', 'value' => 'proj_both', 'checked' => ''),
                                           array('name' => 'Last Name', 'value' => 'name', 'checked' => ''));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;

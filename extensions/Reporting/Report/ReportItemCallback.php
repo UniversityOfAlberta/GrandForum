@@ -98,8 +98,6 @@ class ReportItemCallback {
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
-            "user_requested_budget" => "getUserRequestedBudget",
-            "user_allocated_budget" => "getUserAllocatedBudget",
             "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
             // Champions
@@ -976,19 +974,19 @@ class ReportItemCallback {
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
-                    $roles .= ", PL";
+                    $roles .= ", ".PL;
                 }
                 else{
-                    $roles .= "PL";
+                    $roles .= PL;
                 }
             }
         }
         else if($person->isProjectLeader()){
             if($roles != ""){
-                $roles .= ", PL";
+                $roles .= ", ".PL;
             }
             else{
-                $roles .= "PL";
+                $roles .= PL;
             }
         }
         return $roles;
@@ -1030,7 +1028,7 @@ class ReportItemCallback {
     
     function getUserName(){
         $person = Person::newFromId($this->reportItem->personId);
-        return $person->getNameForForms();
+        return str_replace(")", "&#41;", str_replace("(", "&#40;", $person->getNameForForms()));
     }
     
     function getUserReversedName(){
@@ -1085,19 +1083,19 @@ class ReportItemCallback {
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
                 if($roles != ""){
-                    $roles .= ", PL";
+                    $roles .= ", ".PL;
                 }
                 else{
-                    $roles .= "PL";
+                    $roles .= PL;
                 }
             }
         }
         else if($person->isProjectLeader()){
             if($roles != ""){
-                $roles .= ", PL";
+                $roles .= ", ".PL;
             }
             else{
-                $roles .= "PL";
+                $roles .= PL;
             }
         }
         return $roles;
@@ -1276,34 +1274,6 @@ class ReportItemCallback {
             return $fileNumbers[$id];
         }
         return "";
-    }
-    
-    function getUserRequestedBudget(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $budget = $person->getRequestedBudget(REPORTING_YEAR);
-        if($project != null && $project->getName() != ""){
-            $budgetFirstCol = $budget->copy()->limitCols(0, 1);
-            $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
-            $budget = $budgetFirstCol->join($budget);
-            $budget->xls[0][1]->value = $person->getReversedName();
-        }
-        return $budget->render();
-    }
-    
-    function getUserAllocatedBudget(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $budget = $person->getAllocatedBudget(REPORTING_YEAR);
-        if($project != null && $project->getName() != ""){
-            $budgetFirstCol = $budget->copy()->limitCols(0, 1);
-            $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
-            $budget = $budgetFirstCol->join($budget);
-            $budget->xls[0][1]->value = $person->getReversedName();
-        }
-        return $budget->render();
     }
     
     function getUserSubProjectChamps(){

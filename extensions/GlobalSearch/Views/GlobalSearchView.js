@@ -100,9 +100,6 @@ GlobalSearchResultsView = Backbone.View.extend({
         "personResults" : function(){
             return new PersonResultsView({parent: this, model: new GlobalSearch({group: 'people', search: ''})});
         },
-        "expertResults" : function(){
-            return new ExpertResultsView({parent: this, model: new GlobalSearch({group: 'experts', search: ''})});
-        },
         "projectResults" : function(){
             return new ProjectResultsView({parent: this, model: new GlobalSearch({group: 'projects', search: ''})});
         },
@@ -114,9 +111,6 @@ GlobalSearchResultsView = Backbone.View.extend({
         },
         "wikiResults" : function(){
             return new WikiResultsView({parent: this, model: new GlobalSearch({group: 'wikipage', search: ''})});
-        },
-        "pdfResults" : function(){
-            return new PDFResultsView({parent: this, model: new GlobalSearch({group: 'pdf', search: ''})});
         }
     },
     
@@ -414,22 +408,6 @@ PersonResultsView = ResultsView.extend({
     }
 });
 
-ExpertResultsView = ResultsView.extend({
-    maxResults: 3,
-
-    createCardView: function(model){
-        return new SmallPersonCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new Person({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Experts"}));
-    }
-});
-
 ProjectResultsView = ResultsView.extend({
     maxResults: 3,
     
@@ -494,18 +472,3 @@ WikiResultsView = ResultsView.extend({
     }
 });
 
-PDFResultsView = ResultsView.extend({
-    maxResults: 4,
-
-    createCardView: function(model){
-        return new SmallPDFCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new PDF({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Reports"}));
-    }
-});

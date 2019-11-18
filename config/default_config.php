@@ -97,6 +97,18 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // Whether or not Early Carree Research is enabled
+    $config->setValue("ecrEnabled", false);
+    
+    // Whether or not Canada Research Chair is enabled
+    $config->setValue("crcEnabled", false);
+    
+    // Whether or not Project Technology Evaluation/Adoption is enabled
+    $config->setValue("projectTechEnabled", false);
+    
+    // Whether or not Project Technology Evaluation/Adoption is enabled
+    $config->setValue("alumniEnabled", false);
+    
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     

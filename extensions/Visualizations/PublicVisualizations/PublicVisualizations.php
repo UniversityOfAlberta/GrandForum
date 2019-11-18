@@ -1,6 +1,5 @@
 <?php
 
-require_once("Tabs/PublicDiscTreeTab.php");
 require_once("Tabs/PublicProjTreeTab.php");
 require_once("Tabs/PublicUniTreeTab.php");
 require_once("Tabs/PublicWordleTab.php");
@@ -35,9 +34,6 @@ class PublicVisualizations extends SpecialPage{
                 $tabbedPage->addTab(new PublicPersonChordTab());
             }
             $tabbedPage->addTab(new PublicProjectClusterTab());
-        }
-        if($config->getValue('networkName') == "GRAND"){
-            $tabbedPage->addTab(new PublicDiscTreeTab());
         }
         if($config->getValue('projectsEnabled')){
             $tabbedPage->addTab(new PublicProjTreeTab());

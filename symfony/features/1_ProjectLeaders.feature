@@ -11,6 +11,7 @@ Feature: Project/Theme Leaders
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should see "Wiki"
+        And I should see "Edit Main"
         
         Examples:
         | user       | pass       |
@@ -26,6 +27,7 @@ Feature: Project/Theme Leaders
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should not see "Wiki"
+        And I should not see "Edit Main"
         
         Examples:
         | user       | pass       |
@@ -99,7 +101,7 @@ Feature: Project/Theme Leaders
         Then I should see <text>
         
         Examples:
-        | user       | pass       | text                    |
+        | user       | pass       | text                                 |
         | "PL.User2" | "PL.Pass2" | "Phase 2 Project 3 (Phase2Project3)" |
-        | "TL.User1" | "TL.Pass1" | "Theme 1 (Theme1) (lead)"         |
-        | "TC.User1" | "TC.Pass1" | "Theme 1 (Theme1) (coord)"        |
+        | "TL.User1" | "TL.Pass1" | "Theme 1 (Theme1) (lead)"            |
+        | "TC.User1" | "TC.Pass1" | "Theme 1 (Theme1) (coord)"           |

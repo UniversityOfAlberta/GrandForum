@@ -36,7 +36,6 @@ class Paper extends BackboneModel{
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
-    var $reported = array();
     
     /**
      * Returns a new Paper from the given id
@@ -1242,45 +1241,6 @@ class Paper extends BackboneModel{
     function isDeleted(){
         return ($this->deleted === "1");
     }
-
-    /**
-     * Returns whether or not this Paper has been reported in the given year
-     * @param string $year The reporting year to check
-     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
-     * @return boolean Whether or not this Paper has been reported in the given year
-     */
-    function hasBeenReported($year, $reportedType){
-        if(($reportedType == 'RMC' || $reportedType == 'NCE')){
-            if(!isset($this->reported[$reportedType])){
-                $this->getReportedYears();
-            }
-            $years = $this->reported[$reportedType];
-            if(isset($years[$year])){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns the years that this Paper was reported
-     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
-     * @return array The years that this Paper was reported
-     */
-    function getReportedYears($reportedType){
-        if(!isset($this->reported[$reportedType])){
-            $this->reported['RMC'] = array();
-            $this->reported['NCE'] = array();
-            $sql = "SELECT DISTINCT `year`, `reported_type`
-                    FROM `grand_products_reported`
-                    WHERE `product_id` = '{$this->id}'";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->reported[$row['reported_type']][] = $row['year'];
-            }
-        }
-        return $this->reported[$reportedType];
-    }
     
     function getCitationFormat(){
         $categories = self::structure();
@@ -1456,19 +1416,17 @@ class Paper extends BackboneModel{
     function getCompleteness(){
         $noVenue = $noPublisher = $noPages = false;
         $completeness = array("venue"=>true, 'pages'=>true, 'publisher'=>true);
-
-        $data = $this->getData();
         $vn = $this->getVenue();
         if($this->getType() == "Proceedings Paper" && $vn == ""){
             $completeness['venue'] = false;
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtil::get_string($data, 'pages');
+            $pg = $this->getData('pages');
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtil::get_string($data, 'publisher', '');
+            $pb = $this->getData('publisher');
             if($pb == ''){
                 $completeness['publisher'] = false;
             }
@@ -1743,8 +1701,6 @@ class Paper extends BackboneModel{
                     DBFunctions::delete('grand_product_authors',
                                         array('product_id' => EQ($this->getId())));
                     DBFunctions::delete('grand_product_projects',
-                                        array('product_id' => EQ($this->getId())));
-                    DBFunctions::delete('grand_products_reported',
                                         array('product_id' => EQ($this->getId())));
                 }
             }
