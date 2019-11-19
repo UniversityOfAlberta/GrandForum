@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProgressReportPDF" ajax="true" disabled="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProgressReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
@@ -41,7 +41,7 @@
         </ReportItem>
         <ReportItem id="progress" type="Textarea" blobItem="PROGRESS" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Overall project plan</h3>
+                <h3>Current project status/progress has been made</h3>
                 We are currently at stage x. The progress has been made last year is...
                 {$item}
             ]]>

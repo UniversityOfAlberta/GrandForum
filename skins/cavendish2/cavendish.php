@@ -259,6 +259,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    // Configs
 		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
+		    allowedThemes = <?php echo json_encode(Theme::getAllowedThemes()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
 		    subRoles = <?php $subRoles = $config->getValue('subRoles'); asort($subRoles); echo json_encode($subRoles); ?>;
@@ -272,6 +273,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    skin = "<?php echo $config->getValue('skin'); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
+		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;
 		    alumniEnabled = <?php var_export($config->getValue('alumniEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;

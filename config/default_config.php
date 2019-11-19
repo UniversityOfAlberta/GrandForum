@@ -97,7 +97,10 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
-    // Whether or not Early Carree Research is enabled
+    // Whether or not to show outputs unrelated to projects or not.
+    $config->setValue("showNonNetwork", true);
+    
+    // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
     
     // Whether or not Canada Research Chair is enabled
