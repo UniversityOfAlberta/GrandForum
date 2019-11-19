@@ -116,7 +116,7 @@
                                 </If>
                             </ReportItemSet>
                         </If>
-                        <If id="if2" if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
+                        <If id="if2"  if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
                             <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
                                 <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)},{!contains({$user_name}, Mario Nascimento)})}">
                                     <![CDATA[
