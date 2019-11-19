@@ -51,10 +51,6 @@ class AddMember extends SpecialPage{
                 $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
-                //$form->getElementById('university_field')->setPOST('university');
-                //$form->getElementById('dept_field')->setPOST('department');
-                //$form->getElementById('position_field')->setPOST('position');
-                //$form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
                     $nss = implode(", ", $_POST['wpNS']);
@@ -76,7 +72,12 @@ class AddMember extends SpecialPage{
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = $types;
                 $_POST['wpNS'] = $nss;
-                $result = APIRequest::doAction('RequestUser', false);
+                $_POST['wpSendMail'] = $_POST['wpSendEmail'];
+                $oldUser = $wgUser;
+                $wgUser = User::newFromId(1);
+                $result = APIRequest::doAction('CreateUser', false);
+                $wgUser = $oldUser;
+                //$result = APIRequest::doAction('RequestUser', false);
                 if($result){
                     $form->reset();
                 }
@@ -275,17 +276,9 @@ class AddMember extends SpecialPage{
         $universities = Person::getAllUniversities();
         $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
-        
-        $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
-        $candField = new VerticalRadioBox("cand_field", "Member Type", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
-        $candRow = new FormTableRow("cand_row");
-        $candRow->append($candLabel)->append($candField);
-        if(!$me->isRoleAtLeast(STAFF)){
-            $candRow->attr('style', 'display:none;');
-        }
-               
+             
         $projectsLabel = new Label("project_label", "Department/Faculty", "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Department / Faculty / School", array(), $projects, VALIDATE_NOTHING);
+        $projectsField = new ProjectList("project_field", "Department/Faculty", array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
@@ -323,10 +316,6 @@ class AddMember extends SpecialPage{
                   //->append($deptRow)
                   //->append($positionRow)
                   ->append($submitRow);
-                  
-        if(!$me->isRoleAtLeast(STAFF)){
-            $formTable->getElementById("cand_row")->attr('style', 'display:none;');
-        }
         
         $formContainer->append($formTable);
         return $formContainer;
