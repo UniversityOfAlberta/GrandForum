@@ -73,6 +73,11 @@ class IncrementReportItem extends SelectReportItem {
 	        case "F1":
 	            $increment = Person::getSalaryIncrement($this->getReport()->year, 'fso4');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'fso4');
+                $minSalary = Person::getMinSalary($this->getReport()->year, 'fso4');
+                if($salary > $minSalary + ($increment)*5.0){
+                    // Increment decreases for FSO4 after 5.0 
+                    $increment = Person::getSalaryIncrement($this->getReport()->year, 'fso3');
+                }
                 break;
 	    }
         if($increment > 0 && $maxSalary > 0){
