@@ -260,9 +260,9 @@ class AddMember extends SpecialPage{
             $roleOptions[$config->getValue('roleDefs', $role)] = $role;
         }
         ksort($roleOptions);
-        $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
+        $rolesLabel = new Label("role_label", "Member Type", "The roles the new user should belong to", $roleValidations);
         $rolesLabel->attr('style', 'width:160px;');
-        $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
+        $rolesField = new VerticalCheckBox("role_field", "Member Type", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
 
@@ -277,15 +277,15 @@ class AddMember extends SpecialPage{
         $departments = Person::getAllDepartments();
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
-        $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
+        $candField = new VerticalRadioBox("cand_field", "Member Type", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
         if(!$me->isRoleAtLeast(STAFF)){
             $candRow->attr('style', 'display:none;');
         }
                
-        $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
+        $projectsLabel = new Label("project_label", "Department/Faculty", "The projects the user is a member of", VALIDATE_NOTHING);
+        $projectsField = new ProjectList("project_field", "Department / Faculty / School", array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
@@ -319,10 +319,9 @@ class AddMember extends SpecialPage{
                   ->append($sendEmailRow)
                   ->append($rolesRow)
                   ->append($projectsRow)
-                  ->append($universityRow)
-                  ->append($deptRow)
-                  ->append($positionRow)
-                  ->append($candRow)
+                  //->append($universityRow)
+                  //->append($deptRow)
+                  //->append($positionRow)
                   ->append($submitRow);
                   
         if(!$me->isRoleAtLeast(STAFF)){
@@ -339,7 +338,6 @@ class AddMember extends SpecialPage{
         if($user->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
         }
-        $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administratoer will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember' method='post'>\n");
         
         $form = self::createForm();
