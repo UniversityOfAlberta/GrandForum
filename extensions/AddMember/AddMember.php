@@ -51,10 +51,10 @@ class AddMember extends SpecialPage{
                 $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
-                $form->getElementById('university_field')->setPOST('university');
-                $form->getElementById('dept_field')->setPOST('department');
-                $form->getElementById('position_field')->setPOST('position');
-                $form->getElementById('cand_field')->setPOST('candidate');
+                //$form->getElementById('university_field')->setPOST('university');
+                //$form->getElementById('dept_field')->setPOST('department');
+                //$form->getElementById('position_field')->setPOST('position');
+                //$form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
                     $nss = implode(", ", $_POST['wpNS']);
