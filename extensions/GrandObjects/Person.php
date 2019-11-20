@@ -3912,6 +3912,9 @@ class Person extends BackboneModel {
         }
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
+            if($paper->getId() !== $pId){
+                continue;
+            }
             if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
                !$paper->deleted && 
                ($category == 'all' || $paper->getCategory() == $category)){
