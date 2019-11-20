@@ -404,6 +404,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},clarrivee@ualberta.ca" />
     </ReportSection>
 </Report>
