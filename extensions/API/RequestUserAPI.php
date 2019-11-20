@@ -129,16 +129,19 @@ class RequestUserAPI extends API{
 		                          'position' => $position,
 		                          'candidate' => $candidate,
 		                          'created' => 0));
-		
+		$request = UserCreateRequest::newFromId(DBFunctions::insertId());
+		if($request == null || $request->getId() == ""){
+		    return false;
+		}
 		$me = Person::newFromId($requesting_user);
-		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
+		//Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
 		if($doEcho){
-		    echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";
+		    //echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";
 		}
 		else{
-		    $message = "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.";
-		    $wgMessage->addSuccess($message);
-		    return true;
+		    //$message = "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.";
+		    //$wgMessage->addSuccess($message);
+		    return $request;
 		}
         
 	}

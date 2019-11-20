@@ -73,14 +73,17 @@ class AddMember extends SpecialPage{
                 $_POST['wpUserType'] = $types;
                 $_POST['wpNS'] = $nss;
                 $_POST['wpSendMail'] = $_POST['wpSendEmail'];
-                $oldUser = $wgUser;
-                $wgUser = User::newFromId(1);
-                $result = APIRequest::doAction('CreateUser', false);
-                $wgUser = $oldUser;
-                //$result = APIRequest::doAction('RequestUser', false);
-                if($result){
+                
+                $request = APIRequest::doAction('RequestUser', false);
+                if($request){
                     $form->reset();
+                    $oldUser = $wgUser;
+                    $wgUser = User::newFromId(1);
+                    $result = APIRequest::doAction('CreateUser', false);
+                    $wgUser = $oldUser;
+                    $request->acceptRequest();
                 }
+                
             }
             AddMember::generateFormHTML($wgOut);
             return;
