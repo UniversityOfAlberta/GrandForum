@@ -65,6 +65,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         //$this->showChampions();
         $this->showDescription();
+        $this->html .= $this->showTable();
         if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
             $this->html .= "<span class='pdfnodisplay'><a class='button' href='{$this->project->getUrl()}?generatePDF'>Download PDF</a></span>";
         }
@@ -289,6 +290,58 @@ EOF;
                 $this->html .= "<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a><br />";
             }
         }
+    }
+    
+    /**
+     * Shows a table of this Person's products, and is filterable by the
+     * visualizations which appear above it.
+     */
+    function showTable(){
+        global $config;
+        $me = Person::newFromWgUser();
+        $products = $this->project->getPapers("all", "0000-00-00", "2100-00-00");
+        $string = "";
+        if(count($products) > 0){
+            $string = "<div class='pdfnodisplay'>";
+            $string .= "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            $string .= "<table id='projectProducts' rules='all' frame='box'>
+                <thead>
+                    <tr>
+                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
+                    </tr>
+                </thead>
+                <tbody>";
+            foreach($products as $paper){
+
+                $names = array();
+                foreach($paper->getAuthors() as $author){
+                    if($author->getId() != 0 && $author->getUrl() != ""){
+                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForProduct()}</a>";
+                    }
+                    else{
+                        $names[] = $author->getNameForForms();
+                    }
+                }
+                
+                $string .= "<tr>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()} ".implode(", ", $paper->getUniversities())."</span></td>";
+                $string .= "<td>{$paper->getCategory()}</td>";
+                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
+                $string .= "<td>".implode(", ", $names)."</td>";
+                
+                $string .= "</tr>";
+            }
+            $string .= "</tbody>
+                </table>
+                <script type='text/javascript'>
+                    var projectProducts = $('#projectProducts').dataTable({
+                        'order': [[ 2, 'desc' ]],
+                        'autoWidth': false
+                    });
+                </script>
+            </div>";
+        }
+        return $string;
     }
 
 }    
