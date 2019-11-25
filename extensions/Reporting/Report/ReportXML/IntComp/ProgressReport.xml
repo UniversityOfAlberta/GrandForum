@@ -103,6 +103,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" emails="{$my_email}" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" />
     </ReportSection>
 </Report>
