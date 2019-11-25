@@ -52,6 +52,7 @@
         <ReportItem id="hqp" type="MultiText" blobItem="HQP" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" multiple="true">
             <![CDATA[
                 <h3>Students Involved:</h3>
+                <small>Please use ccid based email addresses (please do not use aliases)</small>
                 {$item}
             ]]>
         </ReportItem>

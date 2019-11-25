@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" ajax="true" disabled="false">
-    <Permissions>
-        <Role role="PL">
-            <SectionPermission id="report" permissions="rw" />
-        </Role>
-    </Permissions>
-    <ReportSection id="report" tooltip="Project Progress Report" name="Progress Report" title="Project Progress Report" blobSection="REPORT" type="HeaderReportSection" pagebreak="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" personId="0" ajax="true" disabled="false">
+    <ReportSection id="details" tooltip="Project Details" name="Project Details" title="Project Details" blobSection="DETAILS" type="HeaderReportSection">
         <Static>
             <![CDATA[
                 <!--img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' /-->
@@ -15,46 +10,81 @@
         </Static>
         <Static>
             <![CDATA[
-                <h3>Title of Project:</h3>
-                {$project_full_name}
+                <h4>Title of Project:</h4>
+                {$project_full_name}<br /><br />
             ]]>
         </Static>
-        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" class="wikitable">
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h4>Project Period:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                &nbsp;-&nbsp;{$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h4>Reporting Period:</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                &nbsp;-&nbsp;{$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>UofA Principal Investigator:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" class="wikitable" optional="true">
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" optional="true" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>UofA Co-Principal Investigators (if applicable):</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" class="wikitable">
+        <ReportItem id="hqp" type="MultiText" blobItem="HQP" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" multiple="true" sizes="30%|40%|30%">
+            <![CDATA[
+                <h3>Students Involved:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>Huawei Technical Lead:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="plan" type="Textarea" blobItem="PLAN" blobType="BLOB_TEXT" rich="true">
+    </ReportSection>
+    <ReportSection id="report" tooltip="Project Report" name="Project Report" title="Project Report" blobSection="REPORT" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="milestones" type="ProjectMilestoneTable">
             <![CDATA[
-                <h3>Overall project plan</h3>
-                There are x stages for this project: A, B, C, D...
+                <h2>Milestones</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
+                    start="{getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})}" 
+                    end="{getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})}">
+            <![CDATA[
+                <h2>Publications and Presentations</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="progress" type="Textarea" blobItem="PROGRESS" blobType="BLOB_TEXT" rich="true">
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Overall project plan</h3>
-                We are currently at stage x. The progress has been made last year is...
+                <h2>Challenges or Problems</h2>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="future" type="Textarea" blobItem="FUTURE" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
-                <h3>Future plan</h3>
-                We will be moving toward to stage x next year/ we plan to accomplish stage x by the year xxxx...
+                <h2>Future plan</h2>
                 {$item}
             ]]>
         </ReportItem>
