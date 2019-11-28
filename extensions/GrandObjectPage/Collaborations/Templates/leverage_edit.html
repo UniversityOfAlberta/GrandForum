@@ -1,6 +1,6 @@
 <div>
     <h3>End Year:</h3>
-    <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year), parseInt(YEAR)+5), function(y){
+    <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year)-1, parseInt(YEAR)+5), function(y){
         return {option: (y - 1) + "/" + y.toString().substr(2, 2), value: y};
     }))}) %><br />
 
