@@ -1,7 +1,6 @@
 <a class="button backButton" href="#/leverages">Back to <%= formType.pluralize() %></a>
 <div style="padding-top:5px;">
     <span style="margin-left: 10px;font-size: 1.1em;font-weight: bold;margin-right: 5px;">Year</span>
-    <span style="font-size: 1.1em;"><%= (year - 1) %>/<%= year.toString().substr(2, 2) %></span> - 
     <% if(endYear != 0){ %>
         <span style="font-size: 1.1em;"><%= (endYear - 1) %>/<%= endYear.toString().substr(2, 2) %></span>
     <% } else { %>
