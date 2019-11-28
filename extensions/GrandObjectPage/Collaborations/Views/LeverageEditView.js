@@ -35,11 +35,6 @@ LeverageEditView = CollaborationEditView.extend({
             addWarning('Organization name must not be empty', true);
             return;
         }
-        if(!this.updateContactWarning()){
-            clearWarning();
-            addWarning("This "+  this.model.getType().toLowerCase() + " does not have a contact name and position specified", true);
-            return;
-        }
         if(!this.updateCountryWarning()){
             clearWarning();
             addWarning("This "+  this.model.getType().toLowerCase() + " does not have a country and sector specified", true);
