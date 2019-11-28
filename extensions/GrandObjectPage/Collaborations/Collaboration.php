@@ -43,7 +43,7 @@ class CollaborationPage extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(PI)){
+        if($me->isRoleAtLeast(PL)){
             $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Collaborations and Knowledge Users", "$wgServer$wgScriptPath/index.php/Special:CollaborationPage");
             $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Leverages", "$wgServer$wgScriptPath/index.php/Special:CollaborationPage#/leverages");
         }
