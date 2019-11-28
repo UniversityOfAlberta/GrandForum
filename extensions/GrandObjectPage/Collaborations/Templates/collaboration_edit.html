@@ -31,12 +31,12 @@
                 </tr>
             </table>
         </div>
-        <div style="max-width:400px; width:50%; display:inline-block; margin-left:18px;">
+        <div style="max-width:600px; width:50%; display:inline-block; margin-left:18px;">
             <% if (knowledgeUser != 1) { %>
                 <h3>Collaboration existed prior to FES grant?</h3>
                 <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
             <% } %>
-            <h3>Have you received funds from this organization?</h3>
+            <h3>To date, have you received in-kind and/or cash support from this organization?</h3>
             <div style="margin-left:15px;">
                 <% if(cash == 0 && inkind == 0) { %>
                     <input style="margin-top: 8px;vertical-align:bottom;" type="radio" name="fund" value="yes"> Yes
@@ -45,11 +45,11 @@
                     <div id="fundingAmount" style="margin-top:5px; display:none;">
                         <table>
                             <tr>
-                                <td><b>Cash:</b></td>
+                                <td><b>Cash Contribution Value (CAD equivalent):</b></td>
                                 <td><%= HTML.TextBox(this, 'cash', {style: 'width:100%;'}) %></td>
                             </tr>
                             <tr>
-                                <td><b>In-Kind:</b></td>
+                                <td><b>In-kind Contribution Value (CAD equivalent):</b></td>
                                 <td><%= HTML.TextBox(this, 'inkind', {style: 'width:100%;'}) %></td>
                             </tr>
                         </table>
@@ -61,11 +61,11 @@
                     <div id="fundingAmount" style="margin-top:7px;">
                         <table>
                             <tr>
-                                <td><b>Cash:</b></td>
+                                <td><b>Cash Contribution Value (CAD equivalent):</b></td>
                                 <td><%= HTML.TextBox(this, 'cash', {style: 'width:100%;'}) %></td>
                             </tr>
                             <tr>
-                                <td><b>In-Kind:</b></td>
+                                <td><b>In-kind Contribution Value (CAD equivalent):</b></td>
                                 <td><%= HTML.TextBox(this, 'inkind', {style: 'width:100%;'}) %></td>
                             </tr>
                         </table>
