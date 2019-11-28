@@ -44,13 +44,24 @@
                 </tr>
             <% } %>
             <tr>
-                <td><b>Funding</b></td>
+                <td><b>Cash</b></td>
                 <td></td>
                 <td>
-                    <% if (funding == 0) { %>
+                    <% if (cash == 0) { %>
                         <span>Not funded</span>
                     <% } else { %>
-                        $<%= funding %>
+                        $<%= cash %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>In-Kind</b></td>
+                <td></td>
+                <td>
+                    <% if (inkind == 0) { %>
+                        <span>Not funded</span>
+                    <% } else { %>
+                        $<%= inkind %>
                     <% } %>
                 </td>
             </tr>

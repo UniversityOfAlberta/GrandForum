@@ -20,7 +20,8 @@ class Collaboration extends BackboneModel{
     var $other = "";
     var $personName = "";
     var $position = "";
-    var $funding = 0;
+    var $cash = 0;
+    var $inkind = 0;
     var $year = YEAR;
     var $endYear = 0;
     var $existed = "";
@@ -133,7 +134,8 @@ class Collaboration extends BackboneModel{
             $this->personName = $data[0]['person_name'];
             $this->position = $data[0]['position'];
             $this->other = $data[0]['other'];
-            $this->funding = $data[0]['funding'];
+            $this->cash = $data[0]['cash'];
+            $this->inkind = $data[0]['inkind'];
             $this->existed = $data[0]['existed'];
             $this->knowledgeUser = $data[0]['knowledge_user'];
             $this->projectsWaiting = true;
@@ -190,8 +192,12 @@ class Collaboration extends BackboneModel{
         return $this->position;
     }
 
-    function getFunding() {
-        return $this->funding;
+    function getCash() {
+        return $this->cash;
+    }
+    
+    function getInKind() {
+        return $this->inkind;
     }
     
     function getExisted(){
@@ -294,7 +300,8 @@ class Collaboration extends BackboneModel{
                                   'position' => $this->position,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
-                                  'funding' => $this->funding,
+                                  'cash' => $this->cash,
+                                  'inkind' => $this->inkind,
                                   'existed' => $this->existed,
                                   'knowledge_user' => $this->knowledgeUser,
                                   'access_id' => $me->getId()));
@@ -348,7 +355,8 @@ class Collaboration extends BackboneModel{
                                   'position' => $this->position,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
-                                  'funding' => $this->funding,
+                                  'cash' => $this->cash,
+                                  'inkind' => $this->inkind,
                                   'existed' => $this->existed,
                                   'knowledge_user' => $this->knowledgeUser),
                             array('id' => EQ($this->getId())));
@@ -439,7 +447,8 @@ class Collaboration extends BackboneModel{
             'personName' => $this->getPersonName(),
             'position' => $this->getPosition(),
             'url' => $this->getUrl(),
-            'funding' => $this->getFunding(),
+            'cash' => $this->getCash(),
+            'inkind' => $this->getInKind(),
             'year' => $this->getYear(),
             'endYear' => $this->getEndYear(),
             'existed' => $this->getExisted(),

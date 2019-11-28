@@ -107,11 +107,13 @@ CollaborationEditView = Backbone.View.extend({
     toggleFunding: function(data) {
         var funded = this.$('input:radio[name=fund]:checked').val();
         var fundAmtDiv = this.$('#fundingAmount');
-        this.model.attributes['funding'] = $('input[name=funding]').val();
+        this.model.attributes['cash'] = $('input[name=cash]').val();
+        this.model.attributes['inkind'] = $('input[name=inkind]').val();
         if (funded == "yes") {
             fundAmtDiv.slideDown();
         } else {
-            this.model.attributes['funding'] = 0;
+            this.model.attributes['cash'] = 0;
+            this.model.attributes['inkind'] = 0;
             fundAmtDiv.slideUp();
         }
     },
@@ -150,9 +152,12 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     updateFundsWarning: function(){
-        if($("[name='fund']:checked").val().trim() == 'yes' && (this.model.get('funding') == "" || 
-                                                                parseInt(this.model.get('funding')) == 0 || 
-                                                                _.isNaN(parseInt(this.model.get('funding'))))){
+        if($("[name='fund']:checked").val().trim() == 'yes' && (this.model.get('cash') == "" || 
+                                                                parseInt(this.model.get('cash')) == 0 || 
+                                                                _.isNaN(parseInt(this.model.get('cash')))) && 
+                                                               (this.model.get('inkind') == "" || 
+                                                                parseInt(this.model.get('inkind')) == 0 || 
+                                                                _.isNaN(parseInt(this.model.get('inkind'))))){
             return false;
         } 
         else {

@@ -34,7 +34,8 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
-        $collab->funding = $this->POST('funding');
+        $collab->cash = $this->POST('cash');
+        $collab->inkind = $this->POST('inkind');
         $collab->existed = $this->POST('existed');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->projects = $this->POST('projects');
@@ -59,7 +60,8 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
-        $collab->funding = $this->POST('funding');
+        $collab->cash = $this->POST('cash');
+        $collab->inkind = $this->POST('inkind');
         $collab->existed = $this->POST('existed');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->projects = $this->POST('projects');
