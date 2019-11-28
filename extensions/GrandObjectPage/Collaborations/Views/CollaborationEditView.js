@@ -86,7 +86,13 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     cancel: function(){
-        document.location = this.model.get('url');
+        if(this.model.get('id') > 0){
+            document.location = this.model.get('url');
+        }
+        else{
+            // Doesn't exist yet
+            document.location = "#/";
+        }
     },
     
     events: {

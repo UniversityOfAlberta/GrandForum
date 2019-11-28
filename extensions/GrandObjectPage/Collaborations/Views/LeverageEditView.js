@@ -19,6 +19,16 @@ LeverageEditView = CollaborationEditView.extend({
         }
     },
     
+    cancel: function(){
+        if(this.model.get('id') > 0){
+            document.location = this.model.get('url');
+        }
+        else{
+            // Doesn't exist yet
+            document.location = "#/leverages";
+        }
+    },
+    
     saveCollaboration: function(){
         if (this.model.get("title").trim() == '') {
             clearWarning();
