@@ -18,7 +18,10 @@ class CollaborationPage extends BackbonePage {
                      'Products/product',
                      'collaborations',
                      'collaboration',
-                     'collaboration_edit');
+                     'collaboration_edit',
+                     'leverages',
+                     'leverage',
+                     'leverage_edit');
     }
     
     function getViews(){
@@ -27,7 +30,10 @@ class CollaborationPage extends BackbonePage {
                      'Products/ProductView',
                      'CollaborationsView',
                      'CollaborationView',
-                     'CollaborationEditView');
+                     'CollaborationEditView',
+                     'LeveragesView',
+                     'LeverageView',
+                     'LeverageEditView');
     }
     
     function getModels(){
@@ -37,8 +43,9 @@ class CollaborationPage extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP)){
+        if($me->isRoleAtLeast(PI)){
             $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Collaborations and Knowledge Users", "$wgServer$wgScriptPath/index.php/Special:CollaborationPage");
+            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Leverages", "$wgServer$wgScriptPath/index.php/Special:CollaborationPage#/leverages");
         }
         return true;
     }

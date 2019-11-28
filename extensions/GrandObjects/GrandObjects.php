@@ -102,8 +102,8 @@ $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyA
 
 // Collaboration
 $apiRequest->addAction('Hidden','collaboration', 'CollaborationAPI');
+$apiRequest->addAction('Hidden','collaboration/leverages', 'CollaborationAPI');
 $apiRequest->addAction('Hidden','collaboration/:id', 'CollaborationAPI');
-//$apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');
 
 // Contribution
 $apiRequest->addAction('Hidden','contribution', 'ContributionAPI');

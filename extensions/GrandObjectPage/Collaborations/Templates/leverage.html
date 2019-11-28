@@ -1,4 +1,4 @@
-<a class="button backButton" href="#">Back to <%= formType.pluralize() %></a>
+<a class="button backButton" href="#/leverages">Back to <%= formType.pluralize() %></a>
 <div style="padding-top:5px;">
     <span style="margin-left: 10px;font-size: 1.1em;font-weight: bold;margin-right: 5px;">Year</span>
     <span style="font-size: 1.1em;"><%= (year - 1) %>/<%= year.toString().substr(2, 2) %></span> - 
@@ -37,13 +37,11 @@
                 <td></td>
                 <td><%= sector %></td>
             </tr>
-            <% if (knowledgeUser != 1) { %>
-                <tr>
-                    <td><b>Existed prior to FES grant?</b></td>
-                    <td></td>
-                    <td><%= existed %></td>
-                </tr>
-            <% } %>
+            <tr>
+                <td><b>Existed prior to FES grant?</b></td>
+                <td></td>
+                <td><%= existed %></td>
+            </tr>
             <tr>
                 <td><b>Cash</b></td>
                 <td></td>
@@ -63,6 +61,28 @@
                         <span>Not funded</span>
                     <% } else { %>
                         $<%= inkind %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Projected Cash</b></td>
+                <td></td>
+                <td>
+                    <% if (projectedCash == 0) { %>
+                        <span>Not funded</span>
+                    <% } else { %>
+                        $<%= projectedCash %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Projected In-Kind</b></td>
+                <td></td>
+                <td>
+                    <% if (projectedInkind == 0) { %>
+                        <span>Not funded</span>
+                    <% } else { %>
+                        $<%= projectedInkind %>
                     <% } %>
                 </td>
             </tr>

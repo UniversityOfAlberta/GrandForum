@@ -6,7 +6,9 @@ Collaboration = Backbone.Model.extend({
     urlRoot: 'index.php?action=api.collaboration',
 
     getType: function() {
-        return (this.get('knowledgeUser') == 0) ? "Collaboration" : "Knowledge User";
+        if(this.get('leverage') == 1){ return "Leverage"; }
+        if(this.get('knowledgeUser') == 1){ return "Knowledge User"; }
+        if(this.get('knowledgeUser') == 0){ return "Collaboration"; }
     },
 
     defaults: function() {
@@ -28,10 +30,13 @@ Collaboration = Backbone.Model.extend({
             other: "",
             cash: 0,
             inkind: 0,
+            projectedCash: 0,
+            projectedInkind: 0,
             existed: "",
             year: YEAR,
             endYear: "0",
             knowledgeUser: 0, // true or false
+            leverage: 0, // true or false
             changed: ""
         };
     }
@@ -43,16 +48,16 @@ Collaborations = Backbone.Collection.extend({
     model: Collaboration,
     
     person: null,
+    
+    leverages: false,
 
     url: function(){
-        if(this.person == null){
+        if(this.leverages == 0){
             return 'index.php?action=api.collaboration';
         }
-        /*
         else{
-            return 'index.php?action=api.collaboration/person/' + this.person;
+            return 'index.php?action=api.collaboration/leverages';
         }
-        */
     }
 
 });

@@ -18,10 +18,14 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "showCollaborations",
+        "leverages": "showLeverages",
         "new": "newCollaboration",
         "newKnowledgeUser": "newKnowledgeUser",
         ":id": "showCollaboration",
-        ":id/edit": "editCollaboration"
+        ":id/edit": "editCollaboration",
+        "leverage/new": "newLeverage",
+        "leverage/:id": "showLeverage",
+        "leverage/:id/edit": "editLeverage",
     }
     
 });
@@ -29,7 +33,7 @@ PageRouter = Backbone.Router.extend({
 // Initiate the router
 var pageRouter = new PageRouter;
 
-pageRouter.on('route:showCollaborations', function (id) {
+pageRouter.on('route:showCollaborations', function () {
     // Create New Product
     if(!me.isLoggedIn()){
         clearAllMessages();
@@ -39,6 +43,20 @@ pageRouter.on('route:showCollaborations', function (id) {
         var collab = new Collaborations();
         this.closeCurrentView();
         this.currentView = new CollaborationsView({el: $("#currentView"), model: collab});
+    }
+});
+
+pageRouter.on('route:showLeverages', function () {
+    // Create New Product
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    } else {
+    // Get A single Leverages
+        var collab = new Collaborations();
+        collab.leverages = true;
+        this.closeCurrentView();
+        this.currentView = new LeveragesView({el: $("#currentView"), model: collab});
     }
 });
 
@@ -68,6 +86,19 @@ pageRouter.on('route:newKnowledgeUser', function(){
     }
 });
 
+pageRouter.on('route:newLeverage', function(){
+    // Create New Knowledge User
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var collab = new Collaboration({leverage:1});
+        this.closeCurrentView();
+        this.currentView = new LeverageEditView({el: $("#currentView"), model: collab});
+    }
+});
+
 pageRouter.on('route:showCollaboration', function (id) {
     // Get A single Collaboration
     // Create New Product
@@ -81,6 +112,19 @@ pageRouter.on('route:showCollaboration', function (id) {
     }
 });
 
+pageRouter.on('route:showLeverage', function (id) {
+    // Get A single Collaboration
+    // Create New Product
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    } else {
+        var collab = new Collaboration({'id': id});
+        this.closeCurrentView();
+        this.currentView = new LeverageView({el: $("#currentView"), model: collab});
+    }
+});
+
 pageRouter.on('route:editCollaboration', function (id) {
     // Get A single Collaboration
     if(!me.isLoggedIn()){
@@ -91,6 +135,19 @@ pageRouter.on('route:editCollaboration', function (id) {
         var collab = new Collaboration({'id': id});
         this.closeCurrentView();
         this.currentView = new CollaborationEditView({el: $("#currentView"), model: collab});
+    }
+});
+
+pageRouter.on('route:editLeverage', function (id) {
+    // Get A single Collaboration
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var collab = new Collaboration({'id': id});
+        this.closeCurrentView();
+        this.currentView = new LeverageEditView({el: $("#currentView"), model: collab});
     }
 });
 
