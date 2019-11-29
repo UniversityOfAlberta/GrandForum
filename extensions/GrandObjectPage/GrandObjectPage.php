@@ -18,6 +18,7 @@
        $config->getValue('networkName') == "NETWORK"){
         // Only show this for FES (for now)
         require_once("Collaborations/Collaboration.php");
+        require_once("Projections.php");
     }
     require_once("Bibliography/Bibliography.php");
     require_once("AddMultimediaPage.php");

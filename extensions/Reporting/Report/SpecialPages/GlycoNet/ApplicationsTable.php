@@ -39,6 +39,7 @@ class ApplicationsTable extends SpecialPage{
         $this->projects = Project::getAllProjectsEver();
         
         $this->startUpLegal2018Applicants = array();
+        $this->startUpLegal2019Applicants = array();
         $this->startUpDev2018Applicants = array();
         $this->strat2017 = array();
         $this->strat2019 = array();
@@ -51,6 +52,9 @@ class ApplicationsTable extends SpecialPage{
             }
             if($person->isSubRole('StartUpLegal2018')){
                 $this->startUpLegal2018Applicants[] = $person;
+            }
+            if($person->isSubRole('StartUpLegal2019')){
+                $this->startUpLegal2019Applicants[] = $person;
             }
             if($person->isSubRole('StartUpDev2018')){
                 $this->startUpDev2018Applicants[] = $person;
@@ -254,6 +258,7 @@ class ApplicationsTable extends SpecialPage{
     function generateStartUp(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2019Applicants, 2019, "Legal2019"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -333,6 +338,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectMilestones(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());

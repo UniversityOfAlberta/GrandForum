@@ -11,18 +11,6 @@ class AnnokiControl extends SpecialPage {
     SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 
-  // Can be used for custom CSS (if we have any) as well
-  function addCustomJavascript(&$out){
-    global $wgScriptPath;
-    //  $out->addScript("\n" . '<link rel="stylesheet" type="text/css" href="' .
-    //                 $wgScriptPath . '/extensions/AnnokiControl/AnnokiCSS.css"' . " />");
-    $out->addScript("\n         <script type='text/javascript' src='" .
-		    $wgScriptPath . '/extensions/AnnokiControl/AnnokiJS.js' . "'></script>");
-    $out->addScript("\n         <script type='text/javascript' src='" .
-                    $wgScriptPath . '/extensions/AnnokiControl/common/Annoki.js' . "'></script>");
-    return true;
-  }
-
   function onMessagesPreLoad($title, &$message) {
     switch(strtolower($title)){
         case "mediawarning": 

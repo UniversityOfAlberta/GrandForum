@@ -23,6 +23,8 @@ class Person extends BackboneModel {
     var $phone;
     var $nationality;
     var $stakeholder;
+    var $earlyCareerResearcher;
+    var $canadaResearchChair;
     var $gender;
     var $photo;
     var $twitter;
@@ -313,6 +315,8 @@ class Person extends BackboneModel {
                                               'user_private_profile',
                                               'user_nationality',
                                               'user_stakeholder',
+                                              'user_ecr',
+                                              'user_crc',
                                               'user_gender',
                                               'user_birth_date',
                                               'user_indigenous_status',
@@ -837,6 +841,8 @@ class Person extends BackboneModel {
             $this->minorityStatus = @$data[0]['user_minority_status'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
+            $this->earlyCareerResearcher = @$data[0]['user_ecr'];
+            $this->canadaResearchChair = @json_decode($data[0]['user_crc'], true);
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
@@ -911,6 +917,8 @@ class Person extends BackboneModel {
                       'disabilityStatus' => $this->getDisabilityStatus(),
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
+                      'earlyCareerResearcher' => $this->getEarlyCareerResearcher(),
+                      'canadaResearchChair' => $this->getCanadaResearchChair(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'linkedin' => $this->getLinkedIn(),
@@ -980,6 +988,8 @@ class Person extends BackboneModel {
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
+                                          'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
@@ -1038,6 +1048,8 @@ class Person extends BackboneModel {
                                           'user_office' => $this->getOffice(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
+                                          'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
@@ -1513,6 +1525,30 @@ class Person extends BackboneModel {
      */
     function isStakeholder(){
         return ($this->getStakeholder() != "");
+    }
+    
+    /**
+     * Returns the earlyCareerResearcher status of this Person
+     * @return string The earlyCareerResearcher status of this Person
+     */
+    function getEarlyCareerResearcher(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->earlyCareerResearcher;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the canada research chair status of this Person
+     * @return string The canada research chair status of this Person
+     */
+    function getCanadaResearchChair(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->canadaResearchChair;
+        }
+        return "";
     }
     
     /**
@@ -3876,6 +3912,9 @@ class Person extends BackboneModel {
         }
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
+            if($paper->getId() !== $pId){
+                continue;
+            }
             if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
                !$paper->deleted && 
                ($category == 'all' || $paper->getCategory() == $category)){

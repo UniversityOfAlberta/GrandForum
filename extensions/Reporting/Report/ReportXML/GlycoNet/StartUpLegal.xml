@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Start-Up Company Funding 2017-2018 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2018">
+<Report name="Start-Up Company Funding 2019-2020 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2019">
     <Permissions>
-        <Role role="INACTIVE+" subRole="StartUpLegal2018">
+        <Role role="INACTIVE+" subRole="StartUpLegal2019">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="opportunity" permissions="rw" />
             <SectionPermission id="project" permissions="rw" />
@@ -181,7 +181,7 @@
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If id="if_eula" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca,glyconet@ualberta.ca" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca,glyconet@ualberta.ca" />
         </If>
         <If id="if_not_eula" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[

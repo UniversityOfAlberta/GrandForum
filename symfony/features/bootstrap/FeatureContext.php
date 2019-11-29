@@ -350,6 +350,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
     }
     
+    /**
+     * @Given /^I select from Chosen "(?P<id>(?:[^"]|\\")*)" with "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function selectFromChosenWith($id, $text){
+        $text = addslashes($text);
+        $this->getSession()->evaluateScript("$('select[name=$id]').val('$text').trigger('chosen:updated').change()");
+    }
+    
      /**
      * @Given /^I index expert search$/
      */

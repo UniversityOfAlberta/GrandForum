@@ -34,14 +34,12 @@ $wgGroupPermissions['*']['createaccount'] = false;
 $wgExtensionFunctions[] = "initializeAccessControls";
 $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";
 
-//$wgHooks['ParserAfterTidy'][] = 'showQueryCounter';
 $wgHooks['userCan'][] = 'onUserCan';
 $wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
 $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['AbortLogin'][] = 'onAbortLogin';
 $wgHooks['TitleMoveComplete'][] = 'onTitleMoveComplete';
 $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
-$wgHooks['UnknownAction'][] = 'listStragglers';
 $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
@@ -49,6 +47,7 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
+$wgHooks['BeforeInitialize'][] = 'checkLoggedIn';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 

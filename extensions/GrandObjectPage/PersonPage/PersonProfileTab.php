@@ -102,7 +102,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 }
             }
             Cache::delete("personRolesDuring{$this->person->getId()}*", true);
-	        Cache::delete("rolesCache");
+            Cache::delete("rolesCache");
         }
 
         Person::$rolesCache = array();
@@ -114,7 +114,7 @@ class PersonProfileTab extends AbstractEditableTab {
     }
     
     function handleContactEdit(){
-        global $wgImpersonating;
+        global $wgImpersonating, $config;
         $error = "";
         if(!$wgImpersonating && isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != ""){
             $type = $_FILES['photo']['type'];
@@ -193,6 +193,14 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
+            $this->person->earlyCareerResearcher = @$_POST['earlyCareerResearcher'];
+            if($config->getValue('crcEnabled')){
+                $this->person->canadaResearchChair = array(
+                    'rank' => @str_replace("'", "&#39;", $_POST['crc_rank']),
+                    'title' => @str_replace("'", "&#39;", $_POST['crc_title']),
+                    'date' => @$_POST['crc_date']
+                );
+            }
             $this->person->update();
 
             $api = new UserEmailAPI();
@@ -239,15 +247,12 @@ EOF;
     function showEditProfile($person, $visibility){
         global $config;
         $this->html .= "
-                           
-                                <h3>Live on Website:</h3>
-                                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
-			  
-                            
-                                <h3>Live on Forum:</h3>
-                                <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
-                            
-                        ";
+                <h3>Live on Website:</h3>
+                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
+
+                <h3>Live on Forum:</h3>
+                <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
+        ";
          $this->html .= "<script type='text/javascript'>
             $('textarea.profile').tinymce({
                 theme: 'modern',
@@ -282,29 +287,29 @@ EOF;
     }
     
     static function getPersonCloudData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getPersonCloudData"){
-	        $text = "";
-	        $person = Person::newFromId($_GET['person']);
-	        $text .= $person->getProfile()."\n";
-	        
-	        $products = $person->getPapers("all", false, 'both', false, 'Public');
-	        foreach($products as $product){
-	            $text .= $product->getTitle()."\n";
-	            $text .= $product->getDescription()."\n";
-	        }
-	        CommonWords::$commonWords[] = strtolower($person->getFirstName());
-	        CommonWords::$commonWords[] = strtolower($person->getLastName());
-	        $data = Wordle::createDataFromText($text);
-	        $data = array_slice($data, 0, 75);
+        global $wgServer, $wgScriptPath;
+        if($action == "getPersonCloudData"){
+            $text = "";
+            $person = Person::newFromId($_GET['person']);
+            $text .= $person->getProfile()."\n";
+            
+            $products = $person->getPapers("all", false, 'both', false, 'Public');
+            foreach($products as $product){
+                $text .= $product->getTitle()."\n";
+                $text .= $product->getDescription()."\n";
+            }
+            CommonWords::$commonWords[] = strtolower($person->getFirstName());
+            CommonWords::$commonWords[] = strtolower($person->getLastName());
+            $data = Wordle::createDataFromText($text);
+            $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
         }
         return true;
-	}
-	
-	function showDoughnut($person, $visibility){
+    }
+
+    function showDoughnut($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
         $fn = '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")';
@@ -597,6 +602,75 @@ EOF;
                     </td>
                 </tr>";
             }
+            
+            
+            $crc = "";
+            if($config->getValue('crcEnabled')){
+                $crcObj = $person->getCanadaResearchChair();
+                $crcOptions = array("No", 
+                                    "Yes, I am a Tier 1 Canada Research Chair (CRC) or equivalent", 
+                                    "Yes, I am a Tier 2 Canada Research Chair (CRC) or equivalent",
+                                    "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent");
+                $blankSelected = ($crcObj['title'] == "") ? "selected='selected'" : "";
+                $crc = "<tr>
+                            <td colspan='2'>
+                                <fieldset>
+                                    <legend>Are you currently a CRC or CERC (or equivalent)?</legend>
+                                    <select name='crc_rank'>
+                                        <option value='' $blankSelected>---</option>";
+                                        foreach($crcOptions as $option){
+                                            $selected = @($crcObj['rank'] == $option) ? "selected='selected'" : "";
+                                            $crc .= "<option value='$option' $selected>$option</option>";
+                                        }
+                $crc .= "           </select>
+                                    <div id='crc_title' style='display:none;'>
+                                        <br />
+                                        <b>Title of your Chair position</b><br />
+                                        <input type='text' name='crc_title' value='{$crcObj['title']}' size='55' /><br />
+                                        <b>Date</b><br />
+                                        <input type='text' name='crc_date' value='{$crcObj['date']}' format='yy-mm-dd' size='10' />
+                                    </div>
+                                    </fieldset>
+                                    
+                                    <script type='text/javascript'>
+                                        $('[name=crc_rank]').change(function(){
+                                            if($(this).val() != '' && $(this).val() != 'No'){
+                                                $('#crc_title').show();
+                                            }
+                                            else{
+                                                $('#crc_title').hide();
+                                            }
+                                        });
+                                        $('[name=crc_rank]').change();
+                                        
+                                        $('[name=crc_date]').datepicker({
+                                            'dateFormat': $('[name=crc_date]').attr('format'),
+                                            'defaultDate': $('[name=crc_date]').attr('value').substr(0, 10),
+                                            'changeMonth': true,
+                                            'changeYear': true,
+                                            'showOn': 'both',
+                                            'buttonImage': '{$wgServer}{$wgScriptPath}/skins/calendar.gif',
+                                            'buttonImageOnly': true
+                                        });
+                                    </script>
+                                </td>
+                            </tr>";
+            }
+            
+            
+            $ecr = "";
+            if($config->getValue('ecrEnabled')){
+                $checked = ($person->getEarlyCareerResearcher() == "Yes") ? "checked" : "";
+                $ecr = "<tr>
+                            <td colspan='2'>
+                                <fieldset>
+                                    <legend title='CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves'>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
+                                    <input type='checkbox' name='earlyCareerResearcher' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
+                                    <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
+                                </fieldset>
+                            </td>
+                        </tr>";
+            }
         }
         
         $this->html .= "<table>
@@ -614,7 +688,9 @@ EOF;
                             </tr>
                             {$nationality}
                             {$gender}
-                            {$stakeholder}";
+                            {$stakeholder}
+                            {$crc}
+                            {$ecr}";
         
         $roles = $person->getRoles();
 

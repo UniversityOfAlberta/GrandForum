@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2019 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2019" ajax="true" disabled="false">
+<Report name="2020 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2020" ajax="true" disabled="false">
     <Permissions>
-        <Role role="HQP" subType="IFP2019Applicant">
+        <Role role="HQP" subType="IFP2020Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP-Candidate" subType="IFP2019Applicant">
+        <Role role="HQP-Candidate" subType="IFP2020Applicant">
             <SectionPermission id="ifp_preview" permissions="" />
             <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
@@ -49,7 +49,7 @@
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <If id="if" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+            <If id="if" if="{contains({$user_sub_roles}, IFP 2020 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
                         <![CDATA[{$item}]]>
@@ -60,7 +60,7 @@
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
         <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
-            <If id="if" if="{contains({$user_sub_roles}, IFP 2019 Applicant)}">
+            <If id="if" if="{contains({$user_sub_roles}, IFP 2020 Applicant)}">
                 <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                     <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
@@ -90,7 +90,7 @@
                     
                     <ReportItem id="section3" type="Radio" blobItem="SECTION3" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
-                            <h3>Section 3 - Interest and Benefit</h3>
+                            <h3>Section 3 - Interest and Value</h3>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -129,7 +129,7 @@
                     
                     <ReportItem id="section6" type="Radio" blobItem="SECTION6" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
-                            <h3>Section 6 - Learning Plan</h3>
+                            <h3>Section 6 - Applicant and Supervisor Capacity Disclosure</h3>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -142,24 +142,11 @@
                     
                     <ReportItem id="section7" type="Radio" blobItem="SECTION7" blobSubItem="{$user_id}" options="Approved|Not Approved">
                         <![CDATA[
-                            <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
+                            <h3>Section 7 - References</h3>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
-                        <![CDATA[
-                            <b>Comments for HQP:</b>
-                            {$item}
-                        ]]>
-                    </ReportItem>
-                    
-                    <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
-                        <![CDATA[
-                            <h3>Section 8 - References</h3>
-                            {$item}
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
                         <![CDATA[
                             <b>Comments for HQP:</b>
                             {$item}
@@ -314,14 +301,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Select" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" width="300px">
+        <!--ReportItem id="theme" type="Select" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" width="300px">
             <![CDATA[
                 <tr>
                     <td align="right"><b>Select the ONE CFN research theme your research most closely aligns with:</b></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <Static>
             <![CDATA[
                 </table>
@@ -377,7 +364,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review.">
+        <!--ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review.">
             <![CDATA[
                 <h3>Research Ethics</h3>
                 <small>If your research project involves biohazards, humans, human embryonic stem cells or animals, <b><u>and</u></b> you are selected for funding from CFN, certification of approval by the host institution certification committee must be obtained by your supervisor before funds will be released.</small>
@@ -402,9 +389,9 @@
                 {$item}
                 <small>If you answered yes to this question, and you are selected for the fellowship program, your supervisor will be required to complete an Environmental Assessment Impact Statement and the Canadian Environmental Assessment Act Pre-Screening Checklist for review and approval by CFN before funds will be released</small>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
-    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Benefit" title="Section 3 - Interest and Benefit">
+    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Value" title="Section 3 - Interest and Value">
         <ReportItem id="expression" type="Textarea" blobItem="EXPRESSION" rich="true" limit="250">
             <![CDATA[
                 <h3>Expression of Interest</h3>
@@ -426,13 +413,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
+        <!--ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
             <![CDATA[
                 <h3>Career Aspirations</h3>
                 <small>Describe your career plan and how a CFN Fellowship will help you achieve your career goals.</small>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="partners" type="EditableReportSection" blobSection="PARTNERS" name="Partnership Funding" title="Section 4 - Partnership Funding">
         <ReportItem id="partners" type="MultiText" blobItem="PARTNERS" blobType="BLOB_ARRAY" labels="Partner Organization|Potential Conflict of Interest|$ Amount of cash contribution|Type of Contribution" types="Text|Radio(Yes,No)|Integer|Radio(Cash,In-Kind)" multiple="true" sizes="200|75|50|100" optional="true">
@@ -446,7 +433,7 @@
         </ReportItem>
         <ReportItem id="sources" type="MultiText" blobItem="SOURCES" blobType="BLOB_ARRAY" labels="Funding Source|Amount|Type (cash or in-kind)|Purpose|Status" types="Text|Integer|Select(---,Cash,In-Kind)|Textarea|Select(---,planning to apply for,in process of being applied for,about to be submitted,submitted,pending,other)" sizes="200|50" multiple="true" optional="true">
             <![CDATA[
-                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2019 to August 2020 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
+                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2020 to August 2021 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
                 <u>For each funding source</u>
                 {$item}
             ]]>
@@ -474,13 +461,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true" limit="250">
+        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true" limit="150">
             <![CDATA[
-                <h3>List any current/past professional employment and volunteer experience relevant to the fellowship.</h3>
+                <h3>Professional employment and volunteer experience</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
+        <!--ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
             <![CDATA[
                 <h3>List any specialized training, conference attendance, collaborations, etc. relevant to fellowship (and outside of academic experience).</h3>
                 {$item}
@@ -491,42 +478,25 @@
                 <h3>List selected publications and presentations that are most relevant to fellowship.</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="distinctions" type="Textarea" blobItem="DISTINCTIONS" rich="true" limit="125">
+        </ReportItem-->
+        <ReportItem id="distinctions" type="Textarea" blobItem="DISTINCTIONS" rich="true" limit="150">
             <![CDATA[
-                <h3>List any distinctions or other relevant information not captured in the CCCV format or in the sections above.</h3>
+                <h3>Distinctions and other relevant information</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="learning" type="EditableReportSection" blobSection="LEARNING" name="Learning Plan" title="Section 6 - Learning Plan">
-        <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Learning Outcome|Activity|Anticipated Completion" types="Text|Text|Select(---,6 months,12 months)" multiple="true">
-            <![CDATA[
-                <p><b><u>Please read the Program Guidelines and Application Instructions carefully before completing this section and discussing with your Supervisor.</u></b></p>
-                <p>The Learning Plan should be developed with your Supervisor and must be specifically approved online by your Supervisor. Progress reporting during the Fellowship by your supervisor will include this Learning Plan. List your desired learning outcomes and the activities you will undertake to achieve each outcome.</p>
-                <u>For each learning outcome</u>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="outcomes" type="MultiText" blobItem="OUTCOMES" blobType="BLOB_ARRAY" labels="Learning Outcome|Proposed Activity (if known)" types="Text|Text" multiple="true">
-            <![CDATA[
-                <p>List any other outcomes that you believe you feel are needed for your professional development but that you feel you may not be able to obtain from the fellowship program. Please consult the Application Instructions for more details before you complete this section.</p>
-                <u>For each desired learning outcome</u>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure">
+    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 6 - Applicant and Supervisor Capacity Disclosure">
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" sizes="200|||75|50" multiple="true">
             <![CDATA[
                 <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 to 12 hours per week over a 12-month period to complete fellowship activities.</p>
-                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2019 to August 2020).</p>
+                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2020 to August 2021).</p>
                 <u>For each activity</u>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 8 - References">
+    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 7 - References">
         <ReportItem id="references" type="MultiText" blobItem="REFERENCES" blobType="BLOB_ARRAY" labels="First Name|Surname|Designations|Organization|Title|Email Address|Applicant relationship to Reference|Why applicant feels Reference relevant to Fellowship application (50 words)" types="Text|Text|Text|Text|Text|Text|Text|Textarea" sizes="100|100|100|120|100|120|120|150" multiple="true" max="2">
             <![CDATA[
                 <p>Please enter two references</p>
@@ -545,7 +515,7 @@
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2,{$user_id},*,0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION2_COMMENT,{$user_id},*,0)}
                 
-                <h3>Section 3 - Interest and Benefit</h3>
+                <h3>Section 3 - Interest and Value</h3>
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3,{$user_id},*,0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION3_COMMENT,{$user_id},*,0)}
                 
@@ -557,17 +527,13 @@
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5_COMMENT,{$user_id},*,0)}
                 
-                <h3>Section 6 - Learning Plan</h3>
+                <h3>Section 6 - Applicant and Supervisor Capacity Disclosure</h3>
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)}<br />
-                <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6_COMMENT,{$user_id},*,0)}
-                
-                <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
-                <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7_COMMENT,{$user_id},*,0)}
                 
-                <h3>Section 8 - References</h3>
-                <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)}<br />
-                <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8_COMMENT,{$user_id},*,0)}
+                <h3>Section 7 - References</h3>
+                <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)}<br />
+                <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7_COMMENT,{$user_id},*,0)}
             ]]>
         </Static>
     </ReportSection>
@@ -583,8 +549,7 @@
                              {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
                              {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
                              {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
-                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
-                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
+                             {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)})}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         </If>
         <If id="if_not" if="{or({!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},*,0)},Approved)},
@@ -593,8 +558,7 @@
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},*,0)},Approved)},
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},*,0)},Approved)},
                                 {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},*,0)},Approved)},
-                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)},
-                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},*,0)},Approved)})}">
+                                {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},*,0)},Approved)})}">
             <Static>
                 <![CDATA[
                     <div class="error">Your supervisor needs to approve your application before you are able to submit.</div>

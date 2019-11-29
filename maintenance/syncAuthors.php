@@ -1,7 +1,8 @@
 <?php
 require_once('commandLine.inc');
 
-global $wgUser;
+global $wgUser, $config;
+$config->setValue("showNonNetwork", true);
 $wgUser = User::newFromName("Admin");
 
 $queriesSoFar = 0;

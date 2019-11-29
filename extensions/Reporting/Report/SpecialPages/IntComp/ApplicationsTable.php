@@ -59,6 +59,7 @@ class ApplicationsTable extends SpecialPage{
         //$links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=candidates'>Candidates</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=loi'>JIC LOIs</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=huawei'>JIC</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=progress'>Progress</a>";
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
@@ -73,6 +74,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "huawei"){
             $this->generateHuawei();
+        }
+        else if($program == "progress"){
+            $this->generateProgress();
         }
         return;
     }
@@ -193,6 +197,16 @@ class ApplicationsTable extends SpecialPage{
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         $tabbedPage->addTab($tab2);
         $tabbedPage->addTab($tab1);
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateProgress(){
+        global $wgOut;
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tab = new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, YEAR, "Reports");
+        $tabbedPage->addTab($tab);
+        
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

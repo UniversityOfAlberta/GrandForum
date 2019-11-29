@@ -8,6 +8,7 @@
                 <br />
                 <br />
                 <br />
+                <br />
                 <b>Project Lead(s):</b> {$project_leaders}<br />
                 <b>Project Title:</b> {$project_full_name}<br />
                 <br />

@@ -117,7 +117,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $_POST['comment'] = "";
             $_POST['id'] = "";
             unset($_POST['id']);
-            unset($_POST['activity_id']);
+            //unset($_POST['activity_id']);
             
             $milestoneApi = new ProjectMilestoneAPI(false);
             $milestoneApi->doAction(true);
