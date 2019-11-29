@@ -79,12 +79,12 @@ class PersonGrantsTab extends AbstractTab {
                 {$this->generateUofAGrantTable()}
                 </div>
             </div>
-            <div class='grantAccordion'>
+            <!--div class='grantAccordion'>
                 <h3><a href='#'>Awarded NSERC Applications</a></h3>
                 <div>
                 {$this->generateGrantTable()}
                 </div>
-            </div>";
+            </div-->";
         if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:GrantPage' class='button'>Manage Funding</a>";
         }
