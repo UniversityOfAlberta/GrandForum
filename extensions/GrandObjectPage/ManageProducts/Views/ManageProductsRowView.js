@@ -92,7 +92,8 @@ ManageProductsViewRow = Backbone.View.extend({
         //Sanity Check: If there is ONLY title and year (no data), set incomplete == true;
         var incomplete = {
                           incomplete: true,
-                          peerReviewedMissing: false
+                          peerReviewedMissing: false,
+                          impactFactorMissing: false
                          };
         
         // bind rebinds this to val to this.model.get('cat') instead of 'type'
@@ -129,7 +130,7 @@ ManageProductsViewRow = Backbone.View.extend({
            (typeof(this.model.get('data')['snip']) == 'undefined' ||
             this.model.get('data')['snip'] === null ||
             this.model.get('data')['snip'].trim() == "")){
-            incomplete.incomplete = true;
+            incomplete.impactFactorMissing = true;
         }
         
         this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine, incomplete));
