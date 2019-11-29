@@ -9,7 +9,8 @@ class CollaborationPage extends BackbonePage {
     }
     
     function userCanExecute($user){
-        return true;
+        $person = Person::newFromUser($user);
+        return $person->isRoleAtLeast(PL);
     }
     
     function getTemplates(){
