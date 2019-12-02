@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Request for Letters of Intent Cycle II – Competition II" reportType="RP_CYCLEII" pdfType="RPTP_CYCLEII" pdfFiles="CollaborativeLOIPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="Request for Letters of Intent Cycle II – Competition II" reportType="RP_CYCLEII" pdfType="RPTP_CYCLEII" ajax="true" allowIdProjects="true" disabled="false" year="2020">
      <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
