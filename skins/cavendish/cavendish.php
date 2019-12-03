@@ -1296,7 +1296,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    echo "
 			<ul class='pBodyLogin'>";
 		    echo <<< EOF
-<form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
+<form id='loginForm' style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
@@ -1328,6 +1328,9 @@ If you have forgotten your password please enter your login and ID and request a
 		</tr>
 	</table>
 <input type="hidden" name="wpLoginToken" value="$token" /></form>
+<script type='text/javascript'>
+    $('#loginForm').attr('action', $('#loginForm').attr('action') + window.location.hash);
+</script>
 $emailPassword
 </li>
 EOF;
