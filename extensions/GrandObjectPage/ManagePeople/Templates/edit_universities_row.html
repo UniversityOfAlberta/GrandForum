@@ -1,5 +1,5 @@
-<tr>
-    <td rowspan="2" style="border-bottom:5px solid #aaaaaa;">
+<tr style="height: 55px;">
+    <td rowspan="2" style="border-bottom:3px solid #007d43; vertical-align: top;">
         <table>
             <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
             <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
@@ -24,7 +24,7 @@
                 <%= HTML.Select(this, 'position', {options: allPositions}) %>
             <% } %>
             </td></tr>
-            <tr><td align="right"><b>Primary?</b></td><td><%= HTML.CheckBox(this, 'primary', {value: 1, default: 0}) %></td></tr>
+            <tr><td align="right"><b title="Primary means this institution has priority over other overlapping institutions." class="tooltip">Primary?</b></td><td><%= HTML.CheckBox(this, 'primary', {value: 1, default: 0}) %></td></tr>
         </table>
     </td>
     <td align="center"><button id="addRelation">Add Relationship</button></td>
@@ -33,5 +33,5 @@
     <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
 </tr>
 <tr>
-    <td colspan="4" class="relations" style="border-bottom:5px solid #aaaaaa;"></td>
+    <td colspan="4" class="relations" style="border-bottom:3px solid #007d43;"></td>
 </tr>

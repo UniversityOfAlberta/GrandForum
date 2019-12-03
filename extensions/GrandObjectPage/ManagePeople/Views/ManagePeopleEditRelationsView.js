@@ -82,12 +82,6 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
                 this.$("#relation_rows").append(view.render());
-                if(i % 2 == 0){
-                    view.$el.addClass('odd');
-                }
-                else{
-                    view.$el.addClass('even');
-                }
                 this.relationViews[i] = view;
             }
         }.bind(this));
