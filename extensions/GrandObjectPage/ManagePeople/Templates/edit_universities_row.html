@@ -1,4 +1,4 @@
-<tr style="height: 55px;">
+<tr style="height: 56px;">
     <td rowspan="2" style="border-bottom:3px solid #007d43; vertical-align: top;">
         <table>
             <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
@@ -28,9 +28,9 @@
         </table>
     </td>
     <td align="center"><button id="addRelation">Add Relationship</button></td>
-    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
-    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
-    <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
+    <td style="white-space: nowrap;" align="center"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
+    <td style="white-space: nowrap;" align="center"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
+    <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: "true", default: "false"}) %></td>
 </tr>
 <tr>
     <td colspan="4" class="relations" style="border-bottom:3px solid #007d43;"></td>

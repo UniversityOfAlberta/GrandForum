@@ -165,10 +165,10 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$el.addClass('deleted');
+            this.$("tr").addClass('deleted');
         }
         else{
-            this.$el.removeClass('deleted');
+            this.$("tr").removeClass('deleted');
         }
     },
    
