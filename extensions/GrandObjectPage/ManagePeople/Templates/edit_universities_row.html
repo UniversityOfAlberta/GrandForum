@@ -1,31 +1,37 @@
-<td>
-    <table>
-        <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
-        <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
-        <tr><td align="right"><b>Research Area:</b></td><td><%= HTML.Select(this, 'researchArea', {options: allDepartments}) %></td></tr>
-        <tr><td align="right"><b>Position/Degree:</b></td><td>
-        <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
-              _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
-            <%= HTML.Select(this, 'position', {options: ["Other", 
-                                                         "Graduate Student - Master's Course", 
-                                                         "Graduate Student - Master's Thesis",
-                                                         "Graduate Student - Master's",
-                                                         "Graduate Student - Doctoral", 
-                                                         "Post-Doctoral Fellow", 
-                                                         "Research Associate", 
-                                                         "Research Assistant", 
-                                                         "Technical Assistant",
-                                                         "Professional End User",
-                                                         "High School Student",
-                                                         "Undergraduate Student",
-                                                         "Honors Thesis"]}) %>
-        <% } else { %>
-            <%= HTML.Select(this, 'position', {options: allPositions}) %>
-        <% } %>
-        </td></tr>
-    </table>
-</td>
-<td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
-<td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
-<td align="center"><%= HTML.CheckBox(this, 'primary', {value: 1, default: 0}) %></td>
-<td align="center"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
+<tr>
+    <td rowspan="2" style="border-bottom:5px solid #aaaaaa;">
+        <table>
+            <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
+            <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
+            <tr><td align="right"><b>Research Area:</b></td><td><%= HTML.Select(this, 'researchArea', {options: allDepartments}) %></td></tr>
+            <tr><td align="right"><b>Position/Degree:</b></td><td>
+            <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
+                  _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
+                <%= HTML.Select(this, 'position', {options: ["Other", 
+                                                             "Graduate Student - Master's Course", 
+                                                             "Graduate Student - Master's Thesis",
+                                                             "Graduate Student - Master's",
+                                                             "Graduate Student - Doctoral", 
+                                                             "Post-Doctoral Fellow", 
+                                                             "Research Associate", 
+                                                             "Research Assistant", 
+                                                             "Technical Assistant",
+                                                             "Professional End User",
+                                                             "High School Student",
+                                                             "Undergraduate Student",
+                                                             "Honors Thesis"]}) %>
+            <% } else { %>
+                <%= HTML.Select(this, 'position', {options: allPositions}) %>
+            <% } %>
+            </td></tr>
+            <tr><td align="right"><b>Primary?</b></td><td><%= HTML.CheckBox(this, 'primary', {value: 1, default: 0}) %></td></tr>
+        </table>
+    </td>
+    <td align="center"><button id="addRelation">Add Relationship</button></td>
+    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
+    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
+    <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
+</tr>
+<tr>
+    <td colspan="4" class="relations" style="border-bottom:5px solid #aaaaaa;"></td>
+</tr>

@@ -114,7 +114,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 show: 'fade',
                 resizable: false,
                 draggable: false,
-                width: 'auto',
+                width: '1075px',
                 position: {
                     my: "center bottom",
                     at: "center center"
@@ -244,7 +244,6 @@ ManagePeopleRowView = Backbone.View.extend({
                     
                     if(tmpStart.substr(0,10) > tmpEnd.substr(0,10) && tmpEnd.substr(0,10) != '0000-00-00'){
                         // Date doesn't make sense, so don't use it
-                        console.log(tmpStart, tmpEnd, name);
                         return;
                     }
                     

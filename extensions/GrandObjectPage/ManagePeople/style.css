@@ -44,3 +44,23 @@ table.wikitable tr.deleted {
     font-weight: bold;
     white-space: initial;
 }
+
+.relations {
+    padding: 0 !important;
+}
+
+.relationCell {
+    min-width: 300px;
+}
+
+.startDateCell {
+    min-width: 115px;
+}
+
+.endDateCell {
+    min-width: 145px;
+}
+
+.deleteCell {
+    min-width: 65px;
+}

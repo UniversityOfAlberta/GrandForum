@@ -97,7 +97,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.universities.each(function(university, i){
             if(this.universityViews[i] == null){
                 var view = new ManagePeopleEditUniversitiesRowView({model: university, person: this.person});
-                this.$("#university_rows").append(view.render());
+                this.$("#university_table").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
                 }
@@ -120,8 +120,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 
 ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
-    tagName: 'tr',
+    tagName: 'tbody',
     person: null,
+    editRelations: null,
     
     initialize: function(options){
         this.person = options.person;
@@ -190,6 +191,9 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
             this.$("[name=startDate]").change();
             this.$("[name=endDate]").change();
         }.bind(this));
+        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+                                                                person: this.person, 
+                                                                el: this.$(".relations")});
         return this.$el;
     }, 
     

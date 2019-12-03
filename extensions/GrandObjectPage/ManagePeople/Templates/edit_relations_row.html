@@ -1,9 +1,20 @@
-<td align="right">
-    <%= HTML.Select(this, 'type', {options: ['Supervises', 'Co-Supervises', 'Supervisory-Committee member', 'Examining-Committee member', 'Examining-Committee chair'], sorted: false}) %><br />
-    <b>Status:</b> <%= HTML.Select(this, 'status', {options: ['', 'Changed Supervisor', 'Completed', 'Continuing', 'Withdrew'], style: 'vertical-align: middle;'}) %>
+<td align="right" class="relationCell">
+    <table cellspacing="0">
+        <tr>
+            <td colspan="2">
+                <%= HTML.Select(this, 'type', {options: ['Supervises', 'Co-Supervises', 'Supervisory-Committee member', 'Examining-Committee member', 'Examining-Committee chair'], sorted: false}) %>
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><b>Status:</b></td>
+            <td><%= HTML.Select(this, 'status', {options: ['', 'Changed Supervisor', 'Completed', 'Continuing', 'Withdrew'], style: 'vertical-align: middle;'}) %></td>
+        </tr>
+        <tr>
+            <td align="right"><b>Thesis:</b></td>
+            <td><%= HTML.TextBox(this, 'thesis', {style: 'width: 220px;'}) %></td>
+        </tr>
+    </table>
 </td>
-<td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
+<td style="white-space: nowrap;" class="startDateCell"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
 <td class="endDateCell" style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span><div class="relError" style="display:none;"></div></td>
-<td><%= HTML.TextArea(this, 'thesis', {style: 'max-height: 52px; resize: none;'}) %></td>
-<!--td><%= HTML.TextArea(this, 'comment', {style: 'max-height: 52px; resize: none;'}) %></td-->
-<td align="center"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
+<td align="center" class="deleteCell"><%= HTML.CheckBox(this, 'deleted', {value: true, default: false}) %></td>
