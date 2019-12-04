@@ -10,6 +10,7 @@ class Relationship extends BackboneModel {
     var $id;
     var $user1;
     var $user2;
+    var $university;
     var $type;
     var $status;
     var $projects;
@@ -56,6 +57,7 @@ class Relationship extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->user1 = $data[0]['user1'];
             $this->user2 = $data[0]['user2'];
+            $this->university = $data[0]['university'];
             $this->type = $data[0]['type'];
             $this->status = $data[0]['status'];
             $this->projects = $data[0]['projects'];
@@ -85,6 +87,11 @@ class Relationship extends BackboneModel {
     // Returns the Person who is related to user1
     function getUser2(){
         return Person::newFromId($this->user2);
+    }
+    
+    // Returns the university id that this relation is associated with
+    function getUniversity(){
+        return $this->university;
     }
     
     // Returns the type of this Relationship
@@ -140,6 +147,7 @@ class Relationship extends BackboneModel {
             $status = DBFunctions::insert('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
+                                                'university' => $this->getUniversity(),
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
                                                 'thesis' => $this->getThesis(),
@@ -184,6 +192,7 @@ class Relationship extends BackboneModel {
             $status = DBFunctions::update('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
+                                                'university' => $this->getUniversity(),
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
                                                 'thesis' => $this->getThesis(),
@@ -224,6 +233,7 @@ class Relationship extends BackboneModel {
             'id' => $this->getId(),
             'user1' => $this->user1,
             'user2' => $this->user2,
+            'university' => $this->getUniversity(),
             'type' => $this->getType(),
             'status' => $this->getStatus(),
             'thesis' => $this->getThesis(),

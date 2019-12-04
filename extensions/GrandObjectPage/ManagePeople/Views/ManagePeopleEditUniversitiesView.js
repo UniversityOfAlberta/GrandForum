@@ -138,6 +138,9 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     events: {
         "click #infinity": "setInfinite",
+        "click #addRelation": function(){
+            this.editRelations.addRelation();
+        },
         "change [name=startDate]": "changeStart",
         "change [name=endDate]": "changeEnd"
     },
@@ -193,6 +196,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         }.bind(this));
         this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
                                                                 person: this.person, 
+                                                                university: this.model,
                                                                 el: this.$(".relations")});
         return this.$el;
     }, 
