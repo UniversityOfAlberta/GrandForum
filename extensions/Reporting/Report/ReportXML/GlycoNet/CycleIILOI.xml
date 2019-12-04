@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Request for Letters of Intent Cycle II – Competition II" reportType="RP_CYCLEII" pdfType="RPTP_CYCLEII" pdfFiles="CycleIILOIPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="NI">
+        <Role role="INACTIVE+" subRole="CycleIILOI">
 
-        </Role>
-        <Role role="NI-Candidate">
-
-        </Role>
-        <Role role="External">
-
-        </Role>
-        <Role role="External-Candidate">
-
-        </Role>
-        <Role role="Staff">
-        
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" type="ReportSection" renderpdf="false">
