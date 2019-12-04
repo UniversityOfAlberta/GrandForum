@@ -22,18 +22,21 @@
             
             if(($relStart <= $uniStart && $relEnd >= $uniStart) ||
                ($relStart >= $uniStart && $relStart <= $uniEnd && $relEnd >= $uniStart)){
+                // Found a possible universtiy, now check to see how close the relation and university match up
                 $start1 = new DateTime($uniStart);
                 $start2 = new DateTime($relStart);
                 
                 $startInterval = intval($start1->diff($start2)->format('%a')); // Difference in days
                 $minInterval = min($minInterval, $startInterval);
                 if($minInterval == $startInterval){
+                    // Closest match so far, so use this one for now
                     $minUni = $uni;
                 }
             }
         }
         
-        if($minUni != null){       
+        if($minUni != null){
+            // Use the university with the lowest difference in start dates
             DBFunctions::execSQL("UPDATE grand_relations SET university = {$minUni['id']} WHERE id = {$rel['id']}", true);
         }
     }

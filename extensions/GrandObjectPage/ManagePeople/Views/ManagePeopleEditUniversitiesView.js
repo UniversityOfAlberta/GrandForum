@@ -168,10 +168,22 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$("tr").addClass('deleted');
+            this.$("> tr").addClass('deleted');
+            if(this.editRelations != null){
+                _.each(this.editRelations.relationViews, function(view){
+                    view.model.set('deleted', "true");
+                    view.render();
+                });
+            }
         }
         else{
-            this.$("tr").removeClass('deleted');
+            this.$("> tr").removeClass('deleted');
+            if(this.editRelations != null){
+                _.each(this.editRelations.relationViews, function(view){
+                    view.model.set('deleted', "false");
+                    view.render();
+                });
+            }
         }
     },
    

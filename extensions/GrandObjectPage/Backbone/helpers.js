@@ -108,10 +108,12 @@ HTML.Value = function(view, attr){
 }
 
 HTML.TextBox = function(view, attr, options){
+    var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("input", "text", options);
     el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('id', id);
     el.setAttribute('value', HTML.Value(view, attr));
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input#' + id] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -122,30 +124,34 @@ HTML.TextBox = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'input#' + id);
+    view.delegate('change', 'input#' + id, view.events['change input#' + id]);
     return el.outerHTML;
 }
 
 HTML.TextArea = function(view, attr, options){
+    var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("textarea", "text", options);
     el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('id', id);
     el.innerHTML = HTML.Value(view, attr);
-    view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change textarea#' + id] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.undelegate('change', 'textarea[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'textarea#' + id);
+    view.delegate('change', 'textarea#' + id, view.events['change textarea#' + id]);
     return el.outerHTML;
 }
 
 HTML.CheckBox = function(view, attr, options){
+    var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("input", "checkbox", options);
     el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('id', id);
     if(HTML.Value(view, attr) == options.value){
         el.setAttribute('checked', 'checked');
     }
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input#' + id] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -166,8 +172,8 @@ HTML.CheckBox = function(view, attr, options){
             }
         }
     };
-    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'input#' + id);
+    view.delegate('change', 'input#' + id, view.events['change input#' + id]);
     return el.outerHTML;
 }
 
@@ -276,8 +282,10 @@ HTML.DatePicker = function(view, attr, options){
 }
 
 HTML.Select = function(view, attr, options){
+    var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("select", "", options);
     el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('id', id);
     var val = HTML.Value(view, attr);
     var foundSelected = false;
     
@@ -307,7 +315,7 @@ HTML.Select = function(view, attr, options){
     if(!foundSelected){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
-    view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change select#' + id] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -318,8 +326,8 @@ HTML.Select = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.undelegate('change', 'select[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'select[name=' + HTML.Name(attr) + ']', view.events['change select[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'select#' + id);
+    view.delegate('change', 'select#' + id, view.events['change select#' + id]);
     $(el).wrap('div');
     return $(el).parent().html();
 }
