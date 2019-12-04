@@ -247,7 +247,18 @@ class ApplicationsTable extends SpecialPage{
     function generateCycleIILOI(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020"));
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
