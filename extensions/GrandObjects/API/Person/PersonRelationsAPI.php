@@ -31,6 +31,7 @@ class PersonRelationsAPI extends RESTAPI {
         $relation = new Relationship(array());
         $relation->user1 = $this->POST('user1');
         $relation->user2 = $this->POST('user2');
+        $relation->university = $this->POST('university');
         $relation->type = $this->POST('type');
         $relation->status = $this->POST('status');
         $relation->thesis = $this->POST('thesis');
@@ -54,6 +55,7 @@ class PersonRelationsAPI extends RESTAPI {
         }
         $relation->user1 = $this->POST('user1');
         $relation->user2 = $this->POST('user2');
+        $relation->university = $this->POST('university');
         $relation->type = $this->POST('type');
         $relation->status = $this->POST('status');
         $relation->thesis = $this->POST('thesis');

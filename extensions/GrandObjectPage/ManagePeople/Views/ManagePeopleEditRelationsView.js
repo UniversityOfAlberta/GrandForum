@@ -43,7 +43,13 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     saveAll: function(){
         var person = this.person;
-        var copy = this.relations.where({'user2': person.get('id')})
+        var copy = null;
+        if(this.university != null){
+            copy = this.relations.where({user2: person.get('id')});
+        }
+        else{
+            copy = this.relations.where({user2: person.get('id'), university: this.university.get('id')});
+        }
         clearAllMessages();
         _.each(copy, function(relation){
             if(relation.get('deleted') != "true"){
