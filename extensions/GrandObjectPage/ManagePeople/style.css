@@ -45,6 +45,17 @@ table.wikitable tr.deleted {
     white-space: initial;
 }
 
+.orphansLabel {
+    text-align: center; 
+    font-size: 26px; 
+    font-weight: bold; 
+    color: #888; 
+    font-family: Helvetica;
+    padding: 0 !important;
+    line-height: 0;
+    overflow: hidden;
+}
+
 .relations {
     padding: 0 !important;
 }

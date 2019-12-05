@@ -3,6 +3,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     universities: null,
     person: null,
     universityViews: null,
+    editRelations: null,
     interval: null,
 
     initialize: function(options){
@@ -116,6 +117,10 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+                                                                person: this.person, 
+                                                                university: null,
+                                                                el: this.$("#orphans")});
         return this.$el;
     }
 

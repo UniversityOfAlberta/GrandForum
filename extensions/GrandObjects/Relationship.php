@@ -94,6 +94,17 @@ class Relationship extends BackboneModel {
         return $this->university;
     }
     
+    // Returns the PersonUniversity object that this relation is associated with
+    function getPersonUniversity(){
+        $unis = $this->getUser2()->getPersonUniversities();
+        foreach($unis as $uni){
+            if($uni['id'] == $this->getUniversity()){
+                return $uni;
+            }
+        }
+        return null;
+    }
+    
     // Returns the type of this Relationship
     function getType(){
         return $this->type;

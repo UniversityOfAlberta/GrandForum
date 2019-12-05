@@ -85,15 +85,22 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                                                user2: this.person.get('id'),
                                                startDate: this.university.get('startDate'),
                                                endDate: this.university.get('endDate'),
-                                               university: this.university.get('id')}));
+                                               university: this.university.get('id'),
+                                               personUniversity: this.university}));
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){
         var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
         if(this.university != null){
-            relations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+            tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+            tmpRelations.each(function(relation){
+                relation.set('personUniversity', this.university)
+            }.bind(this));
         }
+        relations = new Backbone.Collection(relations.filter(function(rel){
+            return (rel.get('personUniversity') == this.university);
+        }.bind(this)));
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});

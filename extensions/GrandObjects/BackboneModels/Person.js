@@ -206,6 +206,7 @@ PersonRelation = RelationModel.extend({
         user1: "",
         user2: "",
         university: 0,
+        personUniversity: null,
         type: "",
         status: "",
         thesis: "",
