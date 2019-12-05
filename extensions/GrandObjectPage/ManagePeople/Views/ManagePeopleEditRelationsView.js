@@ -41,6 +41,15 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 	    }.bind(this));
     },
     
+    clean: function(){
+        _.each(this.relationViews, function(relView){
+            relView.stopListening();
+            relView.undelegateEvents();
+        });
+        this.stopListening();
+        this.undelegateEvents();
+    },
+    
     saveAll: function(){
         var person = this.person;
         var copy = null;

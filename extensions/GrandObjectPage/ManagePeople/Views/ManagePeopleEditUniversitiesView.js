@@ -51,6 +51,18 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 	    }.bind(this), 100);
     },
     
+    clean: function(){
+        _.each(this.universityViews, function(uniView){
+            uniView.editRelations.clean();
+            
+            uniView.stopListening();
+            uniView.undelegateEvents();
+        });
+        this.editRelations.clean();
+        this.stopListening();
+        this.undelegateEvents();
+    },
+    
     saveAll: function(refresh){
         var refresh = (refresh === undefined) ? true : refresh;
         var copy = this.universities.toArray();
@@ -140,7 +152,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('').change();
+        this.$("#uniEnd input[name=endDate]").val('').change();
         this.model.set('endDate', '');
     },
     
@@ -149,28 +161,28 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         "click #addRelation": function(){
             this.editRelations.addRelation();
         },
-        "change [name=startDate]": "changeStart",
-        "change [name=endDate]": "changeEnd"
+        "change #uniStart [name=startDate]": "changeStart",
+        "change #uniEnd [name=endDate]": "changeEnd"
     },
     
     changeStart: function(){
         // These probably won't exist in most cases, but if they do, then yay
-        var start_date = this.$("[name=startDate]").val();
-        var end_date = this.$("[name=endDate]").val();
+        var start_date = this.$("#uniStart [name=startDate]").val();
+        var end_date = this.$("#uniEnd [name=endDate]").val();
         if(start_date != "" && start_date != "0000-00-00"){
-            this.$("[name=endDate]").datepicker("option", "minDate", start_date);
+            this.$("#uniEnd [name=endDate]").datepicker("option", "minDate", start_date);
         }
     },
     
     changeEnd: function(){
         // These probably won't exist in most cases, but if they do, then yay
-        var start_date = this.$("[name=startDate]").val();
-        var end_date = this.$("[name=endDate]").val();
+        var start_date = this.$("#uniStart [name=startDate]").val();
+        var end_date = this.$("#uniEnd [name=endDate]").val();
         if(end_date != "" && end_date != "0000-00-00"){
-            this.$("[name=startDate]").datepicker("option", "maxDate", end_date);
+            this.$("#uniStart [name=startDate]").datepicker("option", "maxDate", end_date);
         }
         else{
-            this.$("[name=startDate]").datepicker("option", "maxDate", null);
+            this.$("#uniStart [name=startDate]").datepicker("option", "maxDate", null);
         }
     },
     
@@ -211,8 +223,8 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         }
         this.update();
         _.defer(function(){
-            this.$("[name=startDate]").change();
-            this.$("[name=endDate]").change();
+            this.$("#uniStart [name=startDate]").change();
+            this.$("#uniEnd [name=endDate]").change();
         }.bind(this));
         this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
                                                                 person: this.person, 

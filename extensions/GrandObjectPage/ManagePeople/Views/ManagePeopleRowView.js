@@ -124,8 +124,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 },
                 beforeClose: function(){
                     $("html").css("overflow", "auto");
-                    this.editUniversities.stopListening();
-                    this.editUniversities.undelegateEvents();
+                    this.editUniversities.clean();
                 }.bind(this),
                 buttons: {
                     "+": {

@@ -28,8 +28,8 @@
         </table>
     </td>
     <td align="center"><button id="addRelation">Add Relationship</button></td>
-    <td style="white-space: nowrap;" align="center"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
-    <td style="white-space: nowrap;" align="center"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
+    <td style="white-space: nowrap;" align="center" id="uniStart"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
+    <td style="white-space: nowrap;" align="center" id="uniEnd"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
     <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: "true", default: "false"}) %></td>
 </tr>
 <tr>

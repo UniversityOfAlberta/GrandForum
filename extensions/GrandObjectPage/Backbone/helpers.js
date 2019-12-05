@@ -262,10 +262,12 @@ HTML.Pages = function(view, attr, options){
 }
 
 HTML.DatePicker = function(view, attr, options){
+    var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("input", "datepicker", options);
     el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('id', id);
     el.setAttribute('value', HTML.Value(view, attr));
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+    view.events['change input#' + id] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -276,8 +278,8 @@ HTML.DatePicker = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'input#' + id);
+    view.delegate('change', 'input#' + id, view.events['change input#' + id]);
     return el.outerHTML;
 }
 
