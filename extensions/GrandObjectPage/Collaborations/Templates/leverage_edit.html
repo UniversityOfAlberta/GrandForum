@@ -1,4 +1,5 @@
 <div>
+    <p>Leveraged funds are from other sources that directly support your FES project, and those funds that support a project where methods and/or outcomes can be used to enhance your FES project. CFREF wishes to know how much cash and in-kind support other entities are contributing to your research, and what sectors those entities are from, to better understand the impact their research funding is having in your field. If you have questions about whether another funding source qualifies as leveraged funds, please contact <a href="mailto:fes@ualberta.ca" target="_blank">fes@ualberta.ca</a>.</p>
     <h3>End Year:</h3>
     <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year)-1, parseInt(YEAR)+5), function(y){
         return {option: (y - 1) + "/" + y.toString().substr(2, 2), value: y};
