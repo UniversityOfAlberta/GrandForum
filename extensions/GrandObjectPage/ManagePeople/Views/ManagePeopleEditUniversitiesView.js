@@ -84,10 +84,11 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
-        _.each(this.universityViews, function(view){
-            requests.concat(view.editRelations.saveAll());
-        });
         $.when.apply($, requests).then(function(){
+            _.each(this.universityViews, function(view){
+                view.editRelations.saveAll();
+            });
+            this.editRelations.saveAll();
             addSuccess("Universities saved");
             if(refresh){
                 this.person.fetch();

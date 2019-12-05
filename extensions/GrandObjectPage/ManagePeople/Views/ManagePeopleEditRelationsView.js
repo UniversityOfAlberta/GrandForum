@@ -50,22 +50,31 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         this.undelegateEvents();
     },
     
+    getRelations: function(){
+        var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
+        if(this.university != null){
+            var tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+            tmpRelations.each(function(relation){
+                relation.set('personUniversity', this.university)
+            }.bind(this));
+        }
+        relations = new Backbone.Collection(relations.filter(function(rel){
+            return (rel.get('personUniversity') == this.university);
+        }.bind(this)));
+        return relations;
+    },
+    
     saveAll: function(){
         var person = this.person;
-        var copy = null;
-        if(this.university != null){
-            copy = this.relations.where({user2: person.get('id')});
-        }
-        else{
-            copy = this.relations.where({user2: person.get('id'), university: this.university.get('id')});
-        }
-        clearAllMessages();
-        _.each(copy, function(relation){
+        var relations = this.getRelations();
+        relations.each(function(relation){
+            if(this.university != null){
+                relation.set('university', this.university.get('id'));
+            }
             if(relation.get('deleted') != "true"){
                 if(!relation.save(null, {
                     success: function(){
-                        addSuccess("Relation saved");
-                        person.fetch();
+                        
                     },
                     error: function(){
                         addError("Relation could not be saved");
@@ -77,8 +86,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             else {
                 relation.destroy({
                     success: function(){
-                        addSuccess("Relation saved");
-                        person.fetch();
+
                     },
                     error: function(){
                         addError("Relation could not be saved");
@@ -100,16 +108,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     addRows: function(){
-        var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
-        if(this.university != null){
-            tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
-            tmpRelations.each(function(relation){
-                relation.set('personUniversity', this.university)
-            }.bind(this));
-        }
-        relations = new Backbone.Collection(relations.filter(function(rel){
-            return (rel.get('personUniversity') == this.university);
-        }.bind(this)));
+        var relations = this.getRelations();
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
