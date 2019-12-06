@@ -2,7 +2,9 @@
     <thead>
         <tr>
             <th>Institution</th>
-            <th class="relationCell">Relationships</th>
+            <% if(this.person.get('id') != me.get('id')){ %>
+                <th class="relationCell">Relationships</th>
+            <% } %>
             <th class="startDateCell" style="white-space: nowrap;">Start Date</th>
             <th class="endDateCell" style="white-space: nowrap;">End Date</th>
             <th class="deleteCell">Delete?</th>

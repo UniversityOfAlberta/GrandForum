@@ -104,6 +104,7 @@ class PersonGradStudentsTab extends AbstractTab {
         $rows = array();
         foreach($relations as $r){
             $hqp = $r->getUser2();
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             $role = $r->getType();
             
             if($role == SUPERVISES){
@@ -115,62 +116,72 @@ class PersonGradStudentsTab extends AbstractTab {
             else{
                 continue;
             }
-            
-            if($r->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($r->getStartDate(), $r->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($r->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
             $found = false;
-            $merged = array();
-            foreach(Person::$studentPositions as $array){
-                $merged = array_merge($merged, $array);
-            }
             
             foreach($universities as $university){
-                if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
-                   !($university['start'] > $r->getEndDate() && $r->getEndDate() != "0000-00-00") &&
-                   !($r->getStartDate() > $university['end'] && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $r->getUniversity()){
                     $found = true;
                     break;
                 }
             }
-            if(!$found){
-                continue;
-            }
             
-            $minRelation = $r;
-            $minInterval = 1000000;
-            foreach($relations as $rel){
-                // Find the best matching relation
-                // Probably slow
-                if($rel->getUser2() == $r->getUser2() && $rel->getType() == $r->getType() && !isset($hqpsDone["{$hqp->getId()}_{$university['id']}_{$rel->getId()}"])){
-                    $start1 = new DateTime($university['start']);
-                    $start2 = new DateTime($rel->getStartDate());
-                    $end1   = new DateTime($university['end']);
-                    $end2   = new DateTime($rel->getEndDate());
-                    $startInterval = intval($start1->diff($start2)->format('%a')); // Difference in days
-                    $endInterval = intval($end1->diff($end2)->format('%a')); // Difference in days
-                    $minInterval = min($minInterval, $startInterval);
-                    if($minInterval == $startInterval){
-                        $minRelation = $rel;
+            if(!$found){
+                if($r->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($r->getStartDate(), $r->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($r->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                $merged = array();
+                foreach(Person::$studentPositions as $array){
+                    $merged = array_merge($merged, $array);
+                }
+                
+                foreach($universities as $university){
+                    if((@in_array(strtolower($university['position']), $hqpTypes) || ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))) && 
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00") &&
+                       !($university['start'] > $r->getEndDate() && $r->getEndDate() != "0000-00-00") &&
+                       !($r->getStartDate() > $university['end'] && $university['end'] != "0000-00-00 00:00:00")){
+                        $found = true;
+                        break;
                     }
                 }
+                if(!$found){
+                    continue;
+                }
+                
+                $minRelation = $r;
+                $minInterval = 1000000;
+                foreach($relations as $rel){
+                    // Find the best matching relation
+                    // Probably slow
+                    if($rel->getUser2() == $r->getUser2() && $rel->getType() == $r->getType() && !isset($hqpsDone["{$hqp->getId()}_{$university['id']}_{$rel->getId()}"])){
+                        $start1 = new DateTime($university['start']);
+                        $start2 = new DateTime($rel->getStartDate());
+                        $end1   = new DateTime($university['end']);
+                        $end2   = new DateTime($rel->getEndDate());
+                        $startInterval = intval($start1->diff($start2)->format('%a')); // Difference in days
+                        $endInterval = intval($end1->diff($end2)->format('%a')); // Difference in days
+                        $minInterval = min($minInterval, $startInterval);
+                        if($minInterval == $startInterval){
+                            $minRelation = $rel;
+                        }
+                    }
+                }
+                $r = $minRelation;
             }
-            $r = $minRelation;
+            
             $startDate1 = substr($r->getStartDate(), 0, 10);
             $endDate1 = substr($r->getEndDate(), 0, 10);
             $status = $r->getStatus();

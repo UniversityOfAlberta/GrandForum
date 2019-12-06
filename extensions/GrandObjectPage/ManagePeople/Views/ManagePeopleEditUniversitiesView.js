@@ -130,10 +130,12 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
-        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
-                                                                person: this.person, 
-                                                                university: null,
-                                                                el: this.$("#orphans")});
+        if(this.person.get('id') != me.get('id')){
+            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+                                                                    person: this.person, 
+                                                                    university: null,
+                                                                    el: this.$("#orphans")});
+        }
         return this.$el;
     }
 
@@ -213,7 +215,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=researchArea]").css('max-width', '200px').css('width', '200px');
-        this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+        this.$("[name=position]").css('max-width', '245px').css('width', '245px');
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
         this.$("[name=researchArea]").combobox();
@@ -227,10 +229,12 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
             this.$("#uniStart [name=startDate]").change();
             this.$("#uniEnd [name=endDate]").change();
         }.bind(this));
-        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
-                                                                person: this.person, 
-                                                                university: this.model,
-                                                                el: this.$(".relations")});
+        if(this.person.get('id') != me.get('id')){
+            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+                                                                    person: this.person, 
+                                                                    university: this.model,
+                                                                    el: this.$(".relations")});
+        }
         return this.$el;
     }, 
     
