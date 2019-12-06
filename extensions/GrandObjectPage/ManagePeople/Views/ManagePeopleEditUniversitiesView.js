@@ -9,6 +9,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
+        me.relations.fetch();
         this.template = _.template($('#edit_universities_template').html());
         this.universityViews = new Array();
         

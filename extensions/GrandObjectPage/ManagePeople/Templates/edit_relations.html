@@ -1,15 +1,3 @@
-<table class="wikitable" frame="void" rules="all" width="100%" cellpadding="5" style="background: #f3f3f3; box-shadow: inset 0 0 10px -5px black;">
-    <thead>
-        <!--tr>
-            <th width="1%">Relation</th>
-            <th width="1%" style="white-space: nowrap;">Start Date</th>
-            <th width="1%" style="white-space: nowrap;">End Date</th>
-            <!--th>Thesis</th-->
-            <!--th>Comment <span class="clicktooltip" title="These comments do not show up anywhere in the Annual Report">&#9432;</span></th-->
-            <!--th width="1%">Delete?</th-->
-        <!--/tr-->
-    </thead>
-    <tbody id="relation_rows">
+<table id="relation_rows" class="wikitable relationsBackground sortableRelations" frame="void" rules="all" width="100%" cellpadding="5" data-id="<%= (this.university == null) ? 0 : this.university.get('id') %>">
 
-    </tbody>
 </table>

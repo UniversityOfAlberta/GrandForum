@@ -5,11 +5,9 @@ ManagePeopleRowView = Backbone.View.extend({
     row: null,
     // Views
     editRoles: null,
-    editRelations: null,
     editUniversities: null,
     // Dialogs
     rolesDialog: null,
-    relationsDialog: null,
     universitiesDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
@@ -59,47 +57,6 @@ ManagePeopleRowView = Backbone.View.extend({
                 },
                     "Cancel": function(){
                         this.rolesDialog.dialog('close');
-                    }.bind(this)
-                }
-            });
-        }
-    },
-    
-    initializeRelationsDialog: function(){
-        if(this.relationsDialog == null){
-            this.relationsDialog = this.$("#relationsDialog").dialog({
-                autoOpen: false,
-                modal: true,
-                show: 'fade',
-                resizable: false,
-                draggable: false,
-                width: 'auto',
-                position: {
-                    my: "center bottom",
-                    at: "center center"
-                },
-                open: function(){
-                    $("html").css("overflow", "hidden");
-                },
-                beforeClose: function(){
-                    $("html").css("overflow", "auto");
-                    this.editRelations.stopListening();
-                    this.editRelations.undelegateEvents();
-                }.bind(this),
-                buttons: {
-                    "+": { 
-                        text: "Add Relationship", 
-                        click: function(e){
-                            this.editRelations.addRelation();
-                        }.bind(this), 
-                        style: "position:absolute;left:0;"
-                    },
-                    "Save": function(e){
-                        this.editRelations.saveAll();
-                        this.relationsDialog.dialog('close');
-                    }.bind(this),
-                    "Cancel": function(){
-                        this.relationsDialog.dialog('close');
                     }.bind(this)
                 }
             });
@@ -156,15 +113,6 @@ ManagePeopleRowView = Backbone.View.extend({
                                                         el: this.rolesDialog});
     },
     
-    openRelationsDialog: function(){
-        this.initializeRelationsDialog();
-        this.relationsDialog.empty();
-        this.relationsDialog.dialog('open');
-        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
-                                                                person:this.model, 
-                                                                el: this.relationsDialog});
-    },
-    
     openUniversitiesDialog: function(){
         this.initializeUniversitiesDialog();
         this.universitiesDialog.empty();
@@ -181,7 +129,6 @@ ManagePeopleRowView = Backbone.View.extend({
     
     events: {
         "click #editRoles": "openRolesDialog",
-        "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog",
         "click .delete-icon": "removePerson"
     },
