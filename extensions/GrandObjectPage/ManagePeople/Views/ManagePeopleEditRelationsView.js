@@ -107,7 +107,6 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                                                endDate: this.university.get('endDate'),
                                                university: this.university.get('id'),
                                                personUniversity: this.university}));
-        this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){
@@ -235,6 +234,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.update();
+        this.$("[name=status]").css('max-width', '228px').css('width', '228px');
         _.defer(function(){
             this.$("[name=startDate]").change();
             this.$("[name=endDate]").change();
