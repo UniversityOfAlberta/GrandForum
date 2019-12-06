@@ -1250,30 +1250,43 @@ class ReportItemCallback {
             if(isset($hqpsDone[$hqp->getId()])){
                 continue;
             }
-           
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
             
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['grad']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['grad']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1296,29 +1309,42 @@ class ReportItemCallback {
                 continue;
             }
            
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['msc']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['msc'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['msc']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1341,29 +1367,42 @@ class ReportItemCallback {
                 continue;
             }
            
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['phd']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['phd'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['phd']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1386,29 +1425,42 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['pdf']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['pdf'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['pdf']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1431,29 +1483,42 @@ class ReportItemCallback {
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['tech']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['tech'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['tech']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1472,34 +1537,46 @@ class ReportItemCallback {
         $hqpsDone = array();
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
-            
             if(isset($hqpsDone[$hqp->getId()])){
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad']) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   in_array(strtolower($university['position']), Person::$studentPositions['ugrad'])){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(in_array(strtolower($university['position']), Person::$studentPositions['ugrad']) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1522,34 +1599,46 @@ class ReportItemCallback {
         }
         foreach($relations as $relation){
             $hqp = $relation->getUser2();
-            
             if(isset($hqpsDone[$hqp->getId()])){
                 continue;
             }
             
-            if($relation->getEndDate() != "0000-00-00"){
-                // Normal Date range
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
-            }
-            else{
-                // Person is still continuing
-                $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Nothing was found, just get everything
-                $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
-            }
-            if(count($universities) == 0){
-                // Still Nothing was found, so skip this person
-                continue;
-            }
-            
+            $found = false;
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
             foreach($universities as $university){
-                if(!in_array(strtolower($university['position']), $merged) &&
-                   !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                if($university['id'] == $relation->getUniversity() && 
+                   !in_array(strtolower($university['position']), $merged)){
+                    $found = true;
                     $count++;
                     $hqpsDone[$hqp->getId()] = true;
                     break;
+                }
+            }
+            if(!$found){
+                if($relation->getEndDate() != "0000-00-00"){
+                    // Normal Date range
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), $relation->getEndDate());
+                }
+                else{
+                    // Person is still continuing
+                    $universities = $hqp->getUniversitiesDuring($relation->getStartDate(), "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Nothing was found, just get everything
+                    $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+                }
+                if(count($universities) == 0){
+                    // Still Nothing was found, so skip this person
+                    continue;
+                }
+                
+                foreach($universities as $university){
+                    if(!in_array(strtolower($university['position']), $merged) &&
+                       !($university['start'] < $startDate && $university['end'] < $startDate && $university['end'] != "0000-00-00 00:00:00")){
+                        $count++;
+                        $hqpsDone[$hqp->getId()] = true;
+                        break;
+                    }
                 }
             }
         }
