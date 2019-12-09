@@ -103,6 +103,14 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
 	            foreach($peopleFullText as $person){
 	                if(!array_search($person['user_id'], $ids)){
+	                    $p = Person::newFromId($person['user_id']);
+	                    if($p->isRoleAtLeast(ADMIN)){
+                            // Don't include Admin
+                            continue;
+                        }
+                        if(!$me->isLoggedIn() && !$p->isRoleAtLeast(NI)){
+                            continue;
+                        }
 	                    $ids[] = intval($person['user_id']);
 	                }
 	            }
@@ -208,9 +216,12 @@ class GlobalSearchAPI extends RESTAPI {
 	            foreach($results as $key => $row){
 	                $ids[] = intval($key);
 	            }
-	            foreach($productsFullText as $product){
-	                if(!array_search($product['id'], $ids)){
-	                    $ids[] = intval($product['id']);
+	            
+	            $dataCollection = new Collection($productsFullText);
+	            $products = Product::getByIds($dataCollection->pluck('id'));
+	            foreach($products as $product){
+	                if(!array_search($product->getId(), $ids)){
+	                    $ids[] = intval($product->getId());
 	                }
 	            }
                 break;
