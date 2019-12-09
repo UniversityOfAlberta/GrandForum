@@ -43,6 +43,7 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given id
      */
     static function newFromId($id){
+        global $config;
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
@@ -54,6 +55,12 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        if(!$config->getValue('showNonNetwork')){
+            // Remove papers that are not associated with projects, or are made by the creator
+            if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                $paper = new Paper(array());
+            }
+        }
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         return $paper;
@@ -65,6 +72,7 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given ccv_id
      */
     static function newFromCCVId($ccv_id){
+        global $config;
         if(isset(self::$cache[$ccv_id])){
             return self::$cache[$ccv_id];
         }
@@ -76,6 +84,12 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        if(!$config->getValue('showNonNetwork')){
+            // Remove papers that are not associated with projects, or are made by the creator
+            if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                $paper = new Paper(array());
+            }
+        }
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->ccv_id] = &$paper;
@@ -89,6 +103,7 @@ class Paper extends BackboneModel{
      * @return Paper The Paper with the given bibtex_id
      */
     static function newFromBibTeXId($bibtex_id, $title=""){
+        global $config;
         if(trim($bibtex_id) == ""){
             return new Paper(array()); 
         }
@@ -118,6 +133,12 @@ class Paper extends BackboneModel{
             $data = $newData;
         }
         $paper = new Paper($data);
+        if(!$config->getValue('showNonNetwork')){
+            // Remove papers that are not associated with projects, or are made by the creator
+            if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                $paper = new Paper(array());
+            }
+        }
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->bibtex_id] = &$paper;
@@ -131,6 +152,7 @@ class Paper extends BackboneModel{
      * @return array The array of Papers
      */
     static function newFromIds($ids, $onlyPublic=true){
+        global $config;
         if(count($ids) == 0){
             return array();
         }
@@ -160,11 +182,20 @@ class Paper extends BackboneModel{
                 $papers[] = $paper;
             }
         }
+        if(!$config->getValue('showNonNetwork')){
+            // Remove papers that are not associated with projects, or are made by the creator
+            foreach($papers as $key => $paper){
+                if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                    unset($papers[$key]);
+                }
+            }
+        }
         return $papers;
     }
     
     // Returns a new Paper from the given id
     static function newFromTitle($title, $category = "%", $type = "%", $status = "%"){
+        global $config;
         $title = str_replace("&#58;", ":", $title);
         $title = str_replace("'", "&#39;", $title);
         $title = DBFunctions::escape($title);
@@ -187,6 +218,12 @@ class Paper extends BackboneModel{
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
+        if(!$config->getValue('showNonNetwork')){
+            // Remove papers that are not associated with projects, or are made by the creator
+            if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                $paper = new Paper(array());
+            }
+        }
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->getTitle().$category.$type.$status] = &$paper;
         self::$cache[$paper->getTitle().$paper->getCategory().$paper->getType().$paper->getStatus()] = &$paper;
@@ -199,6 +236,7 @@ class Paper extends BackboneModel{
      * @return array The array of Products
      */
     static function getByIds($ids){
+        global $config;
         if(count($ids) == 0){
             return array();
         }
@@ -222,6 +260,14 @@ class Paper extends BackboneModel{
                 $paper = new Paper(array($row));
                 self::$cache[$paper->getId()] = $paper;
                 $papers[$paper->getId()] = $paper;
+            }
+            if(!$config->getValue('showNonNetwork')){
+                // Remove papers that are not associated with projects, or are made by the creator
+                foreach($papers as $key => $paper){
+                    if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                        unset($papers[$key]);
+                    }
+                }
             }
         }
         return $papers;
@@ -341,6 +387,14 @@ class Paper extends BackboneModel{
                     $i++;
                 }
             }
+            if(!$config->getValue('showNonNetwork')){
+                // Remove papers that are not associated with projects, or are made by the creator
+                foreach($papers as $key => $paper){
+                    if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                        unset($papers[$key]);
+                    }
+                }
+            }
             self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count] = $papers;
         }
         return $papers;
@@ -446,6 +500,14 @@ class Paper extends BackboneModel{
                         ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
                          $grand == 'both'){
                     $papers[$paper->getId()] = $paper;
+                }
+            }
+            if(!$config->getValue('showNonNetwork')){
+                // Remove papers that are not associated with projects, or are made by the creator
+                foreach($papers as $key => $paper){
+                    if(count($paper->getProjects()) == 0 && $paper->getCreatedBy() != $me->getId()){
+                        unset($papers[$key]);
+                    }
                 }
             }
             self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;

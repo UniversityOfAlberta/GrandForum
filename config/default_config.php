@@ -97,6 +97,27 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // Whether or not to show outputs unrelated to projects or not.
+    $config->setValue("showNonNetwork", true);
+    
+    // Whether or not Early Career Research is enabled
+    $config->setValue("ecrEnabled", false);
+    
+    // Whether or not Canada Research Chair is enabled
+    $config->setValue("crcEnabled", false);
+    
+    // Whether or not Project Technology Evaluation/Adoption is enabled
+    $config->setValue("projectTechEnabled", false);
+    
+    // Whether or not Project Technology Evaluation/Adoption is enabled
+    $config->setValue("alumniEnabled", false);
+    
+    // A list of api keys
+    $config->setValue("apiKeys", array());
+    
+    // A whitelist of ip addresses so that certain ips can still get past the login wall
+    $config->setValue("ipWhitelist", array());
+    
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     

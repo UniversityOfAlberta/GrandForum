@@ -47,6 +47,7 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
+$wgHooks['BeforeInitialize'][] = 'checkLoggedIn';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 

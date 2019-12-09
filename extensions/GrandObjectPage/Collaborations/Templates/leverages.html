@@ -1,0 +1,176 @@
+<% if(me.isLoggedIn()){ %>
+    <a href="#/leverage/new" class="button" id="add">Add Leverage</a><br />
+    <p>Leveraged funds are from other sources that directly support your FES project, and those funds that support a project where methods and/or outcomes can be used to enhance your FES project. CFREF wishes to know how much cash and in-kind support other entities are contributing to your research, and what sectors those entities are from, to better understand the impact their research funding is having in your field. If you have questions about whether another funding source qualifies as leveraged funds, please contact <a href="mailto:fes@ualberta.ca" target="_blank">fes@ualberta.ca</a>.</p>
+<% } %>
+<table id="collaborations" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Organization Name</th>
+            <th style="display:none;">Other</th>
+            <th>Contact Name</th>
+            <th>Position</th>
+            <th>Sector</th>
+            <th>Country</th>
+            <th>Exists Prior to FES</th>
+            <th>Cash</th>
+            <th>In-Kind</th>
+            <th>Projected Cash</th>
+            <th>Projected In-Kind</th>
+            <th>Creator</th>
+            <th>Projects</th>
+            <th>Year</th>
+            <th>End Year</th>
+            <th>Description</th>
+            <th>Last Changed</th>
+            <th width="1%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(collab){ %>
+            <tr>
+                <td>
+                    <a href="<%= collab.get('url') %>"><%= collab.get('title') %></a>
+                </td>
+                <td style="display:none;">
+                    <%= collab.get('other') %>
+                </td>
+                <td>
+                    <%= collab.get('personName') %>
+                </td>
+                <td>
+                    <%= collab.get('position') %>
+                </td>
+                <td>
+                    <%= collab.get('sector') %>
+                </td>
+                <td>
+                    <%= collab.get('country') %>
+                </td>
+                <td>
+                    <%= collab.get('existed') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('cash') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('inkind') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('projectedCash') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('projectedInkind') %>
+                </td>
+                <td>
+                    <% if (collab.get('creator').id != 0){ %>
+                        <a href="<%= collab.get('creator').url %>"><%= collab.get('creator').fullname %></a>
+                    <% } %>
+                </td>
+                <td>
+                    <%= _.map(collab.get('projects'), 
+                        function(project) {
+                            return '<a href="' + project.url + '">' + project.name + '</a>';
+                        }
+                        ).join(', ')
+                    %>
+                </td>
+                <td>
+                    <%= collab.get('year') - 1 %>/<%= collab.get('year').toString().substr(2, 2) %>
+                </td>
+                <td align="center">
+                    <% if(collab.get('endYear') != 0){ %>
+                        <%= collab.get('endYear') - 1 %>/<%= collab.get('endYear').toString().substr(2, 2) %>
+                    <% } else {%>
+                        Active
+                    <% } %>
+                </td>
+                <td style="max-width: 100px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+                    <%= collab.get('other') %>
+                </td>
+                <td>
+                    <%= collab.get('changed').substr(0, 10) %>
+                </td>
+                <td>
+                    <span id="<%= collab.get('id') %>" class="delete-icon"></span>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New Collaboration"></div>
+<script>
+
+    function filterRows() {
+        filterTitle();
+        filterSector();
+        filterCountry();
+    }
+
+    function filterTitle() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("titleInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        if (filter.trim() == "") 
+        {
+            for (i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+            return;
+        }
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterSector() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("editorInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterCountry() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("descInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("collaborations");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

@@ -39,7 +39,9 @@ class ApplicationsTable extends SpecialPage{
         $this->projects = Project::getAllProjectsEver();
         
         $this->startUpLegal2018Applicants = array();
+        $this->startUpLegal2019Applicants = array();
         $this->startUpDev2018Applicants = array();
+        $this->cycleIILOIApplicants = array();
         $this->strat2017 = array();
         $this->strat2019 = array();
         foreach(Person::getAllCandidates() as $person){
@@ -52,8 +54,14 @@ class ApplicationsTable extends SpecialPage{
             if($person->isSubRole('StartUpLegal2018')){
                 $this->startUpLegal2018Applicants[] = $person;
             }
+            if($person->isSubRole('StartUpLegal2019')){
+                $this->startUpLegal2019Applicants[] = $person;
+            }
             if($person->isSubRole('StartUpDev2018')){
                 $this->startUpDev2018Applicants[] = $person;
+            }
+            if($person->isSubRole('CycleIILOI')){
+                $this->cycleIILOIApplicants[] = $person;
             }
         }
     }
@@ -80,6 +88,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
@@ -114,6 +123,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "cycleiiloi" && $me->isRoleAtLeast(SD)){
+            $this->generateCycleIILOI();
         }
         else if($program == "alberta" && $me->isRoleAtLeast(SD)){
             $this->generateAlberta();
@@ -232,6 +244,24 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateCycleIILOI(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020", array($reviewers)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateStrat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -254,6 +284,7 @@ class ApplicationsTable extends SpecialPage{
     function generateStartUp(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2019Applicants, 2019, "Legal2019"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -333,6 +364,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectMilestones(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());

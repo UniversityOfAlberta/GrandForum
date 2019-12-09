@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="PL">
+            <SectionPermission id="details" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="details" tooltip="Project Details" name="Project Details" title="Project Details" blobSection="DETAILS" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Title of Project:</h3>
+                {$project_full_name}
+            ]]>
+        </Static>
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h3>Project Period:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                &nbsp;-&nbsp;{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h3>Reporting Period:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                &nbsp;-&nbsp;{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+            <![CDATA[
+                <h3>UofA Principal Investigator:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" optional="true">
+            <![CDATA[
+                <h3>UofA Co-Principal Investigators (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" type="MultiText" blobItem="HQP" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" multiple="true">
+            <![CDATA[
+                <h3>Students Involved:</h3>
+                <small>Please use ccid based email addresses (please do not use aliases)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+            <![CDATA[
+                <h3>Huawei Technical Lead:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" tooltip="Project Report" name="Project Report" title="Project Report" blobSection="REPORT" type="EditableReportSection">
+        <ReportItem id="milestones" type="ProjectMilestoneTable">
+            <![CDATA[
+                <h2>Milestones</h2>
+                {$item}<br />
+                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
+                <small>(Opens in a new Tab)</small>
+                <br /><br /><br /><br /><br /><br /><br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
+                    start="{getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})}" 
+                    end="{getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})}">
+            <![CDATA[
+                <h2>Publications and Presentations</h2>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a> (Opens in a new Tab).  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period ({getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})} - {getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})})</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Challenges or Problems</h2>
+                We have encountered..., the impacts are... We plan to solve these problems by...
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="future" type="Textarea" blobItem="FUTURE" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Future plan</h2>
+                We will be moving toward to milestone x next year/ we plan to accomplish milestone x by the year xxxx...
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" />
+    </ReportSection>
+</Report>

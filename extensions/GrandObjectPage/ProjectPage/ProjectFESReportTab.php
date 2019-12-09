@@ -49,23 +49,9 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         for($y=$today; $y >= $year; $y--){
-            // Q1
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q1', 0);
-            $result = $blb->load($addr);
-            $q1 = nl2br($blb->getData());
-            
-            // Q2
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q2', 0);
-            $result = $blb->load($addr);
-            $q2 = nl2br($blb->getData());
-            
-            // Q3
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q3', 0);
-            $result = $blb->load($addr);
-            $q3 = nl2br($blb->getData());
+            $q1 = $this->getBlobData("Q1", $y);
+            $q2 = $this->getBlobData("Q2", $y);
+            $q3 = $this->getBlobData("Q3", $y);
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
@@ -100,23 +86,9 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         for($y=$today; $y >= $year; $y--){
-            // Q1
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q1', 0);
-            $result = $blb->load($addr);
-            $q1 = $blb->getData();
-            
-            // Q2
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q2', 0);
-            $result = $blb->load($addr);
-            $q2 = $blb->getData();
-            
-            // Q3
-            $blb = new ReportBlob(BLOB_TEXT, $y, 0, $this->project->getId());
-            $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q3', 0);
-            $result = $blb->load($addr);
-            $q3 = $blb->getData();
+            $q1 = $this->getBlobData("Q1", $y);
+            $q2 = $this->getBlobData("Q2", $y);
+            $q3 = $this->getBlobData("Q3", $y);
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
@@ -146,33 +118,36 @@ class ProjectFESReportTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
         if(isset($_POST['report_q1'])){
             foreach($_POST['report_q1'] as $year => $q){
-                $q = str_replace(">", "&gt;", 
-                     str_replace("<", "&lt;", $q));
-                $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
-                $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q1', 0);
-                $blb->store($q, $addr);
+                $this->saveBlobData("Q1", $year, $q);
             }
         }
         if(isset($_POST['report_q2'])){
             foreach($_POST['report_q2'] as $year => $q){
-                $q = str_replace(">", "&gt;", 
-                     str_replace("<", "&lt;", $q));
-                $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
-                $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q2', 0);
-                $blb->store($q, $addr);
+                $this->saveBlobData("Q2", $year, $q);
             }
         }
         if(isset($_POST['report_q3'])){
             foreach($_POST['report_q3'] as $year => $q){
-                $q = str_replace(">", "&gt;", 
-                     str_replace("<", "&lt;", $q));
-                $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
-                $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'Q3', 0);
-                $blb->store($q, $addr);
+                $this->saveBlobData("Q3", $year, $q);
             }
         }
         header("Location: {$this->project->getUrl()}?tab=reporting");
         exit;
+    }
+    
+    function saveBlobData($blobItem, $year, $value){
+        $value = str_replace(">", "&gt;", 
+                 str_replace("<", "&lt;", $value));
+        $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", $blobItem, 0);
+        $blb->store($value, $addr);
+    }
+    
+    function getBlobData($blobItem, $year){
+        $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", $blobItem, 0);
+        $result = $blb->load($addr);
+        return $blb->getData();
     }
     
     function canEdit(){

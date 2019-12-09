@@ -48,7 +48,13 @@
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
     if(skin == 'cavendish2'){
-        $('li.actions > a', $(this)).width($(divActions).width()-10);
+        if($('li.actions > a', $(this)).width() < $(divActions).width()-10){
+            $('li.actions > a', $(this)).width($(divActions).width()-10);
+        }
+        else{
+            $(lis).width($('li.actions > a', $(this)).width()+10);
+            $(lis).parent().width($('li.actions > a', $(this)).width()+10);
+        }
     } 
     var unHoverTimeout = null;
     $('li.actions > a', $(this)).addClass('highlights-tab');

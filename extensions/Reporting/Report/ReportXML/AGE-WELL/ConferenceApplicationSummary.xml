@@ -292,6 +292,14 @@
                                     </tr>
                                     <tr>
                                         <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Title of Talk:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_TITLE,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
                                             <b>Talk Abstract:</b>
                                         </td>
                                         <td>

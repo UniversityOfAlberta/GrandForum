@@ -3,19 +3,17 @@
 class CollaborationAPI extends RESTAPI {
     
     function doGET(){
+        $leverages = ($this->getParam('leverages') != "");
         if($this->getParam('id') != ""){
             $collab = Collaboration::newFromId($this->getParam('id'));
             return $collab->toJSON();
         }
-        /*
-        else if($this->getParam('person_id') != "" ){
-            $person = Person::newFromId($this->getParam('person_id'));
-            $collabs = new Collection($person->getCollaborations());
+        else if($leverages){
+            $collabs = new Collection(Collaboration::getAllCollaborations(1));
             return $collabs->toJSON();
         }
-        */
         else{
-            $collabs = new Collection(Collaboration::getAllCollaborations());
+            $collabs = new Collection(Collaboration::getAllCollaborations(0));
             return $collabs->toJSON();
         }
     }
@@ -34,8 +32,13 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
-        $collab->funding = $this->POST('funding');
+        $collab->cash = $this->POST('cash');
+        $collab->inkind = $this->POST('inkind');
+        $collab->projectedCash = $this->POST('projectedCash');
+        $collab->projectedInkind = $this->POST('projectedInkind');
+        $collab->existed = $this->POST('existed');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
+        $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
         $status = $collab->create();
         if(!$status) {
@@ -58,8 +61,13 @@ class CollaborationAPI extends RESTAPI {
         $collab->other = $this->POST('other');
         $collab->personName = $this->POST('personName');
         $collab->position = $this->POST('position');
-        $collab->funding = $this->POST('funding');
+        $collab->cash = $this->POST('cash');
+        $collab->inkind = $this->POST('inkind');
+        $collab->projectedCash = $this->POST('projectedCash');
+        $collab->projectedInkind = $this->POST('projectedInkind');
+        $collab->existed = $this->POST('existed');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
+        $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
         $status = $collab->update();
         if(!$status) {

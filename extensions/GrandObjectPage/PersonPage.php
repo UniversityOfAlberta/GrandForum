@@ -116,32 +116,32 @@ class PersonPage {
                 self::showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
-                
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                
-                if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){
-                    $tabbedPage->addTab(new PersonDemographicsTab($person, $visibility));
-                }                
-                
-                if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
-                    $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                if($config->getValue('networkName') != 'AI4Society'){
+                    if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){
+                        $tabbedPage->addTab(new PersonDemographicsTab($person, $visibility));
+                    }                
+                    
+                    if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
+                        $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                    }
+                    if($config->getValue('networkName') == 'AGE-WELL' && 
+                       $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+                        $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                        $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
+                    }
+                    if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+                        $tabbedPage->addTab(new HQPExitTab($person, $visibility));
+                    }
+                    if($config->getValue('projectsEnabled')){
+                        $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
+                    }
+                    $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                    //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 }
-                if($config->getValue('networkName') == 'AGE-WELL' && 
-                   $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
-                    $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
-                }
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
-                if($config->getValue('projectsEnabled')){
-                    $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
-                }
-                $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
-                //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);

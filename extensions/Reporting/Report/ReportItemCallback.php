@@ -1028,7 +1028,7 @@ class ReportItemCallback {
     
     function getUserName(){
         $person = Person::newFromId($this->reportItem->personId);
-        return $person->getNameForForms();
+        return str_replace(")", "&#41;", str_replace("(", "&#40;", $person->getNameForForms()));
     }
     
     function getUserReversedName(){

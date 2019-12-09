@@ -8,205 +8,244 @@
         </Role>
         <Role role="UAHJIC">
             <SectionPermission id="feedback" permissions="rw" />
-            <SectionPermission id="discussion" permissions="" />
-            <SectionPermission id="decision" permissions="" />
+            <SectionPermission id="discussion" permissions="rw" />
+            <SectionPermission id="decision" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="feedback" tooltip="Feedback" name="Feedback" title="Feedback" blobSection="FEEDBACK" type="EditableReportSection">
         <ReportItemSet id="proposals" type="PDFReportItemSet" pdf="RPTP_HUAWEI_FALL_2019">
             <If if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
-                    <ReportItem id="pdf" type="PDFReportItem" reportType="HuaweiFall2019" project="true" buttonName="Proposal">
-                        <![CDATA[
-                            <table width='100%'>
-                            <tr>
-                                <td class='label' width='1%'>Download:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="date" type="Calendar" blobItem="DATE" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Date:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}" options="Proceed|Proceed with conditions|Redirect|Decline">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Decision:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Comments:</td>
-                                <td>{$item}</td>
-                            </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
+                <If if="{and({!=({$user_id},5)},
+                             {!=({$user_id},26)},
+                             {!=({$user_id},27)},
+                             {!=({$user_id},28)},
+                             {!=({$user_id},29)},
+                             {!=({$user_id},32)},
+                             {!=({$user_id},33)},
+                             {!=({$user_id},35)},
+                             {!=({$user_id},48)},
+                             {!=({$user_id},49)},
+                             {!=({$user_id},54)}
+                        )}">
+                    <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
+                        <ReportItem id="pdf" type="PDFReportItem" reportType="HuaweiFall2019" project="true" buttonName="Proposal">
+                            <![CDATA[
+                                <table width='100%'>
+                                <tr>
+                                    <td class='label' width='1%'>Download:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="date" type="Calendar" blobItem="DATE" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Date:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}" options="Proceed|Proceed with conditions|Redirect|Decline">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Decision:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Comments:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                                </table>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </If>
             </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="discussion" tooltip="Discussion" name="Discussion" title="Discussion" blobSection="DISCUSION" type="EditableReportSection">
         <ReportItemSet id="proposals" type="PDFReportItemSet" pdf="RPTP_HUAWEI_FALL_2019">
             <If if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
-                    <Static>
-                        <![CDATA[
-                            <div style="display: flex;">
-                                <div style="width:50%;padding-right:5px;">
-                        ]]>
-                    </Static>
-                    <If id="if1" if="{!=({$user_name},Randy Goebel)}">
-                        <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
-                            <If if="{!contains({$user_roles}, Manager)}">
-                                <![CDATA[
-                                    <table width='100%'>
-                                        <tr>
-                                            <td class='label' width='1%'>Reviewer:</td>
-                                            <td>{$user_name}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Date:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Descision:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Comments:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                    </table>
-                                    <hr />
-                                ]]>
-                            </If>
-                        </ReportItemSet>
-                    </If>
-                    <If id="if2"  if="{==({$user_name},Randy Goebel)}">
-                        <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
-                            <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)})}">
-                                <![CDATA[
-                                    <table width='100%'>
-                                        <tr>
-                                            <td class='label' width='1%'>Reviewer:</td>
-                                            <td>Anonymous</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Descision:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Comments:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                    </table>
-                                    <hr />
-                                ]]>
-                            </If>
-                        </ReportItemSet>
-                    </If>
-                    <Static>
-                        <![CDATA[
+                <If if="{and({!=({$user_id},5)},
+                             {!=({$user_id},26)},
+                             {!=({$user_id},27)},
+                             {!=({$user_id},28)},
+                             {!=({$user_id},29)},
+                             {!=({$user_id},32)},
+                             {!=({$user_id},33)},
+                             {!=({$user_id},35)},
+                             {!=({$user_id},48)},
+                             {!=({$user_id},49)},
+                             {!=({$user_id},54)}
+                        )}">
+                    <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
+                        <Static>
+                            <![CDATA[
+                                <div style="display: flex;">
+                                    <div style="width:50%;padding-right:5px;">
+                            ]]>
+                        </Static>
+                        <If id="if1" if="{and({!=({$user_name},Randy Goebel)},{!=({$user_name},Mario Nascimento)})}">
+                            <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
+                                <If if="{!contains({$user_roles}, Manager)}">
+                                    <![CDATA[
+                                        <table width='100%'>
+                                            <tr>
+                                                <td class='label' width='1%'>Reviewer:</td>
+                                                <td>{$user_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Date:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Descision:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Comments:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                        </table>
+                                        <hr />
+                                    ]]>
+                                </If>
+                            </ReportItemSet>
+                        </If>
+                        <If id="if2"  if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
+                            <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
+                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)},{!contains({$user_name}, Mario Nascimento)})}">
+                                    <![CDATA[
+                                        <table width='100%'>
+                                            <tr>
+                                                <td class='label' width='1%'>Reviewer:</td>
+                                                <td>Anonymous</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Descision:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Comments:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                        </table>
+                                        <hr />
+                                    ]]>
+                                </If>
+                            </ReportItemSet>
+                        </If>
+                        <Static>
+                            <![CDATA[
+                                    </div>
+                                    <div style="width:50%; padding-left:5px;">
+                            ]]>
+                        </Static>
+                        <ReportItem id="pdf" type="PDFReportItem" reportType="HuaweiFall2019" project="true" buttonName="Proposal">
+                            <![CDATA[
+                                <table width='100%'>
+                                <tr>
+                                    <td class='label' width='1%'>Download:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}" options="Proceed|Needs further discussion">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label' width='1%'>Final Decision:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Comments:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                                </table>
+                            ]]>
+                        </ReportItem>
+                        <Static>
+                            <![CDATA[     
+                                    </div>
                                 </div>
-                                <div style="width:50%; padding-left:5px;">
-                        ]]>
-                    </Static>
-                    <ReportItem id="pdf" type="PDFReportItem" reportType="HuaweiFall2019" project="true" buttonName="Proposal">
-                        <![CDATA[
-                            <table width='100%'>
-                            <tr>
-                                <td class='label' width='1%'>Download:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}" options="Proceed|Needs further discussion">
-                        <![CDATA[
-                            <tr>
-                                <td class='label' width='1%'>Final Decision:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Comments:</td>
-                                <td>{$item}</td>
-                            </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                    <Static>
-                        <![CDATA[     
-                                </div>
-                            </div>
-                        ]]>
-                    </Static>
-                </ReportItemSet>
+                            ]]>
+                        </Static>
+                    </ReportItemSet>
+                </If>
             </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="decision" tooltip="Final Decision" name="Final Decision" title="Final Decision" blobSection="DECISION" type="EditableReportSection">
         <ReportItemSet id="proposals" type="PDFReportItemSet" pdf="RPTP_HUAWEI_FALL_2019">
             <If if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
-                    <If id="if1" if="{!=({$user_name},Randy Goebel)}">
-                        <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
-                            <If if="{!contains({$user_roles}, Manager)}">
-                                <![CDATA[
-                                    <table width='100%'>
-                                        <tr>
-                                            <td class='label' width='1%'>Reviewer:</td>
-                                            <td>{$user_name}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Final Descision:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Comments:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                    </table>
-                                    <hr />
-                                ]]>
-                            </If>
-                        </ReportItemSet>
-                    </If>
-                    <If id="if2" if="{==({$user_name},Randy Goebel)}">
-                        <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
-                            <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)})}">
-                                <![CDATA[
-                                    <table width='100%'>
-                                        <tr>
-                                            <td class='label' width='1%'>Reviewer:</td>
-                                            <td>Anonymous</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Final Descision:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class='label'>Comments:</td>
-                                            <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                        </tr>
-                                    </table>
-                                    <hr />
-                                ]]>
-                            </If>
-                        </ReportItemSet>
-                    </If>
-                </ReportItemSet>
+                <If if="{and({!=({$user_id},5)},
+                             {!=({$user_id},26)},
+                             {!=({$user_id},27)},
+                             {!=({$user_id},28)},
+                             {!=({$user_id},29)},
+                             {!=({$user_id},32)},
+                             {!=({$user_id},33)},
+                             {!=({$user_id},35)},
+                             {!=({$user_id},48)},
+                             {!=({$user_id},49)},
+                             {!=({$user_id},54)}
+                        )}">
+                    <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} - {getText(RP_HUAWEI_FALL_2019, PROP_DESC, TITLE, 0, {$user_id}, {$project_id})}">
+                        <If id="if1" if="{and({!=({$user_name},Randy Goebel)},{!=({$user_name},Mario Nascimento)})}">
+                            <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
+                                <If if="{!contains({$user_roles}, Manager)}">
+                                    <![CDATA[
+                                        <table width='100%'>
+                                            <tr>
+                                                <td class='label' width='1%'>Reviewer:</td>
+                                                <td>{$user_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Final Descision:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Comments:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                        </table>
+                                        <hr />
+                                    ]]>
+                                </If>
+                            </ReportItemSet>
+                        </If>
+                        <If id="if2" if="{or({==({$user_name},Randy Goebel)},{==({$user_name},Mario Nascimento)})}">
+                            <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}" randomize="true">
+                                <If if="{and({!contains({$user_roles}, Manager)},{!contains({$user_name}, Randy Goebel)},{!contains({$user_name}, Mario Nascimento)})}">
+                                    <![CDATA[
+                                        <table width='100%'>
+                                            <tr>
+                                                <td class='label' width='1%'>Reviewer:</td>
+                                                <td>Anonymous</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Final Descision:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, DECISION, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class='label'>Comments:</td>
+                                                <td>{getText(RP_HUAWEI_REVIEW, DISCUSION, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                            </tr>
+                                        </table>
+                                        <hr />
+                                    ]]>
+                                </If>
+                            </ReportItemSet>
+                        </If>
+                    </ReportItemSet>
+                </If>
             </If>
         </ReportItemSet>
     </ReportSection>

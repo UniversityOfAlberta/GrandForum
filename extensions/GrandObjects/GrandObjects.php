@@ -102,8 +102,8 @@ $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyA
 
 // Collaboration
 $apiRequest->addAction('Hidden','collaboration', 'CollaborationAPI');
+$apiRequest->addAction('Hidden','collaboration/leverages', 'CollaborationAPI');
 $apiRequest->addAction('Hidden','collaboration/:id', 'CollaborationAPI');
-//$apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');
 
 // Contribution
 $apiRequest->addAction('Hidden','contribution', 'ContributionAPI');
@@ -133,6 +133,11 @@ $apiRequest->addAction('Hidden','threads/:board/:search', 'ThreadsAPI');
 $apiRequest->addAction('Hidden','post', 'PostAPI');
 $apiRequest->addAction('Hidden','post/:id', 'PostAPI');
 $apiRequest->addAction('Hidden','posts', 'PostsAPI');
+
+// Alumni
+$apiRequest->addAction('Hidden','alumni', 'AlumniAPI');
+$apiRequest->addAction('Hidden','alumni/:id', 'AlumniAPI');
+$apiRequest->addAction('Hidden','person/:personId/alumni', 'AlumniAPI');
 
 // PDF
 $apiRequest->addAction('Hidden','pdf/:id', 'PDFAPI');
@@ -183,6 +188,7 @@ function createModels(){
     addScript("MailingList");
     addScript("Freeze");
     addScript("Journal");
+    addScript("Alumni");
     
     return true;
 }

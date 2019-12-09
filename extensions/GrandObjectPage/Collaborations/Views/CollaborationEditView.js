@@ -5,8 +5,6 @@ CollaborationEditView = Backbone.View.extend({
     initialize: function(){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:personName", this.updateContactWarning);
-        this.listenTo(this.model, "change:position", this.updateContactWarning);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -27,6 +25,41 @@ CollaborationEditView = Backbone.View.extend({
         if (this.model.get("title").trim() == '') {
             clearWarning();
             addWarning('Organization name must not be empty', true);
+            return;
+        }
+        if(!this.updateContactWarning()){
+            clearWarning();
+            addWarning("This "+  this.model.getType().toLowerCase() + " does not have a contact name and position specified", true);
+            return;
+        }
+        if(!this.updateCountryWarning()){
+            clearWarning();
+            addWarning("This "+  this.model.getType().toLowerCase() + " does not have a country and sector specified", true);
+            return;
+        }
+        if(!this.updateDescriptionWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have a description specified", true);
+            return;
+        }
+        if(!this.updateExistedWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " is incomplete.", true);
+            return;
+        }
+        if(!this.updateFundsWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have funding information, or is not in the form of a number.", true);
+            return;
+        }
+        if(!this.updateThemesWarning()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have any attributes selected.", true);
+            return;
+        }
+        if(!this.updateProjects()){
+            clearWarning();
+            addWarning("This " + this.model.getType().toLowerCase() + " does not have any associated projects.", true);
             return;
         }
         this.$(".throbber").show();
@@ -53,7 +86,13 @@ CollaborationEditView = Backbone.View.extend({
     },
     
     cancel: function(){
-        document.location = this.model.get('url');
+        if(this.model.get('id') > 0){
+            document.location = this.model.get('url');
+        }
+        else{
+            // Doesn't exist yet
+            document.location = "#/";
+        }
     },
     
     events: {
@@ -74,22 +113,84 @@ CollaborationEditView = Backbone.View.extend({
     toggleFunding: function(data) {
         var funded = this.$('input:radio[name=fund]:checked').val();
         var fundAmtDiv = this.$('#fundingAmount');
-        this.model.attributes['funding'] = $('input[name=funding]').val();
+        this.model.attributes['cash'] = $('input[name=cash]').val();
+        this.model.attributes['inkind'] = $('input[name=inkind]').val();
         if (funded == "yes") {
             fundAmtDiv.slideDown();
         } else {
-            this.model.attributes['funding'] = 0;
+            this.model.attributes['cash'] = 0;
+            this.model.attributes['inkind'] = 0;
             fundAmtDiv.slideUp();
         }
     },
     
     updateContactWarning: function(){
-        if(this.contactWarning != null){
-            if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
-                this.contactWarning.show();
-            } else {
-                this.contactWarning.hide();
-            }
+        if(this.model.get('personName').trim() == '' || this.model.get('position').trim() == ''){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+    updateDescriptionWarning: function(){
+        if(this.model.get('other').trim() == ''){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+    updateCountryWarning: function(){
+        if(this.model.get('country').trim() == '' || this.model.get('sector').trim() == ''){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+    updateExistedWarning: function(){
+        if(this.model.get('knowledgeUser') != 1 && this.model.get('existed') == ""){
+            return false;
+        } 
+        else {
+            return true;
+        }
+    },
+    
+    updateFundsWarning: function(){
+        if($("[name='fund']:checked").val().trim() == 'yes' && (this.model.get('cash') == "" || 
+                                                                parseInt(this.model.get('cash')) == 0 || 
+                                                                _.isNaN(parseInt(this.model.get('cash')))) && 
+                                                               (this.model.get('inkind') == "" || 
+                                                                parseInt(this.model.get('inkind')) == 0 || 
+                                                                _.isNaN(parseInt(this.model.get('inkind'))))){
+            return false;
+        } 
+        else {
+            return true;
+        }
+    },
+    
+    updateThemesWarning: function(){
+        if(this.model.get('knowledgeUser') != 1 &&
+           this.model.get('planning') != "1" &&
+           this.model.get('designDataCollection') != "1" &&
+           this.model.get('analysisOfResults') != "1" &&
+           this.model.get('exchangeKnowledge') != "1" &&
+           this.model.get('userKnowledge') != "1"){
+            return false;
+        }
+        else {
+            return true;
+        }
+    },
+    
+    updateProjects: function(){
+        if(this.model.get('projects').length == 0){
+            return false;
+        }
+        else {
+            return true;
         }
     },
 
@@ -102,10 +203,8 @@ CollaborationEditView = Backbone.View.extend({
             main.set('title', 'Edit ' + formType);
         }
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
-        this.contactWarning = this.$("#contactWarning");
         this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
-        this.updateContactWarning();
         return this.$el;
     },
 });

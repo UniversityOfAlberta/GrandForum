@@ -1,10 +1,10 @@
 <% if(me.isLoggedIn()){ %>
     <a href="#/new" class="button" id="add">Add Collaboration</a>
     <a href="#/newKnowledgeUser" class="button" id="addKU">Add Knowledge User</a><br />
-    According to the CFREF's guidelines, there are two types of partnerships that should be reported.
+    To add Collaborations and Knowledge Users, please refer to the following definitions:
     <ul>
-        <li>A <b>collaboration</b> refers to the involvement of an individual or organization that plays an active role in the research and research-related activities.</li>
-        <li>A <b>knowledge user (KU)</b> is a receptor (individual or organization) of the research’s outputs and findings who does not have an active role in the research.</li>
+        <li>A <b>Collaborator</b> refers to the involvement of an individual (from academia or from other sectors) who plays an active role in the research and research-related activities of the CFREF (FES) initiative, but is not a CFREF participant.</li>
+        <li>A <b>Knowledge User (KU)</b> is a receptor (an individual or organization) of the CFREF (FES)'s outputs and findings, who does not have an active role in the CFREF(FES) research activities.</li>
     </ul>
 <% } %>
 <table id="collaborations" frame="box" rules="all">
@@ -17,12 +17,15 @@
             <th>Position</th>
             <th>Sector</th>
             <th>Country</th>
-            <th>Funding</th>
+            <th>Exists Prior to FES</th>
+            <th>Cash</th>
+            <th>In-Kind</th>
             <th>Attributes</th>
             <th>Creator</th>
             <th>Projects</th>
             <th>Year</th>
             <th>End Year</th>
+            <th>Description</th>
             <th>Last Changed</th>
             <th width="1%"></th>
         </tr>
@@ -51,8 +54,14 @@
                 <td>
                     <%= collab.get('country') %>
                 </td>
+                <td>
+                    <%= collab.get('existed') %>
+                </td>
                 <td align="right">
-                    <%= collab.get('funding') %>
+                    <%= collab.get('cash') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('inkind') %>
                 </td>
                 <td>
                     <ul>
@@ -85,6 +94,9 @@
                     <% } else {%>
                         Active
                     <% } %>
+                </td>
+                <td style="max-width: 100px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+                    <%= collab.get('other') %>
                 </td>
                 <td>
                     <%= collab.get('changed').substr(0, 10) %>

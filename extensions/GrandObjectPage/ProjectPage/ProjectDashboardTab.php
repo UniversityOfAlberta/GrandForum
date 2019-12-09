@@ -18,12 +18,14 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
-            $('button[value=\"Edit Dashboard\"]').css('display', 'none');
-            $('button[value=\"Save Dashboard\"]').css('display', 'none');
+            $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
+            $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
+            $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption)').css('display', 'none');
         });";
     }
     
     function handleEdit(){
+        global $config;
         if($this->canEdit() && isset($_POST['top_products']) && is_array($_POST['top_products'])){
             DBFunctions::delete('grand_top_products',
                                 array('type' => EQ('PROJECT'),
@@ -40,6 +42,14 @@ class ProjectDashboardTab extends AbstractEditableTab {
                                               'product_id' => $productId));
                 }
             }
+            if($config->getValue('projectTechEnabled')){
+                $this->project->technology = array(
+                    'response1' => $_POST['response1'],
+                    'response2' => $_POST['response2'],
+                    'response3' => $_POST['response3']
+                );
+                $this->project->saveTechnology();
+            }
         }
     }
     
@@ -48,11 +58,14 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function generateBody(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             if(!$this->project->isSubProject()){
                 $this->showTopProducts($this->project, $this->visibility);
+                if($config->getValue('projectTechEnabled')){
+                    $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
+                }
             }
             $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
             $this->html .= "<script type='text/javascript'>
@@ -60,15 +73,19 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $('#ajax_dashboard').html(response);
             });
             _.defer(function(){
-                $('button[value=\"Edit Dashboard\"]').css('display', 'none');
+                $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
             });</script>";
         }
         return $this->html;
     }
     
     function generateEditBody(){
+        global $config;
         if(!$this->project->isSubProject()){
             $this->showEditTopProducts($this->project, $this->visibility);
+            if($config->getValue('projectTechEnabled')){
+                $this->showEditTechnologyEvaluationAdoption($this->project, $this->visibility);
+            }
         }
         $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
         $this->html .= "<script type='text/javascript'>
@@ -95,7 +112,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
-                $('button[value=\"Save Dashboard\"]').css('display', 'none');
+                $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
+                $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption)').css('display', 'none');
             });
         </script>";
     }
@@ -169,8 +187,70 @@ class ProjectDashboardTab extends AbstractEditableTab {
         for($i; $i < $config->getValue('nProjectTopProducts'); $i++){
             $this->html .= $this->selectList($project, "");
         }
-        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
-                        <input type='submit' value='Cancel' name='submit' />";
+        $this->html .= "<br /><button id='editTopResearchOutcomes' type='submit' value='Save Dashboard' name='submit'>Save</button>
+                        <input id='cancelTopResearchOutcomes' type='submit' value='Cancel' name='submit' />";
+    }
+    
+    function showEditTechnologyEvaluationAdoption($project, $visibility){
+        if(!$visibility['isLead']){
+            return;
+        }
+        $technology = $project->getTechnology();
+        $options = array("No",
+                         "Yes, only evaluated",
+                         "Yes, only adopted",
+                         "Yes, both evaluated and adopted");
+        $blankSelected = ($technology['response1'] == "") ? "selected='selected'" : "";
+        $response1 = "<select name='response1'>
+                        <option value='' $blankSelected>---</option>";
+                        foreach($options as $option){
+                            $selected = @($technology['response1'] == $option) ? "selected='selected'" : "";
+                            $response1 .= "<option value='$option' $selected>$option</option>";
+                        }
+        $response1 .= "</select>";
+        $options = array("Level 1",
+                         "Level 2",
+                         "Level 3",
+                         "Level 4",
+                         "Level 5",
+                         "Level 6",
+                         "Level 7",
+                         "Level 8",
+                         "Level 9");
+        $blankSelected = ($technology['response3'] == "") ? "selected='selected'" : "";
+        $response3 = "<select name='response3'>
+                        <option value='' $blankSelected>---</option>";
+                        foreach($options as $option){
+                            $selected = @($technology['response3'] == $option) ? "selected='selected'" : "";
+                            $response3 .= "<option value='$option' $selected>$option</option>";
+                        }
+        $response3 .= "</select>";
+        $this->html .= "<br /><br />
+                        <h2>Technology Evaluation/Adoption</h2>
+                        <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
+                        {$response1}
+                        <div id='tech_yes' style='display:none;'>
+                            <br />
+                            <b>Please provide the name of the technology your research group has evaluated/adopted:</b><br />
+                            <input type='text' name='response2' value='{$technology['response2']}' size='50' />
+                            <br /><br />
+                            <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology your research group has evaluated/adopted:</b><br />
+                            {$response3}<br />
+                            <small>Innovation Canada info: <a target='_blank' href='https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html'>https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html</a></small>
+                        </div>
+                        <script type='text/javascript'>
+                            $('[name=response1]').change(function(){
+                                if($(this).val() != 'No' && $(this).val() != ''){
+                                    $('#tech_yes').show();
+                                }
+                                else{
+                                    $('#tech_yes').hide();
+                                }
+                            });
+                            $('[name=response1]').change();
+                        </script>";
+        $this->html .= "<br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Save Dashboard' name='submit'>Save</button>
+                        <input id='cancelTechnologyEvaluationAdoption' type='submit' value='Cancel' name='submit' /><br /><br />";
     }
     
     function showTopProducts($project, $visibility){
@@ -217,8 +297,32 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+            $this->html .= "<button id='editTopResearchOutcomes' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
         }
+    }
+    
+    function showTechnologyEvaluationAdoption($project, $visibility){
+        if(!$visibility['isLead']){
+            return;
+        }
+        $technology = $project->getTechnology();
+        $this->html .= "<br /><br />
+                        <h2>Technology Evaluation/Adoption</h2>
+                        <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
+                        {$technology['response1']}";
+        if($technology['response1'] != "" && $technology['response1'] != "No"){
+            $this->html .= "
+                        <br /><br />
+                        <b>Please provide the name of the technology your research group has evaluated/adopted:</b><br />
+                        {$technology['response2']}
+                        <br /><br />
+                        <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology your research group has evaluated/adopted:</b><br />
+                        {$technology['response3']}";
+        }
+        if($this->canEdit()){
+            $this->html .= "<br /><br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
+        }
+        $this->html .= "<br />";
     }
     
     function showDashboard($project, $visibility){

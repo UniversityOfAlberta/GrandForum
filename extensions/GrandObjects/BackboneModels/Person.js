@@ -24,6 +24,9 @@ Person = Backbone.Model.extend({
         this.universities = new PersonUniversities();
         this.universities.url = this.urlRoot + '/' + this.get('id') + '/universities';
         
+        this.alumni = new Alumni();
+        this.alumni.personId = this.get('id');
+        
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
         
