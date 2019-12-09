@@ -13,6 +13,7 @@ ManageProductsView = Backbone.View.extend({
     deletePrivateDialog: null,
     ccvDialog: null,
     bibtexDialog: null,
+    orcidDialog: null,
     crossForumExportDialog: null,
     duplicatesDialog: null,
 
@@ -71,6 +72,10 @@ ManageProductsView = Backbone.View.extend({
     
     importBibTeX: function(){
         this.bibtexDialog.dialog('open');
+    },
+    
+    importOrcid: function(){
+        this.orcidDialog.dialog('open');
     },
     
     crossForumExport: function(){
@@ -404,6 +409,7 @@ ManageProductsView = Backbone.View.extend({
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX",
         "click #uploadCalendarButton": "uploadCalendar",
+        "click #importOrcidButton": "importOrcid",
         "click #crossForumExport": "crossForumExport"
     },
     
@@ -687,6 +693,102 @@ ManageProductsView = Backbone.View.extend({
 	            }.bind(this),
 	            "Cancel": function(){
 	                this.ccvDialog.dialog('close');
+	            }.bind(this)
+	        }
+	    });
+	    this.orcidDialog = this.$("#orcidDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "800px",
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Import": function(e){
+	                var importOrcidBibtex = function(){
+	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importORCID", {overwrite: overwrite}, function(response){
+                            var data = response.data;
+                            if(!_.isUndefined(data.created)){
+                                var ids = _.pluck(data.created, 'id');
+                                this.products.remove(ids, {silent: true});
+                                this.products.trigger("remove");
+                                this.products.add(data.created, {silent: true});
+                                this.products.trigger("add");
+                            }
+                            clearAllMessages();
+                            if(response.errors.length > 0){
+                                if(response.errors[0] == "Invalid Access Token"){
+                                    $.removeCookie('orcid');
+                                    $.removeCookie('access_token');
+                                    authorizeOrcid();
+                                    return;
+                                }
+                                addError(response.errors.join("<br />"));
+                            }
+                            if(!_.isUndefined(data.created)){
+                                var nCreated = data.created.length;
+                                var nError = response.messages.length;
+                                
+                                if(nCreated > 0){
+                                    var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + _.pluck(response.data.created, 'title').join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addSuccess(info);
+                                }
+                                if(nError > 0){
+                                    var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
+                                               "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
+                                               "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
+                                               "<li>" + response.messages.join("</li><li>") + 
+                                               "</li></ul></div>";
+                                    addInfo(info);
+                                }
+                            }
+                            button.prop("disabled", false);
+                            $("div.throbber", this.orcidDialog).hide();
+                            this.orcidDialog.dialog('close');
+                        }.bind(this)).fail(function(){
+                            clearAllMessages();
+                            addError("There was an error importing the ORCID publications");
+                            button.prop("disabled", false);
+                            $("div.throbber", this.orcidDialog).hide();
+                            this.orcidDialog.dialog('close');
+                        }.bind(this));
+	                }.bind(this);
+	                
+	                var authorizeOrcid = function(){
+	                    if($.cookie('orcid') == undefined && $.cookie('access_token') == undefined){
+                            var url = "https://orcid.org/oauth/authorize?client_id=" + orcidId + "&response_type=code&scope=/read-limited&redirect_uri=" + document.location.origin + document.location.pathname;
+                            var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+                            var popupInterval = setInterval(function(){
+                                if(popup == null || popup.closed){
+                                    importOrcidBibtex();
+                                    clearInterval(popupInterval);
+                                }
+                            }.bind(this), 500);
+                        }
+                        else{
+                            importOrcidBibtex();
+                        }
+	                }.bind(this);
+	                
+	                var button = $(e.currentTarget);
+	                button.prop("disabled", true);
+	                var overwrite = $("input[name=orcid_overwrite]:checked", this.orcidDialog).val();
+	                $("div.throbber", this.orcidDialog).show();
+                    authorizeOrcid();
+	                
+	            }.bind(this),
+	            "Cancel": function(){
+	                this.orcidDialog.dialog('close');
 	            }.bind(this)
 	        }
 	    });
