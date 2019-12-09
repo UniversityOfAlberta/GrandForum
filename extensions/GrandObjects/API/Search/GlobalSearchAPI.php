@@ -19,6 +19,9 @@ class GlobalSearchAPI extends RESTAPI {
                 $people = DBFunctions::select(array('mw_user'),
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
+                $peopleFullText = DBFunctions::execSQL("SELECT user_id FROM mw_user
+                                                        WHERE MATCH(user_public_profile) AGAINST ('".str_replace(" ", "* ", DBFunctions::escape(trim($origSearch)))."*')
+                                                        AND deleted = 0");
                 foreach($people as $pRow){
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
@@ -98,6 +101,11 @@ class GlobalSearchAPI extends RESTAPI {
 	            foreach($results as $key => $row){
 	                $ids[] = intval($key);
 	            }
+	            foreach($peopleFullText as $person){
+	                if(!array_search($person['user_id'], $ids)){
+	                    $ids[] = intval($person['user_id']);
+	                }
+	            }
                 break;
             case 'projects':
                 $data = array();
@@ -147,6 +155,9 @@ class GlobalSearchAPI extends RESTAPI {
                 $products = DBFunctions::select(array('grand_products'),
                                                 array('title', 'category', 'type', 'id'),
                                                 array('deleted' => '0'));
+                $productsFullText = DBFunctions::execSQL("SELECT id FROM grand_products
+                                                          WHERE MATCH(description) AGAINST ('".str_replace(" ", "* ", DBFunctions::escape(trim($origSearch)))."*')
+                                                          AND deleted = 0");
                 Product::generateProductTagsCache();
                 foreach($products as $product){
                     $pTitle = unaccentChars($product['title']);
@@ -196,6 +207,11 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = array_reverse($results, true);
 	            foreach($results as $key => $row){
 	                $ids[] = intval($key);
+	            }
+	            foreach($productsFullText as $product){
+	                if(!array_search($product['id'], $ids)){
+	                    $ids[] = intval($product['id']);
+	                }
 	            }
                 break;
             case 'bibliographies':
