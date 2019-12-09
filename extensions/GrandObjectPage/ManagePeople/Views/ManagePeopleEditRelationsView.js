@@ -125,11 +125,34 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         }.bind(this));
     },
     
+    sortable: function(){
+        $(".sortableRelations").sortable({
+            connectWith: ".sortableRelations",
+            axis: "y",
+            scroll: false,
+            start: function(e, el){
+                // Make sure that inputs have triggered their change event
+                $(':focus').change();
+            },
+            stop: function(e, el){
+                var parentView = el.item.closest("td")[0].view;
+                var thisView = el.item[0].view;
+                var relation = thisView.model;
+                var university = parentView.university;
+                var universityId = el.item.parent().attr("data-id");
+                relation.set('university', universityId);
+                relation.set('personUniversity', university);
+                parentView.relations.add(relation);
+            }
+        });
+    },
+    
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
         this.el.view = this;
+        this.sortable();
         return this.$el;
     }
 
@@ -208,28 +231,6 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.$(".relError").text("").hide();
         }
     },
-    
-    sortable: function(){
-        $(".sortableRelations").sortable({
-            connectWith: ".sortableRelations",
-            axis: "y",
-            scroll: false,
-            start: function(e, el){
-                // Make sure that inputs have triggered their change event
-                $(':focus').change();
-            },
-            stop: function(e, el){
-                var parentView = el.item.closest("td")[0].view;
-                var thisView = el.item[0].view;
-                var relation = thisView.model;
-                var university = parentView.university;
-                var universityId = el.item.parent().attr("data-id");
-                relation.set('university', universityId);
-                relation.set('personUniversity', university);
-                parentView.relations.add(relation);
-            }
-        });
-    },
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
@@ -239,7 +240,6 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.$("[name=startDate]").change();
             this.$("[name=endDate]").change();
         }.bind(this));
-        this.sortable();
         this.el.view = this;
         return this.$el;
     }, 

@@ -161,7 +161,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     },
     
     events: {
-        "click #infinity": "setInfinite",
+        "click #uniEnd #infinity": "setInfinite",
         "click #addRelation": function(){
             this.editRelations.addRelation();
         },
