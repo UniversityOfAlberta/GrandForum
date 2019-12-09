@@ -929,7 +929,7 @@ class CavendishTemplate extends QuickTemplate {
 	    $GLOBALS['toolbox'] = array();
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
-        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
+        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Outputs");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){

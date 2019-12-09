@@ -1,3 +1,4 @@
+<a class="button backButton" href="#">Back to <%= formType.pluralize() %></a>
 <div style="padding-top:5px;">
     <span style="margin-left: 10px;font-size: 1.1em;font-weight: bold;margin-right: 5px;">Year</span>
     <span style="font-size: 1.1em;"><%= (year - 1) %>/<%= year.toString().substr(2, 2) %></span> - 
@@ -44,13 +45,24 @@
                 </tr>
             <% } %>
             <tr>
-                <td><b>Funding</b></td>
+                <td><b>Cash</b></td>
                 <td></td>
                 <td>
-                    <% if (funding == 0) { %>
+                    <% if (cash == 0) { %>
                         <span>Not funded</span>
                     <% } else { %>
-                        $<%= funding %>
+                        $<%= cash %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><b>In-Kind</b></td>
+                <td></td>
+                <td>
+                    <% if (inkind == 0) { %>
+                        <span>Not funded</span>
+                    <% } else { %>
+                        $<%= inkind %>
                     <% } %>
                 </td>
             </tr>
@@ -103,11 +115,7 @@
 </div>
 
 <div style="margin-left:10px;">
-    <% if (knowledgeUser != 1) { %>
-        <h3>Brief Description</h3>
-    <% } else { %>
-        <h3>Brief Description</h3>
-    <% } %>
+    <h3>Brief Description:</h3>
     <% if (other == "") { %>
         <span style="color: #AAAAAA">No 'Brief Description' provided</span>
     <% } else { %>

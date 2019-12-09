@@ -1,18 +1,12 @@
 <% if(me.isLoggedIn()){ %>
-    <a href="#/new" class="button" id="add">Add Collaboration</a>
-    <a href="#/newKnowledgeUser" class="button" id="addKU">Add Knowledge User</a><br />
-    To add Collaborations and Knowledge Users, please refer to the following definitions:
-    <ul>
-        <li>A <b>Collaborator</b> refers to the involvement of an individual (from academia or from other sectors) who plays an active role in the research and research-related activities of the CFREF (FES) initiative, but is not a CFREF participant.</li>
-        <li>A <b>Knowledge User (KU)</b> is a receptor (an individual or organization) of the CFREF (FES)'s outputs and findings, who does not have an active role in the CFREF(FES) research activities.</li>
-    </ul>
+    <a href="#/leverage/new" class="button" id="add">Add Leverage</a><br />
+    <p>Leveraged funds are from other sources that directly support your FES project, and those funds that support a project where methods and/or outcomes can be used to enhance your FES project. CFREF wishes to know how much cash and in-kind support other entities are contributing to your research, and what sectors those entities are from, to better understand the impact their research funding is having in your field. If you have questions about whether another funding source qualifies as leveraged funds, please contact <a href="mailto:fes@ualberta.ca" target="_blank">fes@ualberta.ca</a>.</p>
 <% } %>
 <table id="collaborations" frame="box" rules="all">
     <thead>
         <tr>
             <th>Organization Name</th>
             <th style="display:none;">Other</th>
-            <th>Type</th>
             <th>Contact Name</th>
             <th>Position</th>
             <th>Sector</th>
@@ -20,7 +14,8 @@
             <th>Exists Prior to FES</th>
             <th>Cash</th>
             <th>In-Kind</th>
-            <th>Attributes</th>
+            <th>Projected Cash</th>
+            <th>Projected In-Kind</th>
             <th>Creator</th>
             <th>Projects</th>
             <th>Year</th>
@@ -38,9 +33,6 @@
                 </td>
                 <td style="display:none;">
                     <%= collab.get('other') %>
-                </td>
-                <td>
-                    <%= collab.getType() %>
                 </td>
                 <td>
                     <%= collab.get('personName') %>
@@ -63,14 +55,11 @@
                 <td align="right">
                     <%= collab.get('inkind') %>
                 </td>
-                <td>
-                    <ul>
-                        <% if(collab.get('planning') == 1){ %><li>Planning of Research</li><% } %>
-                        <% if(collab.get('designDataCollection') == 1){ %><li>Design/Data Collection</li><% } %>
-                        <% if(collab.get('analysisOfResults') == 1){ %><li>Analysis of Results</li><% } %>
-                        <% if(collab.get('exchangeKnowledge') == 1){ %><li>Exchange/Disseminate Research Knowledge</li><% } %>
-                        <% if(collab.get('userKnowledge') == 1){ %><li>User of Research Knowledge</li><% } %>
-                    </ul>
+                <td align="right">
+                    <%= collab.get('projectedCash') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('projectedInkind') %>
                 </td>
                 <td>
                     <% if (collab.get('creator').id != 0){ %>

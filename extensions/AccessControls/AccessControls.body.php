@@ -90,6 +90,20 @@ function parsePublicSections($title, $text){
 	return $text;
 }
 
+function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
+    global $config, $wgUser;
+    if(!$user->isLoggedIn()){
+        if(in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist')) &&
+           isset($_GET['apiKey']) && 
+           in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
+           strpos(@$_GET['action'], 'api.') === 0 && $_SERVER['REQUEST_METHOD'] == "GET"){
+            // Allow Access
+            $wgUser = User::newFromId(1);
+            return true;
+        }
+    }
+}
+
 function onUserCanExecute($special, $subpage){
     if(!$special->userCanExecute($special->getUser())){
         permissionError();

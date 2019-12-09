@@ -132,6 +132,7 @@ InflectionJS =
         [new RegExp('(matr|vert|ind)ix|ex$', 'gi'),  '$1ices'],
         [new RegExp('([m|l])ouse$', 'gi'),           '$1ice'],
         [new RegExp('(quiz)$', 'gi'),                '$1zes'],
+        [new RegExp('(Publication and Research Output)$', 'gi'),                'Publications and Research Outputs'],
         [new RegExp('s$', 'gi'),                     's'],
         [new RegExp('$', 'gi'),                      's']
     ],

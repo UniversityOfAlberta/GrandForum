@@ -20,11 +20,15 @@ class Collaboration extends BackboneModel{
     var $other = "";
     var $personName = "";
     var $position = "";
-    var $funding = 0;
+    var $cash = 0;
+    var $inkind = 0;
+    var $projectedCash = 0;
+    var $projectedInkind = 0;
     var $year = YEAR;
     var $endYear = 0;
     var $existed = "";
     var $knowledgeUser = false;
+    var $leverage = false;
     var $accessId = 0;
     var $changed = "";
     var $projects = array();
@@ -61,14 +65,15 @@ class Collaboration extends BackboneModel{
      * Returns all of the Collaborations
      * @return array All of the Collaborations
      */
-    static function getAllCollaborations(){
+    static function getAllCollaborations($leverage=0){
         $me = Person::newFromWgUser();
         if (!$me->isLoggedIn()) {
             return array();
         }
 
         $data = DBFunctions::select(array('grand_collaborations'),
-                                    array('id'));
+                                    array('id'),
+                                    array('leverage' => $leverage));
         $collabs = array();
         foreach($data as $row){
             $collab = Collaboration::newFromId($row['id']);
@@ -78,7 +83,6 @@ class Collaboration extends BackboneModel{
         }
         return $collabs;
     }
-
 
     /**
      * Returns all the Collaborations with the given ids
@@ -133,9 +137,13 @@ class Collaboration extends BackboneModel{
             $this->personName = $data[0]['person_name'];
             $this->position = $data[0]['position'];
             $this->other = $data[0]['other'];
-            $this->funding = $data[0]['funding'];
+            $this->cash = $data[0]['cash'];
+            $this->inkind = $data[0]['inkind'];
+            $this->projectedCash = $data[0]['projected_cash'];
+            $this->projectedInkind = $data[0]['projected_inkind'];
             $this->existed = $data[0]['existed'];
             $this->knowledgeUser = $data[0]['knowledge_user'];
+            $this->leverage = $data[0]['leverage'];
             $this->projectsWaiting = true;
             $this->accessId = $data[0]['access_id'];
             $this->changed = $data[0]['changed'];
@@ -190,8 +198,20 @@ class Collaboration extends BackboneModel{
         return $this->position;
     }
 
-    function getFunding() {
-        return $this->funding;
+    function getCash() {
+        return $this->cash;
+    }
+    
+    function getInKind() {
+        return $this->inkind;
+    }
+    
+    function getProjectedCash() {
+        return $this->projectedCash;
+    }
+    
+    function getProjectedInKind() {
+        return $this->projectedInkind;
     }
     
     function getExisted(){
@@ -200,6 +220,10 @@ class Collaboration extends BackboneModel{
 
     function getKnowledgeUser() {
         return $this->knowledgeUser;
+    }
+    
+    function getLeverage() {
+        return $this->leverage;
     }
 
     function getYear() {
@@ -294,9 +318,13 @@ class Collaboration extends BackboneModel{
                                   'position' => $this->position,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
-                                  'funding' => $this->funding,
+                                  'cash' => $this->cash,
+                                  'inkind' => $this->inkind,
+                                  'projected_cash' => $this->projectedCash,
+                                  'projected_inkind' => $this->projectedInkind,
                                   'existed' => $this->existed,
                                   'knowledge_user' => $this->knowledgeUser,
+                                  'leverage' => $this->leverage,
                                   'access_id' => $me->getId()));
         if($status){
             $this->id = DBFunctions::insertId();
@@ -348,9 +376,13 @@ class Collaboration extends BackboneModel{
                                   'position' => $this->position,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
-                                  'funding' => $this->funding,
+                                  'cash' => $this->cash,
+                                  'inkind' => $this->inkind,
+                                  'projected_cash' => $this->projectedCash,
+                                  'projected_inkind' => $this->projectedInkind,
                                   'existed' => $this->existed,
-                                  'knowledge_user' => $this->knowledgeUser),
+                                  'knowledge_user' => $this->knowledgeUser,
+                                  'leverage' => $this->leverage),
                             array('id' => EQ($this->getId())));
 
         // Update collaboration_projects table
@@ -439,11 +471,15 @@ class Collaboration extends BackboneModel{
             'personName' => $this->getPersonName(),
             'position' => $this->getPosition(),
             'url' => $this->getUrl(),
-            'funding' => $this->getFunding(),
+            'cash' => $this->getCash(),
+            'inkind' => $this->getInKind(),
+            'projectedCash' => $this->getProjectedCash(),
+            'projectedInkind' => $this->getProjectedInKind(),
             'year' => $this->getYear(),
             'endYear' => $this->getEndYear(),
             'existed' => $this->getExisted(),
             'knowledgeUser' => $this->getKnowledgeUser(),
+            'leverage' => $this->getLeverage(),
             'projects' => $projects,
             'changed' => $this->getChanged()
         );
@@ -460,7 +496,12 @@ class Collaboration extends BackboneModel{
 
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        return "$wgServer$wgScriptPath/index.php/Special:CollaborationPage#/{$this->getId()}";
+        if($this->getLeverage() == 1){
+            return "$wgServer$wgScriptPath/index.php/Special:CollaborationPage#/leverage/{$this->getId()}";
+        }
+        else{
+            return "$wgServer$wgScriptPath/index.php/Special:CollaborationPage#/{$this->getId()}";
+        }
     }
     
 }
