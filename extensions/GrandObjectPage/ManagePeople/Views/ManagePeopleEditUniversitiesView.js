@@ -49,17 +49,21 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 dim.w2 = $(window).width();
                 dim.h2 = $(window).height();
             }
-	    }.bind(this), 100);
+        }.bind(this), 100);
     },
     
     clean: function(){
         _.each(this.universityViews, function(uniView){
-            uniView.editRelations.clean();
-            
-            uniView.stopListening();
-            uniView.undelegateEvents();
+            if(uniView.editRelations != null){
+                uniView.editRelations.clean();
+                
+                uniView.stopListening();
+                uniView.undelegateEvents();
+            }
         });
-        this.editRelations.clean();
+        if(this.editRelations != null){
+            this.editRelations.clean();
+        }
         this.stopListening();
         this.undelegateEvents();
     },
@@ -212,7 +216,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     },
    
     render: function(){
-	    this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template(this.model.toJSON()));
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=researchArea]").css('max-width', '200px').css('width', '200px');
