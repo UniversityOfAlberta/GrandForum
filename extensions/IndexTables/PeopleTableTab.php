@@ -97,7 +97,11 @@ class PeopleTableTab extends AbstractTab {
             $statusHeader .= "<th>Nationality</th>
                               <th>Status</th>";
         }
-        $this->html .= "Below are all of the ".strtolower($this->id)." {$this->table} members in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
+        $role = "{$this->table} members";
+        if($this->table == "Member"){
+            $role = "Members";
+        }
+        $this->html .= "Below are all of the ".strtolower($this->id)." {$role} in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
