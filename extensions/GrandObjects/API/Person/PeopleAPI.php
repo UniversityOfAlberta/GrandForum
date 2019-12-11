@@ -36,17 +36,16 @@ class PeopleAPI extends RESTAPI {
                         $people = Person::getAllPeople($role);
                     }
                 }
+                if($alumni){
+                    $allAlumni = Alumni::getAllAlumni();
+                    foreach($allAlumni as $alum){
+                        $people[] = $alum->getPerson();
+                    }
+                }
                 foreach($people as $person){
-                    if(strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
+                    if(!$alumni && strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
                         // Person is still the specified role, don't show on the 'former' table
                         continue;
-                    }
-                    if($alumni){
-                        $alum = Alumni::newFromUserId($person->getId());
-                        if(strstr($alum->getAlumni(), "Yes") === false){
-                            // Person did not answer yes
-                            continue;
-                        }
                     }
                     if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
