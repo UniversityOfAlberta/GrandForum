@@ -3,6 +3,7 @@
 class PeopleAPI extends RESTAPI {
     
     function doGET(){
+        global $config;
         $simple = ($this->getParam('simple') != "");
         if($this->getParam('role') != ""){
             $university = "";
@@ -18,6 +19,11 @@ class PeopleAPI extends RESTAPI {
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
+                if($config->getValue('networkName') == "FES"){
+                    if($role == "Former-".HQP){
+                        $role = "Alumni";
+                    }
+                }
                 $alumni = false;
                 if($role == "Alumni"){
                     $role = "Former-".HQP;
