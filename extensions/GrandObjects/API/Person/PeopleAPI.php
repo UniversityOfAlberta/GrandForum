@@ -18,6 +18,11 @@ class PeopleAPI extends RESTAPI {
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
+                $alumni = false;
+                if($role == "Alumni"){
+                    $role = "Former-".HQP;
+                    $alumni = true;
+                }
                 if($role == 'all'){
                     // Get All people (including candidates)
                     $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
@@ -35,6 +40,13 @@ class PeopleAPI extends RESTAPI {
                     if(strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
                         // Person is still the specified role, don't show on the 'former' table
                         continue;
+                    }
+                    if($alumni){
+                        $alum = Alumni::newFromUserId($person->getId());
+                        if(strstr($alum->getAlumni(), "Yes") === false){
+                            // Person did not answer yes
+                            continue;
+                        }
                     }
                     if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
