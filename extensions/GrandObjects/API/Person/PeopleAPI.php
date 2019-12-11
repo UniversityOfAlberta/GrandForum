@@ -45,7 +45,10 @@ class PeopleAPI extends RESTAPI {
                 if($alumni){
                     $allAlumni = Alumni::getAllAlumni();
                     foreach($allAlumni as $alum){
-                        $people[] = $alum->getPerson();
+                        $person = $alum->getPerson();
+                        if($person->isRoleDuring(HQP, "0000-00-00", date('Y-m-d'))){
+                            $people[] = $person;
+                        }
                     }
                 }
                 foreach($people as $person){
