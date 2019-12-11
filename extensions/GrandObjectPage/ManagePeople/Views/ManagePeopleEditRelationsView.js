@@ -118,7 +118,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         var relations = this.getRelations();
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
-                var view = new ManagePeopleEditRelationsRowView({model: relation});
+                var view = new ManagePeopleEditRelationsRowView({model: relation, university: this.university});
                 this.$("#relation_rows").append(view.render());
                 this.relationViews[i] = view;
             }
@@ -161,8 +161,10 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    //university: null,
     
-    initialize: function(){
+    initialize: function(options){
+        //this.university = options.university;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_relations_row_template').html());
     },
@@ -206,29 +208,39 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     },
     
     update: function(){
+        var uniStart = (this.model.get('personUniversity') != null) ? this.model.get('personUniversity').get('startDate') : "";
+        var uniEnd   = (this.model.get('personUniversity') != null) ? this.model.get('personUniversity').get('endDate').replace("0000-00-00", "9999-99-99") : "";
+        var relStart = this.model.get('startDate');
+        var relEnd   = this.model.get('endDate').replace("0000-00-00", "9999-99-99");
+        
+        uniStart = (uniStart != "") ? uniStart : "9999-99-99";
+        uniEnd   = (uniEnd   != "") ? uniEnd   : "9999-99-99";
+        relStart = (relStart != "") ? relStart : "9999-99-99";
+        relEnd   = (relEnd   != "") ? relEnd   : "9999-99-99";
+        
         if(this.model.get('deleted') == "true"){
             this.$el.addClass('deleted');
         }
         else{
             this.$el.removeClass('deleted');
         }
+        this.$(".relError ul").empty();
         if((this.model.get('status') == "Completed" ||
             this.model.get('status') == "Withdrew" ||
             this.model.get('status') == "Changed Supervisor") &&
            (this.model.get('endDate') == "" ||
             this.model.get('endDate') == "0000-00-00")){
-            this.$(".endDateCell").css("background", "#FF8800");
-            this.$(".relError").text("There should be an end date when status is '" + this.model.get('status') + "'").show();
+            this.$(".relError ul").append("<li>There should be an end date when status is '" + this.model.get('status') + "'</li>").show();
         }
-        else if((this.model.get('status') == "Continuing") &&
-           (this.model.get('endDate') != "" &
+        if((this.model.get('status') == "Continuing") &&
+           (this.model.get('endDate') != "" &&
             this.model.get('endDate') != "0000-00-00")){
-            this.$(".endDateCell").css("background", "#FF8800");
-            this.$(".relError").text("There should be no end date when status is '" + this.model.get('status') + "'").show();
+            this.$(".relError ul").append("<li>There should be no end date when status is '" + this.model.get('status') + "'</li>").show();
         }
-        else{
-            this.$(".endDateCell").css("background", "");
-            this.$(".relError").text("").hide();
+        if(this.model.get('personUniversity') != null && 
+           ((uniStart > relStart && uniStart > relEnd) || 
+            (uniEnd < relStart))){
+            this.$(".relError ul").append("<li>The dates for this relation do not fall within the dates of the university</li>").show();
         }
     },
    
