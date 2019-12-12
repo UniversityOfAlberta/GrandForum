@@ -162,7 +162,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     tagName: 'tr',
     
-    initialize: function(options){
+    initialize: function(){
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_relations_row_template').html());
     },
