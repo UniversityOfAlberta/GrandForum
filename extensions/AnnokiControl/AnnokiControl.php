@@ -137,6 +137,8 @@ foreach($egAnnokiExtensions as $key => $extension){
     }
 }
 
+require_once("$IP/extensions/CrossForumExport/CrossForumExport.php");
+
 require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
 $wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
