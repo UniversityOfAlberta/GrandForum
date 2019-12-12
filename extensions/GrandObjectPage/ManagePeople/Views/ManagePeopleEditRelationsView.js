@@ -118,7 +118,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         var relations = this.getRelations();
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
-                var view = new ManagePeopleEditRelationsRowView({model: relation, university: this.university});
+                var view = new ManagePeopleEditRelationsRowView({model: relation});
                 this.$("#relation_rows").append(view.render());
                 this.relationViews[i] = view;
             }
@@ -161,10 +161,8 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     tagName: 'tr',
-    //university: null,
     
     initialize: function(options){
-        //this.university = options.university;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_relations_row_template').html());
     },
