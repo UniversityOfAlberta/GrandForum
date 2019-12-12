@@ -102,7 +102,7 @@ class GlobalSearchAPI extends RESTAPI {
 	                $ids[] = intval($key);
 	            }
 	            foreach($peopleFullText as $person){
-	                if(!array_search($person['user_id'], $ids)){
+	                if(array_search($person['user_id'], $ids) === false){
 	                    $p = Person::newFromId($person['user_id']);
 	                    if($p->isRoleAtLeast(ADMIN)){
                             // Don't include Admin
@@ -220,7 +220,7 @@ class GlobalSearchAPI extends RESTAPI {
 	            $dataCollection = new Collection($productsFullText);
 	            $products = Product::getByIds($dataCollection->pluck('id'));
 	            foreach($products as $product){
-	                if(!array_search($product->getId(), $ids)){
+	                if(array_search($product->getId(), $ids) === false){
 	                    $ids[] = intval($product->getId());
 	                }
 	            }
