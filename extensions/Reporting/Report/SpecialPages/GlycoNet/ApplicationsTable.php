@@ -41,6 +41,7 @@ class ApplicationsTable extends SpecialPage{
         $this->startUpLegal2018Applicants = array();
         $this->startUpLegal2019Applicants = array();
         $this->startUpDev2018Applicants = array();
+        $this->cycleIILOIApplicants = array();
         $this->strat2017 = array();
         $this->strat2019 = array();
         foreach(Person::getAllCandidates() as $person){
@@ -58,6 +59,9 @@ class ApplicationsTable extends SpecialPage{
             }
             if($person->isSubRole('StartUpDev2018')){
                 $this->startUpDev2018Applicants[] = $person;
+            }
+            if($person->isSubRole('CycleIILOI')){
+                $this->cycleIILOIApplicants[] = $person;
             }
         }
     }
@@ -84,6 +88,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
@@ -118,6 +123,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "cycleiiloi" && $me->isRoleAtLeast(SD)){
+            $this->generateCycleIILOI();
         }
         else if($program == "alberta" && $me->isRoleAtLeast(SD)){
             $this->generateAlberta();
@@ -233,6 +241,24 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_04_2017'), $this->allNis, 2017, "04-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCycleIILOI(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

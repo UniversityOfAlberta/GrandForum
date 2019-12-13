@@ -198,6 +198,7 @@ class Paper extends BackboneModel{
         global $config;
         $title = str_replace("&#58;", ":", $title);
         $title = str_replace("'", "&#39;", $title);
+        $title = DBFunctions::escape($title);
         $category = DBFunctions::escape($category);
         $type = DBFunctions::escape($type);
         $status = DBFunctions::escape($status);

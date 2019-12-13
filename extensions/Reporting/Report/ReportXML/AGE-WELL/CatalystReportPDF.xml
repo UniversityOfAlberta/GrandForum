@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL CRP Catalyst Project Progress Report and Project Plan Update (2019-2020)" reportType="RP_CAT_REPORT" pdfType="RPTP_CAT_REPORT" pdfFiles="CatalystReportPDF" personId="0" ajax="true" disabled="false" year="2019" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30" orientation="landscape">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL CRP Catalyst Project<br />Progress Report and Project Plan Update (2019-2020)</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <b>Project Lead(s):</b> {$project_leaders}<br />
+                <b>Project Title:</b> {$project_full_name}<br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="scorecard" type="EditableReportSection" blobSection="SCORECARD" tooltip="Scorecard" name="Scorecard" title="Scorecard" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <table rules="all" frame="box" class="wikitable smaller" width="100%">
+                    <tr>
+                        <th></th>
+                        <th colspan='3'>To be completed by July 4, 2019</th>
+                        <th colspan='2'>To be completed in January 2020<br />(date to be confirmed)</th>
+                    </tr>
+                    <tr>
+                        <th>NCE Area</th>
+                        <th>Identified Strengths of project</th>
+                        <th>Identified Weaknesses of project</th>
+                        <th>Actions to be taken to address weaknesses</th>
+                        <th>Actions completed</th>
+                        <th>Key outcomes</th>
+                    </tr>
+            ]]>
+        </Static>
+        <!-- Scientific Excellence -->
+        <ReportItem id="sci_1" type="Textarea" blobItem="SCI_1" height="100%">
+            <![CDATA[
+                <tr>
+                    <th>Scientific Excellence</th>
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_2" type="Textarea" blobItem="SCI_2" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_3" type="Textarea" blobItem="SCI_3" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_4" type="Textarea" blobItem="SCI_4" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_5" type="Textarea" blobItem="SCI_5" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <!-- Networking and Partnerships -->
+        <ReportItem id="net_1" type="Textarea" blobItem="NET_1" height="100%">
+            <![CDATA[
+                <tr>
+                    <th>Networking and Partnerships</th>
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_2" type="Textarea" blobItem="NET_2" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_3" type="Textarea" blobItem="NET_3" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_4" type="Textarea" blobItem="NET_4" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_5" type="Textarea" blobItem="NET_5" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <!-- KTEE -->
+        <ReportItem id="ktee_1" type="Textarea" blobItem="KTEE_1" height="100%">
+            <![CDATA[
+                <tr>
+                    <th>KTEE</th>
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee_2" type="Textarea" blobItem="KTEE_2" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee_3" type="Textarea" blobItem="KTEE_3" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee_4" type="Textarea" blobItem="KTEE_4" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee_5" type="Textarea" blobItem="KTEE_5" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <!-- Training of HQP -->
+        <ReportItem id="hqp_1" type="Textarea" blobItem="HQP_1" height="100%">
+            <![CDATA[
+                <tr>
+                    <th>Training of HQP</th>
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_2" type="Textarea" blobItem="HQP_2" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_3" type="Textarea" blobItem="HQP_3" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_4" type="Textarea" blobItem="HQP_4" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_5" type="Textarea" blobItem="HQP_5" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <!-- Team and Project Management -->
+        <ReportItem id="team_1" type="Textarea" blobItem="TEAM_1" height="100%">
+            <![CDATA[
+                <tr>
+                    <th>Team and Project Management</th>
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_2" type="Textarea" blobItem="TEAM_2" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_3" type="Textarea" blobItem="TEAM_3" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_4" type="Textarea" blobItem="TEAM_4" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_5" type="Textarea" blobItem="TEAM_5" height="100%">
+            <![CDATA[
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table><br />
+            ]]>
+        </Static>
+        <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true">
+            <![CDATA[
+                <h3>Supports and resources needed from AGE-WELL:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

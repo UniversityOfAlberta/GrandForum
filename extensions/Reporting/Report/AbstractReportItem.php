@@ -316,9 +316,15 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $projectId = $this->getAttr('projectId', $this->projectId);
         $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $sectionId, $this->blobItem, $this->blobSubItem);
+        
+        $sec = $this->getAttr('blobSection', $sectionId);
+        $rep = $this->getAttr('blobReport', $report->reportType);
+        $year = $this->getAttr('blobYear', $this->getReport()->year);
+        
+        $blob = new ReportBlob($this->blobType, $year, $personId, $projectId);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();
@@ -362,10 +368,16 @@ abstract class AbstractReportItem {
     function getMD5(){
         $report = $this->getReport();
         $section = $this->getSection();
-        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $sectionId, $this->blobItem, $this->blobSubItem);
+        $projectId = $this->getAttr('projectId', $this->projectId);
+        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
+        
+        $sec = $this->getAttr('blobSection', $sectionId);
+        $rep = $this->getAttr('blobReport', $report->reportType);
+        $year = $this->getAttr('blobYear', $this->getReport()->year);
+        
+        $blob = new ReportBlob($this->blobType, $year, $personId, $projectId);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
 	    return $md5;
@@ -392,8 +404,15 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+        $projectId = $this->getAttr('projectId', $this->projectId);
+        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
+        
+        $sec = $this->getAttr('blobSection', $sectionId);
+        $rep = $this->getAttr('blobReport', $report->reportType);
+        $year = $this->getAttr('blobYear', $this->getReport()->year);
+        
+        $blob = new ReportBlob($this->blobType, $year, $personId, $projectId);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();

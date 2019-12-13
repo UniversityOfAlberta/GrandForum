@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Request for Letters of Intent Cycle II – Competition II" reportType="RP_CYCLEII" pdfType="RPTP_CYCLEII" pdfFiles="CycleIILOIPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="NI">
+        <Role role="INACTIVE+" subRole="CycleIILOI">
 
-        </Role>
-        <Role role="NI-Candidate">
-
-        </Role>
-        <Role role="External">
-
-        </Role>
-        <Role role="External-Candidate">
-
-        </Role>
-        <Role role="Staff">
-        
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" type="ReportSection" renderpdf="false">
@@ -205,10 +193,10 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="2000">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="750">
             <![CDATA[
-                <h2>Project Proposal</h2>
-                <p>A research proposal (2,000 words maximum, not including figure/scheme legends and references)</p>
+                <h2>Project Description</h2>
+                <p>A research proposal (750 words maximum, not including figure/scheme legends and references)</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -255,14 +243,15 @@
                 <p>A preliminary budget request should be summarized in the LOI.</p>
                 Budget Guidelines:
                 <ul>
-                    <li>Collaborative Team Grants. Maximum request: $150,000 for one year, 1:1 matching required.</li>
-                    <li>Translational Grants. Maximum request: $150,000 for one year, 1:1 matching required.</li>
-                    <li>Strategic Initiatives. Maximum request: $150,000 for one year, with possibility of one year renewal, 1:1 matching required.</li>
-                    <li>Clinical Partnerships. Maximum request: $50,000 for one year. No matching required</li>
+                    <li>Projects can request up to $150,000/year from GlycoNet</li>
+                    <li>Projects require a 1:1 match with Partner funding (except for Clinical Partnership); at least 50% of the matching funds must be cash. Partner funding must be NCE eligible; other Tri-Council and CFI funding is ineligible for matching.</li>
+                    <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching. Questions on eligibility of matching can be directed to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a>.</li>
+                    <li>The LOI project budget clearly shows the co-contribution of partner funds in alignment with NCE and eligible project expenses.</li>
+                    <li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably (except for Clinical Partnership).</li>
                 </ul>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template 2019.xls">
             <![CDATA[
                 {$item}
             ]]>
