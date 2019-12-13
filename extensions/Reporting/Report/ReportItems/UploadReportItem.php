@@ -4,6 +4,12 @@ class UploadReportItem extends AbstractReportItem {
 
     function render(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        
+        if(strtolower($this->getAttr("pdf")) == "true"){
+            $this->renderForPDF();
+            return;
+        }
+        
         if(isset($_GET['fileUploadForm']) && $_GET['fileUploadForm'] == $this->getPostId()){
             $this->fileUploadForm();
         }
@@ -43,7 +49,10 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data != ""){
             $json = json_decode($data);
             $name = $json->name;
-            $html = "<p><a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a></p><br />";
+            $html = "<p><a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a></p>";
+            if(isset($_GET['generatePDF'])){
+                $html .= "<br />";
+            }
         }
         $item = $this->processCData($html);
         $wgOut->addHTML($item);

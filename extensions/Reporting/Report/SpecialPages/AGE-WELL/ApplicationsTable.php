@@ -435,6 +435,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT_REPORT', $this->catalyst, 2019, "CAT-2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_PLAT_SCORECARD', $this->platform, 2018, "PLAT-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT_SCORECARD', $this->catalyst, 2018, "CAT-2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2018, "2019"));
