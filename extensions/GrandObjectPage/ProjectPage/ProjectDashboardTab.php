@@ -60,6 +60,23 @@ class ProjectDashboardTab extends AbstractEditableTab {
         return ($this->project->userCanEdit() && !$this->project->isSubProject());
     }
     
+    function canGeneratePDF(){
+        return true;
+    }
+    
+    function generatePDFBody(){
+        global $wgServer, $wgScriptPath, $config;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+            if(!$this->project->isSubProject()){
+                $this->showTopProducts($this->project, $this->visibility);
+                if($config->getValue('projectTechEnabled')){
+                    $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
+                }
+            }
+        }
+    }
+    
     function generateBody(){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
@@ -328,7 +345,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button id='editTopResearchOutcomes' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+            $this->html .= "<button id='editTopResearchOutcomes' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
         }
     }
     
@@ -372,7 +389,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             </div><br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button id='editTechnologyEvaluationAdoption' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
+            $this->html .= "<button id='editTechnologyEvaluationAdoption' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
         }
     }
     
