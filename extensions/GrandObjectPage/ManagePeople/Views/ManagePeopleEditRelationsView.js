@@ -129,10 +129,19 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         $(".sortableRelations").sortable({
             connectWith: ".sortableRelations",
             axis: "y",
-            scroll: false,
+            scroll: true,
+            containment: "#university_table",
+            helper: function(e, tr){
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                tr.children().first().css('border-left', 'none');
+                tr.children().last().css('border-right', 'none');
+                return tr;
+            },
             start: function(e, el){
                 // Make sure that inputs have triggered their change event
                 $(':focus').change();
+                el.placeholder.height(el.item.height());
             },
             stop: function(e, el){
                 var parentView = el.item.closest("td")[0].view;
