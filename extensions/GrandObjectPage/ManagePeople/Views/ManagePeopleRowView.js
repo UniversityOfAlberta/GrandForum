@@ -71,7 +71,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 show: 'fade',
                 resizable: false,
                 draggable: false,
-                width: '1075px',
+                width: '1100px',
                 position: {
                     my: "center bottom",
                     at: "center center"

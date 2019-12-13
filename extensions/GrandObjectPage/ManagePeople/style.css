@@ -42,8 +42,6 @@ table.wikitable tr.deleted {
     font-size: 12px;
     white-space: initial;
     color: #FF6600;
-    margin-left: 6px;
-    margin-right: 6px;
 }
 
 .orphansLabel {
@@ -65,11 +63,6 @@ table.wikitable tr.deleted {
     cursor: move;
 }
 
-.relationCell {
-    min-width: 300px;
-    max-width: 300px;
-}
-
 .relationsBackground, .ui-sortable-helper {
     background: #f3f3f3 !important; 
     box-shadow: inset 0 0 10px -5px black;
@@ -85,6 +78,20 @@ table.wikitable tr.deleted {
 
 #orphans #relation_rows {
     height: auto;
+}
+
+.dots {
+    text-shadow: 1px 1px 0 white;
+    color: #888888;
+    width: 100%;
+    text-align: center;
+    line-height: 0.5em;
+    user-select: none;
+}
+
+.relationCell {
+    min-width: 325px;
+    max-width: 325px;
 }
 
 .startDateCell {

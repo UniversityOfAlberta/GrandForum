@@ -1,6 +1,20 @@
 <td align="right" class="relationCell">
-    <table cellspacing="0">
+    <table cellspacing="0" style="width:100%;display:inline-block;vertical-align:middle;">
         <tr>
+            <td rowspan="4" class="dots">
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+                &middot;&middot;<br />
+            </td>
             <td colspan="2">
                 <%= HTML.Select(this, 'type', {options: ['Supervises', 'Co-Supervises', 'Supervisory-Committee member', 'Examining-Committee member', 'Examining-Committee chair'], sorted: false}) %>
             </td>
@@ -13,10 +27,12 @@
             <td align="right"><b>Thesis:</b></td>
             <td><%= HTML.TextBox(this, 'thesis', {style: 'width: 220px;'}) %></td>
         </tr>
+        <tr>
+            <td colspan="2" class="relError">
+                <ul></ul>
+            </td>
+        </tr>
     </table>
-    <div class="relError">
-        <ul></ul>
-    </div>
 </td>
 <td style="white-space: nowrap;" class="startDateCell" align="center">
     <%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %>
