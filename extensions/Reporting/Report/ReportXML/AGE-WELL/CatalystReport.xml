@@ -110,17 +110,17 @@
             <![CDATA[
                 <tr>
                     <th>Scientific Excellence</th>
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="sci_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="SCI_2" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="sci_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="SCI_3" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="sci_4" type="Textarea" blobItem="SCI_4" height="100%">
@@ -139,17 +139,17 @@
             <![CDATA[
                 <tr>
                     <th>Networking and Partnerships</th>
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="net_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="NET_2" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="net_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="NET_3" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="net_4" type="Textarea" blobItem="NET_4" height="100%">
@@ -168,17 +168,17 @@
             <![CDATA[
                 <tr>
                     <th>KTEE</th>
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="ktee_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="KTEE_2" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="ktee_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="KTEE_3" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="ktee_4" type="Textarea" blobItem="KTEE_4" height="100%">
@@ -197,17 +197,17 @@
             <![CDATA[
                 <tr>
                     <th>Training of HQP</th>
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="hqp_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="HQP_2" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="hqp_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="HQP_3" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="hqp_4" type="Textarea" blobItem="HQP_4" height="100%">
@@ -226,17 +226,17 @@
             <![CDATA[
                 <tr>
                     <th>Team and Project Management</th>
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="team_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="TEAM_2" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="team_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="TEAM_3" height="100%">
             <![CDATA[
-                    <td><textarea style='height:89px;' disabled>{$value}</textarea></td>
+                    <td><div style='height:89px;overflow-y:auto;line-height:1.5em;'>{$value}</div></td>
             ]]>
         </ReportItem>
         <ReportItem id="team_4" type="Textarea" blobItem="TEAM_4" height="100%">
