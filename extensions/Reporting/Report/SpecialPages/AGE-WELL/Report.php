@@ -138,8 +138,8 @@ class Report extends AbstractReport {
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}SIPProjectEvaluation&project={$project->getName()}", $selected);
                     }
                     else if(preg_match("/.*CAT-2019.*/", $project->getName()) != 0){
-                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CatalystEvaluation&project={$project->getName()}", $selected);
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CatalystReport&project={$project->getName()}", $selected);
                     }
                     else if(preg_match("/.*AW-PP2019.*/", $project->getName()) != 0){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PlatformEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
