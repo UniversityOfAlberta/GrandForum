@@ -130,7 +130,6 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             connectWith: ".sortableRelations",
             axis: "y",
             scroll: true,
-            containment: "#university_table",
             helper: function(e, tr){
                 var $originals = tr.children();
                 var $helper = tr.clone();
