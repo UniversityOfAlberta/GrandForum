@@ -168,33 +168,14 @@ ManagePeopleRowView = Backbone.View.extend({
                         // Date already found, skip
                         return;
                     }
-                    if((latestRel.endDate == '0000-00-00' && uni.end != '0000-00-00 00:00:00') ||
-                       (latestRel.endDate != '0000-00-00' && uni.end != '0000-00-00 00:00:00' && uni.end < latestRel.endDate)){
-                        // Relationship was not ended, but Basic Info was, use the Basic Info
-                        // or Reltionship was after the Basic Info, use the Basic Info
-                        tmpEnd = uni.end;
-                    }
-                    else{
-                        // Otherwise use the relationship date
-                        tmpEnd = latestRel.endDate;
-                    }
-                    
-                    if(latestRel.startDate <= uni.start){
-                        // Relationship was before Basic Info, use the Basic Info
-                        tmpStart = uni.start;
-                    }
-                    else{
-                        // Otherwise use the relationship date
-                        tmpStart = latestRel.startDate;
-                    }
                     
                     if(tmpStart.substr(0,10) > tmpEnd.substr(0,10) && tmpEnd.substr(0,10) != '0000-00-00'){
                         // Date doesn't make sense, so don't use it
                         return;
                     }
                     
-                    start = tmpStart;
-                    end = tmpEnd;
+                    start = latestRel.startDate;
+                    end = latestRel.endDate;
                     position = uni.position;
                 });
             }
@@ -210,7 +191,6 @@ ManagePeopleRowView = Backbone.View.extend({
                 start = '';
             }
             if(end == '0000-00-00' || end == '0000-00-00 00:00:00' || end == '' || end == undefined){
-                
                 end = 'Current';
             }
             

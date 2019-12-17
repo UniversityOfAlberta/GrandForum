@@ -3350,6 +3350,100 @@ class Person extends BackboneModel {
         }
     }
     
+    function getStudentInfo($hqpTypes=array(), $startDate=null, $endDate=null){
+        if($startDate == null || $endDate == null){
+            $relations = $this->getRelationsAll();
+        }
+        else{
+            $relations = $this->getRelationsDuring('all', $startDate, $endDate);
+        }
+
+        $merged = array();
+        foreach(Person::$studentPositions as $array){
+            $merged = array_merge($merged, $array);
+        }
+        
+        $data = array();
+        foreach($relations as $r){
+            $hqp = $r->getUser2();
+            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            $role = $r->getType();
+            if($hqpTypes == "committee"){
+                if($role == SUPERVISES || $role == CO_SUPERVISES){
+                    continue;
+                }
+            }
+            else{
+                if($role == SUPERVISES){
+                    $role = "Supervisor";
+                }
+                else if($role == CO_SUPERVISES){
+                    $role = "Co-Supervisor";
+                }
+                else{
+                    continue;
+                }
+            }
+            
+            $found = false;
+            foreach($universities as $university){
+                if($university['id'] == $r->getUniversity()){
+                    $found = true;
+                    break;
+                }
+            }
+            
+            if(!$found){
+                // Relation not associated with one of the HQP's universities, try to guess which one it should belong to
+                $minUniversity = null;
+                $minInterval = 1000000;
+                $relStart = new DateTime($r->getStartDate());
+                foreach($universities as $university){
+                    if($hqpTypes == "committee" ||
+                       @in_array(strtolower($university['position']), $hqpTypes) || 
+                       ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))){
+                        $uniStart = new DateTime($university['start']);
+                        $startInterval = intval($uniStart->diff($relStart)->format('%a')); // Difference in days
+                        $minInterval = min($minInterval, $startInterval);
+                        if($minInterval == $startInterval){
+                            $minUniversity = $university;
+                        }
+                    }
+                }
+                $university = $minUniversity;
+            }
+            
+            if($university == null){
+                // No university matched, skip
+                continue;
+            }
+            
+            $startDate1 = substr($r->getStartDate(), 0, 10);
+            $endDate1 = substr($r->getEndDate(), 0, 10);
+            $status = $r->getStatus();
+            
+            $uni = $university['university'];
+            $research_area = $university['research_area'];
+            $position = $university['position'];
+            
+            if($hqpTypes != "committee" && !@in_array(strtolower($position), $hqpTypes) && !($hqpTypes == "other" && !in_array(strtolower($position), $merged))){
+                continue;
+            }
+
+            $end_date = ($endDate1 == '0000-00-00') ? "Current" : $endDate1;
+            $hqp_name = $hqp->getNameForForms();
+            
+            $data[$end_date.$startDate1.$position.$r->getId()] = 
+                array('hqp' => $hqp->getId(),
+                      'position' => $position,
+                      'start_date' => $startDate1,
+                      'end_date' => $end_date,
+                      'status' => $status,
+                      'role' => $role);
+        }
+        return $data;
+    }
+    
     /**
      * Returns and array of Person objects who this Person can delegate
      * @return array The list of People who this Person can delegate
