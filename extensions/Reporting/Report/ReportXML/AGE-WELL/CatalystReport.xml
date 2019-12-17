@@ -302,7 +302,7 @@
             ]]>
         </If>
         
-        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
+        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator, Community Stakeholder)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
             <![CDATA[
                 <h3>Team Members</h3>
                 <p>The following table was submitted with your original project proposal. Please update the table to reflect the development of the team over the Catalyst year. As a reminder, the following roles are defined:</p>

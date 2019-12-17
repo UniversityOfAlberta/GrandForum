@@ -229,7 +229,7 @@
             ]]>
         </If>
         
-        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" class="wikitable" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
+        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" class="wikitable" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator, Community Stakeholder)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
             <![CDATA[
                 <h3>Team Members</h3>
                 {$item}
