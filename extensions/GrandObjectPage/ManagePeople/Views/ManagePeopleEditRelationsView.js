@@ -49,6 +49,14 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         this.undelegateEvents();
     },
     
+    disassociate: function(){
+        var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
+        var tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+        tmpRelations.each(function(relation){
+            relation.set('personUniversity', null);
+        }.bind(this));
+    },
+    
     getRelations: function(){
         var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
         if(this.university != null){
@@ -66,7 +74,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     saveAll: function(){
         var person = this.person;
         var relations = this.getRelations();
-        relations.each(function(relation){
+        _.each(relations.models, function(relation){
             if(relation == null){
                 // Probably removed from sortable
                 return;
@@ -88,6 +96,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             }
             else {
                 relation.destroy({
+                    wait: true,
                     success: function(){
 
                     },
