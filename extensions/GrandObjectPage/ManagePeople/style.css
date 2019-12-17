@@ -37,7 +37,7 @@ table.wikitable tr.deleted {
     background: #FEB8B8;
 }
 
-.relError {
+.relError, .hqpError {
     text-align: left;
     font-size: 12px;
     white-space: initial;

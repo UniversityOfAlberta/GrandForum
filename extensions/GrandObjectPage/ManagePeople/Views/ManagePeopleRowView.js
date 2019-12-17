@@ -139,10 +139,23 @@ ManagePeopleRowView = Backbone.View.extend({
         }
         me.relations.ready().then(function(){
             var universities = this.model.get('universities');
+            var uniIds = _.pluck(universities, 'id');
             var relations = new PersonRelations(me.relations.where({user2: this.model.get('id')}));
             var start = ""; this.model.get('start');
             var end = ""; this.model.get('end');
             var position = this.model.get('position');
+            
+            // Sanity Check 3: Contains Orphaned relationships
+            var foundOrphan = false;
+            relations.each(function(relation){
+                if(relation.get('university') == 0 || uniIds.indexOf(relation.get('university')) === false){
+                    // Orphan found
+                    foundOrphan = true;
+                }
+            }.bind(this));
+            if(foundOrphan){
+                this.$(".hqpError ul").append("<li>HQP has Orphaned Relationships</li>");
+            }
             
             var latestRel = null;
             if(relations.length == 0){
@@ -208,9 +221,9 @@ ManagePeopleRowView = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-
+        this.el.innerHTML = this.template(this.model.toJSON());
+        
         // Sanity Check 1: Incomplete Student Data Check - highlights students with empty dataset
-        var complete = {complete: true};
         if(_.size(_.filter([this.model.get('university'),
                             this.model.get('position'),
                             this.model.get('department')],
@@ -221,17 +234,15 @@ ManagePeopleRowView = Backbone.View.extend({
                             }
                           )
             ) != 3){
-            complete.complete = false;
+            this.$(".hqpError ul").append("<li>Basic Info is incomplete</li>");
         }
         
-        // Sanity Check 2: Relationship with Faculty Member
-        var doubtful = {doubtful: false};
+        // Sanity Check 2: Department different than Faculty Member
         if (me.get('department') != null && this.model.get('department') != null &&
             me.get('department').trim().toLowerCase() != this.model.get('department').trim().toLowerCase()){
-            doubtful.doubtful = true;
+            this.$(".hqpError ul").append("<li>This HQP may not be your student</li>");
         }
-
-        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), complete, doubtful));
+                
         this.renderRelationType();
         if(this.parent.table != null){
             var data = new Array();

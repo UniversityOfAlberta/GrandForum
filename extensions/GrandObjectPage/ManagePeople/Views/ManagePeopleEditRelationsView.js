@@ -50,17 +50,17 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     disassociate: function(){
-        var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
-        var tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+        var relations = new PersonRelations(this.relations.where({user2: this.person.get('id')}));
+        var tmpRelations = new PersonRelations(this.relations.where({university: this.university.get('id')}));
         tmpRelations.each(function(relation){
             relation.set('personUniversity', null);
         }.bind(this));
     },
     
     getRelations: function(){
-        var relations = new Backbone.Collection(this.relations.where({user2: this.person.get('id')}));
+        var relations = new PersonRelations(this.relations.where({user2: this.person.get('id')}));
         if(this.university != null){
-            var tmpRelations = new Backbone.Collection(this.relations.where({university: this.university.get('id')}));
+            var tmpRelations = new PersonRelations(this.relations.where({university: this.university.get('id')}));
             tmpRelations.each(function(relation){
                 relation.set('personUniversity', this.university)
             }.bind(this));

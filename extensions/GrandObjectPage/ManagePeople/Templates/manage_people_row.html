@@ -15,10 +15,11 @@
 <td align="center">
     <span class="delete-icon" style="display:none;"></span>
 </td>
-<td style="border-left: 2px solid #AAAAAA; 
-           <% if(!complete) { %> background:#FFA500; <% } %> 
-           <% if(doubtful) { %> font-weight:bold; <% } %>" align="left" >
+<td style="border-left: 2px solid #AAAAAA;" align="left" >
     <a href="<%= url %>"><%= reversedName %></a>
+    <span class="hqpError">
+        <ul style="margin-top:0; margin-bottom:0;"></ul>
+    </span>
 </td>
 <td id="startDate" align="center">
     <!-- These dates will most likely change after the relationship data is loaded.  These just make it a bit less jarring -->
