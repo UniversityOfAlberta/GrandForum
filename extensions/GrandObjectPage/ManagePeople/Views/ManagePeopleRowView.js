@@ -148,13 +148,14 @@ ManagePeopleRowView = Backbone.View.extend({
             // Sanity Check 3: Contains Orphaned relationships
             var foundOrphan = false;
             relations.each(function(relation){
-                if(relation.get('university') == 0 || uniIds.indexOf(relation.get('university')) === false){
+                if(relation.get('university') == 0 || uniIds.indexOf(relation.get('university')) == -1){
                     // Orphan found
                     foundOrphan = true;
                 }
             }.bind(this));
             if(foundOrphan){
-                this.$(".hqpError ul").append("<li>HQP has Orphaned Relationships</li>");
+                this.$(".hqpError ul li.orphanError").remove();
+                this.$(".hqpError ul").append("<li class='orphanError'>HQP has Orphaned Relationships</li>");
             }
             
             var latestRel = null;
