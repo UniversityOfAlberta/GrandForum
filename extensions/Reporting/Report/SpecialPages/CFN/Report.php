@@ -214,6 +214,10 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
+        if(count($person->getEvaluates("IFP-ETC", 2020)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP Review (2020)", "{$url}IFPReview", $selected);
+        }
         if(count($person->getEvaluates("KT-EX", 2019)) > 0 || 
            count($person->getEvaluates("KT-KTC", 2019)) > 0 || 
            count($person->getEvaluates("KT-RMC", 2019)) > 0){
@@ -223,10 +227,6 @@ class Report extends AbstractReport{
         if(count($person->getEvaluates("KT_INTENT-EX", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTIntentReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Intent Review (2019)", "{$url}KTIntentReview", $selected);
-        }
-        if(count($person->getEvaluates("IFP-ETC", 2020)) > 0){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP Review (2020)", "{$url}IFPReview", $selected);
         }
         if(count($person->getEvaluates("SHOW-EX", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SHOWReview")) ? "selected" : false;
