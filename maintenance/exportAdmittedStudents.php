@@ -93,7 +93,7 @@ for($y=2017;$y<=YEAR;$y++){
 			    
 			    if($oldContents != $newContents){
 			        file_put_contents($loc, $newContents);
-		            $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$outdir}/{$array['student_id']}";
+		            $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$loc}";
 		            echo "{$command}\n";
 		            system("{$command}");
 			    }
