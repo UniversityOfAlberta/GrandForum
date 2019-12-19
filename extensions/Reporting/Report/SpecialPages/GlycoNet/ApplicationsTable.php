@@ -93,6 +93,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=hqpresearch'>Research & Travel</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cspc'>CSPC</a>";
@@ -138,6 +139,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "exchange" && $me->isRoleAtLeast(SD)){
             $this->generateExchange();
+        }
+        else if($program == "hqpresearch" && $me->isRoleAtLeast(SD)){
+            $this->generateHQPResearch();
         }
         else if($program == "summer" && $me->isRoleAtLeast(SD)){
             $this->generateSummer();
@@ -287,6 +291,13 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2019Applicants, 2019, "Legal2019"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateHQPResearch(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH'), $this->hqps, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
