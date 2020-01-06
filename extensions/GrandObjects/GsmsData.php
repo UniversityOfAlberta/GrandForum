@@ -577,12 +577,12 @@ class GsmsData extends BackboneModel{
     }
 
     function getAssignedSupervisors() {
-        $year = ($this->year != "") ? $year : YEAR;
+        $year = ($this->year != "") ? $this->year : YEAR;
         return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
     }
 
     function getFunding() {
-        $year = ($this->year != "") ? $year : YEAR;
+        $year = ($this->year != "") ? $this->year : YEAR;
         return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
     }
 }

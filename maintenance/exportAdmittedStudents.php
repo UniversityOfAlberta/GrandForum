@@ -29,6 +29,7 @@ $filenames = [];
 $peopleSoFar = 0;
 $nPeople = count($people);
 for($y=2017;$y<=YEAR;$y++){
+    @mkdir("{$outdir}/{$y}");
     foreach($people as $person){
 	    $gsms = $person->getGSMS($y);
 	    if ($gsms->id != null) {
@@ -51,6 +52,15 @@ for($y=2017;$y<=YEAR;$y++){
 			    } else {
 				    $gender = $array['gender'];
 			    }
+			    
+			    $supervisors = $gsms->getAssignedSupervisors();
+			    $sups = array();
+			    if(isset($supervisors['q5'])){
+			        foreach($supervisors['q5'] as $supervisor){
+			            $sup = Person::newFromReversedName($supervisor);
+			            $sups[] = str_replace("@ualberta.ca", "", $sup->getEmail());
+			        }
+			    }
 
                 $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);
 
@@ -66,25 +76,26 @@ for($y=2017;$y<=YEAR;$y++){
 				    "immigration " . $array['additional']['immigration'],
 				    "degree " . $array['degree'],
 				    "specialization " . $array['area'],
-				    "status " . $array['ftpt']
+				    "status " . $array['ftpt'],
+				    "supervisor " . implode("; ", $sups)
 			    );
 			    if ($array['student_id'] != 0) {
-				    $loc = $outdir . "/" . $array['student_id'];
+				    $loc = "{$outdir}/{$y}/" . $array['student_id'];
 				    array_push($filenames, $array['student_id']);
 			    } else {
 				    $f = "gsms" . $array['gsms_id'];
-				    $loc = $outdir . "/" . $f;
+				    $loc = "{$outdir}/{$y}/" . $f;
 				    array_push($filenames, $f);
 			    }
-			    $found = false;
-			    if(!file_exists($loc)){
-			        $found = true;
-			    }
-			    file_put_contents($loc, implode("\n", $output) . "\n");
-			    if($found){
-			        $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$outdir}/{$array['student_id']}";
-			        echo "{$command}\n";
-			        system("{$command}");
+			    
+			    $oldContents = @file_get_contents($loc);
+			    $newContents = implode("\n", $output) . "\n";
+			    
+			    if($oldContents != $newContents){
+			        file_put_contents($loc, $newContents);
+		            $command = "ssh -T -i /home/srvadmin/srvadmin docsdb@csora-app.cs.ualberta.ca < {$loc}";
+		            echo "{$command}\n";
+		            system("{$command}");
 			    }
 		    }
 	    }
