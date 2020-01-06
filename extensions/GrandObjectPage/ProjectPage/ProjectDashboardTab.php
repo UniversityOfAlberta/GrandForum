@@ -44,9 +44,12 @@ class ProjectDashboardTab extends AbstractEditableTab {
             }
             if($config->getValue('projectTechEnabled')){
                 $this->project->technology = array(
-                    'response1' => $_POST['response1'],
-                    'response2' => $_POST['response2'],
-                    'response3' => $_POST['response3']
+                    'response1'      => $_POST['response1'],
+                    'response2'      => $_POST['response2'],
+                    'response2_yes1' => $_POST['response2_yes1'],
+                    'response2_yes2' => $_POST['response2_yes2'],
+                    'response3'      => $_POST['response3'],
+                    'response4'      => $_POST['response4']
                 );
                 $this->project->saveTechnology();
             }
@@ -55,6 +58,23 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function canEdit(){
         return ($this->project->userCanEdit() && !$this->project->isSubProject());
+    }
+    
+    function canGeneratePDF(){
+        return true;
+    }
+    
+    function generatePDFBody(){
+        global $wgServer, $wgScriptPath, $config;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+            if(!$this->project->isSubProject()){
+                $this->showTopProducts($this->project, $this->visibility);
+                if($config->getValue('projectTechEnabled')){
+                    $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
+                }
+            }
+        }
     }
     
     function generateBody(){
@@ -197,9 +217,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
         }
         $technology = $project->getTechnology();
         $options = array("No",
-                         "Yes, only evaluated",
+                         "Yes, only assessed",
                          "Yes, only adopted",
-                         "Yes, both evaluated and adopted");
+                         "Yes, both assessed and adopted");
         $blankSelected = ($technology['response1'] == "") ? "selected='selected'" : "";
         $response1 = "<select name='response1'>
                         <option value='' $blankSelected>---</option>";
@@ -227,21 +247,49 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $response3 .= "</select>";
         $this->html .= "<br /><br />
                         <h2>Technology Evaluation/Adoption</h2>
-                        <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
-                        {$response1}
+                        <b>Have your research group developed any new technology that has been assessed and/or adopted by a third party organization?</b><br />
+                        {$response1}<br />
+                        <br />
                         <div id='tech_yes' style='display:none;'>
-                            <br />
-                            <b>Please provide the name of the technology your research group has evaluated/adopted:</b><br />
+                            <b>Please provide the name of the technology:</b><br />
                             <input type='text' name='response2' value='{$technology['response2']}' size='50' />
                             <br /><br />
-                            <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology your research group has evaluated/adopted:</b><br />
+                            <div id='tech_yes1' style='display:none;'>
+                                <b>Please provide the name, sector and country of the third party organization which assessed your technology:</b>
+                                <textarea style='height:100px;' name='response2_yes1'>{$technology['response2_yes1']}</textarea>
+                                <br />
+                                <br />
+                            </div>
+                            <div id='tech_yes2' style='display:none;'>
+                                <b>Please provide the name, sector and country of the third party organization which adopted your technology:</b>
+                                <textarea style='height:100px;' name='response2_yes2'>{$technology['response2_yes2']}</textarea>
+                                <br />
+                                <br />
+                            </div>
+                            <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology:</b><br />
                             {$response3}<br />
-                            <small>Innovation Canada info: <a target='_blank' href='https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html'>https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html</a></small>
+                            <br />
+                            <b>Please provide a brief description of your technology:</b>
+                            <textarea style='height:100px;' name='response4'>{$technology['response4']}</textarea>
+                            <br />
+                            <p><small>Note: If your research group has developed more than one technology that have been assessed and/or adopted by a third party organization, please contact the FES office at <a href='mailto:fes@ualberta.ca'>fes@ualberta.ca</a></small></p>
+                            <p><small>Innovation Canada info: <a target='_blank' href='https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html'>https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html</a></small></p>
                         </div>
                         <script type='text/javascript'>
                             $('[name=response1]').change(function(){
-                                if($(this).val() != 'No' && $(this).val() != ''){
+                                var val = $(this).val();
+                                if(val != 'No' && val != ''){
                                     $('#tech_yes').show();
+                                    $('#tech_yes1').hide();
+                                    $('#tech_yes2').hide();
+                                    if(val == 'Yes, only assessed' ||
+                                       val == 'Yes, both assessed and adopted'){
+                                        $('#tech_yes1').show();
+                                    }
+                                    if(val == 'Yes, only adopted' ||
+                                            val == 'Yes, both assessed and adopted'){
+                                        $('#tech_yes2').show();
+                                    }
                                 }
                                 else{
                                     $('#tech_yes').hide();
@@ -249,7 +297,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             });
                             $('[name=response1]').change();
                         </script>";
-        $this->html .= "<br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Save Dashboard' name='submit'>Save</button>
+        $this->html .= "<button id='editTechnologyEvaluationAdoption' type='submit' value='Save Dashboard' name='submit'>Save</button>
                         <input id='cancelTechnologyEvaluationAdoption' type='submit' value='Cancel' name='submit' /><br /><br />";
     }
     
@@ -297,7 +345,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button id='editTopResearchOutcomes' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+            $this->html .= "<button id='editTopResearchOutcomes' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
         }
     }
     
@@ -308,21 +356,41 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $technology = $project->getTechnology();
         $this->html .= "<br /><br />
                         <h2>Technology Evaluation/Adoption</h2>
-                        <b>Have your research group evaluated and/or adopted any new technology since the beginning of the project?</b><br />
-                        {$technology['response1']}";
+                        <div>
+                            <b>Have your research group developed any new technology that has been assessed and/or adopted by a third party organization?</b><br />
+                            {$technology['response1']}
+                        </div><br />";
         if($technology['response1'] != "" && $technology['response1'] != "No"){
-            $this->html .= "
-                        <br /><br />
-                        <b>Please provide the name of the technology your research group has evaluated/adopted:</b><br />
-                        {$technology['response2']}
-                        <br /><br />
-                        <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology your research group has evaluated/adopted:</b><br />
-                        {$technology['response3']}";
+            $this->html .= "<div>
+                                <b>Please provide the name of the technology:</b><br />
+                                {$technology['response2']}
+                            </div><br />";
+            if($technology['response1'] == 'Yes, only assessed' || 
+               $technology['response1'] == 'Yes, both assessed and adopted'){
+                $this->html .= "<div>
+                                    <b>Please provide the name, sector and country of the third party organization which assessed your technology:</b><br />
+                                    ".nl2br($technology['response2_yes1'])."
+                                </div><br />";
+            }
+            if($technology['response1'] == 'Yes, only adopted' || 
+               $technology['response1'] == 'Yes, both assessed and adopted'){
+                $this->html .= "<div>
+                                    <b>Please provide the name, sector and country of the third party organization which adopted your technology:</b><br />
+                                    ".nl2br($technology['response2_yes2'])."
+                                </div><br />";
+            }
+            $this->html .= "<div>
+                                <b>Based on the definitions provided by Innovation Canada in the link below, please indicate the Technology Readiness Level (TRL) of the technology:</b><br />
+                                {$technology['response3']}
+                            </div><br />";
+            $this->html .= "<div>
+                                <b>Please provide a brief description of your technology:</b><br />
+                                ".nl2br($technology['response4'])."
+                            </div><br />";
         }
         if($this->canEdit()){
-            $this->html .= "<br /><br /><button id='editTechnologyEvaluationAdoption' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
+            $this->html .= "<button id='editTechnologyEvaluationAdoption' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
         }
-        $this->html .= "<br />";
     }
     
     function showDashboard($project, $visibility){

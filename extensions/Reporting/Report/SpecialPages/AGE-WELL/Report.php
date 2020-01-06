@@ -128,6 +128,14 @@ class Report extends AbstractReport {
             }
             knatsort($projects);
             foreach($projects as $project){
+                // Check for CRP project
+                if(preg_match("/[0-9]*.[0-9]*[a-z]* .*/", $project->getName()) != 0){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPCRP")) ? "selected" : false;
+                    $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP (CRP)", "{$url}SIPCRP", $selected);
+                    break;
+                }
+            }
+            foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-SIP A[0-9]+.*/", $project->getName()) != 0 ||
@@ -138,12 +146,12 @@ class Report extends AbstractReport {
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}SIPProjectEvaluation&project={$project->getName()}", $selected);
                     }
                     else if(preg_match("/.*CAT-2019.*/", $project->getName()) != 0){
-                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CatalystEvaluation&project={$project->getName()}", $selected);
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CatalystReport&project={$project->getName()}", $selected);
                     }
                     else if(preg_match("/.*AW-PP2019.*/", $project->getName()) != 0){
-                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PlatformEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PlatformEvaluation&project={$project->getName()}", $selected);
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PlatformReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PlatformReport&project={$project->getName()}", $selected);
                     }
                     else{
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;

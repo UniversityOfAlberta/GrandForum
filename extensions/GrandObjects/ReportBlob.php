@@ -292,7 +292,7 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%"){
+	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%" && strstr($this->_owner_id, "|") === false){
 	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
@@ -303,7 +303,7 @@ class ReportBlob {
 		if ($this->_owner_id === false || $this->_proj_id === false)
 			return false;
 
-		if (! is_array($address) || count($address) == 0)
+		if (!is_array($address) || count($address) == 0)
 			return false;
 
 		// Prepare the address for an SQL statement.
@@ -319,15 +319,21 @@ class ReportBlob {
 		// Load all data from database.
 		if(strstr($this->_owner_id, "%") !== false){
 		    $sql = "SELECT * FROM grand_report_blobs WHERE " .
-			        "user_id LIKE '{$this->_owner_id}' AND " .
-			        "year = {$this->_year} AND " .
-			        "proj_id = {$this->_proj_id} AND {$where};";
+			       "user_id LIKE '{$this->_owner_id}' AND " .
+			       "year = {$this->_year} AND " .
+			       "proj_id = {$this->_proj_id} AND {$where};";
+        }
+        else if(strstr($this->_owner_id, "|") !== false){
+            $sql = "SELECT * FROM grand_report_blobs WHERE " .
+			       "user_id IN (".str_replace("|", ",", $this->_owner_id).") AND " .
+			       "year = {$this->_year} AND " .
+			       "proj_id = {$this->_proj_id} AND {$where};";
         }
         else{
             $sql = "SELECT * FROM grand_report_blobs WHERE " .
-			        "user_id = '{$this->_owner_id}' AND " .
-			        "year = {$this->_year} AND " .
-			        "proj_id = {$this->_proj_id} AND {$where};";
+			       "user_id = '{$this->_owner_id}' AND " .
+			       "year = {$this->_year} AND " .
+			       "proj_id = {$this->_proj_id} AND {$where};";
         }
 		$res = DBFunctions::execSQL($sql);
         $ret = false;

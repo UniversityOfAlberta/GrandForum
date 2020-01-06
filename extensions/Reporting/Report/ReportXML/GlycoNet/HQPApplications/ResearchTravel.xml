@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Research &amp; Travel Supplements Program" reportType="RP_HQP_RESEARCH" pdfType="HQP_RESEARCH" pdfFiles="HQPApplications/ResearchTravelPDF" ajax="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Research &amp; Travel Supplements Program" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Background</h3>
+                <p>The Research & Travel Supplements Program provides financial support to graduate students, postdoctoral fellows, technicians, and research associates within GlycoNet who are working on multi-investigator projects. These funds are intended to contribute towards trainees’ living and travel expenses for a research exchange or to a conference/workshop.</p>
+                
+                <h3>Eligibility</h3>
+                <p>Individuals wishing to take part in the Research & Travel Supplements Program must be currently supervised by a GlycoNet Network Investigator. Trainees must finish the exchange and/or the conference before completion of their degree program or tenure. Both Canadian and international students are eligible. For applicants who are interested in research exchange, the exchange site must be an academic institution or government lab inside or outside of Canada. For applications who are interested in attending a conference/workshop, the conference/workshop site must be glyco-focused and cannot be used for the Canadian Glycomics Symposium, nor the GlycoNet Annual General Meeting. A maximum of two applications from the same lab will be supported each year, and applications must align with one of GlycoNet’s research themes (see <a href='http://www.glyconet.ca/' target='_blank'>glyconet.ca</a>).</p>
+                
+                <h3>Funding Available</h3>
+                <p>Funding Available GlycoNet has set aside $16,000 annually for this program. For applicants who are participating in research exchange, the Network will contribute up to $2000/month in living expenses for trainees who working in another laboratory outside the city of their home institution (pro-rated for partial months). Exchanges of one week or less will not be considered. For applicants who wish to attend conferences and/or workshops, the Network will contribute up to $800 per conference/workshop. The award will be paid as a reimbursement to the award holder.</p>
+                
+                <h3>Instructions</h3>
+                <p>The applicant must complete the application through the GlycoNet forum. A complete application includes:</p>
+                <ul>
+                    <li>Applicant profile</li>
+                    <li>Proposal detailing the exchange activities and benefits to the participants</li>
+                    <li>Budget of estimated living and travel expenses</li>
+                    <li>Signed letter of support from the applicant’s primary academic supervisor</li>
+                    <li>Signed letter of invitation from the proposed host institution/department (applicable to applicants for research exchange)</li>
+                    <li>Formal letter of announcement of participating of conference/workshop from the host organization (applicable to applicants for conference/workshop travel)</li>
+                </ul>
+                
+                <table style="width:450px;">
+                    <tr>
+                        <td><h3>Research Exchange and Conference/Workshop Travel Start Date:</h3></td>
+                        <td><h3>Application Deadline:</h3></td>
+                    </tr>
+                    <tr>
+                        <td>May 1 - August 31</td>
+                        <td>January 15</td>
+                    </tr>
+                    <tr>
+                        <td>September 1 - December 31</td>
+                        <td>May 15</td>	
+                    </tr>
+                    <tr>
+                        <td>January 1 - April 30</td>
+                        <td>September 15</td>
+                    </tr>
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="profile" name="Profile" title="Applicant Profile" tooltip="Applicant Profile" type="EditableReportSection" blobSection="PROFILE">
+        <Static>
+            <![CDATA[
+                <h2>Trainee</h2>
+                <table class='wikitable'>
+                    <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
+                    <tr><td align='right' style='font-weight:bold;'>Program/Position:</td><td>{$user_level}</td></tr>
+                    <tr><td align='right' style='font-weight:bold;'>Department:</td><td>{$user_dept}</td></tr>
+                    <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
+            ]]>
+        </Static>
+        <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="province" type="Text" blobType="BLOB_TEXT" blobItem="PROV">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                        <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
+                        <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
+                    </tr>
+                </table>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h2>Current Supervisor</h2>
+                <table class='wikitable'>
+            ]]>
+        </Static>
+        <ReportItem id="sup_name" type="Text" blobType="BLOB_TEXT" blobItem="SUPNAME">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Name:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_pos" type="Text" blobType="BLOB_TEXT" blobItem="SUPPOS">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Program/Position:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_dept" type="Text" blobType="BLOB_TEXT" blobItem="SUPDEPT">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Department:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_uni" type="Text" blobType="BLOB_TEXT" blobItem="SUPUNI">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Institution:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_city" type="Text" blobType="BLOB_TEXT" blobItem="SUPCITY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_prov" type="Text" blobType="BLOB_TEXT" blobItem="SUPPROV">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_phone" type="Text" blobType="BLOB_TEXT" blobItem="SUPPHONE">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Phone:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_email" type="Text" blobType="BLOB_TEXT" blobItem="SUPEMAIL">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Email:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h2>Proposed Host Supervisor</h2>
+                <p>If you are applying to travel for conference/workshop, provide the contact information of the host organization.</p>
+                <table class='wikitable'>
+            ]]>
+        </Static>
+        <ReportItem id="host_name" type="Text" blobType="BLOB_TEXT" blobItem="HOSTNAME">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Name:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_pos" type="Text" blobType="BLOB_TEXT" blobItem="HOSTPOS">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Program/Position:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_dept" type="Text" blobType="BLOB_TEXT" blobItem="HOSTDEPT">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Department:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_uni" type="Text" blobType="BLOB_TEXT" blobItem="HOSTUNI">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Institution:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_city" type="Text" blobType="BLOB_TEXT" blobItem="HOSTCITY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_prov" type="Text" blobType="BLOB_TEXT" blobItem="HOSTPROV">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Prov/State:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_country" type="Text" blobType="BLOB_TEXT" blobItem="HOSTCOUNTRY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Country:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_phone" type="Text" blobType="BLOB_TEXT" blobItem="HOSTPHONE">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Phone:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_email" type="Text" blobType="BLOB_TEXT" blobItem="HOSTEMAIL">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Email:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="site" type="Radio" blobType="BLOB_TEXT" blobItem="SITE" orientation="vertical" options="In the same province as the home institution (up to $500 travel allowance)|In a different province than the home institution (up to $1000 travel allowance)|Outside of Canada (up to $2000 travel allowance)">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td valign='top' style='font-weight: bold; white-space: nowrap;'>
+                            The site of proposed exchange or conference/workshop is:
+                        </td>
+                        <td valign='top' style='white-space: nowrap;'>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="MultiText" blobType="BLOB_ARRAY" blobItem="BACKGROUND" 
+                    multiple="true" 
+                    labels="Degree/Position|Department|Institution|Country|Date Started&lt;br /&gt;(MM/YYYY)|Date Completed/Expected Date of Completion&lt;br /&gt;(MM/YYYY)" 
+                    types="text|text|text|text|text|text"
+                    sizes="125|125|150|125|100|100">
+            <![CDATA[
+                <h2>Academic Background - <small>list current program or position first</small></h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="scholarships" type="MultiText" blobType="BLOB_ARRAY" blobItem="SCHOLAR" 
+                    multiple="true" 
+                    labels="Name|Value&lt;br /&gt;(CDN $)|Year|Level" 
+                    types="text|integer|integer|Select(Institutional,Provincial,National,International)"
+                    sizes="300|100|40|125">
+            <![CDATA[
+                <h2>Scholarships & Awards - <small>begin with most recent</small></h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[
+                <h2>Contributions</h2>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" type="Editable" name="Proposal" tooltip="Proposal" title="Proposal" blobSection="PROPOSAL">
+        <ReportItem id="acronym" type="Text" blobItem="ACRONYM">
+            <![CDATA[
+                <p>If you are applying to travel for a conference or workshop, please put "N/A" under Project Acronym, and put the title of the conference/workshop under "Project Title." Please indicate the start date and end date of the conference/workshop.</p>
+                <table class='wikitable'>
+                <tr>
+                    <td valign='top' align='right'><b>Project Acronym:</b><br />
+                        <small>(if project is funded by GlycoNet)</small>
+                    </td>
+                    <td valign='top'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE">
+            <![CDATA[
+                <tr>
+                    <td align='right'><b>Project Title:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+            <![CDATA[
+                <tr>
+                    <td valign='top' align='right'><b>Theme:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="start" type="Calendar" blobItem="START_DATE">
+            <![CDATA[
+                <tr>
+                    <td align='right'><b>Start Date:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="Calendar" blobItem="END_DATE">
+            <![CDATA[
+                <tr>
+                    <td align='right'><b>End Date:</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true" recommended="true" height="400px">
+            <![CDATA[
+                <h2>Project Description - <small>750 words maximum, including references</small></h2>
+                <p>If you are applying for a research exchange, describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timeline, methodologies, and the benefits this exchange will provide to the groups involved. Please use Journal of Biological Chemistry style for reference. If you are applying to travel for a conference or workshop, describe the conference/workshop, addressing the objective of the conference/workshop, your role in the conference/workshop. Describe in detail the benefits this experience will provide to you.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>Estimated Expenses</h2>
+                <p>For applicants who are participating in research exchange, the Network will contribute up to $2000/month in living expenses for trainees who working in another laboratory outside the city of their home institution (pro-rated for partial months). Exchanges of one week or less will not be considered. For applicants who wish to attend conferences and/or workshops, the Network will contribute up to $800 per conference/workshop. The award will be paid as a reimbursement to the award holder.</p>
+                <table id='budget' frame='box' rules='all'>
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Expense</b></td>
+                        <td style='background:#CCCCCC;'><b>Amount ($)</b></td>
+                        <td style='background:#CCCCCC;'><b>Description</b></td>
+                    </tr>
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Travel</b></td>
+                        <td style='background:#CCCCCC;'></td>
+                        <td style='background:#CCCCCC;'></td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="airfare" type="Integer" blobItem="AIRFARE" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Airfare</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="airfare_desc" type="Textarea" blobItem="AIRFARE_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ground" type="Integer" blobItem="GROUND" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Ground transport (bus, train)</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ground_desc" type="Textarea" blobItem="GROUND_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vehicle" type="Integer" blobItem="VEHICLE" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Private vehicle</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vehicle_desc" type="Textarea" blobItem="VEHICLE_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="lodging" type="Integer" blobItem="LODGING" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Accommodation</b></td>
+                        <td style='background:#CCCCCC;'></td>
+                        <td style='background:#CCCCCC;'></td>
+                    </tr>
+                    <tr>
+                        <td>Lodging</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="lodging_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meals" type="Integer" blobItem="MEALS" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Meals</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meals_desc" type="Textarea" blobItem="MEALS_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total" type="Integer" blobItem="TOTAL" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td id='total'><div style='text-align:right;padding:3px;'></div>{$item}</td>
+                        <td></td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+                <script type='text/javascript'>
+                    $('td#total input').hide();
+                    function calcTotal(){
+                        var sum = 0;
+                        $('table#budget td:not(#total) input').each(function(i, el){
+                            var value = parseInt($(el).val());
+                            if(!_.isNaN(value)){
+                                sum += parseInt(value);
+                            }
+                        });
+                        $('td#total div').text(sum);
+                        $('td#total input').val(sum);
+                        $('td#total input').attr('value', sum);
+                    }
+                    _.defer(calcTotal);
+                    $('table#budget td:not(#total) input').change(calcTotal);
+                    $('table#budget td:not(#total) input').keyup(calcTotal);
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="figures" type="Upload" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Uploads</h2>
+                <h3>Figures and schemes - <small>2 pages maximum</small></h3>
+                <p>Upload as a single separate PDF document. Include legends below each figure or scheme.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Signed letter (1 page) of support from primary academic supervisor</h3>
+                <p>Upload as a single separate PDF document.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Signed letter of invitation (1 page) from department or institution</h3>
+                <p> If you are applying to travel for a conference or workshop, provide a formal announcement of participating of conference/workshop from the host organization</p>
+                <p>Upload as a single separate PDF document.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="declaration" type="ReportSection" name="Declaration" tooltip="Applicant Declaration" title="Applicant Declaration">
+        <Static>
+            <![CDATA[
+                <p>By submitting this Research & Travel Supplements Program Application Form I agree with GlycoNet that:</p>
+                <ol>
+                    <li>the information contained in this form is true, complete, and accurate;</li>
+                    <li>I will use the funds received by me solely for the purpose set out in this application and as required pursuant to any applicable policies and procedures of GlycoNet;</li>
+                    <li>I will immediately notify the GlycoNet Training Coordinator of any change in my academic status or substantial change to the scope of the project;</li>
+                    <li>I consent to being identified by name as a recipient of funding under the Research Exchange Program on the GlycoNet website and in GlycoNet publications;</li>
+                    <li>I will acknowledge GlycoNet as a funding source when presenting work carried out during the tenure of the Research Exchange Program; and</li>
+                    <li>I will comply with the final reporting requirements of the Research Exchange Program required by GlycoNet.</li>
+                    <li>I consent to being contacted by GlycoNet for purposes including but not limited to survey administration and follow-up communications.</li>
+                </ol>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+    </ReportSection>
+</Report>

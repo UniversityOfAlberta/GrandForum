@@ -3,6 +3,7 @@
 class PeopleAPI extends RESTAPI {
     
     function doGET(){
+        global $config;
         $simple = ($this->getParam('simple') != "");
         if($this->getParam('role') != ""){
             $university = "";
@@ -18,6 +19,16 @@ class PeopleAPI extends RESTAPI {
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
+                if($config->getValue('networkName') == "FES"){
+                    if($role == "Former-".HQP){
+                        $role = "Alumni";
+                    }
+                }
+                $alumni = false;
+                if($role == "Alumni"){
+                    $role = "Former-".HQP;
+                    $alumni = true;
+                }
                 if($role == 'all'){
                     // Get All people (including candidates)
                     $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
@@ -31,11 +42,22 @@ class PeopleAPI extends RESTAPI {
                         $people = Person::getAllPeople($role);
                     }
                 }
-                foreach($people as $person){
+                foreach($people as $key => $person){
                     if(strstr($role, "Former-") !== false && $person->isRole(str_replace("Former-", "", $role))){
                         // Person is still the specified role, don't show on the 'former' table
-                        continue;
+                        unset($people[$key]);
                     }
+                }
+                if($alumni){
+                    $allAlumni = Alumni::getAllAlumni();
+                    foreach($allAlumni as $alum){
+                        $person = $alum->getPerson();
+                        if($person->isRoleDuring(HQP, "0000-00-00", date('Y-m-d'))){
+                            $people[] = $person;
+                        }
+                    }
+                }
+                foreach($people as $person){
                     if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
                     }

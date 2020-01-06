@@ -22,6 +22,7 @@ class ReportItemCallback {
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
             "project_leaders" => "getProjectLeaders",
+            "project_leader_ids" => "getProjectLeaderIds",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
@@ -291,6 +292,18 @@ class ReportItemCallback {
             $leads[] = "N/A";
         }
         return implode(", ", $leads);
+    }
+    
+    function getProjectLeaderIds($delim=", "){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $leaders = $project->getLeaders();
+            foreach($leaders as $lead){
+                $leads[$lead->getReversedName()] = $lead->getId();
+            }
+        }
+        return implode($delim, $leads);
     }
     
     function getProjectProblem(){
@@ -1628,9 +1641,12 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", "){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_ARRAY, $year, $personId, $projectId);
         $result = $blb->load($addr);
         if($index == null){
             return $blb->getData();

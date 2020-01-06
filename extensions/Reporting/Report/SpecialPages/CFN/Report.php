@@ -214,6 +214,10 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
+        if(count($person->getEvaluates("IFP-ETC", 2020)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP Review (2020)", "{$url}IFPReview", $selected);
+        }
         if(count($person->getEvaluates("KT-EX", 2019)) > 0 || 
            count($person->getEvaluates("KT-KTC", 2019)) > 0 || 
            count($person->getEvaluates("KT-RMC", 2019)) > 0){
@@ -224,10 +228,6 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTIntentReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("KT Intent Review (2019)", "{$url}KTIntentReview", $selected);
         }
-        if(count($person->getEvaluates("IFP-ETC", 2019)) > 0){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP Review (2019)", "{$url}IFPReview", $selected);
-        }
         if(count($person->getEvaluates("SHOW-EX", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SHOWReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("SHOW Review (2018)", "{$url}SHOWReview", $selected);
@@ -237,6 +237,9 @@ class Report extends AbstractReport{
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CAT Review (2018)", "{$url}Catalyst2018Review", $selected);
         }
         if($person->isRoleAtLeast(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2020")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2020", "{$url}ReviewReport2020", $selected);
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2019")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2019", "{$url}ReviewReport2019", $selected);
             

@@ -15,9 +15,9 @@ class Alumni extends BackboneModel {
     var $alumni_sector = "";
     
     /**
-     * Returns a new Bibliography from the given id
-     * @param integer $id The id of the Bibliography
-     * @return Bibliography The Bibliography with the given id
+     * Returns a new Alumni from the given id
+     * @param integer $id The id of the Alumni
+     * @return Alumni The Alumni with the given id
      */
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_alumni'),
@@ -28,15 +28,25 @@ class Alumni extends BackboneModel {
     }
     
     /**
-     * Returns a new Bibliography from the given id
-     * @param integer $id The id of the Bibliography
-     * @return Bibliography The Bibliography with the given id
+     * Returns a new Alumni from the given id
+     * @param integer $id The id of the Alumni
+     * @return Alumni The Alumni with the given id
      */
     static function newFromUserId($user_id){
         $data = DBFunctions::select(array('grand_alumni'),
                                     array('*'),
                                     array('user_id' => EQ($user_id)));
         $alumni = new Alumni($data);
+        return $alumni;
+    }
+    
+    static function getAllAlumni(){
+        $data = DBFunctions::select(array('grand_alumni'),
+                                    array('*'));
+        $alumni = array();
+        foreach($data as $row){
+            $alumni[] = new Alumni(array($row));
+        }
         return $alumni;
     }
  

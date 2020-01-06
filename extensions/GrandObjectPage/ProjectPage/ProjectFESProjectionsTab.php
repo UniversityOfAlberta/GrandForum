@@ -9,7 +9,11 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
     }
     
     function canGeneratePDF(){
-        return false;
+        return true;
+    }
+    
+    function generatePDFBody(){
+        $this->generateBody();
     }
 
     function generateBody(){

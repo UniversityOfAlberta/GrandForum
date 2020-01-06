@@ -33,3 +33,7 @@ tbody#productRows td:not(.checkboxCell) {
     max-height: 300px;
     overflow-y: auto;
 }
+
+#importOrcidButton > img {
+    vertical-align: text-top;
+}

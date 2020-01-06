@@ -116,6 +116,7 @@ class APIRequest{
 	    $this->addAction('Products', 'uploadICS', 'UploadICSAPI');
 	    $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
 	    $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
+	    $this->addAction('Products', 'importORCID', 'ImportORCIDAPI');
 	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');

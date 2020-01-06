@@ -1309,15 +1309,33 @@ EOF;
         $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
         $result = $blb->load($addr);
         $t2 = $blb->getData();
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2_YES1', 0);
+        $result = $blb->load($addr);
+        $t2_yes1 = $blb->getData();
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2_YES2', 0);
+        $result = $blb->load($addr);
+        $t2_yes2 = $blb->getData();
             
         $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
         $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
         $result = $blb->load($addr);
         $t3 = $blb->getData();
         
-        $this->technology = array('response1' => $t1,
-                                  'response2' => $t2,
-                                  'response3' => $t3);
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH4', 0);
+        $result = $blb->load($addr);
+        $t4 = $blb->getData();
+        
+        $this->technology = array('response1'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t1))),
+                                  'response2'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t2))),
+                                  'response2_yes1' => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t2_yes1))),
+                                  'response2_yes2' => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t2_yes2))),
+                                  'response3'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t3))),
+                                  'response4'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $t4))));
         return $this->technology;
     }
     
@@ -1332,10 +1350,22 @@ EOF;
         $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
         $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2', 0);
         $blb->store($this->technology['response2'], $addr);
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2_YES1', 0);
+        $blb->store($this->technology['response2_yes1'], $addr);
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH2_YES2', 0);
+        $blb->store($this->technology['response2_yes2'], $addr);
             
         $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
         $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH3', 0);
         $blb->store($this->technology['response3'], $addr);
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH4', 0);
+        $blb->store($this->technology['response4'], $addr);
     }
     
     // Returns an array of papers relating to this project
