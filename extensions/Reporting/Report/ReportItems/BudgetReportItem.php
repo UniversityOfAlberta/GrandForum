@@ -39,7 +39,7 @@ class BudgetReportItem extends AbstractReportItem {
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
-        $wgOut->addHTML("<script type='text/javascript'>
+        $html = "<script type='text/javascript'>
                                 var frameId = 0;
                                 function alertreload{$this->getPostId()}(){
                                     var lastHeight = $('frame[name={$this->getPostId()}]').height();
@@ -54,14 +54,16 @@ class BudgetReportItem extends AbstractReportItem {
                                     $('#budgetFrame{$this->getPostId()}').height(pixels);
                                     $('#budgetFrame{$this->getPostId()}').css('max-height', pixels);
                                 }
-                            </script>");
-		$wgOut->addHTML("<div>");
+                            </script>
+                        <div>";
 		if($template != ""){
-		    $wgOut->addHTML("<h2>Download {$budgetText} Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>");
+		    $html .= "<h4>Download {$budgetText} Template</h4><ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>";
 		}
-		$wgOut->addHTML("<h2>{$budgetText} Upload</h2>
-		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>");
-		$wgOut->addHTML("</div>");
+		$html .= "<h4>{$budgetText} Upload</h4>
+		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
+		$html .= "</div>";
+		$item = $this->processCData($html);
+        $wgOut->addHTML($item);
 	}
 	
 	function renderForPDF(){
