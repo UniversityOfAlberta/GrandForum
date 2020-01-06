@@ -11,6 +11,16 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="NI">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="objectives" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="bio" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
