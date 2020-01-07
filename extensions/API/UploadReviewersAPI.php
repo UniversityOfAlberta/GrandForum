@@ -58,10 +58,7 @@ class UploadReviewersAPI extends API{
         }
 
         $xls = $_FILES['reviewers'];
-        $xls_name = $xls['name'];
-        $pattern = '/(.*)\((.*)\)/';
-        preg_match($pattern, $xls_name, $matches);
-        $file_year = $matches[2];
+        $file_year = YEAR;
 
         if(isset($xls['type']) &&
             ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream") &&
